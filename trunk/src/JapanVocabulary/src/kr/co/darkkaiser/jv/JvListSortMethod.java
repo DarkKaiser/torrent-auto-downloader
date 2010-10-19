@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.jv;
 
-public enum JapanVocabularyListSortMethod {
+//@@@@@
+public enum JvListSortMethod {
 	KANJI,
 	GANA,
 	TRANSLATION,

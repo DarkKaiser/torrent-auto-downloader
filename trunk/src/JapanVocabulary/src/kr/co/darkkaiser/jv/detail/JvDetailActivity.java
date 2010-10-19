@@ -1,5 +1,8 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.detail;
 
+import kr.co.darkkaiser.jv.JapanVocabulary;
+import kr.co.darkkaiser.jv.JvManager;
+import kr.co.darkkaiser.jv.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,19 +12,19 @@ import android.view.GestureDetector.OnGestureListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JapanVocabularyDetailActivity extends Activity implements OnGestureListener {
+public class JvDetailActivity extends Activity implements OnGestureListener {
 
 	private static final int SWIPE_MIN_DISTANCE = 80;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-    
+
     private GestureDetector mGestureScanner = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jv_detail);
-		
+
 		mGestureScanner = new GestureDetector(this);
 
 		// 단어 상세 정보를 출력한다.
@@ -33,9 +36,8 @@ public class JapanVocabularyDetailActivity extends Activity implements OnGesture
 			finish();
 			return;
 		}
-		
-		JapanVocabulary jv = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
-		assert jv != null;
+
+		JapanVocabulary jv = JvManager.getInstance().getJapanVocabulary(idx);
 
 		TextView tvVocabulary = (TextView)findViewById(R.id.vocabulary);
 		TextView tvVocabularyGana = (TextView)findViewById(R.id.vocabulary_gana);
@@ -43,12 +45,13 @@ public class JapanVocabularyDetailActivity extends Activity implements OnGesture
 		TextView tvMemorizeCompleted = (TextView)findViewById(R.id.memorize_completed);
 		TextView tvRegistrationDate = (TextView)findViewById(R.id.registration_date);
 		TextView tvVocabularyDetailInfo = (TextView)findViewById(R.id.vocabulary_detail_info);
-		
+		// @@@@@ 품사 추가
+
 		tvVocabulary.setText(jv.getVocabulary());
 		tvVocabularyGana.setText(jv.getVocabularyGana());
 		tvVocabularyTranslation.setText(jv.getVocabularyTranslation());
 		tvRegistrationDate.setText(jv.getRegistrationDateString());
-		
+
 		if (jv.isMemorizeCompleted() == true) {
 			tvMemorizeCompleted.setText("암기 완료");
 			tvMemorizeCompleted.setTextColor(getResources().getColor(R.color.memorize_completed));
@@ -58,7 +61,7 @@ public class JapanVocabularyDetailActivity extends Activity implements OnGesture
 		}
 
 		// 단어에 대한 상세 정보를 출력한다.
-		tvVocabularyDetailInfo.setText(JapanVocabularyManager.getInstance().getJapanVocabularyDetailInfo(jv.getVocabulary()));
+		tvVocabularyDetailInfo.setText(JvManager.getInstance().getJapanVocabularyDetailDescription(jv.getVocabulary()));
 	}
 
 	@Override
@@ -71,26 +74,26 @@ public class JapanVocabularyDetailActivity extends Activity implements OnGesture
 		try {
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                 return false;
-            
-            // right to left swipe
-            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+
+//            // right to left swipe
+//            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 //                Toast.makeText(getApplicationContext(), "Left Swipe", Toast.LENGTH_SHORT).show();
-            }
+//            }
             // left to right swipe
-            else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 finish();
             }
-            // down to up swipe
-            else if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//            // down to up swipe
+//            else if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 //                Toast.makeText(getApplicationContext(), "Swipe up", Toast.LENGTH_SHORT).show();
-            }
-            // up to down swipe
-            else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//            }
+//            // up to down swipe
+//            else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 //                Toast.makeText(getApplicationContext(), "Swipe down", Toast.LENGTH_SHORT).show();
-            }
+//            }
         } catch (Exception e) {
         }
-        
+
 		return true;
 	}
 

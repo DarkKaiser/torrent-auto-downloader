@@ -12,6 +12,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Random;
 
+import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.Activity;
@@ -38,7 +40,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JapanVocabularyActivity extends Activity implements OnTouchListener {
+// @@@@@
+public class JvActivity extends Activity implements OnTouchListener {
 
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
@@ -128,7 +131,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.jvm_show_all_vocabulary:
-			Intent intent = new Intent(this, JapanVocabularyListActivity.class);
+			Intent intent = new Intent(this, JvListActivity.class);
 			startActivityForResult(intent, R.id.jvm_show_all_vocabulary);
 			return true;
 		case R.id.jvm_all_rememorize:
@@ -141,7 +144,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				@Override
 	   			public void run() {
 					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-					JapanVocabularyManager.getInstance().rememorizeAllMemorizeTarget();
+					JvManager.getInstance().rememorizeAllMemorizeTarget();
 					
 			        // 프로그램을 초기화합니다.
 			        readyMemorizeTargetVocabularyData();
@@ -252,7 +255,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		}
 		
     	// DB에서 단어 데이터를 읽어들인다.
-		if (JapanVocabularyManager.getInstance().initDataFromDB() == false) {
+		if (JvManager.getInstance().initDataFromDB() == false) {
 			mVocabularyDataLoadedHandler.sendEmptyMessage(3);
 		}
 	}
@@ -262,7 +265,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 		// 읽어들인 데이터중에서 암기 대상 단어들만을 필터링한다.
 		mJapanVocabularyList.clear();
-    	JapanVocabularyManager.getInstance().getMemorizeTargetVocabulary(mJapanVocabularyList);
+    	JvManager.getInstance().getMemorizeTargetVocabulary(mJapanVocabularyList);
 	}
 
 	private void showNextVocabulary() {
@@ -290,7 +293,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	public boolean onTouch(View v, MotionEvent event) {
 		if (v.getId() == R.id.vocabulary) {
 			if (event.getAction() == MotionEvent.ACTION_UP && mCurrentJapanVocabularyIndex != -1) {
-				Intent intent = new Intent(this, JapanVocabularyDetailActivity.class);
+				Intent intent = new Intent(this, JvDetailActivity.class);
 				intent.putExtra("idx", mJapanVocabularyList.get(mCurrentJapanVocabularyIndex).getIdx());
 				startActivityForResult(intent, 0);
 			}
@@ -320,11 +323,11 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				if (mProgressDialog != null)
 					mProgressDialog.setMessage("암기할 단어를 불러오고 있습니다...");
 			} else if (msg.what == 3) {
-				Toast.makeText(JapanVocabularyActivity.this, "DB에서 단어를 로드할 수 없습니다.", Toast.LENGTH_LONG).show();
+				Toast.makeText(JvActivity.this, "DB에서 단어를 로드할 수 없습니다.", Toast.LENGTH_LONG).show();
 			} else if (msg.what == 4) {
-				Toast.makeText(JapanVocabularyActivity.this, "원격지 서버의 DB 버전 정보를 로드할 수 없습니다.", Toast.LENGTH_LONG).show();
+				Toast.makeText(JvActivity.this, "원격지 서버의 DB 버전 정보를 로드할 수 없습니다.", Toast.LENGTH_LONG).show();
 			} else if (msg.what == 5) {
-				Toast.makeText(JapanVocabularyActivity.this, "새로운 DB 파일을 다운로드 할 수 없습니다.", Toast.LENGTH_LONG).show();
+				Toast.makeText(JvActivity.this, "새로운 DB 파일을 다운로드 할 수 없습니다.", Toast.LENGTH_LONG).show();
 			}
 		};
 	};

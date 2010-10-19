@@ -8,62 +8,63 @@ public class JapanVocabulary {
 
 	private long mIdx = -1;
 
-	// 단어가 등록된 날짜(UTC)
-	private long mRegistrationUTCDate;
-
-	// 한자 단어
+	// 일본식 한자 단어
 	private String mVocabulary = null;
 
-	// 한자 단어에 대한 히라가나/가타가나
+	// 일본식 한자 단어에 대한 히라가나/가타가나
 	private String mVocabularyGana = null;
 
-	// 단어에 대한 뜻
+	// 일본식 한자 단어에 대한 뜻
 	private String mVocabularyTranslation = null;
 
-	// 암기 대상 단어인지에 대한 플래그
-	private boolean mIsMemorizeTarget = true;
+	// 단어가 등록된 날짜(UTC)
+	private long mRegistrationDateUTC;
 
-	// 단어 암기가 완료되었는지의 대한 플래그
-	private boolean mIsMemorizeCompleted = false;
+	// 단어 암기 대상 여부
+	private boolean mMemorizeTarget = false;
 
-	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
-		this(idx, utcDateTime, vocabulary, vocabularyGana, vocabularyTranslation, true, false);
-	}
+	// 단어 암기 완료 여부
+	private boolean mMemorizeCompleted = false;
+	
+	// 단어 암기 완료 횟수
+	private long mMemorizeCompletedCount = 0;
+	
+	// 단어의 품사 
+	private long mPartsOfSpeech = 99/* 지정된 품사 없음 */;
 
-	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation, boolean isMemorizeTarget, boolean isMemorizeCompleted) {
+	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation, long partsOfSpeech) {
 		assert idx != -1;
 		assert utcDateTime > 0;
 		assert TextUtils.isEmpty(vocabulary) == false;
 		assert TextUtils.isEmpty(vocabularyGana) == false;
 		assert TextUtils.isEmpty(vocabularyTranslation) == false;
-		
-		mIdx = idx;
 
+		mIdx = idx;
+		
 		setVocabulary(vocabulary);
 		setVocabularyGana(vocabularyGana);
 		setVocabularyTranslation(vocabularyTranslation);
-		setMemorizeTarget(isMemorizeTarget, false);
-		setMemorizeCompleted(isMemorizeCompleted, false);
 		setRegistrationDate(utcDateTime);
+		setPartsOfSpeech(partsOfSpeech);
 	}
-	
+
 	public long getIdx() {
 		return mIdx;
 	}
 
 	public long getRegistrationDate() {
-		return mRegistrationUTCDate;
+		return mRegistrationDateUTC;
 	}
 	
 	public String getRegistrationDateString() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(mRegistrationUTCDate);
+		calendar.setTimeInMillis(mRegistrationDateUTC);
 		return String.format("%04d년 %02d월 %02d일", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
 	}
 
 	private void setRegistrationDate(long utcDateTime) {
 		assert utcDateTime > 0;
-		mRegistrationUTCDate = utcDateTime;
+		mRegistrationDateUTC = utcDateTime;
 	}
 
 	public String getVocabulary() {
@@ -74,7 +75,7 @@ public class JapanVocabulary {
 		assert TextUtils.isEmpty(vocabulary) == false;
 		mVocabulary = vocabulary;
 	}
-	
+
 	public String getVocabularyGana() {
 		return mVocabularyGana;
 	}
@@ -92,31 +93,46 @@ public class JapanVocabulary {
 		assert TextUtils.isEmpty(vocabularyTranslation) == false;
 		mVocabularyTranslation = vocabularyTranslation;
 	}
+	
+	public long getPartsOfSpeech() {
+		return mPartsOfSpeech;
+	}
+
+	private void setPartsOfSpeech(long partsOfSpeech) {
+		mPartsOfSpeech = partsOfSpeech;
+	}
 
 	public boolean isMemorizeTarget() {
-		return mIsMemorizeTarget;
+		return mMemorizeTarget;
 	}
 	
+	// @@@@@
 	public void setMemorizeTarget(boolean flag, boolean updateToDB) {
-		mIsMemorizeTarget = flag;
+		mMemorizeTarget = flag;
 
 		if (updateToDB == true) {
 			assert mIdx != -1;
-			JapanVocabularyManager.getInstance().updateMemorizeTarget(mIdx, flag);
+			//JvManager.getInstance().updateMemorizeTarget(mIdx, flag);
 		}
 	}
 
 	public boolean isMemorizeCompleted() {
-		return mIsMemorizeCompleted;
+		return mMemorizeCompleted;
 	}
 	
+	// @@@@@
 	public void setMemorizeCompleted(boolean flag, boolean updateToDB) {
-		mIsMemorizeCompleted = flag;
+		mMemorizeCompleted = flag;
+		++mMemorizeCompletedCount;
 		
 		if (updateToDB == true) {
 			assert mIdx != -1;
-			JapanVocabularyManager.getInstance().updateMemorizeCompleted(mIdx, flag);
+			//JvManager.getInstance().updateMemorizeCompleted(mIdx, flag);
 		}
 	}
 	
+	public long getMemorizeCompletedCount() {
+		return mMemorizeCompletedCount;
+	}
+
 }

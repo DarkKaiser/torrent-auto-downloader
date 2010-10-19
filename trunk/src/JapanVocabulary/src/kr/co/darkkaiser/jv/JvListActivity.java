@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.list.JvListAdapter;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ListActivity;
@@ -32,7 +35,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JapanVocabularyListActivity extends ListActivity {
+//@@@@@
+public class JvListActivity extends ListActivity {
 
 	private Thread mSearchThread = null;
 	private ProgressDialog mProgressDialog = null;
@@ -40,8 +44,8 @@ public class JapanVocabularyListActivity extends ListActivity {
 	private SharedPreferences mPreferences = null;
 
 	private ArrayList<JapanVocabulary> mJvList = null;
-	private JapanVocabularyListAdapter mJvListAdapter = null;
-	private JapanVocabularyListSortMethod mJvListSortMethod = JapanVocabularyListSortMethod.REGISTRATION_DATE;
+	private JvListAdapter mJvListAdapter = null;
+	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE;
 	
 	private String mSearchWord = null;
 	private long mSearchDateFirst = 0;
@@ -54,11 +58,11 @@ public class JapanVocabularyListActivity extends ListActivity {
 
         // 환경설정값을 읽어들인다.
 		mPreferences = getSharedPreferences("jv_setup", MODE_PRIVATE);
-		mJvListSortMethod = JapanVocabularyListSortMethod.valueOf(mPreferences.getString("jv_list_sort", JapanVocabularyListSortMethod.REGISTRATION_DATE.name()));
+		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString("jv_list_sort", JvListSortMethod.REGISTRATION_DATE.name()));
 
 		// 리스트를 초기화한다. 
         mJvList = new ArrayList<JapanVocabulary>();
-        mJvListAdapter = new JapanVocabularyListAdapter(this, R.layout.jv_listitem, mJvList, mDataChangedHandler);
+        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvList, mDataChangedHandler);
         setListAdapter(mJvListAdapter);
  
         // 단어를 검색한다.
@@ -76,7 +80,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.jvlm_search:
-			final LinearLayout linear = (LinearLayout)View.inflate(JapanVocabularyListActivity.this, R.layout.jv_list_search, null);
+			final LinearLayout linear = (LinearLayout)View.inflate(JvListActivity.this, R.layout.jv_list_search, null);
 
 			CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
 			cboAllDataSearch.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +111,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 				public void onClick(View v) {
 					Button btnSearchDateFirst = (Button)v;
 		    		String searchDateString = btnSearchDateFirst.getText().toString().replace("/", "");
-		        	new DatePickerDialog(JapanVocabularyListActivity.this,
+		        	new DatePickerDialog(JvListActivity.this,
 		        			new DatePickerDialog.OnDateSetListener() {
 								@Override
 								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -126,7 +130,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 				public void onClick(View v) {
 					Button btnSearchDateLast = (Button)v;
 		    		String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
-		        	new DatePickerDialog(JapanVocabularyListActivity.this,
+		        	new DatePickerDialog(JvListActivity.this,
 		        			new DatePickerDialog.OnDateSetListener() {
 								@Override
 								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -140,7 +144,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 				}
 			});
 
-			new AlertDialog.Builder(JapanVocabularyListActivity.this)
+			new AlertDialog.Builder(JvListActivity.this)
 				.setTitle("한자 뜻 검색")
 				.setView(linear)
 				.setPositiveButton("검색", new DialogInterface.OnClickListener() {
@@ -187,19 +191,19 @@ public class JapanVocabularyListActivity extends ListActivity {
 			return true;
 		case R.id.jvlm_sort_kanji:
 			// 리스트를 정렬합니다.
-			startSortList(JapanVocabularyListSortMethod.KANJI);
+			startSortList(JvListSortMethod.KANJI);
 			return true;
 		case R.id.jvlm_sort_gana:
 			// 리스트를 정렬합니다.
-			startSortList(JapanVocabularyListSortMethod.GANA);
+			startSortList(JvListSortMethod.GANA);
 			return true;
 		case R.id.jvlm_sort_translation:
 			// 리스트를 정렬합니다.
-			startSortList(JapanVocabularyListSortMethod.TRANSLATION);
+			startSortList(JvListSortMethod.TRANSLATION);
 			return true;
 		case R.id.jvlm_sort_registration_date:
 			// 리스트를 정렬합니다.
-			startSortList(JapanVocabularyListSortMethod.REGISTRATION_DATE);
+			startSortList(JvListSortMethod.REGISTRATION_DATE);
 			return true;
 		case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기
 		case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
@@ -226,7 +230,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 						idxList.add(mJvList.get(index).getIdx());
 					}
 
-					JapanVocabularyManager.getInstance().resetMemorizeInfo(mMenuItemId, idxList);
+					JvManager.getInstance().resetMemorizeInfo(mMenuItemId, idxList);
 
 					mDataChangedHandler.sendEmptyMessage(-2);
 	   			};
@@ -240,7 +244,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 		return false;
 	}
 
-	private void startSortList(JapanVocabularyListSortMethod jvListSortMethod) {
+	private void startSortList(JvListSortMethod jvListSortMethod) {
 		// 정렬 방법을 저장한다.
 		mJvListSortMethod = jvListSortMethod;
 		mPreferences.edit().putString("jv_list_sort", mJvListSortMethod.name()).commit();
@@ -283,7 +287,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 
 		// 단어 상세페이지 호출
-		Intent intent = new Intent(this, JapanVocabularyDetailActivity.class);
+		Intent intent = new Intent(this, JvDetailActivity.class);
 		intent.putExtra("idx", mJvList.get(position).getIdx());
 		startActivity(intent);
 	}
@@ -387,7 +391,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 					}
 					
 					mDataChangedHandler.sendEmptyMessage(-1);
-					Toast.makeText(JapanVocabularyListActivity.this, "검색이 취소되었습니다", Toast.LENGTH_LONG).show();
+					Toast.makeText(JvListActivity.this, "검색이 취소되었습니다", Toast.LENGTH_LONG).show();
 				}
 			});			
 		}
@@ -420,7 +424,7 @@ public class JapanVocabularyListActivity extends ListActivity {
 		@Override
 		public void run() {
 			mJvList.clear();
-			JapanVocabularyManager.getInstance().searchJapanVocabulary(mSearchWord, mSearchDateFirst, mSearchDateLast, mJvList);
+			JvManager.getInstance().searchJapanVocabulary(mSearchWord, mSearchDateFirst, mSearchDateLast, mJvList);
 			sortList();
 	
 			mDataChangedHandler.sendEmptyMessage(-1);
