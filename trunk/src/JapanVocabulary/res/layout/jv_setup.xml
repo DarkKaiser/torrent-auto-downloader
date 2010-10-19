@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="업데이트 설정">
+		<EditTextPreference
+			android:key="udpateURL"
+			android:title="업데이트 URL"
+			android:summary="데이터 파일을 갱신하기 위한 URL을 입력합니다."
+			android:dialogTitle="업데이트 URL" />
+	</PreferenceCategory>
+</PreferenceScreen>

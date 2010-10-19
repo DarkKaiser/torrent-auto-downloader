@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	<TextView 
+		android:id="@+id/jv_info"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content" 
+    	android:gravity="left"
+    	android:textSize="8pt"/>
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    >
+		<TextView 
+			android:id="@+id/vocabulary"
+	    	android:layout_width="fill_parent" 
+	    	android:layout_height="fill_parent" 
+	    	android:gravity="center"
+	    	android:textSize="30pt"/>
+	    <Button android:text="암기완료" 
+			android:id="@+id/memorize_completed" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentRight="true"
+			android:paddingLeft="30px"
+			android:paddingRight="30px"/>
+	 	<Button android:text="다음 글자 >>" 
+			android:id="@+id/next_vocabulary" 
+			android:layout_width="fill_parent" 
+			android:layout_height="60px"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentBottom="true"/>
+	</RelativeLayout>
+</LinearLayout>
