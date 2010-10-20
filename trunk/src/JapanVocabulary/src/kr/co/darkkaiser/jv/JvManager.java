@@ -26,7 +26,7 @@ public class JvManager {
 	/*
 	 * 일본어 단어 DB 파일명
 	 */
-    private static final String JV_VOCABULARY_DB = "jv2.db";
+    public static final String JV_VOCABULARY_DB = "jv2.db";
 
     /*
      * 사용자 DB 파일명
@@ -201,12 +201,18 @@ public class JvManager {
 		return mJvTable.get(idx);
 	}
 
-	public synchronized void getMemorizeTargetJvList(ArrayList<JapanVocabulary> jvList) {
+	public synchronized int getMemorizeTargetJvList(ArrayList<JapanVocabulary> jvList) {
+		int mMemorizeTargetJvCount = 0;
 		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
 			JapanVocabulary jv = e.nextElement();
-			if (jv.isMemorizeTarget() == true && jv.isMemorizeCompleted() == false)
-				jvList.add(jv);
+			if (jv.isMemorizeTarget() == true) {
+				++mMemorizeTargetJvCount;
+				if (jv.isMemorizeCompleted() == false)
+					jvList.add(jv);
+			}
 		}
+		
+		return mMemorizeTargetJvCount;
 	}
 
 	// @@@@@
