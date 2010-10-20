@@ -8,13 +8,7 @@
 		android:id="@+id/jv_info"
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
-    	android:gravity="left"
-    	android:textSize="8pt"/>
-	<TextView 
-    	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" 
-    	android:gravity="left"
-    	android:text="암기 단어 ( 12 / 100 )"
+    	android:gravity="right"
     	android:textSize="8pt"/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"
@@ -26,26 +20,19 @@
 	    	android:layout_height="fill_parent" 
 	    	android:gravity="center"
 	    	android:textSize="30pt"/>
-	    <Button android:text="암기완료" 
-			android:id="@+id/memorize_completed" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentRight="true"
-			android:paddingLeft="30px"
-			android:paddingRight="30px"/>
-	 	<Button android:text="다음 글자 >>" 
+	 	<Button android:text="다음 단어 >>" 
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
-			android:layout_height="100px"
+			android:layout_height="90px"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true"/>
 		<TextView 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content"
-	    	android:text="암기 완료 단어는 길게 눌러주세요!" 
 	    	android:gravity="center"
-	    	android:layout_alignBaseline="@id/next_vocabulary"
-	    	android:textSize="12pt"/>
+	    	android:textSize="6pt"
+	    	android:textColor="#99999999"
+	    	android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요." 
+	    	android:layout_above="@id/next_vocabulary"/>
 	</RelativeLayout>
 </LinearLayout>

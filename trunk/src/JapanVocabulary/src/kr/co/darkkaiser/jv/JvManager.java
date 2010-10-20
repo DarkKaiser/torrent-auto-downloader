@@ -201,8 +201,7 @@ public class JvManager {
 		return mJvTable.get(idx);
 	}
 
-	// @@@@@
-	public synchronized void getMemorizeTargetVocabulary(ArrayList<JapanVocabulary> jvList) {
+	public synchronized void getMemorizeTargetJvList(ArrayList<JapanVocabulary> jvList) {
 		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
 			JapanVocabulary jv = e.nextElement();
 			if (jv.isMemorizeTarget() == true && jv.isMemorizeCompleted() == false)

@@ -41,12 +41,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class JvActivity extends Activity implements OnTouchListener {
+	
+	// @@@@@
+	private static final int MSG_PROGRESS_DIALOG_REFRESH = 10;
 
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
 	
+	// 현재 화면에 보여지고 있는 일본어 단어의 인덱스
 	private int mJvCurrentIndex = -1;
-	private ArrayList<JapanVocabulary> mJapanVocabularyList = new ArrayList<JapanVocabulary>();
+	
+	// 암기 대상 일본어 단어 리스트
+	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
+	
+	// 일본식 한자 단어를 출력할지의 여부, false이면 일본어 히라가나/가타가나를 출력한다.
+	private boolean mOutputJapanVocabulary = true;
+	
+	// 암기 대상 일본어 단어 전체 갯수
+	private int mMemorizeTargetJvCount = 0;
+
+    // @@@@@ 롱클릭 http://skyswim42.egloos.com/3628791
 
 	// @@@@@
     @Override
@@ -54,8 +68,6 @@ public class JvActivity extends Activity implements OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        // @@@@@ 롱클릭 http://skyswim42.egloos.com/3628791
-
         // SD 카드의 상태를 확인한다.
         String sdStatus = Environment.getExternalStorageState();
         if (sdStatus.equals(Environment.MEDIA_UNMOUNTED) == true) {
@@ -88,22 +100,22 @@ public class JvActivity extends Activity implements OnTouchListener {
 			}
 		});
         
-        Button btnMemorizeCompleted = (Button)findViewById(R.id.memorize_completed);
-        btnMemorizeCompleted.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mJvCurrentIndex != -1) {
-					mJapanVocabularyList.get(mJvCurrentIndex).setMemorizeCompleted(true, true);
-					mJapanVocabularyList.remove(mJvCurrentIndex);
-					updateJapanVocabularyInfo();
-					showNextVocabulary();
-
-					// 진동을 발생시킨다.
-					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-					vibrator.vibrate(30);
-				}
-			}
-		});
+//        Button btnMemorizeCompleted = (Button)findViewById(R.id.memorize_completed);
+//        btnMemorizeCompleted.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				if (mJvCurrentIndex != -1) {
+//					mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true);
+//					mJvList.remove(mJvCurrentIndex);
+//					updateJapanVocabularyInfo();
+//					showNextVocabulary();
+//
+//					// 진동을 발생시킨다.
+//					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+//					vibrator.vibrate(30);
+//				}
+//			}
+//		});
 
 		// 데이터를 로딩하는 도중에 프로그레스 대화상자를 보인다.
 		mProgressDialog = ProgressDialog.show(this, null, "잠시만 기다려 주세요...", true, false);
@@ -117,12 +129,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 		        // 프로그램을 초기화합니다.
 		        readyMemorizeTargetVocabularyData();
 
-				mVocabularyDataLoadedHandler.sendEmptyMessage(-1);
+				mVocabularyDataLoadHandler.sendEmptyMessage(-1);
    			};
    		}.start();
     }
 
-	// @@@@@
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -154,7 +165,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			        // 프로그램을 초기화합니다.
 			        readyMemorizeTargetVocabularyData();
 
-					mVocabularyDataLoadedHandler.sendEmptyMessage(-1);
+					mVocabularyDataLoadHandler.sendEmptyMessage(-1);
 	   			};
 	   		}.start();
 
@@ -187,7 +198,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			        // 프로그램을 초기화합니다.
 			        readyMemorizeTargetVocabularyData();
 
-					mVocabularyDataLoadedHandler.sendEmptyMessage(-1);
+					mVocabularyDataLoadHandler.sendEmptyMessage(-1);
 	   			};
 	   		}.start();
 		}
@@ -195,7 +206,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 	// @@@@@
 	private void updateData() {
-		mVocabularyDataLoadedHandler.sendEmptyMessage(1);
+		mVocabularyDataLoadHandler.sendEmptyMessage(1);
 		
 		// 로컬의 DB 버전정보를 구한다.
 		SharedPreferences mPreferences = getSharedPreferences("jv_setup", MODE_PRIVATE);
@@ -225,10 +236,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 			remoteDbVersion = sb.toString().trim();
 		} catch (FileNotFoundException e) {
 			Log.d("JapanVocabulary", e.getMessage());
-			mVocabularyDataLoadedHandler.sendEmptyMessage(4);
+			mVocabularyDataLoadHandler.sendEmptyMessage(4);
 		} catch (Exception e) {
 			Log.d("JapanVocabulary", e.getMessage());
-			mVocabularyDataLoadedHandler.sendEmptyMessage(4);
+			mVocabularyDataLoadHandler.sendEmptyMessage(4);
 		}
 
 		if (remoteDbVersion != null && TextUtils.isEmpty(remoteDbVersion) == false && remoteDbVersion.equals(localDbVersion) == false) {
@@ -261,46 +272,59 @@ public class JvActivity extends Activity implements OnTouchListener {
 				mPreferences.edit().putString("jv_db_version", remoteDbVersion).commit();
 			} catch (Exception e) {
 				Log.d("JapanVocabulary", e.getMessage());
-				mVocabularyDataLoadedHandler.sendEmptyMessage(5);
+				mVocabularyDataLoadHandler.sendEmptyMessage(5);
 			}
 		}
 		
     	// DB에서 단어 데이터를 읽어들인다.
 		if (JvManager.getInstance().initDataFromDB() == false) {
-			mVocabularyDataLoadedHandler.sendEmptyMessage(3);
+			mVocabularyDataLoadHandler.sendEmptyMessage(3);
 		}
 	}
 
-	// @@@@@
 	private void readyMemorizeTargetVocabularyData() {
-		mVocabularyDataLoadedHandler.sendEmptyMessage(2);
+		Message msg = Message.obtain();
+		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
+		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
+		mVocabularyDataLoadHandler.sendMessage(msg);
 
-		// 읽어들인 데이터중에서 암기 대상 단어들만을 필터링한다.
-		mJapanVocabularyList.clear();
-    	JvManager.getInstance().getMemorizeTargetVocabulary(mJapanVocabularyList);
+		// 암기 대상 단어들만을 필터링한다.
+		mJvList.clear();
+    	JvManager.getInstance().getMemorizeTargetJvList(mJvList);
+    	mMemorizeTargetJvCount = mJvList.size();
 	}
 
-	// @@@@@
 	private void showNextVocabulary() {
 		TextView tvJapanVocabulary = (TextView)findViewById(R.id.vocabulary);
 
-		if (mJapanVocabularyList.isEmpty() == true) {
+		if (mJvList.isEmpty() == true) {
 			mJvCurrentIndex = -1;
-			Toast.makeText(this, "암기할 한자가 없습니다.", Toast.LENGTH_SHORT).show();
-
 			tvJapanVocabulary.setText("");
+			
+			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
-			mJvCurrentIndex = mRandom.nextInt(mJapanVocabularyList.size());
+			if (mJvList.size() == 1) {
+				mJvCurrentIndex = 0;
+			} else {
+				int index = mJvCurrentIndex;
 
-			// 화면에 다음 한자를 출력한다.
-			tvJapanVocabulary.setText(mJapanVocabularyList.get(mJvCurrentIndex).getVocabulary());
+				do
+				{
+					mJvCurrentIndex = mRandom.nextInt(mJvList.size());									
+				} while (mJvCurrentIndex == index);
+			}
+
+			// 화면에 다음 단어를 출력한다.
+			if (mOutputJapanVocabulary == true)
+				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
+			else
+				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
 		}
 	}
 
-	// @@@@@
 	private void updateJapanVocabularyInfo() {
 		TextView tvJapanVocabularyInfo = (TextView)findViewById(R.id.jv_info);
-		tvJapanVocabularyInfo.setText(String.format("암기 대상 단어 : %d개", mJapanVocabularyList.size()));
+		tvJapanVocabularyInfo.setText(String.format("완료 %d개 / 전체 %d개", mJvList.size(), mMemorizeTargetJvCount));
 	}
 
 	// @@@@@
@@ -309,7 +333,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		if (v.getId() == R.id.vocabulary) {
 			if (event.getAction() == MotionEvent.ACTION_UP && mJvCurrentIndex != -1) {
 				Intent intent = new Intent(this, JvDetailActivity.class);
-				intent.putExtra("idx", mJapanVocabularyList.get(mJvCurrentIndex).getIdx());
+				intent.putExtra("idx", mJvList.get(mJvCurrentIndex).getIdx());
 				startActivityForResult(intent, 0);
 			}
 
@@ -320,11 +344,16 @@ public class JvActivity extends Activity implements OnTouchListener {
 	}
 
 	// @@@@@
-	private Handler mVocabularyDataLoadedHandler = new Handler() {
+	private Handler mVocabularyDataLoadHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			// 작업 스레드에서 보낸 핸들러 메시지인 경우에는 진행 대화상자를 닫는다.
-			if (msg.what == -1) {
+			if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
+				if (mProgressDialog != null)
+					mProgressDialog.setMessage((String)msg.obj);
+				
+				
+			} else if (msg.what == -1) {
+				// 작업 스레드에서 보낸 핸들러 메시지인 경우에는 진행 대화상자를 닫는다.
 		    	updateJapanVocabularyInfo();
 	        	showNextVocabulary();
 
