@@ -35,7 +35,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//@@@@@
 public class JvListActivity extends ListActivity {
 
 	private Thread mSearchThread = null;
@@ -51,6 +50,7 @@ public class JvListActivity extends ListActivity {
 	private long mSearchDateFirst = 0;
 	private long mSearchDateLast = 0;
 
+	// @@@@@
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,13 +62,14 @@ public class JvListActivity extends ListActivity {
 
 		// 리스트를 초기화한다. 
         mJvList = new ArrayList<JapanVocabulary>();
-        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvList, mDataChangedHandler);
+        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvList);
         setListAdapter(mJvListAdapter);
  
         // 단어를 검색한다.
         searchVocabulary("");
 	}
 
+	// @@@@@
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -76,6 +77,7 @@ public class JvListActivity extends ListActivity {
 		return true;
 	}
 
+	// @@@@@
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -244,6 +246,7 @@ public class JvListActivity extends ListActivity {
 		return false;
 	}
 
+	// @@@@@
 	private void startSortList(JvListSortMethod jvListSortMethod) {
 		// 정렬 방법을 저장한다.
 		mJvListSortMethod = jvListSortMethod;
@@ -265,6 +268,7 @@ public class JvListActivity extends ListActivity {
    		}.start();
 	}
 	
+	// @@@@@
 	private void sortList() {
 		switch (mJvListSortMethod) {
 		case KANJI:
@@ -282,6 +286,7 @@ public class JvListActivity extends ListActivity {
 		}
 	}
 
+	// @@@@@
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -292,6 +297,7 @@ public class JvListActivity extends ListActivity {
 		startActivity(intent);
 	}
 
+	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyComparator = new Comparator<JapanVocabulary>() {
          private final Collator collator = Collator.getInstance();
 
@@ -301,6 +307,7 @@ public class JvListActivity extends ListActivity {
          }
 	};
 
+	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyGanaComparator = new Comparator<JapanVocabulary>() {
         private final Collator collator = Collator.getInstance();
 
@@ -310,6 +317,7 @@ public class JvListActivity extends ListActivity {
         }
 	};
 	
+	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyTranslationComparator = new Comparator<JapanVocabulary>() {
         private final Collator collator = Collator.getInstance();
 
@@ -319,6 +327,7 @@ public class JvListActivity extends ListActivity {
         }
 	};
 	
+	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvRegistrationDateComparator = new Comparator<JapanVocabulary>() {
 
         @Override
@@ -332,6 +341,7 @@ public class JvListActivity extends ListActivity {
         }
 	};
 
+	// @@@@@
 	private Handler mDataChangedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -363,10 +373,12 @@ public class JvListActivity extends ListActivity {
 		};
 	};
 	
+	// @@@@@
 	private void searchVocabulary(String searchWord) {
 		searchVocabulary(searchWord, -1, -1);
 	}
 	
+	// @@@@@
 	private void searchVocabulary(String searchWord, long searchDateFirst, long searchDateLast) {
 		TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
 		TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
@@ -404,6 +416,7 @@ public class JvListActivity extends ListActivity {
    		mSearchThread.start();
 	}
 	
+	// @@@@@
 	public class JapanVocabularyListSearchThread extends Thread {
 
 		private String mSearchWord = null;

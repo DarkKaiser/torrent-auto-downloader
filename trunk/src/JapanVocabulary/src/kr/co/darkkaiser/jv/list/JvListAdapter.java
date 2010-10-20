@@ -6,7 +6,6 @@ import kr.co.darkkaiser.jv.JapanVocabulary;
 import kr.co.darkkaiser.jv.R;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,10 @@ public class JvListAdapter extends BaseAdapter {
 	private ArrayList<JapanVocabulary> mJvList = null;
 	private LayoutInflater mLayoutInflater = null;
 	
-	// 암기완료, 암기대상등의 이벤트로 값이 변경되었을 경우 화면을 다시 그리기 위한 핸들러
-	private Handler mDataChangedHandler = null;
-
-	public JvListAdapter(Context context, int layout, ArrayList<JapanVocabulary> jvList, Handler dataChangedHandler) {
+	public JvListAdapter(Context context, int layout, ArrayList<JapanVocabulary> jvList) {
 		mLayout = layout;
 		mJvList = jvList;
 		mContext = context;
-		mDataChangedHandler = dataChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -67,11 +62,11 @@ public class JvListAdapter extends BaseAdapter {
 		CheckBox cboMemorizeTarget = (CheckBox)convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout)convertView.findViewById(R.id.memorize_bg);
 
-		tvVocabulary.setText(jv.getVocabulary());
+		tvVocabulary.setText(String.format("%s (%d회)", jv.getVocabulary(), jv.getMemorizeCompletedCount()));
 		tvVocabularyGana.setText(jv.getVocabularyGana());
 		tvVocabularyTranslation.setText(jv.getVocabularyTranslation());
 		tvRegistrationDate.setText(String.format("%s:%s", mContext.getResources().getString(R.string.registration_date_text), jv.getRegistrationDateString()));
-		
+
 		if (jv.isMemorizeCompleted() == true) {
 			cboMemorizeCompleted.setChecked(true);
 			tvMemorizeBar.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_completed));
@@ -94,7 +89,7 @@ public class JvListAdapter extends BaseAdapter {
 				CheckBox cboMemorizeTarget = (CheckBox)v;
 				int position = (Integer)cboMemorizeTarget.getTag();
 				mJvList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
-				mDataChangedHandler.sendEmptyMessage(position);
+				notifyDataSetChanged();
 			}
 		});
 		
@@ -103,9 +98,9 @@ public class JvListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				CheckBox cboMemorizeCompleted = (CheckBox)v;
-				int position = (Integer) cboMemorizeCompleted.getTag();
+				int position = (Integer)cboMemorizeCompleted.getTag();
 				mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true);
-				mDataChangedHandler.sendEmptyMessage(position);
+				notifyDataSetChanged();
 			}
 		});
 

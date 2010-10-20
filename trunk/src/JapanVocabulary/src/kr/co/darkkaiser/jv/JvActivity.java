@@ -40,19 +40,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// @@@@@
 public class JvActivity extends Activity implements OnTouchListener {
 
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
-
-	private int mCurrentJapanVocabularyIndex = -1;
+	
+	private int mJvCurrentIndex = -1;
 	private ArrayList<JapanVocabulary> mJapanVocabularyList = new ArrayList<JapanVocabulary>();
 
+	// @@@@@
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        // @@@@@ 롱클릭 http://skyswim42.egloos.com/3628791
 
         // SD 카드의 상태를 확인한다.
         String sdStatus = Environment.getExternalStorageState();
@@ -90,9 +92,9 @@ public class JvActivity extends Activity implements OnTouchListener {
         btnMemorizeCompleted.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mCurrentJapanVocabularyIndex != -1) {
-					mJapanVocabularyList.get(mCurrentJapanVocabularyIndex).setMemorizeCompleted(true, true);
-					mJapanVocabularyList.remove(mCurrentJapanVocabularyIndex);
+				if (mJvCurrentIndex != -1) {
+					mJapanVocabularyList.get(mJvCurrentIndex).setMemorizeCompleted(true, true);
+					mJapanVocabularyList.remove(mJvCurrentIndex);
 					updateJapanVocabularyInfo();
 					showNextVocabulary();
 
@@ -120,6 +122,7 @@ public class JvActivity extends Activity implements OnTouchListener {
    		}.start();
     }
 
+	// @@@@@
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -127,6 +130,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		return true;
     }
 
+	// @@@@@
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -134,6 +138,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			Intent intent = new Intent(this, JvListActivity.class);
 			startActivityForResult(intent, R.id.jvm_show_all_vocabulary);
 			return true;
+
 		case R.id.jvm_all_rememorize:
 			assert mProgressDialog == null;
 
@@ -154,11 +159,16 @@ public class JvActivity extends Activity implements OnTouchListener {
 	   		}.start();
 
 			return true;
+			
+		case R.id.jvm_preferences:
+			// @@@@@
+			return true;
 		}
 
 		return false;
 	}
 
+	// @@@@@
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -183,6 +193,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 	}
 
+	// @@@@@
 	private void updateData() {
 		mVocabularyDataLoadedHandler.sendEmptyMessage(1);
 		
@@ -260,6 +271,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 	}
 
+	// @@@@@
 	private void readyMemorizeTargetVocabularyData() {
 		mVocabularyDataLoadedHandler.sendEmptyMessage(2);
 
@@ -268,33 +280,36 @@ public class JvActivity extends Activity implements OnTouchListener {
     	JvManager.getInstance().getMemorizeTargetVocabulary(mJapanVocabularyList);
 	}
 
+	// @@@@@
 	private void showNextVocabulary() {
 		TextView tvJapanVocabulary = (TextView)findViewById(R.id.vocabulary);
 
 		if (mJapanVocabularyList.isEmpty() == true) {
-			mCurrentJapanVocabularyIndex = -1;
+			mJvCurrentIndex = -1;
 			Toast.makeText(this, "암기할 한자가 없습니다.", Toast.LENGTH_SHORT).show();
 
 			tvJapanVocabulary.setText("");
 		} else {
-			mCurrentJapanVocabularyIndex = mRandom.nextInt(mJapanVocabularyList.size());
+			mJvCurrentIndex = mRandom.nextInt(mJapanVocabularyList.size());
 
 			// 화면에 다음 한자를 출력한다.
-			tvJapanVocabulary.setText(mJapanVocabularyList.get(mCurrentJapanVocabularyIndex).getVocabulary());
+			tvJapanVocabulary.setText(mJapanVocabularyList.get(mJvCurrentIndex).getVocabulary());
 		}
 	}
 
+	// @@@@@
 	private void updateJapanVocabularyInfo() {
 		TextView tvJapanVocabularyInfo = (TextView)findViewById(R.id.jv_info);
 		tvJapanVocabularyInfo.setText(String.format("암기 대상 단어 : %d개", mJapanVocabularyList.size()));
 	}
 
+	// @@@@@
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (v.getId() == R.id.vocabulary) {
-			if (event.getAction() == MotionEvent.ACTION_UP && mCurrentJapanVocabularyIndex != -1) {
+			if (event.getAction() == MotionEvent.ACTION_UP && mJvCurrentIndex != -1) {
 				Intent intent = new Intent(this, JvDetailActivity.class);
-				intent.putExtra("idx", mJapanVocabularyList.get(mCurrentJapanVocabularyIndex).getIdx());
+				intent.putExtra("idx", mJapanVocabularyList.get(mJvCurrentIndex).getIdx());
 				startActivityForResult(intent, 0);
 			}
 
@@ -304,6 +319,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		return false;
 	}
 
+	// @@@@@
 	private Handler mVocabularyDataLoadedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

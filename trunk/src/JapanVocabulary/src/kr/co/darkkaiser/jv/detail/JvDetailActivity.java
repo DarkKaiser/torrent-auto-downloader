@@ -6,6 +6,7 @@ import kr.co.darkkaiser.jv.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
@@ -41,23 +42,35 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 
 		TextView tvVocabulary = (TextView)findViewById(R.id.vocabulary);
 		TextView tvVocabularyGana = (TextView)findViewById(R.id.vocabulary_gana);
+		TextView tvPartsOfSpeech = (TextView)findViewById(R.id.parts_of_speech);
 		TextView tvVocabularyTranslation = (TextView)findViewById(R.id.vocabulary_translation);
 		TextView tvMemorizeCompleted = (TextView)findViewById(R.id.memorize_completed);
+		TextView tvMemorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count);
 		TextView tvRegistrationDate = (TextView)findViewById(R.id.registration_date);
 		TextView tvVocabularyDetailInfo = (TextView)findViewById(R.id.vocabulary_detail_info);
-		// @@@@@ 품사 추가
 
 		tvVocabulary.setText(jv.getVocabulary());
 		tvVocabularyGana.setText(jv.getVocabularyGana());
 		tvVocabularyTranslation.setText(jv.getVocabularyTranslation());
 		tvRegistrationDate.setText(jv.getRegistrationDateString());
+		tvMemorizeCompletedCount.setText("");
+
+		if (TextUtils.isEmpty(jv.getPartsOfSpeech()) == false)
+			tvPartsOfSpeech.setText(String.format("(%s)", jv.getPartsOfSpeech()));
+
+		long memorizeCompletedCount = jv.getMemorizeCompletedCount();
 
 		if (jv.isMemorizeCompleted() == true) {
-			tvMemorizeCompleted.setText("암기 완료");
+			assert memorizeCompletedCount > 0;
+
+			tvMemorizeCompleted.setText(String.format("총 %d회 암기 완료", memorizeCompletedCount));
 			tvMemorizeCompleted.setTextColor(getResources().getColor(R.color.memorize_completed));
 		} else {
 			tvMemorizeCompleted.setText("암기 미완료");
 			tvMemorizeCompleted.setTextColor(getResources().getColor(R.color.memorize_uncompleted));
+
+			if (memorizeCompletedCount > 0)
+				tvMemorizeCompletedCount.setText(String.format("총 %d회 암기 완료", memorizeCompletedCount));
 		}
 
 		// 단어에 대한 상세 정보를 출력한다.

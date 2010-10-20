@@ -28,11 +28,11 @@ public class JapanVocabulary {
 	
 	// 단어 암기 완료 횟수
 	private long mMemorizeCompletedCount = 0;
-	
-	// 단어의 품사 
-	private long mPartsOfSpeech = 99/* 지정된 품사 없음 */;
 
-	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation, long partsOfSpeech) {
+	// 단어의 품사 
+	private String mPartsOfSpeech = null;
+
+	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation, String partsOfSpeech) {
 		assert idx != -1;
 		assert utcDateTime > 0;
 		assert TextUtils.isEmpty(vocabulary) == false;
@@ -94,11 +94,11 @@ public class JapanVocabulary {
 		mVocabularyTranslation = vocabularyTranslation;
 	}
 	
-	public long getPartsOfSpeech() {
+	public String getPartsOfSpeech() {
 		return mPartsOfSpeech;
 	}
 
-	private void setPartsOfSpeech(long partsOfSpeech) {
+	private void setPartsOfSpeech(String partsOfSpeech) {
 		mPartsOfSpeech = partsOfSpeech;
 	}
 
@@ -106,31 +106,40 @@ public class JapanVocabulary {
 		return mMemorizeTarget;
 	}
 	
-	// @@@@@
 	public void setMemorizeTarget(boolean flag, boolean updateToDB) {
 		mMemorizeTarget = flag;
 
 		if (updateToDB == true) {
-			assert mIdx != -1;
-			//JvManager.getInstance().updateMemorizeTarget(mIdx, flag);
+			JvManager.getInstance().updateMemorizeTarget(mIdx, mMemorizeTarget);
 		}
 	}
 
 	public boolean isMemorizeCompleted() {
 		return mMemorizeCompleted;
 	}
-	
-	// @@@@@
+
+	// @@@@@ 함수 호출될때마다 누적되므로 카운트 횟수가 정확하지 않을것임, 
 	public void setMemorizeCompleted(boolean flag, boolean updateToDB) {
+		if (flag == true && mMemorizeCompleted == false)
+			++mMemorizeCompletedCount;
+
 		mMemorizeCompleted = flag;
-		++mMemorizeCompletedCount;
-		
+
 		if (updateToDB == true) {
-			assert mIdx != -1;
-			//JvManager.getInstance().updateMemorizeCompleted(mIdx, flag);
+			JvManager.getInstance().updateMemorizeCompleted(mIdx, mMemorizeCompleted, mMemorizeCompletedCount);
 		}
 	}
-	
+
+	// @@@@@
+	public void initFirstOnceMemorizeCompletedCount(long count) {
+		// 최초 1회만 초기화가 이루어지도록 한다.
+		if (mMemorizeCompletedCount == 0) {
+			mMemorizeCompletedCount = count;
+		} else {
+			assert false;
+		}
+	}
+
 	public long getMemorizeCompletedCount() {
 		return mMemorizeCompletedCount;
 	}

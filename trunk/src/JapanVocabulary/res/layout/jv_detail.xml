@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
    	android:layout_width="fill_parent"
    	android:layout_height="fill_parent"
+   	android:scrollbarStyle="outsideOverlay"
    	>
 	<LinearLayout 
 	    android:orientation="vertical"
@@ -35,14 +36,26 @@
 		    	android:layout_height="wrap_content" 
 		    	android:gravity="left"
 		    	android:textSize="12pt"/>
-	    	<TextView android:id="@+id/memorize_completed"
-		    	android:layout_width="fill_parent" 
-		    	android:layout_height="wrap_content" 
-		    	android:textSize="7pt"
-		    	android:textColor="#ff0000"
-		    	android:background="#00000000"
-		    	android:layout_alignParentRight="true"
-		    	android:gravity="right"/>
+		    <LinearLayout 
+	    		android:orientation="vertical"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:layout_alignParentRight="true"
+	    		android:gravity="right"
+	    		>
+		    	<TextView android:id="@+id/memorize_completed"
+			    	android:layout_width="wrap_content" 
+			    	android:layout_height="wrap_content" 
+			    	android:textSize="7pt"
+			    	android:textColor="#ff0000"
+			    	android:background="#00000000"/>
+		    	<TextView android:id="@+id/memorize_completed_count"
+			    	android:layout_width="wrap_content" 
+			    	android:layout_height="wrap_content" 
+			    	android:textSize="7pt"
+			    	android:textColor="#5070ff"
+			    	android:background="#00000000"/>
+	    	</LinearLayout>
     	</RelativeLayout>
 		<TextView 
 	    	android:layout_width="fill_parent" 
@@ -50,11 +63,23 @@
 	    	android:text="히라가나/가타가나"
 	    	android:textSize="7pt"
 	    	android:background="#77444444"/>
-		<TextView android:id="@+id/vocabulary_gana"
-	    	android:layout_width="fill_parent" 
-	    	android:layout_height="wrap_content" 
-	    	android:gravity="left"
-	    	android:textSize="12pt"/>
+	    <RelativeLayout
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		>
+			<TextView android:id="@+id/vocabulary_gana"
+		    	android:layout_width="wrap_content" 
+		    	android:layout_height="wrap_content" 
+		    	android:gravity="left"
+		    	android:textSize="12pt"
+		    	android:layout_alignParentLeft="true"/>
+			<TextView android:id="@+id/parts_of_speech"
+		    	android:layout_width="wrap_content" 
+		    	android:layout_height="wrap_content" 
+		    	android:gravity="right"
+		    	android:textSize="7pt"
+		    	android:layout_alignParentRight="true"/>
+	    </RelativeLayout>
 		<TextView 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content" 
