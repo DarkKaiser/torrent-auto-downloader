@@ -16,6 +16,11 @@ public class JvDefines {
      * 암기대상 단어 항목 이름
      */
     public static final String JV_SPN_MEMORIZE_TARGET_ITEM = "jv_memorize_target_item";
+    
+    /*
+     * 리스트 정렬 방법
+     */
+    public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
 
     /*
 	 * SDCARD에 생성되는 앱 폴더명

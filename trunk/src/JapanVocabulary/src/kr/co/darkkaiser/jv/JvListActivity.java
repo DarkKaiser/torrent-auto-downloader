@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
 import kr.co.darkkaiser.jv.list.JvListAdapter;
+import kr.co.darkkaiser.jv.list.JvListSortMethod;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -44,7 +45,7 @@ public class JvListActivity extends ListActivity {
 
 	private ArrayList<JapanVocabulary> mJvList = null;
 	private JvListAdapter mJvListAdapter = null;
-	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE;
+	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
 	
 	private String mSearchWord = null;
 	private long mSearchDateFirst = 0;
@@ -56,9 +57,10 @@ public class JvListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jv_list);
 
+		// 초기에 환경설정 값을 읽어들인다@@@@@, 최초에도 정렬이 되어야 함
         // 환경설정값을 읽어들인다.
 		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString("jv_list_sort", JvListSortMethod.REGISTRATION_DATE.name()));
+		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
 
 		// 리스트를 초기화한다. 
         mJvList = new ArrayList<JapanVocabulary>();
@@ -190,21 +192,20 @@ public class JvListActivity extends ListActivity {
 				.show();
 
 			return true;
-		case R.id.jvlm_sort_kanji:
-			// 리스트를 정렬합니다.
+		case R.id.jvlm_sort_vocabulary:
 			startSortList(JvListSortMethod.VOCABULARY);
 			return true;
-		case R.id.jvlm_sort_gana:
-			// 리스트를 정렬합니다.
+		case R.id.jvlm_sort_vocabulary_gana:
 			startSortList(JvListSortMethod.VOCABULARY_GANA);
 			return true;
-		case R.id.jvlm_sort_translation:
-			// 리스트를 정렬합니다.
+		case R.id.jvlm_sort_vocabulary_translation:
 			startSortList(JvListSortMethod.VOCABULARY_TRANSLATION);
 			return true;
-		case R.id.jvlm_sort_registration_date:
-			// 리스트를 정렬합니다.
-			startSortList(JvListSortMethod.REGISTRATION_DATE);
+		case R.id.jvlm_sort_registration_date_up:
+			startSortList(JvListSortMethod.REGISTRATION_DATE_UP);
+			return true;
+		case R.id.jvlm_sort_registration_date_down:
+			startSortList(JvListSortMethod.REGISTRATION_DATE_DOWN);
 			return true;
 		case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기
 		case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
@@ -245,16 +246,18 @@ public class JvListActivity extends ListActivity {
 		return false;
 	}
 
-	// @@@@@
 	private void startSortList(JvListSortMethod jvListSortMethod) {
-		// 정렬 방법을 저장한다.
+		if (mJvListSortMethod == jvListSortMethod)
+			return;
+
+		// 바뀐 정렬 방법을 저장한다.
 		mJvListSortMethod = jvListSortMethod;
-		mPreferences.edit().putString("jv_list_sort", mJvListSortMethod.name()).commit();
+		mPreferences.edit().putString(JvDefines.JV_SPN_LIST_SORT_METHOD, mJvListSortMethod.name()).commit();
 
 		assert mProgressDialog == null;
 
 		// 정렬중에 프로그레스 대화상자를 보인다.
-		mProgressDialog = ProgressDialog.show(this, null, "잠시만 기다려 주세요...", true, false);
+		mProgressDialog = ProgressDialog.show(this, null, "전체 리스트를 정렬중입니다.", true, false);
 
    		new Thread() {
 			@Override
@@ -262,26 +265,29 @@ public class JvListActivity extends ListActivity {
 				// 리스트 데이터 정렬합니다. 
 				sortList();
 
+				// @@@@@
 				mDataChangedHandler.sendEmptyMessage(-1);
    			};
    		}.start();
 	}
 	
-	// @@@@@
 	private void sortList() {
 		switch (mJvListSortMethod) {
-		case VOCABULARY:
-			Collections.sort(mJvList, mJvVocabularyComparator);
-			break;
-		case VOCABULARY_GANA:
-			Collections.sort(mJvList, mJvVocabularyGanaComparator);
-			break;
-		case VOCABULARY_TRANSLATION:
-			Collections.sort(mJvList, mJvVocabularyTranslationComparator);
-			break;
-		case REGISTRATION_DATE:
-			Collections.sort(mJvList, mJvRegistrationDateComparator);
-			break;
+			case VOCABULARY:
+				Collections.sort(mJvList, mJvVocabularyComparator);
+				break;
+			case VOCABULARY_GANA:
+				Collections.sort(mJvList, mJvVocabularyGanaComparator);
+				break;
+			case VOCABULARY_TRANSLATION:
+				Collections.sort(mJvList, mJvVocabularyTranslationComparator);
+				break;
+			case REGISTRATION_DATE_UP:
+				Collections.sort(mJvList, mJvRegistrationDateUpComparator);
+				break;
+			case REGISTRATION_DATE_DOWN:
+				Collections.sort(mJvList, mJvRegistrationDateDownComparator);
+				break;
 		}
 	}
 
@@ -295,7 +301,6 @@ public class JvListActivity extends ListActivity {
 		startActivity(intent);
 	}
 
-	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyComparator = new Comparator<JapanVocabulary>() {
          private final Collator collator = Collator.getInstance();
 
@@ -305,7 +310,6 @@ public class JvListActivity extends ListActivity {
          }
 	};
 
-	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyGanaComparator = new Comparator<JapanVocabulary>() {
         private final Collator collator = Collator.getInstance();
 
@@ -315,7 +319,6 @@ public class JvListActivity extends ListActivity {
         }
 	};
 	
-	// @@@@@
 	private final static Comparator<JapanVocabulary> mJvVocabularyTranslationComparator = new Comparator<JapanVocabulary>() {
         private final Collator collator = Collator.getInstance();
 
@@ -325,8 +328,7 @@ public class JvListActivity extends ListActivity {
         }
 	};
 	
-	// @@@@@
-	private final static Comparator<JapanVocabulary> mJvRegistrationDateComparator = new Comparator<JapanVocabulary>() {
+	private final static Comparator<JapanVocabulary> mJvRegistrationDateUpComparator = new Comparator<JapanVocabulary>() {
 
         @Override
         public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
@@ -334,6 +336,19 @@ public class JvListActivity extends ListActivity {
         		return 1;
         	else if (lhs.getRegistrationDate() < rhs.getRegistrationDate())
         		return -1;
+
+        	return 0;
+        }
+	};
+
+	private final static Comparator<JapanVocabulary> mJvRegistrationDateDownComparator = new Comparator<JapanVocabulary>() {
+
+        @Override
+        public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
+        	if (lhs.getRegistrationDate() > rhs.getRegistrationDate())
+        		return -1;
+        	else if (lhs.getRegistrationDate() < rhs.getRegistrationDate())
+        		return 1;
 
         	return 0;
         }
