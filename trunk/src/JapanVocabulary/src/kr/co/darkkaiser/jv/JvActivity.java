@@ -150,7 +150,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			assert mProgressDialog == null;
 
 			// 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 진행 중 입니다.", true, false);
+			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중 입니다.", true, false);
 
 	   		new Thread() {
 				@Override

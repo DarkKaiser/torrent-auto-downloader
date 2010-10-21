@@ -278,43 +278,40 @@ public class JvManager {
 
 	// @@@@@
 	public void resetMemorizeInfo(int menuItemId, ArrayList<Long> idxList) {
-		if (mJvVocabularySqLite != null) {
+		if (mJvUserSqLite != null) {
 			String contentValue = "";
 
 			switch (menuItemId) {
-			case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기
-				contentValue = "memorize_completed=0";
-				break;
-			case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
-				contentValue = "memorize_completed=1";
-				break;
-			case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
-				contentValue = "memorize_target=1";
-				break;
-			case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
-				contentValue = "memorize_target=0";
-				break;
-			default:
-				assert false;
-				break;
+				case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기 @@@@@ 암기대상만들고 암기완료 해제
+					contentValue = "memorize_completed=0";
+					break;
+				case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
+					contentValue = "memorize_completed=1";
+					break;
+				case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
+					contentValue = "memorize_target=1";
+					break;
+				case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
+					contentValue = "memorize_target=0";
+					break;
+				default:
+					assert false;
+					return;
 			}
-			
-			String idx_list = "";
-			for (int index = 0; index < idxList.size(); ++index) {
-				if (TextUtils.isEmpty(idx_list) == false) {
-					idx_list += ", ";
-				}
-				
-				idx_list += idxList.get(index).toString();
-			}
-			
+
 			try {
-				mJvVocabularySqLite.execSQL(String.format("update tbl_vocabulary set %s where idx in(%s)", contentValue, idx_list));				
+				// @@@@@ 아직 추가안된 단어들은???
+				mJvUserSqLite.beginTransaction();
+				for (int index = 0; index < idxList.size(); ++index) {
+					mJvUserSqLite.execSQL(String.format("UPDATE TBL_USER_VOCABULARY SET %s WHERE VOCABULARY_IDX=%d", contentValue, idxList.get(index)));
+				}
+				mJvUserSqLite.endTransaction();
 			} catch (SQLiteException e) {
+				Log.e(TAG, e.getMessage());
 			}
 			
 			// DB에서 데이터를 다시 읽어들인다.
-			initDataFromDB();
+			//initDataFromDB();
 		} else {
 			assert false;
 		}

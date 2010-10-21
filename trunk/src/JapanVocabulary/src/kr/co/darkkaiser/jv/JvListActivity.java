@@ -43,10 +43,12 @@ public class JvListActivity extends ListActivity {
 
 	private SharedPreferences mPreferences = null;
 
-	private ArrayList<JapanVocabulary> mJvList = null;
 	private JvListAdapter mJvListAdapter = null;
+	private ArrayList<JapanVocabulary> mJvList = null;
+
 	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
-	
+
+	// @@@@@
 	private String mSearchWord = null;
 	private long mSearchDateFirst = 0;
 	private long mSearchDateLast = 0;
@@ -211,8 +213,8 @@ public class JvListActivity extends ListActivity {
 		case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
 		case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
 		case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
-			// 데이터를 로딩하는 도중에 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "잠시만 기다려 주세요...", true, false);
+			// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
+			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중 입니다.", true, false);
 
 	   		new Thread() {
 	   			
@@ -234,7 +236,9 @@ public class JvListActivity extends ListActivity {
 
 					JvManager.getInstance().resetMemorizeInfo(mMenuItemId, idxList);
 
-					mDataChangedHandler.sendEmptyMessage(-2);
+					// @@@@@ notify...로 변경될 수 있음
+					mProgressDialog.dismiss();
+					//mDataChangedHandler.sendEmptyMessage(-2);
 	   			};
 	   		}
 	   		.setMenuItemId(item.getItemId())
@@ -360,7 +364,6 @@ public class JvListActivity extends ListActivity {
 		public void handleMessage(Message msg) {
 			mJvListAdapter.notifyDataSetChanged();
 
-			// ListActivity의 위젯이 아닌 스레드에서 보낸 핸들러 메시지인 경우에는 진행 대화상자를 닫는다.
 			if (msg.what == -1) {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
@@ -375,6 +378,9 @@ public class JvListActivity extends ListActivity {
 				mSearchThread = null;
 				mProgressDialog = null;
 			} else if (msg.what == -2) {
+				// @@@@@
+				//private static final int MSG_TOAST_SHOW = 1;
+
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
@@ -418,7 +424,7 @@ public class JvListActivity extends ListActivity {
 					mDataChangedHandler.sendEmptyMessage(-1);
 					Toast.makeText(JvListActivity.this, "검색이 취소되었습니다", Toast.LENGTH_LONG).show();
 				}
-			});			
+			});
 		}
 		
 		mSearchWord = searchWord;
