@@ -118,9 +118,8 @@ public class JapanVocabulary {
 		return mMemorizeCompleted;
 	}
 
-	// @@@@@ 함수 호출될때마다 누적되므로 카운트 횟수가 정확하지 않을것임, 
 	public void setMemorizeCompleted(boolean flag, boolean updateToDB) {
-		if (flag == true && mMemorizeCompleted == false)
+		if (flag == true && updateToDB == true && mMemorizeCompleted == false)
 			++mMemorizeCompletedCount;
 
 		mMemorizeCompleted = flag;
@@ -130,8 +129,7 @@ public class JapanVocabulary {
 		}
 	}
 
-	// @@@@@
-	public void initFirstOnceMemorizeCompletedCount(long count) {
+	public void setFirstOnceMemorizeCompletedCount(long count) {
 		// 최초 1회만 초기화가 이루어지도록 한다.
 		if (mMemorizeCompletedCount == 0) {
 			mMemorizeCompletedCount = count;

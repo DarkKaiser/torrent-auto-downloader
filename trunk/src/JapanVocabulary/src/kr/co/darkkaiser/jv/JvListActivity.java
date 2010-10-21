@@ -57,7 +57,7 @@ public class JvListActivity extends ListActivity {
 		setContentView(R.layout.jv_list);
 
         // 환경설정값을 읽어들인다.
-		mPreferences = getSharedPreferences("jv_setup", MODE_PRIVATE);
+		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString("jv_list_sort", JvListSortMethod.REGISTRATION_DATE.name()));
 
 		// 리스트를 초기화한다. 
@@ -69,7 +69,6 @@ public class JvListActivity extends ListActivity {
         searchVocabulary("");
 	}
 
-	// @@@@@
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -193,15 +192,15 @@ public class JvListActivity extends ListActivity {
 			return true;
 		case R.id.jvlm_sort_kanji:
 			// 리스트를 정렬합니다.
-			startSortList(JvListSortMethod.KANJI);
+			startSortList(JvListSortMethod.VOCABULARY);
 			return true;
 		case R.id.jvlm_sort_gana:
 			// 리스트를 정렬합니다.
-			startSortList(JvListSortMethod.GANA);
+			startSortList(JvListSortMethod.VOCABULARY_GANA);
 			return true;
 		case R.id.jvlm_sort_translation:
 			// 리스트를 정렬합니다.
-			startSortList(JvListSortMethod.TRANSLATION);
+			startSortList(JvListSortMethod.VOCABULARY_TRANSLATION);
 			return true;
 		case R.id.jvlm_sort_registration_date:
 			// 리스트를 정렬합니다.
@@ -271,13 +270,13 @@ public class JvListActivity extends ListActivity {
 	// @@@@@
 	private void sortList() {
 		switch (mJvListSortMethod) {
-		case KANJI:
+		case VOCABULARY:
 			Collections.sort(mJvList, mJvVocabularyComparator);
 			break;
-		case GANA:
+		case VOCABULARY_GANA:
 			Collections.sort(mJvList, mJvVocabularyGanaComparator);
 			break;
-		case TRANSLATION:
+		case VOCABULARY_TRANSLATION:
 			Collections.sort(mJvList, mJvVocabularyTranslationComparator);
 			break;
 		case REGISTRATION_DATE:
@@ -286,7 +285,6 @@ public class JvListActivity extends ListActivity {
 		}
 	}
 
-	// @@@@@
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);

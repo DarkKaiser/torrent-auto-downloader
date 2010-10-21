@@ -31,6 +31,6 @@
 		android:id="@android:id/empty"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="표시할 단어가 없습니다."
+		android:text="표시 될 단어가 없습니다."
 		android:layout_gravity="center"/> 
 </LinearLayout>

@@ -1,9 +1,8 @@
 package kr.co.darkkaiser.jv;
 
-//@@@@@
 public enum JvListSortMethod {
-	KANJI,
-	GANA,
-	TRANSLATION,
+	VOCABULARY,
+	VOCABULARY_GANA,
+	VOCABULARY_TRANSLATION,
 	REGISTRATION_DATE
 }

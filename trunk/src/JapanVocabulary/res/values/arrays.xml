@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string-array name="memorize_target_item_list_preference">
+		<item>한자</item>
+		<item>히라가나/가타가나</item>
+	</string-array>
+	<string-array name="memorize_target_itemvalues_list_preference">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+</resources>

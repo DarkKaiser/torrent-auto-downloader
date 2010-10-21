@@ -6,15 +6,13 @@
 		android:icon="@android:drawable/ic_menu_sort_alphabetically">
 		<menu>
 			<item android:id="@+id/jvlm_sort_kanji"
-				android:title="한자"
-				/>
+				android:title="한자"/>
 			<item android:id="@+id/jvlm_sort_gana"
-				android:title="히라가나/가타가나"
-				/>
-			<item android:id="@+id/jvlm_sort_translation" android:title="한자 뜻"/>
+				android:title="히라가나/가타가나"/>
+			<item android:id="@+id/jvlm_sort_translation"
+				android:title="한자 뜻"/>
 			<item android:id="@+id/jvlm_sort_registration_date"
-				android:title="단어 등록일"
-				/>
+				android:title="단어 등록일"/>
 		</menu>
 	</item>
 	<item android:title="암기 설정"

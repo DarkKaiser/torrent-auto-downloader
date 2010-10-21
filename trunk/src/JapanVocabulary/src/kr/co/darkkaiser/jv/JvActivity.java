@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.option.OptionActivity;
 
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -44,32 +45,32 @@ import android.widget.Toast;
 public class JvActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "JvActivity";
-	
-	// @@@@@
-	private static final int MSG_PROGRESS_DIALOG_REFRESH = 10;
-	private static final int MSG_VOCABULARY_MEMORIZE_START = 11;
-	private static final int MSG_TOAST_SHOW = 12;
-	
-	// ViewConfiguration 에서 Long Press 를 판단하는 time 을 가져 온다.
-	private static final int LONGPRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
-	
+
+	private static final int MSG_TOAST_SHOW = 1;
+	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
+	private static final int MSG_VOCABULARY_MEMORIZE_START = 3;
+
+    private static final int MSG_TOUCHEVT_TAP = 1;
     private static final int MSG_TOUCHEVT_LONG_PRESS = 2;
-    private static final int MSG_TOUCHEVT_TAP = 3;
-    
+
+	// Long Press 를 판단하는 시간 값
+	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
+
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
 	
 	// 현재 화면에 보여지고 있는 일본어 단어의 인덱스
 	private int mJvCurrentIndex = -1;
-	
-	// 암기 대상 일본어 단어 리스트
-	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
-	
-	// 일본식 한자 단어를 출력할지의 여부, false이면 일본어 히라가나/가타가나를 출력한다.
-	private boolean mOutputJapanVocabulary = true;
-	
+
 	// 암기 대상 일본어 단어 전체 갯수
 	private int mMemorizeTargetJvCount = 0;
+
+	// 일본식 한자 단어를 암기대상으로 출력할지의 여부
+	// 이 값이 false 이면 히라가나/가타가나를 암기대상으로 출력한다.
+	private boolean mIsJapanVocabularyOutputMode = true;
+
+	// 암기 대상 일본어 단어 리스트
+	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 
         	return;
         }
+        
+        // 환경설정 값을 로드한다.
+        initPreference(false);
 
         TextView tvVocabulary = (TextView)findViewById(R.id.vocabulary);
         tvVocabulary.setOnTouchListener(this);
@@ -145,9 +149,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 		case R.id.jvm_all_rememorize:
 			assert mProgressDialog == null;
 
-			// @@@@@
-			// 데이터를 로딩하는 도중에 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "잠시만 기다려 주세요...", true, false);
+			// 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 진행 중 입니다.", true, false);
 
 	   		new Thread() {
 				@Override
@@ -155,7 +158,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
 					JvManager.getInstance().rememorizeAllMemorizeTarget();
 					
-			        // 프로그램을 초기화합니다.
+			        // 단어 데이터를 로드합니다.
 			        readyMemorizeTargetVocabularyData();
 
 					Message msg = Message.obtain();
@@ -167,7 +170,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 			return true;
 			
 		case R.id.jvm_preferences:
-			// @@@@@ 옵션
+			// 설정 페이지를 띄운다.
+			startActivityForResult(new Intent(this, OptionActivity.class), R.id.jvm_preferences);
+
 			return true;
 		}
 
@@ -178,7 +183,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		// @@@@@ 변경된 내역이 없으면 다시 로드할 필요는 없다
+		// @@@@@ 변경된 내역이 없으면 다시 로드할 필요는 없다, resultCode를 이용
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
 			assert mProgressDialog == null;
 
@@ -196,18 +201,35 @@ public class JvActivity extends Activity implements OnTouchListener {
 					mVocabularyDataLoadHandler.sendMessage(msg);
 	   			};
 	   		}.start();
+		} else if (requestCode == R.id.jvm_preferences) {
+			initPreference(true);
+		}
+	}
+	
+	private void initPreference(boolean showNextVocabulary) {
+		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
+		if (mIsJapanVocabularyOutputMode != (TextUtils.equals(memorizeTargetItem, "0"))) {
+			if (TextUtils.equals(memorizeTargetItem, "0") == true) {
+				mIsJapanVocabularyOutputMode = true;
+			} else {
+				mIsJapanVocabularyOutputMode = false;
+			}
+
+			if (showNextVocabulary == true)
+				showNextVocabulary();
 		}
 	}
 
 	private void updateJvDB() {
 		// 로컬 단어 DB의 버전정보를 구한다.
-		SharedPreferences mPreferences = getSharedPreferences("jv_setup", MODE_PRIVATE);
-		String localDbVersion = mPreferences.getString("jv_db_version", "");
+		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		String localDbVersion = mPreferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
 
 		// 단어 DB가 갱신되었으면 네트워크를 통하여 데이터를 새로 내려받는다.
 		String remoteDbVersion = null;
 		try {
-			URL url = new URL("http://darkkaiser.cafe24.com/data/jv2_db_version.html");
+			URL url = new URL(JvDefines.JV_DB_VERSION_CHECK_URL);
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 
@@ -247,17 +269,17 @@ public class JvActivity extends Activity implements OnTouchListener {
 			msg.obj = "단어 DB를 업데이트 하고 있습니다.";
 			mVocabularyDataLoadHandler.sendMessage(msg);
 			
-			String jvDbPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvManager.JV_MAIN_FOLDER_NAME);
+			String jvDbPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
 			File f = new File(jvDbPath);
 			if (f.exists() == false) {
 				f.mkdir();
 			}
 
-			jvDbPath += JvManager.JV_VOCABULARY_DB;
+			jvDbPath += JvDefines.JV_VOCABULARY_DB;
 
 			// 단어 DB 파일을 내려받는다.
 			try {
-				URL url = new URL("http://darkkaiser.cafe24.com/data/jv2.db");
+				URL url = new URL(JvDefines.JV_DB_DOWNLOAD_URL);
 				BufferedInputStream bis = new BufferedInputStream(url.openConnection().getInputStream());
 
 				int current = 0;
@@ -273,7 +295,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				fos.write(baf.toByteArray());
 				fos.close();
 
-				mPreferences.edit().putString("jv_db_version", remoteDbVersion).commit();
+				mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, remoteDbVersion).commit();
 			} catch (Exception e) {
 				Log.d(TAG, e.getMessage());
 				
@@ -330,7 +352,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			}
 
 			// 화면에 다음 단어를 출력한다.
-			if (mOutputJapanVocabulary == true)
+			if (mIsJapanVocabularyOutputMode == true)
 				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
 			else
 				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
@@ -348,7 +370,7 @@ public class JvActivity extends Activity implements OnTouchListener {
         	switch (event.getAction()) {
 		    	case MotionEvent.ACTION_DOWN:
 		    		mTouchEventHandler.removeMessages(MSG_TOUCHEVT_LONG_PRESS);
-		    		mTouchEventHandler.sendEmptyMessageAtTime(MSG_TOUCHEVT_LONG_PRESS, event.getDownTime() + LONGPRESS_TIMEOUT);
+		    		mTouchEventHandler.sendEmptyMessageAtTime(MSG_TOUCHEVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
 		    		break;
 
 		    	case MotionEvent.ACTION_MOVE:
@@ -401,9 +423,13 @@ public class JvActivity extends Activity implements OnTouchListener {
     		switch(msg.what) {
 	    		case MSG_TOUCHEVT_LONG_PRESS:
 	    			if (mJvCurrentIndex != -1) {
+						// 진동을 발생시킨다.
+						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+						vibrator.vibrate(30);
+
 	    				new AlertDialog.Builder(JvActivity.this)
 	    				.setTitle("암기완료")
-	            		.setMessage("화면에 보여지는 일본어 단어의 암기를 완료하셨나요?")
+	            		.setMessage("단어를 암기 완료하셨나요?")
 	            		.setPositiveButton("예", new DialogInterface.OnClickListener() {
 	    					@Override
 	    					public void onClick(DialogInterface dialog, int which) {
