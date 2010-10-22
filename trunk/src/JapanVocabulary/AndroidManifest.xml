@@ -13,7 +13,7 @@
             </intent-filter>
         </activity>
 	<activity android:name=".detail.JvDetailActivity"></activity>
-	<activity android:name="JvListActivity"
+	<activity android:name=".list.JvListActivity"
 			  android:configChanges="orientation|keyboard">
 	</activity>
 <activity android:name=".option.OptionActivity"></activity>

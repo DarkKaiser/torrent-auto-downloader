@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-	<RelativeLayout
+	<LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -22,7 +22,121 @@
 	    	android:singleLine="true"
 	    	android:minWidth="40px"
 	    	android:layout_alignParentRight="true"/>
-	</RelativeLayout>
+		<Button  
+			android:id="@+id/search_area_visible"
+			android:text="검색"
+			android:layout_width="120dp"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<ScrollView 
+		android:gravity="center" 
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		>
+		<LinearLayout
+			android:id="@+id/search_area"
+			android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:visibility="gone"
+		    android:layout_margin="0px"
+		    android:paddingTop="17px"
+		    android:paddingBottom="17px"
+		    android:paddingLeft="19px"
+		    android:paddingRight="19px"
+		    android:background="@android:drawable/dialog_frame"
+		    >
+			<EditText
+				android:id="@+id/search_word" 
+				android:hint="검색어(한자 뜻)를 입력하세요."
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"/>
+			<TableLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:stretchColumns="1"
+				>
+				<TableRow>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="품사:"/>
+					<Spinner
+						android:id="@+id/Spinner01" 
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"/>
+				</TableRow>
+				<TableRow>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="암기완료"/>
+					<Spinner
+						android:id="@+id/Spinner02" 
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"/>
+				</TableRow>
+				<TableRow>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="암기대상"/>
+					<Spinner
+						android:id="@+id/Spinner03" 
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"/>
+				</TableRow>
+				<TableRow>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="JLPT"/>
+					<Spinner
+						android:id="@+id/Spinner04" 
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"/>
+				</TableRow>
+			</TableLayout>
+			<LinearLayout
+				android:orientation="horizontal" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				>
+				<CheckBox
+					android:id="@+id/all_data_search"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:checked="true"/>
+				<Button  
+					android:id="@+id/SearchDateFirst"
+					android:enabled="false" 
+					android:layout_width="120dp"
+					android:layout_height="wrap_content"/>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="~"/>
+				<Button  
+					android:id="@+id/SearchDateLast"
+					android:enabled="false" 
+					android:layout_width="120dp"
+					android:layout_height="wrap_content"/>
+			</LinearLayout>
+			<LinearLayout
+				android:orientation="horizontal" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				>
+				<CheckBox
+					android:id="@+id/all_data_search"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="결과 내 검색"
+					android:checked="true"/>
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 	<ListView
 		android:id="@android:id/list"
 		android:layout_width="fill_parent" 

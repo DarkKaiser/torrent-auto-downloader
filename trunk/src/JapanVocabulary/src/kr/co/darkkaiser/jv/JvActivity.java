@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.list.JvListActivity;
 import kr.co.darkkaiser.jv.option.OptionActivity;
 
 import org.apache.http.util.ByteArrayBuffer;

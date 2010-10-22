@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.list;
 
 import java.text.Collator;
 import java.text.ParseException;
@@ -8,14 +8,20 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import kr.co.darkkaiser.jv.JapanVocabulary;
+import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.JvManager;
+import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
 import kr.co.darkkaiser.jv.list.JvListAdapter;
 import kr.co.darkkaiser.jv.list.JvListSortMethod;
 
+import android.R.layout;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +29,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,29 +57,37 @@ public class JvListActivity extends ListActivity {
 
 	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
 
-	// @@@@@
+	// @@@@@ JLPT(단어 디비에 있음), 품사, 암기완료/미완료/전체, 암기대상/비대상/전체, 결과내 검색??
+	private String mPartsOfSpeech = null;
 	private String mSearchWord = null;
 	private long mSearchDateFirst = 0;
 	private long mSearchDateLast = 0;
 
-	// @@@@@
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jv_list);
 
-		// 초기에 환경설정 값을 읽어들인다@@@@@, 최초에도 정렬이 되어야 함
         // 환경설정값을 읽어들인다.
 		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
 
-		// 리스트를 초기화한다. 
+        // 리스트를 초기화한다.
         mJvList = new ArrayList<JapanVocabulary>();
         mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvList);
         setListAdapter(mJvListAdapter);
- 
-        // 단어를 검색한다.
-        searchVocabulary("");
+
+        // 검색 조건에 따라 단어를 검색한다.
+        searchVocabulary(""); // @@@@@ 이전의 검색 조건을 넘겨야 함
+        
+        Button btnSearchAreaVisible = (Button)findViewById(R.id.search_area_visible);
+        btnSearchAreaVisible.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LinearLayout layoutSearchArea = (LinearLayout)findViewById(R.id.search_area);
+				showSearchArea(layoutSearchArea.getVisibility() == View.VISIBLE ? false : true);
+			}
+		});
 	}
 
 	@Override
@@ -86,124 +101,116 @@ public class JvListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.jvlm_search:
-			final LinearLayout linear = (LinearLayout)View.inflate(JvListActivity.this, R.layout.jv_list_search, null);
-
-			CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
-			cboAllDataSearch.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					CheckBox cboAllDataSearch = (CheckBox)v;
-					Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
-					Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-					btnSearchDateFirst.setEnabled(!cboAllDataSearch.isChecked());
-					btnSearchDateLast.setEnabled(!cboAllDataSearch.isChecked());
-				}
-			});
-
-	        // 현재의 날짜를 구하여 컨트롤에 반영한다.
-	        Calendar currentDate = Calendar.getInstance();
-			Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
-			Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-			btnSearchDateFirst.setText(String.format("%04d/%02d/%02d", currentDate.get(Calendar.YEAR),
-					currentDate.get(Calendar.MONTH) + 1,
-					currentDate.get(Calendar.DATE)));
-
-			btnSearchDateLast.setText(String.format("%04d/%02d/%02d", currentDate.get(Calendar.YEAR),
-					currentDate.get(Calendar.MONTH) + 1,
-					currentDate.get(Calendar.DATE)));
-
-			btnSearchDateFirst.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Button btnSearchDateFirst = (Button)v;
-		    		String searchDateString = btnSearchDateFirst.getText().toString().replace("/", "");
-		        	new DatePickerDialog(JvListActivity.this,
-		        			new DatePickerDialog.OnDateSetListener() {
-								@Override
-								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-									Button searchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);				
-									searchDateFirst.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-								}
-							},
-		        			Integer.parseInt(searchDateString.substring(0, 4)),
-		        			Integer.parseInt(searchDateString.substring(4, 6)) - 1,
-		        			Integer.parseInt(searchDateString.substring(6, 8))).show();
-				}
-			});
-			
-			btnSearchDateLast.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Button btnSearchDateLast = (Button)v;
-		    		String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
-		        	new DatePickerDialog(JvListActivity.this,
-		        			new DatePickerDialog.OnDateSetListener() {
-								@Override
-								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-									Button searchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-									searchDateLast.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-								}
-							},
-		        			Integer.parseInt(searchDateString.substring(0, 4)),
-		        			Integer.parseInt(searchDateString.substring(4, 6)) - 1,
-		        			Integer.parseInt(searchDateString.substring(6, 8))).show();
-				}
-			});
-			
-			String[] strItems = {"aaa", "bbb", "ccc"};//@@@@@
-
-			new AlertDialog.Builder(JvListActivity.this)
-				.setTitle("검색")
-				.setView(linear)
-				.setSingleChoiceItems(strItems, -1, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				})
-				.setPositiveButton("검색", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						EditText etSearchWord = (EditText)linear.findViewById(R.id.SearchWord);
-						String searchWord = etSearchWord.getText().toString().trim();
-						
-						CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
-						if (cboAllDataSearch.isChecked() == true) {
-							searchVocabulary(searchWord);
-						} else {
-							try {
-								Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
-								long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateFirst.getText().toString()).getTime();
-
-								Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-								long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateLast.getText().toString()).getTime();
-								
-								if (searchDateFirst > searchDateLast) {
-									long temp = searchDateFirst;
-									searchDateFirst = searchDateLast;
-									searchDateLast = temp;
-								}
-
-								searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
-								searchDateLast += 999/* 밀리초 */;
-								
-								searchVocabulary(searchWord, searchDateFirst, searchDateLast);
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				})
-				.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				})
-				.show();
-
-			return true;
+//		case R.id.jvlm_search:
+//			final LinearLayout linear = (LinearLayout)View.inflate(JvListActivity.this, R.layout.jv_list_search, null);
+//
+//			CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
+//			cboAllDataSearch.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					CheckBox cboAllDataSearch = (CheckBox)v;
+//					Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
+//					Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
+//					btnSearchDateFirst.setEnabled(!cboAllDataSearch.isChecked());
+//					btnSearchDateLast.setEnabled(!cboAllDataSearch.isChecked());
+//				}
+//			});
+//
+//	        // 현재의 날짜를 구하여 컨트롤에 반영한다.
+//	        Calendar currentDate = Calendar.getInstance();
+//			Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
+//			Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
+//			btnSearchDateFirst.setText(String.format("%04d/%02d/%02d", currentDate.get(Calendar.YEAR),
+//					currentDate.get(Calendar.MONTH) + 1,
+//					currentDate.get(Calendar.DATE)));
+//
+//			btnSearchDateLast.setText(String.format("%04d/%02d/%02d", currentDate.get(Calendar.YEAR),
+//					currentDate.get(Calendar.MONTH) + 1,
+//					currentDate.get(Calendar.DATE)));
+//
+//			btnSearchDateFirst.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					Button btnSearchDateFirst = (Button)v;
+//		    		String searchDateString = btnSearchDateFirst.getText().toString().replace("/", "");
+//		        	new DatePickerDialog(JvListActivity.this,
+//		        			new DatePickerDialog.OnDateSetListener() {
+//								@Override
+//								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//									Button searchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);				
+//									searchDateFirst.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
+//								}
+//							},
+//		        			Integer.parseInt(searchDateString.substring(0, 4)),
+//		        			Integer.parseInt(searchDateString.substring(4, 6)) - 1,
+//		        			Integer.parseInt(searchDateString.substring(6, 8))).show();
+//				}
+//			});
+//			
+//			btnSearchDateLast.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					Button btnSearchDateLast = (Button)v;
+//		    		String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
+//		        	new DatePickerDialog(JvListActivity.this,
+//		        			new DatePickerDialog.OnDateSetListener() {
+//								@Override
+//								public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//									Button searchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
+//									searchDateLast.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
+//								}
+//							},
+//		        			Integer.parseInt(searchDateString.substring(0, 4)),
+//		        			Integer.parseInt(searchDateString.substring(4, 6)) - 1,
+//		        			Integer.parseInt(searchDateString.substring(6, 8))).show();
+//				}
+//			});
+//			
+//			new AlertDialog.Builder(JvListActivity.this)
+//				.setTitle("검색")
+//				.setView(linear)
+//				.setPositiveButton("검색", new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						EditText etSearchWord = (EditText)linear.findViewById(R.id.SearchWord);
+//						String searchWord = etSearchWord.getText().toString().trim();
+//						
+//						CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
+//						if (cboAllDataSearch.isChecked() == true) {
+//							searchVocabulary(searchWord);
+//						} else {
+//							try {
+//								Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
+//								long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateFirst.getText().toString()).getTime();
+//
+//								Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
+//								long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateLast.getText().toString()).getTime();
+//								
+//								if (searchDateFirst > searchDateLast) {
+//									long temp = searchDateFirst;
+//									searchDateFirst = searchDateLast;
+//									searchDateLast = temp;
+//								}
+//
+//								searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
+//								searchDateLast += 999/* 밀리초 */;
+//								
+//								searchVocabulary(searchWord, searchDateFirst, searchDateLast);
+//							} catch (ParseException e) {
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//				})
+//				.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						dialog.cancel();
+//					}
+//				})
+//				.show();
+//
+//			return true;
 		case R.id.jvlm_sort_vocabulary:
 			startSortList(JvListSortMethod.VOCABULARY);
 			return true;
@@ -434,7 +441,7 @@ public class JvListActivity extends ListActivity {
 	private void searchVocabulary(String searchWord) {
 		searchVocabulary(searchWord, -1, -1);
 	}
-	
+
 	// @@@@@
 	private void searchVocabulary(String searchWord, long searchDateFirst, long searchDateLast) {
 		TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
@@ -496,9 +503,13 @@ public class JvListActivity extends ListActivity {
 			mJvList.clear();
 			JvManager.getInstance().searchJapanVocabulary(mSearchWord, mSearchDateFirst, mSearchDateLast, mJvList);
 			sortList();
-	
+
 			mDataChangedHandler.sendEmptyMessage(-1);
 		};
 	}
 
+	private void showSearchArea(boolean visible) {
+		LinearLayout layoutSearchArea = (LinearLayout)findViewById(R.id.search_area);
+		layoutSearchArea.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
 }

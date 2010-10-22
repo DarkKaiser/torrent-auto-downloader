@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/jvlm_search"
-		android:title="검색"
-		android:icon="@android:drawable/ic_search_category_default"/>
 	<item android:title="정렬"
 		android:icon="@android:drawable/ic_menu_sort_alphabetically">
 		<menu>
