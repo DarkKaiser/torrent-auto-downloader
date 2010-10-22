@@ -41,10 +41,10 @@
 		    android:layout_height="wrap_content"
 		    android:visibility="gone"
 		    android:layout_margin="0px"
-		    android:paddingTop="17px"
-		    android:paddingBottom="17px"
-		    android:paddingLeft="19px"
-		    android:paddingRight="19px"
+		    android:paddingTop="21px"
+		    android:paddingBottom="21px"
+		    android:paddingLeft="23px"
+		    android:paddingRight="23px"
 		    android:background="@android:drawable/dialog_frame"
 		    >
 			<EditText
@@ -63,9 +63,13 @@
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_vertical|right"
 						android:text="품사"/>
-					<Spinner
-						android:id="@+id/Spinner01" 
-						android:layout_width="fill_parent" 
+					<Button
+						android:text="품사"
+						android:layout_width="120dp"
+						android:layout_height="wrap_content"/>
+					<Button
+						android:text="JLPT"
+						android:layout_width="120dp"
 						android:layout_height="wrap_content"/>
 				</TableRow>
 				<TableRow>
@@ -87,17 +91,6 @@
 						android:text="암기대상"/>
 					<Spinner
 						android:id="@+id/Spinner03" 
-						android:layout_width="fill_parent" 
-						android:layout_height="wrap_content"/>
-				</TableRow>
-				<TableRow>
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:text="JLPT"/>
-					<Spinner
-						android:id="@+id/Spinner04" 
 						android:layout_width="fill_parent" 
 						android:layout_height="wrap_content"/>
 				</TableRow>
@@ -138,5 +131,32 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="표시 될 단어가 없습니다."
-		android:layout_gravity="center"/> 
+		android:layout_gravity="center"/>
+		
+<SlidingDrawer
+             android:id="@+id/drawer_landscape"
+             android:layout_width="wrap_content"
+             android:layout_height="300px"
+             android:handle="@+id/handle_l"
+             android:content="@+id/content"
+             android:orientation="horizontal"
+             android:visibility="visible"
+        >
+
+                <ImageView
+                android:id="@+id/handle_l"
+                android:layout_height="50px"
+                    android:layout_width="64px"
+                android:padding="0px"
+                android:src="@drawable/icon"
+            />
+
+                <TextView
+                    android:id="@+id/content" 
+                        android:text="content" 
+                android:layout_height="50px"
+                    android:layout_width="64px"
+                />                      
+
+         </SlidingDrawer>  
 </LinearLayout>

@@ -24,6 +24,7 @@
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
 			android:layout_height="90px"
+			android:textSize="8pt"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true"/>
 		<TextView 

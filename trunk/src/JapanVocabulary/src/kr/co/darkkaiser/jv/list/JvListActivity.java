@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -84,6 +85,30 @@ public class JvListActivity extends ListActivity {
         btnSearchAreaVisible.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				//@@@@@ 임시
+//				String []choiceItems = 
+//			       {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
+//			       
+//			       boolean []selecteditems = {false, false, false, false, false, false };
+//			       
+//			       new AlertDialog.Builder(JvListActivity.this).setTitle("검색주제를 선택해주세요")
+//			          .setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
+//			     
+//			     @Override
+//			     public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
+//			           }
+//			    })
+//			          .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//			 
+//			    public void onClick(DialogInterface arg0, int arg1) {
+////			    	for (boolean state : selecteditems) {
+//			    		//String.valueOf(state)
+////			    	}
+//			    }
+//			   })
+//			   .show();
+//			       
+				// @@@@@
 				LinearLayout layoutSearchArea = (LinearLayout)findViewById(R.id.search_area);
 				showSearchArea(layoutSearchArea.getVisibility() == View.VISIBLE ? false : true);
 			}
