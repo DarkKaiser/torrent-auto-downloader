@@ -38,6 +38,8 @@ import android.widget.Toast;
 
 public class JvListActivity extends ListActivity {
 
+	private static final int MSG_UPDATE_LIST_DATA_COMPLETED = 1;
+
 	private Thread mSearchThread = null;
 	private ProgressDialog mProgressDialog = null;
 
@@ -148,10 +150,18 @@ public class JvListActivity extends ListActivity {
 		        			Integer.parseInt(searchDateString.substring(6, 8))).show();
 				}
 			});
+			
+			String[] strItems = {"aaa", "bbb", "ccc"};//@@@@@
 
 			new AlertDialog.Builder(JvListActivity.this)
-				.setTitle("한자 뜻 검색")
+				.setTitle("검색")
 				.setView(linear)
+				.setSingleChoiceItems(strItems, -1, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				})
 				.setPositiveButton("검색", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -228,17 +238,40 @@ public class JvListActivity extends ListActivity {
 
 				@Override
 	   			public void run() {
-					// 리스트의 idx 값을 구한다.
+					JapanVocabulary jv = null;
 					ArrayList<Long> idxList = new ArrayList<Long>();
-					for (int index = 0; index < mJvList.size(); ++index) {
-						idxList.add(mJvList.get(index).getIdx());
+
+					if (mMenuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
+						for (int index = 0; index < mJvList.size(); ++index) {
+							jv = mJvList.get(index);
+							if (jv.isMemorizeTarget() == false || jv.isMemorizeCompleted() == true)
+								idxList.add(jv.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) {			// 검색된 전체 단어 암기 완료
+						for (int index = 0; index < mJvList.size(); ++index) {
+							jv = mJvList.get(index);
+							if (jv.isMemorizeCompleted() == false)
+								idxList.add(jv.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
+						for (int index = 0; index < mJvList.size(); ++index) {
+							jv = mJvList.get(index);
+							if (jv.isMemorizeTarget() == false)
+								idxList.add(jv.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
+						for (int index = 0; index < mJvList.size(); ++index) {
+							jv = mJvList.get(index);
+							if (jv.isMemorizeTarget() == true)
+								idxList.add(jv.getIdx());
+						}
 					}
 
-					JvManager.getInstance().resetMemorizeInfo(mMenuItemId, idxList);
+					JvManager.getInstance().updateMemorizeField(mMenuItemId, idxList);
 
-					// @@@@@ notify...로 변경될 수 있음
-					mProgressDialog.dismiss();
-					//mDataChangedHandler.sendEmptyMessage(-2);
+					Message msg = Message.obtain();
+					msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
+					mDataChangedHandler.sendMessage(msg);
 	   			};
 	   		}
 	   		.setMenuItemId(item.getItemId())
@@ -269,8 +302,9 @@ public class JvListActivity extends ListActivity {
 				// 리스트 데이터 정렬합니다. 
 				sortList();
 
-				// @@@@@
-				mDataChangedHandler.sendEmptyMessage(-1);
+				Message msg = Message.obtain();
+				msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
+				mDataChangedHandler.sendMessage(msg);
    			};
    		}.start();
 	}
@@ -362,9 +396,9 @@ public class JvListActivity extends ListActivity {
 	private Handler mDataChangedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			mJvListAdapter.notifyDataSetChanged();
-
 			if (msg.what == -1) {
+				mJvListAdapter.notifyDataSetChanged();
+
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
@@ -377,17 +411,21 @@ public class JvListActivity extends ListActivity {
 				
 				mSearchThread = null;
 				mProgressDialog = null;
-			} else if (msg.what == -2) {
-				// @@@@@
-				//private static final int MSG_TOAST_SHOW = 1;
+			} else if (msg.what == MSG_UPDATE_LIST_DATA_COMPLETED) {
+				mJvListAdapter.notifyDataSetChanged();
 
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
+				TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
+				TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
+
+				tvSearchInfo.setVisibility(View.VISIBLE);
+				tvVocabularyCount.setVisibility(View.VISIBLE);
+				tvVocabularyCount.setText(String.format("단어:%d개", mJvList.size()));
+
 				mSearchThread = null;
 				mProgressDialog = null;
-
-				searchVocabulary(mSearchWord, mSearchDateFirst, mSearchDateLast);
 			}
 		};
 	};

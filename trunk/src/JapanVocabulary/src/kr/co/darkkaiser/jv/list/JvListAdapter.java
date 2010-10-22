@@ -99,7 +99,7 @@ public class JvListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				CheckBox cboMemorizeCompleted = (CheckBox)v;
 				int position = (Integer)cboMemorizeCompleted.getTag();
-				mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true);
+				mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
 				notifyDataSetChanged();
 			}
 		});

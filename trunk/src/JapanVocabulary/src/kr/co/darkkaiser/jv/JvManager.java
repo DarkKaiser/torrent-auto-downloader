@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import kr.co.darkkaiser.jv.R.menu;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -112,7 +115,7 @@ public class JvManager {
 			if (mJvUserSqLite != null) {
 				// @@@@@ db가 처음 생성된 경우에는 테이블을 자동으로 생성해준다.
 
-				cursor = mJvUserSqLite.rawQuery("SELECT VOCABULARY_IDX, " +
+				cursor = mJvUserSqLite.rawQuery("SELECT V_IDX, " +
 												"       MEMORIZE_TARGET, " +
 												"       MEMORIZE_COMPLETED, " +
 												"       MEMORIZE_COMPLETED_COUNT " +
@@ -121,13 +124,13 @@ public class JvManager {
 				if (cursor.moveToFirst() == true) {
 					do
 					{
-						long idx = cursor.getLong(0/* VOCABULARY_IDX */);
+						long idx = cursor.getLong(0/* V_IDX */);
 						
 						JapanVocabulary jv = mJvTable.get(idx);
 						if (jv != null) {
 							jv.setFirstOnceMemorizeCompletedCount(cursor.getLong(3/* MEMORIZE_COMPLETED_COUNT */));
 							jv.setMemorizeTarget(cursor.getLong(1/* MEMORIZE_TARGET */) == 1 ? true : false, false);
-							jv.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED */) == 1 ? true : false, false);
+							jv.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED */) == 1 ? true : false, false, false);
 						} else {
 							assert false;
 						}
@@ -200,14 +203,17 @@ public class JvManager {
 	public synchronized void rememorizeAllMemorizeTarget() {
 		if (mJvUserSqLite != null) {
 			try {
-				mJvUserSqLite.execSQL("UPDATE TBL_USER_VOCABULARY " +
-						  			  "   SET MEMORIZE_COMPLETED=0 " +
-						  			  " WHERE MEMORIZE_TARGET=1");
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("UPDATE TBL_USER_VOCABULARY ")
+					 .append("   SET MEMORIZE_COMPLETED=0 ")
+					 .append(" WHERE MEMORIZE_TARGET=1");
+
+				mJvUserSqLite.execSQL(sbSQL.toString());
 
 				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
 					JapanVocabulary jv = e.nextElement();
 					if (jv.isMemorizeTarget() == true)
-						jv.setMemorizeCompleted(false, false);
+						jv.setMemorizeCompleted(false, false, false);
 				}
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
@@ -219,27 +225,15 @@ public class JvManager {
 
 	public synchronized void updateMemorizeTarget(long idx, boolean flag) {
 		if (mJvUserSqLite != null) {
-			Cursor cursor = null;
-
 			try {
-				cursor = mJvUserSqLite.rawQuery(String.format("SELECT VOCABULARY_IDX " +
-															  "  FROM TBL_USER_VOCABULARY " +
-															  " WHERE VOCABULARY_IDX=%d", idx), null);
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("INSERT OR REPLACE INTO TBL_USER_VOCABULARY ")
+					 .append("                       (V_IDX, MEMORIZE_TARGET) ")
+					 .append("                VALUES (").append(idx).append(", ").append(flag ? 1 : 0).append(")");
 
-				if (cursor.moveToFirst() == true) {
-					mJvUserSqLite.execSQL(String.format("UPDATE TBL_USER_VOCABULARY " +
-						    							"   SET MEMORIZE_TARGET=%d " +
-						    							" WHERE VOCABULARY_IDX=%d", flag ? 1 : 0, idx));
-				} else {
-					mJvUserSqLite.execSQL(String.format("INSERT INTO TBL_USER_VOCABULARY " +
-														"            (VOCABULARY_IDX, MEMORIZE_TARGET) " +
-														"     VALUES (%d, %d)", idx, flag ? 1 : 0));			
-				}
+				mJvUserSqLite.execSQL(sbSQL.toString());			
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
-			} finally {
-				if (cursor != null)
-					cursor.close();
 			}
 		} else {
 			assert false;
@@ -248,102 +242,143 @@ public class JvManager {
 
 	public synchronized void updateMemorizeCompleted(long idx, boolean flag, long memorizeCompletedCount) {
 		if (mJvUserSqLite != null) {
-			Cursor cursor = null;
-
 			try {
-				cursor = mJvUserSqLite.rawQuery(String.format("SELECT VOCABULARY_IDX " +
-						 									  "  FROM TBL_USER_VOCABULARY " +
-						 									  " WHERE VOCABULARY_IDX=%d", idx), null);
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("INSERT OR REPLACE INTO TBL_USER_VOCABULARY ")
+					 .append("                       (V_IDX, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT) ")
+					 .append("                VALUES (").append(idx).append(", ").append(flag ? 1 : 0).append(", ").append(memorizeCompletedCount).append(")");
 
-				if (cursor.moveToFirst() == true) {
-					mJvUserSqLite.execSQL(String.format("UPDATE TBL_USER_VOCABULARY " +
-														"   SET MEMORIZE_COMPLETED=%d, " +
-														"       MEMORIZE_COMPLETED_COUNT=%d " +
-														" WHERE VOCABULARY_IDX=%d", flag ? 1 : 0, memorizeCompletedCount, idx));				
-				} else {
-					mJvUserSqLite.execSQL(String.format("INSERT INTO TBL_USER_VOCABULARY " +
-														"            (VOCABULARY_IDX, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT) " +
-														"     VALUES (%d, %d, %d)", idx, flag ? 1 : 0, memorizeCompletedCount));				
-				}
+				mJvUserSqLite.execSQL(sbSQL.toString());				
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
-			} finally {
-				if (cursor != null)
-					cursor.close();
 			}
 		} else {
 			assert false;
 		}
 	}
 
-	// @@@@@
-	public void resetMemorizeInfo(int menuItemId, ArrayList<Long> idxList) {
-		if (mJvUserSqLite != null) {
-			String contentValue = "";
+	public boolean updateMemorizeField(int menuItemId, ArrayList<Long> idxList) {
+		if (mJvUserSqLite == null)
+			return false;
+		
+		String columnNameList, columnValueList;
 
-			switch (menuItemId) {
-				case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기 @@@@@ 암기대상만들고 암기완료 해제
-					contentValue = "memorize_completed=0";
-					break;
-				case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
-					contentValue = "memorize_completed=1";
-					break;
-				case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
-					contentValue = "memorize_target=1";
-					break;
-				case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
-					contentValue = "memorize_target=0";
-					break;
-				default:
-					assert false;
-					return;
-			}
-
-			try {
-				// @@@@@ 아직 추가안된 단어들은???
-				mJvUserSqLite.beginTransaction();
-				for (int index = 0; index < idxList.size(); ++index) {
-					mJvUserSqLite.execSQL(String.format("UPDATE TBL_USER_VOCABULARY SET %s WHERE VOCABULARY_IDX=%d", contentValue, idxList.get(index)));
-				}
-				mJvUserSqLite.endTransaction();
-			} catch (SQLiteException e) {
-				Log.e(TAG, e.getMessage());
-			}
-			
-			// DB에서 데이터를 다시 읽어들인다.
-			//initDataFromDB();
-		} else {
-			assert false;
+		switch (menuItemId) {
+			case R.id.jvlm_all_rememorize:				// 검색된 전체 단어 재암기
+				columnNameList = "MEMORIZE_COMPLETED, MEMORIZE_TARGET";
+				columnValueList = "0, 1";
+				break;
+			case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료 
+				columnNameList = "MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT";
+				columnValueList = "1";
+				break;
+			case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
+				columnNameList = "MEMORIZE_TARGET";
+				columnValueList = "1";
+				break;
+			case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
+				columnNameList = "MEMORIZE_TARGET";
+				columnValueList = "0";
+				break;
+			default:
+				assert false;
+				return false;
 		}
+
+		mJvUserSqLite.beginTransaction();
+
+		try {
+			StringBuilder sbSQL = new StringBuilder();
+			for (int index = 0; index < idxList.size(); ++index) {
+				sbSQL.append("INSERT OR REPLACE INTO TBL_USER_VOCABULARY ")
+				     .append("                       (V_IDX, ").append(columnNameList).append(") ");
+
+				if (menuItemId == R.id.jvlm_all_memorize_completed) {
+					sbSQL.append(" VALUES (").append(idxList.get(index)).append(", ").append(columnValueList).append(", ");
+					sbSQL.append("         COALESCE((SELECT MEMORIZE_COMPLETED_COUNT+1 ")
+						 .append("                     FROM TBL_USER_VOCABULARY ")
+						 .append("                    WHERE V_IDX=").append(idxList.get(index)).append("), 1))");
+				} else {
+					sbSQL.append(" VALUES (").append(idxList.get(index)).append(", ").append(columnValueList).append(")");
+				}
+
+				mJvUserSqLite.execSQL(sbSQL.toString());
+
+				sbSQL.delete(0, sbSQL.length());
+			}
+
+			mJvUserSqLite.setTransactionSuccessful();
+		} catch (SQLiteException e) {
+			Log.e(TAG, e.getMessage());
+			return false;
+		} finally {
+			mJvUserSqLite.endTransaction();				
+		}
+
+		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
+			JapanVocabulary jv = null;
+			for (int index = 0; index < idxList.size(); ++index) {
+				jv = mJvTable.get(idxList.get(index));
+
+				jv.setMemorizeTarget(true, false);
+				jv.setMemorizeCompleted(false, false, false);
+			}
+		} else if (menuItemId == R.id.jvlm_all_memorize_completed) {			// 검색된 전체 단어 암기 완료
+			for (int index = 0; index < idxList.size(); ++index)
+				mJvTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
+		} else if (menuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
+			for (int index = 0; index < idxList.size(); ++index)
+				mJvTable.get(idxList.get(index)).setMemorizeTarget(true, false);
+		} else if (menuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
+			for (int index = 0; index < idxList.size(); ++index)
+				mJvTable.get(idxList.get(index)).setMemorizeTarget(false, false);
+		}
+
+		return true;
 	}
 
 	public String getJapanVocabularyDetailDescription(String vocabulary) {
-		assert TextUtils.isEmpty(vocabulary) == false;
-
-		String result = "";
+		StringBuilder sbResult = new StringBuilder();
 		if (mJvVocabularySqLite != null) {
 			for (int index = 0; index < vocabulary.length(); ++index) {
 				Cursor cursor = null;
 				
 				try {
-					cursor = mJvVocabularySqLite.rawQuery(String.format("SELECT CHARACTER, " +
-																	    "       SOUND_READ, " +
-																	    "       MEAN_READ, " +
-																	    "       JLPT_CLASS, " +
-																	    "       TRANSLATION " +
-																	    "  FROM TBL_HANJA " +
-																	    " WHERE CHARACTER = '%s' " +
-																	    " LIMIT 1", vocabulary.charAt(index)), null);
-					if (cursor.moveToFirst() == true) {
-						assert cursor.getCount() == 1;
+					StringBuilder sbSQL = new StringBuilder();
+					sbSQL.append("SELECT CHARACTER, ")
+					     .append("       SOUND_READ, ")
+					     .append("       MEAN_READ, ")
+					     .append("       JLPT_CLASS, ")
+					     .append("       TRANSLATION ")
+					     .append("  FROM TBL_HANJA ")
+					     .append(" WHERE CHARACTER='").append(vocabulary.charAt(index)).append("' ")
+					     .append(" LIMIT 1");
 
-						if (index > 0)
-							result += "\n\n";
-						
-						if (cursor.getLong(3/* JLPT_CLASS */) == 99)
-							result += String.format("%s\n%s\n음독: %s\n훈독: %s", cursor.getString(0/* CHARACTER */), cursor.getString(4/* TRANSLATION */), cursor.getString(1/* SOUND_READ */), cursor.getString(2/* MEAN_READ */));
-						else
-							result += String.format("%s (JLPT %d급)\n%s\n음독: %s\n훈독: %s", cursor.getString(0/* CHARACTER */), cursor.getLong(3/* JLPT_CLASS */), cursor.getString(4/* TRANSLATION */), cursor.getString(1/* SOUND_READ */), cursor.getString(2/* MEAN_READ */));
+					cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
+
+					if (cursor.moveToFirst() == true) {
+						if (sbResult.length() > 0)
+							sbResult.append("\n\n");
+
+						if (cursor.getLong(3/* JLPT_CLASS */) == 99) {
+							sbResult.append(cursor.getString(0/* CHARACTER */))
+								    .append("\n")
+								    .append(cursor.getString(4/* TRANSLATION */))
+								    .append("\n음독: ")
+								    .append(cursor.getString(1/* SOUND_READ */))
+								    .append("\n훈독: ")
+								    .append(cursor.getString(2/* MEAN_READ */));
+						} else {
+							sbResult.append(cursor.getString(0/* CHARACTER */))
+								    .append(" (JLPT ")
+								    .append(cursor.getLong(3/* JLPT_CLASS */))
+								    .append("급)\n")
+								    .append(cursor.getString(4/* TRANSLATION */))
+								    .append("\n음독: ")
+								    .append(cursor.getString(1/* SOUND_READ */))
+								    .append("\n훈독: ")
+								    .append(cursor.getString(2/* MEAN_READ */));
+						}
 					}
 				} catch (SQLiteException e) {
 					Log.e(TAG, e.getMessage());
@@ -354,7 +389,7 @@ public class JvManager {
 			}
 		}
 		
-		return result;
+		return sbResult.toString();
 	}
 
 }

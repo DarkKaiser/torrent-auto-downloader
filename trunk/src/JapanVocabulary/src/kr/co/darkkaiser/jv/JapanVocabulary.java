@@ -118,8 +118,8 @@ public class JapanVocabulary {
 		return mMemorizeCompleted;
 	}
 
-	public void setMemorizeCompleted(boolean flag, boolean updateToDB) {
-		if (flag == true && updateToDB == true && mMemorizeCompleted == false)
+	public void setMemorizeCompleted(boolean flag, boolean whileAddMemorizeCompletedCount, boolean updateToDB) {
+		if (flag == true && mMemorizeCompleted == false && whileAddMemorizeCompletedCount == true)
 			++mMemorizeCompletedCount;
 
 		mMemorizeCompleted = flag;

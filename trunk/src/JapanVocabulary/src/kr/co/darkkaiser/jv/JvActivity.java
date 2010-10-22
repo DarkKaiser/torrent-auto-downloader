@@ -433,7 +433,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	            		.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {
 	    					@Override
 	    					public void onClick(DialogInterface dialog, int which) {
-	    						mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true);
+	    						mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true, true);
 	    						mJvList.remove(mJvCurrentIndex);
 	    						updateJapanVocabularyInfo();
 	    						showNextVocabulary();
