@@ -81,10 +81,6 @@ public class JvListActivity extends ListActivity {
         // 검색 조건에 따라 단어를 검색한다.
         searchVocabulary(""); // @@@@@ 이전의 검색 조건을 넘겨야 함
         
-        Button btnSearchAreaVisible = (Button)findViewById(R.id.search_area_visible);
-        btnSearchAreaVisible.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
 //				//@@@@@ 임시
 //				String []choiceItems = 
 //			       {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
@@ -107,12 +103,6 @@ public class JvListActivity extends ListActivity {
 //			    }
 //			   })
 //			   .show();
-//			       
-				// @@@@@
-				LinearLayout layoutSearchArea = (LinearLayout)findViewById(R.id.search_area);
-				showSearchArea(layoutSearchArea.getVisibility() == View.VISIBLE ? false : true);
-			}
-		});
 	}
 
 	@Override
@@ -533,8 +523,4 @@ public class JvListActivity extends ListActivity {
 		};
 	}
 
-	private void showSearchArea(boolean visible) {
-		LinearLayout layoutSearchArea = (LinearLayout)findViewById(R.id.search_area);
-		layoutSearchArea.setVisibility(visible ? View.VISIBLE : View.GONE);
-	}
 }
