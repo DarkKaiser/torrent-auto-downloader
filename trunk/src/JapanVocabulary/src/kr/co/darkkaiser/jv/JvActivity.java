@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
@@ -29,6 +30,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,15 +53,16 @@ public class JvActivity extends Activity implements OnTouchListener {
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
 	private static final int MSG_VOCABULARY_MEMORIZE_START = 3;
 
-    private static final int MSG_TOUCHEVT_TAP = 1;
-    private static final int MSG_TOUCHEVT_LONG_PRESS = 2;
+    private static final int MSG_CUSTOM_EVT_TAP = 1;
+    private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
+    private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
 	// Long Press 를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
-	
+
 	// 현재 화면에 보여지고 있는 일본어 단어의 인덱스
 	private int mJvCurrentIndex = -1;
 
@@ -72,7 +75,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 	// 암기 대상 일본어 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
-
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -338,7 +341,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		if (mJvList.isEmpty() == true) {
 			mJvCurrentIndex = -1;
 			tvJapanVocabulary.setText("");
-			
+
 			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
 			if (mJvList.size() == 1) {
@@ -370,8 +373,8 @@ public class JvActivity extends Activity implements OnTouchListener {
     	if (v.getId() == R.id.vocabulary && mJvCurrentIndex != -1) {
         	switch (event.getAction()) {
 		    	case MotionEvent.ACTION_DOWN:
-		    		mTouchEventHandler.removeMessages(MSG_TOUCHEVT_LONG_PRESS);
-		    		mTouchEventHandler.sendEmptyMessageAtTime(MSG_TOUCHEVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
+		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+		    		mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
 		    		break;
 
 		    	case MotionEvent.ACTION_MOVE:
@@ -381,21 +384,32 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		    	case MotionEvent.ACTION_UP:
 		    		// MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
-		    		if (mTouchEventHandler.hasMessages(MSG_TOUCHEVT_LONG_PRESS) == true) {
-		    			mTouchEventHandler.removeMessages(MSG_TOUCHEVT_LONG_PRESS);
-		    			mTouchEventHandler.sendEmptyMessage(MSG_TOUCHEVT_TAP);
+		    		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
+		    			mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+		    			mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
 		    		}
 		    		break;
 		    	
 		    	case MotionEvent.ACTION_CANCEL:
-		    		mTouchEventHandler.removeMessages(MSG_TOUCHEVT_LONG_PRESS);
+		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
 		    		break;
         	}
     	} else {
-    		mTouchEventHandler.removeMessages(MSG_TOUCHEVT_LONG_PRESS);
+    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
     	}
 
     	return true;
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
+			mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 1500);
+			Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		super.onBackPressed();
 	}
 
 	private Handler mVocabularyDataLoadHandler = new Handler() {
@@ -418,11 +432,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 		};
 	};
 
-	private Handler mTouchEventHandler = new Handler() {
+	private Handler mCustomEventHandler = new Handler() {
 		@Override
     	public void handleMessage(Message msg){
     		switch(msg.what) {
-	    		case MSG_TOUCHEVT_LONG_PRESS:
+	    		case MSG_CUSTOM_EVT_LONG_PRESS:
 	    			if (mJvCurrentIndex != -1) {
 						// 진동을 발생시킨다.
 						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -455,12 +469,16 @@ public class JvActivity extends Activity implements OnTouchListener {
 					}
 	    			break;
 			
-	    		case MSG_TOUCHEVT_TAP:
+	    		case MSG_CUSTOM_EVT_TAP:
 	    			if (mJvCurrentIndex != -1) {
 	    				Intent intent = new Intent(JvActivity.this, JvDetailActivity.class);
 	    				intent.putExtra("idx", mJvList.get(mJvCurrentIndex).getIdx());
 	    				startActivity(intent);
 	    			}
+	    			break;
+	    			
+	    		case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
+	    			// 수행하는 작업 없음
 	    			break;
 	    			
 				default:

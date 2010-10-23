@@ -19,7 +19,7 @@ public class OptionActivity extends PreferenceActivity implements OnSharedPrefer
 
 		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		PreferenceScreen prefJvDbVersion = (PreferenceScreen)findPreference(JvDefines.JV_SPN_DB_VERSION);
-		prefJvDbVersion.setSummary(preferences.getString(JvDefines.JV_SPN_DB_VERSION, ""));
+		prefJvDbVersion.setSummary(preferences.getString(JvDefines.JV_SPN_DB_VERSION, "버전 정보를 확인할 수 없습니다."));
 	}
 
 	@Override
