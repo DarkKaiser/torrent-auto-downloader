@@ -10,35 +10,53 @@
 	    android:layout_height="fill_parent"
 	    >
 		<LinearLayout
-		    android:orientation="horizontal"
+			android:id="@+id/search_info_bar"
+		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
+		    android:layout_gravity="center"
 		    >
-		    <TextView
-		    	android:id="@+id/search_info"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:singleLine="true"
-		    	android:layout_alignParentLeft="true"/>
-		    <TextView
-		    	android:id="@+id/vocabulary_count"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:singleLine="true"
-		    	android:minWidth="40px"
-		    	android:layout_alignParentRight="true"/>
+			<RelativeLayout
+			    android:orientation="horizontal"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    >
+			    <TextView
+			    	android:id="@+id/search_info"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:singleLine="true"
+			    	android:layout_alignParentLeft="true"
+			    	/>
+			    <TextView
+			    	android:id="@+id/vocabulary_count"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:singleLine="true"
+			    	android:minWidth="40px"
+			    	android:layout_alignParentRight="true"
+			    	/>
+			</RelativeLayout>
+			<TextView
+				android:id="@android:id/empty"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="표시 될 단어가 없습니다."
+				android:layout_gravity="center_horizontal"
+				/>
 		</LinearLayout>
 		<ListView
 			android:id="@android:id/list"
 			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"/>
-		<TextView
-			android:id="@android:id/empty"
-			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="표시 될 단어가 없습니다."
-			android:layout_gravity="center"/>
+			/>
 	</LinearLayout>
+	
+	
+	
+	
+	
+	
 	<SlidingDrawer
 		android:id="@+id/drawer_landscape"
 		android:layout_width="fill_parent"

@@ -1,10 +1,7 @@
 package kr.co.darkkaiser.jv.list;
 
 import java.text.Collator;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -16,29 +13,20 @@ import kr.co.darkkaiser.jv.detail.JvDetailActivity;
 import kr.co.darkkaiser.jv.list.JvListAdapter;
 import kr.co.darkkaiser.jv.list.JvListSortMethod;
 
-import android.R.layout;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,61 +36,33 @@ public class JvListActivity extends ListActivity {
 
 	private static final int MSG_UPDATE_LIST_DATA_COMPLETED = 1;
 
-	private Thread mSearchThread = null;
 	private ProgressDialog mProgressDialog = null;
-
 	private SharedPreferences mPreferences = null;
 
 	private JvListAdapter mJvListAdapter = null;
-	private ArrayList<JapanVocabulary> mJvList = null;
+	private ArrayList<JapanVocabulary> mJvListData = null;
 
+	private Thread mJvListSearchThread = null;
+	private JvListSearchCondition mJvListSearchCondition = null;
 	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
-
-	// @@@@@ JLPT(단어 디비에 있음), 품사, 암기완료/미완료/전체, 암기대상/비대상/전체, 결과내 검색??
-	private String mPartsOfSpeech = null;
-	private String mSearchWord = null;
-	private long mSearchDateFirst = 0;
-	private long mSearchDateLast = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jv_list);
 
-        // 환경설정값을 읽어들인다.
+        // 이전에 저장해 둔 환경설정값을 읽어들인다.
 		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
 
         // 리스트를 초기화한다.
-        mJvList = new ArrayList<JapanVocabulary>();
-        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvList);
+        mJvListData = new ArrayList<JapanVocabulary>();
+        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvListData);
+        mJvListSearchCondition = new JvListSearchCondition(mPreferences);
         setListAdapter(mJvListAdapter);
 
-        // 검색 조건에 따라 단어를 검색한다.
-        searchVocabulary(""); // @@@@@ 이전의 검색 조건을 넘겨야 함
-        
-//				//@@@@@ 임시
-//				String []choiceItems = 
-//			       {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
-//			       
-//			       boolean []selecteditems = {false, false, false, false, false, false };
-//			       
-//			       new AlertDialog.Builder(JvListActivity.this).setTitle("검색주제를 선택해주세요")
-//			          .setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
-//			     
-//			     @Override
-//			     public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-//			           }
-//			    })
-//			          .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//			 
-//			    public void onClick(DialogInterface arg0, int arg1) {
-////			    	for (boolean state : selecteditems) {
-//			    		//String.valueOf(state)
-////			    	}
-//			    }
-//			   })
-//			   .show();
+        // 검색을 수행한다.
+        searchVocabulary();
 	}
 
 	@Override
@@ -264,26 +224,26 @@ public class JvListActivity extends ListActivity {
 					ArrayList<Long> idxList = new ArrayList<Long>();
 
 					if (mMenuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
-						for (int index = 0; index < mJvList.size(); ++index) {
-							jv = mJvList.get(index);
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
 							if (jv.isMemorizeTarget() == false || jv.isMemorizeCompleted() == true)
 								idxList.add(jv.getIdx());
 						}
 					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) {			// 검색된 전체 단어 암기 완료
-						for (int index = 0; index < mJvList.size(); ++index) {
-							jv = mJvList.get(index);
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
 							if (jv.isMemorizeCompleted() == false)
 								idxList.add(jv.getIdx());
 						}
 					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
-						for (int index = 0; index < mJvList.size(); ++index) {
-							jv = mJvList.get(index);
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
 							if (jv.isMemorizeTarget() == false)
 								idxList.add(jv.getIdx());
 						}
 					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
-						for (int index = 0; index < mJvList.size(); ++index) {
-							jv = mJvList.get(index);
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
 							if (jv.isMemorizeTarget() == true)
 								idxList.add(jv.getIdx());
 						}
@@ -334,19 +294,19 @@ public class JvListActivity extends ListActivity {
 	private void sortList() {
 		switch (mJvListSortMethod) {
 			case VOCABULARY:
-				Collections.sort(mJvList, mJvVocabularyComparator);
+				Collections.sort(mJvListData, mJvVocabularyComparator);
 				break;
 			case VOCABULARY_GANA:
-				Collections.sort(mJvList, mJvVocabularyGanaComparator);
+				Collections.sort(mJvListData, mJvVocabularyGanaComparator);
 				break;
 			case VOCABULARY_TRANSLATION:
-				Collections.sort(mJvList, mJvVocabularyTranslationComparator);
+				Collections.sort(mJvListData, mJvVocabularyTranslationComparator);
 				break;
 			case REGISTRATION_DATE_UP:
-				Collections.sort(mJvList, mJvRegistrationDateUpComparator);
+				Collections.sort(mJvListData, mJvRegistrationDateUpComparator);
 				break;
 			case REGISTRATION_DATE_DOWN:
-				Collections.sort(mJvList, mJvRegistrationDateDownComparator);
+				Collections.sort(mJvListData, mJvRegistrationDateDownComparator);
 				break;
 		}
 	}
@@ -357,7 +317,7 @@ public class JvListActivity extends ListActivity {
 
 		// 단어 상세페이지 호출
 		Intent intent = new Intent(this, JvDetailActivity.class);
-		intent.putExtra("idx", mJvList.get(position).getIdx());
+		intent.putExtra("idx", mJvListData.get(position).getIdx());
 		startActivity(intent);
 	}
 
@@ -414,112 +374,78 @@ public class JvListActivity extends ListActivity {
         }
 	};
 
-	// @@@@@
 	private Handler mDataChangedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.what == -1) {
+			if (msg.what == MSG_UPDATE_LIST_DATA_COMPLETED) {
 				mJvListAdapter.notifyDataSetChanged();
 
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
-				TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
-				TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
-
-				tvSearchInfo.setVisibility(View.VISIBLE);
-				tvVocabularyCount.setVisibility(View.VISIBLE);
-				tvVocabularyCount.setText(String.format("단어:%d개", mJvList.size()));
-				
-				mSearchThread = null;
-				mProgressDialog = null;
-			} else if (msg.what == MSG_UPDATE_LIST_DATA_COMPLETED) {
-				mJvListAdapter.notifyDataSetChanged();
-
-				if (mProgressDialog != null)
-					mProgressDialog.dismiss();
+				// @@@@@
+				LinearLayout layoutSearchInfoBar = (LinearLayout)findViewById(R.id.search_info_bar);
+				layoutSearchInfoBar.setVisibility(View.VISIBLE);
 
 				TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
 				TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
+				tvVocabularyCount.setText(String.format("단어:%d개", mJvListData.size()));
 
-				tvSearchInfo.setVisibility(View.VISIBLE);
-				tvVocabularyCount.setVisibility(View.VISIBLE);
-				tvVocabularyCount.setText(String.format("단어:%d개", mJvList.size()));
-
-				mSearchThread = null;
 				mProgressDialog = null;
+				mJvListSearchThread = null;
 			}
 		};
 	};
 	
-	// @@@@@
-	private void searchVocabulary(String searchWord) {
-		searchVocabulary(searchWord, -1, -1);
-	}
+	private void searchVocabulary() {
+		// @@@@@
+		LinearLayout layoutSearchInfoBar = (LinearLayout)findViewById(R.id.search_info_bar);
+		layoutSearchInfoBar.setVisibility(View.INVISIBLE);
 
-	// @@@@@
-	private void searchVocabulary(String searchWord, long searchDateFirst, long searchDateLast) {
-		TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
-		TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
-
-		tvSearchInfo.setVisibility(View.INVISIBLE);
-		tvVocabularyCount.setVisibility(View.INVISIBLE);
-
-		if (searchWord.equals("") == true) {
-			tvSearchInfo.setText("검색:전체");
-		} else {
-			tvSearchInfo.setText("검색:" + searchWord);
-		}
-
-		// 검색중에 진행 대화상자를 보입니다.
-		if (mPreferences == null) {
-			mProgressDialog = ProgressDialog.show(this, null, "잠시만 기다려 주세요...", true, true);
+		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
+		if (mProgressDialog == null) {
+			mProgressDialog = ProgressDialog.show(this, null, "단어를 검색 중입니다.", true, true);
 			mProgressDialog.setOnCancelListener(new OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialog) {
-					if (mSearchThread != null) {
-						mSearchThread.interrupt();
+					if (mJvListSearchThread != null) {
+						mJvListSearchThread.interrupt();
 					}
-					
-					mDataChangedHandler.sendEmptyMessage(-1);
-					Toast.makeText(JvListActivity.this, "검색이 취소되었습니다", Toast.LENGTH_LONG).show();
+
+					// 검색을 취소하였으므로 단어를 모두 제거한다.
+					mJvListData.clear();
+
+					Toast.makeText(JvListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
+
+					Message msg = Message.obtain();
+					msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
+					mDataChangedHandler.sendMessage(msg);
 				}
 			});
 		}
 		
-		mSearchWord = searchWord;
-		mSearchDateFirst = searchDateFirst;
-		mSearchDateLast = searchDateLast;
-
-   		mSearchThread = new JapanVocabularyListSearchThread(searchWord, searchDateFirst, searchDateLast);
-   		mSearchThread.start();
+   		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
+   		mJvListSearchThread.start();
 	}
 	
-	// @@@@@
-	public class JapanVocabularyListSearchThread extends Thread {
+	public class JvListSearchThread extends Thread {
 
-		private String mSearchWord = null;
-		private long mSearchDateFirst = -1;
-		private long mSearchDateLast = -1;
+		private JvListSearchCondition mJvListSearchCondition = null;
 
-		public JapanVocabularyListSearchThread(String searchWord, long searchDateFirst, long searchDateLast) {
-			mSearchWord = searchWord;
-			if (searchDateFirst > searchDateLast) {
-				mSearchDateFirst = searchDateLast;
-				mSearchDateLast = searchDateFirst;
-			} else {
-				mSearchDateFirst = searchDateFirst;
-				mSearchDateLast = searchDateLast;
-			}
+		public JvListSearchThread(JvListSearchCondition jvListSearchCondition) {
+			assert jvListSearchCondition != null;
+			mJvListSearchCondition = jvListSearchCondition;
 		}
 
 		@Override
 		public void run() {
-			mJvList.clear();
-			JvManager.getInstance().searchJapanVocabulary(mSearchWord, mSearchDateFirst, mSearchDateLast, mJvList);
+			mJvListData.clear();
+			JvManager.getInstance().searchVocabulary(mJvListSearchCondition, mJvListData);
 			sortList();
 
-			mDataChangedHandler.sendEmptyMessage(-1);
+			Message msg = Message.obtain();
+			msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
+			mDataChangedHandler.sendMessage(msg);
 		};
 	}
 

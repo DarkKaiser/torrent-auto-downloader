@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import kr.co.darkkaiser.jv.R.menu;
+import kr.co.darkkaiser.jv.list.JvListSearchCondition;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -145,6 +146,11 @@ public class JvManager {
 		}
 
         return true;
+	}
+
+	public void searchVocabulary(JvListSearchCondition mJvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
+		// @@@@@
+		//searchJapanVocabulary("", -1, -1, jvList);
 	}
 
 	// @@@@@
