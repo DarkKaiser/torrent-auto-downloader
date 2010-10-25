@@ -1,19 +1,105 @@
 package kr.co.darkkaiser.jv.list;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 
 public class JvListSearchCondition {
 	
+	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";
+	private static final String JV_SPN_MEMORIZE_TARGET_SC = "sc_memorize_target_position";
+	private static final String JV_SPN_MEMORIZE_COMPLETED_SC = "sc_memorize_completed_position";
+	private static final String JV_SPN_ALL_REG_DATE_SEARCH_SC = "sc_all_reg_date_search";
+	private static final String JV_SPN_FIRST_SEARCH_DATE_SC = "sc_first_search_date";
+	private static final String JV_SPN_LAST_SEARCH_DATE_SC = "sc_last_search_date";
+
 	private SharedPreferences mPreferences = null;
-	
+
+	private String mScSearchWord = null;
+	private int mScMemorizeTargetPosition = 0;
+	private int mScMemorizeCompletedPosition = 0;
+	private boolean mScAllRegDateSearch = true;
+	private String mScFirstSearchDate = null;
+	private String mScLastSearchDate = null;
+
 	public JvListSearchCondition(SharedPreferences preferences) {
 		mPreferences = preferences;
+		
+		mScSearchWord = mPreferences.getString(JV_SPN_SEARCH_WORD_SC, "");
+		mScMemorizeTargetPosition = mPreferences.getInt(JV_SPN_MEMORIZE_TARGET_SC, 0);
+		mScMemorizeCompletedPosition = mPreferences.getInt(JV_SPN_MEMORIZE_COMPLETED_SC, 0);
+		mScAllRegDateSearch = mPreferences.getBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, true);
+		mScFirstSearchDate = mPreferences.getString(JV_SPN_FIRST_SEARCH_DATE_SC, "");
+		mScLastSearchDate = mPreferences.getString(JV_SPN_LAST_SEARCH_DATE_SC, "");
+		
+		if (TextUtils.isEmpty(mScFirstSearchDate) == true || TextUtils.isEmpty(mScLastSearchDate) == true)
+			mScAllRegDateSearch = true;
+	}
+
+	public String getSearchWord() {
+		return mScSearchWord;
+	}
+
+	public void setSearchWord(String searchWord) {
+		assert mPreferences != null;
+		
+		mScSearchWord = searchWord;
+	}
+
+	public int getMemorizeTargetPosition() {
+		return mScMemorizeTargetPosition;
+	}
+
+	public void setMemorizeTargetPosition(int scPosition) {
+		assert mPreferences != null;
+		
+		mScMemorizeTargetPosition = scPosition;
+	}
+
+	public int getMemorizeCompletedPosition() {
+		return mScMemorizeCompletedPosition;
+	}
+
+	public void setMemorizeCompletedPosition(int scPosition) {
+		assert mPreferences != null;
+		
+		mScMemorizeCompletedPosition = scPosition;
 	}
 	
-	// @@@@@ @@@@@ JLPT(단어 디비에 있음), 품사, 암기완료/미완료/전체, 암기대상/비대상/전체, 결과내 검색??
-	private String mPartsOfSpeech = null;
-	private String mSearchWord = null;
-	private long mSearchDateFirst = 0;
-	private long mSearchDateLast = 0;
+	public boolean isAllRegDateSearch() {
+		return mScAllRegDateSearch;
+	}
+
+	public void setAllRegDateSearch(boolean flag) {
+		assert mPreferences != null;
+		
+		mScAllRegDateSearch = flag;
+	}
+	
+	public String getFirstSearchDate() {
+		return mScFirstSearchDate;
+	}
+	
+	public String getLastSearchDate() {
+		return mScLastSearchDate;
+	}
+
+	public void setSearchDateRange(String firstSearchDate, String lastSearchDate) {
+		assert mPreferences != null;
+
+		mScFirstSearchDate = firstSearchDate;
+		mScLastSearchDate = lastSearchDate;
+	}
+
+	public void commit() {
+		Editor editor = mPreferences.edit();
+		editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);		
+		editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
+		editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
+		editor.putBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, mScAllRegDateSearch);
+		editor.putString(JV_SPN_FIRST_SEARCH_DATE_SC, mScFirstSearchDate);
+		editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
+		editor.commit();
+	}
 
 }

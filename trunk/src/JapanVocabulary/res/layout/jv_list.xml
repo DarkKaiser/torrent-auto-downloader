@@ -160,7 +160,7 @@
 							android:layout_marginBottom="4dp"
 							/>
 						<EditText
-							android:id="@+id/search_word" 
+							android:id="@+id/sc_search_word" 
 							android:hint="검색어(한자 뜻)를 입력하세요."
 							android:layout_width="fill_parent"
 							android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
 							>
 							<TableRow>
 								<Button  
-									android:id="@+id/search_date_first"
+									android:id="@+id/sc_first_search_date"
 									android:layout_width="fill_parent"
 									android:layout_height="wrap_content"
 									android:enabled="false" 
@@ -233,7 +233,7 @@
 									android:layout_height="wrap_content"
 									/>
 								<Button  
-									android:id="@+id/search_date_last"
+									android:id="@+id/sc_last_search_date"
 									android:layout_width="fill_parent"
 									android:layout_height="wrap_content"
 									android:enabled="false"
@@ -246,7 +246,7 @@
 							</TableRow>
 						</TableLayout>
 						<CheckBox
-							android:id="@+id/all_registration_date_search"
+							android:id="@+id/sc_all_reg_date_search"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_gravity="right|top"
@@ -282,41 +282,42 @@
 							</TableRow>
 						</TableLayout>
 					</LinearLayout>					
-					<RelativeLayout
-					    android:layout_width="fill_parent"
-					    android:layout_height="fill_parent"
-					    android:layout_marginTop="10dp"
-					    >
-						<TableLayout
-							android:stretchColumns="*"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentBottom="true"
-							android:background="@android:drawable/bottom_bar"
-							android:gravity="center_vertical"
-							android:paddingTop="4px"
-							android:paddingLeft="4px"
-							android:paddingRight="4px"
-							>
-							<TableRow>
-							 	<Button
-									android:id="@+id/search_start" 
-									android:layout_width="fill_parent" 
-									android:layout_height="wrap_content"
-							 		android:text="검색" 
-									/>
-							 	<Button
-									android:id="@+id/search_cancel" 
-									android:layout_width="fill_parent" 
-									android:layout_height="wrap_content"
-							 		android:text="취소" 
-									/>
-							</TableRow>
-						</TableLayout>
-					</RelativeLayout>
 				</LinearLayout>
 			</ScrollView>
+	
+			<LinearLayout
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    >
+				<TableLayout
+					android:stretchColumns="*"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentBottom="true"
+					android:background="@android:drawable/bottom_bar"
+					android:gravity="center_vertical"
+					android:paddingTop="4px"
+					android:paddingLeft="4px"
+					android:paddingRight="4px"
+					>
+					<TableRow>
+					 	<Button
+							android:id="@+id/search_start" 
+							android:layout_width="fill_parent" 
+							android:layout_height="wrap_content"
+					 		android:text="검색" 
+							/>
+					 	<Button
+							android:id="@+id/search_cancel" 
+							android:layout_width="fill_parent" 
+							android:layout_height="wrap_content"
+					 		android:text="취소" 
+							/>
+					</TableRow>
+				</TableLayout>
+			</LinearLayout>
 		</LinearLayout>
+
 	</SlidingDrawer>  
 </FrameLayout>

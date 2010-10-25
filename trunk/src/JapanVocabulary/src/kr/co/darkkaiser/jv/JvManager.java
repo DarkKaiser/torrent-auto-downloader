@@ -148,8 +148,56 @@ public class JvManager {
         return true;
 	}
 
-	public void searchVocabulary(JvListSearchCondition mJvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
+	public void searchVocabulary(JvListSearchCondition jvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
+		if (mJvUserSqLite != null) {
+			try {
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("SELECT IDX ")
+					 .append("  FORM TBL_VOCABULARY ")
+					 .append(" WHERE VOCABULARY_TRANSLATION LIKE ''")
+					 .append("   AND REGISTRATION_DATE");
+
+//				mJvUserSqLite.execSQL(sbSQL.toString());
+//
+//				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+//					JapanVocabulary jv = e.nextElement();
+//					if (jv.isMemorizeTarget() == true)
+//						jv.setMemorizeCompleted(false, false, false);
+//				}
+			} catch (SQLiteException e) {
+				Log.e(TAG, e.getMessage());
+			}
+		} else {
+			assert false;
+		}
+
 		// @@@@@
+//		CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
+//		if (cboAllDataSearch.isChecked() == true) {
+//			searchVocabulary(searchWord);
+//		} else {
+//			try {
+//				Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
+//				long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateFirst.getText().toString()).getTime();
+//
+//				Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
+//				long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateLast.getText().toString()).getTime();
+//				
+//				if (searchDateFirst > searchDateLast) {
+//					long temp = searchDateFirst;
+//					searchDateFirst = searchDateLast;
+//					searchDateLast = temp;
+//				}
+//
+//				searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
+//				searchDateLast += 999/* π–∏Æ√  */;
+//				
+//				searchVocabulary(searchWord, searchDateFirst, searchDateLast);
+//			} catch (ParseException e) {
+//				e.printStackTrace();
+//			}
+//		}
+
 		searchJapanVocabulary("", -1, -1, jvList);
 	}
 

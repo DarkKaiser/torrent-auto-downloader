@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,7 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.Spinner;
@@ -45,11 +44,10 @@ import android.widget.Toast;
 
 public class JvListActivity extends ListActivity implements OnClickListener {
 
-	// 리스트의 데이터가 변경되었음을 알림 메시지
 	public static final int MSG_CHANGED_LIST_DATA = 1;
-	
-	// 리스트의 데이터 업데이트가 완료되었음을 알림 메시지 @@@@@
 	public static final int MSG_COMPLETED_LIST_DATA_UPDATE = 2;
+	
+	public static final int ACTIVITY_RESULT_DATA_CHANGED = 99;
 
 	private ProgressDialog mProgressDialog = null;
 	private SharedPreferences mPreferences = null;
@@ -80,6 +78,10 @@ public class JvListActivity extends ListActivity implements OnClickListener {
         // 검색과 관련된 컨트롤들을 초기화합니다.
         //
 
+        // 검색어 검색 조건
+        EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
+        scSearchWordEditText.setText(mJvListSearchCondition.getSearchWord());
+
         // 암기 대상 검색 조건
         ArrayAdapter<String> scMemorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_target));
         scMemorizeTargetAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
@@ -87,8 +89,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
         Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
         scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
         scMemorizeTargetSpinner.setPrompt("검색 조건");
-        // @@@@@ 이전에 저장된 값을 읽어온다.
-        // scMemorizeCompletedSpinner.setSelection(2, true);
+        scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTargetPosition());
 
         // 암기 완료 검색 조건
         ArrayAdapter<String> scMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_completed));
@@ -97,35 +98,44 @@ public class JvListActivity extends ListActivity implements OnClickListener {
         Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
         scMemorizeCompletedSpinner.setAdapter(scMemorizeCompletedAdapter);
         scMemorizeCompletedSpinner.setPrompt("검색 조건");
-        // @@@@@ 이전에 저장된 값을 읽어온다.
+        scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompletedPosition());
 
         // 단어 등록일 검색 조건
-        // @@@@@ 이전에 저장된 값을 읽어온다. 모두 검색이면 오늘부터 일주일전까지, 아니면 이전에 등록된 일자를 불러온다.
-        Calendar currentDate = Calendar.getInstance();
-		Button btnSearchDateFirst = (Button)findViewById(R.id.search_date_first);
-		Button btnSearchDateLast = (Button)findViewById(R.id.search_date_last);
+		Button btnLastSearchDate = (Button)findViewById(R.id.sc_last_search_date);
+		Button btnFirstSearchDate = (Button)findViewById(R.id.sc_first_search_date);
+		CheckBox cboAllRegDateSearch = (CheckBox)findViewById(R.id.sc_all_reg_date_search);
 
-		btnSearchDateLast.setText(String.format("%04d/%02d/%02d",
-				currentDate.get(Calendar.YEAR),
-				currentDate.get(Calendar.MONTH) + 1,
-				currentDate.get(Calendar.DATE)));
+		if (mJvListSearchCondition.isAllRegDateSearch() == true) {
+        	cboAllRegDateSearch.setChecked(true);
 
-		currentDate.add(Calendar.DAY_OF_MONTH, -7);
-		btnSearchDateFirst.setText(String.format("%04d/%02d/%02d",
-				currentDate.get(Calendar.YEAR),
-				currentDate.get(Calendar.MONTH) + 1,
-				currentDate.get(Calendar.DATE)));
-		
-		btnSearchDateLast.setOnClickListener(this);
-		btnSearchDateFirst.setOnClickListener(this);
-		findViewById(R.id.all_registration_date_search).setOnClickListener(this);
+            Calendar currentDate = Calendar.getInstance();
+    		btnLastSearchDate.setText(String.format("%04d/%02d/%02d",
+    				currentDate.get(Calendar.YEAR),
+    				currentDate.get(Calendar.MONTH) + 1,
+    				currentDate.get(Calendar.DATE)));
+    		currentDate.add(Calendar.DAY_OF_MONTH, -7);
+    		btnFirstSearchDate.setText(String.format("%04d/%02d/%02d",
+    				currentDate.get(Calendar.YEAR),
+    				currentDate.get(Calendar.MONTH) + 1,
+    				currentDate.get(Calendar.DATE)));
+        } else {
+        	cboAllRegDateSearch.setChecked(false);
+        	
+        	btnFirstSearchDate.setText(mJvListSearchCondition.getFirstSearchDate());
+        	btnLastSearchDate.setText(mJvListSearchCondition.getLastSearchDate());
+
+        	btnLastSearchDate.setEnabled(true);
+        	btnFirstSearchDate.setEnabled(true);
+        }
+
+		btnLastSearchDate.setOnClickListener(this);
+		btnFirstSearchDate.setOnClickListener(this);
+		cboAllRegDateSearch.setOnClickListener(this);
 
 		// 품사 검색 조건
-		// @@@@@ 이전 기본값을 설정한다.
 		findViewById(R.id.sc_parts_of_speech).setOnClickListener(this);
 
 		// JLPT 급수 검색 조건
-		// @@@@@ 이전 기본값을 설정한다.
 		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
 
         // 기타
@@ -167,6 +177,9 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		case R.id.jvlm_all_memorize_completed:		// 검색된 전체 단어 암기 완료
 		case R.id.jvlm_all_memorize_target:			// 검색된 전체 단어 암기 대상 만들기
 		case R.id.jvlm_all_memorize_target_cancel:	// 검색된 전체 단어 암기 대상 해제
+			// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
+			setResult(ACTIVITY_RESULT_DATA_CHANGED);
+
 			// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
 			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중 입니다.", true, false);
 
@@ -351,6 +364,9 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 				mProgressDialog = null;
 				mJvListSearchThread = null;
 			} else if (msg.what == MSG_CHANGED_LIST_DATA) {
+				// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
+				setResult(ACTIVITY_RESULT_DATA_CHANGED);
+
 				updateVocabularyInfo();
 				mJvListAdapter.notifyDataSetChanged();
 			}
@@ -434,75 +450,58 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.sc_parts_of_speech:
-			// @@@@@
-//			btn.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					String []choiceItems = 
-//				       {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
-//				       
-//				       boolean []selecteditems = {false, false, false, false, false, false };
-//				       
-//				       new AlertDialog.Builder(JvListActivity.this).setTitle("검색주제를 선택해주세요")
-//				          .setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
-//				     
-//				     @Override
-//				     public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-//				           }
-//				    })
-//				          .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//				 
-//				    public void onClick(DialogInterface arg0, int arg1) {
-////				    	for (boolean state : selecteditems) {
-//				    		//String.valueOf(state)
-////				    	}
-//				    }
-//				   })
-//				   .show();
-//
-//				}
-//			});
+			// @@@@@ 이전 기본값을 설정한다.
 			break;
 			
 		case R.id.sc_jlpt_level:
-			// @@@@@
-//				String []choiceItems = 
-//			       {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
-//			       
-//			       boolean []selecteditems = {false, false, false, false, false, false };
-//			       
-//			       new AlertDialog.Builder(JvListActivity.this).setTitle("검색주제를 선택해주세요")
-//			          .setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
-//			     
-//			     @Override
-//			     public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-//			           }
-//			    })
-//			          .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//			 
-//			    public void onClick(DialogInterface arg0, int arg1) {
-////			    	for (boolean state : selecteditems) {
-//			    		//String.valueOf(state)
-////			    	}
-//			    }
-//			   })
-//			   .show();
-//	
-//			}
-//		});
+			// @@@@@ 이전 기본값을 설정한다.
+			
+			String []choiceItems = {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
+			boolean []selecteditems = {false, false, false, false, false, false };
+			       
+			new AlertDialog.Builder(JvListActivity.this)
+				.setTitle("JLPT 급수 선택")
+				.setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+					}
+				})
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// @@@@@
+//			    	for (boolean state : selecteditems) {
+			    		//String.valueOf(state)
+//			    	}
+					}
+				})
+			   .show();
 			break;
 
-		case R.id.search_date_first:
+		case R.id.sc_first_search_date:
 			{
 				Button btnSearchDateFirst = (Button)v;
 	    		String searchDateString = btnSearchDateFirst.getText().toString().replace("/", "");
 	        	new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 							@Override
 							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-								Button searchDateFirst = (Button)findViewById(R.id.search_date_first);				
+								Button searchDateFirst = (Button)findViewById(R.id.sc_first_search_date);				
 								searchDateFirst.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-								// @@@@@ 마지막 날짜와 검사
+
+								// 검색 종료일보다 최근 날짜이면 검색 종료일도 변경한다.
+								Calendar calSearchDateFirst = Calendar.getInstance();
+								calSearchDateFirst.set(year, monthOfYear, dayOfMonth);
+			
+								Button searchDateLast = (Button)findViewById(R.id.sc_last_search_date);
+								String searchDateLastString = searchDateLast.getText().toString().replace("/", "");
+								
+								Calendar calSearchDateLast = Calendar.getInstance();
+								calSearchDateLast.set(Integer.parseInt(searchDateLastString.substring(0, 4)),
+										Integer.parseInt(searchDateLastString.substring(4, 6)) - 1,
+										Integer.parseInt(searchDateLastString.substring(6, 8)));
+
+								if (calSearchDateFirst.after(calSearchDateLast) == true)
+									searchDateLast.setText(searchDateFirst.getText());
 							}
 						},
 	        			Integer.parseInt(searchDateString.substring(0, 4)),
@@ -510,8 +509,8 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	        			Integer.parseInt(searchDateString.substring(6, 8))).show();
 			}
 			break;
-			
-		case R.id.search_date_last:
+
+		case R.id.sc_last_search_date:
 			{
 				Button btnSearchDateLast = (Button)v;
 	    		String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
@@ -519,9 +518,23 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	        			new DatePickerDialog.OnDateSetListener() {
 							@Override
 							public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-								Button searchDateLast = (Button)findViewById(R.id.search_date_last);
+								Button searchDateLast = (Button)findViewById(R.id.sc_last_search_date);
 								searchDateLast.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-								// @@@@@ 처음 날짜와 검사
+								
+								// 검색 시작일보다 이전 날짜이면 검색 시작일도 변경한다.
+								Calendar calSearchDateLast = Calendar.getInstance();
+								calSearchDateLast.set(year, monthOfYear, dayOfMonth);
+
+								Button searchDateFirst = (Button)findViewById(R.id.sc_first_search_date);
+								String searchDateFirstString = searchDateFirst.getText().toString().replace("/", "");
+								
+								Calendar calSearchDateFirst = Calendar.getInstance();
+								calSearchDateFirst.set(Integer.parseInt(searchDateFirstString.substring(0, 4)),
+										Integer.parseInt(searchDateFirstString.substring(4, 6)) - 1,
+										Integer.parseInt(searchDateFirstString.substring(6, 8)));
+								
+								if (calSearchDateLast.before(calSearchDateFirst) == true)
+									searchDateFirst.setText(searchDateLast.getText());
 							}
 						},
 	        			Integer.parseInt(searchDateString.substring(0, 4)),
@@ -530,11 +543,11 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			}
 			break;
 			
-		case R.id.all_registration_date_search:
+		case R.id.sc_all_reg_date_search:
 			{
 				CheckBox cboAllRegDateSearch = (CheckBox)v;
-				Button btnSearchDateFirst = (Button)findViewById(R.id.search_date_first);
-				Button btnSearchDateLast = (Button)findViewById(R.id.search_date_last);
+				Button btnSearchDateFirst = (Button)findViewById(R.id.sc_first_search_date);
+				Button btnSearchDateLast = (Button)findViewById(R.id.sc_last_search_date);
 				btnSearchDateFirst.setEnabled(!cboAllRegDateSearch.isChecked());
 				btnSearchDateLast.setEnabled(!cboAllRegDateSearch.isChecked());
 			}
@@ -543,47 +556,23 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		case R.id.search_start:
 			{
 				// 설정된 검색 조건들을 저장합니다.
-				// @@@@@
+				EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
+				Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
+				Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
+				CheckBox scAllRegDateSearchCheckBox = (CheckBox)findViewById(R.id.sc_all_reg_date_search);
+				Button scSearchDateFirstButton = (Button)findViewById(R.id.sc_first_search_date);
+				Button scSearchDateLastButton = (Button)findViewById(R.id.sc_last_search_date);
 
-//				new AlertDialog.Builder(JvListActivity.this)
-//				.setPositiveButton("검색", new DialogInterface.OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						EditText etSearchWord = (EditText)linear.findViewById(R.id.SearchWord);
-//						String searchWord = etSearchWord.getText().toString().trim();
-//						
-//						CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
-//						if (cboAllDataSearch.isChecked() == true) {
-//							searchVocabulary(searchWord);
-//						} else {
-//							try {
-//								Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
-//								long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateFirst.getText().toString()).getTime();
-	//
-//								Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-//								long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateLast.getText().toString()).getTime();
-//								
-//								if (searchDateFirst > searchDateLast) {
-//									long temp = searchDateFirst;
-//									searchDateFirst = searchDateLast;
-//									searchDateLast = temp;
-//								}
-	//
-//								searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
-//								searchDateLast += 999/* 밀리초 */;
-//								
-//								searchVocabulary(searchWord, searchDateFirst, searchDateLast);
-//							} catch (ParseException e) {
-//								e.printStackTrace();
-//							}
-//						}
-//					}
-//				})
-	//
-				
-				
-				SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
-				searchSlidingDrawer.animateClose();
+				mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
+				mJvListSearchCondition.setMemorizeTargetPosition(scMemorizeTargetSpinner.getSelectedItemPosition());
+				mJvListSearchCondition.setMemorizeCompletedPosition(scMemorizeCompletedSpinner.getSelectedItemPosition());
+				mJvListSearchCondition.setAllRegDateSearch(scAllRegDateSearchCheckBox.isChecked());
+				mJvListSearchCondition.setSearchDateRange(scSearchDateFirstButton.getText().toString(), scSearchDateLastButton.getText().toString());
+				mJvListSearchCondition.commit();
+
+				// @@@@@
+//				SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
+//				searchSlidingDrawer.animateClose();
 
 				// 설정된 검색 조건을 이용하여 단어를 검색합니다.
 				searchVocabulary();
@@ -591,6 +580,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			break;
 
 		case R.id.search_cancel:
+			// @@@@@
 			SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
 			searchSlidingDrawer.animateClose();
 			break;

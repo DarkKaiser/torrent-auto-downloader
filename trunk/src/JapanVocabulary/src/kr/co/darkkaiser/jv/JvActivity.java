@@ -10,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
@@ -187,9 +186,12 @@ public class JvActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		// @@@@@ 변경된 내역이 없으면 다시 로드할 필요는 없다, resultCode를 이용
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
 			assert mProgressDialog == null;
+
+			// 변경된 내역이 없으면 다시 로드할 필요가 없으므로 바로 반환한다.
+			if (resultCode != JvListActivity.ACTIVITY_RESULT_DATA_CHANGED)
+				return;
 
 			// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 			mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
