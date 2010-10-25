@@ -141,7 +141,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
         // 기타
 		findViewById(R.id.search_start).setOnClickListener(this);
 		findViewById(R.id.search_cancel).setOnClickListener(this);
-		
+
 		//
         // 최근의 검색 조건을 이용하여 검색을 수행한다.
 		//
@@ -374,8 +374,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	};
 	
 	private void searchVocabulary() {
-		findViewById(R.id.vocabulary_info_area).setVisibility(View.INVISIBLE);
-		
 		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
 		if (mProgressDialog == null) {
 			mProgressDialog = ProgressDialog.show(this, null, "단어를 검색 중입니다.", true, true);
@@ -399,6 +397,11 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			});
 			
 		}
+
+		// 검색이 시작되기 전 화면을  정리한다.
+		mJvListData.clear();
+		mJvListAdapter.notifyDataSetChanged();
+		findViewById(R.id.vocabulary_info_area).setVisibility(View.INVISIBLE);
 
    		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
    		mJvListSearchThread.start();
