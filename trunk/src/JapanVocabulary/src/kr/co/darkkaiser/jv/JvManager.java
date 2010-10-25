@@ -150,7 +150,7 @@ public class JvManager {
 
 	public void searchVocabulary(JvListSearchCondition mJvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
 		// @@@@@
-		//searchJapanVocabulary("", -1, -1, jvList);
+		searchJapanVocabulary("", -1, -1, jvList);
 	}
 
 	// @@@@@

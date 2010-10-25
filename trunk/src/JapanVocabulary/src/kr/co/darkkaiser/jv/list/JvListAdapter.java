@@ -6,6 +6,8 @@ import kr.co.darkkaiser.jv.JapanVocabulary;
 import kr.co.darkkaiser.jv.R;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +21,14 @@ public class JvListAdapter extends BaseAdapter {
 	private int mLayout = 0;
 	private Context mContext = null;
 	private ArrayList<JapanVocabulary> mJvList = null;
+	private Handler mJvListDataChangedHandler = null;
 	private LayoutInflater mLayoutInflater = null;
-	
-	public JvListAdapter(Context context, int layout, ArrayList<JapanVocabulary> jvList) {
+
+	public JvListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<JapanVocabulary> jvList) {
 		mLayout = layout;
 		mJvList = jvList;
 		mContext = context;
+		mJvListDataChangedHandler = jvListDataChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -89,7 +93,11 @@ public class JvListAdapter extends BaseAdapter {
 				CheckBox cboMemorizeTarget = (CheckBox)v;
 				int position = (Integer)cboMemorizeTarget.getTag();
 				mJvList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
-				notifyDataSetChanged();
+
+				// 화면을 업데이트합니다.
+				Message msg = Message.obtain();
+				msg.what = JvListActivity.MSG_UPDATE_LIST_ITEM_DATA;
+				mJvListDataChangedHandler.sendMessage(msg);
 			}
 		});
 		
@@ -100,7 +108,11 @@ public class JvListAdapter extends BaseAdapter {
 				CheckBox cboMemorizeCompleted = (CheckBox)v;
 				int position = (Integer)cboMemorizeCompleted.getTag();
 				mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
-				notifyDataSetChanged();
+				
+				// 화면을 업데이트합니다.
+				Message msg = Message.obtain();
+				msg.what = JvListActivity.MSG_UPDATE_LIST_ITEM_DATA;
+				mJvListDataChangedHandler.sendMessage(msg);
 			}
 		});
 

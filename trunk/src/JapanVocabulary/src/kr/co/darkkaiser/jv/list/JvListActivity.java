@@ -34,7 +34,8 @@ import android.widget.Toast;
 
 public class JvListActivity extends ListActivity {
 
-	private static final int MSG_UPDATE_LIST_DATA_COMPLETED = 1;
+	public static final int MSG_UPDATE_LIST_ITEM_DATA = 1;
+	private static final int MSG_UPDATE_LIST_DATA_COMPLETED = 2;
 
 	private ProgressDialog mProgressDialog = null;
 	private SharedPreferences mPreferences = null;
@@ -57,7 +58,7 @@ public class JvListActivity extends ListActivity {
 
         // 리스트를 초기화한다.
         mJvListData = new ArrayList<JapanVocabulary>();
-        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvListData);
+        mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvListDataChangedHandler, mJvListData);
         mJvListSearchCondition = new JvListSearchCondition(mPreferences);
         setListAdapter(mJvListAdapter);
 
@@ -253,7 +254,7 @@ public class JvListActivity extends ListActivity {
 
 					Message msg = Message.obtain();
 					msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
-					mDataChangedHandler.sendMessage(msg);
+					mJvListDataChangedHandler.sendMessage(msg);
 	   			};
 	   		}
 	   		.setMenuItemId(item.getItemId())
@@ -286,7 +287,7 @@ public class JvListActivity extends ListActivity {
 
 				Message msg = Message.obtain();
 				msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
-				mDataChangedHandler.sendMessage(msg);
+				mJvListDataChangedHandler.sendMessage(msg);
    			};
    		}.start();
 	}
@@ -374,7 +375,7 @@ public class JvListActivity extends ListActivity {
         }
 	};
 
-	private Handler mDataChangedHandler = new Handler() {
+	private Handler mJvListDataChangedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == MSG_UPDATE_LIST_DATA_COMPLETED) {
@@ -383,24 +384,20 @@ public class JvListActivity extends ListActivity {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
-				// @@@@@
-				LinearLayout layoutSearchInfoBar = (LinearLayout)findViewById(R.id.search_info_bar);
-				layoutSearchInfoBar.setVisibility(View.VISIBLE);
-
-				TextView tvSearchInfo = (TextView)findViewById(R.id.search_info);
-				TextView tvVocabularyCount = (TextView)findViewById(R.id.vocabulary_count);
-				tvVocabularyCount.setText(String.format("단어:%d개", mJvListData.size()));
+				updateVocabularyInfo();
+				findViewById(R.id.vocabulary_info_area).setVisibility(View.VISIBLE);
 
 				mProgressDialog = null;
 				mJvListSearchThread = null;
+			} else if (msg.what == MSG_UPDATE_LIST_ITEM_DATA) {
+				updateVocabularyInfo();
+				mJvListAdapter.notifyDataSetChanged();
 			}
 		};
 	};
 	
 	private void searchVocabulary() {
-		// @@@@@
-		LinearLayout layoutSearchInfoBar = (LinearLayout)findViewById(R.id.search_info_bar);
-		layoutSearchInfoBar.setVisibility(View.INVISIBLE);
+		findViewById(R.id.vocabulary_info_area).setVisibility(View.INVISIBLE);
 
 		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
 		if (mProgressDialog == null) {
@@ -419,7 +416,7 @@ public class JvListActivity extends ListActivity {
 
 					Message msg = Message.obtain();
 					msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
-					mDataChangedHandler.sendMessage(msg);
+					mJvListDataChangedHandler.sendMessage(msg);
 				}
 			});
 		}
@@ -445,8 +442,27 @@ public class JvListActivity extends ListActivity {
 
 			Message msg = Message.obtain();
 			msg.what = MSG_UPDATE_LIST_DATA_COMPLETED;
-			mDataChangedHandler.sendMessage(msg);
+			mJvListDataChangedHandler.sendMessage(msg);
 		};
+	}
+
+	private void updateVocabularyInfo() {
+		TextView tvAllVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);
+		TextView tvMemorizeTargetCount = (TextView)findViewById(R.id.memorize_target_count);
+		TextView tvMemorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count);
+		
+		int memorizeTargetCount = 0;
+		int memorizeCompletedCount = 0;
+		for (JapanVocabulary  jv : mJvListData) {
+			if (jv.isMemorizeTarget() == true)
+				++memorizeTargetCount;
+			if (jv.isMemorizeCompleted() == true)
+				++memorizeCompletedCount;
+		}
+
+		tvAllVocabularyCount.setText(String.format("%d개", mJvListData.size()));
+		tvMemorizeTargetCount.setText(String.format("%d개", memorizeTargetCount));
+		tvMemorizeCompletedCount.setText(String.format("%d개", memorizeCompletedCount));
 	}
 
 }

@@ -10,39 +10,82 @@
 	    android:layout_height="fill_parent"
 	    >
 		<LinearLayout
-			android:id="@+id/search_info_bar"
+			android:id="@+id/vocabulary_info_area"
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center"
 		    >
-			<RelativeLayout
-			    android:orientation="horizontal"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    >
-			    <TextView
-			    	android:id="@+id/search_info"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:singleLine="true"
-			    	android:layout_alignParentLeft="true"
-			    	/>
-			    <TextView
-			    	android:id="@+id/vocabulary_count"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:singleLine="true"
-			    	android:minWidth="40px"
-			    	android:layout_alignParentRight="true"
-			    	/>
-			</RelativeLayout>
+			<TableLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:background="#44555555"
+				android:stretchColumns="1"
+				android:padding="2px"
+				>
+				<TableRow>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:textColor="#cccccc"
+				    	android:text="전체단어 : "
+				    	/>
+				    <TextView
+				    	android:id="@+id/all_vocabulary_count"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:textColor="#cccccc"
+				    	/>
+				    <TextView
+				    	android:layout_width="fill_parent"
+				    	android:layout_height="wrap_content"
+				    	android:textColor="#cccccc"
+				    	android:text="암기대상 : "
+				    	/>
+				    <TextView
+				    	android:id="@+id/memorize_target_count"
+				    	android:layout_width="fill_parent"
+				    	android:layout_height="wrap_content"
+				    	android:layout_gravity="right"
+				    	android:textColor="#cccccc"
+				    	/>
+				</TableRow>
+				<TableRow>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	/>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	/>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:textColor="#cccccc"
+				    	android:text="암기완료 : "
+				    	/>
+				    <TextView
+				    	android:id="@+id/memorize_completed_count"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_gravity="right"
+				    	android:textColor="#cccccc"
+				    	/>
+				</TableRow>
+			</TableLayout>
+		    <TextView
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="2px"
+		    	android:background="#bbbbbb"
+		    	/>
 			<TextView
 				android:id="@android:id/empty"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="표시 될 단어가 없습니다."
-				android:layout_gravity="center_horizontal"
+				android:layout_gravity="center"
+				android:textColor="#cccccc"
 				/>
 		</LinearLayout>
 		<ListView
@@ -51,6 +94,18 @@
 			android:layout_height="wrap_content"
 			/>
 	</LinearLayout>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
