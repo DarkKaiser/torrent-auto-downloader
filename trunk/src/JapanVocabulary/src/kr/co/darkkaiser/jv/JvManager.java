@@ -7,6 +7,7 @@ import java.util.Hashtable;
 
 import kr.co.darkkaiser.jv.R.menu;
 import kr.co.darkkaiser.jv.list.JvListSearchCondition;
+import kr.co.darkkaiser.jv.list.PartsOfSpeechScInfo;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -424,9 +425,9 @@ public class JvManager {
 								    .append(cursor.getString(2/* MEAN_READ */));
 						} else {
 							sbResult.append(cursor.getString(0/* CHARACTER */))
-								    .append(" (JLPT ")
+								    .append(" ( JLPT N")
 								    .append(cursor.getLong(3/* JLPT_CLASS */))
-								    .append("급)\n")
+								    .append(" )\n")
 								    .append(cursor.getString(4/* TRANSLATION */))
 								    .append("\n음독: ")
 								    .append(cursor.getString(1/* SOUND_READ */))
@@ -444,6 +445,30 @@ public class JvManager {
 		}
 		
 		return sbResult.toString();
+	}
+
+	public void getPartsOfSpeechScInfoList(ArrayList<PartsOfSpeechScInfo> a) {
+		// @@@@@ 모든 단어 99 추가
+		long n = 0;
+		PartsOfSpeechScInfo aa = new PartsOfSpeechScInfo();
+		aa.mChecked = false;
+		aa.mIdx =0;
+		aa.mName = "test1";
+		a.add(aa);
+
+		n = 1;
+		PartsOfSpeechScInfo cc = new PartsOfSpeechScInfo();
+		cc.mChecked = false;
+		cc.mIdx =3;
+		cc.mName = "test2";
+		a.add(cc);
+		
+		n = 2;
+		PartsOfSpeechScInfo bb = new PartsOfSpeechScInfo();
+		bb.mChecked = true;
+		bb.mIdx =20;
+		bb.mName = "test3";
+		a.add(bb);		
 	}
 
 }

@@ -1,5 +1,11 @@
 package kr.co.darkkaiser.jv.list;
 
+import java.util.ArrayList;
+
+import kr.co.darkkaiser.jv.JvManager;
+import kr.co.darkkaiser.jv.R;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
@@ -12,7 +18,10 @@ public class JvListSearchCondition {
 	private static final String JV_SPN_ALL_REG_DATE_SEARCH_SC = "sc_all_reg_date_search";
 	private static final String JV_SPN_FIRST_SEARCH_DATE_SC = "sc_first_search_date";
 	private static final String JV_SPN_LAST_SEARCH_DATE_SC = "sc_last_search_date";
+	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
+	private static final String JV_SPN_PARTS_OF_SPEECH_SC = "sc_parts_of_speech";
 
+	private Context mContext = null;
 	private SharedPreferences mPreferences = null;
 
 	private String mScSearchWord = null;
@@ -21,19 +30,47 @@ public class JvListSearchCondition {
 	private boolean mScAllRegDateSearch = true;
 	private String mScFirstSearchDate = null;
 	private String mScLastSearchDate = null;
+	private boolean[] mScCheckedJLPTLevelArray = null;
+	private ArrayList<PartsOfSpeechScInfo> mScCheckedPartsOfSpeechList = null;
 
-	public JvListSearchCondition(SharedPreferences preferences) {
+	public JvListSearchCondition(Context context, SharedPreferences preferences) {
+		mContext = context;
 		mPreferences = preferences;
-		
+
 		mScSearchWord = mPreferences.getString(JV_SPN_SEARCH_WORD_SC, "");
 		mScMemorizeTargetPosition = mPreferences.getInt(JV_SPN_MEMORIZE_TARGET_SC, 0);
 		mScMemorizeCompletedPosition = mPreferences.getInt(JV_SPN_MEMORIZE_COMPLETED_SC, 0);
 		mScAllRegDateSearch = mPreferences.getBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, true);
 		mScFirstSearchDate = mPreferences.getString(JV_SPN_FIRST_SEARCH_DATE_SC, "");
 		mScLastSearchDate = mPreferences.getString(JV_SPN_LAST_SEARCH_DATE_SC, "");
-		
+
 		if (TextUtils.isEmpty(mScFirstSearchDate) == true || TextUtils.isEmpty(mScLastSearchDate) == true)
 			mScAllRegDateSearch = true;
+
+		// JLPT 각 급수별 검색 여부 플래그를 읽어들인다.
+		CharSequence[] csJLPTLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
+		CharSequence[] csJLPTLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+
+		assert csJLPTLevelList.length == csJLPTLevelListValues.length;
+
+		mScCheckedJLPTLevelArray = new boolean[csJLPTLevelList.length];
+		for (int index = 0; index < csJLPTLevelList.length; ++index) {
+			mScCheckedJLPTLevelArray[index] = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), true);
+		}
+
+		// 일본어 각 품사별 검색 여부 플래그를 읽어들인다.
+		mScCheckedPartsOfSpeechList = new ArrayList<PartsOfSpeechScInfo>();
+		JvManager.getInstance().getPartsOfSpeechScInfoList(mScCheckedPartsOfSpeechList);
+
+		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
+			PartsOfSpeechScInfo element = mScCheckedPartsOfSpeechList.get(index);
+
+			assert element != null;
+			assert element.mIdx != -1;
+			assert TextUtils.isEmpty(element.mName) == false;
+
+			element.mChecked = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_PARTS_OF_SPEECH_SC, element.mIdx), true);
+		}
 	}
 
 	public String getSearchWord() {
@@ -90,6 +127,54 @@ public class JvListSearchCondition {
 		mScFirstSearchDate = firstSearchDate;
 		mScLastSearchDate = lastSearchDate;
 	}
+	
+	public boolean [] getCheckedJLPTLevelArray() {
+		assert mContext != null;
+		assert mScCheckedJLPTLevelArray != null;
+		return mScCheckedJLPTLevelArray;
+	}
+
+	public void setCheckedJLPTLevel(int position, boolean value) {
+		assert mPreferences != null;
+
+		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position) {
+			mScCheckedJLPTLevelArray[position] = value;
+		} else {
+			assert false;
+		}
+	}
+	
+	public CharSequence [] getCheckedPartsOfSpeechNameList() {
+		assert mScCheckedPartsOfSpeechList != null;
+		
+		String[] result = new String[mScCheckedPartsOfSpeechList.size()];
+		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
+			result[index] = mScCheckedPartsOfSpeechList.get(index).mName;
+		}
+
+		return result;
+	}
+
+	public boolean [] getCheckedPartsOfSpeechCheckedList() {
+		assert mScCheckedPartsOfSpeechList != null;
+		
+		boolean [] result = new boolean[mScCheckedPartsOfSpeechList.size()];
+		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
+			result[index] = mScCheckedPartsOfSpeechList.get(index).mChecked;
+		}
+
+		return result;
+	}
+
+	public void setCheckedPartsOfSpeech(int position, boolean value) {
+		assert mPreferences != null;
+
+		if (mScCheckedPartsOfSpeechList != null && mScCheckedPartsOfSpeechList.size() > position) {
+			mScCheckedPartsOfSpeechList.get(position).mChecked = value;
+		} else {
+			assert false;
+		}
+	}
 
 	public void commit() {
 		Editor editor = mPreferences.edit();
@@ -99,6 +184,29 @@ public class JvListSearchCondition {
 		editor.putBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, mScAllRegDateSearch);
 		editor.putString(JV_SPN_FIRST_SEARCH_DATE_SC, mScFirstSearchDate);
 		editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
+
+		// JLPT 각 급수별 검색 여부 플래그를 저장한다.
+		CharSequence[] csJLPTLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
+		CharSequence[] csJLPTLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+
+		assert csJLPTLevelList.length == csJLPTLevelListValues.length;
+		assert csJLPTLevelList.length == mScCheckedJLPTLevelArray.length;
+
+		for (int index = 0; index < csJLPTLevelList.length; ++index) {
+			editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
+		}
+
+		// 일본어 각 품사별 검색 여부 플래그를 저장한다.
+		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
+			PartsOfSpeechScInfo element = mScCheckedPartsOfSpeechList.get(index);
+			
+			assert element != null;
+			assert element.mIdx != -1;
+			assert TextUtils.isEmpty(element.mName) == false;
+			
+			editor.putBoolean(String.format("%s_%s", JV_SPN_PARTS_OF_SPEECH_SC, element.mIdx), element.mChecked);
+		}
+
 		editor.commit();
 	}
 

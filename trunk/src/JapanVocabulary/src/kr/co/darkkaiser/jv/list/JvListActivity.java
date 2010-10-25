@@ -67,7 +67,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
         // 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
-        mJvListSearchCondition = new JvListSearchCondition(mPreferences);
+        mJvListSearchCondition = new JvListSearchCondition(this, mPreferences);
 
         // 단어 리스트를 초기화한다.
         mJvListData = new ArrayList<JapanVocabulary>();
@@ -450,32 +450,47 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.sc_parts_of_speech:
-			// @@@@@ 이전 기본값을 설정한다.
+			{
+				new AlertDialog.Builder(JvListActivity.this)
+					.setTitle("검색 조건")
+					.setMultiChoiceItems(mJvListSearchCondition.getCheckedPartsOfSpeechNameList(),
+							mJvListSearchCondition.getCheckedPartsOfSpeechCheckedList(),
+							new OnMultiChoiceClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+							mJvListSearchCondition.setCheckedPartsOfSpeech(item, isChecked);
+						}
+					})
+					.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mJvListSearchCondition.commit();
+						}
+					})
+				   .show();
+			}
 			break;
 			
 		case R.id.sc_jlpt_level:
-			// @@@@@ 이전 기본값을 설정한다.
-			
-			String []choiceItems = {"중학 과정", "고교 과정", "토익 과정", "토플 과정", "공무원/편입 과정", "사용자 파일내"};
-			boolean []selecteditems = {false, false, false, false, false, false };
-			       
-			new AlertDialog.Builder(JvListActivity.this)
-				.setTitle("JLPT 급수 선택")
-				.setMultiChoiceItems(choiceItems, selecteditems, new OnMultiChoiceClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-					}
-				})
-				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// @@@@@
-//			    	for (boolean state : selecteditems) {
-			    		//String.valueOf(state)
-//			    	}
-					}
-				})
-			   .show();
+			{
+				boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+	
+				new AlertDialog.Builder(JvListActivity.this)
+					.setTitle("검색 조건")
+					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+							mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
+						}
+					})
+					.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mJvListSearchCondition.commit();
+						}
+					})
+				   .show();
+			}
 			break;
 
 		case R.id.sc_first_search_date:
@@ -555,6 +570,9 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			
 		case R.id.search_start:
 			{
+				SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
+				searchSlidingDrawer.animateClose();
+
 				// 설정된 검색 조건들을 저장합니다.
 				EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
 				Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
@@ -570,17 +588,12 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 				mJvListSearchCondition.setSearchDateRange(scSearchDateFirstButton.getText().toString(), scSearchDateLastButton.getText().toString());
 				mJvListSearchCondition.commit();
 
-				// @@@@@
-//				SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
-//				searchSlidingDrawer.animateClose();
-
 				// 설정된 검색 조건을 이용하여 단어를 검색합니다.
 				searchVocabulary();
 			}
 			break;
 
 		case R.id.search_cancel:
-			// @@@@@
 			SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
 			searchSlidingDrawer.animateClose();
 			break;
