@@ -96,7 +96,7 @@ public class JvListAdapter extends BaseAdapter {
 
 				// 화면을 업데이트합니다.
 				Message msg = Message.obtain();
-				msg.what = JvListActivity.MSG_UPDATE_LIST_ITEM_DATA;
+				msg.what = JvListActivity.MSG_CHANGED_LIST_DATA;
 				mJvListDataChangedHandler.sendMessage(msg);
 			}
 		});
@@ -111,7 +111,7 @@ public class JvListAdapter extends BaseAdapter {
 				
 				// 화면을 업데이트합니다.
 				Message msg = Message.obtain();
-				msg.what = JvListActivity.MSG_UPDATE_LIST_ITEM_DATA;
+				msg.what = JvListActivity.MSG_CHANGED_LIST_DATA;
 				mJvListDataChangedHandler.sendMessage(msg);
 			}
 		});

@@ -113,7 +113,7 @@
 	
 	
 	<SlidingDrawer
-		android:id="@+id/drawer_landscape"
+		android:id="@+id/search_sliding_drawer"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:handle="@+id/handle_l"
@@ -188,12 +188,12 @@
 							>
 							<TableRow>
 								<Spinner
-									android:id="@+id/memorize_completed_spinner" 
+									android:id="@+id/sc_memorize_target" 
 									android:layout_width="fill_parent" 
 									android:layout_height="wrap_content"
 									/>
 								<Spinner
-									android:id="@+id/memorize_target_spinner" 
+									android:id="@+id/sc_memorize_completed" 
 									android:layout_width="fill_parent" 
 									android:layout_height="wrap_content"
 									/>
@@ -268,11 +268,13 @@
 							>
 							<TableRow>
 								<Button
+									android:id="@+id/sc_parts_of_speech"
 									android:text="품사를 선택합니다."
 									android:layout_width="fill_parent"
 									android:layout_height="wrap_content"
 									/>
 								<Button
+									android:id="@+id/sc_jlpt_level"
 									android:text="JLPT"
 									android:layout_width="fill_parent"
 									android:layout_height="wrap_content"

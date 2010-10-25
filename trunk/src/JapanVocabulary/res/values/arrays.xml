@@ -8,4 +8,14 @@
 		<item>0</item>
 		<item>1</item>
 	</string-array>
+	<string-array name="sc_memorize_target">
+		<item>모든 단어</item>
+		<item>암기대상 단어</item>
+		<item>암기대상 이외의 단어</item>
+	</string-array>
+	<string-array name="sc_memorize_completed">
+		<item>모든 단어</item>
+		<item>암기완료 단어</item>
+		<item>암기완료 이외의 단어</item>
+	</string-array>
 </resources>
