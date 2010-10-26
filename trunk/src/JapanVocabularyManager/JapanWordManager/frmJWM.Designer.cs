@@ -40,14 +40,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnHanjaSearch = new System.Windows.Forms.Button();
             this.dataHanjaGridView = new System.Windows.Forms.DataGridView();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpWord = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnExportXml = new System.Windows.Forms.Button();
             this.btnWordAdd = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cboWordSearchItem = new System.Windows.Forms.ComboBox();
@@ -57,11 +51,18 @@
             this.btnWordSearch = new System.Windows.Forms.Button();
             this.dataWordGridView = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Column10 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpHanja.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -81,7 +82,7 @@
             this.tbpHanja.Location = new System.Drawing.Point(4, 22);
             this.tbpHanja.Name = "tbpHanja";
             this.tbpHanja.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpHanja.Size = new System.Drawing.Size(769, 527);
+            this.tbpHanja.Size = new System.Drawing.Size(1045, 688);
             this.tbpHanja.TabIndex = 1;
             this.tbpHanja.Text = "한자";
             this.tbpHanja.UseVisualStyleBackColor = true;
@@ -108,7 +109,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.dataHanjaGridView);
-            this.splitContainer2.Size = new System.Drawing.Size(763, 521);
+            this.splitContainer2.Size = new System.Drawing.Size(1039, 682);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -190,7 +191,8 @@
             this.Column5,
             this.Column6,
             this.Column7,
-            this.Column8});
+            this.Column8,
+            this.Column11});
             this.dataHanjaGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataHanjaGridView.Location = new System.Drawing.Point(0, 0);
             this.dataHanjaGridView.MultiSelect = false;
@@ -198,44 +200,12 @@
             this.dataHanjaGridView.ReadOnly = true;
             this.dataHanjaGridView.RowTemplate.Height = 23;
             this.dataHanjaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataHanjaGridView.Size = new System.Drawing.Size(763, 484);
+            this.dataHanjaGridView.Size = new System.Drawing.Size(1039, 645);
             this.dataHanjaGridView.TabIndex = 0;
             this.dataHanjaGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataHanjaGridView_CellMouseDoubleClick);
             this.dataHanjaGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataHanjaGridView_RowPostPaint);
             this.dataHanjaGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataHanjaGridView_UserDeletedRow);
             this.dataHanjaGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataHanjaGridView_UserDeletingRow);
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "idx";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            this.Column9.Visible = false;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "한자";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "음독";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "훈독";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "뜻";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.Width = 300;
             // 
             // tbpWord
             // 
@@ -243,7 +213,7 @@
             this.tbpWord.Location = new System.Drawing.Point(4, 22);
             this.tbpWord.Name = "tbpWord";
             this.tbpWord.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpWord.Size = new System.Drawing.Size(769, 527);
+            this.tbpWord.Size = new System.Drawing.Size(1045, 688);
             this.tbpWord.TabIndex = 0;
             this.tbpWord.Text = "단어";
             this.tbpWord.UseVisualStyleBackColor = true;
@@ -259,7 +229,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.btnExportXml);
             this.splitContainer1.Panel1.Controls.Add(this.btnWordAdd);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.cboWordSearchItem);
@@ -271,19 +240,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataWordGridView);
-            this.splitContainer1.Size = new System.Drawing.Size(763, 521);
+            this.splitContainer1.Size = new System.Drawing.Size(1039, 682);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // btnExportXml
-            // 
-            this.btnExportXml.Location = new System.Drawing.Point(658, 7);
-            this.btnExportXml.Name = "btnExportXml";
-            this.btnExportXml.Size = new System.Drawing.Size(100, 23);
-            this.btnExportXml.TabIndex = 7;
-            this.btnExportXml.Text = "XML 내보내기";
-            this.btnExportXml.UseVisualStyleBackColor = true;
-            this.btnExportXml.Click += new System.EventHandler(this.btnExportXml_Click);
             // 
             // btnWordAdd
             // 
@@ -363,7 +322,8 @@
             this.Column1,
             this.Column2,
             this.Column3,
-            this.Column10});
+            this.Column10,
+            this.Column12});
             this.dataWordGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataWordGridView.Location = new System.Drawing.Point(0, 0);
             this.dataWordGridView.MultiSelect = false;
@@ -371,9 +331,8 @@
             this.dataWordGridView.ReadOnly = true;
             this.dataWordGridView.RowTemplate.Height = 23;
             this.dataWordGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataWordGridView.Size = new System.Drawing.Size(763, 481);
+            this.dataWordGridView.Size = new System.Drawing.Size(1039, 642);
             this.dataWordGridView.TabIndex = 2;
-            this.dataWordGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataWordGridView_CellContentClick);
             this.dataWordGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataWordGridView_CellMouseDoubleClick);
             this.dataWordGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataWordGridView_RowPostPaint);
             this.dataWordGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataWordGridView_UserDeletedRow);
@@ -387,35 +346,46 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(777, 553);
+            this.tabControl1.Size = new System.Drawing.Size(1053, 714);
             this.tabControl1.TabIndex = 0;
             // 
-            // Column10
+            // Column9
             // 
-            this.Column10.HeaderText = "";
-            this.Column10.Name = "Column10";
-            this.Column10.ReadOnly = true;
-            this.Column10.Width = 30;
+            this.Column9.HeaderText = "idx";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            this.Column9.Visible = false;
             // 
-            // Column3
+            // Column5
             // 
-            this.Column3.HeaderText = "설명";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 300;
+            this.Column5.HeaderText = "한자";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
-            // Column2
+            // Column6
             // 
-            this.Column2.HeaderText = "히라가나/가타카나";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 200;
+            this.Column6.HeaderText = "음독";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
-            // Column1
+            // Column7
             // 
-            this.Column1.HeaderText = "단어";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
+            this.Column7.HeaderText = "훈독";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "뜻";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 300;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "JLPT 급수";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
             // 
             // Column4
             // 
@@ -424,11 +394,43 @@
             this.Column4.ReadOnly = true;
             this.Column4.Visible = false;
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "단어";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "히라가나/가타카나";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 200;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "설명";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 200;
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "등록일";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
+            // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "품사";
+            this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
+            // 
             // frmJWM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(777, 553);
+            this.ClientSize = new System.Drawing.Size(1053, 714);
             this.Controls.Add(this.tabControl1);
             this.Name = "frmJWM";
             this.Text = "일본어 단어 관리";
@@ -478,12 +480,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.Button btnExportXml;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
 
     }
 }

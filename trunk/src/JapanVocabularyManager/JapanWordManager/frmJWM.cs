@@ -17,8 +17,8 @@ namespace JapanWordManager
     {
         private SQLiteConnection dbConn = null;
 
-        private static string DB_FILE_NAME = "jv.db";
-        private static string DATA_FOLDER_NAME = "Data";
+        private static string DB_FILE_NAME = "jv2.db";
+        private static string DATA_FOLDER_NAME = "data";
 
         public frmJWM()
         {
@@ -85,7 +85,7 @@ namespace JapanWordManager
             if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
-        
+       
         private void dataHanjaGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -151,7 +151,7 @@ namespace JapanWordManager
         {
             using (SQLiteCommand cmd = dbConn.CreateCommand())
             {
-                cmd.CommandText = string.Format("DELETE FROM tbl_vocabulary WHERE idx = {0};", e.Row.Cells[0].Value);
+                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY WHERE idx = {0};", e.Row.Cells[0].Value);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -160,7 +160,7 @@ namespace JapanWordManager
         {
             using (SQLiteCommand cmd = dbConn.CreateCommand())
             {
-                cmd.CommandText = string.Format("DELETE FROM tbl_hanja WHERE idx = {0};", e.Row.Cells[0].Value);
+                cmd.CommandText = string.Format("DELETE FROM TBL_HANJA WHERE idx = {0};", e.Row.Cells[0].Value);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -322,31 +322,22 @@ namespace JapanWordManager
                     }
                 }
 
-                if (tableList.Contains("tbl_hanja") == false)
+                if (tableList.Contains("TBL_HANJA") == false)
                 {
-                    using (SQLiteCommand cmd = dbConn.CreateCommand())
-                    {
-                        cmd.CommandText = "CREATE TABLE tbl_hanja (idx integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, Word varchar(10), YmDok varchar(50), HunDok varchar(50), Description text);";
-                        cmd.ExecuteNonQuery();
-
-                        cmd.CommandText = "CREATE UNIQUE INDEX tbl_hanja_Index01 ON tbl_hanja(idx);";
-                        cmd.ExecuteNonQuery();
-
-                        cmd.CommandText = "CREATE INDEX tbl_hanja_Index02 ON tbl_hanja(Word);";
-                        cmd.ExecuteNonQuery();
-                    }
+                    errorMessage = "'TBL_HANJA' 테이블이 존재하지 않습니다.";
+                    return false;
                 }
 
-                if (tableList.Contains("tbl_vocabulary") == false)
+                if (tableList.Contains("TBL_VOCABULARY") == false)
                 {
-                    using (SQLiteCommand cmd = dbConn.CreateCommand())
-                    {
-                        cmd.CommandText = "CREATE TABLE tbl_vocabulary (idx integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, vocabulary varchar(50), vocabulary_gana varchar(50), vocabulary_translation TEXT, memorize_completed integer DEFAULT (0), memorize_target integer DEFAULT (1), registration_date integer);";
-                        cmd.ExecuteNonQuery();
+                    errorMessage = "'TBL_VOCABULARY' 테이블이 존재하지 않습니다.";
+                    return false;
+                }
 
-                        cmd.CommandText = "CREATE UNIQUE INDEX tbl_vocabulary_Index01 ON tbl_vocabulary(idx);";
-                        cmd.ExecuteNonQuery();
-                    }
+                if (tableList.Contains("TBL_PARTS_OF_SPEECH") == false)
+                {
+                    errorMessage = "'TBL_PARTS_OF_SPEECH' 테이블이 존재하지 않습니다.";
+                    return false;
                 }
             }
             catch (SQLiteException e)
@@ -384,7 +375,7 @@ namespace JapanWordManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT * FROM tbl_vocabulary";
+                string strSQL = "SELECT * FROM TBL_VOCABULARY ";
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
@@ -394,7 +385,9 @@ namespace JapanWordManager
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.HasRows == true && reader.Read() == true)
-                        dataWordGridView.Rows.Add(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
+                    {
+                        dataWordGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*VOCABULARY*/), reader.GetString(2/*VOCABULARY_GANA*/), reader.GetString(3/*VOCABULARY_TRANSLATION*/));
+                    }
                 }
             }
             catch (SQLiteException e)
@@ -412,7 +405,7 @@ namespace JapanWordManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT * FROM tbl_hanja";
+                string strSQL = "SELECT * FROM TBL_HANJA ";
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
@@ -422,86 +415,19 @@ namespace JapanWordManager
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.HasRows == true && reader.Read() == true)
-                        dataHanjaGridView.Rows.Add(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4));
+                    {
+                        string strLevel = "";
+                        int nLevel = reader.GetInt32(4/*JLPT_CLASS*/);
+                        if (nLevel != 99)
+                            strLevel = "N" + nLevel;
+
+                        dataHanjaGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*CHARACTER*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/), reader.GetString(5/*TRANSLATION*/), strLevel);
+                    }
                 }
             }
             catch (SQLiteException e)
             {
             }
-        }
-
-        private void dataWordGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 4)
-            {
-                if (dataWordGridView.Rows[e.RowIndex].Cells[4].Value == null || Boolean.Parse(dataWordGridView.Rows[e.RowIndex].Cells[4].Value.ToString()) == false)
-                    dataWordGridView.Rows[e.RowIndex].Cells[4].Value = true;
-                else
-                    dataWordGridView.Rows[e.RowIndex].Cells[4].Value = false;
-            }
-        }
-
-        private void btnExportXml_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "XML File|*.xml";
-            dlg.Title = "저장하시려는 XML 파일명을 입력하여 주세요.";
-            if (dlg.ShowDialog() != DialogResult.OK)
-                return;
-
-            bool bIsSaveAll = false;
-            if (MessageBox.Show("전체 데이터를 XML 파일로 저장하시겠습니까?", "저장", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                bIsSaveAll = true;
-
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(dlg.FileName, Encoding.UTF8);
- 
-            // XML 문서를 생성할 때 자식 요소에 따라서 들여쓰기를 한다.
-            xmlTextWriter.Formatting = Formatting.Indented;
- 
-            // XML선언을 작성한다.
-            xmlTextWriter.WriteStartDocument();
- 
-            xmlTextWriter.WriteStartElement("vocabularys");
-            foreach (DataGridViewRow row in dataWordGridView.Rows)
-            {
-                if (bIsSaveAll == true || (row.Cells[4].Value != null && Boolean.Parse(row.Cells[4].Value.ToString()) == true))
-                {
-                    xmlTextWriter.WriteStartElement("vocabulary");
-                    xmlTextWriter.WriteElementString("hanja", row.Cells[1].Value.ToString());
-                    xmlTextWriter.WriteElementString("speech", row.Cells[2].Value.ToString());
-
-                    string description = row.Cells[3].Value.ToString();
-                    string text = row.Cells[1].Value.ToString().Trim();
-                    foreach (char c in text)
-                    {
-                        try
-                        {
-                            // 데이터를 읽어들입니다.
-                            string strSQL = string.Format(@"SELECT * FROM tbl_hanja WHERE Word = ""{0}""", c);
-                            SQLiteCommand cmd = new SQLiteCommand(strSQL, dbConn);
-                            cmd.CommandType = CommandType.Text;
-
-                            using (SQLiteDataReader reader = cmd.ExecuteReader())
-                            {
-                                if (reader.HasRows == true && reader.Read())
-                                    description = string.Format("{0}\r\n\r\n{1}\r\n음독 : {3}\r\n훈독 : {4}\r\n{2}", description, reader.GetString(1), reader.GetString(4), reader.GetString(2), reader.GetString(3));
-                            }
-                        }
-                        catch (SQLiteException ex)
-                        {
-                        }
-                    }
-
-                    xmlTextWriter.WriteElementString("description", description);
-                    xmlTextWriter.WriteElementString("visible", "true");
-
-                    xmlTextWriter.WriteEndElement();
-                }
-            }
-            xmlTextWriter.WriteEndElement();
- 
-            xmlTextWriter.Flush();
-            xmlTextWriter.Close();
         }
 
         #endregion
