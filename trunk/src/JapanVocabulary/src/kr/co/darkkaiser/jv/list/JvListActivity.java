@@ -70,11 +70,8 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		setContentView(R.layout.jv_list);
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
-		mPreferences = getSharedPreferences(
-				JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(
-				JvDefines.JV_SPN_LIST_SORT_METHOD,
-				JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
+		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		mJvListSortMethod = JvListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvListSortMethod.REGISTRATION_DATE_DOWN.name()));
 		mJvListSearchCondition = new JvListSearchCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
@@ -95,8 +92,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		ArrayAdapter<String> scMemorizeTargetAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, getResources()
 						.getStringArray(R.array.sc_memorize_target));
-		scMemorizeTargetAdapter
-				.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+		scMemorizeTargetAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
 
 		Spinner scMemorizeTargetSpinner = (Spinner) findViewById(R.id.sc_memorize_target);
 		scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
