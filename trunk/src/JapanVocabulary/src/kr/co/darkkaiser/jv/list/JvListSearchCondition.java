@@ -31,7 +31,7 @@ public class JvListSearchCondition {
 	private String mScFirstSearchDate = null;
 	private String mScLastSearchDate = null;
 	private boolean[] mScCheckedJLPTLevelArray = null;
-	private ArrayList<PartsOfSpeechScInfo> mScCheckedPartsOfSpeechList = null;
+	private ArrayList<PartsOfSpeechScInfo> mScPartsOfSpeechItems = null;
 
 	public JvListSearchCondition(Context context, SharedPreferences preferences) {
 		mContext = context;
@@ -59,11 +59,11 @@ public class JvListSearchCondition {
 		}
 
 		// 일본어 각 품사별 검색 여부 플래그를 읽어들인다.
-		mScCheckedPartsOfSpeechList = new ArrayList<PartsOfSpeechScInfo>();
-		JvManager.getInstance().getPartsOfSpeechScInfoList(mScCheckedPartsOfSpeechList);
+		mScPartsOfSpeechItems = new ArrayList<PartsOfSpeechScInfo>();
+		JvManager.getInstance().getPartsOfSpeechScInfoList(mScPartsOfSpeechItems);
 
-		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
-			PartsOfSpeechScInfo element = mScCheckedPartsOfSpeechList.get(index);
+		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
+			PartsOfSpeechScInfo element = mScPartsOfSpeechItems.get(index);
 
 			assert element != null;
 			assert element.mIdx != -1;
@@ -144,23 +144,23 @@ public class JvListSearchCondition {
 		}
 	}
 	
-	public CharSequence [] getCheckedPartsOfSpeechNameList() {
-		assert mScCheckedPartsOfSpeechList != null;
+	public CharSequence [] getPartsOfSpeechItems() {
+		assert mScPartsOfSpeechItems != null;
 		
-		String[] result = new String[mScCheckedPartsOfSpeechList.size()];
-		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
-			result[index] = mScCheckedPartsOfSpeechList.get(index).mName;
+		String[] result = new String[mScPartsOfSpeechItems.size()];
+		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
+			result[index] = mScPartsOfSpeechItems.get(index).mName;
 		}
 
 		return result;
 	}
 
-	public boolean [] getCheckedPartsOfSpeechCheckedList() {
-		assert mScCheckedPartsOfSpeechList != null;
+	public boolean [] getPartsOfSpeechCheckedItems() {
+		assert mScPartsOfSpeechItems != null;
 		
-		boolean [] result = new boolean[mScCheckedPartsOfSpeechList.size()];
-		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
-			result[index] = mScCheckedPartsOfSpeechList.get(index).mChecked;
+		boolean [] result = new boolean[mScPartsOfSpeechItems.size()];
+		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
+			result[index] = mScPartsOfSpeechItems.get(index).mChecked;
 		}
 
 		return result;
@@ -169,8 +169,8 @@ public class JvListSearchCondition {
 	public void setCheckedPartsOfSpeech(int position, boolean value) {
 		assert mPreferences != null;
 
-		if (mScCheckedPartsOfSpeechList != null && mScCheckedPartsOfSpeechList.size() > position) {
-			mScCheckedPartsOfSpeechList.get(position).mChecked = value;
+		if (mScPartsOfSpeechItems != null && mScPartsOfSpeechItems.size() > position) {
+			mScPartsOfSpeechItems.get(position).mChecked = value;
 		} else {
 			assert false;
 		}
@@ -197,8 +197,8 @@ public class JvListSearchCondition {
 		}
 
 		// 일본어 각 품사별 검색 여부 플래그를 저장한다.
-		for (int index = 0; index < mScCheckedPartsOfSpeechList.size(); ++index) {
-			PartsOfSpeechScInfo element = mScCheckedPartsOfSpeechList.get(index);
+		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
+			PartsOfSpeechScInfo element = mScPartsOfSpeechItems.get(index);
 			
 			assert element != null;
 			assert element.mIdx != -1;

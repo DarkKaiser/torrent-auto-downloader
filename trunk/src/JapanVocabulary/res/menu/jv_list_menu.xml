@@ -29,4 +29,6 @@
 				android:title="암기 대상 상태 해제하기"/>
 		</menu>
 	</item>
+	<item android:id="@+id/jvm_preferences"
+		android:icon="@android:drawable/ic_menu_preferences" android:title="설정"/>
 </menu>

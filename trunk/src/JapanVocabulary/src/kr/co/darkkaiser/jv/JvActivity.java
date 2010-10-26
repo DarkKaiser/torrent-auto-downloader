@@ -153,7 +153,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			assert mProgressDialog == null;
 
 			// 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중 입니다.", true, false);
+			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
 
 	   		new Thread() {
 				@Override
@@ -189,8 +189,18 @@ public class JvActivity extends Activity implements OnTouchListener {
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
 			assert mProgressDialog == null;
 
+			// 환경설정 값이 바뀌었는지 확인한다.
+			if ((resultCode & JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
+				if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) {
+					initPreference(false);
+				} else {
+					initPreference(true);
+					return;
+				}
+			}
+
 			// 변경된 내역이 없으면 다시 로드할 필요가 없으므로 바로 반환한다.
-			if (resultCode != JvListActivity.ACTIVITY_RESULT_DATA_CHANGED)
+			if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) != JvListActivity.ACTIVITY_RESULT_DATA_CHANGED)
 				return;
 
 			// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
@@ -211,7 +221,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			initPreference(true);
 		}
 	}
-	
+
 	private void initPreference(boolean showNextVocabulary) {
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
