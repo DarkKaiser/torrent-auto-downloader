@@ -26,6 +26,14 @@
 		<item>N5 단어</item>
 		<item>미분류 단어</item>
 	</string-array>
+	<string-array name="sc_jlpt_level_simple_list">
+		<item>N1</item>
+		<item>N2</item>
+		<item>N3</item>
+		<item>N4</item>
+		<item>N5</item>
+		<item>미분류</item>
+	</string-array>
 	<string-array name="sc_jlpt_level_list_values">
 		<item>1</item>
 		<item>2</item>
