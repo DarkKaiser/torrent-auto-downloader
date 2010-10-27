@@ -15,10 +15,10 @@ namespace JapanWordManager
 {
     public partial class frmJWM : Form
     {
-        private SQLiteConnection dbConn = null;
-
         private static string DB_FILE_NAME = "jv2.db";
         private static string DATA_FOLDER_NAME = "data";
+
+        private SQLiteConnection dbConn = null;
 
         public frmJWM()
         {
@@ -92,6 +92,24 @@ namespace JapanWordManager
                 e.Cancel = true;
         }
 
+        private void dataWordGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            using (SQLiteCommand cmd = dbConn.CreateCommand())
+            {
+                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY WHERE idx = {0};", e.Row.Cells[0].Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            using (SQLiteCommand cmd = dbConn.CreateCommand())
+            {
+                cmd.CommandText = string.Format("DELETE FROM TBL_HANJA WHERE idx = {0};", e.Row.Cells[0].Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         private void btnWordSearch_Click(object sender, EventArgs e)
         {
             string searchWord = txtWordSearchWord.Text.Trim();
@@ -101,13 +119,13 @@ namespace JapanWordManager
             switch (cboWordSearchItem.SelectedIndex)
             {
                 case 1:
-                    sb.Append("vocabulary_gana LIKE ");
+                    sb.Append("VOCABULARY_GANA LIKE ");
                     break;
                 case 2:
-                    sb.Append("vocabulary_translation LIKE ");
+                    sb.Append("VOCABULARY_TRANSLATION LIKE ");
                     break;
                 default:
-                    sb.Append("vocabulary LIKE ");
+                    sb.Append("VOCABULARY LIKE ");
                     break;
             }
 
@@ -127,16 +145,16 @@ namespace JapanWordManager
             switch (cboHanjaSearchItem.SelectedIndex)
             {
                 case 1:
-                    sb.Append("YmDok LIKE ");
+                    sb.Append("SOUND_READ LIKE ");
                     break;
                 case 2:
-                    sb.Append("HunDok LIKE ");
+                    sb.Append("MEAN_READ LIKE ");
                     break;
                 case 3:
-                    sb.Append("Description LIKE ");
+                    sb.Append("TRANSLATION LIKE ");
                     break;
                 default:
-                    sb.Append("Word LIKE ");
+                    sb.Append("CHARACTER LIKE ");
                     break;
             }
 
@@ -145,24 +163,6 @@ namespace JapanWordManager
             sb.Append(@"%""");
 
             FillHanjaData(sb.ToString());
-        }
-
-        private void dataWordGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            using (SQLiteCommand cmd = dbConn.CreateCommand())
-            {
-                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY WHERE idx = {0};", e.Row.Cells[0].Value);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            using (SQLiteCommand cmd = dbConn.CreateCommand())
-            {
-                cmd.CommandText = string.Format("DELETE FROM TBL_HANJA WHERE idx = {0};", e.Row.Cells[0].Value);
-                cmd.ExecuteNonQuery();
-            }
         }
 
         private void dataWordGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -195,6 +195,7 @@ namespace JapanWordManager
                                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
+        // @@@@@
         private void dataWordGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 현재 선택된 행을 얻는다.
@@ -208,15 +209,15 @@ namespace JapanWordManager
             form.EditMode = true;
             form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
             form.Vocabulary = rc[0].Cells[1].Value.ToString();
-            form.HiGaVocabulary = rc[0].Cells[2].Value.ToString();
-            form.Description = rc[0].Cells[3].Value.ToString();
+            form.VocabularyGana = rc[0].Cells[2].Value.ToString();
+            form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
             form.DbConnection = dbConn;
 
             if (form.ShowDialog() == DialogResult.OK)
             {
                 rc[0].Cells[1].Value = form.Vocabulary;
-                rc[0].Cells[2].Value = form.HiGaVocabulary;
-                rc[0].Cells[3].Value = form.Description;
+                rc[0].Cells[2].Value = form.VocabularyGana;
+                rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
         }
 
@@ -232,18 +233,30 @@ namespace JapanWordManager
             frmHanja form = new frmHanja();
             form.EditMode = true;
             form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
-            form.Word = rc[0].Cells[1].Value.ToString();
-            form.YmDok = rc[0].Cells[2].Value.ToString();
-            form.HunDok = rc[0].Cells[3].Value.ToString();
-            form.Description = rc[0].Cells[4].Value.ToString();
+            form.Character = rc[0].Cells[1].Value.ToString();
+            form.SoundRead = rc[0].Cells[2].Value.ToString();
+            form.MeanRead = rc[0].Cells[3].Value.ToString();
+            form.Translation = rc[0].Cells[4].Value.ToString();
             form.DbConnection = dbConn;
+
+            string jlptLevel = rc[0].Cells[5].Value.ToString();
+            if (jlptLevel == "")
+                form.JLPTClass = 99;
+            else
+                form.JLPTClass = int.Parse(jlptLevel.Substring(1, 1));
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                rc[0].Cells[1].Value = form.Word;
-                rc[0].Cells[2].Value = form.YmDok;
-                rc[0].Cells[3].Value = form.HunDok;
-                rc[0].Cells[4].Value = form.Description;
+                rc[0].Cells[1].Value = form.Character;
+                rc[0].Cells[2].Value = form.SoundRead;
+                rc[0].Cells[3].Value = form.MeanRead;
+                rc[0].Cells[4].Value = form.Translation;
+
+                string strLevel = "";
+                if (form.JLPTClass != 99)
+                    strLevel = "N" + form.JLPTClass;
+
+                rc[0].Cells[5].Value = form.Translation;
             }
         }
 
@@ -299,7 +312,7 @@ namespace JapanWordManager
             dbConn = new SQLiteConnection(string.Format("Data Source={0}/{1}", DATA_FOLDER_NAME, DB_FILE_NAME));
             dbConn.Open();
 
-            // DB에 테이블이 존재하지 않는 경우에 테이블을 생성한다.
+            // DB에 필요한 테이블이 존재하는지 확인한다.
             try
             {
                 List<string> tableList = new List<string>();
@@ -375,7 +388,7 @@ namespace JapanWordManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT * FROM TBL_VOCABULARY ";
+                string strSQL = "SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION FROM TBL_VOCABULARY ";
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
@@ -405,7 +418,7 @@ namespace JapanWordManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT * FROM TBL_HANJA ";
+                string strSQL = "SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, JLPT_CLASS, TRANSLATION FROM TBL_HANJA ";
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 

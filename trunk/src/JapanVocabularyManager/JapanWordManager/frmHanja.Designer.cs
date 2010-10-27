@@ -32,14 +32,16 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cboJlptLevel = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.txtTranslation = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtHunDok = new System.Windows.Forms.TextBox();
-            this.txtHanja = new System.Windows.Forms.TextBox();
-            this.txtYmDok = new System.Windows.Forms.TextBox();
+            this.txtMeanRead = new System.Windows.Forms.TextBox();
+            this.txtCharacter = new System.Windows.Forms.TextBox();
+            this.txtSoundRead = new System.Windows.Forms.TextBox();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,7 +72,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(255, 231);
+            this.btnOk.Location = new System.Drawing.Point(255, 257);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 16;
@@ -80,7 +82,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(336, 231);
+            this.btnCancel.Location = new System.Drawing.Point(336, 257);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 15;
@@ -90,19 +92,48 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cboJlptLevel);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtDescription);
+            this.groupBox1.Controls.Add(this.txtTranslation);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txtHunDok);
-            this.groupBox1.Controls.Add(this.txtHanja);
-            this.groupBox1.Controls.Add(this.txtYmDok);
+            this.groupBox1.Controls.Add(this.txtMeanRead);
+            this.groupBox1.Controls.Add(this.txtCharacter);
+            this.groupBox1.Controls.Add(this.txtSoundRead);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(408, 222);
+            this.groupBox1.Size = new System.Drawing.Size(408, 247);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
+            // 
+            // cboJlptLevel
+            // 
+            this.cboJlptLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboJlptLevel.FormattingEnabled = true;
+            this.cboJlptLevel.Items.AddRange(new object[] {
+            "N1",
+            "N2",
+            "N3",
+            "N4",
+            "N5",
+            "미지정"});
+            this.cboJlptLevel.Location = new System.Drawing.Point(41, 98);
+            this.cboJlptLevel.Name = "cboJlptLevel";
+            this.cboJlptLevel.Size = new System.Drawing.Size(356, 20);
+            this.cboJlptLevel.TabIndex = 18;
+            this.cboJlptLevel.SelectedIndexChanged += new System.EventHandler(this.cboJlptLevel_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 104);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 12);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "JLPT";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
@@ -134,52 +165,52 @@
             this.label3.Text = "훈독";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtDescription
+            // txtTranslation
             // 
-            this.txtDescription.Location = new System.Drawing.Point(41, 98);
-            this.txtDescription.Multiline = true;
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(356, 113);
-            this.txtDescription.TabIndex = 7;
-            this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
-            this.txtDescription.Leave += new System.EventHandler(this.txtDescription_Leave);
+            this.txtTranslation.Location = new System.Drawing.Point(41, 126);
+            this.txtTranslation.Multiline = true;
+            this.txtTranslation.Name = "txtTranslation";
+            this.txtTranslation.Size = new System.Drawing.Size(356, 113);
+            this.txtTranslation.TabIndex = 7;
+            this.txtTranslation.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
+            this.txtTranslation.Leave += new System.EventHandler(this.txtDescription_Leave);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 98);
+            this.label4.Location = new System.Drawing.Point(18, 126);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(17, 12);
             this.label4.TabIndex = 3;
             this.label4.Text = "뜻";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtHunDok
+            // txtMeanRead
             // 
-            this.txtHunDok.Location = new System.Drawing.Point(41, 71);
-            this.txtHunDok.Name = "txtHunDok";
-            this.txtHunDok.Size = new System.Drawing.Size(356, 21);
-            this.txtHunDok.TabIndex = 6;
-            this.txtHunDok.TextChanged += new System.EventHandler(this.txtHunDok_TextChanged);
-            this.txtHunDok.Leave += new System.EventHandler(this.txtHunDok_Leave);
+            this.txtMeanRead.Location = new System.Drawing.Point(41, 71);
+            this.txtMeanRead.Name = "txtMeanRead";
+            this.txtMeanRead.Size = new System.Drawing.Size(356, 21);
+            this.txtMeanRead.TabIndex = 6;
+            this.txtMeanRead.TextChanged += new System.EventHandler(this.txtHunDok_TextChanged);
+            this.txtMeanRead.Leave += new System.EventHandler(this.txtHunDok_Leave);
             // 
-            // txtHanja
+            // txtCharacter
             // 
-            this.txtHanja.Location = new System.Drawing.Point(41, 17);
-            this.txtHanja.Name = "txtHanja";
-            this.txtHanja.Size = new System.Drawing.Size(356, 21);
-            this.txtHanja.TabIndex = 4;
-            this.txtHanja.TextChanged += new System.EventHandler(this.txtHanja_TextChanged);
-            this.txtHanja.Leave += new System.EventHandler(this.txtHanja_Leave);
+            this.txtCharacter.Location = new System.Drawing.Point(41, 17);
+            this.txtCharacter.Name = "txtCharacter";
+            this.txtCharacter.Size = new System.Drawing.Size(356, 21);
+            this.txtCharacter.TabIndex = 4;
+            this.txtCharacter.TextChanged += new System.EventHandler(this.txtHanja_TextChanged);
+            this.txtCharacter.Leave += new System.EventHandler(this.txtHanja_Leave);
             // 
-            // txtYmDok
+            // txtSoundRead
             // 
-            this.txtYmDok.Location = new System.Drawing.Point(41, 44);
-            this.txtYmDok.Name = "txtYmDok";
-            this.txtYmDok.Size = new System.Drawing.Size(356, 21);
-            this.txtYmDok.TabIndex = 5;
-            this.txtYmDok.TextChanged += new System.EventHandler(this.txtYmDok_TextChanged);
-            this.txtYmDok.Leave += new System.EventHandler(this.txtYmDok_Leave);
+            this.txtSoundRead.Location = new System.Drawing.Point(41, 44);
+            this.txtSoundRead.Name = "txtSoundRead";
+            this.txtSoundRead.Size = new System.Drawing.Size(356, 21);
+            this.txtSoundRead.TabIndex = 5;
+            this.txtSoundRead.TextChanged += new System.EventHandler(this.txtYmDok_TextChanged);
+            this.txtSoundRead.Leave += new System.EventHandler(this.txtYmDok_Leave);
             // 
             // webBrowser
             // 
@@ -222,11 +253,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.TextBox txtTranslation;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtHunDok;
-        private System.Windows.Forms.TextBox txtHanja;
-        private System.Windows.Forms.TextBox txtYmDok;
+        private System.Windows.Forms.TextBox txtMeanRead;
+        private System.Windows.Forms.TextBox txtCharacter;
+        private System.Windows.Forms.TextBox txtSoundRead;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cboJlptLevel;
 
     }
 }

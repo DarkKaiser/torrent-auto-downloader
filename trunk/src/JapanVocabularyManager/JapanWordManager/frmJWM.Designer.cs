@@ -40,6 +40,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnHanjaSearch = new System.Windows.Forms.Button();
             this.dataHanjaGridView = new System.Windows.Forms.DataGridView();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpWord = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnWordAdd = new System.Windows.Forms.Button();
@@ -50,19 +56,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnWordSearch = new System.Windows.Forms.Button();
             this.dataWordGridView = new System.Windows.Forms.DataGridView();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbpHanja.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -207,6 +207,44 @@
             this.dataHanjaGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataHanjaGridView_UserDeletedRow);
             this.dataHanjaGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataHanjaGridView_UserDeletingRow);
             // 
+            // Column9
+            // 
+            this.Column9.HeaderText = "idx";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            this.Column9.Visible = false;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "한자";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "음독";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "훈독";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "뜻";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 300;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "JLPT 급수";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
+            // 
             // tbpWord
             // 
             this.tbpWord.Controls.Add(this.splitContainer1);
@@ -338,55 +376,6 @@
             this.dataWordGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataWordGridView_UserDeletedRow);
             this.dataWordGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataWordGridView_UserDeletingRow);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tbpWord);
-            this.tabControl1.Controls.Add(this.tbpHanja);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1053, 714);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "idx";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            this.Column9.Visible = false;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "한자";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "음독";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "훈독";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "뜻";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.Width = 300;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "JLPT 급수";
-            this.Column11.Name = "Column11";
-            this.Column11.ReadOnly = true;
-            // 
             // Column4
             // 
             this.Column4.HeaderText = "idx";
@@ -426,6 +415,17 @@
             this.Column12.Name = "Column12";
             this.Column12.ReadOnly = true;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tbpWord);
+            this.tabControl1.Controls.Add(this.tbpHanja);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1053, 714);
+            this.tabControl1.TabIndex = 0;
+            // 
             // frmJWM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -433,6 +433,7 @@
             this.ClientSize = new System.Drawing.Size(1053, 714);
             this.Controls.Add(this.tabControl1);
             this.Name = "frmJWM";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "일본어 단어 관리";
             this.Load += new System.EventHandler(this.frmJWM_Load);
             this.tbpHanja.ResumeLayout(false);

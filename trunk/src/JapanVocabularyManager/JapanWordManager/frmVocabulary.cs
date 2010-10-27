@@ -16,8 +16,8 @@ namespace JapanWordManager
 
         public long idx { get; set; }
         public string Vocabulary { get; set; }
-        public string HiGaVocabulary { get; set; }
-        public string Description { get; set; }
+        public string VocabularyGana { get; set; }
+        public string VocabularyTranslation { get; set; }
         public SQLiteConnection DbConnection { private get; set; }
 
         public frmVocabulary()
@@ -27,7 +27,7 @@ namespace JapanWordManager
 
         private void EnableControls()
         {
-            if (string.IsNullOrEmpty(txtVocabulary.Text.Trim()) == true || string.IsNullOrEmpty(txtHiGaVocabulary.Text.Trim()) == true)
+            if (string.IsNullOrEmpty(txtVocabulary.Text.Trim()) == true || string.IsNullOrEmpty(txtVocabularyGana.Text.Trim()) == true || cboPartsOfSpeech.SelectedIndex == -1)
                 btnOk.Enabled = false;
             else
                 btnOk.Enabled = true;
@@ -43,14 +43,14 @@ namespace JapanWordManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM tbl_hanja WHERE Word = ""{0}""", c);
+                    string strSQL = string.Format(@"SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, JLPT_CLASS, TRANSLATION FROM TBL_HANJA WHERE CHARACTER = ""{0}""", c);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == true && reader.Read())
-                            txtExtensionInfo.Text += string.Format("{0}\r\n음독 : {2}\r\n훈독 : {3}\r\n{1}\r\n\r\n", reader.GetString(1), reader.GetString(4), reader.GetString(2), reader.GetString(3));
+                            txtExtensionInfo.Text += string.Format("{0}\r\n음독 : {2}\r\n훈독 : {3}\r\n{1}\r\n\r\n", reader.GetString(1/*CHARACTER*/), reader.GetString(5/*TRANSLATION*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/));
                     }
                 }
                 catch (SQLiteException ex)
@@ -59,11 +59,12 @@ namespace JapanWordManager
             }
         }
 
+        // @@@@@
         private void frmVocabulary_Load(object sender, EventArgs e)
         {
             txtVocabulary.Text = Vocabulary;
-            txtHiGaVocabulary.Text = HiGaVocabulary;
-            txtDescription.Text = Description;
+            txtVocabularyGana.Text = VocabularyGana;
+            txtVocabularyTranslation.Text = VocabularyTranslation;
 
             EnableControls();
             CheckVocabularyExtensionInfo();
@@ -74,14 +75,15 @@ namespace JapanWordManager
             txtVocabulary.Focus();
         }
 
+        // @@@@@
         private void btnOk_Click(object sender, EventArgs e)
         {
             string vocabulary = txtVocabulary.Text.Trim();
-            string higaVocabulary = txtHiGaVocabulary.Text.Trim();
-            string description = txtDescription.Text.Trim();
+            string higaVocabulary = txtVocabularyGana.Text.Trim();
+            string description = txtVocabularyTranslation.Text.Trim();
 
             // 변경된 것이 없는지 확인한다.
-            if (Vocabulary == vocabulary && HiGaVocabulary == higaVocabulary && Description == description)
+            if (Vocabulary == vocabulary && VocabularyGana == higaVocabulary && VocabularyTranslation == description)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -178,8 +180,8 @@ namespace JapanWordManager
                             }
 
                             Vocabulary = vocabulary;
-                            HiGaVocabulary = higaVocabulary;
-                            Description = description;
+                            VocabularyGana = higaVocabulary;
+                            VocabularyTranslation = description;
 
                             DialogResult = DialogResult.OK;
                             Close();
@@ -216,8 +218,8 @@ namespace JapanWordManager
             }
 
             Vocabulary = vocabulary;
-            HiGaVocabulary = higaVocabulary;
-            Description = description;
+            VocabularyGana = higaVocabulary;
+            VocabularyTranslation = description;
 
             DialogResult = DialogResult.OK;
             Close();
@@ -257,12 +259,12 @@ namespace JapanWordManager
 
         private void txtHiGaVocabulary_Leave(object sender, EventArgs e)
         {
-            txtHiGaVocabulary.Text = txtHiGaVocabulary.Text.Trim();
+            txtVocabularyGana.Text = txtVocabularyGana.Text.Trim();
         }
 
         private void txtDescription_Leave(object sender, EventArgs e)
         {
-            txtDescription.Text = txtDescription.Text.Trim();
+            txtVocabularyTranslation.Text = txtVocabularyTranslation.Text.Trim();
         }
     }
 }

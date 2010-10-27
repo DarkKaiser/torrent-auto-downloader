@@ -15,10 +15,11 @@ namespace JapanWordManager
         public bool EditMode { private get; set; }
 
         public long idx { get; set; }
-        public string Word { get; set; }
-        public string YmDok { get; set; }
-        public string HunDok { get; set; }
-        public string Description { get; set; }
+        public string Character { get; set; }
+        public string SoundRead { get; set; }
+        public string MeanRead { get; set; }
+        public string Translation { get; set; }
+        public int JLPTClass { get; set; }
         public SQLiteConnection DbConnection { private get; set; }
 
         public frmHanja()
@@ -28,13 +29,11 @@ namespace JapanWordManager
 
         private void EnableControls()
         {
-            if (string.IsNullOrEmpty(txtHanja.Text.Trim()) == true || string.IsNullOrEmpty(txtDescription.Text.Trim()) == true ||
-                (string.IsNullOrEmpty(txtYmDok.Text.Trim()) && string.IsNullOrEmpty(txtHunDok.Text.Trim())))
+            if (string.IsNullOrEmpty(txtCharacter.Text.Trim()) == true ||
+                (string.IsNullOrEmpty(txtSoundRead.Text.Trim()) == true && string.IsNullOrEmpty(txtMeanRead.Text.Trim()) == true))
             {
                 btnOk.Enabled = false;
-            }
-            else
-            {
+            } else {
                 btnOk.Enabled = true;
             }
         }
@@ -43,10 +42,19 @@ namespace JapanWordManager
 
         private void frmHanja_Load(object sender, EventArgs e)
         {
-            txtHanja.Text = Word;
-            txtYmDok.Text = YmDok;
-            txtHunDok.Text = HunDok;
-            txtDescription.Text = Description;
+            txtCharacter.Text = Character;
+            txtSoundRead.Text = SoundRead;
+            txtMeanRead.Text = MeanRead;
+            txtTranslation.Text = Translation;
+
+            if (JLPTClass == 99)
+            {
+                cboJlptLevel.SelectedIndex = 5;
+            }
+            else
+            {
+                cboJlptLevel.SelectedIndex = JLPTClass - 1;
+            }
 
             EnableControls();
         }
@@ -57,15 +65,16 @@ namespace JapanWordManager
             Close();
         }
 
+        // @@@@@
         private void btnOk_Click(object sender, EventArgs e)
         {
-            string hanja = txtHanja.Text.Trim();
-            string ymdok = txtYmDok.Text.Trim();
-            string hundok = txtHunDok.Text.Trim();
-            string description = txtDescription.Text.Trim();
+            string hanja = txtCharacter.Text.Trim();
+            string ymdok = txtSoundRead.Text.Trim();
+            string hundok = txtMeanRead.Text.Trim();
+            string description = txtTranslation.Text.Trim();
 
             // 변경된 것이 없는지 확인한다.
-            if (Word == hanja && YmDok == ymdok && HunDok == hundok && Description == description)
+            if (Character == hanja && SoundRead == ymdok && MeanRead == hundok && Translation == description)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -87,7 +96,7 @@ namespace JapanWordManager
                         if (reader.HasRows == true)
                         {
                             MessageBox.Show("DB에 이미 등록된 단어입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            txtHanja.Focus();
+                            txtCharacter.Focus();
                             return;
                         }
                     }
@@ -134,7 +143,7 @@ namespace JapanWordManager
                         if (reader.HasRows == true)
                         {
                             MessageBox.Show("DB에 이미 등록된 단어입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            txtHanja.Focus();
+                            txtCharacter.Focus();
                             return;
                         }
                     }
@@ -166,10 +175,10 @@ namespace JapanWordManager
                 }
             }
 
-            Word = hanja;
-            YmDok = ymdok;
-            HunDok = hundok;
-            Description = description;
+            Character = hanja;
+            SoundRead = ymdok;
+            MeanRead = hundok;
+            Translation = description;
 
             DialogResult = DialogResult.OK;
             Close();
@@ -179,8 +188,8 @@ namespace JapanWordManager
         {
             EnableControls();
 
-            if (string.IsNullOrEmpty(txtHanja.Text.Trim()) == false)
-                webBrowser.Url = new Uri(string.Format("http://jpdic.naver.com/search.nhn?query={0}", txtHanja.Text.Trim()));
+            if (string.IsNullOrEmpty(txtCharacter.Text.Trim()) == false)
+                webBrowser.Url = new Uri(string.Format("http://jpdic.naver.com/search.nhn?query={0}", txtCharacter.Text.Trim()));
         }
 
         private void txtYmDok_TextChanged(object sender, EventArgs e)
@@ -193,6 +202,11 @@ namespace JapanWordManager
             EnableControls();
         }
 
+        private void cboJlptLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
         private void txtDescription_TextChanged(object sender, EventArgs e)
         {
             EnableControls();
@@ -200,31 +214,31 @@ namespace JapanWordManager
         
         private void txtHanja_Leave(object sender, EventArgs e)
         {
-            txtHanja.Text = txtHanja.Text.Trim();
+            txtCharacter.Text = txtCharacter.Text.Trim();
         }
 
         private void txtYmDok_Leave(object sender, EventArgs e)
         {
-            txtYmDok.Text = txtYmDok.Text.Trim();
+            txtSoundRead.Text = txtSoundRead.Text.Trim();
         }
 
         private void txtHunDok_Leave(object sender, EventArgs e)
         {
-            txtHunDok.Text = txtHunDok.Text.Trim();
+            txtMeanRead.Text = txtMeanRead.Text.Trim();
         }
 
         private void txtDescription_Leave(object sender, EventArgs e)
         {
-            txtDescription.Text = txtDescription.Text.Trim();
+            txtTranslation.Text = txtTranslation.Text.Trim();
         }
 
         private void frmHanja_Shown(object sender, EventArgs e)
         {
-            txtHanja.Focus();
+            txtCharacter.Focus();
 
             string strClipboardText = Clipboard.GetText();
             if (strClipboardText.Length == 1)
-                txtHanja.Text = strClipboardText;
+                txtCharacter.Text = strClipboardText;
         }
 
         #endregion
@@ -246,7 +260,7 @@ namespace JapanWordManager
 
                 string strContent = strDocumentText.Substring(first, last - first);
 
-                first = strContent.IndexOf(txtHanja.Text.Trim());
+                first = strContent.IndexOf(txtCharacter.Text.Trim());
                 if (first == -1)
                     return;
 
@@ -257,6 +271,14 @@ namespace JapanWordManager
                 last = strContent.IndexOf("<dt>", first);
                 if (last == -1)
                     return;
+
+                int jlptClass = 5;
+                int levelPos = strContent.IndexOf("ico_jlpt");
+                if (levelPos != -1)
+                {
+                    string strJLPTLevel = strContent.Substring(levelPos + 8, 1);
+                    jlptClass = int.Parse(strJLPTLevel) - 1;
+                }
 
                 strContent = strContent.Substring(first, last - first);
 
@@ -278,7 +300,7 @@ namespace JapanWordManager
                                 first += 11;
                                 last = temp.IndexOf("</span>", first);
                                 if (last != -1)
-                                    txtYmDok.Text = temp.Substring(first, last - first);
+                                    txtSoundRead.Text = temp.Substring(first, last - first);
                             }
                         }
                     }
@@ -297,7 +319,7 @@ namespace JapanWordManager
                                 first += 11;
                                 last = temp.IndexOf("</span>", first);
                                 if (last != -1)
-                                    txtHunDok.Text = temp.Substring(first, last - first);
+                                    txtMeanRead.Text = temp.Substring(first, last - first);
                             }
                         }
                     }
@@ -309,8 +331,11 @@ namespace JapanWordManager
                         first += 19;
                         last = strContent.IndexOf("<em>", first);
                         if (last != -1)
-                            txtDescription.Text = strContent.Substring(first, last - first);
+                            txtTranslation.Text = strContent.Substring(first, last - first);
                     }
+
+                    // JLPT 클래스를 지정한다.
+                    cboJlptLevel.SelectedIndex = jlptClass;
                 }
             }
         }
