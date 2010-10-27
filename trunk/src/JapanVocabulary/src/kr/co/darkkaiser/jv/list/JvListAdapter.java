@@ -100,7 +100,7 @@ public class JvListAdapter extends BaseAdapter {
 				mJvListDataChangedHandler.sendMessage(msg);
 			}
 		});
-		
+
 		cboMemorizeCompleted.setTag(position);
 		cboMemorizeCompleted.setOnClickListener(new View.OnClickListener() {
 			@Override

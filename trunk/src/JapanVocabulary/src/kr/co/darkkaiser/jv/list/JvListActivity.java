@@ -45,23 +45,23 @@ import android.widget.Toast;
 
 public class JvListActivity extends ListActivity implements OnClickListener {
 
-	public static final int MSG_CHANGED_LIST_DATA = 1;
-	public static final int MSG_COMPLETED_LIST_DATA_UPDATE = 2;
-
-	// 인텐트로 넘겨 줄 액티비티 결과 값, 서로 배타적이어야 함.
+	// 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
 	public static final int ACTIVITY_RESULT_PREFERENCE_CHANGED = 2;
+
+	public static final int MSG_CHANGED_LIST_DATA = 1;
+	public static final int MSG_COMPLETED_LIST_DATA_UPDATE = 2;
 
 	private ProgressDialog mProgressDialog = null;
 	private SharedPreferences mPreferences = null;
 
 	private JvListAdapter mJvListAdapter = null;
 	private ArrayList<JapanVocabulary> mJvListData = null;
+	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
 
 	private Thread mJvListSearchThread = null;
 	private JvListSearchCondition mJvListSearchCondition = null;
-	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
-	
+
 	private int mActivityResultCode = 0;
 
 	@Override
@@ -102,16 +102,13 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 		// 암기 완료 검색 조건
 		ArrayAdapter<String> scMemorizeCompletedAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, getResources()
-						.getStringArray(R.array.sc_memorize_completed));
-		scMemorizeCompletedAdapter
-				.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+				this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_completed));
+		scMemorizeCompletedAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
 
-		Spinner scMemorizeCompletedSpinner = (Spinner) findViewById(R.id.sc_memorize_completed);
+		Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
 		scMemorizeCompletedSpinner.setAdapter(scMemorizeCompletedAdapter);
 		scMemorizeCompletedSpinner.setPrompt("검색 조건");
-		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition
-				.getMemorizeCompletedPosition());
+		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompletedPosition());
 
 		// 단어 등록일 검색 조건
 		Button btnLastSearchDate = (Button) findViewById(R.id.sc_last_search_date);
@@ -148,9 +145,11 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		cboAllRegDateSearch.setOnClickListener(this);
 
 		// 품사 검색 조건
+		updatePartsOfSpeechButtonText();
 		findViewById(R.id.sc_parts_of_speech).setOnClickListener(this);
 
 		// JLPT 급수 검색 조건
+		updateJLPTLevelButtonText();
 		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
 
 		// 기타
@@ -161,6 +160,37 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		// 최근의 검색 조건을 이용하여 검색을 수행한다.
 		//
 		searchVocabulary();
+	}
+
+	private void updatePartsOfSpeechButtonText() {
+		// @@@@@		android:text="품사를 선택합니다.\n테스트"
+//		CharSequence[] items = mJvListSearchCondition.getPartsOfSpeechItems();
+//		boolean[] checkedItems = mJvListSearchCondition.getPartsOfSpeechCheckedItems();
+//		assert items.length == checkedItems.length;
+
+	
+	}
+
+	private void updateJLPTLevelButtonText() {
+		String[] items = getResources().getStringArray(R.array.sc_jlpt_level_simple_list);
+		boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+		assert items.length == checkedItems.length;
+
+		StringBuilder sb = new StringBuilder();
+		for (int index = 0; index < checkedItems.length; ++index) {
+			if (checkedItems[index] == true) {
+				if (sb.length() > 0)
+					sb.append(", ");
+
+				sb.append(items[index]);
+			}
+		}
+		
+		if (sb.length() == 0)
+			sb.append("<선택 항목 없음>");
+
+		Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
+		scJLPTLevelButton.setText(sb.toString());
 	}
 
 	@Override
@@ -528,22 +558,17 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			assert items.length == checkedItems.length;
 
 			new AlertDialog.Builder(JvListActivity.this).setTitle("검색 조건")
-					.setMultiChoiceItems(items, checkedItems,
-							new OnMultiChoiceClickListener() {
+					.setMultiChoiceItems(items, checkedItems, new OnMultiChoiceClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int item, boolean isChecked) {
-									mJvListSearchCondition
-											.setCheckedPartsOfSpeech(item,
-													isChecked);
+								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+									mJvListSearchCondition.setCheckedPartsOfSpeech(item, isChecked);
 								}
 							})
-					.setPositiveButton("확인",
-							new DialogInterface.OnClickListener() {
+					.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog, int which) {
 									mJvListSearchCondition.commit();
+									updatePartsOfSpeechButtonText();
 								}
 							})
 					.show();
@@ -551,25 +576,21 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			break;
 
 		case R.id.sc_jlpt_level: {
-			boolean[] checkedItems = mJvListSearchCondition
-					.getCheckedJLPTLevelArray();
+			boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
 
 			new AlertDialog.Builder(JvListActivity.this).setTitle("검색 조건")
-					.setMultiChoiceItems(R.array.sc_jlpt_level_list,
-							checkedItems, new OnMultiChoiceClickListener() {
+					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int item, boolean isChecked) {
-									mJvListSearchCondition.setCheckedJLPTLevel(
-											item, isChecked);
+								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+									mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
 								}
 							})
 					.setPositiveButton("확인",
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog, int which) {
 									mJvListSearchCondition.commit();
+									updateJLPTLevelButtonText();
 								}
 							})
 					.show();
