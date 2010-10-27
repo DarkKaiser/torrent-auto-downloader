@@ -163,12 +163,25 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void updatePartsOfSpeechButtonText() {
-		// @@@@@		android:text="품사를 선택합니다.\n테스트"
-//		CharSequence[] items = mJvListSearchCondition.getPartsOfSpeechItems();
-//		boolean[] checkedItems = mJvListSearchCondition.getPartsOfSpeechCheckedItems();
-//		assert items.length == checkedItems.length;
+		CharSequence[] items = mJvListSearchCondition.getPartsOfSpeechItems();
+		boolean[] checkedItems = mJvListSearchCondition.getPartsOfSpeechCheckedItems();
+		assert items.length == checkedItems.length;
+ 
+		StringBuilder sb = new StringBuilder();
+		for (int index = 0; index < checkedItems.length; ++index) {
+			if (checkedItems[index] == true) {
+				if (sb.length() > 0)
+					sb.append(", ");
 
-	
+				sb.append(items[index]);
+			}
+		}
+
+		if (sb.length() == 0)
+			sb.append("<선택 항목 없음>");
+
+		Button scPartsOfSpeechButton= (Button)findViewById(R.id.sc_parts_of_speech);
+		scPartsOfSpeechButton.setText(sb.toString());	
 	}
 
 	private void updateJLPTLevelButtonText() {

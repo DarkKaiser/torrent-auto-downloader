@@ -69,7 +69,7 @@
 			</TableLayout>
 		    <TextView
 		    	android:layout_width="fill_parent"
-		    	android:layout_height="1px"
+		    	android:layout_height="2px"
 		    	android:background="#cccccc"
 		    	/>
 		    <TextView
@@ -113,7 +113,7 @@
 			android:orientation="vertical"
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
-		    android:background="#1e1e1e"
+		    android:background="#0a0a0a"
 		    android:clickable="true"
 		    >
 			<RelativeLayout
@@ -186,13 +186,13 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="단어의 뜻에서 입력하신 문자를 포함하는 단어를 검색합니다. 검색어를 입력하지 않으시면 검색 조건에서 제외됩니다."
-										android:textColor="#ffffff"
+										android:text="입력하신 검색어를 이용하여 단어의 뜻을 검색합니다. 입력된 내용이 없으면 전체를 검색 대상으로 합니다."
+										android:textColor="#cccccc"
 										android:textSize="6pt"
 										/>
 								</TableRow>
 								<TableRow
-									android:paddingBottom="20px"
+									android:paddingBottom="27px"
 									>
 									<EditText
 										android:id="@+id/sc_search_word" 
@@ -209,14 +209,12 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="암기대상을 지정합니다."
-										android:textColor="#ffffff"
+										android:text="암기대상, 암기완료 상태의 단어 검색 방법을 선택합니다."
+										android:textColor="#cccccc"
 										android:textSize="6pt"
 										/>
 								</TableRow>
-								<TableRow
-									android:paddingBottom="20px"
-									>
+								<TableRow>
 									<Spinner
 										android:id="@+id/sc_memorize_target" 
 										android:layout_width="fill_parent" 
@@ -226,18 +224,7 @@
 										/>
 								</TableRow>
 								<TableRow
-									android:paddingBottom="10px"
-									>
-									<TextView
-										android:layout_width="wrap_content"
-										android:layout_height="wrap_content"
-										android:text="암기완료를 지정합니다."
-										android:textColor="#ffffff"
-										android:textSize="6pt"
-										/>
-								</TableRow>
-								<TableRow
-									android:paddingBottom="20px"
+									android:paddingBottom="27px"
 									>
 									<Spinner
 										android:id="@+id/sc_memorize_completed" 
@@ -253,8 +240,8 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="단어의 등록일  검색 범위를 선택합니다."
-										android:textColor="#ffffff"
+										android:text="단어가 등록된 날짜의 검색 범위를 선택합니다."
+										android:textColor="#cccccc"
 										android:textSize="6pt"
 										/>
 								</TableRow>
@@ -277,6 +264,7 @@
 												android:text="부터  "
 												android:layout_width="wrap_content"
 												android:layout_height="wrap_content"
+												android:textColor="#cccccc"
 												android:textSize="6pt"
 												/>
 											<Button  
@@ -289,26 +277,32 @@
 												android:text="까지"
 												android:layout_width="wrap_content"
 												android:layout_height="wrap_content"
+												android:textColor="#cccccc"
 												android:textSize="6pt"
 												/>
 										</TableRow>
 									</TableLayout>
 								</TableRow>
 								<TableRow
-									android:paddingBottom="20px"
+									android:paddingBottom="27px"
 									>
-									<CheckBox
-										android:id="@+id/sc_all_reg_date_search"
-										android:layout_width="fill_parent"
-										android:layout_height="wrap_content"
-										android:layout_gravity="top"
-										android:text="모든 등록일 검색"
-										android:textColor="#ffffff"
-										android:textSize="6pt"
-										android:checked="true"
+									<LinearLayout
+									    android:layout_width="fill_parent"
+									    android:layout_height="wrap_content"
 										android:layout_marginLeft="10dp"
 										android:layout_marginRight="10dp"
-										/>
+										android:gravity="right"
+									    >
+										<CheckBox
+											android:id="@+id/sc_all_reg_date_search"
+											android:layout_width="wrap_content"
+											android:layout_height="wrap_content"
+											android:text="모든 등록일 검색"
+											android:textColor="#cccccc"
+											android:textSize="6pt"
+											android:checked="true"
+											/>
+									</LinearLayout>
 								</TableRow>
 								<TableRow
 									android:paddingBottom="10px"
@@ -316,13 +310,13 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="검색 조건에 포함시킬 단어의 품사를 선택합니다."
-										android:textColor="#ffffff"
+										android:text="품사를 선택합니다. 선택된 항목이 없으면 전체를 검색 대상으로 합니다."
+										android:textColor="#cccccc"
 										android:textSize="6pt"
 										/>
 								</TableRow>
 								<TableRow
-									android:paddingBottom="20px"
+									android:paddingBottom="27px"
 									>
 									<Button
 										android:id="@+id/sc_parts_of_speech"
@@ -339,8 +333,8 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="검색 조건에 포함시킬 JLPT 급수를 선택합니다."
-										android:textColor="#ffffff"
+										android:text="JLPT 급수를 선택합니다. 선택된 항목이 없으면 전체를 검색 대상으로 합니다."
+										android:textColor="#cccccc"
 										android:textSize="6pt"
 										/>
 								</TableRow>
