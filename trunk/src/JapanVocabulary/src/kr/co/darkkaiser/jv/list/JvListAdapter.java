@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.JapanVocabulary;
 import kr.co.darkkaiser.jv.R;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -56,38 +55,35 @@ public class JvListAdapter extends BaseAdapter {
 			convertView = mLayoutInflater.inflate(mLayout, parent, false);
 		}
 
-		JapanVocabulary jv = mJvList.get(position);
-		TextView tvMemorizeBar = (TextView)convertView.findViewById(R.id.memorize_bar);
-		TextView tvVocabulary = (TextView)convertView.findViewById(R.id.vocabulary);
-		TextView tvVocabularyGana = (TextView)convertView.findViewById(R.id.vocabulary_gana);
-		TextView tvVocabularyTranslation = (TextView)convertView.findViewById(R.id.vocabulary_translation);
-		TextView tvRegistrationDate = (TextView)convertView.findViewById(R.id.registration_date);
-		CheckBox cboMemorizeCompleted = (CheckBox)convertView.findViewById(R.id.memorize_completed);
-		CheckBox cboMemorizeTarget = (CheckBox)convertView.findViewById(R.id.memorize_target);
+		TextView memorizeBar = (TextView)convertView.findViewById(R.id.memorize_bar);
+		TextView vocabulary = (TextView)convertView.findViewById(R.id.vocabulary);
+		TextView vocabularyGana = (TextView)convertView.findViewById(R.id.vocabulary_gana);
+		TextView vocabularyTranslation = (TextView)convertView.findViewById(R.id.vocabulary_translation);
+		TextView registrationDate = (TextView)convertView.findViewById(R.id.registration_date);
+		CheckBox memorizeCompleted = (CheckBox)convertView.findViewById(R.id.memorize_completed);
+		CheckBox memorizeTarget = (CheckBox)convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout)convertView.findViewById(R.id.memorize_bg);
 
-		tvVocabulary.setText(String.format("%s (%dȸ)", jv.getVocabulary(), jv.getMemorizeCompletedCount()));
-		tvVocabularyGana.setText(jv.getVocabularyGana());
-		tvVocabularyTranslation.setText(jv.getVocabularyTranslation());
-		tvRegistrationDate.setText(String.format("%s:%s", mContext.getResources().getString(R.string.registration_date_text), jv.getRegistrationDateString()));
+		JapanVocabulary japanVocabulary = mJvList.get(position);
+		vocabulary.setText(String.format("%s (%dȸ)", japanVocabulary.getVocabulary(), japanVocabulary.getMemorizeCompletedCount()));
+		vocabularyGana.setText(japanVocabulary.getVocabularyGana());
+		vocabularyTranslation.setText(japanVocabulary.getVocabularyTranslation());
+		registrationDate.setText(String.format("%s:%s", mContext.getResources().getString(R.string.registration_date_text), japanVocabulary.getRegistrationDateString()));
 
-		if (jv.isMemorizeCompleted() == true) {
-			cboMemorizeCompleted.setChecked(true);
-			tvMemorizeBar.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_completed));
+		if (japanVocabulary.isMemorizeCompleted() == true) {
+			memorizeCompleted.setChecked(true);
+			memorizeBar.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_completed));
 			layoutMemorizeBg.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_completed_bg));
 		} else {
-			cboMemorizeCompleted.setChecked(false);
-			tvMemorizeBar.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_uncompleted));
+			memorizeCompleted.setChecked(false);
+			memorizeBar.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_uncompleted));
 			layoutMemorizeBg.setBackgroundColor(mContext.getResources().getColor(R.color.memorize_uncompleted_bg));
 		}
 
-		if (jv.isMemorizeTarget() == true)
-			cboMemorizeTarget.setChecked(true);
-		else
-			cboMemorizeTarget.setChecked(false);
+		memorizeTarget.setTag(position);
+		memorizeTarget.setChecked(japanVocabulary.isMemorizeTarget());
 
-		cboMemorizeTarget.setTag(position);
-		cboMemorizeTarget.setOnClickListener(new View.OnClickListener() {
+		memorizeTarget.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CheckBox cboMemorizeTarget = (CheckBox)v;
@@ -101,8 +97,9 @@ public class JvListAdapter extends BaseAdapter {
 			}
 		});
 
-		cboMemorizeCompleted.setTag(position);
-		cboMemorizeCompleted.setOnClickListener(new View.OnClickListener() {
+		memorizeCompleted.setTag(position);
+
+		memorizeCompleted.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CheckBox cboMemorizeCompleted = (CheckBox)v;

@@ -147,6 +147,7 @@ public class JvManager {
 
 	// @@@@@
 	public void searchVocabulary(JvListSearchCondition jvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
+		
 		if (mJvUserSqLite != null) {
 			try {
 				String searchWord = jvListSearchCondition.getSearchWord();
@@ -160,29 +161,29 @@ public class JvManager {
 				sbSQL.append("SELECT IDX ")
 					 .append("  FROM TBL_VOCABULARY ")
 					 .append(" WHERE 1=1 ");
-
-				if (TextUtils.isEmpty(searchWord) == false)
-					 sbSQL.append(" AND VOCABULARY_TRANSLATION LIKE '").append(searchWord).append("' ");
-
-				if (allRegDateSearch == false) {
-					try {
-						long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(firstSearchDate).getTime();
-						long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(lastSearchDate).getTime();
-
-						if (searchDateFirst > searchDateLast) {
-							long temp = searchDateFirst;
-							searchDateFirst = searchDateLast;
-							searchDateLast = temp;
-						}
-		
-						searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
-						searchDateLast += 999/* 밀리초 */;
-
-						sbSQL.append(" AND REGISTRATION_DATE >= ").append(searchDateFirst).append("AND REGISTRATION_DATE <= ").append(searchDateLast);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}
+//
+//				if (TextUtils.isEmpty(searchWord) == false)
+//					 sbSQL.append(" AND VOCABULARY_TRANSLATION LIKE '").append(searchWord).append("' ");
+//
+//				if (allRegDateSearch == false) {
+//					try {
+//						long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(firstSearchDate).getTime();
+//						long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(lastSearchDate).getTime();
+//
+//						if (searchDateFirst > searchDateLast) {
+//							long temp = searchDateFirst;
+//							searchDateFirst = searchDateLast;
+//							searchDateLast = temp;
+//						}
+//		
+//						searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
+//						searchDateLast += 999/* 밀리초 */;
+//
+//						sbSQL.append(" AND REGISTRATION_DATE >= ").append(searchDateFirst).append("AND REGISTRATION_DATE <= ").append(searchDateLast);
+//					} catch (ParseException e) {
+//						e.printStackTrace();
+//					}
+//				}
 
 				// @@@@@
 //				 .append("   AND C.JLPT_CLASS = 1");
@@ -200,41 +201,41 @@ public class JvManager {
 
 				cursor.close();
 
-				String idxListString = "";
-				for (int index = 0; index < idxList.size(); ++index) {
-					if (TextUtils.isEmpty(idxListString) == false)
-						idxListString += ", ";
-
-					idxListString += String.format("%s", idxList.get(index));					
-				}
+//				String idxListString = "";
+//				for (int index = 0; index < idxList.size(); ++index) {
+//					if (TextUtils.isEmpty(idxListString) == false)
+//						idxListString += ", ";
+//
+//					idxListString += String.format("%s", idxList.get(index));					
+//				}
 
 				// 2순위 암기완료
 				// 암기대상
-				StringBuilder sb = new StringBuilder();
-				sb.append("SELECT V_IDX FROM TBL_USER_VOCABULARY ")
-				  .append(" WEHRE V_IDX IN (").append(idxListString).append(") ");
-			
-				if (memorizeTargetPos == 1)
-					sb.append(" AND MEMORIZE_TARGET=1");
-				else if (memorizeTargetPos == 2) {
-					sb.append(" AND MEMORIZE_TARGET=0");
-				}
-				
-				if (memorizeCompletedPos == 1) {
-					sb.append(" AND MEMORIZE_COMPLETED=1 ");
-				} else if (memorizeCompletedPos == 2) {
-					sb.append(" AND MEMORIZE_COMPLETED=0 ");
-				}
-
-				cursor = mJvUserSqLite.rawQuery(sb.toString(), null);
-
-				idxList.clear();
-				if (cursor.moveToFirst() == true) {
-					do
-					{
-						idxList.add(cursor.getLong(0/* IDX */));
-					} while (cursor.moveToNext());
-				}
+//				StringBuilder sb = new StringBuilder();
+//				sb.append("SELECT V_IDX FROM TBL_USER_VOCABULARY ")
+//				  .append(" WEHRE V_IDX IN (").append(idxListString).append(") ");
+//			
+//				if (memorizeTargetPos == 1)
+//					sb.append(" AND MEMORIZE_TARGET=1");
+//				else if (memorizeTargetPos == 2) {
+//					sb.append(" AND MEMORIZE_TARGET=0");
+//				}
+//				
+//				if (memorizeCompletedPos == 1) {
+//					sb.append(" AND MEMORIZE_COMPLETED=1 ");
+//				} else if (memorizeCompletedPos == 2) {
+//					sb.append(" AND MEMORIZE_COMPLETED=0 ");
+//				}
+//
+//				cursor = mJvUserSqLite.rawQuery(sb.toString(), null);
+//
+//				idxList.clear();
+//				if (cursor.moveToFirst() == true) {
+//					do
+//					{
+//						idxList.add(cursor.getLong(0/* IDX */));
+//					} while (cursor.moveToNext());
+//				}
 
 				for (int index = 0; index < idxList.size(); ++index) {
 					jvList.add(mJvTable.get(idxList.get(index)));					

@@ -2,6 +2,6 @@
 <resources>
 	<color name="memorize_completed">#22ff22</color>
 	<color name="memorize_uncompleted">#ff2222</color>
-	<color name="memorize_completed_bg">#0dffffff</color>
+	<color name="memorize_completed_bg">#13cccccc</color>
 	<color name="memorize_uncompleted_bg">#000000</color>
 </resources>

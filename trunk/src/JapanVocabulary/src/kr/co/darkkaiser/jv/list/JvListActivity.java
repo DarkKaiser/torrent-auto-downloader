@@ -158,7 +158,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void updateJLPTLevelButtonText() {
-		String[] items = getResources().getStringArray(R.array.sc_jlpt_level_simple_list);
+		String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
 		boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
 		assert items.length == checkedItems.length;
 

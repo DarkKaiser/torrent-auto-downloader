@@ -8,22 +8,22 @@ public class JvDefines {
     public static final String JV_SHARED_PREFERENCE_NAME = "jv_setup";
     
     /*
-     * 로컬에 설치된 단어 DB 버전 항목 이름
+     * 로컬에 설치된 단어 DB 버전 항목 이름(공용 환경설정 키이름)
      */
     public static final String JV_SPN_DB_VERSION = "jv_db_version";
     
     /*
-     * 암기대상 단어 항목 이름
+     * 암기대상 단어 항목 이름(공용 환경설정 키이름)
      */
     public static final String JV_SPN_MEMORIZE_TARGET_ITEM = "jv_memorize_target_item";
     
     /*
-     * 리스트 정렬 방법
+     * 리스트 정렬 방법(공용 환경설정 키이름)
      */
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
 
     /*
-	 * SDCARD에 생성되는 앱 폴더명
+	 * SDCARD에 생성되는 프로그램 폴더명
 	 */
 	public static final String JV_MAIN_FOLDER_NAME = "JapanVocabulary";
 	

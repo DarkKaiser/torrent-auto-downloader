@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.jv.list;
 
 import kr.co.darkkaiser.jv.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -43,14 +42,14 @@ public class JvListSearchCondition {
 			mScAllRegDateSearch = true;
 
 		// JLPT 각 급수별 검색 여부 플래그를 읽어들인다.
-		CharSequence[] csJLPTLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
-		CharSequence[] csJLPTLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
+		CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
 
-		assert csJLPTLevelList.length == csJLPTLevelListValues.length;
+		assert jlptLevelList.length == jlptLevelListValues.length;
 
-		mScCheckedJLPTLevelArray = new boolean[csJLPTLevelList.length];
-		for (int index = 0; index < csJLPTLevelList.length; ++index) {
-			mScCheckedJLPTLevelArray[index] = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), true);
+		mScCheckedJLPTLevelArray = new boolean[jlptLevelList.length];
+		for (int index = 0; index < jlptLevelList.length; ++index) {
+			mScCheckedJLPTLevelArray[index] = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), true);
 		}
 	}
 
@@ -108,25 +107,26 @@ public class JvListSearchCondition {
 		mScFirstSearchDate = firstSearchDate;
 		mScLastSearchDate = lastSearchDate;
 	}
-	
+
 	public boolean [] getCheckedJLPTLevelArray() {
 		assert mContext != null;
 		assert mScCheckedJLPTLevelArray != null;
+		
 		return mScCheckedJLPTLevelArray;
 	}
 
 	public void setCheckedJLPTLevel(int position, boolean value) {
 		assert mPreferences != null;
 
-		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position) {
+		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position)
 			mScCheckedJLPTLevelArray[position] = value;
-		} else {
+		else
 			assert false;
-		}
 	}
-	
+
 	public void commit() {
 		Editor editor = mPreferences.edit();
+
 		editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);		
 		editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
 		editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
@@ -135,14 +135,14 @@ public class JvListSearchCondition {
 		editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
 
 		// JLPT 각 급수별 검색 여부 플래그를 저장한다.
-		CharSequence[] csJLPTLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
-		CharSequence[] csJLPTLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
+		CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
 
-		assert csJLPTLevelList.length == csJLPTLevelListValues.length;
-		assert csJLPTLevelList.length == mScCheckedJLPTLevelArray.length;
+		assert jlptLevelList.length == jlptLevelListValues.length;
+		assert jlptLevelList.length == mScCheckedJLPTLevelArray.length;
 
-		for (int index = 0; index < csJLPTLevelList.length; ++index) {
-			editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
+		for (int index = 0; index < jlptLevelList.length; ++index) {
+			editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
 		}
 
 		editor.commit();

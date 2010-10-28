@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="단어암기 설정">
+	<PreferenceCategory
+		android:title="단어 암기 설정"
+		>
 		<ListPreference
 			android:key="jv_memorize_target_item"
-			android:title="암기대상 설정"
-			android:summary="단어를 암기할 때 암기 대상이 되는(화면에 출력 되는) 단어의 항목을 선택합니다."
-			android:entries="@array/memorize_target_item_list_preference"
-			android:entryValues="@array/memorize_target_itemvalues_list_preference"
+			android:title="암기 대상 설정"
+			android:summary="단어를 암기할 때 암기 대상이 되는(화면에 출력이 되는) 단어의 항목을 선택합니다."
+			android:entries="@array/preference_memorize_target_item_list"
+			android:entryValues="@array/preference_memorize_target_itemvalues_list"
 			android:defaultValue="0"
-			android:dialogTitle="암기대상"/>
+			android:dialogTitle="암기 대상"
+			/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="기타">
+	<PreferenceCategory android:title="프로그램 정보">
 		<PreferenceScreen 
 			android:key="jv_db_version"
 			android:title="단어 DB 버전"
-   			android:summary="버전 정보를 확인할 수 없습니다." />
+   			android:summary="버전 정보를 확인할 수 없습니다."
+   			/>
 	</PreferenceCategory>
 </PreferenceScreen>
