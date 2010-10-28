@@ -80,14 +80,6 @@ namespace JapanWordManager
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
 
-            // 변경된 것이 없는지 확인한다.
-            if (Vocabulary == strVocabulary && VocabularyGana == strVocabularyGana && VocabularyTranslation == strVocabularyTranslation)
-            {
-                DialogResult = DialogResult.Cancel;
-                Close();
-                return;
-            }
-
             if (EditMode == true)
             {
                 // 이미 입력된 단어인지 확인한다.
