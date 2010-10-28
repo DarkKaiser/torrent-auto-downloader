@@ -154,9 +154,20 @@ public class JvManager {
 			try {
 				StringBuilder sbSQL = new StringBuilder();
 				sbSQL.append("SELECT IDX ")
-					 .append("  FORM TBL_VOCABULARY ")
-					 .append(" WHERE VOCABULARY_TRANSLATION LIKE ''")
-					 .append("   AND REGISTRATION_DATE");
+					 .append("  FROM TBL_VOCABULARY ")
+					 .append(" WHERE A.VOCABULARY_TRANSLATION LIKE ''")
+					 .append("   AND A.REGISTRATION_DATE ")
+					 .append("   AND B.IDX IN ()")
+					 .append("   AND C.CHARACTER LIKE ''")
+					 .append("   AND C.JLPT_CLASS = 1");
+
+				// 검색어
+				// 기간
+				// 품사
+				// jlpt
+
+				// 암기완료
+				// 암기대상
 
 //				mJvUserSqLite.execSQL(sbSQL.toString());
 //
@@ -447,28 +458,41 @@ public class JvManager {
 		return sbResult.toString();
 	}
 
-	public void getPartsOfSpeechScInfoList(ArrayList<PartsOfSpeechScInfo> a) {
-		// @@@@@ 모든 단어 99 추가
-		long n = 0;
-		PartsOfSpeechScInfo aa = new PartsOfSpeechScInfo();
-		aa.mChecked = false;
-		aa.mIdx =0;
-		aa.mName = "test1";
-		a.add(aa);
+	public void getPartsOfSpeechSearchConditionInfoList(ArrayList<PartsOfSpeechScInfo> list) {
+		if (mJvUserSqLite != null) {
+			try {
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("SELECT IDX, NAME ")
+					 .append("  FROM TBL_PARTS_OF_SPEECH ");
 
-		n = 1;
-		PartsOfSpeechScInfo cc = new PartsOfSpeechScInfo();
-		cc.mChecked = false;
-		cc.mIdx =3;
-		cc.mName = "test2";
-		a.add(cc);
-		
-		n = 2;
-		PartsOfSpeechScInfo bb = new PartsOfSpeechScInfo();
-		bb.mChecked = true;
-		bb.mIdx =20;
-		bb.mName = "test3";
-		a.add(bb);		
+				Cursor cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
+
+				if (cursor.moveToFirst() == true) {
+					do
+					{
+						PartsOfSpeechScInfo info = new PartsOfSpeechScInfo();
+						info.mIdx = cursor.getLong(0/* IDX */);
+						info.mName = cursor.getString(1/* NAME */);
+						info.mChecked = true;
+
+						list.add(info);
+					} while (cursor.moveToNext());
+				}
+
+				PartsOfSpeechScInfo info = new PartsOfSpeechScInfo();
+				info.mIdx = 99;
+				info.mName = "미분류";//@@@@@
+				info.mChecked = true;
+
+				list.add(info);
+
+				cursor.close();
+			} catch (SQLiteException e) {
+				Log.e(TAG, e.getMessage());
+			}
+		} else {
+			assert false;
+		}
 	}
 
 }

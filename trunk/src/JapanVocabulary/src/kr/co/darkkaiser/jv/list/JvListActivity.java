@@ -170,7 +170,9 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		StringBuilder sb = new StringBuilder();
 		for (int index = 0; index < checkedItems.length; ++index) {
 			if (checkedItems[index] == true) {
-				if (sb.length() > 0)
+				if (index == 5)
+					sb.append("\n");
+				else if (sb.length() > 0)
 					sb.append(", ");
 
 				sb.append(items[index]);

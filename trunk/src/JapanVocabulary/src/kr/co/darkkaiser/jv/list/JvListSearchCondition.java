@@ -60,7 +60,7 @@ public class JvListSearchCondition {
 
 		// 일본어 각 품사별 검색 여부 플래그를 읽어들인다.
 		mScPartsOfSpeechItems = new ArrayList<PartsOfSpeechScInfo>();
-		JvManager.getInstance().getPartsOfSpeechScInfoList(mScPartsOfSpeechItems);
+		JvManager.getInstance().getPartsOfSpeechSearchConditionInfoList(mScPartsOfSpeechItems);
 
 		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
 			PartsOfSpeechScInfo element = mScPartsOfSpeechItems.get(index);
