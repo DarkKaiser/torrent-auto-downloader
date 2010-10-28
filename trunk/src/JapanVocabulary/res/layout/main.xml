@@ -9,31 +9,38 @@
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
     	android:gravity="right"
-    	android:textSize="8pt"/>
+    	android:textSize="8pt"
+    	/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    >
-		<TextView 
-			android:id="@+id/vocabulary"
-	    	android:layout_width="fill_parent" 
-	    	android:layout_height="fill_parent" 
-	    	android:gravity="center"
-	    	android:textSize="30pt"/>
-	 	<Button android:text="다음 단어 >>" 
+	 	<Button
+	 		android:text="다음 단어 >>" 
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
 			android:layout_height="90px"
 			android:textSize="8pt"
 			android:layout_alignParentRight="true"
-			android:layout_alignParentBottom="true"/>
-		<TextView 
+			android:layout_alignParentBottom="true"
+			/>
+		<TextView
+			android:id="@+id/memorize_method_info" 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content"
 	    	android:gravity="center"
 	    	android:textSize="6pt"
 	    	android:textColor="#99999999"
 	    	android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요." 
-	    	android:layout_above="@id/next_vocabulary"/>
+	    	android:layout_above="@id/next_vocabulary"
+	    	/>
+		<TextView
+			android:id="@+id/vocabulary"
+	    	android:layout_width="fill_parent" 
+	    	android:layout_height="fill_parent" 
+	    	android:gravity="center"
+	    	android:textSize="30pt"
+	    	android:layout_above="@id/memorize_method_info"
+	    	/>
 	</RelativeLayout>
 </LinearLayout>

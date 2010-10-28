@@ -438,8 +438,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
-				findViewById(R.id.vocabulary_info_area).setVisibility(
-						View.VISIBLE);
+				findViewById(R.id.vocabulary_info_area).setVisibility(View.VISIBLE);
 
 				mProgressDialog = null;
 				mJvListSearchThread = null;

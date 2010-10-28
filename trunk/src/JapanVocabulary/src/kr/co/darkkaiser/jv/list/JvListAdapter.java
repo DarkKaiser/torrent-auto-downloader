@@ -6,7 +6,6 @@ import kr.co.darkkaiser.jv.JapanVocabulary;
 import kr.co.darkkaiser.jv.R;
 import android.content.Context;
 import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,9 +90,7 @@ public class JvListAdapter extends BaseAdapter {
 				mJvList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
 
 				// 화면을 업데이트합니다.
-				Message msg = Message.obtain();
-				msg.what = JvListActivity.MSG_CHANGED_LIST_DATA;
-				mJvListDataChangedHandler.sendMessage(msg);
+				mJvListDataChangedHandler.sendEmptyMessage(JvListActivity.MSG_CHANGED_LIST_DATA);
 			}
 		});
 
@@ -107,9 +104,7 @@ public class JvListAdapter extends BaseAdapter {
 				mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
 				
 				// 화면을 업데이트합니다.
-				Message msg = Message.obtain();
-				msg.what = JvListActivity.MSG_CHANGED_LIST_DATA;
-				mJvListDataChangedHandler.sendMessage(msg);
+				mJvListDataChangedHandler.sendEmptyMessage(JvListActivity.MSG_CHANGED_LIST_DATA);
 			}
 		});
 

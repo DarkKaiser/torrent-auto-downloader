@@ -62,10 +62,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
 
-	// 현재 화면에 보여지고 있는 일본어 단어의 인덱스
+	// 현재 화면에 보여지고 있는 단어의 인덱스
 	private int mJvCurrentIndex = -1;
 
-	// 암기 대상 일본어 단어 전체 갯수
+	// 암기 대상 단어 전체 갯수
 	private int mMemorizeTargetJvCount = 0;
 
 	// 일본식 한자 단어를 암기대상으로 출력할지의 여부
@@ -87,38 +87,43 @@ public class JvActivity extends Activity implements OnTouchListener {
         		.setTitle("SD 카드 오류")
         		.setMessage("SD 카드가 마운트 해제되어 있습니다. 데이터를 로드할 수 없습니다.")
         		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-					@Override
+					
+        			@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();
 					}
+					
 				})
         		.show();
 
         	return;
         }
-        
+
         // 환경설정 값을 로드한다.
-        initPreference(false);
+        initSharedPreference(false);
 
-        TextView tvVocabulary = (TextView)findViewById(R.id.vocabulary);
-        tvVocabulary.setOnTouchListener(this);
+        TextView vocabulary = (TextView)findViewById(R.id.vocabulary);
+        vocabulary.setOnTouchListener(this);
 
-        Button btnNextVocabulary = (Button)findViewById(R.id.next_vocabulary);
-        btnNextVocabulary.setOnClickListener(new View.OnClickListener() {
+        Button nextVocabulary = (Button)findViewById(R.id.next_vocabulary);
+        nextVocabulary.setOnClickListener(new View.OnClickListener() {
+        	
 			@Override
 			public void onClick(View v) {
-				showNextVocabulary();
-
 				// 진동을 발생시킨다.
 				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 				vibrator.vibrate(30);
+
+				showNextVocabulary();
 			}
+
 		});
         
 		// 프로그레스 대화상자를 보인다.
 		mProgressDialog = ProgressDialog.show(this, null, "단어 DB의 업데이트 여부를 확인하는 중 입니다.", true, false);
 
    		new Thread() {
+   			
 			@Override
    			public void run() {
 		        // 새로운 단어 데이터가 있을 경우, 단어 데이터를 업데이트합니다.
@@ -131,6 +136,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				msg.what = MSG_VOCABULARY_MEMORIZE_START;
 				mVocabularyDataLoadHandler.sendMessage(msg);
    			};
+
    		}.start();
     }
 
@@ -173,9 +179,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			return true;
 			
 		case R.id.jvm_preferences:
-			// 설정 페이지를 띄운다.
 			startActivityForResult(new Intent(this, OptionActivity.class), R.id.jvm_preferences);
-
 			return true;
 		}
 
@@ -192,9 +196,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 			// 환경설정 값이 바뀌었는지 확인한다.
 			if ((resultCode & JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
 				if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) {
-					initPreference(false);
+					initSharedPreference(false);
 				} else {
-					initPreference(true);
+					initSharedPreference(true);
 					return;
 				}
 			}
@@ -218,11 +222,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 	   			};
 	   		}.start();
 		} else if (requestCode == R.id.jvm_preferences) {
-			initPreference(true);
+			initSharedPreference(true);
 		}
 	}
 
-	private void initPreference(boolean showNextVocabulary) {
+	private void initSharedPreference(boolean showNextVocabulary) {
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
 		if (mIsJapanVocabularyOutputMode != (TextUtils.equals(memorizeTargetItem, "0"))) {
@@ -232,6 +236,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				mIsJapanVocabularyOutputMode = false;
 			}
 
+			// 출력될 단어의 항목이 바뀌었을 경우에만 다음 글자를 보인다.
 			if (showNextVocabulary == true)
 				showNextVocabulary();
 		}
@@ -348,11 +353,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 	}
 
 	private void showNextVocabulary() {
-		TextView tvJapanVocabulary = (TextView)findViewById(R.id.vocabulary);
+		TextView vocabulary = (TextView)findViewById(R.id.vocabulary);
 
 		if (mJvList.isEmpty() == true) {
 			mJvCurrentIndex = -1;
-			tvJapanVocabulary.setText("");
+			vocabulary.setText("");
 
 			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
@@ -369,15 +374,15 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 			// 화면에 다음 단어를 출력한다.
 			if (mIsJapanVocabularyOutputMode == true)
-				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
+				vocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
 			else
-				tvJapanVocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
+				vocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
 		}
 	}
 
-	private void updateJapanVocabularyInfo() {
-		TextView tvJapanVocabularyInfo = (TextView)findViewById(R.id.jv_info);
-		tvJapanVocabularyInfo.setText(String.format("완료 %d개 / 전체 %d개", mMemorizeTargetJvCount - mJvList.size(), mMemorizeTargetJvCount));
+	private void updateJvMemorizeInfo() {
+		TextView jvInfo = (TextView)findViewById(R.id.jv_info);
+		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mMemorizeTargetJvCount - mJvList.size(), mMemorizeTargetJvCount));
 	}
 
 	@Override
@@ -431,7 +436,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				if (mProgressDialog != null)
 					mProgressDialog.setMessage((String)msg.obj);
 			} else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
-		    	updateJapanVocabularyInfo();
+		    	updateJvMemorizeInfo();
 	        	showNextVocabulary();
 
 				if (mProgressDialog != null)
@@ -455,29 +460,29 @@ public class JvActivity extends Activity implements OnTouchListener {
 						vibrator.vibrate(30);
 
 	    				new AlertDialog.Builder(JvActivity.this)
-	    				.setTitle("암기완료")
-	            		.setMessage("단어를 암기 완료하셨나요?")
-	            		.setPositiveButton("예", new DialogInterface.OnClickListener() {
-	    					@Override
-	    					public void onClick(DialogInterface dialog, int which) {
-	    						mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true, true);
-	    						mJvList.remove(mJvCurrentIndex);
-	    						updateJapanVocabularyInfo();
-	    						showNextVocabulary();
-	    		
-	    						// 진동을 발생시킨다.
-	    						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-	    						vibrator.vibrate(30);
+	    					.setTitle("암기완료")
+	    					.setMessage("단어 암기를 완료하셨나요?")
+	    					.setPositiveButton("예", new DialogInterface.OnClickListener() {
+	    						@Override
+	    						public void onClick(DialogInterface dialog, int which) {
+	    							// 진동을 발생시킨다.
+	    							Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+	    							vibrator.vibrate(30);
 
-	    						dialog.dismiss();
-	    					}
-	    				})
-	            		.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-							}
-						})
-	    				.show();
+	    							mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true, true);
+	    							mJvList.remove(mJvCurrentIndex);
+	    							updateJvMemorizeInfo();
+	    							showNextVocabulary();
+	    		
+	    							dialog.dismiss();
+	    						}
+	    					})
+	    					.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+	    						@Override
+	    						public void onClick(DialogInterface dialog, int which) {
+	    						}
+	    					})
+	    					.show();
 					}
 	    			break;
 			

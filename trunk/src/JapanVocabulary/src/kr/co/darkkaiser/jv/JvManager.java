@@ -1,20 +1,16 @@
 package kr.co.darkkaiser.jv;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 import kr.co.darkkaiser.jv.list.JvListSearchCondition;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.text.TextUtils.StringSplitter;
 import android.util.Log;
 
 public class JvManager {
@@ -26,7 +22,7 @@ public class JvManager {
     // 일본어 단어 DB, 사용자 DB 전체 경로 
 	private String mJvUserDbPath = null;
 	private String mJvVocabularyDbPath = null;
-	
+
 	// 일본어 단어 DB, 사용자 DB 접근 SQLite 객체
 	private SQLiteDatabase mJvUserSqLite = null;
 	private SQLiteDatabase mJvVocabularySqLite = null;
@@ -289,6 +285,7 @@ public class JvManager {
 		}
 	}
 
+	// @@@@@ 속도 개선
 	public synchronized void updateMemorizeTarget(long idx, boolean flag) {
 		if (mJvUserSqLite != null) {
 			try {
@@ -297,7 +294,7 @@ public class JvManager {
 					 .append("                       (V_IDX, MEMORIZE_TARGET) ")
 					 .append("                VALUES (").append(idx).append(", ").append(flag ? 1 : 0).append(")");
 
-				mJvUserSqLite.execSQL(sbSQL.toString());			
+				mJvUserSqLite.execSQL(sbSQL.toString());
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
 			}
@@ -306,6 +303,7 @@ public class JvManager {
 		}
 	}
 
+	// @@@@@ 속도 개선
 	public synchronized void updateMemorizeCompleted(long idx, boolean flag, long memorizeCompletedCount) {
 		if (mJvUserSqLite != null) {
 			try {
