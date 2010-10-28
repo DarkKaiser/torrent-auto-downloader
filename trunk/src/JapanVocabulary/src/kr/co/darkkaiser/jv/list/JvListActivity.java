@@ -97,8 +97,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		Spinner scMemorizeTargetSpinner = (Spinner) findViewById(R.id.sc_memorize_target);
 		scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
 		scMemorizeTargetSpinner.setPrompt("검색 조건");
-		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition
-				.getMemorizeTargetPosition());
+		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTargetPosition());
 
 		// 암기 완료 검색 조건
 		ArrayAdapter<String> scMemorizeCompletedAdapter = new ArrayAdapter<String>(

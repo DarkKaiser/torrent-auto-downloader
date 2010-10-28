@@ -1,6 +1,8 @@
 package kr.co.darkkaiser.jv;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -12,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.text.TextUtils.StringSplitter;
 import android.util.Log;
 
 public class JvManager {
@@ -142,101 +145,105 @@ public class JvManager {
         return true;
 	}
 
+	// @@@@@
 	public void searchVocabulary(JvListSearchCondition jvListSearchCondition, ArrayList<JapanVocabulary> jvList) {
 		if (mJvUserSqLite != null) {
 			try {
+				String searchWord = jvListSearchCondition.getSearchWord();
+				int memorizeTargetPos = jvListSearchCondition.getMemorizeTargetPosition();
+				int memorizeCompletedPos = jvListSearchCondition.getMemorizeCompletedPosition();
+				boolean allRegDateSearch = jvListSearchCondition.isAllRegDateSearch();
+				String firstSearchDate = jvListSearchCondition.getFirstSearchDate();
+				String lastSearchDate = jvListSearchCondition.getLastSearchDate();
+
 				StringBuilder sbSQL = new StringBuilder();
 				sbSQL.append("SELECT IDX ")
 					 .append("  FROM TBL_VOCABULARY ")
-					 .append(" WHERE A.VOCABULARY_TRANSLATION LIKE ''")
-					 .append("   AND A.REGISTRATION_DATE ")
-					 .append("   AND B.IDX IN ()")
-					 .append("   AND C.CHARACTER LIKE ''")
-					 .append("   AND C.JLPT_CLASS = 1");
+					 .append(" WHERE 1=1 ");
 
-				// 검색어
-				// 기간
-				// jlpt
+				if (TextUtils.isEmpty(searchWord) == false)
+					 sbSQL.append(" AND VOCABULARY_TRANSLATION LIKE '").append(searchWord).append("' ");
 
-				// 암기완료
+				if (allRegDateSearch == false) {
+					try {
+						long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(firstSearchDate).getTime();
+						long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(lastSearchDate).getTime();
+
+						if (searchDateFirst > searchDateLast) {
+							long temp = searchDateFirst;
+							searchDateFirst = searchDateLast;
+							searchDateLast = temp;
+						}
+		
+						searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
+						searchDateLast += 999/* 밀리초 */;
+
+						sbSQL.append(" AND REGISTRATION_DATE >= ").append(searchDateFirst).append("AND REGISTRATION_DATE <= ").append(searchDateLast);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}
+
+				// @@@@@
+//				 .append("   AND C.JLPT_CLASS = 1");
+
+				Cursor cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
+
+				ArrayList<Long> idxList = new ArrayList<Long>();
+
+				if (cursor.moveToFirst() == true) {
+					do
+					{
+						idxList.add(cursor.getLong(0/* IDX */));
+					} while (cursor.moveToNext());
+				}
+
+				cursor.close();
+
+				String idxListString = "";
+				for (int index = 0; index < idxList.size(); ++index) {
+					if (TextUtils.isEmpty(idxListString) == false)
+						idxListString += ", ";
+
+					idxListString += String.format("%s", idxList.get(index));					
+				}
+
+				// 2순위 암기완료
 				// 암기대상
+				StringBuilder sb = new StringBuilder();
+				sb.append("SELECT V_IDX FROM TBL_USER_VOCABULARY ")
+				  .append(" WEHRE V_IDX IN (").append(idxListString).append(") ");
+			
+				if (memorizeTargetPos == 1)
+					sb.append(" AND MEMORIZE_TARGET=1");
+				else if (memorizeTargetPos == 2) {
+					sb.append(" AND MEMORIZE_TARGET=0");
+				}
+				
+				if (memorizeCompletedPos == 1) {
+					sb.append(" AND MEMORIZE_COMPLETED=1 ");
+				} else if (memorizeCompletedPos == 2) {
+					sb.append(" AND MEMORIZE_COMPLETED=0 ");
+				}
 
-//				mJvUserSqLite.execSQL(sbSQL.toString());
-//
-//				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-//					JapanVocabulary jv = e.nextElement();
-//					if (jv.isMemorizeTarget() == true)
-//						jv.setMemorizeCompleted(false, false, false);
-//				}
+				cursor = mJvUserSqLite.rawQuery(sb.toString(), null);
+
+				idxList.clear();
+				if (cursor.moveToFirst() == true) {
+					do
+					{
+						idxList.add(cursor.getLong(0/* IDX */));
+					} while (cursor.moveToNext());
+				}
+
+				for (int index = 0; index < idxList.size(); ++index) {
+					jvList.add(mJvTable.get(idxList.get(index)));					
+				}
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
 			}
 		} else {
 			assert false;
-		}
-
-		// @@@@@
-//		CheckBox cboAllDataSearch = (CheckBox)linear.findViewById(R.id.all_data_search);
-//		if (cboAllDataSearch.isChecked() == true) {
-//			searchVocabulary(searchWord);
-//		} else {
-//			try {
-//				Button btnSearchDateFirst = (Button)linear.findViewById(R.id.SearchDateFirst);
-//				long searchDateFirst = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateFirst.getText().toString()).getTime();
-//
-//				Button btnSearchDateLast = (Button)linear.findViewById(R.id.SearchDateLast);
-//				long searchDateLast = new SimpleDateFormat("yyyy/MM/dd").parse(btnSearchDateLast.getText().toString()).getTime();
-//				
-//				if (searchDateFirst > searchDateLast) {
-//					long temp = searchDateFirst;
-//					searchDateFirst = searchDateLast;
-//					searchDateLast = temp;
-//				}
-//
-//				searchDateLast += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
-//				searchDateLast += 999/* 밀리초 */;
-//				
-//				searchVocabulary(searchWord, searchDateFirst, searchDateLast);
-//			} catch (ParseException e) {
-//				e.printStackTrace();
-//			}
-//		}
-
-		searchJapanVocabulary("", -1, -1, jvList);
-	}
-
-	// @@@@@
-	public synchronized void searchJapanVocabulary(String searchWord, long searchDateFirst, long searchDateLast, ArrayList<JapanVocabulary> jvList) {
-		if (TextUtils.isEmpty(searchWord) == true) {
-			if (searchDateFirst == -1 || searchDateLast == -1) {
-				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-					jvList.add(e.nextElement());
-				}
-			} else {
-				assert searchDateFirst < searchDateLast;
-				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-					JapanVocabulary jv = e.nextElement();
-					if (jv.getRegistrationDate() >= searchDateFirst && jv.getRegistrationDate() <= searchDateLast)
-						jvList.add(jv);
-				}
-			}
-		} else {
-			if (searchDateFirst == -1 || searchDateLast == -1) {
-				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-					JapanVocabulary jv = e.nextElement();
-					if (jv.getVocabularyTranslation().contains(searchWord) == true)
-						jvList.add(jv);
-				}
-			} else {
-				assert searchDateFirst < searchDateLast;
-				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-					JapanVocabulary jv = e.nextElement();
-					if (jv.getRegistrationDate() >= searchDateFirst && jv.getRegistrationDate() <= searchDateLast &&
-							jv.getVocabularyTranslation().contains(searchWord) == true) {
-						jvList.add(jv);
-					}
-				}
-			}
 		}
 	}
 
