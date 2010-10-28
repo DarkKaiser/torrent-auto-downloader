@@ -27,23 +27,11 @@ CREATE TABLE TBL_VOCABULARY (
     VOCABULARY              VARCHAR(50),
     VOCABULARY_GANA         VARCHAR(50),
     VOCABULARY_TRANSLATION  TEXT,
-    REGISTRATION_DATE       INTEGER,
-    PARTS_OF_SPEECH         INTEGER DEFAULT (99)
+    REGISTRATION_DATE       INTEGER
 );
 
 CREATE UNIQUE INDEX TBL_VOCABULARY_INDEX01 
                  ON TBL_VOCABULARY(IDX);
-
--- TBL_PARTS_OF_SPEECH 테이블
-CREATE TABLE TBL_PARTS_OF_SPEECH (
-    IDX                     INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-    NAME                    VARCHAR(50)
-);
-
-CREATE UNIQUE INDEX TBL_PARTS_OF_SPEECH_INDEX01 
-                 ON TBL_PARTS_OF_SPEECH(IDX)
-
--- 동사, 형용사, 형용동사, 명사, 부사, 접속사, 조사, 조동사, 연체사, 감동사
 
 #####################################################################################################
 ## jv2_user.db

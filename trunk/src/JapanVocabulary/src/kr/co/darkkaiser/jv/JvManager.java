@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import kr.co.darkkaiser.jv.R.menu;
 import kr.co.darkkaiser.jv.list.JvListSearchCondition;
-import kr.co.darkkaiser.jv.list.PartsOfSpeechScInfo;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -83,15 +80,12 @@ public class JvManager {
 				return false;
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("         SELECT V.IDX, ")
-			  .append("                V.VOCABULARY, ")
-			  .append("                V.VOCABULARY_GANA, ")
-			  .append("                V.VOCABULARY_TRANSLATION, ")
-			  .append("                V.REGISTRATION_DATE, ")
-			  .append("                TBL_PARTS_OF_SPEECH.NAME ")
-			  .append("           FROM TBL_VOCABULARY AS V ")
-			  .append("LEFT OUTER JOIN TBL_PARTS_OF_SPEECH")
-			  .append("             ON V.PARTS_OF_SPEECH = TBL_PARTS_OF_SPEECH.IDX");
+			sb.append("         SELECT IDX, ")
+			  .append("                VOCABULARY, ")
+			  .append("                VOCABULARY_GANA, ")
+			  .append("                VOCABULARY_TRANSLATION, ")
+			  .append("                REGISTRATION_DATE ")
+			  .append("           FROM TBL_VOCABULARY ");
 
 			Cursor cursor = mJvVocabularySqLite.rawQuery(sb.toString(), null);
 
@@ -104,8 +98,7 @@ public class JvManager {
 		    											  cursor.getLong(4/* REGISTRATION_DATE */),
 		    											  cursor.getString(1/* VOCABULARY */),
 		    											  cursor.getString(2/* VOCABULARY_GANA */),
-		    											  cursor.getString(3/* VOCABULARY_TRANSLATION */),
-		    											  cursor.getString(5/* PARTS_OF_SPEECH */)));
+		    											  cursor.getString(3/* VOCABULARY_TRANSLATION */)));
 				} while (cursor.moveToNext());
 			}
 
@@ -163,7 +156,6 @@ public class JvManager {
 
 				// 검색어
 				// 기간
-				// 품사
 				// jlpt
 
 				// 암기완료
@@ -456,43 +448,6 @@ public class JvManager {
 		}
 		
 		return sbResult.toString();
-	}
-
-	public void getPartsOfSpeechSearchConditionInfoList(ArrayList<PartsOfSpeechScInfo> list) {
-		if (mJvUserSqLite != null) {
-			try {
-				StringBuilder sbSQL = new StringBuilder();
-				sbSQL.append("SELECT IDX, NAME ")
-					 .append("  FROM TBL_PARTS_OF_SPEECH ");
-
-				Cursor cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
-
-				if (cursor.moveToFirst() == true) {
-					do
-					{
-						PartsOfSpeechScInfo info = new PartsOfSpeechScInfo();
-						info.mIdx = cursor.getLong(0/* IDX */);
-						info.mName = cursor.getString(1/* NAME */);
-						info.mChecked = true;
-
-						list.add(info);
-					} while (cursor.moveToNext());
-				}
-
-				PartsOfSpeechScInfo info = new PartsOfSpeechScInfo();
-				info.mIdx = 99;
-				info.mName = "미분류";//@@@@@
-				info.mChecked = true;
-
-				list.add(info);
-
-				cursor.close();
-			} catch (SQLiteException e) {
-				Log.e(TAG, e.getMessage());
-			}
-		} else {
-			assert false;
-		}
 	}
 
 }

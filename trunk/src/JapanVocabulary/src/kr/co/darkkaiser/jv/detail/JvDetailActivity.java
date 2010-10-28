@@ -6,7 +6,6 @@ import kr.co.darkkaiser.jv.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
@@ -42,7 +41,6 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 
 		TextView tvVocabulary = (TextView)findViewById(R.id.vocabulary);
 		TextView tvVocabularyGana = (TextView)findViewById(R.id.vocabulary_gana);
-		TextView tvPartsOfSpeech = (TextView)findViewById(R.id.parts_of_speech);
 		TextView tvVocabularyTranslation = (TextView)findViewById(R.id.vocabulary_translation);
 		TextView tvMemorizeCompleted = (TextView)findViewById(R.id.memorize_completed);
 		TextView tvMemorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count);
@@ -54,9 +52,6 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 		tvVocabularyTranslation.setText(jv.getVocabularyTranslation());
 		tvRegistrationDate.setText(jv.getRegistrationDateString());
 		tvMemorizeCompletedCount.setText("");
-
-		if (TextUtils.isEmpty(jv.getPartsOfSpeech()) == false)
-			tvPartsOfSpeech.setText(String.format("(%s)", jv.getPartsOfSpeech()));
 
 		long memorizeCompletedCount = jv.getMemorizeCompletedCount();
 

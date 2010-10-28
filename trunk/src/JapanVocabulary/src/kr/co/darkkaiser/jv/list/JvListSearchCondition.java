@@ -1,8 +1,5 @@
 package kr.co.darkkaiser.jv.list;
 
-import java.util.ArrayList;
-
-import kr.co.darkkaiser.jv.JvManager;
 import kr.co.darkkaiser.jv.R;
 
 import android.content.Context;
@@ -11,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 public class JvListSearchCondition {
-	
+
 	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";
 	private static final String JV_SPN_MEMORIZE_TARGET_SC = "sc_memorize_target_position";
 	private static final String JV_SPN_MEMORIZE_COMPLETED_SC = "sc_memorize_completed_position";
@@ -19,7 +16,6 @@ public class JvListSearchCondition {
 	private static final String JV_SPN_FIRST_SEARCH_DATE_SC = "sc_first_search_date";
 	private static final String JV_SPN_LAST_SEARCH_DATE_SC = "sc_last_search_date";
 	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
-	private static final String JV_SPN_PARTS_OF_SPEECH_SC = "sc_parts_of_speech";
 
 	private Context mContext = null;
 	private SharedPreferences mPreferences = null;
@@ -31,7 +27,6 @@ public class JvListSearchCondition {
 	private String mScFirstSearchDate = null;
 	private String mScLastSearchDate = null;
 	private boolean[] mScCheckedJLPTLevelArray = null;
-	private ArrayList<PartsOfSpeechScInfo> mScPartsOfSpeechItems = null;
 
 	public JvListSearchCondition(Context context, SharedPreferences preferences) {
 		mContext = context;
@@ -56,20 +51,6 @@ public class JvListSearchCondition {
 		mScCheckedJLPTLevelArray = new boolean[csJLPTLevelList.length];
 		for (int index = 0; index < csJLPTLevelList.length; ++index) {
 			mScCheckedJLPTLevelArray[index] = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), true);
-		}
-
-		// 일본어 각 품사별 검색 여부 플래그를 읽어들인다.
-		mScPartsOfSpeechItems = new ArrayList<PartsOfSpeechScInfo>();
-		JvManager.getInstance().getPartsOfSpeechSearchConditionInfoList(mScPartsOfSpeechItems);
-
-		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
-			PartsOfSpeechScInfo element = mScPartsOfSpeechItems.get(index);
-
-			assert element != null;
-			assert element.mIdx != -1;
-			assert TextUtils.isEmpty(element.mName) == false;
-
-			element.mChecked = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_PARTS_OF_SPEECH_SC, element.mIdx), true);
 		}
 	}
 
@@ -144,38 +125,6 @@ public class JvListSearchCondition {
 		}
 	}
 	
-	public CharSequence [] getPartsOfSpeechItems() {
-		assert mScPartsOfSpeechItems != null;
-		
-		String[] result = new String[mScPartsOfSpeechItems.size()];
-		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
-			result[index] = mScPartsOfSpeechItems.get(index).mName;
-		}
-
-		return result;
-	}
-
-	public boolean [] getPartsOfSpeechCheckedItems() {
-		assert mScPartsOfSpeechItems != null;
-		
-		boolean [] result = new boolean[mScPartsOfSpeechItems.size()];
-		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
-			result[index] = mScPartsOfSpeechItems.get(index).mChecked;
-		}
-
-		return result;
-	}
-
-	public void setCheckedPartsOfSpeech(int position, boolean value) {
-		assert mPreferences != null;
-
-		if (mScPartsOfSpeechItems != null && mScPartsOfSpeechItems.size() > position) {
-			mScPartsOfSpeechItems.get(position).mChecked = value;
-		} else {
-			assert false;
-		}
-	}
-
 	public void commit() {
 		Editor editor = mPreferences.edit();
 		editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);		
@@ -194,17 +143,6 @@ public class JvListSearchCondition {
 
 		for (int index = 0; index < csJLPTLevelList.length; ++index) {
 			editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, csJLPTLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
-		}
-
-		// 일본어 각 품사별 검색 여부 플래그를 저장한다.
-		for (int index = 0; index < mScPartsOfSpeechItems.size(); ++index) {
-			PartsOfSpeechScInfo element = mScPartsOfSpeechItems.get(index);
-			
-			assert element != null;
-			assert element.mIdx != -1;
-			assert TextUtils.isEmpty(element.mName) == false;
-			
-			editor.putBoolean(String.format("%s_%s", JV_SPN_PARTS_OF_SPEECH_SC, element.mIdx), element.mChecked);
 		}
 
 		editor.commit();

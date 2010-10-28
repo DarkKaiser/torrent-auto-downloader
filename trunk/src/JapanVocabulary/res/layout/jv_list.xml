@@ -310,29 +310,6 @@
 									<TextView
 										android:layout_width="wrap_content"
 										android:layout_height="wrap_content"
-										android:text="품사를 선택합니다. 선택된 항목이 없으면 전체를 검색 대상으로 합니다."
-										android:textColor="#cccccc"
-										android:textSize="6pt"
-										/>
-								</TableRow>
-								<TableRow
-									android:paddingBottom="27px"
-									>
-									<Button
-										android:id="@+id/sc_parts_of_speech"
-										android:layout_width="fill_parent"
-										android:layout_height="wrap_content"
-										android:layout_marginLeft="10dp"
-										android:layout_marginRight="10dp"
-										android:gravity="center"
-										/>
-								</TableRow>
-								<TableRow
-									android:paddingBottom="10px"
-									>
-									<TextView
-										android:layout_width="wrap_content"
-										android:layout_height="wrap_content"
 										android:text="JLPT 급수를 선택합니다. 선택된 항목이 없으면 전체를 검색 대상으로 합니다."
 										android:textColor="#cccccc"
 										android:textSize="6pt"

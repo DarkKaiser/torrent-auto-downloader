@@ -144,10 +144,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		btnFirstSearchDate.setOnClickListener(this);
 		cboAllRegDateSearch.setOnClickListener(this);
 
-		// 품사 검색 조건
-		updatePartsOfSpeechButtonText();
-		findViewById(R.id.sc_parts_of_speech).setOnClickListener(this);
-
 		// JLPT 급수 검색 조건
 		updateJLPTLevelButtonText();
 		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
@@ -160,30 +156,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		// 최근의 검색 조건을 이용하여 검색을 수행한다.
 		//
 		searchVocabulary();
-	}
-
-	private void updatePartsOfSpeechButtonText() {
-		CharSequence[] items = mJvListSearchCondition.getPartsOfSpeechItems();
-		boolean[] checkedItems = mJvListSearchCondition.getPartsOfSpeechCheckedItems();
-		assert items.length == checkedItems.length;
- 
-		StringBuilder sb = new StringBuilder();
-		for (int index = 0; index < checkedItems.length; ++index) {
-			if (checkedItems[index] == true) {
-				if (index == 5)
-					sb.append("\n");
-				else if (sb.length() > 0)
-					sb.append(", ");
-
-				sb.append(items[index]);
-			}
-		}
-
-		if (sb.length() == 0)
-			sb.append("<선택 항목 없음>");
-
-		Button scPartsOfSpeechButton= (Button)findViewById(R.id.sc_parts_of_speech);
-		scPartsOfSpeechButton.setText(sb.toString());	
 	}
 
 	private void updateJLPTLevelButtonText() {
@@ -567,29 +539,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.sc_parts_of_speech: {
-			CharSequence[] items = mJvListSearchCondition.getPartsOfSpeechItems();
-			boolean[] checkedItems = mJvListSearchCondition.getPartsOfSpeechCheckedItems();
-			assert items.length == checkedItems.length;
-
-			new AlertDialog.Builder(JvListActivity.this).setTitle("검색 조건")
-					.setMultiChoiceItems(items, checkedItems, new OnMultiChoiceClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-									mJvListSearchCondition.setCheckedPartsOfSpeech(item, isChecked);
-								}
-							})
-					.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									mJvListSearchCondition.commit();
-									updatePartsOfSpeechButtonText();
-								}
-							})
-					.show();
-		}
-			break;
-
 		case R.id.sc_jlpt_level: {
 			boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
 

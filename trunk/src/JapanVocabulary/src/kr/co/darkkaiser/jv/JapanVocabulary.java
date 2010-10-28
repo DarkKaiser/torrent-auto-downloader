@@ -29,10 +29,7 @@ public class JapanVocabulary {
 	// 단어 암기 완료 횟수
 	private long mMemorizeCompletedCount = 0;
 
-	// 단어의 품사 
-	private String mPartsOfSpeech = null;
-
-	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation, String partsOfSpeech) {
+	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
 		assert idx != -1;
 		assert utcDateTime > 0;
 		assert TextUtils.isEmpty(vocabulary) == false;
@@ -45,7 +42,6 @@ public class JapanVocabulary {
 		setVocabularyGana(vocabularyGana);
 		setVocabularyTranslation(vocabularyTranslation);
 		setRegistrationDate(utcDateTime);
-		setPartsOfSpeech(partsOfSpeech);
 	}
 
 	public long getIdx() {
@@ -94,14 +90,6 @@ public class JapanVocabulary {
 		mVocabularyTranslation = vocabularyTranslation;
 	}
 	
-	public String getPartsOfSpeech() {
-		return mPartsOfSpeech;
-	}
-
-	private void setPartsOfSpeech(String partsOfSpeech) {
-		mPartsOfSpeech = partsOfSpeech;
-	}
-
 	public boolean isMemorizeTarget() {
 		return mMemorizeTarget;
 	}
