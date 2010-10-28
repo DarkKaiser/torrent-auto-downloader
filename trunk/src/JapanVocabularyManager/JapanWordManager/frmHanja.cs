@@ -65,16 +65,18 @@ namespace JapanWordManager
             Close();
         }
 
-        // @@@@@
         private void btnOk_Click(object sender, EventArgs e)
         {
-            string hanja = txtCharacter.Text.Trim();
-            string ymdok = txtSoundRead.Text.Trim();
-            string hundok = txtMeanRead.Text.Trim();
-            string description = txtTranslation.Text.Trim();
+            string strCharacter = txtCharacter.Text.Trim();
+            string strSoundRead = txtSoundRead.Text.Trim();
+            string strMeanRead = txtMeanRead.Text.Trim();
+            string strTranslation = txtTranslation.Text.Trim();
+            int nJlptClass = cboJlptLevel.SelectedIndex + 1;
+            if (nJlptClass == 6)
+                nJlptClass = 99;
 
             // 변경된 것이 없는지 확인한다.
-            if (Character == hanja && SoundRead == ymdok && MeanRead == hundok && Translation == description)
+            if (Character == strCharacter && SoundRead == strSoundRead && MeanRead == strMeanRead && Translation == strTranslation && JLPTClass == nJlptClass)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -87,7 +89,7 @@ namespace JapanWordManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM tbl_hanja WHERE idx <> {0} AND Word = ""{1}""", idx, hanja);
+                    string strSQL = string.Format(@"SELECT * FROM TBL_HANJA WHERE IDX <> {0} AND CHARACTER = ""{1}""", idx, strCharacter);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -104,20 +106,23 @@ namespace JapanWordManager
                     // 데이터를 갱신한다.
                     using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
                     {
-                        updateCmd.CommandText = string.Format("UPDATE tbl_hanja SET Word=?, YmDok=?, HunDok=?, Description=? WHERE idx={0};", idx);
+                        updateCmd.CommandText = string.Format("UPDATE TBL_HANJA SET CHARACTER=?, SOUND_READ=?, MEAN_READ=?, TRANSLATION=?, JLPT_CLASS=? WHERE IDX={0};", idx);
                         SQLiteParameter param1 = new SQLiteParameter();
                         SQLiteParameter param2 = new SQLiteParameter();
                         SQLiteParameter param3 = new SQLiteParameter();
                         SQLiteParameter param4 = new SQLiteParameter();
+                        SQLiteParameter param5 = new SQLiteParameter();
                         updateCmd.Parameters.Add(param1);
                         updateCmd.Parameters.Add(param2);
                         updateCmd.Parameters.Add(param3);
                         updateCmd.Parameters.Add(param4);
+                        updateCmd.Parameters.Add(param5);
 
-                        param1.Value = hanja;
-                        param2.Value = ymdok;
-                        param3.Value = hundok;
-                        param4.Value = description;
+                        param1.Value = strCharacter;
+                        param2.Value = strSoundRead;
+                        param3.Value = strMeanRead;
+                        param4.Value = strTranslation;
+                        param5.Value = nJlptClass;
 
                         updateCmd.ExecuteNonQuery();
                     }
@@ -134,7 +139,7 @@ namespace JapanWordManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM tbl_hanja WHERE Word = ""{0}""", hanja);
+                    string strSQL = string.Format(@"SELECT * FROM TBL_HANJA WHERE CHARACTER = ""{0}""", strCharacter);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -157,28 +162,32 @@ namespace JapanWordManager
                 // 데이터를 추가한다.
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO tbl_hanja (Word, YmDok, HunDok, Description) VALUES (?,?,?,?);";
+                    cmd.CommandText = "INSERT INTO TBL_HANJA (CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION, JLPT_CLASS) VALUES (?,?,?,?,?);";
                     SQLiteParameter param1 = new SQLiteParameter();
                     SQLiteParameter param2 = new SQLiteParameter();
                     SQLiteParameter param3 = new SQLiteParameter();
                     SQLiteParameter param4 = new SQLiteParameter();
+                    SQLiteParameter param5 = new SQLiteParameter();
                     cmd.Parameters.Add(param1);
                     cmd.Parameters.Add(param2);
                     cmd.Parameters.Add(param3);
                     cmd.Parameters.Add(param4);
+                    cmd.Parameters.Add(param5);
 
-                    param1.Value = hanja;
-                    param2.Value = ymdok;
-                    param3.Value = hundok;
-                    param4.Value = description;
+                    param1.Value = strCharacter;
+                    param2.Value = strSoundRead;
+                    param3.Value = strMeanRead;
+                    param4.Value = strTranslation;
+                    param5.Value = nJlptClass;
                     cmd.ExecuteNonQuery();
                 }
             }
 
-            Character = hanja;
-            SoundRead = ymdok;
-            MeanRead = hundok;
-            Translation = description;
+            Character = strCharacter;
+            SoundRead = strSoundRead;
+            MeanRead = strMeanRead;
+            Translation = strTranslation;
+            JLPTClass = nJlptClass;
 
             DialogResult = DialogResult.OK;
             Close();

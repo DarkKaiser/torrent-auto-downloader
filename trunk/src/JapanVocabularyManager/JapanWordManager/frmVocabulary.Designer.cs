@@ -42,8 +42,6 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cboPartsOfSpeech = new System.Windows.Forms.ComboBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -73,8 +71,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cboPartsOfSpeech);
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.btnAddHanja);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -86,13 +82,13 @@
             this.groupBox1.Controls.Add(this.txtVocabularyGana);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(488, 415);
+            this.groupBox1.Size = new System.Drawing.Size(488, 393);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
             // btnAddHanja
             // 
-            this.btnAddHanja.Location = new System.Drawing.Point(20, 381);
+            this.btnAddHanja.Location = new System.Drawing.Point(20, 357);
             this.btnAddHanja.Name = "btnAddHanja";
             this.btnAddHanja.Size = new System.Drawing.Size(100, 28);
             this.btnAddHanja.TabIndex = 11;
@@ -132,7 +128,7 @@
             // 
             // txtExtensionInfo
             // 
-            this.txtExtensionInfo.Location = new System.Drawing.Point(126, 194);
+            this.txtExtensionInfo.Location = new System.Drawing.Point(126, 168);
             this.txtExtensionInfo.Multiline = true;
             this.txtExtensionInfo.Name = "txtExtensionInfo";
             this.txtExtensionInfo.ReadOnly = true;
@@ -143,18 +139,18 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(63, 197);
+            this.label4.Location = new System.Drawing.Point(63, 171);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 12);
             this.label4.TabIndex = 3;
             this.label4.Text = "확장 정보";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtDescription
+            // txtVocabularyTranslation
             // 
             this.txtVocabularyTranslation.Location = new System.Drawing.Point(126, 74);
             this.txtVocabularyTranslation.Multiline = true;
-            this.txtVocabularyTranslation.Name = "txtDescription";
+            this.txtVocabularyTranslation.Name = "txtVocabularyTranslation";
             this.txtVocabularyTranslation.Size = new System.Drawing.Size(356, 87);
             this.txtVocabularyTranslation.TabIndex = 6;
             this.txtVocabularyTranslation.Leave += new System.EventHandler(this.txtDescription_Leave);
@@ -168,10 +164,10 @@
             this.txtVocabulary.TextChanged += new System.EventHandler(this.txtVocabulary_TextChanged);
             this.txtVocabulary.Leave += new System.EventHandler(this.txtVocabulary_Leave);
             // 
-            // txtHiGaVocabulary
+            // txtVocabularyGana
             // 
             this.txtVocabularyGana.Location = new System.Drawing.Point(126, 47);
-            this.txtVocabularyGana.Name = "txtHiGaVocabulary";
+            this.txtVocabularyGana.Name = "txtVocabularyGana";
             this.txtVocabularyGana.Size = new System.Drawing.Size(356, 21);
             this.txtVocabularyGana.TabIndex = 5;
             this.txtVocabularyGana.TextChanged += new System.EventHandler(this.txtHiGaVocabulary_TextChanged);
@@ -179,7 +175,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(336, 424);
+            this.btnOk.Location = new System.Drawing.Point(336, 402);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 12;
@@ -189,7 +185,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(417, 424);
+            this.btnCancel.Location = new System.Drawing.Point(417, 402);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 11;
@@ -206,25 +202,6 @@
             this.webBrowser1.Size = new System.Drawing.Size(704, 622);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(91, 173);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 12);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "품사";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cboPartsOfSpeech
-            // 
-            this.cboPartsOfSpeech.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboPartsOfSpeech.FormattingEnabled = true;
-            this.cboPartsOfSpeech.Location = new System.Drawing.Point(127, 168);
-            this.cboPartsOfSpeech.Name = "cboPartsOfSpeech";
-            this.cboPartsOfSpeech.Size = new System.Drawing.Size(355, 20);
-            this.cboPartsOfSpeech.TabIndex = 13;
             // 
             // frmVocabulary
             // 
@@ -263,8 +240,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cboPartsOfSpeech;
 
     }
 }

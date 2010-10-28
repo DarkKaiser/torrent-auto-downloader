@@ -27,7 +27,7 @@ namespace JapanWordManager
 
         private void EnableControls()
         {
-            if (string.IsNullOrEmpty(txtVocabulary.Text.Trim()) == true || string.IsNullOrEmpty(txtVocabularyGana.Text.Trim()) == true || cboPartsOfSpeech.SelectedIndex == -1)
+            if (string.IsNullOrEmpty(txtVocabulary.Text.Trim()) == true || string.IsNullOrEmpty(txtVocabularyGana.Text.Trim()) == true)
                 btnOk.Enabled = false;
             else
                 btnOk.Enabled = true;
@@ -59,7 +59,6 @@ namespace JapanWordManager
             }
         }
 
-        // @@@@@
         private void frmVocabulary_Load(object sender, EventArgs e)
         {
             txtVocabulary.Text = Vocabulary;
@@ -75,15 +74,14 @@ namespace JapanWordManager
             txtVocabulary.Focus();
         }
 
-        // @@@@@
         private void btnOk_Click(object sender, EventArgs e)
         {
-            string vocabulary = txtVocabulary.Text.Trim();
-            string higaVocabulary = txtVocabularyGana.Text.Trim();
-            string description = txtVocabularyTranslation.Text.Trim();
+            string strVocabulary = txtVocabulary.Text.Trim();
+            string strVocabularyGana = txtVocabularyGana.Text.Trim();
+            string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
 
             // 변경된 것이 없는지 확인한다.
-            if (Vocabulary == vocabulary && VocabularyGana == higaVocabulary && VocabularyTranslation == description)
+            if (Vocabulary == strVocabulary && VocabularyGana == strVocabularyGana && VocabularyTranslation == strVocabularyTranslation)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -96,7 +94,7 @@ namespace JapanWordManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM tbl_vocabulary WHERE idx <> {0} AND vocabulary = ""{1}""", idx, vocabulary);
+                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE IDX <> {0} AND VOCABULARY = ""{1}""", idx, strVocabulary);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -113,7 +111,7 @@ namespace JapanWordManager
                     // 데이터를 갱신한다.
                     using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
                     {
-                        updateCmd.CommandText = string.Format("UPDATE tbl_vocabulary SET vocabulary=?, vocabulary_gana=?, vocabulary_translation=?, registration_date=? WHERE idx={0};", idx);
+                        updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, REGISTRATION_DATE=? WHERE IDX={0};", idx);
                         SQLiteParameter param1 = new SQLiteParameter();
                         SQLiteParameter param2 = new SQLiteParameter();
                         SQLiteParameter param3 = new SQLiteParameter();
@@ -123,9 +121,9 @@ namespace JapanWordManager
                         updateCmd.Parameters.Add(param3);
                         updateCmd.Parameters.Add(param4);
 
-                        param1.Value = vocabulary;
-                        param2.Value = higaVocabulary;
-                        param3.Value = description;
+                        param1.Value = strVocabulary;
+                        param2.Value = strVocabularyGana;
+                        param3.Value = strVocabularyTranslation;
                         param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
 
                         updateCmd.ExecuteNonQuery();
@@ -143,7 +141,7 @@ namespace JapanWordManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM tbl_vocabulary WHERE vocabulary = ""{0}""", vocabulary);
+                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}""", strVocabulary);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -151,41 +149,8 @@ namespace JapanWordManager
                     {
                         if (reader.HasRows == true)
                         {
-                            if (MessageBox.Show("DB에 이미 등록된 단어입니다.\nDB의 데이터를 업데이트 하시겠습니까?", "오류", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
-                            {
-                                txtVocabulary.Focus();
-                                return;
-                            }
-
-                            // 데이터를 갱신한다.
-                            using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
-                            {
-                                reader.Read();
-                                updateCmd.CommandText = string.Format("UPDATE tbl_vocabulary SET vocabulary=?, vocabulary_gana=?, vocabulary_translation=?, registration_date=? WHERE idx={0};", reader.GetInt32(0));
-                                SQLiteParameter param1 = new SQLiteParameter();
-                                SQLiteParameter param2 = new SQLiteParameter();
-                                SQLiteParameter param3 = new SQLiteParameter();
-                                SQLiteParameter param4 = new SQLiteParameter();
-                                updateCmd.Parameters.Add(param1);
-                                updateCmd.Parameters.Add(param2);
-                                updateCmd.Parameters.Add(param3);
-                                updateCmd.Parameters.Add(param4);
-                                param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
-
-                                param1.Value = vocabulary;
-                                param2.Value = higaVocabulary;
-                                param3.Value = description;
-
-                                updateCmd.ExecuteNonQuery();
-                            }
-
-                            Vocabulary = vocabulary;
-                            VocabularyGana = higaVocabulary;
-                            VocabularyTranslation = description;
-
-                            DialogResult = DialogResult.OK;
-                            Close();
-
+                            MessageBox.Show("DB에 이미 등록된 단어입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            txtVocabulary.Focus();
                             return;
                         }
                     }
@@ -199,7 +164,7 @@ namespace JapanWordManager
                 // 데이터를 추가한다.
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO tbl_vocabulary (vocabulary, vocabulary_gana, vocabulary_translation, registration_date) VALUES (?,?,?,?);";
+                    cmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, REGISTRATION_DATE) VALUES (?,?,?,?);";
                     SQLiteParameter param1 = new SQLiteParameter();
                     SQLiteParameter param2 = new SQLiteParameter();
                     SQLiteParameter param3 = new SQLiteParameter();
@@ -209,17 +174,17 @@ namespace JapanWordManager
                     cmd.Parameters.Add(param3);
                     cmd.Parameters.Add(param4);
 
-                    param1.Value = vocabulary;
-                    param2.Value = higaVocabulary;
-                    param3.Value = description;
+                    param1.Value = strVocabulary;
+                    param2.Value = strVocabularyGana;
+                    param3.Value = strVocabularyTranslation;
                     param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
                     cmd.ExecuteNonQuery();
                 }
             }
 
-            Vocabulary = vocabulary;
-            VocabularyGana = higaVocabulary;
-            VocabularyTranslation = description;
+            Vocabulary = strVocabulary;
+            VocabularyGana = strVocabularyGana;
+            VocabularyTranslation = strVocabularyTranslation;
 
             DialogResult = DialogResult.OK;
             Close();

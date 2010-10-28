@@ -16,7 +16,7 @@ namespace JapanWordManager
     public partial class frmJWM : Form
     {
         private static string DB_FILE_NAME = "jv2.db";
-        private static string DATA_FOLDER_NAME = "data";
+        private static string DATA_FOLDER_NAME = ".";
 
         private SQLiteConnection dbConn = null;
 
@@ -195,7 +195,6 @@ namespace JapanWordManager
                                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
-        // @@@@@
         private void dataWordGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 현재 선택된 행을 얻는다.
@@ -219,6 +218,8 @@ namespace JapanWordManager
                 rc[0].Cells[2].Value = form.VocabularyGana;
                 rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
+
+            form.Dispose();
         }
 
         private void dataHanjaGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -256,8 +257,10 @@ namespace JapanWordManager
                 if (form.JLPTClass != 99)
                     strLevel = "N" + form.JLPTClass;
 
-                rc[0].Cells[5].Value = form.Translation;
+                rc[0].Cells[5].Value = strLevel;
             }
+
+            form.Dispose();
         }
 
         private void btnWordAdd_Click(object sender, EventArgs e)
@@ -344,12 +347,6 @@ namespace JapanWordManager
                 if (tableList.Contains("TBL_VOCABULARY") == false)
                 {
                     errorMessage = "'TBL_VOCABULARY' 테이블이 존재하지 않습니다.";
-                    return false;
-                }
-
-                if (tableList.Contains("TBL_PARTS_OF_SPEECH") == false)
-                {
-                    errorMessage = "'TBL_PARTS_OF_SPEECH' 테이블이 존재하지 않습니다.";
                     return false;
                 }
             }
