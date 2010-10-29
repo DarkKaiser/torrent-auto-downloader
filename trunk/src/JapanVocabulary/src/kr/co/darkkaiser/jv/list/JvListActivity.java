@@ -63,7 +63,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 	private int mActivityResultCode = 0;
 
-	// @@@@@
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,8 +75,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 		// 단어 리스트를 초기화한다.
 		mJvListData = new ArrayList<JapanVocabulary>();
-		mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem,
-				mJvListDataChangedHandler, mJvListData);
+		mJvListAdapter = new JvListAdapter(this, R.layout.jv_listitem, mJvListDataChangedHandler, mJvListData);
 		setListAdapter(mJvListAdapter);
 
 		//
@@ -85,16 +83,15 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		//
 
 		// 검색어 검색 조건
-		EditText scSearchWordEditText = (EditText) findViewById(R.id.sc_search_word);
+		EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
 		scSearchWordEditText.setText(mJvListSearchCondition.getSearchWord());
 
 		// 암기 대상 검색 조건
 		ArrayAdapter<String> scMemorizeTargetAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, getResources()
-						.getStringArray(R.array.sc_memorize_target));
+				this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_target));
 		scMemorizeTargetAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
 
-		Spinner scMemorizeTargetSpinner = (Spinner) findViewById(R.id.sc_memorize_target);
+		Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
 		scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
 		scMemorizeTargetSpinner.setPrompt("검색 조건");
 		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTargetPosition());
@@ -110,30 +107,29 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompletedPosition());
 
 		// 단어 등록일 검색 조건
-		Button btnLastSearchDate = (Button) findViewById(R.id.sc_last_search_date);
-		Button btnFirstSearchDate = (Button) findViewById(R.id.sc_first_search_date);
-		CheckBox cboAllRegDateSearch = (CheckBox) findViewById(R.id.sc_all_reg_date_search);
+		Button btnLastSearchDate = (Button)findViewById(R.id.sc_last_search_date);
+		Button btnFirstSearchDate = (Button)findViewById(R.id.sc_first_search_date);
+		CheckBox cboAllRegDateSearch = (CheckBox)findViewById(R.id.sc_all_reg_date_search);
 
 		if (mJvListSearchCondition.isAllRegDateSearch() == true) {
 			cboAllRegDateSearch.setChecked(true);
 
 			Calendar currentDate = Calendar.getInstance();
 			btnLastSearchDate.setText(String.format("%04d/%02d/%02d",
-					currentDate.get(Calendar.YEAR), currentDate
-							.get(Calendar.MONTH) + 1, currentDate
-							.get(Calendar.DATE)));
+					currentDate.get(Calendar.YEAR),
+					currentDate.get(Calendar.MONTH) + 1,
+					currentDate.get(Calendar.DATE)));
+			
 			currentDate.add(Calendar.DAY_OF_MONTH, -7);
 			btnFirstSearchDate.setText(String.format("%04d/%02d/%02d",
-					currentDate.get(Calendar.YEAR), currentDate
-							.get(Calendar.MONTH) + 1, currentDate
-							.get(Calendar.DATE)));
+					currentDate.get(Calendar.YEAR), 
+					currentDate.get(Calendar.MONTH) + 1, 
+					currentDate.get(Calendar.DATE)));
 		} else {
 			cboAllRegDateSearch.setChecked(false);
 
-			btnFirstSearchDate.setText(mJvListSearchCondition
-					.getFirstSearchDate());
-			btnLastSearchDate.setText(mJvListSearchCondition
-					.getLastSearchDate());
+			btnFirstSearchDate.setText(mJvListSearchCondition.getFirstSearchDate());
+			btnLastSearchDate.setText(mJvListSearchCondition.getLastSearchDate());
 
 			btnLastSearchDate.setEnabled(true);
 			btnFirstSearchDate.setEnabled(true);
@@ -408,33 +404,29 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		}
 	};
 
-	// @@@@@
 	private Handler mJvListDataChangedHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == MSG_COMPLETED_LIST_DATA_UPDATE) {
-				updateVocabularyInfo();
 				mJvListAdapter.notifyDataSetChanged();
+				updateVocabularyInfo();
 
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 
-				findViewById(R.id.vocabulary_info_area).setVisibility(View.VISIBLE);
-
 				mProgressDialog = null;
 				mJvListSearchThread = null;
 			} else if (msg.what == MSG_CHANGED_LIST_DATA) {
+				mJvListAdapter.notifyDataSetChanged();
+				updateVocabularyInfo();
+
 				// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
 				mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
 				setResult(mActivityResultCode);
-
-				updateVocabularyInfo();
-				mJvListAdapter.notifyDataSetChanged();
 			}
 		};
 	};
 
-	// @@@@@
 	private void searchVocabulary() {
 		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
 		if (mProgressDialog == null) {
@@ -450,27 +442,19 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 					// 검색을 취소하였으므로 단어를 모두 제거한다.
 					mJvListData.clear();
 
-					Toast.makeText(JvListActivity.this, "단어 검색이 취소되었습니다",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(JvListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
 
 					Message msg = Message.obtain();
 					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
 					mJvListDataChangedHandler.sendMessage(msg);
 				}
 			});
-
 		}
-
-		// 검색이 시작되기 전 화면을 정리한다.
-		mJvListData.clear();
-		mJvListAdapter.notifyDataSetChanged();
-		findViewById(R.id.vocabulary_info_area).setVisibility(View.INVISIBLE);
 
 		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
 		mJvListSearchThread.start();
 	}
 
-	// @@@@@
 	public class JvListSearchThread extends Thread {
 
 		private JvListSearchCondition mJvListSearchCondition = null;
@@ -482,9 +466,9 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 		@Override
 		public void run() {
-			// 검색 정보를 저장 @@@@@ 위치를 더 나중으로??
+			// 현재 검색되는 검색 정보를 저장해 놓는다.
 			mJvListSearchCondition.commit();
-			
+
 			mJvListData.clear();
 			JvManager.getInstance().searchVocabulary(JvListActivity.this, mJvListSearchCondition, mJvListData);
 			sortList();
