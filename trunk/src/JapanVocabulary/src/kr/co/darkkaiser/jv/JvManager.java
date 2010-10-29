@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import kr.co.darkkaiser.jv.list.JvListSearchCondition;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -191,8 +192,9 @@ public class JvManager {
         return true;
 	}
 
-	// @@@@@
-	public void searchVocabulary(JvListSearchCondition searchCondition, ArrayList<JapanVocabulary> jvList) {
+	public synchronized void searchVocabulary(Context context, JvListSearchCondition searchCondition, ArrayList<JapanVocabulary> jvList) {
+		assert context != null;
+
 		if (mJvVocabularySqLite != null && mJvUserSqLite != null) {
 			Cursor cursor = null;
 
@@ -203,26 +205,59 @@ public class JvManager {
 				boolean allRegDateSearch = searchCondition.isAllRegDateSearch();
 				String firstSearchDate = searchCondition.getFirstSearchDate();
 				String lastSearchDate = searchCondition.getLastSearchDate();
+				boolean[] checkedItems = searchCondition.getCheckedJLPTLevelArray();
 
-				// JLPT 가 있고 없고에 따라서, 전체 , jlpt 검색일땐 필요없음
-				
-				
-				
-				
-				
+				boolean hasSearchCondition = false;
 				StringBuilder sbSQL = new StringBuilder();
-				sbSQL.append("SELECT IDX ")
-					 .append("  FROM TBL_VOCABULARY AS V ")
-					 .append(" WHERE 1=1 ");
+
+				// 'JLPT 급수' 검색 조건 추가
+				boolean allSearchJLPTLevel = true;
+				for (int index = 1; index < checkedItems.length; ++index) {
+					if (checkedItems[0] != checkedItems[index]) {
+						allSearchJLPTLevel = false;
+						break;
+					}
+				}
+				
+				if (allSearchJLPTLevel == true) {
+					sbSQL.append("SELECT V.IDX ")
+				 	 	 .append("  FROM TBL_VOCABULARY AS V ")
+				 	 	 .append(" WHERE 1=1 ");
+				} else {
+					hasSearchCondition = true;
+
+					sbSQL.append("SELECT V.IDX ")
+						 .append("  FROM TBL_VOCABULARY AS V ")
+						 .append(" WHERE V.IDX IN (          SELECT DISTINCT V2.IDX ")
+						 .append("                             FROM TBL_HANJA AS A ")
+						 .append("                  LEFT OUTER JOIN TBL_VOCABULARY AS V2 ")
+						 .append("                               ON V2.VOCABULARY LIKE ('%'||A.CHARACTER||'%') ")
+						 .append("                            WHERE 1=1 ")
+						 .append("                              AND A.JLPT_CLASS IN (");
+				
+					String[] items = context.getResources().getStringArray(R.array.sc_jlpt_level_list_values);
+					for (int index = 0; index < checkedItems.length; ++index) {
+						if (checkedItems[index] == true) {
+							if (index > 0)
+								sbSQL.append(", ");
+							
+							sbSQL.append(items[index]);
+						}
+					}
+					
+					sbSQL.append(" ) ) ");
+				}
 
 				// '단어 뜻 검색어' 검색 조건 추가
-				if (TextUtils.isEmpty(searchWord) == false)
-					 sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
+				if (TextUtils.isEmpty(searchWord) == false) {
+					hasSearchCondition = true;
+					sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
+				}
 
-				// @@@@@
 				// '단어 등록일' 검색 조건 추가
 				if (allRegDateSearch == false) {
 					try {
+						hasSearchCondition = true;
 						long firstSearchDateValue = new SimpleDateFormat("yyyy/MM/dd").parse(firstSearchDate).getTime();
 						long lastSearchDateValue = new SimpleDateFormat("yyyy/MM/dd").parse(lastSearchDate).getTime();
 
@@ -235,83 +270,82 @@ public class JvManager {
 						lastSearchDateValue += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
 						lastSearchDateValue += 999/* 밀리초 */;
 
-						sbSQL.append(" AND REGISTRATION_DATE >= ").append(firstSearchDateValue).append("AND REGISTRATION_DATE <= ").append(lastSearchDateValue);
+						sbSQL.append(" AND REGISTRATION_DATE >= ").append(firstSearchDateValue)
+						 	 .append(" AND REGISTRATION_DATE <= ").append(lastSearchDateValue);
 					} catch (ParseException e) {
-						e.printStackTrace();
+						Log.e(TAG, e.getMessage());
+						return;
 					}
 				}
-				
-				// 'JLPT 급수'  검색 조건 추가
-				// @@@@@
-
-				cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
 
 				ArrayList<Long> idxList = new ArrayList<Long>();
-				if (cursor.moveToFirst() == true) {
-					do
-					{
-						idxList.add(cursor.getLong(0/* IDX */));
-					} while (cursor.moveToNext());
-				}
 
-				cursor.close();
-				cursor = null;
-				
-				if (idxList.isEmpty() == true)
-					return;
-					
-				if (memorizeTargetPosition == 0 && memorizeCompletedPosition == 0) {
-					// @@@@@
-					for (int index = 0; index < idxList.size(); ++index)
-						jvList.add(mJvTable.get(idxList.get(index)));
-					
-					return;
-				}
+				if (hasSearchCondition == true) {
+					cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
 
-				sbSQL = new StringBuilder();
-				sbSQL.append("SELECT V_IDX ")
-					 .append("  FROM TBL_USER_VOCABULARY ")
-					 .append(" WHERE V_IDX IN (");
+					if (cursor.moveToFirst() == true) {
+						do
+						{
+							idxList.add(cursor.getLong(0/* IDX */));
+						} while (cursor.moveToNext());
+					}
 
-				for (int index = 0; index < idxList.size(); ++index) {
-					if (index > 0)
-						sbSQL.append(", ");
+					cursor.close();
+					cursor = null;
 
-					sbSQL.append(idxList.get(index));
-				}
+					// 현재까지의 검색 결과가 없다면 앞으로 더 검색해봐야 의미 없으므로 반환한다.
+					if (idxList.isEmpty() == true)
+						return;
 
-				sbSQL.append(") ");
+					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 현재까지의 검색 결과를 반환한다.
+					if (memorizeTargetPosition == 0/*모든 단어*/ && memorizeCompletedPosition == 0/*모든 단어*/) {
+						for (int index = 0; index < idxList.size(); ++index)
+							jvList.add(mJvTable.get(idxList.get(index)));
+						
+						return;
+					}
 
-				// '암기 완료'  검색 조건 추가
-				if (memorizeCompletedPosition == 1/*암기 완료된 단어*/) {
-					sbSQL.append(" AND MEMORIZE_COMPLETED=1 ");
-				} else if (memorizeCompletedPosition == 2/*암기 미완료된 단어*/) {
-					sbSQL.append(" AND MEMORIZE_COMPLETED=0 ");
-				}
+					boolean memorizeTarget = false;
+					boolean memorizeCompleted = false;
+					if (memorizeTargetPosition == 1/*암기 대상 단어*/)
+						memorizeTarget = true;
+					if (memorizeCompletedPosition == 1/*암기 완료된 단어*/)
+						memorizeCompleted = true;
 
-				// '암기 대상'  검색 조건 추가
-				if (memorizeTargetPosition == 1/*암기 대상 단어*/) {
-					sbSQL.append(" AND MEMORIZE_TARGET=1 ");
-				} else if (memorizeTargetPosition == 2/*암기 비대상 단어*/) {
-					// @@@@@ 아직 추가 안된 단어도 있을 수 있음
-					sbSQL.append(" AND MEMORIZE_TARGET=0 ");
-				}
+					for (int index = 0; index < idxList.size(); ++index) {
+						JapanVocabulary japanVocabulary = mJvTable.get(idxList.get(index));
+						if (memorizeTargetPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeTarget() != memorizeTarget)
+							continue;
+						if (memorizeCompletedPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeCompleted() != memorizeCompleted)
+							continue;
+						
+						jvList.add(japanVocabulary);
+					}
+				} else {
+					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 모든 단어를 반환한다.
+					if (memorizeTargetPosition == 0/*모든 단어*/ && memorizeCompletedPosition == 0/*모든 단어*/) {
+						for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); )
+							jvList.add(e.nextElement());
+						
+						return;
+					}
 
-				cursor = mJvUserSqLite.rawQuery(sbSQL.toString(), null);
+					boolean memorizeTarget = false;
+					boolean memorizeCompleted = false;
+					if (memorizeTargetPosition == 1/*암기 대상 단어*/)
+						memorizeTarget = true;
+					if (memorizeCompletedPosition == 1/*암기 완료된 단어*/)
+						memorizeCompleted = true;
 
-				idxList.clear();
-				if (cursor.moveToFirst() == true) {
-					do
-					{
-						idxList.add(cursor.getLong(0/* IDX */));
-					} while (cursor.moveToNext());
-				}
-
-				cursor.close();
-				cursor = null;
-
-				for (int index = 0; index < idxList.size(); ++index) {
-					jvList.add(mJvTable.get(idxList.get(index)));					
+					for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+						JapanVocabulary japanVocabulary = e.nextElement();
+						if (memorizeTargetPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeTarget() != memorizeTarget)
+							continue;
+						if (memorizeCompletedPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeCompleted() != memorizeCompleted)
+							continue;
+						
+						jvList.add(japanVocabulary);
+					}
 				}
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
@@ -327,7 +361,6 @@ public class JvManager {
 	}
 
 	public synchronized JapanVocabulary getJapanVocabulary(long idx) {
-		assert idx >= 0 && idx < mJvTable.size();
 		return mJvTable.get(idx);
 	}
 
