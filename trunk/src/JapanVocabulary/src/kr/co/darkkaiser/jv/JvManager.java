@@ -437,7 +437,7 @@ public class JvManager {
 		}
 	}
 
-	public boolean updateMemorizeField(int menuItemId, ArrayList<Long> idxList) {
+	public synchronized boolean updateMemorizeField(int menuItemId, ArrayList<Long> idxList) {
 		if (mJvUserSqLite == null) {
 			assert false;
 			return false;
@@ -523,7 +523,7 @@ public class JvManager {
 		return true;
 	}
 
-	public String getJapanVocabularyDetailDescription(String vocabulary) {
+	public synchronized String getJapanVocabularyDetailDescription(String vocabulary) {
 		StringBuilder sbResult = new StringBuilder();
 		if (mJvVocabularySqLite != null) {
 			for (int index = 0; index < vocabulary.length(); ++index) {
@@ -576,6 +576,26 @@ public class JvManager {
 		}
 		
 		return sbResult.toString();
+	}
+
+	public synchronized ArrayList<Integer> getVocabularyInfo() {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		
+		int memorizeTargetCount = 0;
+		int memorizeCompletedCount = 0;
+		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			JapanVocabulary jv = e.nextElement();
+			if (jv.isMemorizeTarget() == true)
+				++memorizeTargetCount;
+			if (jv.isMemorizeCompleted() == true)
+				++memorizeCompletedCount;
+		}
+		
+		result.add(mJvTable.size());
+		result.add(memorizeTargetCount);
+		result.add(memorizeCompletedCount);
+		
+		return result;
 	}
 
 }

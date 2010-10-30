@@ -19,8 +19,8 @@
 			<TableLayout
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:background="#77444444"
-				android:stretchColumns="1"
+				android:background="@drawable/vocabulary_info_bar"
+				android:stretchColumns="2"
 				android:padding="3px"
 				>
 				<TableRow>
@@ -28,19 +28,25 @@
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:textColor="#cccccc"
-				    	android:text="* 전체 : "
+				    	android:layout_gravity="right"
+				    	android:text="전체단어 : "
 				    	/>
 				    <TextView
 				    	android:id="@+id/all_vocabulary_count"
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
+				    	android:layout_gravity="right"
 				    	android:textColor="#cccccc"
 				    	/>
 				    <TextView
-				    	android:layout_width="fill_parent"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	/>
+				    <TextView
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:textColor="#cccccc"
-				    	android:text="* 암기대상 : "
+				    	android:text="전체암기대상 : "
 				    	/>
 				    <TextView
 				    	android:id="@+id/memorize_target_count"
@@ -55,8 +61,25 @@
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:textColor="#cccccc"
-				    	android:text="* 암기완료 : "
-				    	android:layout_column="2"
+				    	android:layout_gravity="right"
+				    	android:text="검색된단어 : "
+				    	/>
+				    <TextView
+				    	android:id="@+id/search_vocabulary_count"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_gravity="right"
+				    	android:textColor="#cccccc"
+				    	/>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	/>
+				    <TextView
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:textColor="#cccccc"
+				    	android:text="전체암기완료 : "
 				    	/>
 				    <TextView
 				    	android:id="@+id/memorize_completed_count"
@@ -67,16 +90,6 @@
 				    	/>
 				</TableRow>
 			</TableLayout>
-		    <TextView
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="2px"
-		    	android:background="#cccccc"
-		    	/>
-		    <TextView
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="1px"
-		    	android:background="#000000"
-		    	/>
 			<TextView
 				android:id="@android:id/empty"
 				android:layout_width="wrap_content"

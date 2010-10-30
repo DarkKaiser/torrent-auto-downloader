@@ -480,27 +480,19 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 	}
 
-	// @@@@@
 	private void updateVocabularyInfo() {
-		int memorizeTargetCount = 0;
-		int memorizeCompletedCount = 0;
+		ArrayList<Integer> vocabularyInfo = JvManager.getInstance().getVocabularyInfo();
+		assert vocabularyInfo.size() == 3;
 
-		for (JapanVocabulary jv : mJvListData) {
-			if (jv.isMemorizeTarget() == true)
-				++memorizeTargetCount;
-			if (jv.isMemorizeCompleted() == true)
-				++memorizeCompletedCount;
-		}
+		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);
+		TextView searchVocabularyCount = (TextView)findViewById(R.id.search_vocabulary_count);
+		TextView memorizeTargetCount = (TextView)findViewById(R.id.memorize_target_count);
+		TextView memorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count);
 
-		TextView tvAllVocabularyCount = (TextView) findViewById(R.id.all_vocabulary_count);
-		TextView tvMemorizeTargetCount = (TextView) findViewById(R.id.memorize_target_count);
-		TextView tvMemorizeCompletedCount = (TextView) findViewById(R.id.memorize_completed_count);
-
-		tvAllVocabularyCount.setText(String.format("%d개", mJvListData.size()));
-		tvMemorizeTargetCount
-				.setText(String.format("%d개", memorizeTargetCount));
-		tvMemorizeCompletedCount.setText(String.format("%d개",
-				memorizeCompletedCount));
+		allVocabularyCount.setText(String.format("%d개", vocabularyInfo.get(0)));
+		searchVocabularyCount.setText(String.format("%d개", mJvListData.size()));
+		memorizeTargetCount.setText(String.format("%d개", vocabularyInfo.get(1)));
+		memorizeCompletedCount.setText(String.format("%d개", vocabularyInfo.get(2)));
 	}
 
 	@Override
