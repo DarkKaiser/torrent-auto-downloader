@@ -33,9 +33,9 @@ public class JvDefines {
     public static final String JV_VOCABULARY_DB = "jv2.db";
 
     /*
-     * 사용자 DB 파일명
+     * 사용자의 단어에 대한 정보를 저장한 파일명
      */
-    public static final String JV_USER_DB = "jv2_user.db";
+    public static final String JV_USER_VOCABULARY_INFO_FILE = "jv2_user.db";
     
     /*
      * 단어 DB 버전 정보 확인 URL
