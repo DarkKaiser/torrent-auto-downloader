@@ -12,14 +12,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	<activity android:name=".detail.JvDetailActivity"></activity>
-	<activity android:name=".list.JvListActivity"
-			  android:configChanges="orientation|keyboard">
-	</activity>
-<activity android:name=".option.OptionActivity"></activity>
-</application>
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+		<activity android:name=".detail.JvDetailActivity">
+		</activity>
+		<activity android:name=".list.JvListActivity"
+				  android:configChanges="orientation|keyboard">
+		</activity>
+		<activity android:name=".option.OptionActivity">
+		</activity>
+	</application>
 <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 <uses-sdk android:minSdkVersion="5"></uses-sdk>
-</manifest> 
+</manifest>
