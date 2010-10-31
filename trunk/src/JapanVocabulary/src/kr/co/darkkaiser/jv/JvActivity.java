@@ -177,7 +177,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	   		}.start();
 
 			return true;
-			
+
 		case R.id.jvm_preferences:
 			startActivityForResult(new Intent(this, OptionActivity.class), R.id.jvm_preferences);
 			return true;
@@ -289,7 +289,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			msg.what = MSG_PROGRESS_DIALOG_REFRESH;
 			msg.obj = "단어 DB를 업데이트 하고 있습니다.";
 			mVocabularyDataLoadHandler.sendMessage(msg);
-			
+
 			String jvDbPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
 			File f = new File(jvDbPath);
 			if (f.exists() == false) {
@@ -301,22 +301,36 @@ public class JvActivity extends Activity implements OnTouchListener {
 			// 단어 DB 파일을 내려받는다.
 			try {
 				URL url = new URL(JvDefines.JV_DB_DOWNLOAD_URL);
-				BufferedInputStream bis = new BufferedInputStream(url.openConnection().getInputStream());
 
-				int current = 0;
-				ByteArrayBuffer baf = new ByteArrayBuffer(50);
-				while ((current = bis.read()) != -1) {
-					baf.append((byte)current);
+				URLConnection con = url.openConnection();
+				int contentLength = con.getContentLength();
+				BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+
+				int readBytes = 0;
+				byte[] bytesIn = new byte[1024];
+				ByteArrayBuffer baf = new ByteArrayBuffer(1024);
+
+		        while ((readBytes = bis.read(bytesIn)) >= 0) {
+		            baf.append(bytesIn, 0, readBytes);
+		        }
+
+				bis.close();
+
+				if (contentLength > 0 && contentLength > baf.length()) {
+					msg = Message.obtain();
+					msg.what = MSG_TOAST_SHOW;
+					msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
+					mVocabularyDataLoadHandler.sendMessage(msg);
+				} else {
+					f = new File(jvDbPath);
+					f.delete();
+
+					FileOutputStream fos = new FileOutputStream(f);
+					fos.write(baf.toByteArray());
+					fos.close();
+
+					mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, remoteDbVersion).commit();
 				}
-
-				f = new File(jvDbPath);
-				f.delete();
-
-				FileOutputStream fos = new FileOutputStream(f);
-				fos.write(baf.toByteArray());
-				fos.close();
-
-				mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, remoteDbVersion).commit();
 			} catch (Exception e) {
 				Log.d(TAG, e.getMessage());
 				
@@ -326,7 +340,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				mVocabularyDataLoadHandler.sendMessage(msg);
 			}
 		}
-		
+
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";

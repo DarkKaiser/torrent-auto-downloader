@@ -21,7 +21,7 @@ public class JapanVocabulary {
 	private long mRegistrationDateUTC;
 
 	// 단어 암기 대상 여부
-	private boolean mMemorizeTarget = false;
+	private boolean mMemorizeTarget = true;
 
 	// 단어 암기 완료 여부
 	private boolean mMemorizeCompleted = false;
