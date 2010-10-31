@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="kr.co.darkkaiser.jv"
+      android:versionCode="5"
+      android:versionName="1.0.5">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
+        <activity android:name=".JvActivity"
+                  android:label="@string/app_name"
+                  android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+		<activity android:name=".detail.JvDetailActivity">
+		</activity>
+		<activity android:name=".list.JvListActivity"
+				  android:configChanges="orientation|keyboard">
+		</activity>
+		<activity android:name=".option.OptionActivity">
+		</activity>
+	</application>
+<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+<uses-sdk android:minSdkVersion="5"></uses-sdk>
+</manifest>
