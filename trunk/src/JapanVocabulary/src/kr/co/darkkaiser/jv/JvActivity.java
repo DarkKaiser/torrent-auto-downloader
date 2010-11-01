@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -33,6 +34,8 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,11 +43,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher.ViewFactory;
 
-public class JvActivity extends Activity implements OnTouchListener {
+public class JvActivity extends Activity implements OnTouchListener, ViewFactory {
 
 	private static final String TAG = "JvActivity";
 
@@ -102,8 +109,12 @@ public class JvActivity extends Activity implements OnTouchListener {
         // 환경설정 값을 로드한다.
         initSharedPreference(false);
 
-        TextView vocabulary = (TextView)findViewById(R.id.vocabulary);
-        vocabulary.setOnTouchListener(this);
+        TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
+
+        vocabularyTextSwitcher.setFactory(this);  
+        vocabularyTextSwitcher.setOnTouchListener(this);
+        vocabularyTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+        vocabularyTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 
         Button nextVocabulary = (Button)findViewById(R.id.next_vocabulary);
         nextVocabulary.setOnClickListener(new View.OnClickListener() {
@@ -316,7 +327,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 				bis.close();
 
-				if (contentLength > 0 && contentLength > baf.length()) {
+				if (contentLength > 0 && contentLength != baf.length()) {
 					msg = Message.obtain();
 					msg.what = MSG_TOAST_SHOW;
 					msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
@@ -367,11 +378,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 	}
 
 	private void showNextVocabulary() {
-		TextView vocabulary = (TextView)findViewById(R.id.vocabulary);
+		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 
 		if (mJvList.isEmpty() == true) {
 			mJvCurrentIndex = -1;
-			vocabulary.setText("");
+			vocabularyTextSwitcher.setText("");
 
 			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
@@ -388,9 +399,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 			// 화면에 다음 단어를 출력한다.
 			if (mIsJapanVocabularyOutputMode == true)
-				vocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
+				vocabularyTextSwitcher.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
 			else
-				vocabulary.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
+				vocabularyTextSwitcher.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
 		}
 	}
 
@@ -517,5 +528,17 @@ public class JvActivity extends Activity implements OnTouchListener {
     		}
     	}
     };
+
+	@Override
+	public View makeView() {
+		TextView t = new TextView(this);  
+        t.setGravity(Gravity.CENTER);
+        t.setTypeface(Typeface.SERIF);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_PT, 30);
+        t.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT,
+        		LayoutParams.FILL_PARENT));
+
+        return t;  
+	}
 
 }

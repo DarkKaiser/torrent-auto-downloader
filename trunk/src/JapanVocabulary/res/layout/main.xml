@@ -34,13 +34,10 @@
 	    	android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요." 
 	    	android:layout_above="@id/next_vocabulary"
 	    	/>
-		<TextView
+		<TextSwitcher 
 			android:id="@+id/vocabulary"
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="fill_parent" 
-	    	android:gravity="center"
-	    	android:textSize="30pt"
-			android:typeface="serif"
 	    	android:layout_above="@id/memorize_method_info"
 	    	/>
 	</RelativeLayout>

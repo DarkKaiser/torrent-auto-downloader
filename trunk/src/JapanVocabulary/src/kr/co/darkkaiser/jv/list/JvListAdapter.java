@@ -53,7 +53,7 @@ public class JvListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(mLayout, parent, false);
 		}
-
+		
 		TextView memorizeBar = (TextView)convertView.findViewById(R.id.memorize_bar);
 		TextView vocabulary = (TextView)convertView.findViewById(R.id.vocabulary);
 		TextView vocabularyGana = (TextView)convertView.findViewById(R.id.vocabulary_gana);
