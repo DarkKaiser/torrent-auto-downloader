@@ -35,7 +35,9 @@
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
 		    	android:gravity="left"
-		    	android:textSize="12pt"/>
+		    	android:textSize="12pt"
+		    	android:typeface="serif"
+		    	/>
 		    <LinearLayout 
 	    		android:orientation="vertical"
 	    		android:layout_width="wrap_content"
@@ -62,35 +64,44 @@
 	    	android:layout_height="wrap_content" 
 	    	android:text="히라가나/가타가나"
 	    	android:textSize="7pt"
-	    	android:background="#77444444"/>
+	    	android:background="#77444444"
+	    	/>
 		<TextView android:id="@+id/vocabulary_gana"
 	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content" 
 	    	android:gravity="left"
 	    	android:textSize="12pt"
-	    	android:layout_alignParentLeft="true"/>
+	    	android:typeface="serif"
+	    	android:layout_alignParentLeft="true"
+	    	/>
 		<TextView 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content" 
 	    	android:text="뜻"
 	    	android:textSize="7pt"
-	    	android:background="#77444444"/>
+	    	android:background="#77444444"
+	    	/>
 		<TextView android:id="@+id/vocabulary_translation"
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content" 
 	    	android:gravity="left"
-	    	android:textSize="12pt"/>
+	    	android:textSize="12pt"
+	    	android:typeface="serif"
+	    	/>
 		<TextView 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content" 
 	    	android:text="상세 설명"
 	    	android:textSize="7pt"
-	    	android:background="#77444444"/>
+	    	android:background="#77444444"
+	    	/>
 		<TextView android:id="@+id/vocabulary_detail_info"
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content" 
 	    	android:gravity="left"
-	    	android:textSize="12pt"/>
+	    	android:textSize="12pt"
+	    	android:typeface="serif"
+	    	/>
 	</LinearLayout>
 </ScrollView>
 	
