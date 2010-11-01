@@ -3,7 +3,9 @@
       package="kr.co.darkkaiser.jv"
       android:versionCode="5"
       android:versionName="1.0.5">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
+    <application android:icon="@drawable/icon"
+    	android:label="@string/app_name"
+    	android:debuggable="false">
         <activity android:name=".JvActivity"
                   android:label="@string/app_name"
                   android:configChanges="orientation|keyboard">
@@ -20,8 +22,8 @@
 		<activity android:name=".option.OptionActivity">
 		</activity>
 	</application>
-<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-<uses-sdk android:minSdkVersion="5"></uses-sdk>
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-sdk android:minSdkVersion="5"></uses-sdk>
 </manifest>
