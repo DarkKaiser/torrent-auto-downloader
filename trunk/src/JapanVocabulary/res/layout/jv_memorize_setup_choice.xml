@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+	<CheckBox 
+		android:id="@+id/memorize_setup_exclusive"
+        android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+       	android:text="검색되지 않은 단어는 선택된 항목에 대해서 초기화"
+       	/>
+</LinearLayout>

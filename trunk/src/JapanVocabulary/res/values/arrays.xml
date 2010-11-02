@@ -8,6 +8,12 @@
 		<item>0</item>
 		<item>1</item>
 	</string-array>
+	<string-array name="vocabulary_memorize_setup">
+		<item>재암기하기</item>
+		<item>암기 완료 상태로 만들기</item>
+		<item>암기 대상 상태로 만들기</item>
+		<item>암기 대상 상태 해제하기</item>
+	</string-array>
 	<string-array name="sc_memorize_target">
 		<item>전체 단어</item>
 		<item>암기 대상 단어</item>
