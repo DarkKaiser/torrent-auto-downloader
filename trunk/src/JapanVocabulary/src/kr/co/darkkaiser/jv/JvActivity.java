@@ -81,7 +81,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
 	// 암기 대상 일본어 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
-	
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -344,7 +344,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 				}
 			} catch (Exception e) {
 				Log.d(TAG, e.getMessage());
-				
+
 				msg = Message.obtain();
 				msg.what = MSG_TOAST_SHOW;
 				msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";

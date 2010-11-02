@@ -19,7 +19,7 @@
 	 		android:text="다음 단어 >>" 
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
-			android:layout_height="90px"
+			android:layout_height="60dp"
 			android:textSize="8pt"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true"
