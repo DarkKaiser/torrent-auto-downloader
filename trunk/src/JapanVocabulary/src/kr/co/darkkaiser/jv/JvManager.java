@@ -11,7 +11,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import kr.co.darkkaiser.jv.list.JvListActivity;
 import kr.co.darkkaiser.jv.list.JvListSearchCondition;
 import android.content.Context;
 import android.database.Cursor;
@@ -373,10 +372,8 @@ public class JvManager {
 		}
 	}
 
-	public synchronized boolean updateMemorizeField(JvListActivity.VocabularyMemorizeSetup vms, boolean memorizeExclusive, ArrayList<Long> idxList) {
-		// @@@@@ exclusive 필요하나?
-
-		if (vms == JvListActivity.VocabularyMemorizeSetup.REMEMORIZE) {							// 검색된 전체 단어 재암기
+	public synchronized boolean updateMemorizeField(int menuItemId, ArrayList<Long> idxList) {
+		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
 			JapanVocabulary jv = null;
 			for (int index = 0; index < idxList.size(); ++index) {
 				jv = mJvTable.get(idxList.get(index));
@@ -384,19 +381,17 @@ public class JvManager {
 				jv.setMemorizeTarget(true, false);
 				jv.setMemorizeCompleted(false, false, false);
 			}
-		} else if (vms == JvListActivity.VocabularyMemorizeSetup.MEMORIZE_COMPLETED) {			// 검색된 전체 단어 암기 완료
+		} else if (menuItemId == R.id.jvlm_all_memorize_completed) {			// 검색된 전체 단어 암기 완료
 			for (int index = 0; index < idxList.size(); ++index)
 				mJvTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
-		} else if (vms == JvListActivity.VocabularyMemorizeSetup.MEMORIZE_TARGET) {				// 검색된 전체 단어 암기 대상 만들기
+		} else if (menuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
 			for (int index = 0; index < idxList.size(); ++index)
 				mJvTable.get(idxList.get(index)).setMemorizeTarget(true, false);
-		} else if (vms == JvListActivity.VocabularyMemorizeSetup.MEMORIZE_TARGET_CANCEL) {		// 검색된 전체 단어 암기 대상 해제
+		} else if (menuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
 			for (int index = 0; index < idxList.size(); ++index)
 				mJvTable.get(idxList.get(index)).setMemorizeTarget(false, false);
-		} else {
-			assert false;
 		}
-
+		
 		writeUserVocabularyInfo();
 
 		return true;

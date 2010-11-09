@@ -25,7 +25,6 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -63,14 +62,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	private JvListSearchCondition mJvListSearchCondition = null;
 
 	private int mActivityResultCode = 0;
-	
-	// 리스트에 검색된 단어의 암기 설정 방법
-	public enum VocabularyMemorizeSetup {
-		REMEMORIZE,								// 검색된 전체 단어 재암기
-		MEMORIZE_COMPLETED,						// 검색된 전체 단어 암기 완료
-		MEMORIZE_TARGET,						// 검색된 전체 단어 암기 대상 만들기
-		MEMORIZE_TARGET_CANCEL					// 검색된 전체 단어 암기 대상 해제
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -208,116 +199,76 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		case R.id.jvlm_sort_vocabulary:
 			startSortList(JvListSortMethod.VOCABULARY);
 			return true;
-
 		case R.id.jvlm_sort_vocabulary_gana:
 			startSortList(JvListSortMethod.VOCABULARY_GANA);
 			return true;
-			
 		case R.id.jvlm_sort_vocabulary_translation:
 			startSortList(JvListSortMethod.VOCABULARY_TRANSLATION);
 			return true;
-			
 		case R.id.jvlm_sort_registration_date_up:
 			startSortList(JvListSortMethod.REGISTRATION_DATE_UP);
 			return true;
-			
 		case R.id.jvlm_sort_registration_date_down:
 			startSortList(JvListSortMethod.REGISTRATION_DATE_DOWN);
 			return true;
+		case R.id.jvlm_all_rememorize: 				// 검색된 전체 단어 재암기
+		case R.id.jvlm_all_memorize_completed: 		// 검색된 전체 단어 암기 완료
+		case R.id.jvlm_all_memorize_target: 		// 검색된 전체 단어 암기 대상 만들기
+		case R.id.jvlm_all_memorize_target_cancel: 	// 검색된 전체 단어 암기 대상 해제
+			// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 값을 설정한다.
+			mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+			setResult(mActivityResultCode);
 			
-		case R.id.vocabulary_memorize_setup:
-			LayoutInflater inflater = getLayoutInflater();
-			final View viewChoice = inflater.inflate(R.layout.jv_memorize_setup_choice, null);
+			// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
+			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
 
-			new AlertDialog.Builder(this)
-				.setTitle("검색된 전체 단어")
-				.setItems(R.array.vocabulary_memorize_setup, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						CheckBox cb = (CheckBox)viewChoice.findViewById(R.id.memorize_setup_exclusive);
+			new Thread() {
 
-						// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 값을 설정한다.
-						mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
-						setResult(mActivityResultCode);
+				private int mMenuItemId = 0;
 
-						// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
-						mProgressDialog = ProgressDialog.show(JvListActivity.this, null, "요청하신 작업을 처리 중입니다.", true, false);
+				public Thread setMenuItemId(int menuItemId) {
+					mMenuItemId = menuItemId;
+					return this;
+				}
 
-						new Thread() {
+				@Override
+				public void run() {
+					JapanVocabulary jv = null;
+					ArrayList<Long> idxList = new ArrayList<Long>();
 
-							private boolean mMemorizeExclusive = false;
-							private VocabularyMemorizeSetup mVms = VocabularyMemorizeSetup.REMEMORIZE;
-
-							public Thread setValues(int which, boolean memorizeExclusive) {
-								mMemorizeExclusive = memorizeExclusive;
-
-								switch (which) {
-								case 0:
-									mVms = VocabularyMemorizeSetup.REMEMORIZE;
-									break;
-								case 1:
-									mVms = VocabularyMemorizeSetup.MEMORIZE_COMPLETED;
-									break;
-								case 2:
-									mVms = VocabularyMemorizeSetup.MEMORIZE_TARGET;
-									break;
-								case 3:
-									mVms = VocabularyMemorizeSetup.MEMORIZE_TARGET_CANCEL;
-									break;
-								default:
-									assert false;
-									break;
-								}
-
-								return this;
-							}
-
-							@Override
-							public void run() {
-								JapanVocabulary jv = null;
-								ArrayList<Long> idxList = new ArrayList<Long>();
-
-								if (mVms == VocabularyMemorizeSetup.REMEMORIZE) { 						// 검색된 전체 단어 재암기
-									for (int index = 0; index < mJvListData.size(); ++index) {
-										jv = mJvListData.get(index);
-										if (jv.isMemorizeTarget() == false || jv.isMemorizeCompleted() == true)
-											idxList.add(jv.getIdx());
-									}
-								} else if (mVms == VocabularyMemorizeSetup.MEMORIZE_COMPLETED) { 		// 검색된 전체 단어 암기 완료
-									for (int index = 0; index < mJvListData.size(); ++index) {
-										jv = mJvListData.get(index);
-										if (jv.isMemorizeCompleted() == false)
-											idxList.add(jv.getIdx());
-									}
-								} else if (mVms == VocabularyMemorizeSetup.MEMORIZE_TARGET) { 			// 검색된 전체 단어 암기 대상 만들기
-									for (int index = 0; index < mJvListData.size(); ++index) {
-										jv = mJvListData.get(index);
-										if (jv.isMemorizeTarget() == false)
-											idxList.add(jv.getIdx());
-									}
-								} else if (mVms == VocabularyMemorizeSetup.MEMORIZE_TARGET_CANCEL) { 	// 검색된 전체 단어 암기 대상 해제
-									for (int index = 0; index < mJvListData.size(); ++index) {
-										jv = mJvListData.get(index);
-										if (jv.isMemorizeTarget() == true)
-											idxList.add(jv.getIdx());
-									}
-								}
-
-								JvManager.getInstance().updateMemorizeField(mVms, mMemorizeExclusive, idxList);
-
-								Message msg = Message.obtain();
-								msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-								mJvListDataChangedHandler.sendMessage(msg);
-							};
+					if (mMenuItemId == R.id.jvlm_all_rememorize) { 						// 검색된 전체 단어 재암기
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
+							if (jv.isMemorizeTarget() == false || jv.isMemorizeCompleted() == true)
+								idxList.add(jv.getIdx());
 						}
-						.setValues(which, cb.isChecked())
-						.start();
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) { 		// 검색된 전체 단어 암기 완료
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
+							if (jv.isMemorizeCompleted() == false)
+								idxList.add(jv.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) { 			// 검색된 전체 단어 암기 대상 만들기
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
+							if (jv.isMemorizeTarget() == false)
+								idxList.add(jv.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) { 	// 검색된 전체 단어 암기 대상 해제
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jv = mJvListData.get(index);
+							if (jv.isMemorizeTarget() == true)
+								idxList.add(jv.getIdx());
+						}
 					}
 
-				})
-				.setView(viewChoice)
-				.show();
+					JvManager.getInstance().updateMemorizeField(mMenuItemId, idxList);
+
+					Message msg = Message.obtain();
+					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
+					mJvListDataChangedHandler.sendMessage(msg);
+				};
+			}.setMenuItemId(item.getItemId()).start();
 
 			return true;
 
