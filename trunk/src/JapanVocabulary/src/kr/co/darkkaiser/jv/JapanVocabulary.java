@@ -11,7 +11,7 @@ public class JapanVocabulary {
 	// 일본식 한자 단어
 	private String mVocabulary = null;
 
-	// 일본식 한자 단어에 대한 히라가나/가타가나
+	// 일본식 한자 단어에 대한 히라가나/가타카나
 	private String mVocabularyGana = null;
 
 	// 일본식 한자 단어에 대한 뜻

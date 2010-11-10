@@ -76,7 +76,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 	private int mMemorizeTargetJvCount = 0;
 
 	// 일본식 한자 단어를 암기대상으로 출력할지의 여부
-	// 이 값이 false 이면 히라가나/가타가나를 암기대상으로 출력한다.
+	// 이 값이 false 이면 히라가나/가타카나를 암기대상으로 출력한다.
 	private boolean mIsJapanVocabularyOutputMode = true;
 
 	// 암기 대상 일본어 단어 리스트

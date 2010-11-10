@@ -8,7 +8,7 @@
 			<item android:id="@+id/jvlm_sort_vocabulary_translation"
 				android:title="한자 뜻"/>
 			<item android:id="@+id/jvlm_sort_vocabulary_gana"
-				android:title="히라가나/가타가나"/>
+				android:title="히라가나/가타카나"/>
 			<item android:id="@+id/jvlm_sort_registration_date_up"
 				android:title="단어 등록일(올림차순)"/>
 			<item android:id="@+id/jvlm_sort_registration_date_down"
