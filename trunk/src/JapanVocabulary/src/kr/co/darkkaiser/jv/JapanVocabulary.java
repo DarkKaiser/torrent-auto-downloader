@@ -37,7 +37,7 @@ public class JapanVocabulary {
 		assert TextUtils.isEmpty(vocabularyTranslation) == false;
 
 		mIdx = idx;
-		
+
 		setVocabulary(vocabulary);
 		setVocabularyGana(vocabularyGana);
 		setVocabularyTranslation(vocabularyTranslation);
@@ -75,7 +75,7 @@ public class JapanVocabulary {
 	public String getVocabularyGana() {
 		return mVocabularyGana;
 	}
-	
+
 	private void setVocabularyGana(String vocabularyGana) {
 		assert TextUtils.isEmpty(vocabularyGana) == false;
 		mVocabularyGana = vocabularyGana;

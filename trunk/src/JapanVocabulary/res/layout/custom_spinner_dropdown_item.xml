@@ -6,5 +6,5 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:ellipsize="marquee"
-    android:textSize="10pt"
+    android:textSize="20dp"
     />

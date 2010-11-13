@@ -218,57 +218,32 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 값을 설정한다.
 			mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
 			setResult(mActivityResultCode);
-			
-			// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
 
-			new Thread() {
+			final int itemId = item.getItemId();
+			if (item.getItemId() == R.id.jvlm_all_memorize_target) {
+				new AlertDialog.Builder(this)
+					.setTitle("암기 대상 상태로 만들기")
+					.setMessage("검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기 대상 상태로, 검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기 대상 상태로 만듭니다.")
+					.setPositiveButton("예", new DialogInterface.OnClickListener() {
 
-				private int mMenuItemId = 0;
-
-				public Thread setMenuItemId(int menuItemId) {
-					mMenuItemId = menuItemId;
-					return this;
-				}
-
-				@Override
-				public void run() {
-					JapanVocabulary jv = null;
-					ArrayList<Long> idxList = new ArrayList<Long>();
-
-					if (mMenuItemId == R.id.jvlm_all_rememorize) { 						// 검색된 전체 단어 재암기
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jv = mJvListData.get(index);
-							if (jv.isMemorizeTarget() == false || jv.isMemorizeCompleted() == true)
-								idxList.add(jv.getIdx());
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							memorizeSetupVocabulary(itemId, true);
 						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) { 		// 검색된 전체 단어 암기 완료
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jv = mJvListData.get(index);
-							if (jv.isMemorizeCompleted() == false)
-								idxList.add(jv.getIdx());
+					})
+					.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							memorizeSetupVocabulary(itemId, false);
 						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) { 			// 검색된 전체 단어 암기 대상 만들기
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jv = mJvListData.get(index);
-							if (jv.isMemorizeTarget() == false)
-								idxList.add(jv.getIdx());
-						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) { 	// 검색된 전체 단어 암기 대상 해제
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jv = mJvListData.get(index);
-							if (jv.isMemorizeTarget() == true)
-								idxList.add(jv.getIdx());
-						}
-					}
-
-					JvManager.getInstance().updateMemorizeField(mMenuItemId, idxList);
-
-					Message msg = Message.obtain();
-					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-					mJvListDataChangedHandler.sendMessage(msg);
-				};
-			}.setMenuItemId(item.getItemId()).start();
+					})
+					.show();
+			} else {
+				memorizeSetupVocabulary(itemId, false);
+			}
 
 			return true;
 
@@ -282,6 +257,71 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		}
 
 		return false;
+	}
+	
+	private void memorizeSetupVocabulary(int menuId, boolean notSearchVocabularyTargetCancel) {
+		// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
+		mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
+
+		new Thread() {
+
+			private int mMenuItemId;
+			private boolean mNotSearchVocabularyTargetCancel = false;
+
+			public Thread setValues(int menuItemId, boolean notSearchVocabularyTargetCancel) {
+				mMenuItemId = menuItemId;
+				mNotSearchVocabularyTargetCancel = notSearchVocabularyTargetCancel;
+				return this;
+			}
+			
+			@Override
+			public void run() {
+				JapanVocabulary jpVocabulary = null;
+				ArrayList<Long> idxList = new ArrayList<Long>();
+
+				synchronized (mJvListData) {
+					if (mMenuItemId == R.id.jvlm_all_rememorize) { 						// 검색된 전체 단어 재암기
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jpVocabulary = mJvListData.get(index);
+							if (jpVocabulary.isMemorizeTarget() == false || jpVocabulary.isMemorizeCompleted() == true)
+								idxList.add(jpVocabulary.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) { 		// 검색된 전체 단어 암기 완료
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jpVocabulary = mJvListData.get(index);
+							if (jpVocabulary.isMemorizeCompleted() == false)
+								idxList.add(jpVocabulary.getIdx());
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) { 			// 검색된 전체 단어 암기 대상 만들기
+						if (mNotSearchVocabularyTargetCancel == true) {
+							for (int index = 0; index < mJvListData.size(); ++index) {
+								idxList.add(mJvListData.get(index).getIdx());
+							}							
+						} else {
+							for (int index = 0; index < mJvListData.size(); ++index) {
+								jpVocabulary = mJvListData.get(index);
+								if (jpVocabulary.isMemorizeTarget() == false)
+									idxList.add(jpVocabulary.getIdx());
+							}							
+						}
+					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) { 	// 검색된 전체 단어 암기 대상 해제
+						for (int index = 0; index < mJvListData.size(); ++index) {
+							jpVocabulary = mJvListData.get(index);
+							if (jpVocabulary.isMemorizeTarget() == true)
+								idxList.add(jpVocabulary.getIdx());
+						}
+					}
+
+					JvManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);					
+				}
+
+				Message msg = Message.obtain();
+				msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
+				mJvListDataChangedHandler.sendMessage(msg);
+			};
+		}
+		.setValues(menuId, notSearchVocabularyTargetCancel)
+		.start();		
 	}
 
 	@Override
@@ -320,22 +360,24 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void sortList() {
-		switch (mJvListSortMethod) {
-		case VOCABULARY:
-			Collections.sort(mJvListData, mJvVocabularyComparator);
-			break;
-		case VOCABULARY_GANA:
-			Collections.sort(mJvListData, mJvVocabularyGanaComparator);
-			break;
-		case VOCABULARY_TRANSLATION:
-			Collections.sort(mJvListData, mJvVocabularyTranslationComparator);
-			break;
-		case REGISTRATION_DATE_UP:
-			Collections.sort(mJvListData, mJvRegistrationDateUpComparator);
-			break;
-		case REGISTRATION_DATE_DOWN:
-			Collections.sort(mJvListData, mJvRegistrationDateDownComparator);
-			break;
+		synchronized (mJvListData) {
+			switch (mJvListSortMethod) {
+			case VOCABULARY:
+				Collections.sort(mJvListData, mJvVocabularyComparator);
+				break;
+			case VOCABULARY_GANA:
+				Collections.sort(mJvListData, mJvVocabularyGanaComparator);
+				break;
+			case VOCABULARY_TRANSLATION:
+				Collections.sort(mJvListData, mJvVocabularyTranslationComparator);
+				break;
+			case REGISTRATION_DATE_UP:
+				Collections.sort(mJvListData, mJvRegistrationDateUpComparator);
+				break;
+			case REGISTRATION_DATE_DOWN:
+				Collections.sort(mJvListData, mJvRegistrationDateDownComparator);
+				break;
+			}			
 		}
 	}
 
@@ -343,10 +385,12 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		// 단어 상세페이지 호출
-		Intent intent = new Intent(this, JvDetailActivity.class);
-		intent.putExtra("idx", mJvListData.get(position).getIdx());
-		startActivity(intent);
+		synchronized (mJvListData) {
+			// 단어 상세페이지 호출
+			Intent intent = new Intent(this, JvDetailActivity.class);
+			intent.putExtra("idx", mJvListData.get(position).getIdx());
+			startActivity(intent);			
+		}
 	}
 
 	private final static Comparator<JapanVocabulary> mJvVocabularyComparator = new Comparator<JapanVocabulary>() {
@@ -405,6 +449,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	};
 
 	private Handler mJvListDataChangedHandler = new Handler() {
+		
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == MSG_COMPLETED_LIST_DATA_UPDATE) {
@@ -439,8 +484,10 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 						mJvListSearchThread.interrupt();
 					}
 
-					// 검색을 취소하였으므로 단어를 모두 제거한다.
-					mJvListData.clear();
+					synchronized (mJvListData) {
+						// 검색을 취소하였으므로 단어를 모두 제거한다.
+						mJvListData.clear();						
+					}
 
 					Toast.makeText(JvListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
 
@@ -469,8 +516,11 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			// 현재 검색되는 검색 정보를 저장해 놓는다.
 			mJvListSearchCondition.commit();
 
-			mJvListData.clear();
-			JvManager.getInstance().searchVocabulary(JvListActivity.this, mJvListSearchCondition, mJvListData);
+			synchronized (mJvListData) {
+				mJvListData.clear();
+				JvManager.getInstance().searchVocabulary(JvListActivity.this, mJvListSearchCondition, mJvListData);
+			}
+
 			sortList();
 
 			Message msg = Message.obtain();
@@ -504,6 +554,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			new AlertDialog.Builder(JvListActivity.this)
 					.setTitle("검색 조건")
 					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
+						
 								@Override
 								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
 									mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
@@ -511,6 +562,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 							})
 					.setPositiveButton("확인",
 							new DialogInterface.OnClickListener() {
+						
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
@@ -529,6 +581,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			new DatePickerDialog(
 					this,
 					new DatePickerDialog.OnDateSetListener() {
+						
 						@Override
 						public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 							Button searchDateFirst = (Button)findViewById(R.id.sc_first_search_date);
@@ -563,6 +616,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			new DatePickerDialog(
 					JvListActivity.this,
 					new DatePickerDialog.OnDateSetListener() {
+						
 						@Override
 						public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 							Button searchDateLast = (Button)findViewById(R.id.sc_last_search_date);

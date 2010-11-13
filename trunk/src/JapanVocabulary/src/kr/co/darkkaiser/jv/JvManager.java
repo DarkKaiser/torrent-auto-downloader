@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+// @@@@@
 public class JvManager {
 
 	private static final String TAG = "JvManager";
@@ -372,7 +373,8 @@ public class JvManager {
 		}
 	}
 
-	public synchronized boolean updateMemorizeField(int menuItemId, ArrayList<Long> idxList) {
+	// @@@@@@ mNotSearchVocabularyTargetCancel
+	public synchronized boolean updateMemorizeField(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
 		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
 			JapanVocabulary jv = null;
 			for (int index = 0; index < idxList.size(); ++index) {
