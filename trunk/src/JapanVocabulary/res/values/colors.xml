@@ -6,12 +6,4 @@
 	<color name="jv_detail_memorize_completed_count_text">#5070ff</color>
 	<color name="jv_listitem_memorize_completed_bg">#15cccccc</color>
 	<color name="jv_listitem_memorize_uncompleted_bg">#15000000</color>
-	
-
-
-
-
-
-	<color name="memorize_completed">#22ff22</color>
-	<color name="memorize_uncompleted">#ff2222</color>
 </resources>

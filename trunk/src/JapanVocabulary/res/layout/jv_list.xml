@@ -123,14 +123,13 @@
 		android:orientation="vertical"
 		android:animateOnClick="true"
 		>
-		<ImageView
+	    <ImageButton
 			android:id="@+id/sd_handle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/sd_handle"
-			android:padding="0px"
-			/>
-		<LinearLayout
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:background="@drawable/sd_handle"
+	    	/>
+		<kr.co.darkkaiser.jv.helper.LinearLayoutForPatternBackground
 			android:id="@+id/sd_content"
 			android:orientation="vertical"
 		    android:layout_width="fill_parent"
@@ -142,12 +141,6 @@
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				>
-				<LinearLayout 
-					android:id="@+id/sc_area_head"
-					android:layout_width="fill_parent"
-				    android:layout_height="3px"
-				    android:background="#848684"
-					/>
 				<LinearLayout
 					android:id="@+id/sc_area_tail" 
 					android:layout_width="fill_parent"
@@ -157,12 +150,12 @@
 					<TableLayout
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content"
-						android:background="@android:drawable/bottom_bar"
-						android:stretchColumns="*"
-						android:gravity="center"
 						android:paddingTop="5px"
 						android:paddingLeft="10px"
 						android:paddingRight="10px"
+						android:gravity="center"
+						android:stretchColumns="*"
+						android:background="@android:drawable/bottom_bar"
 						>
 						<TableRow>
 						 	<Button
@@ -175,7 +168,7 @@
 								android:id="@+id/search_cancel" 
 								android:layout_width="fill_parent" 
 								android:layout_height="wrap_content"
-						 		android:text="취소" 
+						 		android:text="취소"
 								/>
 						</TableRow>
 					</TableLayout>
@@ -183,7 +176,6 @@
 				<LinearLayout
 					android:layout_width="fill_parent"
 					android:layout_height="fill_parent"
-					android:layout_below="@id/sc_area_head"
 					android:layout_above="@id/sc_area_tail"
 					>
 					<ScrollView
@@ -213,7 +205,7 @@
 										android:layout_height="wrap_content"
 										android:text="입력하신 검색어를 이용하여 단어의 뜻을 검색합니다. 입력된 내용이 없으면 전체 단어를 검색합니다."
 										android:textColor="#cccccc"
-										android:textSize="6pt"
+										android:textSize="13dp"
 										/>
 								</TableRow>
 								<TableRow
@@ -236,7 +228,7 @@
 										android:layout_height="wrap_content"
 										android:text="암기대상, 암기완료 상태의 단어 검색 방법을 선택합니다."
 										android:textColor="#cccccc"
-										android:textSize="6pt"
+										android:textSize="13dp"
 										/>
 								</TableRow>
 								<TableRow>
@@ -267,7 +259,7 @@
 										android:layout_height="wrap_content"
 										android:text="단어가 등록된 날짜의 검색 범위를 선택합니다."
 										android:textColor="#cccccc"
-										android:textSize="6pt"
+										android:textSize="13dp"
 										/>
 								</TableRow>
 								<TableRow>
@@ -290,7 +282,7 @@
 												android:layout_width="wrap_content"
 												android:layout_height="wrap_content"
 												android:textColor="#cccccc"
-												android:textSize="6pt"
+												android:textSize="13dp"
 												/>
 											<Button  
 												android:id="@+id/sc_last_search_date"
@@ -317,7 +309,7 @@
 											android:layout_height="wrap_content"
 											android:text="모든 등록일 검색"
 											android:textColor="#cccccc"
-											android:textSize="6pt"
+											android:textSize="13dp"
 											android:checked="true"
 											/>
 									</LinearLayout>
@@ -330,7 +322,7 @@
 										android:layout_height="wrap_content"
 										android:text="검색하실 단어의 JLPT 급수를 선택합니다."
 										android:textColor="#cccccc"
-										android:textSize="6pt"
+										android:textSize="13dp"
 										/>
 								</TableRow>
 								<TableRow
@@ -349,6 +341,6 @@
 					</ScrollView>
 				</LinearLayout>
 			</RelativeLayout>
-		</LinearLayout>
+		</kr.co.darkkaiser.jv.helper.LinearLayoutForPatternBackground>
 	</SlidingDrawer>  
 </FrameLayout>
