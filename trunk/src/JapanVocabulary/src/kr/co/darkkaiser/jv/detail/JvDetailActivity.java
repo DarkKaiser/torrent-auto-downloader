@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.GestureDetector.OnGestureListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,16 +67,20 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 
 			memorizeCompletedInfo1.setText(String.format("총 %d회 암기 완료", memorizeCompletedCount));
 			memorizeCompletedInfo1.setTextColor(getResources().getColor(R.color.jv_detail_memorize_completed_count_text));
+			
 			memorizeCompletedInfo2.setText("");
+			memorizeCompletedInfo2.setVisibility(View.GONE);
 		} else {
-			memorizeCompletedInfo1.setText("암기 미완료");
+			memorizeCompletedInfo1.setText("미암기");
 			memorizeCompletedInfo1.setTextColor(getResources().getColor(R.color.jv_detail_memorize_uncompleted_text));
 
 			if (memorizeCompletedCount > 0) {
 				memorizeCompletedInfo2.setText(String.format("총 %d회 암기 완료", memorizeCompletedCount));
 				memorizeCompletedInfo2.setTextColor(getResources().getColor(R.color.jv_detail_memorize_completed_count_text));
+				memorizeCompletedInfo2.setVisibility(View.VISIBLE);
 			} else {
 				memorizeCompletedInfo2.setText("");
+				memorizeCompletedInfo2.setVisibility(View.GONE);
 			}
 		}
 
