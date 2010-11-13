@@ -9,32 +9,32 @@
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
     	android:gravity="right"
-    	android:textSize="8pt"
+    	android:textSize="15dp"
     	/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    >
 	 	<Button
-	 		android:text="다음 단어 >>" 
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
 			android:layout_height="60dp"
-			android:textSize="8pt"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true"
+	 		android:text="다음 단어 >>" 
+			android:textSize="15dp"
 			/>
 		<TextView
 			android:id="@+id/memorize_method_info" 
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="wrap_content"
-	    	android:gravity="center"
-	    	android:textSize="6pt"
-	    	android:textColor="#99999999"
-	    	android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요." 
 	    	android:layout_above="@id/next_vocabulary"
+	    	android:gravity="center"
+	    	android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요." 
+	    	android:textSize="13dp"
+	    	android:textColor="#99999999"
 	    	/>
-		<TextSwitcher 
+		<TextSwitcher
 			android:id="@+id/vocabulary"
 	    	android:layout_width="fill_parent" 
 	    	android:layout_height="fill_parent" 
