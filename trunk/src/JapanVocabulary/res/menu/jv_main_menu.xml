@@ -3,7 +3,7 @@
 	<item
 		android:id="@+id/jvm_show_all_vocabulary"
 		android:icon="@android:drawable/ic_menu_agenda" 
-		android:title="전체 단어보기"/>
+		android:title="단어검색"/>
 	<item 
 		android:id="@+id/jvm_all_rememorize"
 		android:icon="@android:drawable/ic_menu_revert" 

@@ -25,10 +25,12 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -41,6 +43,7 @@ import android.widget.SlidingDrawer;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class JvListActivity extends ListActivity implements OnClickListener {
 
@@ -67,6 +70,12 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jv_list);
+
+		// 컨텍스트 메뉴를 등록한다.
+		registerForContextMenu(getListView());
+		
+		// 타이틀을 설정한다.
+		setTitle(String.format("%s - 단어검색", getResources().getString(R.string.app_name)));
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -698,6 +707,28 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 			break;
 		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		getMenuInflater().inflate(R.menu.jv_list_context_menu, menu);
+		menu.setHeaderTitle("작업");
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.jvlm_remove_vocabulary:
+			AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
+			mJvListData.remove(menuInfo.position);
+			
+			updateVocabularyInfo();
+			mJvListAdapter.notifyDataSetChanged();
+			break;
+		}
+
+		return super.onContextItemSelected(item);
 	}
 
 }
