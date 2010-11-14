@@ -13,11 +13,17 @@
 			android:dialogTitle="암기 대상"
 			/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="프로그램 정보">
+	<PreferenceCategory
+		android:title="프로그램 정보"
+		>
 		<PreferenceScreen 
-			android:key="jv_db_ver"
-			android:title="단어 DB 버전"
+			android:key="jv_program_info"
+			android:title="프로그램 정보"
    			android:summary="버전 정보를 확인할 수 없습니다."
+   			/>
+		<PreferenceScreen 
+			android:title="개발자 정보"
+   			android:summary="DarkKaiser(twitter : darkkaiser78)\ndarkkaiser78@hotmail.com"
    			/>
 	</PreferenceCategory>
 </PreferenceScreen>

@@ -4,11 +4,11 @@ import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 
-// @@@@@
 public class OptionActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	@Override
@@ -18,9 +18,21 @@ public class OptionActivity extends PreferenceActivity implements OnSharedPrefer
 		getPreferenceManager().setSharedPreferencesName(JvDefines.JV_SHARED_PREFERENCE_NAME);
 		addPreferencesFromResource(R.layout.jv_optionlist);
 
+		String versionName = "Unknown";
+		try {
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		PreferenceScreen prefJvDbVersion = (PreferenceScreen)findPreference(JvDefines.JV_SPN_DB_VERSION);
-		prefJvDbVersion.setSummary(preferences.getString(JvDefines.JV_SPN_DB_VERSION, "버전 정보를 확인할 수 없습니다."));
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("App. Version ").append(versionName)
+		  .append("\nVocubulary DB Version ").append(preferences.getString(JvDefines.JV_SPN_DB_VERSION, "Unknown"));
+
+		PreferenceScreen prefJvDbVersion = (PreferenceScreen)findPreference("jv_program_info");
+		prefJvDbVersion.setSummary(sb.toString());
 	}
 
 	@Override
@@ -43,5 +55,4 @@ public class OptionActivity extends PreferenceActivity implements OnSharedPrefer
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 	}
-
 }
