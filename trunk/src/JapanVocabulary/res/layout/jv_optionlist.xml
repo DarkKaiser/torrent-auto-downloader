@@ -12,6 +12,12 @@
 			android:defaultValue="0"
 			android:dialogTitle="암기 대상"
 			/>
+		<CheckBoxPreference
+			android:key="jv_fade_effect_next_vocabulary"
+			android:title="단어 전환시 페이드효과 적용"
+			android:summary="다음 암기 대상 단어가 나타날 때 페이드 효과를 적용하여 나타나도록 합니다."
+			android:defaultValue="true"
+			/>
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="프로그램 정보"

@@ -20,7 +20,6 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-// @@@@@
 public class JvManager {
 
 	private static final String TAG = "JvManager";
@@ -121,12 +120,12 @@ public class JvManager {
 
 					if (token.countTokens() == 4) {
 						long idx = Long.parseLong(token.nextToken());
-						JapanVocabulary japanVocabulary = mJvTable.get(idx);
+						JapanVocabulary jpVocabulary = mJvTable.get(idx);
 
-						if (japanVocabulary != null) {
-							japanVocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
-							japanVocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
-							japanVocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false, false);
+						if (jpVocabulary != null) {
+							jpVocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
+							jpVocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
+							jpVocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false, false);
 						} else {
 							assert false;
 						}
@@ -344,15 +343,15 @@ public class JvManager {
 	public synchronized void writeUserVocabularyInfo() {
 		StringBuilder sb = new StringBuilder();
 		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary japanVocabulary = e.nextElement();
+			JapanVocabulary jpVocabulary = e.nextElement();
 
-			sb.append(japanVocabulary.getIdx())
+			sb.append(jpVocabulary.getIdx())
 			  .append("|")
-			  .append(japanVocabulary.getMemorizeCompletedCount())
+			  .append(jpVocabulary.getMemorizeCompletedCount())
 			  .append("|")
-			  .append(japanVocabulary.isMemorizeTarget() == true ? 1 : 0)
+			  .append(jpVocabulary.isMemorizeTarget() == true ? 1 : 0)
 			  .append("|")
-			  .append(japanVocabulary.isMemorizeCompleted() == true ? 1 : 0)
+			  .append(jpVocabulary.isMemorizeCompleted() == true ? 1 : 0)
 			  .append("\n");
 		}
 
@@ -373,7 +372,6 @@ public class JvManager {
 		}
 	}
 
-	// @@@@@@ mNotSearchVocabularyTargetCancel
 	public synchronized boolean updateMemorizeField(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
 		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
 			JapanVocabulary jv = null;
@@ -387,6 +385,13 @@ public class JvManager {
 			for (int index = 0; index < idxList.size(); ++index)
 				mJvTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
 		} else if (menuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
+			if (notSearchVocabularyTargetCancel == true) {
+				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+					JapanVocabulary jpVocabulary = e.nextElement();
+					jpVocabulary.setMemorizeTarget(false, false);
+				}
+			}
+
 			for (int index = 0; index < idxList.size(); ++index)
 				mJvTable.get(idxList.get(index)).setMemorizeTarget(true, false);
 		} else if (menuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
@@ -455,8 +460,6 @@ public class JvManager {
 	}
 
 	public synchronized ArrayList<Integer> getVocabularyInfo() {
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
 		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
@@ -467,6 +470,8 @@ public class JvManager {
 				++memorizeCompletedCount;
 		}
 		
+		ArrayList<Integer> result = new ArrayList<Integer>();
+
 		result.add(mJvTable.size());
 		result.add(memorizeTargetCount);
 		result.add(memorizeCompletedCount);

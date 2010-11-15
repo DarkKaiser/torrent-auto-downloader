@@ -15,6 +15,9 @@ public class OptionActivity extends PreferenceActivity implements OnSharedPrefer
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// 타이틀을 설정한다.
+		setTitle(String.format("%s - 환경설정", getResources().getString(R.string.app_name)));
+
 		getPreferenceManager().setSharedPreferencesName(JvDefines.JV_SHARED_PREFERENCE_NAME);
 		addPreferencesFromResource(R.layout.jv_optionlist);
 

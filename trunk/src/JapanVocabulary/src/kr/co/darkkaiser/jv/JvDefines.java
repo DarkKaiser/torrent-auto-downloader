@@ -18,6 +18,11 @@ public class JvDefines {
     public static final String JV_SPN_MEMORIZE_TARGET_ITEM = "jv_memorize_target_item";
     
     /*
+     * 다음 단어로 전환시 페이드 효과 적용 여부 항목 이름(공용 환경설정 키이름)
+     */
+    public static final String JV_SPN_FADE_EFFECT_NEXT_VOCABULARY = "jv_fade_effect_next_vocabulary";
+
+    /*
      * 리스트 정렬 방법(공용 환경설정 키이름)
      */
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
@@ -40,7 +45,7 @@ public class JvDefines {
     /*
      * 단어 DB 버전 정보 확인 URL
      */
-    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_version.html";
+    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_version_sha1.php";
     
     /*
      * 단어 DB 다운로드 URL
