@@ -3,16 +3,21 @@ package kr.co.darkkaiser.jv;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.helper.ByteUtils;
 import kr.co.darkkaiser.jv.list.JvListActivity;
 import kr.co.darkkaiser.jv.option.OptionActivity;
 
@@ -160,7 +165,17 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 			@Override
    			public void run() {
 				if (mIsNowNetworkConnected == true) {
-					String newVocabularyDbVersion = checkNewVocabularyDb();
+					ArrayList<String> newVocaInfo = checkNewVocabularyDb();
+					String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
+
+					if (newVocaInfo != null) {
+						if (newVocaInfo.size() >= 1)
+							newVocabularyDbVersion = newVocaInfo.get(0);
+
+						if (newVocaInfo.size() >= 2)
+							newVocabularyDbFileHash = newVocaInfo.get(1);
+					}
+
 					if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false) {
 						// 현재 연결된 네트워크가 3G 연결인지 확인한다.
 						ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -168,6 +183,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 						if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
 							Bundle bundle = new Bundle();
 							bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbVersion);
+							bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbFileHash);
 							
 							Message msg = Message.obtain();
 							msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION;
@@ -176,7 +192,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 							mVocabularyDataLoadHandler.sendMessage(msg);
 						} else {
 							// 새로운 단어 DB로 갱신합니다.
-							updateVocabularyDb(newVocabularyDbVersion);
+							updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
 
 							// 단어 데이터를 초기화한 후, 암기를 시작합니다.
 							initVocabularyDataAndStartMemorize(mIsNowNetworkConnected);
@@ -442,6 +458,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 					mProgressDialog.dismiss();
 
 				final String newVocabularyDbVersion = msg.getData().getString("NEW_VOCABULARY_DB_VERSION");
+				final String newVocabularyDbFileHash = msg.getData().getString("NEW_VOCABULARY_DB_FILE_HASH");
 
 	        	new AlertDialog.Builder(JvActivity.this)
     				.setTitle("알림")
@@ -450,14 +467,14 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 				
     					@Override
     					public void onClick(DialogInterface dialog, int which) {
-    						updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, true);
+    						updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, true);
     					}
     				})
 					.setNegativeButton("취소", new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, false);
+							updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, false);
 						}
 					})		
     				.show();
@@ -534,13 +551,10 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
         return tv;
 	}
 	
-	private String checkNewVocabularyDb() {
+	private ArrayList<String> checkNewVocabularyDb() {
 		// 로컬 단어 DB의 버전정보를 구한다.
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		String localDbVersion = mPreferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
-
-		// 단어 DB의 갱신 여부를 확인한다.
-		String remoteDbVersion = null;
 
 		try {
 			URL url = new URL(JvDefines.JV_DB_VERSION_CHECK_URL);
@@ -554,17 +568,30 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
 
 			String inputLine = null;
-			StringBuilder sb = new StringBuilder();
+			ArrayList<String> readData = new ArrayList<String>(); 
 			while ((inputLine = br.readLine()) != null) {
-				sb.append(inputLine);
+				readData.add(inputLine);
 			}
 
 			br.close();
-			remoteDbVersion = sb.toString().trim();
 
-			if (remoteDbVersion != null && TextUtils.isEmpty(remoteDbVersion) == false && remoteDbVersion.equals(localDbVersion) == false) {
-				return remoteDbVersion;
+			// 단어 DB의 갱신 여부를 확인한다.
+			String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
+
+			if (readData.size() >= 1) {
+				newVocabularyDbVersion = readData.get(0).trim();
 			}
+			
+			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false && newVocabularyDbVersion.equals(localDbVersion) == false) {
+				if (readData.size() >= 2) {
+					newVocabularyDbFileHash = readData.get(1).trim();
+				}
+			}
+
+			ArrayList<String> result = new ArrayList<String>();
+			result.add(newVocabularyDbVersion);
+			result.add(newVocabularyDbFileHash);
+			return result;
 		} catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 
@@ -581,48 +608,50 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 			mVocabularyDataLoadHandler.sendMessage(msg);
 		}
 
-		return "sldfl";//@@@@@ 임시코드
-//		return "";
+		return null;
 	}
 
-	private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, boolean updateVocabularyDb) {
-		if (updateVocabularyDb == true) {
+	private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
+		if (isUpdateVocabularyDb == true)
 			mProgressDialog = ProgressDialog.show(JvActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);			
-		} else {
+		else
 			mProgressDialog = ProgressDialog.show(JvActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);			
-		}
 
 		new Thread() {
 
 			// 단어 DB를 업데이트 할지에 대한 플래그
-			private boolean mUpdateVocabularyDb = false;
+			private boolean mIsUpdateVocabularyDb = false;
 			
-			// 새로 업데이트 할 단어 DB의 버전
+			// 새로 업데이트 할 단어 DB의 버전 및 파일 해쉬값
 			private String mNewVocabularyDbVersion = null;
+			private String mNewVocabularyDbFileHash = null;
 
-   			public Thread setValues(String newVocabularyDbVersion, boolean updateVocabularyDb) {
+   			public Thread setValues(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
    				assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
+   				
+   				mIsUpdateVocabularyDb = isUpdateVocabularyDb;
    				mNewVocabularyDbVersion = newVocabularyDbVersion;
-   				mUpdateVocabularyDb = updateVocabularyDb;
+   				mNewVocabularyDbFileHash = newVocabularyDbFileHash;
+   				
    				return this;
    			}
 
 			@Override
    			public void run() {
-				if (mUpdateVocabularyDb == true) {
+				if (mIsUpdateVocabularyDb == true) {
 					// 새로운 단어 DB로 갱신합니다.
-					updateVocabularyDb(mNewVocabularyDbVersion);					
+					updateVocabularyDb(mNewVocabularyDbVersion, mNewVocabularyDbFileHash);					
 				}
 
 				// 단어 데이터를 초기화한 후, 암기를 시작합니다.
 				initVocabularyDataAndStartMemorize(true);
    			};
    		}
-   		.setValues(newVocabularyDbVersion, updateVocabularyDb)
+   		.setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
    		.start();
 	}
 
-	private void updateVocabularyDb(String newVocabularyDbVersion) {
+	private void updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
 		assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
 		Message msg = null;
@@ -676,17 +705,48 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 				msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
 				mVocabularyDataLoadHandler.sendMessage(msg);
 			} else {
-				f = new File(jvDbPath);
-				f.delete();
+				if (TextUtils.isEmpty(newVocabularyDbFileHash) == true) {
+					f = new File(jvDbPath);
+					f.delete();
 
-				FileOutputStream fos = new FileOutputStream(f);
-				fos.write(baf.toByteArray());
-				fos.close();
+					FileOutputStream fos = new FileOutputStream(f);
+					fos.write(baf.toByteArray());
+					fos.close();
 
-				// @@@@@ sha1 체크
+					SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+					mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+				} else {
+					f = new File(String.format("%s.tmp", jvDbPath));
+					f.delete();
 
-				SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-				mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+					FileOutputStream fos = new FileOutputStream(f);
+					fos.write(baf.toByteArray());
+					fos.close();
+
+					// 다운로드 받은 파일의 해쉬값을 구하여 올바른 파일인지 비교한다.
+					boolean isValidationFile = true;
+					byte[] fileHashBytes = getFileHash(f);
+					if (fileHashBytes != null) {
+						if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
+							isValidationFile = false;
+					}
+
+					if (isValidationFile == true) {
+						File dstFile = new File(jvDbPath);
+						dstFile.delete();
+						f.renameTo(dstFile);
+
+						SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+						mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();						
+					} else {
+						f.delete();
+
+						msg = Message.obtain();
+						msg.what = MSG_TOAST_SHOW;
+						msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
+						mVocabularyDataLoadHandler.sendMessage(msg);
+					}
+				}
 			}
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage());
@@ -740,6 +800,33 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 		// 암기 대상 단어들만을 필터링한다.
 		mJvList.clear();
 		mMemorizeTargetJvCount = JvManager.getInstance().getMemorizeTargetJvList(mJvList);			
+	}
+
+	protected byte[] getFileHash(File file) throws IOException, NoSuchAlgorithmException {
+		assert file != null;
+		assert file.exists() == true;
+
+	    BufferedInputStream bis = null;
+
+	    try {
+	        MessageDigest md = MessageDigest.getInstance("SHA1");
+	        bis = new BufferedInputStream(new FileInputStream(file));
+	        
+	        int readBytes = -1;
+	        byte[] buffer = new byte[1024];
+	        while ((readBytes = bis.read(buffer)) != -1) {
+	            md.update(buffer, 0, readBytes);
+	        }
+
+	        return md.digest();
+	    } finally {
+	        if (bis != null) {
+	        	try {
+	        		bis.close();
+	        	} catch (IOException e) {
+	        	}
+	        }
+	    }
 	}
 
 }

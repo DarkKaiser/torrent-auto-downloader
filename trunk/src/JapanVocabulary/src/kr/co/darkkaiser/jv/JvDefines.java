@@ -45,7 +45,7 @@ public class JvDefines {
     /*
      * 단어 DB 버전 정보 확인 URL
      */
-    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_version_sha1.php";
+    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.php";
     
     /*
      * 단어 DB 다운로드 URL
