@@ -26,6 +26,11 @@ public class JvDefines {
      * 리스트 정렬 방법(공용 환경설정 키이름)
      */
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
+    
+    /*
+     * 가장 마지막에 업데이트 된 단어 DB의 Max IDX 값
+     */
+    public static final String JV_SPN_LAST_UPDATED_MAX_IDX = "jv_last_updated_max_idx";
 
     /*
 	 * SDCARD에 생성되는 프로그램 폴더명
@@ -43,13 +48,13 @@ public class JvDefines {
     public static final String JV_USER_VOCABULARY_INFO_FILE = "jv2_user.db";
     
     /*
-     * 단어 DB 버전 정보 확인 URL
-     */
-    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.php";
-    
-    /*
      * 단어 DB 다운로드 URL
      */
     public static final String JV_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/jv2.db";
 
+    /*
+     * 단어 DB 버전 정보 확인 URL
+     */
+    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.php";
+    
 }

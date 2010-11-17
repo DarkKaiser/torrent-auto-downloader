@@ -479,4 +479,45 @@ public class JvManager {
 		return result;
 	}
 
+	public synchronized long getUpdatedJapanVocabularyInfo(long prevMaxIdx, StringBuilder sb) {
+		assert sb != null;
+
+		long newMaxIdx = -1;
+		long updateVocabularyCount = 0;
+		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			JapanVocabulary jpVocabulary = e.nextElement();
+			if (jpVocabulary.getIdx() > prevMaxIdx) {
+				++updateVocabularyCount;
+
+				if (jpVocabulary.getIdx() > newMaxIdx) {
+					newMaxIdx = jpVocabulary.getIdx();
+				}
+
+				// 최대 200개 이상의 단어는 출력되지 않도록 한다.
+				if (updateVocabularyCount < 200) {
+					sb.append(jpVocabulary.getVocabulary())
+					  .append("(")
+					  .append(jpVocabulary.getVocabularyGana())
+					  .append(") - ")
+					  .append(jpVocabulary.getVocabularyTranslation())
+					  .append("\n");					
+				}
+			}
+		}
+
+		if (updateVocabularyCount > 0) {
+			sb.insert(0, String.format("%d개의 단어가 업데이트 되었습니다.\n\n", updateVocabularyCount));
+
+			// 200개 이상의 단어가 업데이트 되었을 경우 '.....' 문자를 마지막에 보이도록 한다.
+			if (updateVocabularyCount > 200) {
+				sb.append(".....");
+			} else {
+				// 마지막에 추가된 '\n' 문자를 제거한다.
+				sb.deleteCharAt(sb.length() - 1);
+			}
+		}
+		
+		return newMaxIdx;
+	}
+
 }

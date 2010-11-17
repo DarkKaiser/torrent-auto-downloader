@@ -43,6 +43,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -70,6 +71,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
+	private static final int MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW = 9;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -192,18 +194,18 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 							mVocabularyDataLoadHandler.sendMessage(msg);
 						} else {
 							// 새로운 단어 DB로 갱신합니다.
-							updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
+							boolean updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
 
 							// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-							initVocabularyDataAndStartMemorize(mIsNowNetworkConnected);
+							initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, updateSucceeded);
 						}
 					} else {
 						// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-						initVocabularyDataAndStartMemorize(mIsNowNetworkConnected);
+						initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, false);
 					}					
 				} else {
 					// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-					initVocabularyDataAndStartMemorize(mIsNowNetworkConnected);					
+					initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, false);
 				}
    			};
    		}
@@ -430,6 +432,24 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
         				}
         			})
         			.show();
+			} else if (msg.what == MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW) {
+				LayoutInflater inflater = getLayoutInflater();
+				View v = inflater.inflate(R.layout.jv_update_info_view, null);
+				
+				if (v != null) {
+					TextView jpVocabularyUpdateInfo = (TextView)v.findViewById(R.id.jv_update_info);
+					jpVocabularyUpdateInfo.setText(msg.getData().getString("JV_UPDATE_INFO"));
+
+		        	new AlertDialog.Builder(JvActivity.this)
+		        		.setTitle("단어 업데이트 정보")
+		        		.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
+		        			@Override
+		        			public void onClick(DialogInterface dialog, int which) {
+		        			}
+		        		})
+		        		.setView(v)
+		        		.show();
+				}
 			} else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_START) {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
@@ -586,12 +606,12 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 				if (readData.size() >= 2) {
 					newVocabularyDbFileHash = readData.get(1).trim();
 				}
-			}
 
-			ArrayList<String> result = new ArrayList<String>();
-			result.add(newVocabularyDbVersion);
-			result.add(newVocabularyDbFileHash);
-			return result;
+				ArrayList<String> result = new ArrayList<String>();
+				result.add(newVocabularyDbVersion);
+				result.add(newVocabularyDbFileHash);
+				return result;
+			}
 		} catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 
@@ -638,23 +658,26 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
 			@Override
    			public void run() {
+				boolean updateSucceeded = false;
 				if (mIsUpdateVocabularyDb == true) {
 					// 새로운 단어 DB로 갱신합니다.
-					updateVocabularyDb(mNewVocabularyDbVersion, mNewVocabularyDbFileHash);					
+					updateSucceeded = updateVocabularyDb(mNewVocabularyDbVersion, mNewVocabularyDbFileHash);					
 				}
 
 				// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-				initVocabularyDataAndStartMemorize(true);
+				initVocabularyDataAndStartMemorize(true, updateSucceeded);
    			};
    		}
    		.setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
    		.start();
 	}
 
-	private void updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
+	private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
 		assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
 		Message msg = null;
+		boolean updateSucceeded = false;
+
 		String jvDbPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
 		File f = new File(jvDbPath);
 		if (f.exists() == false) {
@@ -736,8 +759,9 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 						dstFile.delete();
 						f.renameTo(dstFile);
 
+						updateSucceeded = true;
 						SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-						mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();						
+						mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
 					} else {
 						f.delete();
 
@@ -760,9 +784,11 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 		msg = Message.obtain();
 		msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_END;
 		mVocabularyDataLoadHandler.sendMessage(msg);
+		
+		return updateSucceeded;
 	}
 
-	private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected) {
+	private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean updateSucceeded) {
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
@@ -779,16 +805,38 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 		// 단어 데이터를 로드합니다.
         loadMemorizeTargetVocabularyData();
 
-        // 단어 암기를 시작합니다.
-		msg = Message.obtain();
-		msg.what = MSG_VOCABULARY_MEMORIZE_START;
-		mVocabularyDataLoadHandler.sendMessage(msg);
-
 		if (nowNetworkConnected == false) {
 			msg = Message.obtain();
 			msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
 			mVocabularyDataLoadHandler.sendMessage(msg);
+		} else if (updateSucceeded == true) {
+			SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+			long prevMaxIdx = mPreferences.getLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
+			
+			StringBuilder sb = new StringBuilder();
+			long newMaxIdx = JvManager.getInstance().getUpdatedJapanVocabularyInfo(prevMaxIdx, sb);
+
+			if (newMaxIdx != -1) {
+				mPreferences.edit().putLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
+				
+				// 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
+				if (prevMaxIdx != -1) {
+					Bundle bundle = new Bundle();
+					bundle.putString("JV_UPDATE_INFO", sb.toString());
+
+					msg = Message.obtain();
+					msg.what = MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW;
+					msg.setData(bundle);
+
+					mVocabularyDataLoadHandler.sendMessage(msg);					
+				}
+			}
 		}
+
+        // 단어 암기를 시작합니다.
+		msg = Message.obtain();
+		msg.what = MSG_VOCABULARY_MEMORIZE_START;
+		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
 
 	private void loadMemorizeTargetVocabularyData() {
