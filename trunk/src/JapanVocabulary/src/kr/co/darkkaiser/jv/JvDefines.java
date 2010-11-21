@@ -18,6 +18,11 @@ public class JvDefines {
     public static final String JV_SPN_MEMORIZE_TARGET_ITEM = "jv_memorize_target_item";
     
     /*
+     * 암기 대상 단어가 출력되는 아랫부분에 단어의 뜻 출력 여부 항목 이름(공용 환경설정 키이름)
+     */
+    public static final String JV_SPN_SHOW_VOCABULARY_TRANSLATION = "jv_show_vocabulary_translation";
+    
+    /*
      * 다음 단어로 전환시 페이드 효과 적용 여부 항목 이름(공용 환경설정 키이름)
      */
     public static final String JV_SPN_FADE_EFFECT_NEXT_VOCABULARY = "jv_fade_effect_next_vocabulary";

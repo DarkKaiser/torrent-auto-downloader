@@ -54,12 +54,13 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
-public class JvActivity extends Activity implements OnTouchListener, ViewFactory {
+public class JvActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "JvActivity";
 
@@ -118,10 +119,41 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
         	return;
         }
+        
+        RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
+        vocabularyContainer.setOnTouchListener(this);
 
         TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
-        vocabularyTextSwitcher.setFactory(this);  
         vocabularyTextSwitcher.setOnTouchListener(this);
+        vocabularyTextSwitcher.setFactory(new ViewFactory() {
+			
+			@Override
+			public View makeView() {
+				TextView tv = new TextView(JvActivity.this);
+		        tv.setGravity(Gravity.CENTER);
+		        tv.setTypeface(Typeface.SERIF);
+		        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
+		        tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+		        return tv;
+			}
+		});
+        
+        TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
+        vocabularyTranslationTextSwitcher.setOnTouchListener(this);
+        vocabularyTranslationTextSwitcher.setFactory(new ViewFactory() {
+
+			@Override
+			public View makeView() {
+				TextView tv = new TextView(JvActivity.this);
+		        tv.setGravity(Gravity.CENTER);
+		        tv.setTypeface(Typeface.SERIF);
+		        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+		        tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+		        return tv;
+			}
+		});
 
         // 환경설정 값을 로드한다.
         initSharedPreference(false);
@@ -305,12 +337,23 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
+		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 		if (mPreferences.getBoolean(JvDefines.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, true) == true) {
 			vocabularyTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			vocabularyTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));						
+			vocabularyTranslationTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+			vocabularyTranslationTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));						
 		} else {
 			vocabularyTextSwitcher.setInAnimation(null);
 			vocabularyTextSwitcher.setOutAnimation(null);			
+			vocabularyTranslationTextSwitcher.setInAnimation(null);
+			vocabularyTranslationTextSwitcher.setOutAnimation(null);			
+		}
+		
+		if (mPreferences.getBoolean(JvDefines.JV_SPN_SHOW_VOCABULARY_TRANSLATION, false) == false) {
+			vocabularyTranslationTextSwitcher.setVisibility(View.GONE);
+		} else {
+			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
 		}
 
 		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
@@ -329,10 +372,12 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
 	private void showNextVocabulary() {
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
+		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 
 		if (mJvList.isEmpty() == true) {
 			mJvCurrentIndex = -1;
 			vocabularyTextSwitcher.setText("");
+			vocabularyTranslationTextSwitcher.setText("");
 
 			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
@@ -347,11 +392,22 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 				} while (mJvCurrentIndex == index);
 			}
 
-			// 화면에 다음 단어를 출력한다.
-			if (mIsJapanVocabularyOutputMode == true)
-				vocabularyTextSwitcher.setText(mJvList.get(mJvCurrentIndex).getVocabulary());
-			else
-				vocabularyTextSwitcher.setText(mJvList.get(mJvCurrentIndex).getVocabularyGana());
+			// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
+			// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
+			vocabularyTextSwitcher.setText("");
+			vocabularyTranslationTextSwitcher.setText("");
+			
+			JapanVocabulary jpVocabulary = mJvList.get(mJvCurrentIndex);
+			if (jpVocabulary != null) {
+				// 화면에 다음 단어를 출력한다.
+				if (mIsJapanVocabularyOutputMode == true) {
+					vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
+				} else {
+					vocabularyTextSwitcher.setText(jpVocabulary.getVocabularyGana());
+				}
+				
+				vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());				
+			}
 		}
 	}
 
@@ -362,7 +418,9 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-    	if (v.getId() == R.id.vocabulary && mJvCurrentIndex != -1) {
+    	if ((v.getId() == R.id.vocabulary_container || v.getId() == R.id.vocabulary || v.getId() == R.id.vocabulary_translation) &&
+    			mJvCurrentIndex != -1) {
+
         	switch (event.getAction()) {
 		    	case MotionEvent.ACTION_DOWN:
 		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
@@ -560,17 +618,6 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
     	}
     };
 
-	@Override
-	public View makeView() {
-		TextView tv = new TextView(this);
-        tv.setGravity(Gravity.CENTER);
-        tv.setTypeface(Typeface.SERIF);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
-        tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
-        return tv;
-	}
-	
 	private ArrayList<String> checkNewVocabularyDb() {
 		// 로컬 단어 DB의 버전정보를 구한다.
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -767,7 +814,7 @@ public class JvActivity extends Activity implements OnTouchListener, ViewFactory
 
 						msg = Message.obtain();
 						msg.what = MSG_TOAST_SHOW;
-						msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
+						msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).";
 						mVocabularyDataLoadHandler.sendMessage(msg);
 					}
 				}

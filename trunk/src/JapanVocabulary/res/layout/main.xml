@@ -34,11 +34,26 @@
 	    	android:textSize="13dp"
 	    	android:textColor="#99999999"
 	    	/>
-		<TextSwitcher
-			android:id="@+id/vocabulary"
-	    	android:layout_width="fill_parent" 
-	    	android:layout_height="fill_parent" 
+	    <RelativeLayout
+	    	android:id="@+id/vocabulary_container"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="fill_parent"
+	    	android:layout_below="@id/jv_info"
 	    	android:layout_above="@id/memorize_method_info"
-	    	/>
+	    	>
+			<TextSwitcher
+				android:id="@+id/vocabulary"
+		    	android:layout_width="fill_parent" 
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerInParent="true"
+		    	/>
+			<TextSwitcher
+				android:id="@+id/vocabulary_translation"
+		    	android:layout_width="fill_parent" 
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/vocabulary"
+		    	android:layout_centerInParent="true"
+		    	/>
+	    </RelativeLayout>
 	</RelativeLayout>
 </LinearLayout>
