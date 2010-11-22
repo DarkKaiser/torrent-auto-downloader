@@ -14,6 +14,7 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.detail.JvDetailActivity;
@@ -90,9 +91,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 	// 암기 대상 단어 전체 갯수
 	private int mMemorizeTargetJvCount = 0;
 
-	// 일본식 한자 단어를 암기대상으로 출력할지의 여부
-	// 이 값이 false 이면 히라가나/가타카나를 암기대상으로 출력한다.
-	private boolean mIsJapanVocabularyOutputMode = true;
+	// 암기 대상 항목
+	private JapanVocabularyMemorizeTargetItem mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY;
 
 	// 암기 대상 일본어 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
@@ -296,6 +296,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		// @@@@@ 단어 암기 순서가 변경된 경우는???
+
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
 			assert mProgressDialog == null;
 
@@ -359,9 +361,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
 		if (mIsJapanVocabularyOutputMode != (TextUtils.equals(memorizeTargetItem, "0"))) {
 			if (TextUtils.equals(memorizeTargetItem, "0") == true) {
-				mIsJapanVocabularyOutputMode = true;
+				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY;
 			} else {
-				mIsJapanVocabularyOutputMode = false;
+				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY_GANA;
 			}
 
 			// 출력될 단어의 항목이 바뀌었을 경우에만 다음 글자를 보인다.
@@ -400,7 +402,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			JapanVocabulary jpVocabulary = mJvList.get(mJvCurrentIndex);
 			if (jpVocabulary != null) {
 				// 화면에 다음 단어를 출력한다.
-				if (mIsJapanVocabularyOutputMode == true) {
+				if (mJvMemorizeTargetItem == JapanVocabularyMemorizeTargetItem.VOCABULARY) {
 					vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
 				} else {
 					vocabularyTextSwitcher.setText(jpVocabulary.getVocabularyGana());
@@ -412,6 +414,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	}
 
 	private void updateJvMemorizeInfo() {
+		// @@@@@
 		TextView jvInfo = (TextView)findViewById(R.id.jv_info);
 		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mMemorizeTargetJvCount - mJvList.size(), mMemorizeTargetJvCount));
 	}
@@ -582,6 +585,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	    							Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 	    							vibrator.vibrate(30);
 
+		    						// @@@@@
 	    							mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true, true);
 	    							mJvList.remove(mJvCurrentIndex);
 	    							updateJvMemorizeInfo();
@@ -905,6 +909,28 @@ public class JvActivity extends Activity implements OnTouchListener {
 		// 암기 대상 단어들만을 필터링한다.
 		mJvList.clear();
 		mMemorizeTargetJvCount = JvManager.getInstance().getMemorizeTargetJvList(mJvList);			
+
+		// 단어 암기 순서에 따라 정렬한다.
+		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		int memorizeOrderMethod = Integer.parseInt(mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
+		
+		switch (memorizeOrderMethod) {
+		case 1:
+			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyComparator);
+			break;
+		case 3:
+			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyGanaComparator);
+			break;
+		case 2:
+			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyTranslationComparator);
+			break;
+		case 4:
+			Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateUpComparator);
+			break;
+		case 5:
+			Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateDownComparator);
+			break;
+		}
 	}
 
 	protected byte[] getFileHash(File file) throws IOException, NoSuchAlgorithmException {

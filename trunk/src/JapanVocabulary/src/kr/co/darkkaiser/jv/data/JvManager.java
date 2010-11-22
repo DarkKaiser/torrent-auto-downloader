@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import kr.co.darkkaiser.jv.list.JvListSearchCondition;
+import kr.co.darkkaiser.jv.view.list.JvListSearchCondition;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

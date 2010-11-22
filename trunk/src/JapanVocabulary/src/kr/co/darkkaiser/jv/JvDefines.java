@@ -28,6 +28,11 @@ public class JvDefines {
     public static final String JV_SPN_FADE_EFFECT_NEXT_VOCABULARY = "jv_fade_effect_next_vocabulary";
 
     /*
+     * 단어 암기 순서 항목 이름(공용 환경설정 키이름)
+     */
+    public static final String JV_SPN_MEMORIZE_ORDER_METHOD = "jv_memorize_order_method";
+    
+    /*
      * 리스트 정렬 방법(공용 환경설정 키이름)
      */
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
