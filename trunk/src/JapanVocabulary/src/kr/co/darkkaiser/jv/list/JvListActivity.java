@@ -1,12 +1,11 @@
 package kr.co.darkkaiser.jv.list;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 
 import kr.co.darkkaiser.jv.JapanVocabulary;
+import kr.co.darkkaiser.jv.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.JvManager;
 import kr.co.darkkaiser.jv.R;
@@ -372,19 +371,19 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 		synchronized (mJvListData) {
 			switch (mJvListSortMethod) {
 			case VOCABULARY:
-				Collections.sort(mJvListData, mJvVocabularyComparator);
+				Collections.sort(mJvListData, JapanVocabularyComparator.mJvVocabularyComparator);
 				break;
 			case VOCABULARY_GANA:
-				Collections.sort(mJvListData, mJvVocabularyGanaComparator);
+				Collections.sort(mJvListData, JapanVocabularyComparator.mJvVocabularyGanaComparator);
 				break;
 			case VOCABULARY_TRANSLATION:
-				Collections.sort(mJvListData, mJvVocabularyTranslationComparator);
+				Collections.sort(mJvListData, JapanVocabularyComparator.mJvVocabularyTranslationComparator);
 				break;
 			case REGISTRATION_DATE_UP:
-				Collections.sort(mJvListData, mJvRegistrationDateUpComparator);
+				Collections.sort(mJvListData, JapanVocabularyComparator.mJvRegistrationDateUpComparator);
 				break;
 			case REGISTRATION_DATE_DOWN:
-				Collections.sort(mJvListData, mJvRegistrationDateDownComparator);
+				Collections.sort(mJvListData, JapanVocabularyComparator.mJvRegistrationDateDownComparator);
 				break;
 			}			
 		}
@@ -401,61 +400,6 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 			startActivity(intent);			
 		}
 	}
-
-	private final static Comparator<JapanVocabulary> mJvVocabularyComparator = new Comparator<JapanVocabulary>() {
-		private final Collator collator = Collator.getInstance();
-
-		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
-			return collator.compare(lhs.getVocabulary(), rhs.getVocabulary());
-		}
-	};
-
-	private final static Comparator<JapanVocabulary> mJvVocabularyGanaComparator = new Comparator<JapanVocabulary>() {
-		private final Collator collator = Collator.getInstance();
-
-		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
-			return collator.compare(lhs.getVocabularyGana(), rhs
-					.getVocabularyGana());
-		}
-	};
-
-	private final static Comparator<JapanVocabulary> mJvVocabularyTranslationComparator = new Comparator<JapanVocabulary>() {
-		private final Collator collator = Collator.getInstance();
-
-		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
-			return collator.compare(lhs.getVocabularyTranslation(), rhs
-					.getVocabularyTranslation());
-		}
-	};
-
-	private final static Comparator<JapanVocabulary> mJvRegistrationDateUpComparator = new Comparator<JapanVocabulary>() {
-
-		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
-			if (lhs.getRegistrationDate() > rhs.getRegistrationDate())
-				return 1;
-			else if (lhs.getRegistrationDate() < rhs.getRegistrationDate())
-				return -1;
-
-			return 0;
-		}
-	};
-
-	private final static Comparator<JapanVocabulary> mJvRegistrationDateDownComparator = new Comparator<JapanVocabulary>() {
-
-		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
-			if (lhs.getRegistrationDate() > rhs.getRegistrationDate())
-				return -1;
-			else if (lhs.getRegistrationDate() < rhs.getRegistrationDate())
-				return 1;
-
-			return 0;
-		}
-	};
 
 	private Handler mJvListDataChangedHandler = new Handler() {
 		
