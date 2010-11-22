@@ -14,8 +14,8 @@
 			/>
 		<CheckBoxPreference
 			android:key="jv_show_vocabulary_translation"
-			android:title="암기 시 단어 뜻 출력"
-			android:summary="암기 대상 단어가 출력되는 아랫부분에 단어의 뜻을 출력합니다."
+			android:title="암기 시 단어 뜻 보이기"
+			android:summary="암기 대상 단어가 나타나는 아랫부분에 단어의 뜻을 보여줍니다."
 			android:defaultValue="false"
 			/>
 		<CheckBoxPreference
@@ -23,6 +23,15 @@
 			android:title="단어 전환시 페이드효과 적용"
 			android:summary="다음 암기 대상 단어가 나타날 때 페이드 효과를 적용하여 나타나도록 합니다."
 			android:defaultValue="true"
+			/>
+		<ListPreference
+			android:key="jv_memorize_order_method"
+			android:title="단어 암기 순서"
+			android:summary="암기시에 암기 대상 단어가 화면에 나타나는 순서를 선택합니다."
+			android:entries="@array/preference_memorize_order_method_list"
+			android:entryValues="@array/preference_memorize_order_itemvalues_list"
+			android:defaultValue="0"
+			android:dialogTitle="단어 암기 순서"
 			/>
 	</PreferenceCategory>
 	<PreferenceCategory
