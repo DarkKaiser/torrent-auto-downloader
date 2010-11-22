@@ -1,8 +1,8 @@
 package kr.co.darkkaiser.jv.view.detail;
 
-import kr.co.darkkaiser.jv.JapanVocabulary;
-import kr.co.darkkaiser.jv.JvManager;
 import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 		JapanVocabulary jpVocabulary = null;
 
 		if (idx != -1)
-			jpVocabulary = JvManager.getInstance().getJapanVocabulary(idx);
+			jpVocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
 
 		if (jpVocabulary == null) {
 			assert false;
@@ -84,7 +84,7 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 			}
 		}
 
-		vocabularyDetailInfo.setText(JvManager.getInstance().getJapanVocabularyDetailDescription(jpVocabulary.getVocabulary()));
+		vocabularyDetailInfo.setText(JapanVocabularyManager.getInstance().getJapanVocabularyDetailDescription(jpVocabulary.getVocabulary()));
 
 		// 제스쳐 감지 객체를 생성한다.
 		mGestureScanner = new GestureDetector(this);

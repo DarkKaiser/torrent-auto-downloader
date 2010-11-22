@@ -1,7 +1,9 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.data;
 
 import java.text.Collator;
 import java.util.Comparator;
+
+import kr.co.darkkaiser.jv.data.JapanVocabulary;
 
 public class JapanVocabularyComparator {
 	

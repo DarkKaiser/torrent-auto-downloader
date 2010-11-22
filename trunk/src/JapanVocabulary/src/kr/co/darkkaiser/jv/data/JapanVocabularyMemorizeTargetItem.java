@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.data;
 
 public enum JapanVocabularyMemorizeTargetItem {
 

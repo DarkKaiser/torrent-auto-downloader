@@ -17,10 +17,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import kr.co.darkkaiser.jv.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
+import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.data.JapanVocabularyMemorizeTargetItem;
 import kr.co.darkkaiser.jv.helper.ByteUtils;
-import kr.co.darkkaiser.jv.list.JvListActivity;
-import kr.co.darkkaiser.jv.option.OptionActivity;
+import kr.co.darkkaiser.jv.view.detail.JvDetailActivity;
+import kr.co.darkkaiser.jv.view.list.JvListActivity;
+import kr.co.darkkaiser.jv.view.option.OptionActivity;
 
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -270,7 +274,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				@Override
 	   			public void run() {
 					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-					JvManager.getInstance().rememorizeAllMemorizeTarget();
+					JapanVocabularyManager.getInstance().rememorizeAllMemorizeTarget();
 					
 			        // 단어 데이터를 로드합니다.
 			        loadMemorizeTargetVocabularyData();
@@ -856,7 +860,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
 		// DB에서 단어 데이터를 읽어들인다.
-		if (JvManager.getInstance().initDataFromDB() == false) {
+		if (JapanVocabularyManager.getInstance().initDataFromDB() == false) {
 			msg = Message.obtain();
 			msg.what = MSG_TOAST_SHOW;
 			msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
@@ -875,7 +879,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			long prevMaxIdx = mPreferences.getLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
 			
 			StringBuilder sb = new StringBuilder();
-			long newMaxIdx = JvManager.getInstance().getUpdatedJapanVocabularyInfo(prevMaxIdx, sb);
+			long newMaxIdx = JapanVocabularyManager.getInstance().getUpdatedJapanVocabularyInfo(prevMaxIdx, sb);
 
 			if (newMaxIdx != -1) {
 				mPreferences.edit().putLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
@@ -908,7 +912,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		// 암기 대상 단어들만을 필터링한다.
 		mJvList.clear();
-		mMemorizeTargetJvCount = JvManager.getInstance().getMemorizeTargetJvList(mJvList);			
+		mMemorizeTargetJvCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mJvList);			
 
 		// 단어 암기 순서에 따라 정렬한다.
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);

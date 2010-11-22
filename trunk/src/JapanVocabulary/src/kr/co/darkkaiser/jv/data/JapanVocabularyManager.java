@@ -11,6 +11,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvListSearchCondition;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,11 +22,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class JvManager {
+public class JapanVocabularyManager {
 
 	private static final String TAG = "JvManager";
 
-	private static JvManager mInstance = null;
+	private static JapanVocabularyManager mInstance = null;
 	
 	private String mJvVocabularyDbPath = null;
 	private String mJvUserVocubularyInfoFilePath = null;
@@ -37,10 +39,10 @@ public class JvManager {
 	private Hashtable<Long, JapanVocabulary> mJvTable = new Hashtable<Long, JapanVocabulary>();
 
 	static {
-		mInstance = new JvManager();
+		mInstance = new JapanVocabularyManager();
 	}
 
-	private JvManager() {
+	private JapanVocabularyManager() {
 		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
 		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
 		File f = new File(appMainPath);
@@ -52,7 +54,7 @@ public class JvManager {
 		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
 	}
 
-	public static JvManager getInstance() {
+	public static JapanVocabularyManager getInstance() {
 		return mInstance;
 	}
 

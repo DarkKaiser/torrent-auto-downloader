@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.JapanVocabularyComparator;
+import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.JvDefines;
-import kr.co.darkkaiser.jv.data.JvManager;
+import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.detail.JvDetailActivity;
 import kr.co.darkkaiser.jv.view.option.OptionActivity;
@@ -320,7 +320,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 						}
 					}
 
-					JvManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);					
+					JapanVocabularyManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);					
 				}
 
 				Message msg = Message.obtain();
@@ -471,7 +471,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 
 			synchronized (mJvListData) {
 				mJvListData.clear();
-				JvManager.getInstance().searchVocabulary(JvListActivity.this, mJvListSearchCondition, mJvListData);
+				JapanVocabularyManager.getInstance().searchVocabulary(JvListActivity.this, mJvListSearchCondition, mJvListData);
 			}
 
 			sortList();
@@ -484,7 +484,7 @@ public class JvListActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void updateVocabularyInfo() {
-		ArrayList<Integer> vocabularyInfo = JvManager.getInstance().getVocabularyInfo();
+		ArrayList<Integer> vocabularyInfo = JapanVocabularyManager.getInstance().getVocabularyInfo();
 		assert vocabularyInfo.size() == 3;
 
 		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);

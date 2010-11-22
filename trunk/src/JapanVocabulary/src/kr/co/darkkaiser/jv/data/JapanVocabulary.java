@@ -98,7 +98,7 @@ public class JapanVocabulary {
 		mMemorizeTarget = flag;
 
 		if (updateToDB == true) {
-			JvManager.getInstance().writeUserVocabularyInfo();
+			JapanVocabularyManager.getInstance().writeUserVocabularyInfo();
 		}
 	}
 
@@ -113,7 +113,7 @@ public class JapanVocabulary {
 		mMemorizeCompleted = flag;
 
 		if (updateToDB == true) {
-			JvManager.getInstance().writeUserVocabularyInfo();
+			JapanVocabularyManager.getInstance().writeUserVocabularyInfo();
 		}
 	}
 
