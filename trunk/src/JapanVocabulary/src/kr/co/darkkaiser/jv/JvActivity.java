@@ -750,6 +750,11 @@ public class JvActivity extends Activity implements OnTouchListener {
             msg.setData(bundle);
 			mVocabularyDataLoadHandler.sendMessage(msg);
 
+			// 해당 메시지의 처리가 완료될 때까지 대기한다.
+			while (mVocabularyDataLoadHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOAD_START) == true) {
+				Thread.sleep(10);
+			}
+
 			int readBytes = 0;
 			byte[] bytesIn = new byte[1024];
 			ByteArrayBuffer baf = new ByteArrayBuffer(1024);
@@ -766,6 +771,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 	            msg.setData(bundle);
 				mVocabularyDataLoadHandler.sendMessage(msg);
 	        }
+
+			// 해당 메시지의 처리가 완료될 때까지 대기한다.
+			while (mVocabularyDataLoadHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true) {
+				Thread.sleep(10);
+			}
 
 			bis.close();
 
