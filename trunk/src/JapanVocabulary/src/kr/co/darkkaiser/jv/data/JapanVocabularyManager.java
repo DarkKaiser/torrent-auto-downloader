@@ -319,17 +319,18 @@ public class JapanVocabularyManager {
 	}
 
 	public synchronized int getMemorizeTargetJvList(ArrayList<JapanVocabulary> jvList) {
-		int mMemorizeTargetJvCount = 0;
+		int mJvMemorizeCompletedCount = 0;
 		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jv = e.nextElement();
-			if (jv.isMemorizeTarget() == true) {
-				++mMemorizeTargetJvCount;
-				if (jv.isMemorizeCompleted() == false)
-					jvList.add(jv);
+			JapanVocabulary jpVocabulary = e.nextElement();
+			if (jpVocabulary.isMemorizeTarget() == true) {
+				jvList.add(jpVocabulary);
+
+				if (jpVocabulary.isMemorizeCompleted() == true)
+					++mJvMemorizeCompletedCount;
 			}
 		}
 
-		return mMemorizeTargetJvCount;
+		return mJvMemorizeCompletedCount;
 	}
 
 	public synchronized void rememorizeAllMemorizeTarget() {

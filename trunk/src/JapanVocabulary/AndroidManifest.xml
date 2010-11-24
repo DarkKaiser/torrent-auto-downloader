@@ -14,12 +14,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name=".detail.JvDetailActivity">
+		<activity android:name=".view.detail.JvDetailActivity">
 		</activity>
-		<activity android:name=".list.JvListActivity"
+		<activity android:name=".view.list.JvListActivity"
 				  android:configChanges="orientation|keyboard">
 		</activity>
-		<activity android:name=".option.OptionActivity">
+		<activity android:name=".view.option.OptionActivity">
 		</activity>
 	</application>
 	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>

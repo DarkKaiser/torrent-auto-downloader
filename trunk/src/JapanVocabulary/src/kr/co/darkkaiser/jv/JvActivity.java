@@ -3,16 +3,12 @@ package kr.co.darkkaiser.jv;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -20,8 +16,8 @@ import java.util.Random;
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
-import kr.co.darkkaiser.jv.data.JapanVocabularyMemorizeTargetItem;
 import kr.co.darkkaiser.jv.helper.ByteUtils;
+import kr.co.darkkaiser.jv.helper.FileHash;
 import kr.co.darkkaiser.jv.view.detail.JvDetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvListActivity;
 import kr.co.darkkaiser.jv.view.option.OptionActivity;
@@ -83,23 +79,58 @@ public class JvActivity extends Activity implements OnTouchListener {
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
-	// Long Press 를 판단하는 시간 값
+	// 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
 	private Random mRandom = new Random();
 	private ProgressDialog mProgressDialog = null;
 
-	// 현재 화면에 보여지고 있는 단어의 인덱스
-	private int mJvCurrentIndex = -1;
-
-	// 암기 대상 단어 전체 갯수
-	private int mMemorizeTargetJvCount = 0;
-
-	// 암기 대상 항목
-	private JapanVocabularyMemorizeTargetItem mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY;
-
-	// 암기 대상 일본어 단어 리스트
+	// 암기 대상 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
+
+	
+	
+	
+	
+	// 화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
+	private JvMemorizeTargetItem mJvMemorizeTargetItem = JvMemorizeTargetItem.VOCABULARY;
+
+	// 단어 암기 모드(무작위, 순차) @@@@@ 다시 안 읽어들이기 위해서 자세한 정보를 저장해놓는다.
+	private boolean mJvMemorizeRandomMode = true;
+	private int mJvMemorizeOrderMethod = 0;
+
+	// 암기 대상 단어 리스트 중에서 암기 완료한 단어의 갯수
+	private int mJvMemorizeCompletedCount = 0;
+
+	// 현재 화면에 보여지고 있는 암기 대상 단어의 인덱스
+	private int mJvCurrentIndex = -1;
+	
+	
+	// @@@@@
+	private class JvList {
+
+		// 암기 대상 단어 리스트
+		private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
+
+		// 화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
+		private JvMemorizeTargetItem mJvMemorizeTargetItem = JvMemorizeTargetItem.VOCABULARY;
+
+		// 단어 암기 모드(무작위, 순차) @@@@@ 다시 안 읽어들이기 위해서 자세한 정보를 저장해놓는다.
+		private boolean mJvMemorizeRandomMode = true;
+		private int mJvMemorizeOrderMethod = 0;
+
+		// 암기 대상 단어 리스트 중에서 암기 완료한 단어의 갯수
+		private int mJvMemorizeCompletedCount = 0;
+
+		// 현재 화면에 보여지고 있는 암기 대상 단어의 인덱스
+		private int mJvCurrentIndex = -1;
+		
+	}
+	
+	private JvList j = new JvList();
+	
+	
+	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,28 +327,24 @@ public class JvActivity extends Activity implements OnTouchListener {
 		return false;
 	}
 
+	// @@@@@
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		// @@@@@ 단어 암기 순서가 변경된 경우는???
-
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
 			assert mProgressDialog == null;
 
+			// @@@@@ 변경된 항목이 있는경우 단어 다시 로드
+			// 단어 암기 순서라든가...
+			
 			// 환경설정 값이 바뀌었는지 확인한다.
-			if ((resultCode & JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
-				if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) {
-					initSharedPreference(false);
-				} else {
-					initSharedPreference(true);
-					return;
-				}
-			}
-
-			// 변경된 내역이 없으면 다시 로드할 필요가 없으므로 바로 반환한다.
-			if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) != JvListActivity.ACTIVITY_RESULT_DATA_CHANGED)
+			if (resultCode == 0)
 				return;
+			
+			if ((resultCode & JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
+				initSharedPreference(false);
+			}
 
 			// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 			mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
@@ -336,9 +363,12 @@ public class JvActivity extends Activity implements OnTouchListener {
 	   		.start();
 		} else if (requestCode == R.id.jvm_preferences) {
 			initSharedPreference(true);
+			// @@@@@ 변경된 항목이 있는경우 단어 다시 로드
+			// 단어 암기 순서라든가...
 		}
 	}
 
+	// @@@@@
 	private void initSharedPreference(boolean showNextVocabulary) {
 		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
@@ -362,65 +392,79 @@ public class JvActivity extends Activity implements OnTouchListener {
 			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
 		}
 
+		// @@@@@ 임시 주석
 		String memorizeTargetItem = mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
-		if (mIsJapanVocabularyOutputMode != (TextUtils.equals(memorizeTargetItem, "0"))) {
-			if (TextUtils.equals(memorizeTargetItem, "0") == true) {
-				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY;
-			} else {
-				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY_GANA;
-			}
-
-			// 출력될 단어의 항목이 바뀌었을 경우에만 다음 글자를 보인다.
-			if (showNextVocabulary == true)
-				showNextVocabulary();
-		}
+//		if (mIsJapanVocabularyOutputMode != (TextUtils.equals(memorizeTargetItem, "0"))) {
+//			if (TextUtils.equals(memorizeTargetItem, "0") == true) {
+//				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY;
+//			} else {
+//				mJvMemorizeTargetItem = JapanVocabularyMemorizeTargetItem.VOCABULARY_GANA;
+//			}
+//
+//			// 출력될 단어의 항목이 바뀌었을 경우에만 다음 글자를 보인다.
+//			if (showNextVocabulary == true)
+//				showNextVocabulary();
+//		}
 	}
 
+	// @@@@@
 	private void showNextVocabulary() {
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 
-		if (mJvList.isEmpty() == true) {
-			mJvCurrentIndex = -1;
-			vocabularyTextSwitcher.setText("");
-			vocabularyTranslationTextSwitcher.setText("");
+		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
+		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
+		vocabularyTextSwitcher.setText("");
+		vocabularyTranslationTextSwitcher.setText("");
 
+		if (mJvList.isEmpty() == true || mJvMemorizeCompletedCount >= mJvList.size()) {
+			mJvCurrentIndex = -1;
 			Toast.makeText(this, "암기 할 단어가 없습니다.", Toast.LENGTH_SHORT).show();
 		} else {
-			if (mJvList.size() == 1) {
-				mJvCurrentIndex = 0;
-			} else {
-				int index = mJvCurrentIndex;
+			if (mJvMemorizeRandomMode == true) {
+				// @@@@@ 이전으로 보여주기 위한 현재 단어 저장
+				
+				// @@@@@ 랜덤한 숫자를 구한 후 순차적으로 루프를 돌면서 찾는다.
+				if (mJvList.size() == 1) {
+					mJvCurrentIndex = 0;
+				} else {
+					int index = mJvCurrentIndex;
 
-				do
-				{
-					mJvCurrentIndex = mRandom.nextInt(mJvList.size());									
-				} while (mJvCurrentIndex == index);
+					do
+					{
+						mJvCurrentIndex = mRandom.nextInt(mJvList.size());									
+					} while (mJvCurrentIndex == index);
+				}
+			} else {
+				// @@@@@
+				if ((mJvCurrentIndex + 1) == mJvList.size()) {
+					Toast.makeText(this, "다음 단어가 없습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					++mJvCurrentIndex;
+				}
 			}
 
-			// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
-			// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
-			vocabularyTextSwitcher.setText("");
-			vocabularyTranslationTextSwitcher.setText("");
-			
 			JapanVocabulary jpVocabulary = mJvList.get(mJvCurrentIndex);
 			if (jpVocabulary != null) {
 				// 화면에 다음 단어를 출력한다.
-				if (mJvMemorizeTargetItem == JapanVocabularyMemorizeTargetItem.VOCABULARY) {
+				if (mJvMemorizeTargetItem == JvMemorizeTargetItem.VOCABULARY) {
 					vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
 				} else {
 					vocabularyTextSwitcher.setText(jpVocabulary.getVocabularyGana());
 				}
 				
-				vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());				
+				vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
 			}
 		}
 	}
 
 	private void updateJvMemorizeInfo() {
-		// @@@@@
+		assert mJvMemorizeCompletedCount >= 0;
+		assert mJvMemorizeCompletedCount <= mJvList.size();
+		
 		TextView jvInfo = (TextView)findViewById(R.id.jv_info);
-		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mMemorizeTargetJvCount - mJvList.size(), mMemorizeTargetJvCount));
+		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mJvMemorizeCompletedCount, mJvList.size()));
 	}
 
 	@Override
@@ -464,6 +508,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 			mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 2000);
 			Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
 			return;
+		}
+		
+		if (mJvMemorizeRandomMode == false) {
+			// 현재의 단어 인덱스를 저장한다. @@@@@
 		}
 
 		super.onBackPressed();
@@ -589,9 +637,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 	    							Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 	    							vibrator.vibrate(30);
 
-		    						// @@@@@
+	    							++mJvMemorizeCompletedCount;
 	    							mJvList.get(mJvCurrentIndex).setMemorizeCompleted(true, true, true);
-	    							mJvList.remove(mJvCurrentIndex);
 	    							updateJvMemorizeInfo();
 	    							showNextVocabulary();
 
@@ -813,7 +860,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 					// 다운로드 받은 파일의 해쉬값을 구하여 올바른 파일인지 비교한다.
 					boolean isValidationFile = true;
-					byte[] fileHashBytes = getFileHash(f);
+					byte[] fileHashBytes = FileHash.getHash(f);
 					if (fileHashBytes != null) {
 						if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
 							isValidationFile = false;
@@ -910,58 +957,41 @@ public class JvActivity extends Activity implements OnTouchListener {
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
+		mJvCurrentIndex = -1;
+
 		// 암기 대상 단어들만을 필터링한다.
 		mJvList.clear();
-		mMemorizeTargetJvCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mJvList);			
-
-		// 단어 암기 순서에 따라 정렬한다.
-		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		int memorizeOrderMethod = Integer.parseInt(mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
+		mJvMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mJvList);
 		
-		switch (memorizeOrderMethod) {
-		case 1:
-			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyComparator);
-			break;
-		case 3:
-			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyGanaComparator);
-			break;
-		case 2:
-			Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyTranslationComparator);
-			break;
-		case 4:
-			Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateUpComparator);
-			break;
-		case 5:
-			Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateDownComparator);
-			break;
+		assert mJvMemorizeCompletedCount >= 0;
+		assert mJvMemorizeCompletedCount <= mJvList.size();
+
+		if (mJvMemorizeRandomMode == false) {
+			// 단어 암기 순서에 따라 정렬한다.
+			SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+			int memorizeOrderMethod = Integer.parseInt(mPreferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
+	
+			switch (memorizeOrderMethod) {
+			case 1:
+				Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyComparator);
+				break;
+			case 3:
+				Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyGanaComparator);
+				break;
+			case 2:
+				Collections.sort(mJvList, JapanVocabularyComparator.mJvVocabularyTranslationComparator);
+				break;
+			case 4:
+				Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateUpComparator);
+				break;
+			case 5:
+				Collections.sort(mJvList, JapanVocabularyComparator.mJvRegistrationDateDownComparator);
+				break;
+			default:
+				assert false;
+				break;
+			}			
 		}
-	}
-
-	protected byte[] getFileHash(File file) throws IOException, NoSuchAlgorithmException {
-		assert file != null;
-		assert file.exists() == true;
-
-	    BufferedInputStream bis = null;
-
-	    try {
-	        MessageDigest md = MessageDigest.getInstance("SHA1");
-	        bis = new BufferedInputStream(new FileInputStream(file));
-	        
-	        int readBytes = -1;
-	        byte[] buffer = new byte[1024];
-	        while ((readBytes = bis.read(buffer)) != -1) {
-	            md.update(buffer, 0, readBytes);
-	        }
-
-	        return md.digest();
-	    } finally {
-	        if (bis != null) {
-	        	try {
-	        		bis.close();
-	        	} catch (IOException e) {
-	        	}
-	        }
-	    }
 	}
 
 }

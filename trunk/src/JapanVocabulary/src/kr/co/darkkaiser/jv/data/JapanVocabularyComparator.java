@@ -61,5 +61,5 @@ public class JapanVocabularyComparator {
 			return 0;
 		}
 	};
-	
+
 }
