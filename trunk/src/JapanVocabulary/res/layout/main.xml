@@ -15,26 +15,22 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    >
-		<RelativeLayout
-			android:id="@+id/memorize_progress_about" 
-		    android:layout_width="fill_parent"
-		    android:layout_height="5px"
-			android:layout_alignParentBottom="true"
-		    android:background="#ff0000"
-		    >
-			<TextView 
-		    	android:layout_width="100px" 
-		    	android:layout_height="wrap_content"
-		    	android:background="#0000ff"
-		    	/>
-		</RelativeLayout>
+	 	<Button
+			android:id="@+id/prev_vocabulary" 
+			android:layout_width="42dp" 
+			android:layout_height="60dp"
+			android:layout_alignParentLeft="true"
+	    	android:layout_alignParentBottom="true"
+	 		android:text="《"
+			android:textSize="15dp"
+			/>
 	 	<Button
 			android:id="@+id/next_vocabulary" 
 			android:layout_width="fill_parent" 
 			android:layout_height="60dp"
-			android:layout_alignParentRight="true"
-	    	android:layout_above="@id/memorize_progress_about"
-	 		android:text="다음 단어 >>" 
+	    	android:layout_alignParentBottom="true"
+			android:layout_toRightOf="@id/prev_vocabulary"
+	 		android:text="다음 단어 》" 
 			android:textSize="15dp"
 			/>
 		<TextView

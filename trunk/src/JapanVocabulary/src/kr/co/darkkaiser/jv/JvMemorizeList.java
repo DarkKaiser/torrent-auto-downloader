@@ -7,7 +7,9 @@ import java.util.Random;
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.helper.CircularBuffer;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 public class JvMemorizeList {
@@ -16,6 +18,9 @@ public class JvMemorizeList {
 
 	// 암기 대상 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
+	
+	// 암기 대상 단어 암기 순서 버퍼
+	private CircularBuffer<Integer> mJvListMemorizeSequence = new CircularBuffer<Integer>();
 
 	// 암기 대상 단어 리스트 중에서 암기 완료한 단어의 갯수
 	private int mMemorizeCompletedCount = 0;
@@ -50,10 +55,11 @@ public class JvMemorizeList {
 		return (mMemorizeOrderMethod != prevMemorizeOrderMethod ? true : false);
 	}
 
-	public synchronized void loadData() {
+	public synchronized void loadData(SharedPreferences preferences, boolean launchApp) {
 		// 암기 대상 단어들만을 필터링한다.
 		mJvList.clear();
 		mCurrentPosition = -1;
+		mJvListMemorizeSequence.clear();
 		mMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mJvList);
 
 		assert mMemorizeCompletedCount >= 0;
@@ -77,6 +83,10 @@ public class JvMemorizeList {
 			break;
 		default:
 			break;
+		}
+		
+		if (launchApp == true) {
+			loadVocabularyPosition(preferences);
 		}
 	}
 
@@ -104,7 +114,7 @@ public class JvMemorizeList {
 
 	public synchronized long getIdxAtVocabularyPosition() {
 		if (isValidVocabularyPosition() == true) {
-			mJvList.get(mCurrentPosition).getIdx();
+			return mJvList.get(mCurrentPosition).getIdx();
 		} else {
 			assert false;
 		}
@@ -112,14 +122,38 @@ public class JvMemorizeList {
 		return -1;
 	}
 
-	public void storeVocabularyPosition() {
-		// @@@@@
-		// 현재의 단어 인덱스를 저장한다. currentIndex
-//		if (mJvMemorizeRandomMode == false) {
-//			// 현재의 단어 인덱스를 저장한다. @@@@@
-//		}
+	private void loadVocabularyPosition(SharedPreferences preferences) {
+		assert preferences != null;
+
+		int latestMemorizeOrderMethod = preferences.getInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, 0/* 랜덤 */);
+		if (latestMemorizeOrderMethod == mMemorizeOrderMethod && mMemorizeOrderMethod != 0/* 랜덤 */) {
+			int prevCurrentPosition = mCurrentPosition;
+			mCurrentPosition = preferences.getInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
+			
+			if (isValidVocabularyPosition() == false) {
+				mCurrentPosition = prevCurrentPosition;
+			}
+		}
 	}
-	
+
+	public void saveVocabularyPosition(SharedPreferences preferences) {
+		assert preferences != null;
+
+		Editor edit = preferences.edit();
+		edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, mMemorizeOrderMethod);
+		if (mMemorizeOrderMethod == 0/* 랜덤 */) {
+			edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
+		} else {
+			if (mCurrentPosition != -1) {
+				edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition - 1);
+			} else {
+				edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition);
+			}			
+		}
+		
+		edit.commit();
+	}
+
 	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
 			return mJvList.get(mCurrentPosition);
@@ -129,47 +163,94 @@ public class JvMemorizeList {
 	}
 	
 	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		// @@@@@
+		Integer value = mJvListMemorizeSequence.pop();
+		if (value != null) {
+			int prevCurrentPosition = mCurrentPosition;
+
+			mCurrentPosition = (int)value;
+			if (isValidVocabularyPosition() == true) {
+				return mJvList.get(mCurrentPosition);
+			} else {
+				assert false;
+				mCurrentPosition = prevCurrentPosition;
+			}
+		} else {
+			sbErrorMessage.append("이전 단어가 없습니다.");
+		}
+
 		return null;
 	}
 
-	// @@@@@
 	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		assert sbErrMessage != null;
 		
 		if (mJvList.isEmpty() == true || mMemorizeCompletedCount >= mJvList.size()) {
-			mCurrentPosition = -1;//???? 순차모들일때 첨으로 돌아가면 이상하지 않나?
+			if (mMemorizeOrderMethod == 0/* 랜덤 */) { 
+				mCurrentPosition = -1;
+			} else {
+				mCurrentPosition = mJvList.size() - 1;
+			}
+
 			sbErrMessage.append("암기 할 단어가 없습니다.");
 		} else {
+			if (isValidVocabularyPosition() == true) {
+				Integer value = mJvListMemorizeSequence.popNoRemove();
+				if (value != null) {
+					if (mCurrentPosition != (int)value) {
+						mJvListMemorizeSequence.push(mCurrentPosition);
+					}
+				} else {
+					mJvListMemorizeSequence.push(mCurrentPosition);
+				}
+			}
+
 			if (mMemorizeOrderMethod == 0/* 랜덤 */) {
-//				// @@@@@ 이전으로 보여주기 위한 현재 단어 저장
-//				
-//				// @@@@@ 랜덤한 숫자를 구한 후 순차적으로 루프를 돌면서 찾는다.
-//				if (mJvList.size() == 1) {
-//					mCurrentPosition = 0;
-//				} else {
-//					int index = mCurrentPosition;
-//
-//					do
-//					{
-//						mCurrentPosition = mRandom.nextInt(mJvList.size());									
-//					} while (mCurrentPosition == index);
-//				}
+				int prevCurrentPosition = mCurrentPosition;
+				int memorizeUncompletedCount = mJvList.size() - mMemorizeCompletedCount;
+				
+				do {
+					int uncompletedCount = 0;
+					int targetUncompletedCount = mRandom.nextInt(memorizeUncompletedCount) + 1;
+
+					for (int index = 0; index < mJvList.size(); ++index) {
+						if (mJvList.get(index).isMemorizeCompleted() == false) {
+							++uncompletedCount;
+							
+							if (uncompletedCount == targetUncompletedCount) {
+								mCurrentPosition = index;
+								break;
+							}
+						}
+					}
+				} while (memorizeUncompletedCount > 1 && prevCurrentPosition == mCurrentPosition);
 			} else {
-//				// @@@@@
-//				if ((mCurrentPosition + 1) == mJvList.size()) {
-//					Toast.makeText(this, "다음 단어가 없습니다.", Toast.LENGTH_SHORT).show();
-//					return;
-//				} else {
-//					++mCurrentPosition;
-//				}
+				boolean bFindSucceeded = false;
+				for (int index = mCurrentPosition + 1; index < mJvList.size(); ++index) {
+					if (mJvList.get(index).isMemorizeCompleted() == false) {
+						mCurrentPosition = index;
+						bFindSucceeded = true;
+						break;
+					}
+				}
+				
+				if (bFindSucceeded == false) {
+					for (int index = 0; index < mCurrentPosition; ++index) {
+						if (mJvList.get(index).isMemorizeCompleted() == false) {
+							mCurrentPosition = index;
+							bFindSucceeded = true;
+							break;
+						}
+					}
+				}
+
+				assert bFindSucceeded == true;
 			}
 
 			if (isValidVocabularyPosition() == true) {
 				return mJvList.get(mCurrentPosition);
 			}
 		}
-		
+
 		return null;
 	}
 	
@@ -182,10 +263,13 @@ public class JvMemorizeList {
 		assert mMemorizeCompletedCount >= 0;
 		assert mMemorizeCompletedCount <= mJvList.size();
 
+		StringBuilder sb = new StringBuilder();
+		sb.append(mCurrentPosition).append(", 전체: ").append(mJvList.size());
+		
 //		TextView jvInfo = (TextView)findViewById(R.id.jv_info);
 //		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mJvMemorizeCompletedCount, mJvList.size()));
 		// JvActivity에서 문자열 생성을 해야하지 않나?
 
-		return null;
+		return sb;
 	}
 }

@@ -146,6 +146,19 @@ public class JvActivity extends Activity implements OnTouchListener {
         // 환경설정 값을 로드한다.
         reloadPreference();
 
+        Button prevVocabulary = (Button)findViewById(R.id.prev_vocabulary);
+        prevVocabulary.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 진동을 발생시킨다.
+				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+				vibrator.vibrate(30);
+
+				showPrevMemorizeVocabulary();				
+			}
+		});
+        
         Button nextVocabulary = (Button)findViewById(R.id.next_vocabulary);
         nextVocabulary.setOnClickListener(new View.OnClickListener() {
         	
@@ -261,7 +274,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					JapanVocabularyManager.getInstance().rememorizeAllMemorizeTarget();
 
 			        // 암기할 단어 데이터를 로드합니다.
-			        loadMemorizeTargetVocabularyData();
+			        loadMemorizeTargetVocabularyData(false);
 
 					Message msg = Message.obtain();
 					msg.what = MSG_VOCABULARY_MEMORIZE_START;
@@ -307,7 +320,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					@Override
 		   			public void run() {
 				        // 암기할 단어 데이터를 로드합니다.
-				        loadMemorizeTargetVocabularyData();
+				        loadMemorizeTargetVocabularyData(false);
 
 						Message msg = Message.obtain();
 						msg.what = MSG_VOCABULARY_MEMORIZE_START;
@@ -328,7 +341,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					@Override
 		   			public void run() {
 				        // 암기할 단어 데이터를 로드합니다.
-				        loadMemorizeTargetVocabularyData();
+				        loadMemorizeTargetVocabularyData(false);
 
 						Message msg = Message.obtain();
 						msg.what = MSG_VOCABULARY_MEMORIZE_START;
@@ -377,7 +390,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
 		vocabularyTextSwitcher.setText("");
 		vocabularyTranslationTextSwitcher.setText("");
-		
+
 		JapanVocabulary jpVocabulary = mJvMemorizeList.getCurrentVocabulary();
 		if (jpVocabulary != null) {
 			switch (mJvMemorizeList.getMemorizeTargetItem()) {
@@ -398,7 +411,31 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 	}
 
+	private void showPrevMemorizeVocabulary() {
+		StringBuilder sbErrMessage = new StringBuilder();
+		JapanVocabulary jpVocabulary = mJvMemorizeList.previousVocabulary(sbErrMessage);
+		
+		if (jpVocabulary == null) {
+			if (sbErrMessage.length() > 0) {
+				Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			showMemorizeVocabulary(jpVocabulary);
+		}
+	}
+	
 	private void showNextMemorizeVocabulary() {
+		StringBuilder sbErrMessage = new StringBuilder();
+		JapanVocabulary jpVocabulary = mJvMemorizeList.nextVocabulary(sbErrMessage);
+		
+		if (jpVocabulary == null && sbErrMessage.length() > 0) {
+			Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
+		}
+		
+		showMemorizeVocabulary(jpVocabulary);
+	}
+	
+	private void showMemorizeVocabulary(JapanVocabulary jpVocabulary) {
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 
@@ -407,13 +444,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		vocabularyTextSwitcher.setText("");
 		vocabularyTranslationTextSwitcher.setText("");
 
-		StringBuilder sbErrMessage = new StringBuilder();
-		JapanVocabulary jpVocabulary = mJvMemorizeList.nextVocabulary(sbErrMessage);
-		if (jpVocabulary == null) {
-			if (sbErrMessage != null && sbErrMessage.length() > 0) {
-				Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();	
-			}
-		} else {
+		if (jpVocabulary != null) {
 			switch (mJvMemorizeList.getMemorizeTargetItem()) {
 			case VOCABULARY:
 				vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
@@ -430,6 +461,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 			
 			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
 		}
+		
+		// @@@@@ 임시코드 나중에 삭제할 것
+		updateJvMemorizeInfo();
 	}
 
 	private void updateJvMemorizeInfo() {
@@ -483,7 +517,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 			return;
 		}
 
-		mJvMemorizeList.storeVocabularyPosition();
+		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		mJvMemorizeList.saveVocabularyPosition(preferences);
 
 		super.onBackPressed();
 	}
@@ -886,7 +921,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 
 		// 암기할 단어 데이터를 로드합니다.
-        loadMemorizeTargetVocabularyData();
+        loadMemorizeTargetVocabularyData(true);
 
 		if (nowNetworkConnected == false) {
 			msg = Message.obtain();
@@ -922,13 +957,14 @@ public class JvActivity extends Activity implements OnTouchListener {
 		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
 
-	private void loadMemorizeTargetVocabularyData() {
+	private void loadMemorizeTargetVocabularyData(boolean launchApp) {
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
-		mJvMemorizeList.loadData();
+		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		mJvMemorizeList.loadData(preferences, launchApp);
 	}
 
 }
