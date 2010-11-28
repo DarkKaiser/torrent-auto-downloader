@@ -10,7 +10,16 @@
     	android:layout_height="wrap_content" 
     	android:gravity="right"
     	android:textSize="15dp"
+    	android:background="@color/jv_main_header_bg"
     	/>
+	<SeekBar
+		android:id="@+id/jv_move_vocabulary_bar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+    	android:layout_below="@id/jv_info" 
+		android:visibility="gone"
+		android:progressDrawable="@drawable/seek_background"
+		/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
@@ -47,7 +56,7 @@
 	    	android:id="@+id/vocabulary_container"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="fill_parent"
-	    	android:layout_below="@id/jv_info"
+	    	android:layout_below="@id/jv_move_vocabulary_bar"
 	    	android:layout_above="@id/memorize_method_info"
 	    	>
 			<TextSwitcher

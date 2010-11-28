@@ -99,6 +99,10 @@ public class JvMemorizeList {
 		
 		return true;
 	}
+	
+	public synchronized int getCount() {
+		return mJvList.size();
+	}
 
 	public synchronized void setMemorizeCompletedAtVocabularyPosition() {
 		if (isValidVocabularyPosition() == true) {
@@ -157,6 +161,20 @@ public class JvMemorizeList {
 	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
 			return mJvList.get(mCurrentPosition);
+		}
+
+		return null;
+	}
+	
+	public synchronized JapanVocabulary movePosition(int position) {
+		int prevCurrentPosition = mCurrentPosition;
+
+		mCurrentPosition = position;
+		if (isValidVocabularyPosition() == true) {
+			return mJvList.get(mCurrentPosition);
+		} else {
+			assert false;
+			mCurrentPosition = prevCurrentPosition;
 		}
 
 		return null;
@@ -264,12 +282,7 @@ public class JvMemorizeList {
 		assert mMemorizeCompletedCount <= mJvList.size();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(mCurrentPosition).append(", 전체: ").append(mJvList.size());
-		
-//		TextView jvInfo = (TextView)findViewById(R.id.jv_info);
-//		jvInfo.setText(String.format("암기완료 %d개 / 암기대상 %d개", mJvMemorizeCompletedCount, mJvList.size()));
-		// JvActivity에서 문자열 생성을 해야하지 않나?
-
+		sb.append("암기정보:").append(mMemorizeCompletedCount).append("/").append(mJvList.size()).append("");
 		return sb;
 	}
 }

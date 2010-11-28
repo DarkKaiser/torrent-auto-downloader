@@ -107,7 +107,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 
         	return;
         }
-        
+
+        findViewById(R.id.jv_move_vocabulary_bar).setOnTouchListener(this);
+
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
@@ -378,6 +380,15 @@ public class JvActivity extends Activity implements OnTouchListener {
 		} else {
 			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
 		}
+		
+		////////////
+		// @@@@@
+		if (Integer.parseInt(preferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
+			findViewById(R.id.jv_move_vocabulary_bar).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.jv_move_vocabulary_bar).setVisibility(View.VISIBLE);
+		}
+		//////////////
 
 		return mJvMemorizeList.reloadPreference(preferences);
 	}
@@ -461,9 +472,6 @@ public class JvActivity extends Activity implements OnTouchListener {
 			
 			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
 		}
-		
-		// @@@@@ 임시코드 나중에 삭제할 것
-		updateJvMemorizeInfo();
 	}
 
 	private void updateJvMemorizeInfo() {
@@ -502,6 +510,25 @@ public class JvActivity extends Activity implements OnTouchListener {
 		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
 		    		break;
         	}
+    	} else if (mJvMemorizeList.getCount() > 0 && v.getId() == R.id.jv_move_vocabulary_bar) {
+    		// @@@@@ 좌우 30정도의 공간
+//    		switch (event.getAction()) {
+//			case MotionEvent.ACTION_MOVE:
+//			{
+//				// 회전도 처리..
+//				TextView t = (TextView)findViewById(R.id.jv_info2);
+//				
+//				t.setText(String.format("%f, %d", event.getX(), t.getRight()));
+//				
+//				int n = (int) (event.getX() / (t.getRight() / mJvMemorizeList.getCount()));
+//				
+//				JapanVocabulary jpVocabulary = mJvMemorizeList.movePosition(n);
+//
+//				showMemorizeVocabulary(jpVocabulary);
+//
+//			}
+//			break;
+//			}
     	} else {
     		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
     	}
