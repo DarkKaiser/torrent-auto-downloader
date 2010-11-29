@@ -116,7 +116,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				StringBuilder sb = new StringBuilder();
-				sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition()).append("번째");
+				sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition() + 1).append("번째");
 				setTitle(sb.toString());
 			}
 
@@ -131,7 +131,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					showMemorizeVocabulary(mJvMemorizeList.movePosition(progress));
 					
 					StringBuilder sb = new StringBuilder();
-					sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition()).append("번째");
+					sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition() + 1).append("번째");
 					setTitle(sb.toString());
 				}
 			}
@@ -1035,7 +1035,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 			SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
 			moveVocabularyBar.setProgress(0);
-			moveVocabularyBar.setMax(memorizeVocabularyCount);
+			moveVocabularyBar.setMax(memorizeVocabularyCount - 1);
 			moveVocabularyBar.incrementProgressBy(1);
 		}
 

@@ -37,7 +37,7 @@
 				android:title="암기 대상 상태로 만들기..."/>
 			<item 
 				android:id="@+id/jvlm_all_memorize_target_cancel"
-				android:title="암기 대상 상태 해제하기"/>
+				android:title="암기 대상 상태를 해제하기"/>
 		</menu>
 	</item>
 	<item
