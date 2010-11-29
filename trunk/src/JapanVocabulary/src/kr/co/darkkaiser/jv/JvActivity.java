@@ -53,6 +53,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
 	private static final int MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW = 9;
+	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -108,7 +110,32 @@ public class JvActivity extends Activity implements OnTouchListener {
         	return;
         }
 
-        findViewById(R.id.jv_move_vocabulary_bar).setOnTouchListener(this);
+        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+        moveVocabularyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition()).append("번째");
+				setTitle(sb.toString());
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				setTitle(String.format("%s", getResources().getString(R.string.app_name)));
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				if (fromUser == true) {
+					showMemorizeVocabulary(mJvMemorizeList.movePosition(progress));
+					
+					StringBuilder sb = new StringBuilder();
+					sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mJvMemorizeList.getCurrentPosition()).append("번째");
+					setTitle(sb.toString());
+				}
+			}
+		});
 
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
@@ -380,17 +407,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 		} else {
 			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
 		}
-		
-		////////////
-		// @@@@@
-		if (Integer.parseInt(preferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
-			findViewById(R.id.jv_move_vocabulary_bar).setVisibility(View.GONE);
-		} else {
-			findViewById(R.id.jv_move_vocabulary_bar).setVisibility(View.VISIBLE);
-		}
-		//////////////
 
-		return mJvMemorizeList.reloadPreference(preferences);
+		boolean result = mJvMemorizeList.reloadPreference(preferences);
+		adjustVocabularySeekBar();
+		return result;
 	}
 	
 	private void refreshMemorizeVocabulary() {
@@ -433,6 +453,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 		} else {
 			showMemorizeVocabulary(jpVocabulary);
 		}
+
+		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+		moveVocabularyBar.setProgress(mJvMemorizeList.getCurrentPosition());
 	}
 	
 	private void showNextMemorizeVocabulary() {
@@ -444,11 +468,16 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 		
 		showMemorizeVocabulary(jpVocabulary);
+		
+		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+		moveVocabularyBar.setProgress(mJvMemorizeList.getCurrentPosition());
 	}
 	
 	private void showMemorizeVocabulary(JapanVocabulary jpVocabulary) {
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
+		TextView memorizeCompletedInfo = (TextView)findViewById(R.id.memorize_completed_info);
 
 		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
 		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
@@ -456,6 +485,12 @@ public class JvActivity extends Activity implements OnTouchListener {
 		vocabularyTranslationTextSwitcher.setText("");
 
 		if (jpVocabulary != null) {
+			if (jpVocabulary.isMemorizeCompleted() == true) {
+				memorizeCompletedInfo.setVisibility(View.VISIBLE);
+			} else {
+				memorizeCompletedInfo.setVisibility(View.INVISIBLE);
+			}
+
 			switch (mJvMemorizeList.getMemorizeTargetItem()) {
 			case VOCABULARY:
 				vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
@@ -471,6 +506,8 @@ public class JvActivity extends Activity implements OnTouchListener {
 			}
 			
 			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
+		} else {
+			memorizeCompletedInfo.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -510,25 +547,6 @@ public class JvActivity extends Activity implements OnTouchListener {
 		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
 		    		break;
         	}
-    	} else if (mJvMemorizeList.getCount() > 0 && v.getId() == R.id.jv_move_vocabulary_bar) {
-    		// @@@@@ 좌우 30정도의 공간
-//    		switch (event.getAction()) {
-//			case MotionEvent.ACTION_MOVE:
-//			{
-//				// 회전도 처리..
-//				TextView t = (TextView)findViewById(R.id.jv_info2);
-//				
-//				t.setText(String.format("%f, %d", event.getX(), t.getRight()));
-//				
-//				int n = (int) (event.getX() / (t.getRight() / mJvMemorizeList.getCount()));
-//				
-//				JapanVocabulary jpVocabulary = mJvMemorizeList.movePosition(n);
-//
-//				showMemorizeVocabulary(jpVocabulary);
-//
-//			}
-//			break;
-//			}
     	} else {
     		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
     	}
@@ -644,6 +662,12 @@ public class JvActivity extends Activity implements OnTouchListener {
 						}
 					})		
     				.show();
+			} else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
+				if (msg.arg1 == 1/* VISIBLE */) {
+					findViewById(R.id.jv_vocabulary_seekbar).setVisibility(View.VISIBLE);
+				} else {
+					findViewById(R.id.jv_vocabulary_seekbar).setVisibility(View.GONE);
+				}
 			}
 		};
 	};
@@ -992,6 +1016,30 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvMemorizeList.loadData(preferences, launchApp);
+
+		adjustVocabularySeekBar();
 	}
 
+	private void adjustVocabularySeekBar() {
+		int memorizeVocabularyCount = mJvMemorizeList.getCount();
+		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+
+		Message msg = Message.obtain();
+		msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
+
+		// '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
+		if (memorizeVocabularyCount == 0 || Integer.parseInt(preferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
+			msg.arg1 = 0;
+		} else {
+			msg.arg1 = 1;
+
+			SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+			moveVocabularyBar.setProgress(0);
+			moveVocabularyBar.setMax(memorizeVocabularyCount);
+			moveVocabularyBar.incrementProgressBy(1);
+		}
+
+		mVocabularyDataLoadHandler.sendMessage(msg);					
+	}
+	
 }

@@ -157,6 +157,10 @@ public class JvMemorizeList {
 		
 		edit.commit();
 	}
+	
+	public synchronized int getCurrentPosition() {
+		return mCurrentPosition;
+	}
 
 	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
@@ -276,13 +280,12 @@ public class JvMemorizeList {
 		return mJvMemorizeTargetItem;
 	}
 
-	// @@@@@
 	public StringBuilder getMemorizeVocabularyInfo() {
-		assert mMemorizeCompletedCount >= 0;
-		assert mMemorizeCompletedCount <= mJvList.size();
+		assert isValidVocabularyPosition() == true;
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("암기정보:").append(mMemorizeCompletedCount).append("/").append(mJvList.size()).append("");
+		sb.append("암기완료 ").append(mMemorizeCompletedCount).append("개 / 전체 ").append(mJvList.size()).append("개");
 		return sb;
 	}
+
 }

@@ -5,7 +5,7 @@ public class CircularBuffer<T> {
 
 	private int mHead = 0;
 	private int mTail = 0;
-	private T[] mBufferData = (T[])new Object[10];
+	private T[] mBufferData = (T[])new Object[50];
 	
 	public CircularBuffer() {
 
