@@ -2,8 +2,8 @@ package kr.co.darkkaiser.jv.view.list;
 
 import java.util.ArrayList;
 
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -64,7 +63,7 @@ public class JvListAdapter extends BaseAdapter {
 			return convertView;
 		}
 
-		ImageView memorizeBar = (ImageView) convertView.findViewById(R.id.memorize_bar);
+		TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
 		TextView vocabulary = (TextView) convertView.findViewById(R.id.vocabulary);
 		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.vocabulary_gana);
 		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.vocabulary_translation);
