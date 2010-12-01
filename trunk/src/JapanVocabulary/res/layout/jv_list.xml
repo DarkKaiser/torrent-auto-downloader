@@ -141,6 +141,12 @@
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				>
+				<TextView
+					android:id="@+id/sc_content_first_line" 
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#7B7D7B"
+					/>
 				<LinearLayout
 					android:id="@+id/sc_area_tail" 
 					android:layout_width="fill_parent"
@@ -177,6 +183,7 @@
 					android:layout_width="fill_parent"
 					android:layout_height="fill_parent"
 					android:layout_above="@id/sc_area_tail"
+					android:layout_below="@id/sc_content_first_line"
 					>
 					<ScrollView
 						android:orientation="vertical"
