@@ -145,7 +145,7 @@
 					android:id="@+id/sc_content_first_line" 
 					android:layout_width="fill_parent"
 					android:layout_height="1px"
-					android:background="#7B7D7B"
+					android:background="#636563"
 					/>
 				<LinearLayout
 					android:id="@+id/sc_area_tail" 
