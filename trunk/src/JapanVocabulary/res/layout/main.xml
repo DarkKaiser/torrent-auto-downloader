@@ -8,24 +8,23 @@
     	android:id="@+id/jv_main_header" 
    		android:layout_width="fill_parent"
    		android:layout_height="wrap_content"
-    	android:background="@color/jv_main_header_bg"
+    	android:background="@drawable/vocabulary_info_bar"
+   		android:gravity="bottom"
    		>
-		<TextView 
-			android:id="@+id/jv_info"
+    	<TextView 
+    		android:id="@+id/etc_info"
 	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentLeft="true"
 	    	android:textSize="15dp"
+	    	android:visibility="invisible"
 	    	/>
-    	<TextView 
-    		android:id="@+id/memorize_completed_info"
+		<TextView 
+			android:id="@+id/jv_info"
 	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentRight="true" 
 	    	android:textSize="15dp"
-	    	android:text="암기 완료"
-	    	android:textColor="@color/jv_main_memorize_completed_count_text"
-	    	android:visibility="invisible"
 	    	/>
    	</RelativeLayout>
 	<SeekBar
@@ -36,7 +35,9 @@
 		android:progressDrawable="@drawable/custom_seekbar"
 		android:visibility="gone"
 		android:paddingLeft="15dp"
+		android:paddingTop="5dp"
 		android:paddingRight="15dp"
+		android:paddingBottom="10dp"
 		/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"

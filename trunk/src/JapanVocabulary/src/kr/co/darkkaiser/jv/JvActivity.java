@@ -475,9 +475,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 	}
 	
 	private void showMemorizeVocabulary(JapanVocabulary jpVocabulary) {
+		TextView etcInfo = (TextView)findViewById(R.id.etc_info);
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
-		TextView memorizeCompletedInfo = (TextView)findViewById(R.id.memorize_completed_info);
 
 		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
 		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
@@ -486,9 +486,11 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		if (jpVocabulary != null) {
 			if (jpVocabulary.isMemorizeCompleted() == true) {
-				memorizeCompletedInfo.setVisibility(View.VISIBLE);
+				etcInfo.setText(String.format("총 %d회 암기 완료", jpVocabulary.getMemorizeCompletedCount()));
+				etcInfo.setTextColor(getResources().getColor(R.color.jv_main_memorize_completed_count_text));
+				etcInfo.setVisibility(View.VISIBLE);
 			} else {
-				memorizeCompletedInfo.setVisibility(View.INVISIBLE);
+				etcInfo.setVisibility(View.INVISIBLE);
 			}
 
 			switch (mJvMemorizeList.getMemorizeTargetItem()) {
@@ -507,7 +509,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			
 			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
 		} else {
-			memorizeCompletedInfo.setVisibility(View.INVISIBLE);
+			etcInfo.setVisibility(View.INVISIBLE);
 		}
 	}
 
