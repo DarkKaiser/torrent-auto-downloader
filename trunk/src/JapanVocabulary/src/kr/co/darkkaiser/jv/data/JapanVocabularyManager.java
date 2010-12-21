@@ -188,13 +188,15 @@ public class JapanVocabularyManager {
 						 .append("                               ON V2.VOCABULARY LIKE ('%'||A.CHARACTER||'%') ")
 						 .append("                            WHERE 1=1 ")
 						 .append("                              AND A.JLPT_CLASS IN (");
-				
+
+					boolean isAppended = false;
 					String[] items = context.getResources().getStringArray(R.array.sc_jlpt_level_list_values);
 					for (int index = 0; index < checkedItems.length; ++index) {
 						if (checkedItems[index] == true) {
-							if (index > 0)
+							if (isAppended == true)
 								sbSQL.append(", ");
 							
+							isAppended = true;
 							sbSQL.append(items[index]);
 						}
 					}
@@ -220,9 +222,9 @@ public class JapanVocabularyManager {
 							firstSearchDateValue = lastSearchDateValue;
 							lastSearchDateValue = temp;
 						}
-
-						lastSearchDateValue += new SimpleDateFormat("HH:mm:ss").parse("23:59:59").getTime();
-						lastSearchDateValue += 999/* 밀리초 */;
+						
+						// 검색 종료일에 검색 종료일의 마지막 시간값을 더한다. 
+						lastSearchDateValue += (86400000 - 1);
 
 						sbSQL.append(" AND REGISTRATION_DATE >= ").append(firstSearchDateValue)
 						 	 .append(" AND REGISTRATION_DATE <= ").append(lastSearchDateValue);
