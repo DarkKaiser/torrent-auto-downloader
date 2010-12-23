@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
+	<com.cauly.android.ad.AdView  
+		xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jc"
+		android:id="@+id/ad"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		app:appcode="n3PRB2gKP"
+		app:adtype="cpc"
+		app:gender="all"
+		app:age="all"
+		app:gps="off"
+		app:effect="half"
+		app:reloadInterval="30"
+		/>
+ 	<Button
+		android:id="@+id/nextCharacter" 
+		android:layout_width="fill_parent" 
+		android:layout_height="60dp"
+		android:layout_alignParentBottom="true"
+		android:text="다음 >>" 
+		/>
+	<TextView
+		android:id="@+id/jc_info" 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:layout_above="@id/nextCharacter"
+    	android:gravity="center"
+    	android:text="화면을 탭하시면 상세정보를 보실 수 있습니다." 
+    	android:textSize="13dp"
+    	android:textColor="#99999999"
+    	/>
+	<TextView 
+		android:id="@+id/character"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="fill_parent"
+    	android:layout_above="@id/jc_info" 
+    	android:layout_below="@id/ad"
+    	android:gravity="center"
+    	android:typeface="serif"
+    	android:textSize="100dp"
+    	/>
+</RelativeLayout>
