@@ -15,7 +15,7 @@
 		app:gender="all"
 		app:age="all"
 		app:gps="off"
-		app:effect="default"
+		app:effect="bottom_slide"
 		app:reloadInterval="30"
 		/>
 	<ScrollView 
