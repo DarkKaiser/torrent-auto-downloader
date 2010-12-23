@@ -41,16 +41,16 @@ public class JapanCharacterActivity extends Activity {
 
         mPreferences = getSharedPreferences("jc_setup", MODE_PRIVATE);
 
-        TextView charTextView = (TextView)findViewById(R.id.character);
-        charTextView.setOnTouchListener(new View.OnTouchListener() {
-			
+        TextView character = (TextView)findViewById(R.id.character);
+        character.setOnTouchListener(new View.OnTouchListener() {
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (v.getId() == R.id.character) {
 					if (event.getAction() == MotionEvent.ACTION_UP && mCurrentShowIndex != -1) {
 						Dialog dlg = new Dialog(JapanCharacterActivity.this);
 						dlg.setContentView(R.layout.jc_description);
-						dlg.setTitle("상세 페이지");
+						dlg.setTitle("<상세정보>");
 						dlg.setCanceledOnTouchOutside(true);
 						
 						TextView descriptionTv = (TextView)dlg.findViewById(R.id.description);
@@ -417,11 +417,11 @@ public class JapanCharacterActivity extends Activity {
 
     private void showNextCharactor() {
     	if (mShowHiragana == false && mShowGatakana == false) {
-    		Toast.makeText(this, "설정 페이지에서 보여줄 문자가 선택되지 않았습니다. 설정 페이지에서 선택하여 주세요!", Toast.LENGTH_LONG).show();
+    		Toast.makeText(this, "암기 대상 문자가 선택되지 않았습니다. 환경설정 페이지에서 선택하여 주세요!", Toast.LENGTH_LONG).show();
     		return;
     	}
 
-    	TextView tv = (TextView)findViewById(R.id.character);
+    	TextView character = (TextView)findViewById(R.id.character);
 
     	if (mShowHiragana == true && mShowGatakana == true) {
     		if (mRandom.nextInt(2) == 0) {
@@ -432,7 +432,7 @@ public class JapanCharacterActivity extends Activity {
     			}
 
     			mIsCurrentShowHiragana = true;
-    			tv.setText(mJapanHiragana.get(mCurrentShowIndex));
+    			character.setText(mJapanHiragana.get(mCurrentShowIndex));
     		} else {
     			if (mShowYoum == true) {
     				mCurrentShowIndex = mRandom.nextInt(104);
@@ -441,7 +441,7 @@ public class JapanCharacterActivity extends Activity {
     			}
     			
     			mIsCurrentShowHiragana = false;
-    			tv.setText(mJapanGatagana.get(mCurrentShowIndex));
+    			character.setText(mJapanGatagana.get(mCurrentShowIndex));
     		}
     	} else if (mShowHiragana == true) {
 			if (mShowYoum == true) {
@@ -451,7 +451,7 @@ public class JapanCharacterActivity extends Activity {
 			}
 			
 			mIsCurrentShowHiragana = true;
-			tv.setText(mJapanHiragana.get(mCurrentShowIndex));
+			character.setText(mJapanHiragana.get(mCurrentShowIndex));
     	} else if (mShowGatakana == true) {
 			if (mShowYoum == true) {
 				mCurrentShowIndex = mRandom.nextInt(104);
@@ -460,7 +460,7 @@ public class JapanCharacterActivity extends Activity {
 			}
 
 			mIsCurrentShowHiragana = false;
-			tv.setText(mJapanGatagana.get(mCurrentShowIndex));
+			character.setText(mJapanGatagana.get(mCurrentShowIndex));
     	}
     }
 
@@ -468,10 +468,8 @@ public class JapanCharacterActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		MenuItem item = menu.add(0, 1, 0, "설정");
-		item.setIcon(R.drawable.setup_icon);
-		item.setAlphabeticShortcut('a');
-	
+		MenuItem item = menu.add(0, 1, 0, "환경설정");
+		item.setIcon(android.R.drawable.ic_menu_preferences);
 		return true;
     }
 

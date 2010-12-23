@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="기본 설정"
+	<PreferenceCategory android:title="암기 설정"
 		android:key="cc">
 		<CheckBoxPreference
 			android:key="chk_hiragana"
-			android:title="히라가나(ひらがな) 설정"
-			android:summary="테스트 항목에 히라가나 문자를 포함합니다."/>
+			android:title="히라가나(ひらがな) 보이기"
+			android:summary="암기 대상에 히라가나 문자를 포함합니다."/>
 		<CheckBoxPreference
 			android:key="chk_gatakana"
-			android:title="가타까나(がタカな) 설정"
-			android:summary="테스트 항목에 가타까나 문자를 포함합니다."/>
-	</PreferenceCategory>
-	<PreferenceCategory android:title="기타">
+			android:title="가타카나(がタカな) 보이기"
+			android:summary="암기 대상에 가타카나 문자를 포함합니다."/>
 		<CheckBoxPreference
 			android:key="chk_youm"
 			android:title="요음 보이기"
-			android:summary="테스트 항목에 요음을 포함합니다."/>
+			android:summary="암기 대상에 요음을 포함합니다."/>
 	</PreferenceCategory>
 </PreferenceScreen>
