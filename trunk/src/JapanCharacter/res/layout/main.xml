@@ -8,7 +8,7 @@
 		android:id="@+id/ad"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		app:appcode="CAULY"
+		app:appcode="n3PRB2gKP"
 		app:adtype="cpc"
 		app:gender="all"
 		app:age="all"
