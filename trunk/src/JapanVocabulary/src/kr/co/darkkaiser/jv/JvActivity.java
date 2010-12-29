@@ -74,6 +74,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
 	private static final int MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW = 9;
 	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
+	private static final int MSG_VOCABULARY_MAINBAR_VISIBILITY = 11;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -602,6 +603,18 @@ public class JvActivity extends Activity implements OnTouchListener {
 					mProgressDialog.dismiss();
 
 				mProgressDialog = null;
+
+				// 단어 정보 헤더가 화면에 보이도록 메시지를 보낸다.
+				Message msg2 = Message.obtain();
+				msg2.what = MSG_VOCABULARY_MAINBAR_VISIBILITY;
+				mVocabularyDataLoadHandler.sendMessage(msg2);
+			} else if (msg.what == MSG_VOCABULARY_MAINBAR_VISIBILITY) {
+				// 단어 정보 헤더를 화면에 보이도록 한다.
+				RelativeLayout layout = (RelativeLayout)findViewById(R.id.jv_main_header);
+				if (layout.getVisibility() != View.VISIBLE) {
+					layout.setVisibility(View.VISIBLE);					
+					layout.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, R.anim.up_to_down));
+				}				
 			} else if (msg.what == MSG_TOAST_SHOW) {
 				Toast.makeText(JvActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
 			} else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
@@ -682,10 +695,14 @@ public class JvActivity extends Activity implements OnTouchListener {
 					})		
     				.show();
 			} else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
+				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+
 				if (msg.arg1 == 1/* VISIBLE */) {
-					findViewById(R.id.jv_vocabulary_seekbar).setVisibility(View.VISIBLE);
+					moveVocabularyBar.setVisibility(View.VISIBLE);
+					moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_in));
 				} else {
-					findViewById(R.id.jv_vocabulary_seekbar).setVisibility(View.GONE);
+					moveVocabularyBar.setVisibility(View.GONE);
+					moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_out));
 				}
 			}
 		};

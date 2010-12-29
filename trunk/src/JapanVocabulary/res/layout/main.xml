@@ -9,6 +9,7 @@
    		android:layout_width="fill_parent"
    		android:layout_height="wrap_content"
     	android:background="@drawable/vocabulary_info_bar"
+   		android:visibility="invisible"
    		android:gravity="bottom"
    		>
     	<TextView 
