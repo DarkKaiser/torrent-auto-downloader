@@ -67,23 +67,23 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 
 	public static final int MSG_CHANGED_LIST_DATA = 1;
 	public static final int MSG_COMPLETED_LIST_DATA_UPDATE = 2;
-	
-	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE = 1;
 
-	private ProgressDialog mProgressDialog = null;
-	private SharedPreferences mPreferences = null;
+	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
+	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
+
 	private WindowManager mWindowManager = null;
+	private SharedPreferences mPreferences = null;
+	private ProgressDialog mProgressDialog = null;
 
 	private JvListAdapter mJvListAdapter = null;
 	private ArrayList<JapanVocabulary> mJvListData = null;
 	private JvListSortMethod mJvListSortMethod = JvListSortMethod.REGISTRATION_DATE_DOWN;
 
 	private Thread mJvListSearchThread = null;
-
 	private JvListSearchCondition mJvListSearchCondition = null;
 
 	private ScrollBarThumb mScrollThumb = null;
-	private boolean mReadyScrollBarThumb = false;
+	private boolean mUseModeScrollBarThumb = false;
 	private boolean mVisibleScrollBarThumb = false;
 	private WindowManager.LayoutParams mScrollBarThumbLayout = null;
 
@@ -95,6 +95,7 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 		setContentView(R.layout.jv_list);
 
 		mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+		assert mWindowManager != null;
 
 		// 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
@@ -115,6 +116,8 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 		//
 		// Thumb 관련 객체를 초기화합니다.
 		//
+		assert getListView() != null;
+
 		mScrollThumb = new ScrollBarThumb(this, getListView());
 		mScrollThumb.setVisibility(View.INVISIBLE);
 
@@ -125,6 +128,8 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 
 		mScrollBarThumbLayout.gravity = Gravity.TOP;
 		mScrollBarThumbLayout.x = mScrollThumb.getScrollBarThumbLayoutX();
+		mScrollBarThumbLayout.y = 0;
+
 		mWindowManager.addView(mScrollThumb, mScrollBarThumbLayout);
 
 		getListView().setOnScrollListener(this);
@@ -440,7 +445,7 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, JvDetailActivity.class);
 			intent.putExtra("idx", mJvListData.get(position).getIdx());
-			startActivity(intent);			
+			startActivity(intent);
 		}
 	}
 
@@ -469,7 +474,7 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 	};
 
 	private void searchVocabulary() {
-		mReadyScrollBarThumb = false;
+		mUseModeScrollBarThumb = false;
 
 		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
 		if (mProgressDialog == null) {
@@ -722,7 +727,7 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (mReadyScrollBarThumb == true) {
+		if (mUseModeScrollBarThumb == true) {
 			if (mVisibleScrollBarThumb == false) {
 				mVisibleScrollBarThumb = true;
 				mScrollThumb.setVisibility(View.VISIBLE);
@@ -731,8 +736,11 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 
 			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
 		} else {
-			if (mJvListData.size() >= 50)
-				mReadyScrollBarThumb = true;
+			SlidingDrawer searchSlidingDrawer = (SlidingDrawer) findViewById(R.id.search_sliding_drawer);
+			if (searchSlidingDrawer.isOpened() == false) {
+				if (mJvListData.size() >= 50)
+					mUseModeScrollBarThumb = true;				
+			}
 		}
 	}
 
@@ -740,22 +748,23 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		switch (scrollState) {
 		case SCROLL_STATE_IDLE:
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE);
-    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE, 1000);
+    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
+    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
 			break;
 
 		case SCROLL_STATE_TOUCH_SCROLL:
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE);
+    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
 			break;
 		}
 	}
-	
+
 	private Handler mScrollBarThumbEventHandler = new Handler() {
 
 		@Override
     	public void handleMessage(Message msg){
     		switch(msg.what) {
-	    		case MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE:
+	    		case MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE:
+	    			mUseModeScrollBarThumb = false;
 	    			mVisibleScrollBarThumb = false;
 	    			mScrollThumb.setVisibility(View.INVISIBLE);
 	    			getListView().setVerticalScrollBarEnabled(true);
@@ -856,11 +865,12 @@ public class JvListActivity extends ListActivity implements OnClickListener, OnS
 		public boolean onTouchEvent(MotionEvent event) {
 			assert mListView != null;
 
+    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
+
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE);
 				return true;
 			} else if (event.getAction() == MotionEvent.ACTION_UP) {
-	    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_IDLE, 1000);				
+	    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);				
 			}
 
 			if (mTitleBarHeight <= 0) {
