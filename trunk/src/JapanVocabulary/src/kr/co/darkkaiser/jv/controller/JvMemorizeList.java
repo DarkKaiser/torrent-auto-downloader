@@ -1,9 +1,10 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
@@ -12,13 +13,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-public class JvMemorizeList {
+public class JvMemorizeList implements JvList {
 	
 	private Random mRandom = new Random();
 
 	// 암기 대상 단어 리스트
 	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
-	
+
 	// 암기 대상 단어 암기 순서 버퍼
 	private CircularBuffer<Integer> mJvListMemorizeSequence = new CircularBuffer<Integer>();
 
@@ -162,6 +163,7 @@ public class JvMemorizeList {
 		return mCurrentPosition;
 	}
 
+	@Override
 	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
 			return mJvList.get(mCurrentPosition);
@@ -184,6 +186,7 @@ public class JvMemorizeList {
 		return null;
 	}
 	
+	@Override
 	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
 		Integer value = mJvListMemorizeSequence.pop();
 		if (value != null) {
@@ -203,6 +206,7 @@ public class JvMemorizeList {
 		return null;
 	}
 
+	@Override
 	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		assert sbErrMessage != null;
 		

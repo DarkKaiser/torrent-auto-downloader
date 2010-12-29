@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-public class JvListSearchCondition {
+public class JvSearchListCondition {
 
 	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";
 	private static final String JV_SPN_MEMORIZE_TARGET_SC = "sc_memorize_target_position";
@@ -27,7 +27,7 @@ public class JvListSearchCondition {
 	private String mScLastSearchDate = null;
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
-	public JvListSearchCondition(Context context, SharedPreferences preferences) {
+	public JvSearchListCondition(Context context, SharedPreferences preferences) {
 		mContext = context;
 		mPreferences = preferences;
 

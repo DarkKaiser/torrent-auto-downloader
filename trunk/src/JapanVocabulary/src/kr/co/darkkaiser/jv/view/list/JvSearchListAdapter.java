@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class JvListAdapter extends BaseAdapter {
+public class JvSearchListAdapter extends BaseAdapter {
 
 	private int mLayout;
 	private Context mContext = null;
@@ -22,7 +22,7 @@ public class JvListAdapter extends BaseAdapter {
 	private Handler mJvListDataChangedHandler = null;
 	private LayoutInflater mLayoutInflater = null;
 
-	public JvListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<JapanVocabulary> jvList) {
+	public JvSearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<JapanVocabulary> jvList) {
 		mLayout = layout;
 		mJvList = jvList;
 		mContext = context;
@@ -100,7 +100,7 @@ public class JvListAdapter extends BaseAdapter {
 					mJvList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(JvListActivity.MSG_CHANGED_LIST_DATA);					
+					mJvListDataChangedHandler.sendEmptyMessage(JvSearchListActivity.MSG_CHANGED_LIST_DATA);					
 				}
 			}
 		});
@@ -117,7 +117,7 @@ public class JvListAdapter extends BaseAdapter {
 					mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(JvListActivity.MSG_CHANGED_LIST_DATA);					
+					mJvListDataChangedHandler.sendEmptyMessage(JvSearchListActivity.MSG_CHANGED_LIST_DATA);					
 				}
 			}
 		});

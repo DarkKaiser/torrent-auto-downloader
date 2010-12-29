@@ -11,12 +11,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import kr.co.darkkaiser.jv.controller.JvMemorizeList;
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.helper.ByteUtils;
 import kr.co.darkkaiser.jv.helper.FileHash;
 import kr.co.darkkaiser.jv.view.detail.JvDetailActivity;
-import kr.co.darkkaiser.jv.view.list.JvListActivity;
+import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.option.OptionActivity;
 
 import org.apache.http.util.ByteArrayBuffer;
@@ -286,7 +287,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.jvm_show_all_vocabulary:
-			Intent intent = new Intent(this, JvListActivity.class);
+			Intent intent = new Intent(this, JvSearchListActivity.class);
 			startActivityForResult(intent, R.id.jvm_show_all_vocabulary);
 			return true;
 
@@ -336,9 +337,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 			boolean mustReloadJvData = false;
 
 			// 환경설정의 값이 변경된 경우는 해당 값을 다시 읽어들인다.
-			if ((resultCode & JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED)
+			if ((resultCode & JvSearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvSearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED)
 				mustReloadJvData = reloadPreference();
-			if ((resultCode & JvListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvListActivity.ACTIVITY_RESULT_DATA_CHANGED)
+			if ((resultCode & JvSearchListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvSearchListActivity.ACTIVITY_RESULT_DATA_CHANGED)
 				mustReloadJvData = true;
 
 			if (mustReloadJvData == true) {
@@ -382,6 +383,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
+		} else if (requestCode == R.id.vocabulary_detail_info) {
+			JvDetailActivity.setVocabularySeekList(null);
+			if (resultCode == JvDetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
+				showCurrentMemorizeVocabulary();
 		}
 	}
 
@@ -409,7 +414,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		}
 
 		boolean result = mJvMemorizeList.reloadPreference(preferences);
-		adjustVocabularySeekBar();
+		adjustVocabularySeekBar(preferences);
 		return result;
 	}
 	
@@ -440,6 +445,18 @@ public class JvActivity extends Activity implements OnTouchListener {
 			
 			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
 		}
+	}
+
+	private void showCurrentMemorizeVocabulary() {
+		JapanVocabulary jpVocabulary = mJvMemorizeList.getCurrentVocabulary();
+
+		if (jpVocabulary != null) {
+			showMemorizeVocabulary(jpVocabulary);
+		}
+
+		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+		moveVocabularyBar.setProgress(mJvMemorizeList.getCurrentPosition());
 	}
 
 	private void showPrevMemorizeVocabulary() {
@@ -716,9 +733,14 @@ public class JvActivity extends Activity implements OnTouchListener {
 	    		case MSG_CUSTOM_EVT_TAP:
 	    			long idx = mJvMemorizeList.getIdxAtVocabularyPosition();
 	    			if (idx != -1) {
+	    				if (findViewById(R.id.jv_vocabulary_seekbar).getVisibility() == View.VISIBLE)
+	    					JvDetailActivity.setVocabularySeekList(mJvMemorizeList);
+	    				else
+	    					JvDetailActivity.setVocabularySeekList(null);
+
 	    				Intent intent = new Intent(JvActivity.this, JvDetailActivity.class);
 	    				intent.putExtra("idx", idx);
-	    				startActivity(intent);
+	    				startActivityForResult(intent, R.id.vocabulary_detail_info);
 	    			}
 	    			break;
 
@@ -1019,12 +1041,13 @@ public class JvActivity extends Activity implements OnTouchListener {
 		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvMemorizeList.loadData(preferences, launchApp);
 
-		adjustVocabularySeekBar();
+		adjustVocabularySeekBar(preferences);
 	}
 
-	private void adjustVocabularySeekBar() {
+	private void adjustVocabularySeekBar(SharedPreferences preferences) {
+		assert preferences != null;
+
 		int memorizeVocabularyCount = mJvMemorizeList.getCount();
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		Message msg = Message.obtain();
 		msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;

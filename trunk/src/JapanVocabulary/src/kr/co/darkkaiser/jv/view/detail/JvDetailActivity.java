@@ -1,25 +1,44 @@
 package kr.co.darkkaiser.jv.view.detail;
 
 import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.controller.JvList;
+import kr.co.darkkaiser.jv.controller.JvListManager;
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JvDetailActivity extends Activity implements OnGestureListener {
+public class JvDetailActivity extends Activity implements OnGestureListener, OnClickListener {
+
+	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
+	public static final int ACTIVITY_RESULT_POSITION_CHANGED = 1;
 
 	private static final int SWIPE_MIN_DISTANCE = 100;
     private static final int SWIPE_MAX_OFF_PATH = 170;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     private GestureDetector mGestureScanner = null;
+
+    // 이전/다음 단어로 이동하기 위한 관리자 객체
+	private static JvListManager mJvListManager = new JvListManager();
+
+	public static void setVocabularySeekList(JvList list) {
+		mJvListManager.setVocabularySeekList(list);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +48,38 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 		// 타이틀을 설정한다.
 		setTitle(String.format("%s - 단어상세정보", getResources().getString(R.string.app_name)));
 
-		// 단어 상세 정보를 출력한다.
-		long idx = -1;
-		Intent intent = getIntent();
-		if (intent != null)
-			idx = intent.getLongExtra("idx", -1);
-
+		// 상세 정보를 출력할 단어에 대한 정보를 구한다.
 		JapanVocabulary jpVocabulary = null;
 
-		if (idx != -1)
-			jpVocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
+		if (mJvListManager.isValid() == true) {
+			jpVocabulary = mJvListManager.getCurrentVocabulary();
+		}
+
+		if (jpVocabulary == null) {
+			// 이전/다음 단어로 이동하기 위한 관리자 객체가 유효하지 않으므로 null로 설정한다.
+			setVocabularySeekList(null);
+
+			long idx = -1;
+			Intent intent = getIntent();
+			if (intent != null) {
+				idx = intent.getLongExtra("idx", -1);
+
+				if (idx != -1)
+					jpVocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
+			}
+		} else {
+			ImageButton prevVocabulary = (ImageButton)findViewById(R.id.prev_vocabulary);
+			ImageButton nextVocabulary = (ImageButton)findViewById(R.id.next_vocabulary);
+
+			prevVocabulary.setAlpha(100);
+			nextVocabulary.setAlpha(100);
+			prevVocabulary.setOnClickListener(this);
+			nextVocabulary.setOnClickListener(this);
+
+			RelativeLayout layout = (RelativeLayout)findViewById(R.id.move_vocabulary_area);
+			layout.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+			layout.setVisibility(View.VISIBLE);
+		}
 
 		if (jpVocabulary == null) {
 			assert false;
@@ -47,6 +88,15 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 			finish();
 			return;
 		}
+
+		updateDetailVocabularyInfo(jpVocabulary);
+
+		// 제스쳐 감지 객체를 생성한다.
+		mGestureScanner = new GestureDetector(this);
+	}
+
+	private void updateDetailVocabularyInfo(JapanVocabulary jpVocabulary) {
+		assert jpVocabulary != null;
 
 		TextView vocabulary = (TextView) findViewById(R.id.vocabulary);
 		TextView vocabularyGana = (TextView) findViewById(R.id.vocabulary_gana);
@@ -85,9 +135,6 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 		}
 
 		vocabularyDetailInfo.setText(JapanVocabularyManager.getInstance().getJapanVocabularyDetailDescription(jpVocabulary.getVocabulary()));
-
-		// 제스쳐 감지 객체를 생성한다.
-		mGestureScanner = new GestureDetector(this);
 	}
 
 	@Override
@@ -140,7 +187,72 @@ public class JvDetailActivity extends Activity implements OnGestureListener {
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
+		if (mJvListManager.isValid() == true) {
+			RelativeLayout layout = (RelativeLayout)findViewById(R.id.move_vocabulary_area);
+			if (layout.getVisibility() == View.VISIBLE) {
+				ImageButton prevVocabulary = (ImageButton)findViewById(R.id.prev_vocabulary);
+				ImageButton nextVocabulary = (ImageButton)findViewById(R.id.next_vocabulary);
+				
+				Rect r = new Rect();
+				int rawX = (int)e.getRawX();
+				int rawY = (int)e.getRawY();
+
+				prevVocabulary.getGlobalVisibleRect(r);
+				if (r.contains(rawX, rawY) == true) {
+					return false;
+				}
+				
+				nextVocabulary.getGlobalVisibleRect(r);
+				if (r.contains(rawX, rawY) == true) {
+					return false;
+				}
+
+				layout.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+				layout.setVisibility(View.INVISIBLE);
+			} else {
+				layout.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+				layout.setVisibility(View.VISIBLE);
+			}
+
+			return true;
+		}
+
 		return false;
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (mJvListManager.isValid() == true) {
+			JapanVocabulary jpVocabulary = null;
+			StringBuilder sbErrorMessage = new StringBuilder();
+			Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+			
+			switch (v.getId()) {
+			case R.id.prev_vocabulary:
+				// 진동을 발생시킨다.
+				vibrator.vibrate(30);
+
+				jpVocabulary = mJvListManager.previousVocabulary(sbErrorMessage);
+
+				break;
+
+			case R.id.next_vocabulary:
+				// 진동을 발생시킨다.
+				vibrator.vibrate(30);
+				
+				jpVocabulary = mJvListManager.nextVocabulary(sbErrorMessage);
+
+				break;
+			}
+
+			if (jpVocabulary != null) {
+				setResult(ACTIVITY_RESULT_POSITION_CHANGED);
+
+				updateDetailVocabularyInfo(jpVocabulary);
+			} else if (sbErrorMessage.length() > 0) {
+				Toast.makeText(this, sbErrorMessage.toString(), Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override

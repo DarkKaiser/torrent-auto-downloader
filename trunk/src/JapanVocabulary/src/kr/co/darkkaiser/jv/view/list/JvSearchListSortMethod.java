@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.view.list;
 
-public enum JvListSortMethod {
+public enum JvSearchListSortMethod {
 
 	// ÇÑÀÚ
 	VOCABULARY,

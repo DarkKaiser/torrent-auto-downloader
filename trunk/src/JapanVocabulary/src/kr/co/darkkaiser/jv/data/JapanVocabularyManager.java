@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 
 import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.view.list.JvListSearchCondition;
+import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -195,7 +195,7 @@ public class JapanVocabularyManager {
 	    }
 	}
 
-	public synchronized void searchVocabulary(Context context, JvListSearchCondition searchCondition, ArrayList<JapanVocabulary> jvList) {
+	public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<JapanVocabulary> jvList) {
 		assert context != null;
 
 		if (mJvVocabularySqLite != null) {

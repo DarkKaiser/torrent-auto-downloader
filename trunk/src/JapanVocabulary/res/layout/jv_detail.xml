@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:clickable="true"
     >
 	<com.cauly.android.ad.AdView  
 		xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
@@ -132,4 +133,31 @@
 		    	/>
 		</LinearLayout>
 	</ScrollView>
+	<RelativeLayout
+		android:id="@+id/move_vocabulary_area"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/ad"
+		android:padding="10dp"
+		android:visibility="invisible"
+		>
+	    <ImageButton
+			android:id="@+id/prev_vocabulary"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_alignParentBottom="true"
+	    	android:src="@drawable/prev_arrow"
+	    	android:background="#00000000"
+	    	/>
+	    <ImageButton
+			android:id="@+id/next_vocabulary"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_alignParentBottom="true"
+	    	android:src="@drawable/next_arrow"
+	    	android:background="#00000000"
+	    	/>
+	</RelativeLayout>
 </RelativeLayout>
