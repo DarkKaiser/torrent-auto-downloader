@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,10 +61,15 @@ public class JapanVocabularyManager {
 		return mInstance;
 	}
 
-	public synchronized boolean initDataFromDB() {
+	public synchronized boolean initDataFromDB(Context context) {
+		assert context != null;
+		
 		// 이전에 등록된 모든 단어를 제거한다.
 		if (mJvTable.isEmpty() == false)
 			mJvTable.clear();
+		
+		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 asserts에서 복사하도록 한다.
+		checkJapanVocabularyDatabaseFile(context);
 
 		Cursor cursor = null;
 
@@ -144,6 +152,47 @@ public class JapanVocabularyManager {
 		}
 
         return true;
+	}
+
+	private void checkJapanVocabularyDatabaseFile(Context context) {
+		assert context != null;
+		assert TextUtils.isEmpty(mJvVocabularyDbPath) == false;
+
+		// 단어 DB 파일이 존재하는지 확인한다.
+		File f = new File(mJvVocabularyDbPath);
+		if (f.exists() == true) {
+			return;
+		}
+
+	    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) == true) {
+	        File outFile = new File(mJvVocabularyDbPath);
+
+	        InputStream is = null;
+	        OutputStream os = null;
+	        
+	        try {                        
+	            outFile.createNewFile();           
+	            os = new FileOutputStream(outFile);
+	            is = context.getAssets().open(JvDefines.JV_VOCABULARY_DB);
+
+	            byte[] buffer = new byte[is.available()];
+
+	            is.read(buffer);
+	            os.write(buffer);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	            	if (is != null)
+	            		is.close();
+	            	
+	            	if (os != null)
+	            		os.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 
 	public synchronized void searchVocabulary(Context context, JvListSearchCondition searchCondition, ArrayList<JapanVocabulary> jvList) {

@@ -966,7 +966,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
 		// DB에서 단어 데이터를 읽어들인다.
-		if (JapanVocabularyManager.getInstance().initDataFromDB() == false) {
+		if (JapanVocabularyManager.getInstance().initDataFromDB(this) == false) {
 			msg = Message.obtain();
 			msg.what = MSG_TOAST_SHOW;
 			msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
