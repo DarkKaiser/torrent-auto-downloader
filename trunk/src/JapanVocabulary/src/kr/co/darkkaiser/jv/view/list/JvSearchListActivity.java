@@ -387,6 +387,10 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 			// 수행 작업 없음
 		} else if (requestCode == R.id.vocabulary_detail_info) {
 			JvDetailActivity.setVocabularySeekList(null);
+
+			// 상세페이지가 열릴 때 스크롤바를 커스텀 숨기도록 한다.
+    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
+    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -446,7 +450,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 		synchronized (mJvListData) {
 			JvDetailActivity.setVocabularySeekList(new JvSearchList(mJvListData, position));
-
+			
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, JvDetailActivity.class);
 			intent.putExtra("idx", mJvListData.get(position).getIdx());
