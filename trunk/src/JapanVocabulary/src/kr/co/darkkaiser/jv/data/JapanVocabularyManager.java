@@ -67,9 +67,9 @@ public class JapanVocabularyManager {
 		// 이전에 등록된 모든 단어를 제거한다.
 		if (mJvTable.isEmpty() == false)
 			mJvTable.clear();
-		
-		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 asserts에서 복사하도록 한다.
-		checkJapanVocabularyDatabaseFile(context);
+
+		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 assets에서 복사하도록 한다.
+		checkJpVocabularyDatabaseFile(context);
 
 		Cursor cursor = null;
 
@@ -154,7 +154,7 @@ public class JapanVocabularyManager {
         return true;
 	}
 
-	private void checkJapanVocabularyDatabaseFile(Context context) {
+	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
 		assert TextUtils.isEmpty(mJvVocabularyDbPath) == false;
 

@@ -11,7 +11,7 @@ public class JvDefines {
      * 로컬에 설치된 단어 DB 버전 항목 이름(공용 환경설정 키이름)
      */
     public static final String JV_SPN_DB_VERSION = "jv_db_ver";
-    
+
     /*
      * 암기대상 단어 항목 이름(공용 환경설정 키이름)
      */
