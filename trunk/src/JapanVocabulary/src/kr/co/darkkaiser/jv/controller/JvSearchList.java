@@ -10,6 +10,9 @@ public class JvSearchList implements JvList {
 	private ArrayList<JapanVocabulary> mJvListData = null;
 
 	public JvSearchList(ArrayList<JapanVocabulary> jvListData, int position) {
+		assert position != -1;
+		assert jvListData != null;
+
 		mJvListData = jvListData;
 		mCurrentPosition = position;
 	}

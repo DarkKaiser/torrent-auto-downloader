@@ -147,7 +147,7 @@
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentLeft="true"
 	    	android:layout_alignParentBottom="true"
-	    	android:src="@drawable/prev_arrow"
+	    	android:src="@drawable/prev_vocabulary_button"
 	    	android:background="#00000000"
 	    	/>
 	    <ImageButton
@@ -156,7 +156,7 @@
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentRight="true"
 	    	android:layout_alignParentBottom="true"
-	    	android:src="@drawable/next_arrow"
+	    	android:src="@drawable/next_vocabulary_button"
 	    	android:background="#00000000"
 	    	/>
 	</RelativeLayout>

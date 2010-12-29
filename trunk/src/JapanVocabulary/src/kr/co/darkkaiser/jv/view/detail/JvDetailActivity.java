@@ -227,21 +227,16 @@ public class JvDetailActivity extends Activity implements OnGestureListener, OnC
 			StringBuilder sbErrorMessage = new StringBuilder();
 			Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 			
+			// 진동을 발생시킨다.
+			vibrator.vibrate(30);
+
 			switch (v.getId()) {
 			case R.id.prev_vocabulary:
-				// 진동을 발생시킨다.
-				vibrator.vibrate(30);
-
 				jpVocabulary = mJvListManager.previousVocabulary(sbErrorMessage);
-
 				break;
 
 			case R.id.next_vocabulary:
-				// 진동을 발생시킨다.
-				vibrator.vibrate(30);
-				
 				jpVocabulary = mJvListManager.nextVocabulary(sbErrorMessage);
-
 				break;
 			}
 
