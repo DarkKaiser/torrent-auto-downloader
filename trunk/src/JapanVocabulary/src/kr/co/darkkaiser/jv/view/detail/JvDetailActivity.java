@@ -95,6 +95,12 @@ public class JvDetailActivity extends Activity implements OnGestureListener, OnC
 		mGestureScanner = new GestureDetector(this);
 	}
 
+	@Override
+	protected void onDestroy() {
+		setVocabularySeekList(null);
+		super.onDestroy();
+	}
+
 	private void updateDetailVocabularyInfo(JapanVocabulary jpVocabulary) {
 		assert jpVocabulary != null;
 

@@ -613,7 +613,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				RelativeLayout layout = (RelativeLayout)findViewById(R.id.jv_main_header);
 				if (layout.getVisibility() != View.VISIBLE) {
 					layout.setVisibility(View.VISIBLE);					
-					layout.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, R.anim.up_to_down));
+					layout.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, R.anim.slide_top_to_bottom));
 				}				
 			} else if (msg.what == MSG_TOAST_SHOW) {
 				Toast.makeText(JvActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
@@ -698,11 +698,15 @@ public class JvActivity extends Activity implements OnTouchListener {
 				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
 
 				if (msg.arg1 == 1/* VISIBLE */) {
-					moveVocabularyBar.setVisibility(View.VISIBLE);
-					moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_in));
+					if (moveVocabularyBar.getVisibility() != View.VISIBLE) {
+						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_in));
+						moveVocabularyBar.setVisibility(View.VISIBLE);
+					}
 				} else {
-					moveVocabularyBar.setVisibility(View.GONE);
-					moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_out));
+					if (moveVocabularyBar.getVisibility() != View.GONE) {
+						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JvActivity.this, android.R.anim.fade_out));
+						moveVocabularyBar.setVisibility(View.GONE);
+					}
 				}
 			}
 		};
