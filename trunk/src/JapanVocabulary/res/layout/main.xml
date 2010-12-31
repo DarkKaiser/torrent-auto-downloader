@@ -39,6 +39,8 @@
 		android:paddingTop="5dp"
 		android:paddingRight="15dp"
 		android:paddingBottom="10dp"
+		android:minHeight="8dp"
+		android:maxHeight="8dp"
 		/>
 	<RelativeLayout
 	    android:layout_width="fill_parent"
