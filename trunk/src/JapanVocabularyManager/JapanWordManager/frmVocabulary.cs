@@ -67,6 +67,9 @@ namespace JapanWordManager
 
             EnableControls();
             CheckVocabularyExtensionInfo();
+
+            if (txtVocabulary.Text.Length > 0)
+                webBrowser1.Url = new Uri(string.Format("http://jpdic.naver.com/search.nhn?query={0}", txtVocabulary.Text.Trim()));
         }
 
         private void frmVocabulary_Shown(object sender, EventArgs e)
