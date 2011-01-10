@@ -9,5 +9,6 @@
 		<attr name="reloadInterval" format="integer" />
 		<attr name="gps" format="string" />
 		<attr name="effect" format="string" />
+		<attr name="allowcall" format="string" />
 	</declare-styleable>
 </resources>
