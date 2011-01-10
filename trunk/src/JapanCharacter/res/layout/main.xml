@@ -12,8 +12,9 @@
 		app:adtype="cpc"
 		app:gender="all"
 		app:age="all"
-		app:gps="off"
+		app:gps="auto"
 		app:effect="half"
+		app:allowcall="no"
 		app:reloadInterval="30"
 		/>
  	<Button
