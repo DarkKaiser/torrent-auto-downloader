@@ -24,6 +24,12 @@
 			android:summary="다음 암기 대상 단어가 나타날 때 페이드 효과를 적용하여 나타나도록 합니다."
 			android:defaultValue="true"
 			/>
+		<CheckBoxPreference
+			android:key="jv_vibrate_next_vocabulary"
+			android:title="단어 전환시 진동 발생"
+			android:summary="다음 암기 대상 단어가 나타날 때 휴대폰에 진동을 발생시킵니다."
+			android:defaultValue="true"
+			/>
 		<ListPreference
 			android:key="jv_memorize_order_method"
 			android:title="단어 암기 순서"

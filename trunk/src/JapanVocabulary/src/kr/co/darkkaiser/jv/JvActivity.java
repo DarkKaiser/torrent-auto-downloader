@@ -182,9 +182,12 @@ public class JvActivity extends Activity implements OnTouchListener {
 			
 			@Override
 			public void onClick(View v) {
-				// 진동을 발생시킨다.
-				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-				vibrator.vibrate(30);
+				SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+				if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
+					// 진동을 발생시킨다.
+					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+					vibrator.vibrate(30);
+				}
 
 				showPrevMemorizeVocabulary();				
 			}
@@ -195,9 +198,12 @@ public class JvActivity extends Activity implements OnTouchListener {
         	
 			@Override
 			public void onClick(View v) {
-				// 진동을 발생시킨다.
-				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-				vibrator.vibrate(30);
+				SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+				if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
+					// 진동을 발생시킨다.
+					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+					vibrator.vibrate(30);
+				}
 
 				showNextMemorizeVocabulary();
 			}
@@ -721,7 +727,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	    			if (mJvMemorizeList.isValidVocabularyPosition() == true) {
 						// 진동을 발생시킨다.
 						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-						vibrator.vibrate(30);
+						vibrator.vibrate(30);	    					
 
 	    				new AlertDialog.Builder(JvActivity.this)
 	    					.setTitle("암기완료")

@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.view.detail;
 
+import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.controller.JvList;
 import kr.co.darkkaiser.jv.controller.JvListManager;
@@ -8,6 +9,7 @@ import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -229,12 +231,15 @@ public class JvDetailActivity extends Activity implements OnGestureListener, OnC
 	@Override
 	public void onClick(View v) {
 		if (mJvListManager.isValid() == true) {
+			SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+			if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
+				// 진동을 발생시킨다.
+				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+				vibrator.vibrate(30);				
+			}
+			
 			JapanVocabulary jpVocabulary = null;
 			StringBuilder sbErrorMessage = new StringBuilder();
-			Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-			
-			// 진동을 발생시킨다.
-			vibrator.vibrate(30);
 
 			switch (v.getId()) {
 			case R.id.prev_vocabulary:
