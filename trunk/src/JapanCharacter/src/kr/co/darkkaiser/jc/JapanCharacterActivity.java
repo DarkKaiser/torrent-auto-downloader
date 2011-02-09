@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,12 @@ public class JapanCharacterActivity extends Activity {
 
         mPreferences = getSharedPreferences("jc_setup", MODE_PRIVATE);
 
-        TextView character = (TextView)findViewById(R.id.character);
-        character.setOnTouchListener(new View.OnTouchListener() {
+        RelativeLayout characterContainer = (RelativeLayout)findViewById(R.id.character_container);
+        characterContainer.setOnTouchListener(new View.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (v.getId() == R.id.character) {
+				if (v.getId() == R.id.character_container) {
 					if (event.getAction() == MotionEvent.ACTION_UP && mCurrentShowIndex != -1) {
 						Dialog dlg = new Dialog(JapanCharacterActivity.this);
 						dlg.setContentView(R.layout.jc_description);
@@ -413,6 +414,13 @@ public class JapanCharacterActivity extends Activity {
     	mShowYoum = mPreferences.getBoolean("chk_youm", false);
     	mShowHiragana = mPreferences.getBoolean("chk_hiragana", false);
     	mShowGatakana = mPreferences.getBoolean("chk_gatakana", false);
+
+    	TextView characterMean = (TextView)findViewById(R.id.character_mean);
+    	if (mPreferences.getBoolean("show_character_mean", false) == true) {
+        	characterMean.setVisibility(View.VISIBLE);
+    	} else {
+        	characterMean.setVisibility(View.GONE);
+    	}
     }
 
     private void showNextCharactor() {
@@ -422,6 +430,7 @@ public class JapanCharacterActivity extends Activity {
     	}
 
     	TextView character = (TextView)findViewById(R.id.character);
+    	TextView characterMean = (TextView)findViewById(R.id.character_mean);
 
     	if (mShowHiragana == true && mShowGatakana == true) {
     		if (mRandom.nextInt(2) == 0) {
@@ -433,6 +442,7 @@ public class JapanCharacterActivity extends Activity {
 
     			mIsCurrentShowHiragana = true;
     			character.setText(mJapanHiragana.get(mCurrentShowIndex));
+    			characterMean.setText(mKorea.get(mCurrentShowIndex));
     		} else {
     			if (mShowYoum == true) {
     				mCurrentShowIndex = mRandom.nextInt(104);
@@ -442,6 +452,7 @@ public class JapanCharacterActivity extends Activity {
     			
     			mIsCurrentShowHiragana = false;
     			character.setText(mJapanGatagana.get(mCurrentShowIndex));
+    			characterMean.setText(mKorea.get(mCurrentShowIndex));
     		}
     	} else if (mShowHiragana == true) {
 			if (mShowYoum == true) {
@@ -452,6 +463,7 @@ public class JapanCharacterActivity extends Activity {
 			
 			mIsCurrentShowHiragana = true;
 			character.setText(mJapanHiragana.get(mCurrentShowIndex));
+			characterMean.setText(mKorea.get(mCurrentShowIndex));
     	} else if (mShowGatakana == true) {
 			if (mShowYoum == true) {
 				mCurrentShowIndex = mRandom.nextInt(104);
@@ -461,6 +473,7 @@ public class JapanCharacterActivity extends Activity {
 
 			mIsCurrentShowHiragana = false;
 			character.setText(mJapanGatagana.get(mCurrentShowIndex));
+			characterMean.setText(mKorea.get(mCurrentShowIndex));
     	}
     }
 
