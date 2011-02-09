@@ -411,9 +411,9 @@ public class JapanCharacterActivity extends Activity {
     	assert mPreferences != null;
 
     	// 프로그램을 초기화합니다.
-    	mShowYoum = mPreferences.getBoolean("chk_youm", false);
-    	mShowHiragana = mPreferences.getBoolean("chk_hiragana", false);
-    	mShowGatakana = mPreferences.getBoolean("chk_gatakana", false);
+    	mShowYoum = mPreferences.getBoolean("chk_youm", true);
+    	mShowHiragana = mPreferences.getBoolean("chk_hiragana", true);
+    	mShowGatakana = mPreferences.getBoolean("chk_gatakana", true);
 
     	TextView characterMean = (TextView)findViewById(R.id.character_mean);
     	if (mPreferences.getBoolean("show_character_mean", false) == true) {
