@@ -15,7 +15,7 @@
 		app:adtype="cpc"
 		app:gender="all"
 		app:age="all"
-		app:gps="auto"
+		app:gps="off"
 		app:effect="bottom_slide"
 		app:allowcall="no"
 		app:reloadInterval="30"
