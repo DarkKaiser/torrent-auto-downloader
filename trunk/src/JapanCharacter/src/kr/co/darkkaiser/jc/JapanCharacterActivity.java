@@ -49,9 +49,8 @@ public class JapanCharacterActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (v.getId() == R.id.character_container) {
 					if (event.getAction() == MotionEvent.ACTION_UP && mCurrentShowIndex != -1) {
-						Dialog dlg = new Dialog(JapanCharacterActivity.this);
+						Dialog dlg = new Dialog(JapanCharacterActivity.this, R.style.NoTitleDialog);
 						dlg.setContentView(R.layout.jc_description);
-						dlg.setTitle("<상세정보>");
 						dlg.setCanceledOnTouchOutside(true);
 						
 						TextView descriptionTv = (TextView)dlg.findViewById(R.id.description);
