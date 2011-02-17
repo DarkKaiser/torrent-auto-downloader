@@ -24,6 +24,7 @@ public class JapanCharacterActivity extends Activity {
 	private boolean mShowYoum = false;
 	private boolean mShowHiragana = false;
 	private boolean mShowGatakana = false;
+	private boolean mVibrateNextCharacter = true;
 
 	private int mCurrentShowIndex = -1;
 	private boolean mIsCurrentShowHiragana = false;
@@ -75,9 +76,11 @@ public class JapanCharacterActivity extends Activity {
 			public void onClick(View v) {
 				showNextCharactor();
 				
-				// 진동을 발생시킨다.
-				Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-				vibrator.vibrate(10);
+				if (mVibrateNextCharacter == true) {
+					// 진동을 발생시킨다.
+					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+					vibrator.vibrate(10);
+				}
 			}
 		});
         
@@ -413,6 +416,7 @@ public class JapanCharacterActivity extends Activity {
     	mShowYoum = mPreferences.getBoolean("chk_youm", true);
     	mShowHiragana = mPreferences.getBoolean("chk_hiragana", true);
     	mShowGatakana = mPreferences.getBoolean("chk_gatakana", true);
+    	mVibrateNextCharacter = mPreferences.getBoolean("vibrate_next_character", true);
 
     	TextView characterMean = (TextView)findViewById(R.id.character_mean);
     	if (mPreferences.getBoolean("show_character_mean", false) == true) {

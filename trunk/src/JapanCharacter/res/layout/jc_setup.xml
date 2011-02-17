@@ -23,6 +23,12 @@
 			android:summary="암기 대상 글자가 나타나는 아랫부분에 글자의 음을 보여줍니다."
 			android:defaultValue="false"
 			/>
+		<CheckBoxPreference
+			android:key="vibrate_next_character"
+			android:title="글자 전환시 진동 발생"
+			android:summary="다음 암기 대상 글자가 나타날 때 휴대폰에 진동을 발생시킵니다."
+			android:defaultValue="true"
+			/>
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="프로그램 정보"
