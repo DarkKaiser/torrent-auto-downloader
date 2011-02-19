@@ -509,6 +509,11 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 				}
 			});
 		}
+		
+		// 검색을 시작하기 전 리스트의 내용을 모두 지운다.
+		// 이유) 검색 스레드에서 리스트를 모두 지운후 검색을 하였을 때 간혹 오류가 발생하는 경우 있음
+		mJvListData.clear();
+		mJvListAdapter.notifyDataSetChanged();
 
 		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
 		mJvListSearchThread.start();
