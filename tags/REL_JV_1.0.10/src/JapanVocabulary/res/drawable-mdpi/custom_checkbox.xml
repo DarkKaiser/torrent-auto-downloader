@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Enabled states -->  
+    <item android:state_checked="true" 
+    	  android:state_window_focused="false"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_checked" />  
+    <item android:state_checked="false" 
+    	  android:state_window_focused="false"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_unchecked" />
+            
+    <item android:state_checked="true" 
+    	  android:state_pressed="true"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_checked_focus" />  
+    <item android:state_checked="false" 
+    	  android:state_pressed="true"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_unchecked_focus" />
+            
+    <item android:state_checked="true" 
+    	  android:state_focused="true"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_checked" />  
+    <item android:state_checked="false" 
+    	  android:state_focused="true"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_unchecked" />
+            
+    <item android:state_checked="false"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_unchecked" />  
+    <item android:state_checked="true"  
+          android:state_enabled="true"  
+          android:drawable="@drawable/checkbox_checked" />  
+  
+    <!-- Disabled states -->  
+    <item android:state_checked="true" 
+    	  android:state_window_focused="false"  
+          android:drawable="@drawable/checkbox_checked" />  
+    <item android:state_checked="false" 
+    	  android:state_window_focused="false"  
+          android:drawable="@drawable/checkbox_unchecked" />
+            
+    <item android:state_checked="true" 
+    	  android:state_focused="true"  
+          android:drawable="@drawable/checkbox_checked" />  
+    <item android:state_checked="false" 
+    	  android:state_focused="true"  
+          android:drawable="@drawable/checkbox_unchecked" />
+            
+    <item android:state_checked="false" 
+    	  android:drawable="@drawable/checkbox_unchecked" />  
+    <item android:state_checked="true" 
+    	  android:drawable="@drawable/checkbox_checked" />
+</selector>
