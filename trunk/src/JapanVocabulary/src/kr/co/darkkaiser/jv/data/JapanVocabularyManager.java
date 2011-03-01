@@ -512,6 +512,44 @@ public class JapanVocabularyManager {
 		
 		return sbResult.toString();
 	}
+	
+	public synchronized String getJapanVocabularyExample(long idx) {
+		StringBuilder sbResult = new StringBuilder();
+		if (mJvVocabularySqLite != null) {
+			Cursor cursor = null;
+			
+			try {
+				StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append("SELECT VOCABULARY, ")
+				     .append("       VOCABULARY_TRANSLATION ")
+				     .append("  FROM TBL_VOCABULARY_EXAMPLE ")
+				     .append(" WHERE V_IDX=").append(idx);
+
+				cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
+
+				if (cursor.moveToFirst() == true) {
+					do
+					{
+						if (sbResult.length() > 0)
+							sbResult.append("<br><br>");
+						
+						sbResult.append(cursor.getString(0/* VOCABULARY */)).append("<br>").append(cursor.getString(1/* VOCABULARY_TRANSLATION */));
+					} while (cursor.moveToNext());
+				}
+			} catch (SQLiteException e) {
+				Log.e(TAG, e.getMessage());
+			} finally {
+				if (cursor != null)
+					cursor.close();
+			}
+		}
+		
+		if (sbResult.length() == 0) {
+			sbResult.append("등록된 예문이 없습니다.");
+		}
+		
+		return sbResult.toString();
+	}
 
 	public synchronized ArrayList<Integer> getVocabularyInfo() {
 		int memorizeTargetCount = 0;
@@ -560,7 +598,7 @@ public class JapanVocabularyManager {
 		}
 
 		if (updateVocabularyCount > 0) {
-			sb.insert(0, String.format("%d개의 단어가 업데이트 되었습니다.\n\n", updateVocabularyCount));
+			sb.insert(0, String.format("%d개의 단어가 추가되었습니다.\n\n", updateVocabularyCount));
 
 			// 200개 이상의 단어가 업데이트 되었을 경우 '.....' 문자를 마지막에 보이도록 한다.
 			if (updateVocabularyCount > 200) {

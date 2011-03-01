@@ -132,6 +132,22 @@
 		    	android:typeface="serif"
 		    	android:textSize="26dp"
 		    	/>
+			<TextView 
+		    	android:layout_width="fill_parent" 
+		    	android:layout_height="wrap_content" 
+		    	android:background="@color/jv_detail_title_bg"
+		    	android:textSize="15dp"
+		    	android:text="예문"
+		    	/>
+			<TextView
+				android:id="@+id/vocabulary_example"
+		    	android:layout_width="fill_parent" 
+		    	android:layout_height="wrap_content" 
+		    	android:background="@color/jv_detail_content_bg"
+		    	android:gravity="left"
+		    	android:typeface="serif"
+		    	android:textSize="15dp"
+		    	/>
 		</LinearLayout>
 	</ScrollView>
 	<RelativeLayout

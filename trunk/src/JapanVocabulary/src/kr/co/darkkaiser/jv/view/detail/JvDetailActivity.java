@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.Html;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,6 +114,7 @@ public class JvDetailActivity extends Activity implements OnGestureListener, OnC
 		TextView memorizeCompletedInfo2 = (TextView) findViewById(R.id.memorize_completed_info2);
 		TextView registrationDate = (TextView) findViewById(R.id.registration_date);
 		TextView vocabularyDetailInfo = (TextView) findViewById(R.id.vocabulary_detail_info);
+		TextView vocabularyExample = (TextView) findViewById(R.id.vocabulary_example);
 
 		vocabulary.setText(jpVocabulary.getVocabulary());
 		vocabularyGana.setText(jpVocabulary.getVocabularyGana());
@@ -143,6 +145,7 @@ public class JvDetailActivity extends Activity implements OnGestureListener, OnC
 		}
 
 		vocabularyDetailInfo.setText(JapanVocabularyManager.getInstance().getJapanVocabularyDetailDescription(jpVocabulary.getVocabulary()));
+		vocabularyExample.setText(Html.fromHtml(JapanVocabularyManager.getInstance().getJapanVocabularyExample(jpVocabulary.getIdx())));
 	}
 
 	@Override

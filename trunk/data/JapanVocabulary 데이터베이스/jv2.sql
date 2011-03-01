@@ -33,6 +33,20 @@ CREATE TABLE TBL_VOCABULARY (
 CREATE UNIQUE INDEX TBL_VOCABULARY_INDEX01 
                  ON TBL_VOCABULARY(IDX);
 
+-- TBL_VOCABULARY_EXAMPLE 테이블
+CREATE TABLE TBL_VOCABULARY_EXAMPLE (
+    IDX                     INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    V_IDX                   INTEGER NOT NULL,
+    VOCABULARY              TEXT,
+    VOCABULARY_TRANSLATION  TEXT
+);
+
+CREATE UNIQUE INDEX TBL_VOCABULARY_EXAMPLE_INDEX01 
+                 ON TBL_VOCABULARY_EXAMPLE(IDX);
+
+CREATE INDEX TBL_VOCABULARY_EXAMPLE_INDEX02
+                 ON TBL_VOCABULARY_EXAMPLE(V_IDX);
+
 #####################################################################################################
 ## jv2_user.db
 #####################################################################################################

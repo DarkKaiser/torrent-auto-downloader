@@ -837,7 +837,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 			msg.obj = "단어 DB의 업데이트  여부를 확인할 수 없습니다.";
 			mVocabularyDataLoadHandler.sendMessage(msg);
 		}
-
+		
 		return null;
 	}
 
