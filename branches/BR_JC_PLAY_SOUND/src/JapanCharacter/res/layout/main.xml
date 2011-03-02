@@ -41,6 +41,15 @@
     	android:layout_below="@id/ad"
     	android:layout_above="@id/jc_info"
     	>
+	 	<ImageButton
+			android:id="@+id/playSound" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+	    	android:src="@drawable/play_button"
+	    	android:background="#00000000"
+			/>
 		<TextView
 			android:id="@+id/character"
 	    	android:layout_width="fill_parent" 
