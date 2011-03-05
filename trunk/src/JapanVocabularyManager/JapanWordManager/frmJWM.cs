@@ -219,6 +219,31 @@ namespace JapanWordManager
                 rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
 
+            // 예문 카운트를 구하여 업데이트 한다.
+            try
+            {
+                // 데이터를 읽어들입니다.
+                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
+
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, dbConn);
+                cmd.CommandType = CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows == true && reader.Read() == true)
+                    {
+                        int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
+                        if (nCount > 0)
+                            rc[0].Cells[4].Value = nCount;
+                        else
+                            rc[0].Cells[4].Value = "";
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+            }
+
             form.Dispose();
         }
 
@@ -385,7 +410,7 @@ namespace JapanWordManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION FROM TBL_VOCABULARY ";
+                string strSQL = "SELECT A.IDX, A.VOCABULARY, A.VOCABULARY_GANA, A.VOCABULARY_TRANSLATION, (SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE A.IDX = V_IDX) FROM TBL_VOCABULARY A";
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
@@ -396,7 +421,11 @@ namespace JapanWordManager
                 {
                     while (reader.HasRows == true && reader.Read() == true)
                     {
-                        dataWordGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*VOCABULARY*/), reader.GetString(2/*VOCABULARY_GANA*/), reader.GetString(3/*VOCABULARY_TRANSLATION*/));
+                        long nCount = reader.GetInt32(4/*EXAMPLE_COUNT*/);
+                        if (nCount > 0)
+                            dataWordGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*VOCABULARY*/), reader.GetString(2/*VOCABULARY_GANA*/), reader.GetString(3/*VOCABULARY_TRANSLATION*/), nCount);
+                        else
+                            dataWordGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*VOCABULARY*/), reader.GetString(2/*VOCABULARY_GANA*/), reader.GetString(3/*VOCABULARY_TRANSLATION*/));
                     }
                 }
             }
@@ -441,5 +470,14 @@ namespace JapanWordManager
         }
 
         #endregion
+
+        private void txtWordSearchWord_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                btnWordSearch.PerformClick();
+                e.Handled = true;
+            }
+        }
     }
 }

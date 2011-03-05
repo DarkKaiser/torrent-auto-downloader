@@ -10,6 +10,12 @@ using System.Data.SQLite;
 
 namespace JapanWordManager
 {
+    public struct ExampleInfo
+    {
+        public string example;
+        public string example_translation;
+    };
+
     public partial class frmVocabulary : Form
     {
         public bool EditMode { private get; set; }
@@ -28,9 +34,15 @@ namespace JapanWordManager
         private void EnableControls()
         {
             if (string.IsNullOrEmpty(txtVocabulary.Text.Trim()) == true || string.IsNullOrEmpty(txtVocabularyGana.Text.Trim()) == true)
+            {
                 btnOk.Enabled = false;
+                btnAddNoClose.Enabled = false;
+            }
             else
+            {
                 btnOk.Enabled = true;
+                btnAddNoClose.Enabled = true;
+            }
         }
 
         private void CheckVocabularyExtensionInfo()
@@ -68,6 +80,20 @@ namespace JapanWordManager
             EnableControls();
             CheckVocabularyExtensionInfo();
 
+            if (EditMode == true)
+            {
+                FillExampleData();
+                btnExampleAdd.Visible = true;
+                dataExampleGridView.Visible = true;
+                exampleWebBrowser.Visible = true;
+            }
+            else
+            {
+                btnExampleAdd.Visible = false;
+                dataExampleGridView.Visible = false;
+                exampleWebBrowser.Visible = false;
+            }
+
             if (txtVocabulary.Text.Length > 0)
                 webBrowser1.Url = new Uri(string.Format("http://jpdic.naver.com/search.nhn?query={0}", txtVocabulary.Text.Trim()));
         }
@@ -78,6 +104,61 @@ namespace JapanWordManager
         }
 
         private void btnOk_Click(object sender, EventArgs e)
+        {
+            if (addVocabulary() == false)
+                return;
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btnAddNoClose_Click(object sender, EventArgs e)
+        {
+            if (addVocabulary() == false)
+                return;
+
+            if (EditMode == false)
+            {
+                EditMode = true;
+
+                // 방금 추가한 단어의 idx 값을 구한다.
+                string strSQL = string.Format(@"SELECT IDX FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}""", txtVocabulary.Text.Trim());
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
+                cmd.CommandType = CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows == false)
+                    {
+                        MessageBox.Show("방금 추가한 단어의 IDX 값을 구하지 못하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        DialogResult = DialogResult.OK;
+                        Close();
+                        return;
+                    }
+
+                    int nRowCount = 0;
+                    while (reader.Read() == true)
+                    {
+                        ++nRowCount;
+                        if (nRowCount >= 2)
+                        {
+                            MessageBox.Show("방금 추가한 단어의 IDX 값이 2개 이상 존재합니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            DialogResult = DialogResult.OK;
+                            Close();
+                            return;
+                        }
+
+                        idx = reader.GetInt32(0/*IDX*/);
+                    }
+                }
+
+                FillExampleData();
+                btnExampleAdd.Visible = true;
+                dataExampleGridView.Visible = true;
+            }
+        }
+
+        private bool addVocabulary()
         {
             string strVocabulary = txtVocabulary.Text.Trim();
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
@@ -99,7 +180,7 @@ namespace JapanWordManager
                         {
                             MessageBox.Show("DB에 이미 등록된 단어입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtVocabulary.Focus();
-                            return;
+                            return false;
                         }
                     }
 
@@ -127,7 +208,7 @@ namespace JapanWordManager
                 catch (SQLiteException ex)
                 {
                     MessageBox.Show(string.Format("데이터 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return false;
                 }
             }
             else
@@ -146,14 +227,14 @@ namespace JapanWordManager
                         {
                             MessageBox.Show("DB에 이미 등록된 단어입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtVocabulary.Focus();
-                            return;
+                            return false;
                         }
                     }
                 }
                 catch (SQLiteException ex)
                 {
                     MessageBox.Show(string.Format("데이터 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return false;
                 }
 
                 // 데이터를 추가한다.
@@ -181,8 +262,7 @@ namespace JapanWordManager
             VocabularyGana = strVocabularyGana;
             VocabularyTranslation = strVocabularyTranslation;
 
-            DialogResult = DialogResult.OK;
-            Close();
+            return true;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -225,6 +305,272 @@ namespace JapanWordManager
         private void txtDescription_Leave(object sender, EventArgs e)
         {
             txtVocabularyTranslation.Text = txtVocabularyTranslation.Text.Trim();
+        }
+
+        private void dataExampleGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                e.Cancel = true;
+        }
+
+        private void dataExampleGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            using (SQLiteCommand cmd = DbConnection.CreateCommand())
+            {
+                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE WHERE idx = {0};", e.Row.Cells[0].Value);
+                cmd.ExecuteNonQuery();
+            }
+
+            // 데이터를 다시 채운다.
+            FillExampleData();
+        }
+
+        private void FillExampleData()
+        {
+            if (EditMode == false)
+                return;
+
+            // 전체 행을 삭제합니다.
+            dataExampleGridView.Rows.Clear();
+
+            StringBuilder sbDocumentText = new StringBuilder();
+
+            try
+            {
+                // 데이터를 읽어들입니다.
+                string strSQL = string.Format(@"SELECT IDX, VOCABULARY, VOCABULARY_TRANSLATION FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0}", idx);
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
+                cmd.CommandType = CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.HasRows == true && reader.Read() == true)
+                    {
+                        string example = reader.GetString(1/*VOCABULARY*/);
+                        dataExampleGridView.Rows.Add(reader.GetInt32(0/*IDX*/), example, reader.GetString(2/*VOCABULARY_TRANSLATION*/));
+
+                        if (sbDocumentText.Length != 0)
+                            sbDocumentText.Append("<br>");
+                        sbDocumentText.Append(example);
+                    }
+                }
+            }
+            catch (SQLiteException e)
+            {
+            }
+
+            exampleWebBrowser.DocumentText = sbDocumentText.ToString();
+        }
+
+        private void btnExampleAdd_Click(object sender, EventArgs e)
+        {
+            string strDocumentText = webBrowser1.DocumentText;
+            if (strDocumentText.Length == 0)
+            {
+                MessageBox.Show("분석할 웹페이지가 로딩되지 않았습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 데이터를 파싱하여 예문을 추출한다.
+            int first = strDocumentText.IndexOf(@"예문 검색결과");
+            if (first == -1)
+            {
+                MessageBox.Show("읽어들인 웹페이지에서 예문을 찾을 수 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            first = strDocumentText.IndexOf(@"class=""exam_result""");
+            if (first == -1)
+            {
+                MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            first += 20;
+
+            int last = strDocumentText.IndexOf("</dl>", first);
+            if (last == -1)
+            {
+                MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            strDocumentText = strDocumentText.Substring(first, last - first).Trim();
+
+            string temp;
+            List<ExampleInfo> exampleInfoList = new List<ExampleInfo>();
+
+            // DT, DD로 구분
+            first = last = 0;
+            while (true)
+            {
+                ExampleInfo exInfo = new ExampleInfo();
+
+                first = strDocumentText.IndexOf(@"<dt>", last);
+                if (first == -1)
+                {
+                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                last = strDocumentText.IndexOf(@"</dt>", first);
+                if (last == -1)
+                {
+                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                first += 4;
+
+                temp = strDocumentText.Substring(first, last - first).Trim();
+                if (temp.Contains("class='jp'") == true)
+                {
+                    exInfo.example = extract_example(temp);
+                    exInfo.example_translation = "";
+                }
+                else
+                {
+                    exInfo.example = "";
+                    exInfo.example_translation = extract_translation(temp);
+                }
+
+                first = strDocumentText.IndexOf(@"<dd>", last);
+                if (first == -1)
+                {
+                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                last = strDocumentText.IndexOf(@"</dd>", first);
+                if (last == -1)
+                {
+                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                first += 4;
+
+                temp = strDocumentText.Substring(first, last - first).Trim();
+                if (exInfo.example.Length == 0)
+                    exInfo.example = extract_example(temp);
+                else
+                    exInfo.example_translation = extract_translation(temp);
+
+                exampleInfoList.Add(exInfo);
+
+                temp = strDocumentText.Substring(last + 5).Trim();
+                if (temp.Length == 0)
+                    break;
+            }
+
+            if (exampleInfoList.Count == 0)
+            {
+                MessageBox.Show("예문이 존재하지 않습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 예문 대화상자를 연다.
+            frmExample form = new frmExample();
+            form.idx = idx;
+            form.DbConnection = DbConnection;
+            form.ExampleInfoList = exampleInfoList;
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                // 데이터를 다시 채운다.
+                FillExampleData();
+            }
+
+            form.Dispose();
+        }
+
+        private string extract_example(string example)
+        {
+            int nFirst = 0;
+            int nLast = 0;
+
+            // img 태그 제거
+            while (true)
+            {
+                nFirst = example.IndexOf(@"<img", 0);
+                if (nFirst == -1)
+                    break;
+                nLast = example.IndexOf(@"/>", nFirst);
+                if (nLast == -1)
+                    break;
+                nLast += 2;
+
+                example = example.Remove(nFirst, nLast - nFirst).Trim();
+            }
+
+            // Span 태그 제거
+            while (true)
+            {
+                nFirst = example.IndexOf(@"<span", 0);
+                if (nFirst == -1)
+                    break;
+                nLast = example.IndexOf(@">", nFirst);
+                if (nLast == -1)
+                    break;
+                nLast += 1;
+
+                example = example.Remove(nFirst, nLast - nFirst).Trim();
+            }
+            example = example.Replace("</span>", "");
+
+            // '→' 이후의 글자 제거
+            nFirst = example.IndexOf(@"→", 0);
+            if (nFirst != -1)
+                example = example.Remove(nFirst, example.Length - nFirst).Trim();
+
+            example = example.Replace("<b>", "");
+            example = example.Replace("</b>", "");
+
+            // <sup> 태그에 <font> 태그 추가
+            example = example.Replace(@"<sup class=""huri"">", "<sup><font color='#f67474'>");
+            example = example.Replace("</sup>", "</font></sup>");
+
+            return example;
+        }
+
+        private string extract_translation(string mean)
+        {
+            int nFirst = 0;
+            int nLast = 0;
+
+            // img 태그 제거
+            while (true)
+            {
+                nFirst = mean.IndexOf(@"<img", 0);
+                if (nFirst == -1)
+                    break;
+                nLast = mean.IndexOf(@"/>", nFirst);
+                if (nLast == -1)
+                    break;
+                nLast += 2;
+
+                mean = mean.Remove(nFirst, nLast - nFirst).Trim();
+            }
+
+            // Span 태그 제거
+            while (true)
+            {
+                nFirst = mean.IndexOf(@"<span", 0);
+                if (nFirst == -1)
+                    break;
+                nLast = mean.IndexOf(@">", nFirst);
+                if (nLast == -1)
+                    break;
+                nLast += 1;
+
+                mean = mean.Remove(nFirst, nLast - nFirst).Trim();
+            }
+            mean = mean.Replace("</span>", "");
+
+            // '→' 이후의 글자 제거
+            nFirst = mean.IndexOf(@"→", 0);
+            if (nFirst != -1)
+                mean = mean.Remove(nFirst, mean.Length - nFirst).Trim();
+
+            mean = mean.Replace("<b>", "");
+            mean = mean.Replace("</b>", "");
+
+            return mean;
         }
     }
 }
