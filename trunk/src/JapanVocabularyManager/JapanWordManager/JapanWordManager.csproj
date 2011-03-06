@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmCustomExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomExample.Designer.cs">
+      <DependentUpon>frmCustomExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmCustomExample.resx">
+      <DependentUpon>frmCustomExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmExample.resx">
       <DependentUpon>frmExample.cs</DependentUpon>
     </EmbeddedResource>

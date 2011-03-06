@@ -49,6 +49,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.btnExampleCustomAdd = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -66,6 +67,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnExampleCustomAdd);
             this.splitContainer1.Panel1.Controls.Add(this.exampleWebBrowser);
             this.splitContainer1.Panel1.Controls.Add(this.btnAddNoClose);
             this.splitContainer1.Panel1.Controls.Add(this.btnExampleAdd);
@@ -86,7 +88,7 @@
             this.exampleWebBrowser.Location = new System.Drawing.Point(5, 663);
             this.exampleWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.exampleWebBrowser.Name = "exampleWebBrowser";
-            this.exampleWebBrowser.Size = new System.Drawing.Size(401, 146);
+            this.exampleWebBrowser.Size = new System.Drawing.Size(377, 146);
             this.exampleWebBrowser.TabIndex = 17;
             // 
             // btnAddNoClose
@@ -101,9 +103,9 @@
             // 
             // btnExampleAdd
             // 
-            this.btnExampleAdd.Location = new System.Drawing.Point(412, 663);
+            this.btnExampleAdd.Location = new System.Drawing.Point(388, 663);
             this.btnExampleAdd.Name = "btnExampleAdd";
-            this.btnExampleAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnExampleAdd.Size = new System.Drawing.Size(99, 23);
             this.btnExampleAdd.TabIndex = 15;
             this.btnExampleAdd.Text = "예문 추가";
             this.btnExampleAdd.UseVisualStyleBackColor = true;
@@ -283,6 +285,16 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
             // 
+            // btnExampleCustomAdd
+            // 
+            this.btnExampleCustomAdd.Location = new System.Drawing.Point(388, 692);
+            this.btnExampleCustomAdd.Name = "btnExampleCustomAdd";
+            this.btnExampleCustomAdd.Size = new System.Drawing.Size(99, 23);
+            this.btnExampleCustomAdd.TabIndex = 18;
+            this.btnExampleCustomAdd.Text = "예문수동추가";
+            this.btnExampleCustomAdd.UseVisualStyleBackColor = true;
+            this.btnExampleCustomAdd.Click += new System.EventHandler(this.btnExampleCustomAdd_Click);
+            // 
             // frmVocabulary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -328,6 +340,7 @@
         private System.Windows.Forms.Button btnExampleAdd;
         private System.Windows.Forms.Button btnAddNoClose;
         private System.Windows.Forms.WebBrowser exampleWebBrowser;
+        private System.Windows.Forms.Button btnExampleCustomAdd;
 
     }
 }

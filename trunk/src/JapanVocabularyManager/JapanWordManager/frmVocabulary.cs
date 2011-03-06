@@ -84,12 +84,14 @@ namespace JapanWordManager
             {
                 FillExampleData();
                 btnExampleAdd.Visible = true;
+                btnExampleCustomAdd.Visible = true;
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
             }
             else
             {
                 btnExampleAdd.Visible = false;
+                btnExampleCustomAdd.Visible = false;
                 dataExampleGridView.Visible = false;
                 exampleWebBrowser.Visible = false;
             }
@@ -154,7 +156,9 @@ namespace JapanWordManager
 
                 FillExampleData();
                 btnExampleAdd.Visible = true;
+                btnExampleCustomAdd.Visible = true;
                 dataExampleGridView.Visible = true;
+                exampleWebBrowser.Visible = true;
             }
         }
 
@@ -571,6 +575,22 @@ namespace JapanWordManager
             mean = mean.Replace("</b>", "");
 
             return mean;
+        }
+
+        private void btnExampleCustomAdd_Click(object sender, EventArgs e)
+        {
+            // 예문 대화상자를 연다.
+            frmCustomExample form = new frmCustomExample();
+            form.idx = idx;
+            form.DbConnection = DbConnection;
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                // 데이터를 다시 채운다.
+                FillExampleData();
+            }
+
+            form.Dispose();
         }
     }
 }
