@@ -177,6 +177,9 @@ public class JvActivity extends Activity implements OnTouchListener {
         // 환경설정 값을 로드한다.
         reloadPreference();
 
+        // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.
+        JvPathManager.getInstance();
+
         Button prevVocabulary = (Button)findViewById(R.id.prev_vocabulary);
         prevVocabulary.setOnClickListener(new View.OnClickListener() {
 			
@@ -887,14 +890,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		Message msg = null;
 		boolean updateSucceeded = false;
-
-		String jvDbPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
-		File f = new File(jvDbPath);
-		if (f.exists() == false) {
-			f.mkdir();
-		}
-
-		jvDbPath += JvDefines.JV_VOCABULARY_DB;
+		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
 
 		// 단어 DB 파일을 내려받는다.
 		try {
@@ -949,7 +945,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				mVocabularyDataLoadHandler.sendMessage(msg);
 			} else {
 				if (TextUtils.isEmpty(newVocabularyDbFileHash) == true) {
-					f = new File(jvDbPath);
+					File f = new File(jvDbPath);
 					f.delete();
 
 					FileOutputStream fos = new FileOutputStream(f);
@@ -959,7 +955,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 					SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 					mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
 				} else {
-					f = new File(String.format("%s.tmp", jvDbPath));
+					File f = new File(String.format("%s.tmp", jvDbPath));
 					f.delete();
 
 					FileOutputStream fos = new FileOutputStream(f);

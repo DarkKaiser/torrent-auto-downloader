@@ -15,13 +15,13 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.JvPathManager;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -30,10 +30,6 @@ public class JapanVocabularyManager {
 	private static final String TAG = "JvManager";
 
 	private static JapanVocabularyManager mInstance = null;
-	
-	private String mJvVocabularyDbPath = null;
-	private String mJvUserVocubularyInfoFilePath = null;
-
 	private SQLiteDatabase mJvVocabularySqLite = null;
 
 	/*
@@ -46,15 +42,6 @@ public class JapanVocabularyManager {
 	}
 
 	private JapanVocabularyManager() {
-		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
-		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
-		File f = new File(appMainPath);
-		if (f.exists() == false) {
-			f.mkdir();
-		}
-
-		mJvVocabularyDbPath = String.format("%s%s", appMainPath, JvDefines.JV_VOCABULARY_DB);
-		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
 	}
 
 	public static JapanVocabularyManager getInstance() {
@@ -80,8 +67,7 @@ public class JapanVocabularyManager {
 			}
 
 			// 일본어 단어를 읽어들인다.
-			assert TextUtils.isEmpty(mJvVocabularyDbPath) == false;
-			mJvVocabularySqLite = SQLiteDatabase.openDatabase(mJvVocabularyDbPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			mJvVocabularySqLite = SQLiteDatabase.openDatabase(JvPathManager.getInstance().getVocabularyDbPath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 			if (mJvVocabularySqLite == null)
 				return false;
 
@@ -120,7 +106,7 @@ public class JapanVocabularyManager {
 
 		// 사용자 파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
-			File f = new File(mJvUserVocubularyInfoFilePath);
+			File f = new File(JvPathManager.getInstance().getUserVocabularyInfoFilePath());
 			if (f.exists() == true) {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
@@ -156,20 +142,22 @@ public class JapanVocabularyManager {
 
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(mJvVocabularyDbPath) == false;
+		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbPath()) == false;
+
+		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
 
 		// 단어 DB 파일이 존재하는지 확인한다.
-		File f = new File(mJvVocabularyDbPath);
+		File f = new File(jvDbPath);
 		if (f.exists() == true) {
 			return;
 		}
 
-	    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) == true) {
-	        File outFile = new File(mJvVocabularyDbPath);
+		if (JvPathManager.getInstance().isReadyIoDevice() == true) {
+	        File outFile = new File(jvDbPath);
 
 	        InputStream is = null;
 	        OutputStream os = null;
-	        
+
 	        try {                        
 	            outFile.createNewFile();           
 	            os = new FileOutputStream(outFile);
@@ -410,8 +398,10 @@ public class JapanVocabularyManager {
 		}
 
 		try {
-			File fileOrg = new File(mJvUserVocubularyInfoFilePath);
-			File fileTemp = new File(mJvUserVocubularyInfoFilePath + ".tmp");
+			String jvUserVocabularyInfoFilePath = JvPathManager.getInstance().getUserVocabularyInfoFilePath();
+
+			File fileOrg = new File(jvUserVocabularyInfoFilePath);
+			File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");
 
 			FileOutputStream fos = new FileOutputStream(fileTemp);
 			fos.write(sb.toString().getBytes());
