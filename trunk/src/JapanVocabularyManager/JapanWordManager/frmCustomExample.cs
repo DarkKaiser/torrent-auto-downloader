@@ -70,7 +70,7 @@ namespace JapanWordManager
                 param3.Value = strExampleTranslation;
                 cmd.ExecuteNonQuery();
             }
-
+            
             DialogResult = DialogResult.OK;
             Close();
         }

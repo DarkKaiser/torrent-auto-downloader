@@ -529,6 +529,10 @@ namespace JapanWordManager
             example = example.Replace(@"<sup class=""huri"">", "<sup><font color='#f67474'>");
             example = example.Replace("</sup>", "</font></sup>");
 
+            // ·,- 문자 제거
+            example = example.Replace("·", "");
+            example = example.Replace("-", "");
+
             return example;
         }
 
