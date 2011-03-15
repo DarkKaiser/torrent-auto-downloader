@@ -45,7 +45,8 @@ public class JvPathManager {
 		String path = jvVocabularyDbPath.substring(0, jvVocabularyDbPath.length() - JvDefines.JV_VOCABULARY_DB.length());
 		File f = new File(path);
 		if (f.exists() == false && f.mkdirs() == false) {
-			return initSDCard(context);
+			callUseSDCardCount(context);
+			return false;
 		}
 
 		// SDCARD 영역에 기존 단어 DB 파일이 존재하는지 확인한 후 존재한다면 복사한 후 삭제한다.
@@ -60,7 +61,7 @@ public class JvPathManager {
 				try {
 					copyFile(sdcJvVocabularyDbPath, jvVocabularyDbPath);
 				} catch (IOException e) {
-					return initSDCard(context);
+					callUseSDCardCount(context);
 				}
 				
 				f.delete();
@@ -92,18 +93,18 @@ public class JvPathManager {
 		return true;
 	}
 	
-	private boolean initSDCard(Context context) {
+	private void callUseSDCardCount(Context context) {
 		assert context != null;
 
-		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
-		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
-		File f = new File(appMainPath);
-		if (f.exists() == false) {
-			f.mkdir();
-		}
-
-		mJvVocabularyDbPath = String.format("%s%s", appMainPath, JvDefines.JV_VOCABULARY_DB);
-		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
+//		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
+//		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
+//		File f = new File(appMainPath);
+//		if (f.exists() == false) {
+//			f.mkdir();
+//		}
+//
+//		mJvVocabularyDbPath = String.format("%s%s", appMainPath, JvDefines.JV_VOCABULARY_DB);
+//		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
 
 		try {
 			// 단어 DB 파일의 경로가 SDCARD를 사용하는 사용자를 카운트하기 위해 웹페이지를 호출한다. 
@@ -122,8 +123,6 @@ public class JvPathManager {
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage());
 		}
-		
-		return true;
 	}
 	
 	public String getVocabularyDbPath() {
