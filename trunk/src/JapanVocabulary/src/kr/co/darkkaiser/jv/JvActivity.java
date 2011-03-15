@@ -33,7 +33,6 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -95,6 +94,7 @@ public class JvActivity extends Activity implements OnTouchListener {
         setContentView(R.layout.main);
 
         // SD 카드의 상태를 확인한다.
+        /* 단어DB의 위치를 SDCARD에서 어플 설치폴더로 옮김에 따라 주석 처리한다.
         String sdStatus = Environment.getExternalStorageState();
         if (sdStatus.equals(Environment.MEDIA_UNMOUNTED) == true) {
         	new AlertDialog.Builder(this)
@@ -111,6 +111,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 
         	return;
         }
+        */
 
         SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
         moveVocabularyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -178,7 +179,21 @@ public class JvActivity extends Activity implements OnTouchListener {
         reloadPreference();
 
         // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.
-        JvPathManager.getInstance();
+        if (JvPathManager.getInstance().init(this) == false) {
+        	new AlertDialog.Builder(this)
+    			.setTitle("오류")
+    			.setMessage("사용 가능한 저장 장치를 확인할 수 없습니다. 단어 데이터를 로드할 수 없습니다.")
+    			.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+				
+    				@Override
+    				public void onClick(DialogInterface dialog, int which) {
+    					finish();
+    				}
+    			})
+    			.show();
+
+        	return;
+        }
 
         Button prevVocabulary = (Button)findViewById(R.id.prev_vocabulary);
         prevVocabulary.setOnClickListener(new View.OnClickListener() {
