@@ -37,7 +37,7 @@ public class JvPathManager {
 
 	public boolean init(Context context) {
 		assert context != null;
-
+		
 		String jvVocabularyDbPath = context.getDatabasePath(JvDefines.JV_VOCABULARY_DB).getAbsolutePath();
 		String jvUserVocubularyInfoFilePath = context.getDatabasePath(JvDefines.JV_USER_VOCABULARY_INFO_FILE).getAbsolutePath();
 
@@ -45,7 +45,7 @@ public class JvPathManager {
 		String path = jvVocabularyDbPath.substring(0, jvVocabularyDbPath.length() - JvDefines.JV_VOCABULARY_DB.length());
 		File f = new File(path);
 		if (f.exists() == false && f.mkdirs() == false) {
-			callUseSDCardCount(context);
+			callUseSDCardCount(context, path);
 			return false;
 		}
 
@@ -61,7 +61,7 @@ public class JvPathManager {
 				try {
 					copyFile(sdcJvVocabularyDbPath, jvVocabularyDbPath);
 				} catch (IOException e) {
-					callUseSDCardCount(context);
+					callUseSDCardCount(context, "copyFile failed.");
 				}
 				
 				f.delete();
@@ -93,7 +93,7 @@ public class JvPathManager {
 		return true;
 	}
 	
-	private void callUseSDCardCount(Context context) {
+	private void callUseSDCardCount(Context context, String param) {
 		assert context != null;
 
 //		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
@@ -108,7 +108,7 @@ public class JvPathManager {
 
 		try {
 			// 단어 DB 파일의 경로가 SDCARD를 사용하는 사용자를 카운트하기 위해 웹페이지를 호출한다. 
-			URL url = new URL("http://darkkaiser.cafe24.com/data/jv_sdcard_check.php");
+			URL url = new URL(String.format("http://darkkaiser.cafe24.com/data/jv_sdcard_check.php?param=%s", param));
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 
