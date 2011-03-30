@@ -82,4 +82,9 @@ public class JvDefines {
      */
     public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.php";
 
+    /*
+     * APP과 함께 배포되는 단어 DB 버전
+     */
+    public static final String JV_DB_VERSION_FROM_ASSETS = "Jv.Voca.50";
+    
 }

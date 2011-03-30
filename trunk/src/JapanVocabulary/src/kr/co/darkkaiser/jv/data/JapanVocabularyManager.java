@@ -19,6 +19,7 @@ import kr.co.darkkaiser.jv.JvPathManager;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -167,6 +168,9 @@ public class JapanVocabularyManager {
 
 	            is.read(buffer);
 	            os.write(buffer);
+
+				SharedPreferences mPreferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+				mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {

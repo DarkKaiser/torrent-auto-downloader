@@ -829,8 +829,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 			if (readData.size() >= 1) {
 				newVocabularyDbVersion = readData.get(0).trim();
 			}
-			
-			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false && newVocabularyDbVersion.equals(localDbVersion) == false) {
+
+			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
+					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(JvDefines.JV_DB_VERSION_FROM_ASSETS) == false) {
 				if (readData.size() >= 2) {
 					newVocabularyDbFileHash = readData.get(1).trim();
 				}
