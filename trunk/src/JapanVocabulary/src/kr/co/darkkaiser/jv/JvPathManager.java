@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import android.content.Context;
 import android.os.Environment;
@@ -40,13 +41,15 @@ public class JvPathManager {
 		
 		String jvVocabularyDbPath = context.getDatabasePath(JvDefines.JV_VOCABULARY_DB).getAbsolutePath();
 		String jvUserVocubularyInfoFilePath = context.getDatabasePath(JvDefines.JV_USER_VOCABULARY_INFO_FILE).getAbsolutePath();
-
+		
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
 		String path = jvVocabularyDbPath.substring(0, jvVocabularyDbPath.length() - JvDefines.JV_VOCABULARY_DB.length());
 		File f = new File(path);
-		if (f.exists() == false && f.mkdirs() == false) {
-			callUseSDCardCount(context, path);
-			return false;
+		if (f.exists() == false) {
+			if (f.mkdirs() == false) {
+				callUseSDCardCount(context, "mkdirs() function failed", path);
+				return false;
+			}
 		}
 
 		// SDCARD 영역에 기존 단어 DB 파일이 존재하는지 확인한 후 존재한다면 복사한 후 삭제한다.
@@ -61,7 +64,7 @@ public class JvPathManager {
 				try {
 					copyFile(sdcJvVocabularyDbPath, jvVocabularyDbPath);
 				} catch (IOException e) {
-					callUseSDCardCount(context, "copyFile failed.");
+					callUseSDCardCount(context, "copyFile() function failed.", "");
 				}
 				
 				f.delete();
@@ -93,8 +96,9 @@ public class JvPathManager {
 		return true;
 	}
 	
-	private void callUseSDCardCount(Context context, String param) {
+	private void callUseSDCardCount(Context context, String param1, String param2) {
 		assert context != null;
+		assert param1 != null && param2 != null;
 
 //		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
 //		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
@@ -108,7 +112,7 @@ public class JvPathManager {
 
 		try {
 			// 단어 DB 파일의 경로가 SDCARD를 사용하는 사용자를 카운트하기 위해 웹페이지를 호출한다. 
-			URL url = new URL(String.format("http://darkkaiser.cafe24.com/data/jv_sdcard_check.php?param=%s", param));
+			URL url = new URL(String.format("http://darkkaiser.cafe24.com/data/jv_sdcard_check2.php?param1=%s&param2=%s", URLEncoder.encode(param1, "UTF-8"), URLEncoder.encode(param2, "UTF-8")));
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 
