@@ -41,6 +41,16 @@
 			/>
 	</PreferenceCategory>
 	<PreferenceCategory
+		android:title="단어 업데이트 설정"
+		>
+		<CheckBoxPreference
+			android:key="jv_vocabulary_update_on_started"
+			android:title="시작시 단어 업데이트"
+			android:summary="프로그램 시작시 단어 DB를 최신 버전으로 업데이트 합니다."
+			android:defaultValue="true"
+			/>
+	</PreferenceCategory>
+	<PreferenceCategory
 		android:title="프로그램 정보"
 		>
 		<PreferenceScreen 

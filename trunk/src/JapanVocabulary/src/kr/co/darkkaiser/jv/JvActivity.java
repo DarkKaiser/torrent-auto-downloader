@@ -227,6 +227,10 @@ public class JvActivity extends Activity implements OnTouchListener {
 			}
 		});
 
+        // 시작시 단어 업데이트할지의 여부를 확인한 후, 단어 데이터를 업데이트한다. 
+		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		boolean isVocabularyUpdateOnStarted = preferences.getBoolean(JvDefines.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, true);
+
         // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어 데이터를 업데이트한다.
         boolean isNowNetworkConnected = false;
 		ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -234,7 +238,9 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		if (activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting() == true) {
 			isNowNetworkConnected = true;
+		}
 
+		if (isNowNetworkConnected == true && isVocabularyUpdateOnStarted == true) {
 			// 프로그레스 대화상자를 보인다.
 			mProgressDialog = ProgressDialog.show(this, null, "단어 DB의 업데이트 여부를 확인하는 중 입니다.", true, false);
 		} else {
@@ -246,15 +252,17 @@ public class JvActivity extends Activity implements OnTouchListener {
 
    			// 현재 네트워크(3G 혹은 와이파이)에 연결되어 있는지의 여부를 나타낸다.
    			private boolean mIsNowNetworkConnected = false;
+   			private boolean mIsVocabularyUpdateOnStarted = true;
 
-   			public Thread setValues(boolean isNowNetworkConnected) {
+   			public Thread setValues(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted) {
    				mIsNowNetworkConnected = isNowNetworkConnected;
+   				mIsVocabularyUpdateOnStarted = isVocabularyUpdateOnStarted;
    				return this;
    			}
 
 			@Override
    			public void run() {
-				if (mIsNowNetworkConnected == true) {
+				if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
 					ArrayList<String> newVocaInfo = checkNewVocabularyDb();
 					String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
 
@@ -285,19 +293,19 @@ public class JvActivity extends Activity implements OnTouchListener {
 							boolean updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
 
 							// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-							initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, updateSucceeded);
+							initVocabularyDataAndStartMemorize(true, true, updateSucceeded);
 						}
 					} else {
 						// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-						initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, false);
-					}					
+						initVocabularyDataAndStartMemorize(true, true, false);
+					}
 				} else {
 					// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-					initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, false);
+					initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, false);
 				}
    			};
    		}
-   		.setValues(isNowNetworkConnected)
+   		.setValues(isNowNetworkConnected, isVocabularyUpdateOnStarted)
    		.start();
     }
 
@@ -894,7 +902,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 				}
 
 				// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-				initVocabularyDataAndStartMemorize(true, updateSucceeded);
+				initVocabularyDataAndStartMemorize(true, true, updateSucceeded);
    			};
    		}
    		.setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
@@ -1020,7 +1028,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		return updateSucceeded;
 	}
 
-	private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean updateSucceeded) {
+	private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean updateSucceeded) {
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
@@ -1037,7 +1045,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		// 암기할 단어 데이터를 로드합니다.
         loadMemorizeTargetVocabularyData(true);
 
-		if (nowNetworkConnected == false) {
+		if (nowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
 			msg = Message.obtain();
 			msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
 			mVocabularyDataLoadHandler.sendMessage(msg);

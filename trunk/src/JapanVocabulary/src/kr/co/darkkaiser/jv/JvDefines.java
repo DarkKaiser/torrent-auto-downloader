@@ -53,6 +53,11 @@ public class JvDefines {
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
     
     /*
+     * 시작시 단어DB 업데이트 항목 이름(공용 환경설정 키이름)
+     */
+    public static final String JV_SPN_VOCABULARY_UPDATE_ON_STARTED = "jv_vocabulary_update_on_started";
+
+    /*
      * 가장 마지막에 업데이트 된 단어 DB의 Max IDX 값
      */
     public static final String JV_SPN_LAST_UPDATED_MAX_IDX = "jv_last_updated_max_idx";
