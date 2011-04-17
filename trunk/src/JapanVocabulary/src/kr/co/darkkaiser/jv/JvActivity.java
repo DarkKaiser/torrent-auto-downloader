@@ -1,12 +1,9 @@
 package kr.co.darkkaiser.jv;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -21,6 +18,8 @@ import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.option.OptionActivity;
 
 import org.apache.http.util.ByteArrayBuffer;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -814,36 +813,40 @@ public class JvActivity extends Activity implements OnTouchListener {
 
 		try {
 			URL url = new URL(JvDefines.JV_DB_VERSION_CHECK_URL);
-			URLConnection conn = url.openConnection();
-			conn.setDoOutput(true);
 
-			OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
-			osw.write("");
-			osw.flush();
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
-
-			String inputLine = null;
-			ArrayList<String> readData = new ArrayList<String>(); 
-			while ((inputLine = br.readLine()) != null) {
-				readData.add(inputLine);
-			}
-
-			br.close();
-
-			// 단어 DB의 갱신 여부를 확인한다.
+			XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
+			XmlPullParser parser = parserCreator.newPullParser();
+			parser.setInput(url.openStream(), null);
+			 
+			String tagName = null;
+			int eventType = parser.getEventType();
 			String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
 
-			if (readData.size() >= 1) {
-				newVocabularyDbVersion = readData.get(0).trim();
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.TEXT:
+					if (tagName != null) {
+						if (tagName.equals("version") == true) {
+							newVocabularyDbVersion = parser.getText();
+						} else if (tagName.equals("sha1") == true) {
+							newVocabularyDbFileHash = parser.getText();
+						}
+					}
+					break;
+				case XmlPullParser.END_TAG:
+					tagName = null;
+					break;                
+				case XmlPullParser.START_TAG:
+					tagName = parser.getName();
+					break;
+				}
+				
+				eventType = parser.next();
 			}
 
+			// 단어 DB의 갱신 여부를 확인한다.
 			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
 					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(JvDefines.JV_DB_VERSION_FROM_ASSETS) == false) {
-				if (readData.size() >= 2) {
-					newVocabularyDbFileHash = readData.get(1).trim();
-				}
-
 				ArrayList<String> result = new ArrayList<String>();
 				result.add(newVocabularyDbVersion);
 				result.add(newVocabularyDbFileHash);
