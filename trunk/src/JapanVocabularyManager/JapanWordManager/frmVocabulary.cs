@@ -502,6 +502,20 @@ namespace JapanWordManager
                 example = example.Remove(nFirst, nLast - nFirst).Trim();
             }
 
+            // span 태그 제거
+            while (true)
+            {
+                nFirst = example.IndexOf("\"<span", 0);
+                if (nFirst == -1)
+                    break;
+                nLast = example.IndexOf("/span>\"", nFirst);
+                if (nLast == -1)
+                    break;
+                nLast += 7;
+
+                example = example.Remove(nFirst, nLast - nFirst).Trim();
+            }
+
             // Span 태그 제거
             while (true)
             {
