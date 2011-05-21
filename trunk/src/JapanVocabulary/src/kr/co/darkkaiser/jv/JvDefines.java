@@ -90,6 +90,6 @@ public class JvDefines {
     /*
      * APP과 함께 배포되는 단어 DB 버전
      */
-    public static final String JV_DB_VERSION_FROM_ASSETS = "Jv.Voca.51";
+    public static final String JV_DB_VERSION_FROM_ASSETS = "Jv.Voca.52";
     
 }
