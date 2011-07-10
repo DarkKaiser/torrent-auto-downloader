@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="단어 암기 설정"
+		>
+		<CheckBoxPreference
+			android:key="jv_show_vocabulary_translation"
+			android:title="암기 시 단어 뜻 보이기"
+			android:summary="암기 대상 단어가 나타나는 아랫부분에 단어의 뜻을 보여줍니다."
+			android:defaultValue="false"
+			/>
+		<CheckBoxPreference
+			android:key="jv_fade_effect_next_vocabulary"
+			android:title="단어 전환시 페이드효과 적용"
+			android:summary="다음 암기 대상 단어가 나타날 때 페이드 효과를 적용하여 나타나도록 합니다."
+			android:defaultValue="true"
+			/>
+		<CheckBoxPreference
+			android:key="jv_vibrate_next_vocabulary"
+			android:title="단어 전환시 진동 발생"
+			android:summary="다음 암기 대상 단어가 나타날 때 휴대폰에 진동을 발생시킵니다."
+			android:defaultValue="true"
+			/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="프로그램 정보"
+		>
+		<PreferenceScreen 
+			android:key="jv_program_info"
+			android:title="프로그램 정보"
+   			android:summary="버전 정보를 확인할 수 없습니다."
+   			/>
+		<PreferenceScreen 
+			android:title="개발자 정보"
+   			android:summary="DarkKaiser(twitter : darkkaiser78)\ndarkkaiser78@hotmail.com"
+   			/>
+	</PreferenceCategory>
+</PreferenceScreen>
