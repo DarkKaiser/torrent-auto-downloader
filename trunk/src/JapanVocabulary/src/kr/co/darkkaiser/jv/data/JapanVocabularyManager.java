@@ -146,11 +146,21 @@ public class JapanVocabularyManager {
 		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbPath()) == false;
 
 		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
+		SharedPreferences preferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
 
 		// 단어 DB 파일이 존재하는지 확인한다.
 		File f = new File(jvDbPath);
 		if (f.exists() == true) {
-			return;
+			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
+			String jvDbVersion = preferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
+			if (jvDbVersion.equals("") == false) {
+				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
+				int assetsDbVersion = Integer.parseInt(JvDefines.JV_DB_VERSION_FROM_ASSETS.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
+				
+				if (currentDbVersion >= assetsDbVersion) {
+					return;
+				}
+			}
 		}
 
 		if (JvPathManager.getInstance().isReadyIoDevice() == true) {
@@ -169,8 +179,7 @@ public class JapanVocabularyManager {
 	            is.read(buffer);
 	            os.write(buffer);
 
-				SharedPreferences mPreferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-				mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
+				preferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {
