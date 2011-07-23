@@ -91,6 +91,6 @@ public class JvDefines {
      * APP과 함께 배포되는 단어 DB 버전
      */
     public static final String JV_DB_VERSION_PREFIX = "Jv.Voca.";
-    public static final String JV_DB_VERSION_FROM_ASSETS = JV_DB_VERSION_PREFIX + "52";
+    public static final String JV_DB_VERSION_FROM_ASSETS = JV_DB_VERSION_PREFIX + "53";
     
 }
