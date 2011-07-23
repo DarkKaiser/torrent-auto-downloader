@@ -1,0 +1,336 @@
+com.cauly.android.ad.AdClickHandler -> com.cauly.android.ad.AdClickHandler:
+    java.lang.String feedUrlString -> a
+    void sendClickData(com.cauly.android.ad.AdCommon,com.cauly.android.ad.AdData) -> a
+    int connect(java.lang.String) -> a
+com.cauly.android.ad.AdCommon -> com.cauly.android.ad.AdCommon:
+    java.lang.String SDK_VERSION -> a
+    java.lang.String PLATFORM -> b
+    java.lang.String AD_SERVER_ADDRESS -> c
+    java.lang.String AD_SERVER_PORT -> d
+    java.lang.String AD_SERVER_PAGE -> e
+    java.lang.String CLICK_SERVER_ADDRESS -> f
+    java.lang.String CLICK_SERVER_PORT -> g
+    java.lang.String CLICK_SERVER_PAGE -> h
+    int AD_SERVER_CONNECT_TIMEOUT -> i
+    int CLICK_SERVER_CONNECT_TIMEOUT -> l
+    int AD_SERVER_READ_TIMEOUT -> j
+    int CLICK_SERVER_READ_TIMEOUT -> m
+    java.lang.String Debug -> n
+    int REQ_SEQ -> o
+    int REU_SEQ -> p
+    java.lang.String action -> k
+    java.lang.String adType -> q
+    java.lang.String appCode -> r
+    java.lang.String gender -> s
+    java.lang.String age -> t
+    java.lang.String gpsInfo -> u
+    java.lang.String udid -> v
+    java.lang.String version -> w
+    java.lang.String lang -> x
+    java.lang.String provider -> y
+    java.lang.String manufacturer -> z
+    java.lang.String model -> A
+    java.lang.String allowcall -> B
+    java.lang.String Error -> C
+    void initCommon(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
+    java.lang.String nullChk(java.lang.String) -> a
+    java.lang.String BackgroundImage(java.lang.String) -> b
+    java.lang.String Change_Icon(java.lang.String) -> c
+    int[] Change_Icon_Background(java.lang.String) -> d
+    void Download_Info(java.lang.String,java.lang.String) -> a
+    int connect(java.lang.String) -> f
+    void alertError(java.lang.String) -> e
+    java.lang.String getAdType() -> a
+    java.lang.String getAppCode() -> b
+    java.lang.String getGender() -> c
+    java.lang.String getAge() -> d
+    java.lang.String getGpsInfo() -> e
+    java.lang.String getUdid() -> f
+    java.lang.String getVersion() -> g
+    java.lang.String getLang() -> h
+    java.lang.String getProvider() -> i
+    java.lang.String getManufacturer() -> j
+    java.lang.String getModel() -> k
+    java.lang.String getAllowcall() -> l
+com.cauly.android.ad.AdData -> com.cauly.android.ad.AdData:
+    java.lang.String code -> a
+    java.lang.String adsId -> b
+    java.lang.String title -> c
+    java.lang.String text -> d
+    java.lang.String link -> e
+    java.lang.String pay_type -> f
+    java.lang.String adType -> g
+    java.lang.String imageUrl -> h
+    java.lang.String backgroundColor -> i
+    android.graphics.Bitmap image -> j
+    java.lang.String market -> k
+    java.lang.String eventUrl -> l
+    void setCode(java.lang.String) -> a
+    android.graphics.Bitmap getImage() -> a
+    void setImage(android.graphics.Bitmap) -> a
+    java.lang.String getAdsId() -> b
+    void setAdsId(java.lang.String) -> b
+    java.lang.String getTitle() -> c
+    void setTitle(java.lang.String) -> c
+    java.lang.String getText() -> d
+    void setText(java.lang.String) -> d
+    java.lang.String getImageUrl() -> e
+    void setImageUrl(java.lang.String) -> e
+    java.lang.String getAdType() -> f
+    void setAdType(java.lang.String) -> f
+    java.lang.String getLink() -> g
+    void setLink(java.lang.String) -> g
+    java.lang.String getPay_type() -> h
+    void setPay_type(java.lang.String) -> h
+    java.lang.String getBackgroundColor() -> i
+    void setBackgroundColor(java.lang.String) -> i
+    java.lang.String getMarket() -> j
+    void setMarket(java.lang.String) -> j
+    java.lang.String getEventUrl() -> k
+    void setEventUrl(java.lang.String) -> k
+com.cauly.android.ad.AdHandler -> com.cauly.android.ad.AdHandler:
+    java.lang.String feedUrlString -> a
+    java.net.URL feedUrl -> b
+    java.io.InputStream getInputStream() -> b
+    java.util.List parse() -> a
+com.cauly.android.ad.AdHandler$1 -> com.cauly.android.ad.n:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    java.util.List val$messages -> b
+    com.cauly.android.ad.Message_Ads val$currentMessage -> c
+    void end() -> end
+com.cauly.android.ad.AdHandler$10 -> com.cauly.android.ad.m:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$11 -> com.cauly.android.ad.v:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$12 -> com.cauly.android.ad.u:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$2 -> com.cauly.android.ad.o:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$3 -> com.cauly.android.ad.p:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$4 -> com.cauly.android.ad.q:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$5 -> com.cauly.android.ad.r:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$6 -> com.cauly.android.ad.s:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$7 -> com.cauly.android.ad.t:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$8 -> com.cauly.android.ad.k:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$9 -> com.cauly.android.ad.l:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdLayout -> com.cauly.android.ad.AdLayout:
+    android.content.Context context -> a
+    com.cauly.android.ad.AdData adData -> b
+    com.cauly.android.ad.AdCommon adCommon -> c
+    android.widget.TextView adTitleView -> d
+    android.widget.TextView adTextView -> e
+    android.widget.ImageView adCaulyView -> f
+    android.widget.ImageView adImageView -> g
+    android.widget.ImageView adIconView -> h
+    android.widget.RelativeLayout ClickLayout -> i
+    int padding -> j
+    android.graphics.drawable.GradientDrawable gradientDrawable -> k
+    void setAdData(com.cauly.android.ad.AdData,com.cauly.android.ad.AdCommon,int) -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    void clickedAD() -> a
+    com.cauly.android.ad.AdData access$0(com.cauly.android.ad.AdLayout) -> a
+    android.content.Context access$1(com.cauly.android.ad.AdLayout) -> b
+    void access$2(com.cauly.android.ad.AdLayout) -> c
+    com.cauly.android.ad.AdCommon access$3(com.cauly.android.ad.AdLayout) -> d
+com.cauly.android.ad.AdLayout$1 -> com.cauly.android.ad.a:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$2 -> com.cauly.android.ad.b:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$3 -> com.cauly.android.ad.c:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$4 -> com.cauly.android.ad.h:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$5 -> com.cauly.android.ad.g:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView -> com.cauly.android.ad.AdView:
+    com.cauly.android.ad.AdData adData -> b
+    com.cauly.android.ad.AdHandler adHandler -> c
+    com.cauly.android.ad.AdCommon adCommon -> d
+    com.cauly.android.ad.AdLayout adLayout -> e
+    java.util.List messages -> f
+    android.os.Handler threadHandler -> g
+    java.lang.String action -> h
+    java.lang.String appcode -> i
+    java.lang.String adtype -> j
+    java.lang.String gender -> k
+    java.lang.String age -> l
+    java.lang.String gps -> m
+    java.lang.String udid -> n
+    java.lang.String version -> o
+    java.lang.String effect -> p
+    java.lang.String lang -> q
+    java.lang.String provider -> r
+    java.lang.String manufacturer -> s
+    java.lang.String model -> t
+    java.lang.String allowcall -> u
+    double lat -> v
+    double lng -> w
+    android.location.LocationManager lm -> x
+    java.util.Timer reloadTimer -> y
+    int reloadInterval -> z
+    boolean isReload -> A
+    com.cauly.android.ad.Rotate3dAnimation rotation -> a
+    android.net.NetworkInfo$State mobile -> B
+    android.net.NetworkInfo$State wifi -> C
+    android.net.wifi.WifiInfo wifiInfo -> D
+    android.net.wifi.WifiManager wm -> E
+    java.lang.String SAVE_PATH -> F
+    void realodAD() -> a
+    void onWindowFocusChanged(boolean) -> onWindowFocusChanged
+    void onLocationChanged(android.location.Location) -> onLocationChanged
+    void onProviderDisabled(java.lang.String) -> onProviderDisabled
+    void onProviderEnabled(java.lang.String) -> onProviderEnabled
+    void onStatusChanged(java.lang.String,int,android.os.Bundle) -> onStatusChanged
+    android.graphics.Bitmap loadImage$27412dcc$676c1c3e(java.lang.String) -> b
+    com.cauly.android.ad.AdLayout access$0() -> b
+    com.cauly.android.ad.AdCommon access$1() -> c
+    void access$2(com.cauly.android.ad.AdHandler) -> a
+    com.cauly.android.ad.AdHandler access$3() -> d
+    void access$4(com.cauly.android.ad.AdView,java.util.List) -> a
+    java.util.List access$5(com.cauly.android.ad.AdView) -> a
+    com.cauly.android.ad.AdData access$6() -> e
+    java.lang.String access$7() -> f
+    android.graphics.Bitmap access$8$27412dcc(java.lang.String) -> a
+    java.lang.String access$9(com.cauly.android.ad.AdView) -> b
+    void access$10(com.cauly.android.ad.AdLayout) -> a
+    android.os.Handler access$11() -> g
+    java.lang.String access$12(com.cauly.android.ad.AdView) -> c
+com.cauly.android.ad.AdView$1 -> com.cauly.android.ad.j:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$1$1 -> com.cauly.android.ad.f:
+    com.cauly.android.ad.AdView$1 this$1 -> a
+    android.content.Context val$context -> b
+    void run() -> run
+com.cauly.android.ad.AdView$1$2 -> com.cauly.android.ad.d:
+    com.cauly.android.ad.AdView$1 this$1 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$2 -> com.cauly.android.ad.i:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$DisplayRolling -> com.cauly.android.ad.e:
+    com.cauly.android.ad.AdView this$0 -> a
+    void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
+    void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
+    void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+com.cauly.android.ad.ImageHelper -> com.cauly.android.ad.ImageHelper:
+com.cauly.android.ad.Message_Ads -> com.cauly.android.ad.Message_Ads:
+    java.lang.String C_PAY_TYPE -> a
+    java.lang.String C_CODE -> b
+    java.lang.String C_ID -> c
+    java.lang.String C_TITLE -> d
+    java.lang.String C_DESCRIPTION -> e
+    java.lang.String C_LINK -> f
+    java.lang.String C_AD_TYPE -> g
+    java.lang.String C_IMG -> h
+    java.lang.String C_COLOR -> i
+    java.lang.String C_MARKET -> j
+    java.lang.String C_EVENT -> k
+    java.lang.String getC_PAY_TYPE() -> a
+    void setC_PAY_TYPE(java.lang.String) -> a
+    java.lang.String getC_CODE() -> b
+    void setC_CODE(java.lang.String) -> b
+    java.lang.String getC_ID() -> c
+    void setC_ID(java.lang.String) -> c
+    java.lang.String getC_TITLE() -> d
+    void setC_TITLE(java.lang.String) -> d
+    java.lang.String getC_DESCRIPTION() -> e
+    void setC_DESCRIPTION(java.lang.String) -> e
+    java.lang.String getC_LINK() -> f
+    void setC_LINK(java.lang.String) -> f
+    java.lang.String getC_AD_TYPE() -> g
+    void setC_AD_TYPE(java.lang.String) -> g
+    java.lang.String getC_IMG() -> h
+    void setC_IMG(java.lang.String) -> h
+    java.lang.String getC_COLOR() -> i
+    void setC_COLOR(java.lang.String) -> i
+    java.lang.String getC_MARKET() -> j
+    void setC_MARKET(java.lang.String) -> j
+    java.lang.String getC_EVENT() -> k
+    void setC_EVENT(java.lang.String) -> k
+    com.cauly.android.ad.Message_Ads copy() -> l
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.cauly.android.ad.Rotate3dAnimation -> com.cauly.android.ad.Rotate3dAnimation:
+    float mFromDegrees -> a
+    float mToDegrees -> b
+    float mCenterX -> c
+    float mCenterY -> d
+    float mDepthZ -> e
+    boolean mReverse -> f
+    android.graphics.Camera mCamera -> g
+    void initialize(int,int,int,int) -> initialize
+    void applyTransformation(float,android.view.animation.Transformation) -> applyTransformation
+kr.co.darkkaiser.jc.JapanCharacterActivity -> kr.co.darkkaiser.jc.JapanCharacterActivity:
+    boolean mShowYoum -> a
+    boolean mShowHiragana -> b
+    boolean mShowGatakana -> c
+    boolean mVibrateNextCharacter -> d
+    int mCurrentShowIndex -> e
+    boolean mIsCurrentShowHiragana -> f
+    java.util.Random mRandom -> g
+    java.util.ArrayList mKorea -> h
+    java.util.ArrayList mJapanHiragana -> i
+    java.util.ArrayList mJapanGatagana -> j
+    android.content.SharedPreferences mPreferences -> k
+    boolean $assertionsDisabled -> l
+    void onCreate(android.os.Bundle) -> onCreate
+    void init() -> a
+    void showNextCharactor() -> b
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    int access$0(kr.co.darkkaiser.jc.JapanCharacterActivity) -> a
+    boolean access$1(kr.co.darkkaiser.jc.JapanCharacterActivity) -> b
+    java.util.ArrayList access$2(kr.co.darkkaiser.jc.JapanCharacterActivity) -> c
+    java.util.ArrayList access$3(kr.co.darkkaiser.jc.JapanCharacterActivity) -> d
+    java.util.ArrayList access$4(kr.co.darkkaiser.jc.JapanCharacterActivity) -> e
+    void access$5(kr.co.darkkaiser.jc.JapanCharacterActivity) -> f
+    boolean access$6(kr.co.darkkaiser.jc.JapanCharacterActivity) -> g
+kr.co.darkkaiser.jc.JapanCharacterActivity$1 -> kr.co.darkkaiser.jc.b:
+    kr.co.darkkaiser.jc.JapanCharacterActivity this$0 -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+kr.co.darkkaiser.jc.JapanCharacterActivity$2 -> kr.co.darkkaiser.jc.a:
+    kr.co.darkkaiser.jc.JapanCharacterActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+kr.co.darkkaiser.jc.SetupActivity -> kr.co.darkkaiser.jc.SetupActivity:
+    void onCreate(android.os.Bundle) -> onCreate
+    void onResume() -> onResume
+    void onPause() -> onPause
+    void onDestroy() -> onDestroy
+    void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
