@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	>
@@ -20,8 +21,8 @@
 		android:id="@+id/nextCharacter" 
 		android:layout_width="fill_parent" 
 		android:layout_height="60dp"
-		android:layout_alignParentBottom="true"
-		android:text="다음 >>" 
+    	android:layout_above="@id/xmladview"
+		android:text="@string/next_character"
 		/>
 	<TextView
 		android:id="@+id/jc_info" 
@@ -29,9 +30,10 @@
     	android:layout_height="wrap_content"
     	android:layout_above="@id/nextCharacter"
     	android:gravity="center"
-    	android:text="화면을 탭하시면 상세정보를 보실 수 있습니다." 
+    	android:text="@string/screen_tab_info" 
     	android:textSize="13dp"
     	android:textColor="#99999999"
+    	tools:ignore="SpUsage"
     	/>
     <RelativeLayout
     	android:id="@+id/character_container"
@@ -47,6 +49,7 @@
 	    	android:gravity="center_horizontal"
 	    	android:typeface="serif"
 	    	android:textSize="100dp"
+	    	tools:ignore="SpUsage"
 	    	/>
 		<TextView
 			android:id="@+id/character_mean"
@@ -58,6 +61,7 @@
 	    	android:typeface="serif"
 	    	android:textSize="25dp"
 	    	android:visibility="gone"
+	    	tools:ignore="SpUsage"
 	    	/>
     </RelativeLayout>    	
 </RelativeLayout>
