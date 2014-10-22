@@ -39,7 +39,7 @@ public class JapanCharacterActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.jc_main);
 
         mPreferences = getSharedPreferences("jc_setup", MODE_PRIVATE);
 

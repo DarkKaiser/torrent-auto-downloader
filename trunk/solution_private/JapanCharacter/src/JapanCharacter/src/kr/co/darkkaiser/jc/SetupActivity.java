@@ -25,7 +25,7 @@ public class SetupActivity extends PreferenceActivity implements OnSharedPrefere
 		}
 
 		// 어플리케이션의 버전 정보를 구하여 화면에 출력한다.
-		String versionName = "Unknown";
+		String versionName = getString(R.string.unknown_program_version);
 		try {
 			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
@@ -33,10 +33,10 @@ public class SetupActivity extends PreferenceActivity implements OnSharedPrefere
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("App. Version ").append(versionName);
+		sb.append(getString(R.string.app_name)).append(" ").append(getString(R.string.program_version)).append(" ").append(versionName);
 
-		PreferenceScreen prefJcDbVersion = (PreferenceScreen)findPreference("jc_program_info");
-		prefJcDbVersion.setSummary(sb.toString());
+		PreferenceScreen prefProgramInfo = (PreferenceScreen)findPreference("jc_program_info");
+		prefProgramInfo.setSummary(sb.toString());
 	}
 
 	@Override
