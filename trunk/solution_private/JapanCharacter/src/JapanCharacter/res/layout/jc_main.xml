@@ -37,7 +37,6 @@
     	android:id="@+id/character_container"
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:layout_below="@id/xmladview"
     	android:layout_above="@id/jc_info"
     	>
 		<TextView

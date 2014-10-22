@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">일본어 글자 암기</string>
-
+    <string name="environment_setting">환경설정</string>
+    
     <string name="program_version">프로그램 버전</string>
     <string name="unknown_program_version">알수없음</string>
 
