@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="암기 설정"
+	<PreferenceCategory
+	    android:title="암기 설정"
 		android:key="cc1">
 		<CheckBoxPreference
 			android:key="chk_hiragana"

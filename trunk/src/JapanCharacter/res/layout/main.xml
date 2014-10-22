@@ -3,19 +3,18 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	>
-	<com.cauly.android.ad.AdView  
-		xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jc"
-		android:id="@+id/ad"
-		android:layout_width="fill_parent" 
+	<com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jc"
+		android:id="@+id/xmladview"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
 		app:appcode="n3PRB2gKP"
-		app:adtype="cpc"
-		app:gender="all"
-		app:age="all"
+		app:effect="RightSlide"
 		app:gps="off"
-		app:effect="half"
-		app:allowcall="no"
-		app:reloadInterval="30"
+		app:allowcall="true"
+		app:dynamicReloadInterval="true"
+		app:reloadInterval="20"
+		app:bannerHeight="Fixed"
 		/>
  	<Button
 		android:id="@+id/nextCharacter" 
@@ -38,7 +37,7 @@
     	android:id="@+id/character_container"
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:layout_below="@id/ad"
+    	android:layout_below="@id/xmladview"
     	android:layout_above="@id/jc_info"
     	>
 		<TextView

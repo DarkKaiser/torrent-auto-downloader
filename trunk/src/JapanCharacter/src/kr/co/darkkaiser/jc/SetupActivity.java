@@ -16,7 +16,7 @@ public class SetupActivity extends PreferenceActivity implements OnSharedPrefere
 
 		getPreferenceManager().setSharedPreferencesName("jc_setup");
 		addPreferencesFromResource(R.layout.jc_setup);
-		
+
 		CheckBoxPreference chkYoum = (CheckBoxPreference)findPreference("chk_youm");
 		if (getPreferenceScreen().getSharedPreferences().getBoolean("chk_hiragana", true) == true || getPreferenceScreen().getSharedPreferences().getBoolean("chk_gatakana", true) == true) {
 			chkYoum.setEnabled(true);
