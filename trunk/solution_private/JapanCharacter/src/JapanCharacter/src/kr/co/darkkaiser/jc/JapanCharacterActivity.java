@@ -61,9 +61,9 @@ public class JapanCharacterActivity extends Activity {
 							
 							TextView descriptionTv = (TextView)dlg.findViewById(R.id.description);
 							if (mIsCurrentShowHiragana == true)
-								descriptionTv.setText(String.format("발음 : %s\n가타카나 : %s", mKorea.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex)));
+								descriptionTv.setText(String.format("%s\n%s", mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
 							else
-								descriptionTv.setText(String.format("발음 : %s\n히라가나 : %s", mKorea.get(mCurrentShowIndex), mJapanHiragana.get(mCurrentShowIndex)));
+								descriptionTv.setText(String.format("%s\n%s", mJapanHiragana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
 
 							dlg.show();
 						}
