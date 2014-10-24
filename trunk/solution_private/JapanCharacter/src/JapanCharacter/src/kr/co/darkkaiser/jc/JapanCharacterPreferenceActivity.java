@@ -8,14 +8,14 @@ import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 
-public class SetupActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class JapanCharacterPreferenceActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		getPreferenceManager().setSharedPreferencesName("jc_setup");
-		addPreferencesFromResource(R.layout.jc_setup);
+		addPreferencesFromResource(R.xml.preference);
 
 		CheckBoxPreference chkYoum = (CheckBoxPreference)findPreference("chk_youm");
 		if (getPreferenceScreen().getSharedPreferences().getBoolean("chk_hiragana", true) == true || getPreferenceScreen().getSharedPreferences().getBoolean("chk_gatakana", true) == true) {

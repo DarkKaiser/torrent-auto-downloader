@@ -166,7 +166,7 @@ public class JapanCharacterActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 1) {
 			// 설정 페이지를 띄운다.
-			startActivityForResult(new Intent(this, SetupActivity.class), 0);
+			startActivityForResult(new Intent(this, JapanCharacterPreferenceActivity.class), 0);
 
 			return true;
 		}

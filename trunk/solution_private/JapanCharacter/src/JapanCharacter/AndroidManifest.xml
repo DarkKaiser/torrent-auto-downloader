@@ -38,7 +38,7 @@
         </activity>
         
     	<activity 
-    	    android:name="SetupActivity"
+    	    android:name="JapanCharacterPreferenceActivity"
         	android:configChanges="keyboard|keyboardHidden|orientation"
         	>
     	</activity>
