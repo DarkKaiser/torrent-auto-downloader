@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.view.Window;
 
 //@@@@@
 public class OptionActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -23,13 +24,14 @@ public class OptionActivity extends PreferenceActivity implements OnSharedPrefer
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 
 		// 타이틀을 설정한다.
 		setTitle(String.format("%s - 환경설정", getResources().getString(R.string.app_name)));
 
 		getPreferenceManager().setSharedPreferencesName(JvDefines.JV_SHARED_PREFERENCE_NAME);
-		addPreferencesFromResource(R.layout.jv_optionlist);
+		addPreferencesFromResource(R.xml.preference);
 
 		try {
 			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

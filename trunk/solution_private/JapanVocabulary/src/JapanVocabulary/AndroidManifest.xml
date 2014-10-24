@@ -29,6 +29,7 @@
         <activity
             android:name=".JvActivity"
             android:label="@string/app_name"
+            android:theme="@style/jvTitle"
             android:configChanges="keyboard|keyboardHidden|orientation"
             >
             <intent-filter>
