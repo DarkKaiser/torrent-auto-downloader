@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,20 +25,22 @@ import android.widget.Toast;
 
 public class JapanCharacterActivity extends Activity {
 
+	private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 1;
+
 	private boolean mShowYoum = false;
 	private boolean mShowHiragana = false;
 	private boolean mShowGatakana = false;
 	private boolean mVibrateNextCharacter = true;
 
 	private int mCurrentShowIndex = -1;
-	private boolean mIsCurrentShowHiragana = false;
 
 	private Random mRandom = new Random();
 	private List<String> mKorea = null;
 	private List<String> mJapanHiragana = null;
 	private List<String> mJapanGatagana = null;
-	
+
 	private SharedPreferences mPreferences = null;
+	private Handler mCustomEventHandler = new CustomEventHandler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,17 +140,13 @@ public class JapanCharacterActivity extends Activity {
 
     	if (mShowHiragana == true && mShowGatakana == true) {
     		if (mRandom.nextInt(2) == 0) {
-    			mIsCurrentShowHiragana = true;
     			character.setText(mJapanHiragana.get(mCurrentShowIndex));
     		} else {
-    			mIsCurrentShowHiragana = false;
     			character.setText(mJapanGatagana.get(mCurrentShowIndex));
     		}
     	} else if (mShowHiragana == true) {
-			mIsCurrentShowHiragana = true;
 			character.setText(mJapanHiragana.get(mCurrentShowIndex));
     	} else if (mShowGatakana == true) {
-			mIsCurrentShowHiragana = false;
 			character.setText(mJapanGatagana.get(mCurrentShowIndex));
     	}
 
@@ -182,5 +183,33 @@ public class JapanCharacterActivity extends Activity {
 			showNextCharactor();
 		}
 	}
+
+	@Override
+	public void onBackPressed() {
+		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
+			mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 2000);
+			Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		super.onBackPressed();
+	}
+
+    private static class CustomEventHandler extends Handler {
+    	
+    	@Override
+    	public void handleMessage(Message msg) {
+    		switch(msg.what) {
+    		case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
+    			// 수행하는 작업 없음
+    			break;
+    			
+			default:
+				 throw new RuntimeException("Unknown message " + msg);
+    		}
+    		
+    		super.handleMessage(msg);
+    	}
+    }
 
 }
