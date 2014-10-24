@@ -29,6 +29,7 @@
         <activity
             android:name=".JapanCharacterActivity"
         	android:label="@string/app_name"
+        	android:theme="@style/jcTitle"
         	android:configChanges="keyboard|keyboardHidden|orientation"
         	>
             <intent-filter>

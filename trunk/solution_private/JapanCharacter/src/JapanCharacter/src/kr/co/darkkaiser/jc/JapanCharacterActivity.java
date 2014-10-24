@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +46,9 @@ public class JapanCharacterActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.jc_main);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.jc_title);
 
         mPreferences = getSharedPreferences("jc_setup", MODE_PRIVATE);
 
@@ -96,6 +99,16 @@ public class JapanCharacterActivity extends Activity {
 			}
 		});
         
+        Button environmentSettingButton = (Button)findViewById(R.id.environment_setting_button);
+        environmentSettingButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 설정 페이지를 띄운다.
+				startActivityForResult(new Intent(JapanCharacterActivity.this, JapanCharacterPreferenceActivity.class), 0);
+			}
+		});
+
         // 데이터를 초기화한다.
         mKorea = Arrays.asList(getResources().getStringArray(R.array.character_korea));
         mJapanHiragana = Arrays.asList(getResources().getStringArray(R.array.character_japan_hiragana));

@@ -3,4 +3,12 @@
 	<style name="NoTitleDialog" parent="android:style/Theme.Dialog">
 		<item name="android:windowNoTitle">true</item>
 	</style>
+	
+	<style name="jcTitle" parent="android:Theme">
+		<item name="android:windowTitleSize">48dp</item>
+		<item name="android:windowTitleBackgroundStyle">@style/jcWindowTitleBackground</item>
+	</style>
+	<style name="jcWindowTitleBackground">
+		<item name="android:background">#00000000</item>
+	</style>
 </resources>

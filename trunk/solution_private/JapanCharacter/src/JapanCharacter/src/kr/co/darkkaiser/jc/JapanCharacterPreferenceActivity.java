@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.view.Window;
 
 public class JapanCharacterPreferenceActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
 
 		getPreferenceManager().setSharedPreferencesName("jc_setup");
 		addPreferencesFromResource(R.xml.preference);

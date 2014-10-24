@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+      android:layout="@layout/jc_title_without_button"
+      />
 	<PreferenceCategory
 	    android:title="@string/memorize_config_category"
 		>
