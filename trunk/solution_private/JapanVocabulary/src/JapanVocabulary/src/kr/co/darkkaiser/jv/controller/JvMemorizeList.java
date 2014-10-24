@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+//@@@@@
 public class JvMemorizeList implements JvList {
 	
 	private Random mRandom = new Random();

@@ -5,6 +5,7 @@ import java.util.Comparator;
 
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 
+//@@@@@
 public class JapanVocabularyComparator {
 	
 	public final static Comparator<JapanVocabulary> mJvVocabularyComparator = new Comparator<JapanVocabulary>() {

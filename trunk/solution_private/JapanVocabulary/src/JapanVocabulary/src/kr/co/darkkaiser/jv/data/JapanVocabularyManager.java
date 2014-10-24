@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
+//@@@@@
 public class JapanVocabularyManager {
 
 	private static final String TAG = "JvManager";

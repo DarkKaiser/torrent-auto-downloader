@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 
+//@@@@@
 public class JvSearchList implements JvList {
 	
 	private int mCurrentPosition = -1;

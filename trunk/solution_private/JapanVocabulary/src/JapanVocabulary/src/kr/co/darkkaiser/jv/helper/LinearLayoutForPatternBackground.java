@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+//@@@@@
 public class LinearLayoutForPatternBackground extends LinearLayout {
 	private Drawable background = null;
  

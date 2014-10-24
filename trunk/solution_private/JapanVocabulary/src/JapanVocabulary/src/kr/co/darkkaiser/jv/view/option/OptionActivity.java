@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 
+//@@@@@
 public class OptionActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	
 	private String appVersion = null;

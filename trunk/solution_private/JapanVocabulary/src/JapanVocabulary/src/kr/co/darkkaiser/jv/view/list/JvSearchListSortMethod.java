@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.view.list;
 
+//@@@@@
 public enum JvSearchListSortMethod {
 
 	// ÇÑÀÚ

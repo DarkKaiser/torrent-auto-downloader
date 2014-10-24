@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+//@@@@@
 public class JvSearchListCondition {
 
 	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";

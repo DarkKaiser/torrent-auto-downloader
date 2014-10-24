@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.helper;
 
+//@@@@@
 /**
  * 이 클래스는 Byte 관련 함수를 제공합니다. 
  */

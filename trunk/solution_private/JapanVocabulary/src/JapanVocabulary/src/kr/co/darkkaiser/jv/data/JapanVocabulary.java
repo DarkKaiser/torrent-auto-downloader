@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import android.text.TextUtils;
 
+//@@@@@
 public class JapanVocabulary {
 
 	private long mIdx = -1;

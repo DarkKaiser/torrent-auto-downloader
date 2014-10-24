@@ -55,6 +55,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
+//@@@@@
 public class JvActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "JvActivity";

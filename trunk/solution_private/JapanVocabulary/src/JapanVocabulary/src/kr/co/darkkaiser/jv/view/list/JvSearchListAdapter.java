@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+//@@@@@
 public class JvSearchListAdapter extends BaseAdapter {
 
 	private int mLayout;

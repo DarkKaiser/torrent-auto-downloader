@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+//@@@@@
 public class JvHelper {
 
 	public static ArrayList<String> getLatestVocabularyDbInfo() throws Exception {

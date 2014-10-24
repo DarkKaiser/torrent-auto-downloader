@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv;
 
+//@@@@@
 public class JvDefines {
 
     /*

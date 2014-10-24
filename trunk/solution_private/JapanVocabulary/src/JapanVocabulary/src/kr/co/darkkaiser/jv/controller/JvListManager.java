@@ -2,6 +2,7 @@ package kr.co.darkkaiser.jv.controller;
 
 import kr.co.darkkaiser.jv.data.JapanVocabulary;
 
+//@@@@@
 public class JvListManager {
 	
 	private JvList mJvList = null;

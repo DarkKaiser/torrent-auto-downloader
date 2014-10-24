@@ -60,6 +60,7 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+//@@@@@
 public class JvSearchListActivity extends ListActivity implements OnClickListener, OnScrollListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.

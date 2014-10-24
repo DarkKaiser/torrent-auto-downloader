@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.controller;
 
+//@@@@@
 public enum JvMemorizeTargetItem {
 
 	// ÇÑÀÚ
