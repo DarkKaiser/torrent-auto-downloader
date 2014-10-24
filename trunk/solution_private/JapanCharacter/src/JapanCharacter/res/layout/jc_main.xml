@@ -32,7 +32,7 @@
     	android:gravity="center"
     	android:text="@string/screen_tab_info" 
     	android:textSize="13dp"
-    	android:textColor="#99999999"
+    	android:textColor="@color/jc_main_information_text"
     	tools:ignore="SpUsage"
     	/>
     <RelativeLayout

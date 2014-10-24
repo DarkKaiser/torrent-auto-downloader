@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="30dp"
-        android:textColor="#ffffff"
+        android:textColor="@color/jc_description_text"
         android:textSize="30dp"
         android:gravity="center"
         android:typeface="serif"

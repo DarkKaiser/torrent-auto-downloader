@@ -9,6 +9,6 @@
 		<item name="android:windowTitleBackgroundStyle">@style/jcWindowTitleBackground</item>
 	</style>
 	<style name="jcWindowTitleBackground">
-		<item name="android:background">#00000000</item>
+		<item name="android:background">@color/jc_window_title_bg</item>
 	</style>
 </resources>
