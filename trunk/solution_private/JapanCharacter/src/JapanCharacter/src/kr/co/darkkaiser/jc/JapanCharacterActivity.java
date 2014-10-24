@@ -60,10 +60,7 @@ public class JapanCharacterActivity extends Activity {
 							dlg.setCanceledOnTouchOutside(true);
 							
 							TextView descriptionTv = (TextView)dlg.findViewById(R.id.description);
-							if (mIsCurrentShowHiragana == true)
-								descriptionTv.setText(String.format("%s\n%s", mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
-							else
-								descriptionTv.setText(String.format("%s\n%s", mJapanHiragana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
+							descriptionTv.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
 
 							dlg.show();
 						}
