@@ -9,31 +9,36 @@
 		<CheckBoxPreference
 			android:key="chk_hiragana"
 			android:title="@string/show_hiragana_item"
-			android:summary="@string/show_hiragana_summary"
+			android:summaryOn="@string/show_hiragana_summary_on"
+			android:summaryOff="@string/show_hiragana_summary_off"
 			android:defaultValue="true"
 			/>
 		<CheckBoxPreference
 			android:key="chk_gatakana"
 			android:title="@string/show_gatakana_item"
-			android:summary="@string/show_gatakana_summary"
+			android:summaryOn="@string/show_gatakana_summary_on"
+			android:summaryOff="@string/show_gatakana_summary_off"
 			android:defaultValue="true"
 			/>
 		<CheckBoxPreference
 			android:key="chk_youm"
 			android:title="@string/show_youm_item"
-			android:summary="@string/show_youm_summary"
+			android:summaryOn="@string/show_youm_summary_on"
+			android:summaryOff="@string/show_youm_summary_off"
 			android:defaultValue="true"
 			/>
 		<CheckBoxPreference
 			android:key="show_character_mean"
 			android:title="@string/show_character_mean_item"
-			android:summary="@string/show_character_mean_summary"
+			android:summaryOn="@string/show_character_mean_summary_on"
+			android:summaryOff="@string/show_character_mean_summary_off"
 			android:defaultValue="false"
 			/>
 		<CheckBoxPreference
 			android:key="vibrate_next_character"
 			android:title="@string/vibrate_next_character_item"
-			android:summary="@string/vibrate_next_character_summary"
+			android:summaryOn="@string/vibrate_next_character_summary_on"
+			android:summaryOff="@string/vibrate_next_character_summary_off"
 			android:defaultValue="true"
 			/>
 	</PreferenceCategory>
@@ -45,9 +50,14 @@
 			android:title="@string/program_info_item"
    			android:summary="@string/program_info_summary"
    			/>
-		<PreferenceScreen 
+		<PreferenceScreen
 			android:title="@string/developer_info_item"
    			android:summary="@string/developer_info_summary"
-   			/>
+   			>
+   			<intent
+            	android:action="android.intent.action.SENDTO"
+            	android:data="mailto:darkkaiser78@hotmail.com"
+            	/>
+   		</PreferenceScreen>
 	</PreferenceCategory>
 </PreferenceScreen>

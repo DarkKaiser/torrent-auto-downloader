@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:src="@drawable/icon"
-        android:contentDescription="@string/empty"
+        android:contentDescription="@null"
         />
     <TextView
         android:layout_width="fill_parent"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:src="@drawable/jc_title_bottom_line"
-        android:contentDescription="@string/empty"
+        android:contentDescription="@null"
         android:scaleType="fitXY"
         />
 </RelativeLayout>
