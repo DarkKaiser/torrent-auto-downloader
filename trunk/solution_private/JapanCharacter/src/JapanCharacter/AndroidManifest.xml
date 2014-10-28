@@ -41,6 +41,7 @@
     	<activity 
     	    android:name="JapanCharacterPreferenceActivity"
         	android:configChanges="keyboard|keyboardHidden|orientation"
+        	android:theme="@android:style/Theme.Black"
         	>
     	</activity>
 	</application>
