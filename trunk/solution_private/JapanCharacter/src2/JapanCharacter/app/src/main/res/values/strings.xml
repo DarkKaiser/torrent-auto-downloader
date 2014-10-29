@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">JapanCharacter</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">일본어 글자 암기</string>
+    <string name="environment_setting">환경설정</string>
+
+    <string name="program_version">버전</string>
+    <string name="unknown_program_version">알수없음</string>
+
+    <string name="next_character">다음 >></string>
+    <string name="screen_tab_info">화면을 탭하시면 상세정보를 보실 수 있습니다.</string>
+
+    <string name="memorize_config_category">암기 설정</string>
+    <string name="program_info_category">프로그램 정보</string>
+
+    <string name="show_hiragana_item">히라가나(ひらがな) 보이기</string>
+    <string name="show_hiragana_summary_on">암기 대상에 히라가나 문자를 포함합니다.</string>
+    <string name="show_hiragana_summary_off">암기 대상에 히라가나 문자를 포함하지 않습니다.</string>
+    <string name="show_gatakana_item">가타카나(がタカな) 보이기</string>
+    <string name="show_gatakana_summary_on">암기 대상에 가타카나 문자를 포함합니다.</string>
+    <string name="show_gatakana_summary_off">암기 대상에 가타카나 문자를 포함하지 않습니다.</string>
+    <string name="show_youm_item">요음 보이기</string>
+    <string name="show_youm_summary_on">암기 대상에 선택한 히라가나/가타카나 문자의 요음 문자들을 포함합니다.</string>
+    <string name="show_youm_summary_off">암기 대상에 선택한 히라가나/가타카나 문자의 요음 문자들을 포함하지 않습니다.</string>
+    <string name="show_character_mean_item">암기 시 글자 음 보이기</string>
+    <string name="show_character_mean_summary_on">암기 대상 글자가 나타나는 아랫부분에 글자의 음을 보여줍니다.</string>
+    <string name="show_character_mean_summary_off">암기 대상 글자가 나타나는 아랫부분에 글자의 음을 보여주지 않습니다.</string>
+    <string name="vibrate_next_character_item">글자 전환시 진동 발생</string>
+    <string name="vibrate_next_character_summary_on">다음 암기 대상 글자가 나타날 때 휴대폰에 진동을 발생시킵니다.</string>
+    <string name="vibrate_next_character_summary_off">다음 암기 대상 글자가 나타날 때 휴대폰에 진동을 발생시키지 않습니다.</string>
+
+    <string name="program_info_item">프로그램 정보</string>
+    <string name="program_info_summary">버전 정보를 확인할 수 없습니다.</string>
+    <string name="developer_info_item">개발자에게 메일보내기</string>
+    <string name="developer_info_summary">DarkKaiser\ndarkkaiser78@hotmail.com</string>
 
 </resources>
