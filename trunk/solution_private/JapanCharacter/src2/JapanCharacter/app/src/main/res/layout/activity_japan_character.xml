@@ -1,16 +1,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".JapanCharacterActivity">
-
+    tools:context=".JapanCharacterActivity"
+    >
+    <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jc"
+        android:id="@+id/xmladview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:appcode="n3PRB2gKP"
+        app:effect="RightSlide"
+        app:gps="off"
+        app:allowcall="true"
+        app:dynamicReloadInterval="true"
+        app:reloadInterval="20"
+        app:bannerHeight="Fixed"
+        />
+    <Button
+        android:id="@+id/nextCharacter"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_above="@id/xmladview"
+        android:text="@string/next_character"
+        />
     <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/jc_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/nextCharacter"
+        android:gravity="center"
+        android:text="@string/screen_tab_info"
+        android:textSize="13dp"
+        android:textColor="@color/jc_main_information_text"
+        tools:ignore="SpUsage"
+        />
+    <RelativeLayout
+        android:id="@+id/character_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/jc_info"
+        >
+        <TextView
+            android:id="@+id/character"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:typeface="serif"
+            android:textSize="100dp"
+            tools:ignore="SpUsage"
+            />
+        <TextView
+            android:id="@+id/character_mean"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/character"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:typeface="serif"
+            android:textSize="25dp"
+            android:visibility="gone"
+            tools:ignore="SpUsage"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>
