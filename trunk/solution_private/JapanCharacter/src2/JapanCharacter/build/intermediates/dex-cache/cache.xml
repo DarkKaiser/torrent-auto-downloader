@@ -20,6 +20,12 @@
         revision="20.0.0"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
     <item
+        dex="D:\Solution-CNA\DARKKAISER_SOLUTION\solution_private\JapanCharacter\src2\JapanCharacter\app\build\intermediates\pre-dexed\debug\CaulySDK-3.3.6-95be3b5ff03a4db2630eb41152e37dd7c1458f4c.jar"
+        jar="D:\Solution-CNA\DARKKAISER_SOLUTION\solution_private\JapanCharacter\src2\JapanCharacter\app\libs\CaulySDK-3.3.6.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="3a01af96f6fad029d33887e384a902395fbad2fe"/>
+    <item
         dex="D:\Solution-CNA\DARKKAISER_SOLUTION\solution_private\JapanCharacter\src2\JapanCharacter\app\build\intermediates\pre-dexed\debug\classes-25d4e2322bdfd88cdf91eded033b70b95010c7ad.jar"
         jar="D:\Solution-CNA\DARKKAISER_SOLUTION\solution_private\JapanCharacter\src2\JapanCharacter\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
         jumboMode="false"

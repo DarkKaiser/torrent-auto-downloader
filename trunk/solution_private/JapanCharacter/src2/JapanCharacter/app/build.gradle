@@ -8,8 +8,8 @@ android {
         applicationId "kr.co.darkkaiser.jc"
         minSdkVersion 7
         targetSdkVersion 20
-        versionCode 1
-        versionName "1.0"
+        versionCode 13
+        versionName "2.0.1"
     }
     buildTypes {
         release {
