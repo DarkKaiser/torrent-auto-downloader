@@ -57,7 +57,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChan    ged(SharedPreferences sharedPreferences, String key) {
         CheckBoxPreference chkYoum = (CheckBoxPreference)findPreference("chk_youm");
         CheckBoxPreference chkHiragana = (CheckBoxPreference)findPreference("chk_hiragana");
         CheckBoxPreference chkGatakana = (CheckBoxPreference)findPreference("chk_gatakana");
