@@ -9,12 +9,21 @@ android {
         minSdkVersion 7
         targetSdkVersion 20
         versionCode 13
-        versionName "2.0.1"
+        versionName "2.0.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file('./../../../../../data/darkkaiser_android_keystore/android_darkkaiser.keystore')
+            storePassword 'chlrhrkehlwk78!'
+            keyAlias 'darkkaiser'
+            keyPassword 'chlrhrkehlwk78!'
+        }
     }
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
