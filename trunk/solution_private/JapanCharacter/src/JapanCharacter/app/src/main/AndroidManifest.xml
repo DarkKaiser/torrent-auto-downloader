@@ -35,7 +35,8 @@
             android:theme="@style/Theme.AppCompat"
             android:parentActivityName=".JapanCharacterActivity"
             >
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value=".JapanCharacterActivity"
                 />
         </activity>
