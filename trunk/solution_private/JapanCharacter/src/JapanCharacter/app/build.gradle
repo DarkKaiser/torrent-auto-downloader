@@ -13,7 +13,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('./../../../../../data/darkkaiser_android_keystore/android_darkkaiser.keystore')
+            storeFile file('./../../../../../security/darkkaiser_android_keystore/android_darkkaiser.keystore')
             storePassword 'chlrhrkehlwk78!'
             keyAlias 'darkkaiser'
             keyPassword 'chlrhrkehlwk78!'
