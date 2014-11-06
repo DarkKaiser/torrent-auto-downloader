@@ -20,9 +20,9 @@
     <string name="vibrate_next_vocabulary_item">단어 전환시 진동 발생</string>
     <string name="vibrate_next_vocabulary_summary_on">다음 암기 대상 단어가 나타날 때 스마트폰에 진동을 발생시킵니다.</string>
     <string name="vibrate_next_vocabulary_summary_off">다음 암기 대상 단어가 나타날 때 스마트폰에 진동을 발생시키지 않습니다.</string>
-    <string name="memorize_order_method_item">단어 암기 순서</string>
-    <string name="memorize_order_method_summary">단어를 암기할 때 암기대상 단어가 화면에 나타나는 순서를 선택합니다.</string>
-    <string name="memorize_order_method_item_entry_dialog_title">단어 암기 순서</string>
+    <string name="memorize_order_method_item">단어 암기순서</string>
+    <string name="memorize_order_method_summary">단어를 암기할 때 암기대상 단어가 화면에 나타나는 암기순서를 선택합니다.</string>
+    <string name="memorize_order_method_item_entry_dialog_title">단어 암기순서</string>
 
     <string name="vocabulary_update_on_started_item">프로그램 시작시 단어 업데이트</string>
     <string name="vocabulary_update_on_started_summary_on">프로그램 시작시에 단어 DB를 최신버전으로 업데이트합니다.</string>
