@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.vocabularylist.internal.MemorizeVocabularyList;
-import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
-import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;

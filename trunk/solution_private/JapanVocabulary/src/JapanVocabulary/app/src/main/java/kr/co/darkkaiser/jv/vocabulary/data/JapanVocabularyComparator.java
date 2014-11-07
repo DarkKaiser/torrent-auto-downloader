@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.vocabularydata;
+package kr.co.darkkaiser.jv.vocabulary.data;
 
 import java.text.Collator;
 import java.util.Comparator;

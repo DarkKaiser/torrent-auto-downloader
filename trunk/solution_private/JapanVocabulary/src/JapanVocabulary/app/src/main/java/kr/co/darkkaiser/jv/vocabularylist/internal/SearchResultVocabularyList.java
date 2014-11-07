@@ -3,7 +3,7 @@ package kr.co.darkkaiser.jv.vocabularylist.internal;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.vocabularylist.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 
 public class SearchResultVocabularyList implements IVocabularyList {
 
