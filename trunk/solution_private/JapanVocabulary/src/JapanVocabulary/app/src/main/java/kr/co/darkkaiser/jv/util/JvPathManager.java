@@ -159,7 +159,7 @@ public class JvPathManager {
 	    FileOutputStream fos = new FileOutputStream(tgtFilePath);
 
 	    try {
-	        int i = 0;
+	        int i;
 	        byte[] buf = new byte[1024];
 
 	        while ((i = fis.read(buf)) != -1) {
@@ -168,10 +168,8 @@ public class JvPathManager {
 	    } catch (IOException e) {
 	        throw e;
 	    } finally {
-	        if (fis != null)
-	            fis.close();
-	        if (fos != null)
-	            fos.close();
+            fis.close();
+            fos.close();
 	    }
 	}
 	

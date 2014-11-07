@@ -20,13 +20,13 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	
 	private Random mRandom = new Random();
 
-	// 암기 대상 단어 리스트
+	// 암기대상 단어 리스트
 	private ArrayList<JapanVocabulary> mVocabularyListData = new ArrayList<JapanVocabulary>();
 
-	// 암기 대상 단어 암기 순서 버퍼
-	private CircularBuffer<Integer> mJvListMemorizeSequence = new CircularBuffer<Integer>();
+	// 암기대상 단어 암기순서 버퍼
+	private CircularBuffer<Integer> mVocabularyListMemorizeSequence = new CircularBuffer<Integer>();
 
-	// 암기 대상 단어 리스트 중에서 암기 완료한 단어의 갯수
+	// 암기대상 단어 리스트 중에서 암기 완료한 단어의 갯수
 	private int mMemorizeCompletedCount = 0;
 
 	// 현재 화면에 보여지고 있는 암기 대상 단어의 위치
@@ -35,8 +35,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	// (환경설정 값)단어 암기 순서(무작위, 순차(...))
 	private int mMemorizeOrderMethod = 0/* 랜덤 */;
 
-	// (환경설정 값)화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
-	private MemorizeTargetItem mJvMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
+    // (환경설정 값)화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
+	private MemorizeTargetItem mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
 
 	public MemorizeTargetVocabularyList() {
 		
@@ -48,9 +48,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		// 화면에 출력 할 암기 대상 단어의 항목을 읽는다.
 		String memorizeTargetItem = preferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
 		if (TextUtils.equals(memorizeTargetItem, "0") == true)
-			mJvMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
+			mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
 		else
-			mJvMemorizeTargetItem = MemorizeTargetItem.VOCABULARY_GANA;
+			mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY_GANA;
 
 		// 단어 암기 순서를 읽는다.
 		int prevMemorizeOrderMethod = mMemorizeOrderMethod;
@@ -63,7 +63,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		// 암기 대상 단어들만을 필터링한다.
 		mVocabularyListData.clear();
 		mCurrentPosition = -1;
-		mJvListMemorizeSequence.clear();
+		mVocabularyListMemorizeSequence.clear();
 		mMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mVocabularyListData);
 
 		assert mMemorizeCompletedCount >= 0;
@@ -88,7 +88,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		}
 	}
 
-	public boolean isValidVocabularyPosition() {
+	public synchronized boolean isValidVocabularyPosition() {
 		if (mCurrentPosition < 0)
 			return false;
 		
@@ -185,7 +185,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	
 	@Override
 	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		Integer value = mJvListMemorizeSequence.pop();
+		Integer value = mVocabularyListMemorizeSequence.pop();
 		if (value != null) {
 			int prevCurrentPosition = mCurrentPosition;
 
@@ -217,13 +217,13 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			sbErrMessage.append("암기 할 단어가 없습니다.");
 		} else {
 			if (isValidVocabularyPosition() == true) {
-				Integer value = mJvListMemorizeSequence.popNoRemove();
+				Integer value = mVocabularyListMemorizeSequence.popNoRemove();
 				if (value != null) {
 					if (mCurrentPosition != (int)value) {
-						mJvListMemorizeSequence.push(mCurrentPosition);
+						mVocabularyListMemorizeSequence.push(mCurrentPosition);
 					}
 				} else {
-					mJvListMemorizeSequence.push(mCurrentPosition);
+					mVocabularyListMemorizeSequence.push(mCurrentPosition);
 				}
 			}
 
@@ -278,7 +278,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 	
 	public MemorizeTargetItem getMemorizeTargetItem() {
-		return mJvMemorizeTargetItem;
+		return mMemorizeTargetItem;
 	}
 
 	public StringBuilder getMemorizeVocabularyInfo() {
