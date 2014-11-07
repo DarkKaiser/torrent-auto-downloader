@@ -8,7 +8,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
-import kr.co.darkkaiser.jv.vocabularylist.internal.MemorizeVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.MemorizeVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.ByteUtils;

@@ -2,8 +2,8 @@ package kr.co.darkkaiser.jv.view.detail;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.vocabularylist.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabularylist.MemorizeVocabularyListManager;
+import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.MemorizeVocabularyListManager;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import android.app.Activity;

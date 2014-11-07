@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.vocabularylist.internal.SearchResultVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
