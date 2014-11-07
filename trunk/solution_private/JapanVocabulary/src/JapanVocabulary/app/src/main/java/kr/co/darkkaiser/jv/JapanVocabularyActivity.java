@@ -91,7 +91,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_japan_vocabulary);
 
         // SD 카드의 상태를 확인한다.
         /* 단어DB의 위치를 SDCARD에서 어플 설치폴더로 옮김에 따라 주석 처리한다.
