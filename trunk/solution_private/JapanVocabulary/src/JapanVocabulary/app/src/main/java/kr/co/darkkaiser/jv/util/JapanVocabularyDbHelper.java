@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.util;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-public class JvHelper {
+import kr.co.darkkaiser.jv.JvDefines;
+
+public class JapanVocabularyDbHelper {
 
 	public static ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
 		URL url = new URL(JvDefines.JV_DB_VERSION_CHECK_URL);

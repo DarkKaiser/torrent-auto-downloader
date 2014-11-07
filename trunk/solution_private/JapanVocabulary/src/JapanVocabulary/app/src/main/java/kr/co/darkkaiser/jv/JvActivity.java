@@ -12,6 +12,7 @@ import kr.co.darkkaiser.jv.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
+import kr.co.darkkaiser.jv.util.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
@@ -810,7 +811,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 		String localDbVersion = mPreferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
 
 		try {
-			ArrayList<String> vocaDbInfo = JvHelper.getLatestVocabularyDbInfoList();
+			ArrayList<String> vocaDbInfo = JapanVocabularyDbHelper.getLatestVocabularyDbInfoList();
 			assert vocaDbInfo.size() == 2;
 			
 			String newVocabularyDbVersion = "";

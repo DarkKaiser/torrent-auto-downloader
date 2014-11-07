@@ -10,7 +10,7 @@ import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 
 import kr.co.darkkaiser.jv.JvDefines;
-import kr.co.darkkaiser.jv.JvHelper;
+import kr.co.darkkaiser.jv.util.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.R;
 
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -73,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				String latestVocabularyDbVersion = JvHelper.getLatestVocabularyDbVersion();
+				String latestVocabularyDbVersion = JapanVocabularyDbHelper.getLatestVocabularyDbVersion();
 
 				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false)
                     return latestVocabularyDbVersion;
