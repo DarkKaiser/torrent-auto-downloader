@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.helper;
+package kr.co.darkkaiser.jv.util;
 
 import java.io.BufferedInputStream;
 import java.io.File;

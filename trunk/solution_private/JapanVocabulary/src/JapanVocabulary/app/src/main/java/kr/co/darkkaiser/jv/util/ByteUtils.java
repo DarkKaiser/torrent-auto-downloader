@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.helper;
+package kr.co.darkkaiser.jv.util;
 
 public class ByteUtils {
 	
