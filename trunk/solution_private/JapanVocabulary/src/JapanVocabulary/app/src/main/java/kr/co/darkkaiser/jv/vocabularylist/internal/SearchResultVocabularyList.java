@@ -1,8 +1,8 @@
-package kr.co.darkkaiser.jv.controller.internal;
+package kr.co.darkkaiser.jv.vocabularylist.internal;
 
 import java.util.ArrayList;
 
-import kr.co.darkkaiser.jv.controller.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabularylist.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 
 public class SearchResultVocabularyList implements IVocabularyList {

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.controller;
+package kr.co.darkkaiser.jv.vocabularylist;
 
 import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 
