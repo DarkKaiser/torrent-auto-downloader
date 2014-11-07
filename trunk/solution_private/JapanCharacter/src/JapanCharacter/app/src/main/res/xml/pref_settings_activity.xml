@@ -8,35 +8,35 @@
 			android:title="@string/show_hiragana_item"
 			android:summaryOn="@string/show_hiragana_summary_on"
 			android:summaryOff="@string/show_hiragana_summary_off"
-			android:defaultValue="true"
+			android:defaultValue="@bool/chk_hiragana_default_value"
 			/>
 		<CheckBoxPreference
 			android:key="chk_gatakana"
 			android:title="@string/show_gatakana_item"
 			android:summaryOn="@string/show_gatakana_summary_on"
 			android:summaryOff="@string/show_gatakana_summary_off"
-			android:defaultValue="true"
+			android:defaultValue="@bool/chk_gatakana_default_value"
 			/>
 		<CheckBoxPreference
 			android:key="chk_youm"
 			android:title="@string/show_youm_item"
 			android:summaryOn="@string/show_youm_summary_on"
 			android:summaryOff="@string/show_youm_summary_off"
-			android:defaultValue="true"
+			android:defaultValue="@bool/chk_youm_default_value"
 			/>
 		<CheckBoxPreference
 			android:key="show_character_mean"
 			android:title="@string/show_character_mean_item"
 			android:summaryOn="@string/show_character_mean_summary_on"
 			android:summaryOff="@string/show_character_mean_summary_off"
-			android:defaultValue="false"
+			android:defaultValue="@bool/show_character_mean_default_value"
 			/>
 		<CheckBoxPreference
 			android:key="vibrate_next_character"
 			android:title="@string/vibrate_next_character_item"
 			android:summaryOn="@string/vibrate_next_character_summary_on"
 			android:summaryOff="@string/vibrate_next_character_summary_off"
-			android:defaultValue="true"
+			android:defaultValue="@bool/vibrate_next_character_default_value"
 			/>
 	</PreferenceCategory>
 	<PreferenceCategory

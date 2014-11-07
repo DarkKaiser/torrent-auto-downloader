@@ -110,13 +110,13 @@ public class JapanCharacterActivity extends ActionBarActivity {
         assert mPreferences != null;
 
         // 프로그램을 초기화합니다.
-        mShowYoum = mPreferences.getBoolean("chk_youm", true);
-        mShowHiragana = mPreferences.getBoolean("chk_hiragana", true);
-        mShowGatakana = mPreferences.getBoolean("chk_gatakana", true);
-        mVibrateNextCharacter = mPreferences.getBoolean("vibrate_next_character", true);
+        mShowYoum = mPreferences.getBoolean("chk_youm", getResources().getBoolean(R.bool.chk_youm_default_value));
+        mShowHiragana = mPreferences.getBoolean("chk_hiragana", getResources().getBoolean(R.bool.chk_hiragana_default_value));
+        mShowGatakana = mPreferences.getBoolean("chk_gatakana", getResources().getBoolean(R.bool.chk_gatakana_default_value));
+        mVibrateNextCharacter = mPreferences.getBoolean("vibrate_next_character", getResources().getBoolean(R.bool.vibrate_next_character_default_value));
 
         TextView characterMean = (TextView)findViewById(R.id.character_mean);
-        if (mPreferences.getBoolean("show_character_mean", false) == true) {
+        if (mPreferences.getBoolean("show_character_mean", getResources().getBoolean(R.bool.show_character_mean_default_value)) == true) {
             characterMean.setVisibility(View.VISIBLE);
         } else {
             characterMean.setVisibility(View.GONE);
