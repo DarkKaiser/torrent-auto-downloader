@@ -1,11 +1,11 @@
-package kr.co.darkkaiser.jv.vocabularylist.internal;
+package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
-import kr.co.darkkaiser.jv.vocabularylist.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.common.MemorizeTargetItem;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
