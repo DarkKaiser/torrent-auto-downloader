@@ -84,4 +84,5 @@ public class CircularBuffer<T> {
 	public void clear() {
 		mHead = mTail = 0;
 	}
+
 }
