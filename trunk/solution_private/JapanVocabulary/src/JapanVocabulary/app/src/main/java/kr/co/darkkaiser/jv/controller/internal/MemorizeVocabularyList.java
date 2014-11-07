@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.controller.IVocabularyList;
 import kr.co.darkkaiser.jv.common.MemorizeTargetItem;
 import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.common.JvDefines;
 
 public class JapanVocabularyDbHelper {
 

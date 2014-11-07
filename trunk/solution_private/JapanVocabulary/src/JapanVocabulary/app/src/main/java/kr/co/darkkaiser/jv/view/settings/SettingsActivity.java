@@ -9,7 +9,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 
-import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.R;
 

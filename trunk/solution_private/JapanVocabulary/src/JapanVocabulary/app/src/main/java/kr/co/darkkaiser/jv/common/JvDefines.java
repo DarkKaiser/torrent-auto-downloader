@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.common;
 
 //@@@@@
 public class JvDefines {

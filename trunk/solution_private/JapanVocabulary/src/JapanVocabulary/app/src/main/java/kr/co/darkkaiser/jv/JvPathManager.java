@@ -16,6 +16,8 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import kr.co.darkkaiser.jv.common.JvDefines;
+
 // @@@@@
 public class JvPathManager {
 

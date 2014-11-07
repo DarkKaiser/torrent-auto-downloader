@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.controller.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;

@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.view.detail;
 
-import kr.co.darkkaiser.jv.JvDefines;
+import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.controller.IVocabularyList;
 import kr.co.darkkaiser.jv.controller.MemorizeVocabularyListManager;
