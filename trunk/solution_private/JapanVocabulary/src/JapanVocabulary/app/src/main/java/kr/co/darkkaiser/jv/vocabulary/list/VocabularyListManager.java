@@ -2,11 +2,11 @@ package kr.co.darkkaiser.jv.vocabulary.list;
 
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 
-public class MemorizeVocabularyListManager {
+public class VocabularyListManager {
 	
 	private IVocabularyList mVocabularyList = null;
 
-	public MemorizeVocabularyListManager() {
+	public VocabularyListManager() {
 
 	}
 

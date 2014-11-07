@@ -8,7 +8,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.JvDefines;
-import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.ByteUtils;
@@ -85,7 +85,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 	private ProgressDialog mProgressDialog = null;
 
 	// 암기 단어 관련 정보 객체
-	private MemorizeVocabularyList mMemorizeList = new MemorizeVocabularyList();
+	private MemorizeTargetVocabularyList mMemorizeList = new MemorizeTargetVocabularyList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

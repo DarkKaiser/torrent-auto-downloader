@@ -3,9 +3,10 @@ package kr.co.darkkaiser.jv.view.detail;
 import kr.co.darkkaiser.jv.common.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.list.MemorizeVocabularyListManager;
+import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListManager;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,10 +39,10 @@ public class DetailActivity extends Activity implements OnGestureListener, OnCli
     private GestureDetector mGestureScanner = null;
 
     // 이전/다음 단어로 이동하기 위한 관리자 객체
-	private static MemorizeVocabularyListManager mMemorizeVocabularyListManager = new MemorizeVocabularyListManager();
+	private static VocabularyListManager mVocabularyListManager = new VocabularyListManager();
 
 	public static void setVocabularySeekList(IVocabularyList list) {
-		mMemorizeVocabularyListManager.setVocabularySeekList(list);
+		mVocabularyListManager.setVocabularySeekList(list);
 	}
 
 	@Override
@@ -55,8 +56,8 @@ public class DetailActivity extends Activity implements OnGestureListener, OnCli
 		// 상세 정보를 출력할 단어에 대한 정보를 구한다.
 		JapanVocabulary jpVocabulary = null;
 
-		if (mMemorizeVocabularyListManager.isValid() == true) {
-			jpVocabulary = mMemorizeVocabularyListManager.getCurrentVocabulary();
+		if (mVocabularyListManager.isValid() == true) {
+			jpVocabulary = mVocabularyListManager.getCurrentVocabulary();
 		}
 
 		if (jpVocabulary == null) {
@@ -201,7 +202,7 @@ public class DetailActivity extends Activity implements OnGestureListener, OnCli
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		if (mMemorizeVocabularyListManager.isValid() == true) {
+		if (mVocabularyListManager.isValid() == true) {
 			RelativeLayout layout = (RelativeLayout)findViewById(R.id.move_vocabulary_area);
 			if (layout.getVisibility() == View.VISIBLE) {
 				ImageButton prevVocabulary = (ImageButton)findViewById(R.id.prev_vocabulary);
@@ -236,7 +237,7 @@ public class DetailActivity extends Activity implements OnGestureListener, OnCli
 
 	@Override
 	public void onClick(View v) {
-		if (mMemorizeVocabularyListManager.isValid() == true) {
+		if (mVocabularyListManager.isValid() == true) {
 			SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 			if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
 				// 진동을 발생시킨다.
@@ -249,11 +250,11 @@ public class DetailActivity extends Activity implements OnGestureListener, OnCli
 
 			switch (v.getId()) {
 			case R.id.prev_vocabulary:
-				jpVocabulary = mMemorizeVocabularyListManager.previousVocabulary(sbErrorMessage);
+				jpVocabulary = mVocabularyListManager.previousVocabulary(sbErrorMessage);
 				break;
 
 			case R.id.next_vocabulary:
-				jpVocabulary = mMemorizeVocabularyListManager.nextVocabulary(sbErrorMessage);
+				jpVocabulary = mVocabularyListManager.nextVocabulary(sbErrorMessage);
 				break;
 			}
 

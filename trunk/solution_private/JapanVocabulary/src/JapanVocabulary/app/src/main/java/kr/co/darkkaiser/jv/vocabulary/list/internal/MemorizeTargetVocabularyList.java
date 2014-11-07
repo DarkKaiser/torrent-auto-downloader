@@ -16,12 +16,12 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 //@@@@@
-public class MemorizeVocabularyList implements IVocabularyList {
+public class MemorizeTargetVocabularyList implements IVocabularyList {
 	
 	private Random mRandom = new Random();
 
 	// 암기 대상 단어 리스트
-	private ArrayList<JapanVocabulary> mJvList = new ArrayList<JapanVocabulary>();
+	private ArrayList<JapanVocabulary> mVocabularyListData = new ArrayList<JapanVocabulary>();
 
 	// 암기 대상 단어 암기 순서 버퍼
 	private CircularBuffer<Integer> mJvListMemorizeSequence = new CircularBuffer<Integer>();
@@ -38,7 +38,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 	// (환경설정 값)화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
 	private MemorizeTargetItem mJvMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
 
-	public MemorizeVocabularyList() {
+	public MemorizeTargetVocabularyList() {
 		
 	}
 
@@ -61,23 +61,23 @@ public class MemorizeVocabularyList implements IVocabularyList {
 
 	public synchronized void loadData(SharedPreferences preferences, boolean launchApp) {
 		// 암기 대상 단어들만을 필터링한다.
-		mJvList.clear();
+		mVocabularyListData.clear();
 		mCurrentPosition = -1;
 		mJvListMemorizeSequence.clear();
-		mMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mJvList);
+		mMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mVocabularyListData);
 
 		assert mMemorizeCompletedCount >= 0;
-		assert mMemorizeCompletedCount <= mJvList.size();
+		assert mMemorizeCompletedCount <= mVocabularyListData.size();
 	
 		switch (mMemorizeOrderMethod) {
 		case 1:
-			Collections.sort(mJvList, JapanVocabularyComparator.mVocabularyComparator);
+			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyComparator);
 			break;
 		case 3:
-			Collections.sort(mJvList, JapanVocabularyComparator.mVocabularyGanaComparator);
+			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyGanaComparator);
 			break;
 		case 2:
-			Collections.sort(mJvList, JapanVocabularyComparator.mVocabularyTranslationComparator);
+			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyTranslationComparator);
 			break;
 		default:
 			break;
@@ -92,19 +92,19 @@ public class MemorizeVocabularyList implements IVocabularyList {
 		if (mCurrentPosition < 0)
 			return false;
 		
-		if (mCurrentPosition >= mJvList.size())
+		if (mCurrentPosition >= mVocabularyListData.size())
 			return false;
 		
 		return true;
 	}
 	
 	public synchronized int getCount() {
-		return mJvList.size();
+		return mVocabularyListData.size();
 	}
 
 	public synchronized void setMemorizeCompletedAtVocabularyPosition() {
 		if (isValidVocabularyPosition() == true) {
-			JapanVocabulary jpVocabulary = mJvList.get(mCurrentPosition);
+			JapanVocabulary jpVocabulary = mVocabularyListData.get(mCurrentPosition);
 			if (jpVocabulary != null && jpVocabulary.isMemorizeCompleted() == false) {
 				++mMemorizeCompletedCount;
 				jpVocabulary.setMemorizeCompleted(true, true, true);							
@@ -116,7 +116,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 
 	public synchronized long getIdxAtVocabularyPosition() {
 		if (isValidVocabularyPosition() == true) {
-			return mJvList.get(mCurrentPosition).getIdx();
+			return mVocabularyListData.get(mCurrentPosition).getIdx();
 		} else {
 			assert false;
 		}
@@ -163,7 +163,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 	@Override
 	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
-			return mJvList.get(mCurrentPosition);
+			return mVocabularyListData.get(mCurrentPosition);
 		}
 
 		return null;
@@ -174,7 +174,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 
 		mCurrentPosition = position;
 		if (isValidVocabularyPosition() == true) {
-			return mJvList.get(mCurrentPosition);
+			return mVocabularyListData.get(mCurrentPosition);
 		} else {
 			assert false;
 			mCurrentPosition = prevCurrentPosition;
@@ -191,7 +191,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 
 			mCurrentPosition = (int)value;
 			if (isValidVocabularyPosition() == true) {
-				return mJvList.get(mCurrentPosition);
+				return mVocabularyListData.get(mCurrentPosition);
 			} else {
 				assert false;
 				mCurrentPosition = prevCurrentPosition;
@@ -207,11 +207,11 @@ public class MemorizeVocabularyList implements IVocabularyList {
 	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		assert sbErrMessage != null;
 		
-		if (mJvList.isEmpty() == true || mMemorizeCompletedCount >= mJvList.size()) {
+		if (mVocabularyListData.isEmpty() == true || mMemorizeCompletedCount >= mVocabularyListData.size()) {
 			if (mMemorizeOrderMethod == 0/* 랜덤 */) { 
 				mCurrentPosition = -1;
 			} else {
-				mCurrentPosition = mJvList.size() - 1;
+				mCurrentPosition = mVocabularyListData.size() - 1;
 			}
 
 			sbErrMessage.append("암기 할 단어가 없습니다.");
@@ -229,14 +229,14 @@ public class MemorizeVocabularyList implements IVocabularyList {
 
 			if (mMemorizeOrderMethod == 0/* 랜덤 */) {
 				int prevCurrentPosition = mCurrentPosition;
-				int memorizeUncompletedCount = mJvList.size() - mMemorizeCompletedCount;
+				int memorizeUncompletedCount = mVocabularyListData.size() - mMemorizeCompletedCount;
 				
 				do {
 					int uncompletedCount = 0;
 					int targetUncompletedCount = mRandom.nextInt(memorizeUncompletedCount) + 1;
 
-					for (int index = 0; index < mJvList.size(); ++index) {
-						if (mJvList.get(index).isMemorizeCompleted() == false) {
+					for (int index = 0; index < mVocabularyListData.size(); ++index) {
+						if (mVocabularyListData.get(index).isMemorizeCompleted() == false) {
 							++uncompletedCount;
 							
 							if (uncompletedCount == targetUncompletedCount) {
@@ -248,8 +248,8 @@ public class MemorizeVocabularyList implements IVocabularyList {
 				} while (memorizeUncompletedCount > 1 && prevCurrentPosition == mCurrentPosition);
 			} else {
 				boolean bFindSucceeded = false;
-				for (int index = mCurrentPosition + 1; index < mJvList.size(); ++index) {
-					if (mJvList.get(index).isMemorizeCompleted() == false) {
+				for (int index = mCurrentPosition + 1; index < mVocabularyListData.size(); ++index) {
+					if (mVocabularyListData.get(index).isMemorizeCompleted() == false) {
 						mCurrentPosition = index;
 						bFindSucceeded = true;
 						break;
@@ -258,7 +258,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 				
 				if (bFindSucceeded == false) {
 					for (int index = 0; index < mCurrentPosition; ++index) {
-						if (mJvList.get(index).isMemorizeCompleted() == false) {
+						if (mVocabularyListData.get(index).isMemorizeCompleted() == false) {
 							mCurrentPosition = index;
 							bFindSucceeded = true;
 							break;
@@ -270,7 +270,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 			}
 
 			if (isValidVocabularyPosition() == true) {
-				return mJvList.get(mCurrentPosition);
+				return mVocabularyListData.get(mCurrentPosition);
 			}
 		}
 
@@ -285,7 +285,7 @@ public class MemorizeVocabularyList implements IVocabularyList {
 		assert isValidVocabularyPosition() == true;
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("암기완료 ").append(mMemorizeCompletedCount).append("개 / 전체 ").append(mJvList.size()).append("개");
+		sb.append("암기완료 ").append(mMemorizeCompletedCount).append("개 / 전체 ").append(mVocabularyListData.size()).append("개");
 		return sb;
 	}
 
