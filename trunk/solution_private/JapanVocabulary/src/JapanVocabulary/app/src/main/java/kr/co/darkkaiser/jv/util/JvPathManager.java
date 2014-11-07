@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv;
+package kr.co.darkkaiser.jv.util;
 
 import java.io.BufferedReader;
 import java.io.File;
