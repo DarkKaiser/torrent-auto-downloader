@@ -5,8 +5,9 @@ public class CircularBuffer<T> {
 	private int mHead = 0;
 	private int mTail = 0;
 	private T[] mBufferData = (T[])new Object[50];
-	
+
 	public CircularBuffer() {
+
     }
 
 	public synchronized void push(T value) {
