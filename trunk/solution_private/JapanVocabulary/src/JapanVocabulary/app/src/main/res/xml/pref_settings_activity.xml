@@ -60,7 +60,7 @@
         <PreferenceScreen
             android:key="jv_program_info"
             android:title="@string/program_info_item"
-            android:summary="@string/program_info_summary"
+            android:summary="@null"
             />
         <PreferenceScreen
             android:title="@string/developer_info_item"
