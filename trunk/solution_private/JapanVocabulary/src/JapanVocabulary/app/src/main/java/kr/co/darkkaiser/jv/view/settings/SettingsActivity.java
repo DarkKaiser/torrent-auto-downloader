@@ -10,7 +10,7 @@ import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 
 import kr.co.darkkaiser.jv.JvDefines;
-import kr.co.darkkaiser.jv.util.JapanVocabularyDbHelper;
+import kr.co.darkkaiser.jv.data.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.R;
 
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {

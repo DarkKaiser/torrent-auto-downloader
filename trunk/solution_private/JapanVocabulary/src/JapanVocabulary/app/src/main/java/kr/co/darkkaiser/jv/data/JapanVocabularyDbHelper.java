@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.util;
+package kr.co.darkkaiser.jv.data;
 
 import java.net.URL;
 import java.util.ArrayList;
