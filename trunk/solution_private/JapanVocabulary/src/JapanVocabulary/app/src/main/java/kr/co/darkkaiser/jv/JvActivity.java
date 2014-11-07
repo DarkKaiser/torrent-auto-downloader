@@ -8,11 +8,11 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.controller.internal.MemorizeVocabularyList;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.data.JapanVocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
@@ -722,7 +722,7 @@ public class JvActivity extends Activity implements OnTouchListener {
 						public void onClick(DialogInterface dialog, int which) {
 							updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, false);
 						}
-					})		
+					})
     				.show();
 			} else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
 				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);

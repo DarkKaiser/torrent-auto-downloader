@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.controller;
 
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 
 public interface IVocabularyList {
 

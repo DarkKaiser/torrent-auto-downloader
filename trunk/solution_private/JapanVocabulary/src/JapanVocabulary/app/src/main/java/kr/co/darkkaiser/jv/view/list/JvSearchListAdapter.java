@@ -3,7 +3,7 @@ package kr.co.darkkaiser.jv.view.list;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;

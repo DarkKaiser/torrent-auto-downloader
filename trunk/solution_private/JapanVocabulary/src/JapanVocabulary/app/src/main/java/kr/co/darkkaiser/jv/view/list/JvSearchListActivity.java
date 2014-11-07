@@ -7,9 +7,9 @@ import java.util.Collections;
 import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.controller.internal.SearchResultVocabularyList;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
-import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyComparator;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 

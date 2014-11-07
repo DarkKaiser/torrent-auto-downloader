@@ -1,12 +1,9 @@
-package kr.co.darkkaiser.jv.data;
+package kr.co.darkkaiser.jv.vocabularydata;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,12 +11,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.JvPathManager;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -145,56 +140,56 @@ public class JapanVocabularyManager {
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
 		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbPath()) == false;
-
-		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
-		SharedPreferences preferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-
-		// 단어 DB 파일이 존재하는지 확인한다.
-		File f = new File(jvDbPath);
-		if (f.exists() == true) {
-			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
-			String jvDbVersion = preferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
-			if (jvDbVersion.equals("") == false) {
-				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
-				int assetsDbVersion = Integer.parseInt(JvDefines.JV_DB_VERSION_FROM_ASSETS.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
-				
-				if (currentDbVersion >= assetsDbVersion) {
-					return;
-				}
-			}
-		}
-
-		if (JvPathManager.getInstance().isReadyIoDevice() == true) {
-	        File outFile = new File(jvDbPath);
-
-	        InputStream is = null;
-	        OutputStream os = null;
-
-	        try {                        
-	            outFile.createNewFile();           
-	            os = new FileOutputStream(outFile);
-	            is = context.getAssets().open(JvDefines.JV_VOCABULARY_DB);
-
-	            byte[] buffer = new byte[is.available()];
-
-	            is.read(buffer);
-	            os.write(buffer);
-
-				preferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        } finally {
-	            try {
-	            	if (is != null)
-	            		is.close();
-	            	
-	            	if (os != null)
-	            		os.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+//@@@@@
+//		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
+//		SharedPreferences preferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+//
+//		// 단어 DB 파일이 존재하는지 확인한다.
+//		File f = new File(jvDbPath);
+//		if (f.exists() == true) {
+//			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
+//			String jvDbVersion = preferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
+//			if (jvDbVersion.equals("") == false) {
+//				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
+//				int assetsDbVersion = Integer.parseInt(JvDefines.JV_DB_VERSION_FROM_ASSETS.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
+//
+//				if (currentDbVersion >= assetsDbVersion) {
+//					return;
+//				}
+//			}
+//		}
+//
+//		if (JvPathManager.getInstance().isReadyIoDevice() == true) {
+//	        File outFile = new File(jvDbPath);
+//
+//	        InputStream is = null;
+//	        OutputStream os = null;
+//
+//	        try {
+//	            outFile.createNewFile();
+//	            os = new FileOutputStream(outFile);
+//	            is = context.getAssets().open(JvDefines.JV_VOCABULARY_DB);
+//
+//	            byte[] buffer = new byte[is.available()];
+//
+//	            is.read(buffer);
+//	            os.write(buffer);
+//
+//				preferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
+//	        } catch (Exception e) {
+//	            e.printStackTrace();
+//	        } finally {
+//	            try {
+//	            	if (is != null)
+//	            		is.close();
+//
+//	            	if (os != null)
+//	            		os.close();
+//	            } catch (IOException e) {
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	    }
 	}
 
 	public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<JapanVocabulary> jvList) {

@@ -1,9 +1,8 @@
-package kr.co.darkkaiser.jv.controller.internal;
+package kr.co.darkkaiser.jv.controller;
 
-import kr.co.darkkaiser.jv.controller.IVocabularyList;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 
-public class MemorizeVocabularyListManager implements IVocabularyList {
+public class MemorizeVocabularyListManager {
 	
 	private IVocabularyList mVocabularyList = null;
 

@@ -3,38 +3,37 @@ package kr.co.darkkaiser.jv.controller.internal;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.controller.IVocabularyList;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
 
-//@@@@@
 public class SearchResultVocabularyList implements IVocabularyList {
-	
+
 	private int mCurrentPosition = -1;
-	private ArrayList<JapanVocabulary> mJvListData = null;
+	private ArrayList<JapanVocabulary> mVocabularyListData = null;
 
-	public SearchResultVocabularyList(ArrayList<JapanVocabulary> jvListData, int position) {
+	public SearchResultVocabularyList(ArrayList<JapanVocabulary> vocabularyListData, int position) {
 		assert position != -1;
-		assert jvListData != null;
+		assert vocabularyListData != null;
 
-		mJvListData = jvListData;
-		mCurrentPosition = position;
+        mCurrentPosition = position;
+        mVocabularyListData = vocabularyListData;
 	}
 
 	@Override
-	public JapanVocabulary getCurrentVocabulary() {
+	public synchronized JapanVocabulary getCurrentVocabulary() {
 		if (isValid() == true) {
-			return mJvListData.get(mCurrentPosition);
+			return mVocabularyListData.get(mCurrentPosition);
 		}
 
 		return null;
 	}
 
 	@Override
-	public JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
+	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
 		int prevCurrentPosition = mCurrentPosition;
 
 		--mCurrentPosition;
 		if (isValid() == true) {
-			return mJvListData.get(mCurrentPosition);
+			return mVocabularyListData.get(mCurrentPosition);
 		} else {
 			mCurrentPosition = prevCurrentPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
@@ -44,12 +43,12 @@ public class SearchResultVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
+	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		int nextCurrentPosition = mCurrentPosition;
 
 		++mCurrentPosition;
 		if (isValid() == true) {
-			return mJvListData.get(mCurrentPosition);
+			return mVocabularyListData.get(mCurrentPosition);
 		} else {
 			mCurrentPosition = nextCurrentPosition;
 			sbErrMessage.append("다음 단어가 없습니다.");
@@ -58,16 +57,8 @@ public class SearchResultVocabularyList implements IVocabularyList {
 		return null;
 	}
 
-	private boolean isValid() {
-		if (mJvListData == null) {
-			return false;
-		}
-
-		if (mCurrentPosition < 0 || mCurrentPosition >= mJvListData.size()) {
-			return false;
-		}
-
-		return true;
-	}
+	private synchronized boolean isValid() {
+        return mVocabularyListData != null && !(mCurrentPosition < 0 || mCurrentPosition >= mVocabularyListData.size());
+    }
 	
 }

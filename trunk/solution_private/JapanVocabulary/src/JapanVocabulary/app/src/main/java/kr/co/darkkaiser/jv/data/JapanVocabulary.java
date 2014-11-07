@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.data;
+package kr.co.darkkaiser.jv.vocabularydata;
 
 import android.text.TextUtils;
 

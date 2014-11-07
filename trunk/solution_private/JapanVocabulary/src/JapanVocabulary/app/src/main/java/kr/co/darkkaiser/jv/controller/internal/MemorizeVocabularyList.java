@@ -6,10 +6,10 @@ import java.util.Random;
 
 import kr.co.darkkaiser.jv.JvDefines;
 import kr.co.darkkaiser.jv.controller.IVocabularyList;
-import kr.co.darkkaiser.jv.controller.MemorizeTargetItem;
-import kr.co.darkkaiser.jv.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.data.JapanVocabularyComparator;
-import kr.co.darkkaiser.jv.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.common.MemorizeTargetItem;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyComparator;
+import kr.co.darkkaiser.jv.vocabularydata.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.CircularBuffer;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
