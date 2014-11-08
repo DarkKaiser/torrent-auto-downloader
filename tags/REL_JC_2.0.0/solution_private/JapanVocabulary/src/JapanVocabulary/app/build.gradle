@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "kr.co.darkkaiser.jv"
+        minSdkVersion 7
+        targetSdkVersion 20
+        versionCode 17
+        versionName "2.0.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file('./../../../../../security/darkkaiser_android_keystore/android_darkkaiser.keystore')
+            storePassword 'chlrhrkehlwk78!'
+            keyAlias 'darkkaiser'
+            keyPassword 'chlrhrkehlwk78!'
+        }
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            debuggable false            // 디버깅 허용안함
+            zipAlign true               // APK 최적화
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:20.0.0'
+}

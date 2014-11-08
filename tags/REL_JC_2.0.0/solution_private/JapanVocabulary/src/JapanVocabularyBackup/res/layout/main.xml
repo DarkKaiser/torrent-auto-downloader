@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/jv_main_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vocabulary_info_bar"
+        android:gravity="bottom"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/etc_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="15dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/jv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/jv_vocabulary_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jv_main_header"
+        android:maxHeight="8dp"
+        android:minHeight="8dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:progressDrawable="@drawable/custom_seekbar"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/prev_vocabulary"
+            android:layout_width="42dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="《"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/next_vocabulary"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/prev_vocabulary"
+            android:text="다음 단어 》"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/memorize_method_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/next_vocabulary"
+            android:gravity="center"
+            android:text="암기 완료 단어는 화면을 꾸~욱 눌러주세요."
+            android:textColor="#99999999"
+            android:textSize="13dp" />
+
+        <RelativeLayout
+            android:id="@+id/vocabulary_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/memorize_method_info"
+            android:layout_below="@id/jv_vocabulary_seekbar"
+            tools:ignore="NotSibling" >
+
+            <TextSwitcher
+                android:id="@+id/vocabulary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <TextSwitcher
+                android:id="@+id/vocabulary_translation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vocabulary"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

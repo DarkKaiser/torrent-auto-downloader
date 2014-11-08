@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+
+
+
+
+
+
+
+
+    <!-- @@@@@ -->
+	<color name="jv_main_memorize_completed_count_text">#5070ff</color>
+	<color name="jv_detail_title_bg">#77444444</color>
+	<color name="jv_detail_content_bg">#000000</color>
+	<color name="jv_detail_memorize_uncompleted_text">#ff2222</color>
+	<color name="jv_detail_memorize_completed_count_text">#5070ff</color>
+	<color name="jv_listitem_memorize_completed_bg">#15cccccc</color>
+	<color name="jv_listitem_memorize_uncompleted_bg">#15000000</color>
+</resources>

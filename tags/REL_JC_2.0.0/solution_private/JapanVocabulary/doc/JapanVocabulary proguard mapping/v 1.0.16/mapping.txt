@@ -1,0 +1,992 @@
+com.cauly.android.ad.AdClickHandler -> com.cauly.android.ad.AdClickHandler:
+    java.lang.String feedUrlString -> a
+    org.apache.http.conn.ClientConnectionManager clientConnectionManager -> b
+    org.apache.http.protocol.HttpContext context -> c
+    org.apache.http.params.HttpParams params -> d
+    void sendClickData(com.cauly.android.ad.AdCommon,com.cauly.android.ad.AdData) -> a
+    int connect(java.lang.String,java.lang.String) -> a
+com.cauly.android.ad.AdCommon -> com.cauly.android.ad.AdCommon:
+    java.lang.String Debug -> b
+    int REQ_SEQ -> c
+    int REU_SEQ -> d
+    java.lang.String action -> a
+    java.lang.String adType -> e
+    java.lang.String appCode -> f
+    java.lang.String gender -> g
+    java.lang.String age -> h
+    java.lang.String gpsInfo -> i
+    java.lang.String scode -> j
+    java.lang.String version -> k
+    java.lang.String lang -> l
+    java.lang.String provider -> m
+    java.lang.String manufacturer -> n
+    java.lang.String model -> o
+    java.lang.String allowcall -> p
+    java.lang.String network -> q
+    java.lang.String Error -> r
+    void initCommon(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
+    java.lang.String nullChk(java.lang.String) -> a
+    java.lang.String BackgroundImage(java.lang.String) -> b
+    java.lang.String Change_Icon(java.lang.String) -> c
+    int[] Change_Icon_Background(java.lang.String) -> d
+    void Download_Info(java.lang.String,java.lang.String) -> a
+    void Ad_Log_Info(java.lang.String,java.lang.String,java.lang.String,boolean) -> a
+    int connect(java.lang.String) -> f
+    java.lang.String generateRandomCODE$47921032() -> a
+    void alertError(java.lang.String) -> e
+    java.lang.String getAdType() -> b
+    java.lang.String getAppCode() -> c
+    java.lang.String getGender() -> d
+    java.lang.String getAge() -> e
+    java.lang.String getGpsInfo() -> f
+    java.lang.String getScode() -> g
+    java.lang.String getVersion() -> h
+    java.lang.String getLang() -> i
+    java.lang.String getProvider() -> j
+    java.lang.String getManufacturer() -> k
+    java.lang.String getModel() -> l
+    java.lang.String getAllowcall() -> m
+    java.lang.String getNetwork() -> n
+com.cauly.android.ad.AdConfig -> com.cauly.android.ad.AdConfig:
+    java.lang.String feedUrlString -> a
+    java.net.URL feedUrl -> b
+    java.io.InputStream getInputStream() -> b
+    java.util.List parse() -> a
+com.cauly.android.ad.AdConfig$1 -> com.cauly.android.ad.x:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    java.util.List val$messages -> b
+    com.cauly.android.ad.Message_Config val$currentMessage -> c
+    void end() -> end
+com.cauly.android.ad.AdConfig$10 -> com.cauly.android.ad.p:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$11 -> com.cauly.android.ad.l:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$12 -> com.cauly.android.ad.m:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$13 -> com.cauly.android.ad.n:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$14 -> com.cauly.android.ad.o:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$2 -> com.cauly.android.ad.y:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$3 -> com.cauly.android.ad.z:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$4 -> com.cauly.android.ad.q:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$5 -> com.cauly.android.ad.r:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$6 -> com.cauly.android.ad.s:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$7 -> com.cauly.android.ad.t:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$8 -> com.cauly.android.ad.u:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdConfig$9 -> com.cauly.android.ad.v:
+    com.cauly.android.ad.AdConfig this$0 -> a
+    com.cauly.android.ad.Message_Config val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdData -> com.cauly.android.ad.AdData:
+    java.lang.String code -> a
+    java.lang.String adsId -> b
+    java.lang.String title -> c
+    java.lang.String text -> d
+    java.lang.String link -> e
+    java.lang.String pay_type -> f
+    java.lang.String adType -> g
+    java.lang.String imageUrl -> h
+    java.lang.String backgroundColor -> i
+    android.graphics.Bitmap image -> j
+    java.lang.String market -> k
+    java.lang.String eventUrl -> l
+    java.lang.String iSerial -> m
+    java.lang.String c_ssl -> n
+    java.lang.String c_report_ack -> o
+    java.lang.String c_alt_cpc_ad -> p
+    java.lang.String c_alt_cpm_ad -> q
+    java.lang.String c_gender -> r
+    java.lang.String c_age -> s
+    java.lang.String c_model -> t
+    java.lang.String c_lang -> u
+    java.lang.String c_reuse_seq -> v
+    java.lang.String c_request_seq -> w
+    java.lang.String c_gps_info -> x
+    java.lang.String c_manufacturer -> y
+    java.lang.String c_network -> z
+    void init() -> a
+    void setCode(java.lang.String) -> a
+    android.graphics.Bitmap getImage() -> b
+    void setImage(android.graphics.Bitmap) -> a
+    java.lang.String getAdsId() -> c
+    void setAdsId(java.lang.String) -> b
+    java.lang.String getTitle() -> d
+    void setTitle(java.lang.String) -> c
+    java.lang.String getText() -> e
+    void setText(java.lang.String) -> d
+    java.lang.String getImageUrl() -> f
+    void setImageUrl(java.lang.String) -> e
+    java.lang.String getAdType() -> g
+    void setAdType(java.lang.String) -> f
+    java.lang.String getLink() -> h
+    void setLink(java.lang.String) -> g
+    java.lang.String getPay_type() -> i
+    void setPay_type(java.lang.String) -> h
+    java.lang.String getBackgroundColor() -> j
+    void setBackgroundColor(java.lang.String) -> i
+    java.lang.String getMarket() -> k
+    void setMarket(java.lang.String) -> j
+    java.lang.String getEventUrl() -> l
+    void setEventUrl(java.lang.String) -> k
+    java.lang.String getiSerial() -> m
+    void setiSerial(java.lang.String) -> l
+    java.lang.String getC_ssl() -> n
+    void setC_ssl(java.lang.String) -> m
+    java.lang.String getC_report_ack() -> o
+    void setC_report_ack(java.lang.String) -> n
+    java.lang.String getC_alt_cpc_ad() -> p
+    void setC_alt_cpc_ad(java.lang.String) -> o
+    java.lang.String getC_alt_cpm_ad() -> q
+    void setC_alt_cpm_ad(java.lang.String) -> p
+    java.lang.String getC_gps_info() -> r
+    void setC_gps_info(java.lang.String) -> q
+    java.lang.String getC_gender() -> s
+    void setC_gender(java.lang.String) -> r
+    java.lang.String getC_age() -> t
+    void setC_age(java.lang.String) -> s
+    java.lang.String getC_model() -> u
+    void setC_model(java.lang.String) -> t
+    java.lang.String getC_lang() -> v
+    void setC_lang(java.lang.String) -> u
+    java.lang.String getC_reuse_seq() -> w
+    void setC_reuse_seq(java.lang.String) -> v
+    java.lang.String getC_request_seq() -> x
+    void setC_request_seq(java.lang.String) -> w
+    java.lang.String getC_manufacturer() -> y
+    void setC_manufacturer(java.lang.String) -> x
+    java.lang.String getC_network() -> z
+    void setC_network(java.lang.String) -> y
+com.cauly.android.ad.AdHandler -> com.cauly.android.ad.AdHandler:
+    java.lang.String feedUrlString -> a
+    java.lang.String tmpUrlString -> b
+    org.apache.http.conn.ClientConnectionManager clientConnectionManager -> c
+    org.apache.http.protocol.HttpContext context -> d
+    org.apache.http.params.HttpParams params -> e
+    java.io.InputStream getInputStream(java.lang.String) -> b
+    java.util.List parse(java.lang.String) -> a
+com.cauly.android.ad.AdHandler$1 -> com.cauly.android.ad.ah:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    java.util.List val$messages -> b
+    com.cauly.android.ad.Message_Ads val$currentMessage -> c
+    void end() -> end
+com.cauly.android.ad.AdHandler$10 -> com.cauly.android.ad.g:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$11 -> com.cauly.android.ad.j:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$12 -> com.cauly.android.ad.i:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$13 -> com.cauly.android.ad.h:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$2 -> com.cauly.android.ad.ai:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$3 -> com.cauly.android.ad.aj:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$4 -> com.cauly.android.ad.ak:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$5 -> com.cauly.android.ad.al:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$6 -> com.cauly.android.ad.am:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$7 -> com.cauly.android.ad.an:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$8 -> com.cauly.android.ad.af:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdHandler$9 -> com.cauly.android.ad.ag:
+    com.cauly.android.ad.AdHandler this$0 -> a
+    com.cauly.android.ad.Message_Ads val$currentMessage -> b
+    void end(java.lang.String) -> end
+com.cauly.android.ad.AdInfo -> com.cauly.android.ad.AdInfo:
+    java.lang.String appcode -> a
+    java.lang.String adtype -> b
+    java.lang.String gender -> c
+    java.lang.String age -> d
+    java.lang.String gps -> e
+    java.lang.String effect -> f
+    java.lang.String allowcall -> g
+    int reloadInterval -> h
+com.cauly.android.ad.AdLayout -> com.cauly.android.ad.AdLayout:
+    android.content.Context context -> a
+    com.cauly.android.ad.AdData adData -> b
+    com.cauly.android.ad.AdCommon adCommon -> c
+    android.widget.ImageView adImageView -> d
+    android.widget.RelativeLayout ClickLayout -> e
+    android.graphics.Bitmap bmpBkgnd -> f
+    android.graphics.Bitmap bmpAd -> g
+    android.graphics.Bitmap bmpIcon -> h
+    android.graphics.Bitmap bmpLeftLogo -> i
+    android.graphics.Bitmap bmpRightLogo -> j
+    java.lang.String strTitle -> k
+    java.lang.String strDesc -> l
+    java.lang.String PATH -> m
+    com.cauly.android.ad.CADRenderer m_oADRenderer -> n
+    void setAdData(com.cauly.android.ad.AdData,com.cauly.android.ad.AdCommon,int) -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    void clickedAD() -> a
+    com.cauly.android.ad.AdData access$0(com.cauly.android.ad.AdLayout) -> a
+    void access$1(com.cauly.android.ad.AdLayout) -> b
+    android.content.Context access$2(com.cauly.android.ad.AdLayout) -> c
+    com.cauly.android.ad.AdCommon access$3(com.cauly.android.ad.AdLayout) -> d
+com.cauly.android.ad.AdLayout$1 -> com.cauly.android.ad.aa:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$2 -> com.cauly.android.ad.ab:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$3 -> com.cauly.android.ad.ac:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$4 -> com.cauly.android.ad.ae:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.cauly.android.ad.AdLayout$5 -> com.cauly.android.ad.ad:
+    com.cauly.android.ad.AdLayout this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdListener -> com.cauly.android.ad.AdListener:
+com.cauly.android.ad.AdView -> com.cauly.android.ad.AdView:
+    com.cauly.android.ad.CADRenderer m_oADRenderer -> a
+    com.cauly.android.ad.AdData adData -> b
+    com.cauly.android.ad.AdHandler adHandler -> c
+    com.cauly.android.ad.AdConfig adConfig -> d
+    com.cauly.android.ad.AdCommon adCommon -> e
+    com.cauly.android.ad.AdLayout adLayout -> f
+    java.util.List messages -> g
+    java.util.List msg_config -> h
+    android.os.Handler threadHandler -> i
+    java.lang.String action -> j
+    java.lang.String appcode -> k
+    java.lang.String adtype -> l
+    java.lang.String gender -> m
+    java.lang.String age -> n
+    java.lang.String gps -> o
+    java.lang.String scode -> p
+    java.lang.String version -> q
+    java.lang.String effect -> r
+    java.lang.String lang -> s
+    java.lang.String provider -> t
+    java.lang.String manufacturer -> u
+    java.lang.String model -> v
+    java.lang.String allowcall -> w
+    java.lang.String network -> x
+    double lat -> y
+    double lng -> z
+    android.location.LocationManager lm -> A
+    java.util.Timer reloadTimer -> B
+    java.util.Timer XconfTimer -> C
+    int reloadInterval -> D
+    boolean isReload -> E
+    com.cauly.android.ad.Rotate3dAnimation rotation -> F
+    android.net.NetworkInfo$State mobile -> G
+    android.net.NetworkInfo$State wifi -> H
+    java.lang.String SAVE_PATH -> I
+    java.lang.String time_stamp -> J
+    boolean ConnectedFail -> K
+    boolean XconfFail -> L
+    com.cauly.android.ad.AdListener adListener -> M
+    boolean isJava -> N
+    boolean isFirst -> O
+    void DefaultConifgInfo() -> h
+    void setConifgInfo(java.io.File,java.io.File) -> a
+    void getConifgInfoRead$c068691(java.io.File,boolean) -> a
+    void CheckConifgInfo() -> i
+    void reloadAD() -> j
+    void onWindowFocusChanged(boolean) -> onWindowFocusChanged
+    void onLocationChanged(android.location.Location) -> onLocationChanged
+    void onProviderDisabled(java.lang.String) -> onProviderDisabled
+    void onProviderEnabled(java.lang.String) -> onProviderEnabled
+    void onStatusChanged(java.lang.String,int,android.os.Bundle) -> onStatusChanged
+    android.graphics.Bitmap loadImage$27412dcc$676c1c3e(java.lang.String) -> a
+    java.lang.String getcodeCheck() -> k
+    void DownLoadCheck() -> l
+    void getGpsInfo() -> m
+    void getNetworkState() -> n
+    int getreloadInterval(int) -> a
+    com.cauly.android.ad.AdLayout access$0() -> a
+    void access$1$5603191f(com.cauly.android.ad.AdView) -> a
+    void access$2$2cd854fd(com.cauly.android.ad.AdView) -> b
+    void access$3(com.cauly.android.ad.AdView,boolean) -> a
+    boolean access$4(com.cauly.android.ad.AdView) -> c
+    void access$5(com.cauly.android.ad.AdView) -> d
+    com.cauly.android.ad.AdCommon access$6() -> b
+    com.cauly.android.ad.AdData access$7() -> c
+    void access$8(com.cauly.android.ad.AdHandler) -> a
+    void access$9(java.lang.String) -> b
+    com.cauly.android.ad.AdHandler access$10() -> d
+    void access$11(com.cauly.android.ad.AdView,java.util.List) -> a
+    java.util.List access$12(com.cauly.android.ad.AdView) -> e
+    java.lang.String access$13() -> e
+    java.lang.String access$14(com.cauly.android.ad.AdView) -> f
+    com.cauly.android.ad.CADRenderer access$15() -> f
+    void access$16(com.cauly.android.ad.AdLayout) -> a
+    void access$17(com.cauly.android.ad.AdView,com.cauly.android.ad.Rotate3dAnimation) -> a
+    com.cauly.android.ad.Rotate3dAnimation access$18(com.cauly.android.ad.AdView) -> g
+    android.os.Handler access$19() -> g
+    boolean access$20(com.cauly.android.ad.AdView) -> h
+    boolean access$22(com.cauly.android.ad.AdView) -> i
+    boolean access$23(com.cauly.android.ad.AdView) -> j
+    java.lang.String access$24(com.cauly.android.ad.AdView) -> k
+    void access$25(com.cauly.android.ad.AdView) -> l
+    void access$26(com.cauly.android.ad.AdView) -> m
+com.cauly.android.ad.AdView$1 -> com.cauly.android.ad.f:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$2 -> com.cauly.android.ad.e:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$2$1 -> com.cauly.android.ad.a:
+    com.cauly.android.ad.AdView$2 this$1 -> a
+    android.content.Context val$context -> b
+    void run() -> run
+com.cauly.android.ad.AdView$2$2 -> com.cauly.android.ad.b:
+    com.cauly.android.ad.AdView$2 this$1 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$3 -> com.cauly.android.ad.d:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$4 -> com.cauly.android.ad.c:
+    com.cauly.android.ad.AdView this$0 -> a
+    void run() -> run
+com.cauly.android.ad.AdView$DisplayRolling -> com.cauly.android.ad.k:
+    com.cauly.android.ad.AdView this$0 -> a
+    void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
+    void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
+    void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+com.cauly.android.ad.CADRenderer -> com.cauly.android.ad.ap:
+    android.view.Display m_display -> a
+    android.util.DisplayMetrics m_metrics -> b
+    com.cauly.android.ad.SAdLayoutParams m_sAdLayoutParams -> c
+    android.graphics.Canvas m_canvas -> d
+    android.graphics.Bitmap m_bmpCanvas -> e
+    android.graphics.Paint m_paint -> f
+    android.graphics.Path m_pathAd -> g
+    void Render(android.graphics.Bitmap,android.graphics.Bitmap,android.graphics.Bitmap,android.graphics.Bitmap,android.graphics.Bitmap,java.lang.String,java.lang.String,int[],int) -> a
+    void Render(android.graphics.Bitmap) -> a
+    android.graphics.Bitmap getBitmap() -> a
+    float convertUnitFromDptoPx(float) -> a
+com.cauly.android.ad.EasySSLSocketFactory -> com.cauly.android.ad.ao:
+    javax.net.ssl.SSLContext sslcontext -> a
+    javax.net.ssl.SSLContext createEasySSLContext() -> a
+    javax.net.ssl.SSLContext getSSLContext() -> b
+    java.net.Socket connectSocket(java.net.Socket,java.lang.String,int,java.net.InetAddress,int,org.apache.http.params.HttpParams) -> connectSocket
+    java.net.Socket createSocket() -> createSocket
+    boolean isSecure(java.net.Socket) -> isSecure
+    java.net.Socket createSocket(java.net.Socket,java.lang.String,int,boolean) -> createSocket
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+com.cauly.android.ad.EasyX509TrustManager -> com.cauly.android.ad.EasyX509TrustManager:
+    javax.net.ssl.X509TrustManager standardTrustManager -> a
+    void checkClientTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkClientTrusted
+    void checkServerTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkServerTrusted
+    java.security.cert.X509Certificate[] getAcceptedIssuers() -> getAcceptedIssuers
+com.cauly.android.ad.ImageHelper -> com.cauly.android.ad.ImageHelper:
+com.cauly.android.ad.Message_Ads -> com.cauly.android.ad.Message_Ads:
+    java.lang.String C_PAY_TYPE -> a
+    java.lang.String C_CODE -> b
+    java.lang.String C_ID -> c
+    java.lang.String C_TITLE -> d
+    java.lang.String C_DESCRIPTION -> e
+    java.lang.String C_LINK -> f
+    java.lang.String C_AD_TYPE -> g
+    java.lang.String C_IMG -> h
+    java.lang.String C_COLOR -> i
+    java.lang.String C_MARKET -> j
+    java.lang.String C_EVENT -> k
+    java.lang.String C_ISERIAL -> l
+    java.lang.String getC_PAY_TYPE() -> a
+    void setC_PAY_TYPE(java.lang.String) -> a
+    java.lang.String getC_CODE() -> b
+    void setC_CODE(java.lang.String) -> b
+    java.lang.String getC_ID() -> c
+    void setC_ID(java.lang.String) -> c
+    java.lang.String getC_TITLE() -> d
+    void setC_TITLE(java.lang.String) -> d
+    java.lang.String getC_DESCRIPTION() -> e
+    void setC_DESCRIPTION(java.lang.String) -> e
+    java.lang.String getC_LINK() -> f
+    void setC_LINK(java.lang.String) -> f
+    java.lang.String getC_AD_TYPE() -> g
+    void setC_AD_TYPE(java.lang.String) -> g
+    java.lang.String getC_IMG() -> h
+    void setC_IMG(java.lang.String) -> h
+    java.lang.String getC_COLOR() -> i
+    void setC_COLOR(java.lang.String) -> i
+    java.lang.String getC_MARKET() -> j
+    void setC_MARKET(java.lang.String) -> j
+    java.lang.String getC_EVENT() -> k
+    void setC_EVENT(java.lang.String) -> k
+    java.lang.String getC_ISERIAL() -> l
+    void setC_ISERIAL(java.lang.String) -> l
+    com.cauly.android.ad.Message_Ads copy() -> m
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.cauly.android.ad.Message_Config -> com.cauly.android.ad.Message_Config:
+    java.lang.String SSL -> a
+    java.lang.String REPORT_ACK -> b
+    java.lang.String ALT_CPC_AD -> c
+    java.lang.String ALT_CPM_AD -> d
+    java.lang.String GENDER -> e
+    java.lang.String AGE -> f
+    java.lang.String MODEL -> g
+    java.lang.String LANG -> h
+    java.lang.String REUSE_SEQ -> i
+    java.lang.String REQUEST_SEQ -> j
+    java.lang.String GPS_INFO -> k
+    java.lang.String MANUFACTURER -> l
+    java.lang.String NETWORK -> m
+    java.lang.String getSSL() -> a
+    void setSSL(java.lang.String) -> a
+    java.lang.String getREPORT_ACK() -> b
+    void setREPORT_ACK(java.lang.String) -> b
+    java.lang.String getGENDER() -> c
+    void setGENDER(java.lang.String) -> c
+    java.lang.String getAGE() -> d
+    void setAGE(java.lang.String) -> d
+    java.lang.String getMODEL() -> e
+    void setMODEL(java.lang.String) -> e
+    java.lang.String getLANG() -> f
+    void setLANG(java.lang.String) -> f
+    java.lang.String getREUSE_SEQ() -> g
+    void setREUSE_SEQ(java.lang.String) -> g
+    java.lang.String getREQUEST_SEQ() -> h
+    void setREQUEST_SEQ(java.lang.String) -> h
+    java.lang.String getALT_CPC_AD() -> i
+    void setALT_CPC_AD(java.lang.String) -> i
+    java.lang.String getALT_CPM_AD() -> j
+    void setALT_CPM_AD(java.lang.String) -> j
+    java.lang.String getGPS_INFO() -> k
+    void setGPS_INFO(java.lang.String) -> k
+    java.lang.String getMANUFACTURER() -> l
+    void setMANUFACTURER(java.lang.String) -> l
+    java.lang.String getNETWORK() -> m
+    void setNETWORK(java.lang.String) -> m
+    com.cauly.android.ad.Message_Config copy() -> n
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.cauly.android.ad.Rotate3dAnimation -> com.cauly.android.ad.Rotate3dAnimation:
+    float mFromDegrees -> a
+    float mToDegrees -> b
+    float mCenterX -> c
+    float mCenterY -> d
+    float mDepthZ -> e
+    boolean mReverse -> f
+    android.graphics.Camera mCamera -> g
+    void initialize(int,int,int,int) -> initialize
+    void applyTransformation(float,android.view.animation.Transformation) -> applyTransformation
+com.cauly.android.ad.SAdLayoutParams -> com.cauly.android.ad.w:
+    android.util.DisplayMetrics metrics -> h
+    android.graphics.Rect rcAreaAd -> a
+    android.graphics.Rect rcOrgAd -> i
+    android.graphics.Rect rcOrgIcon -> j
+    android.graphics.Rect rcOrgLeftLogo -> k
+    android.graphics.Rect rcOrgRightLogo -> l
+    android.graphics.Point ptMarginAd -> m
+    android.graphics.Point ptMarginTitle -> n
+    android.graphics.Point ptMarginDesc -> o
+    android.graphics.Rect rcAd -> b
+    android.graphics.Rect rcIcon -> c
+    android.graphics.Rect rcLeftLogo -> d
+    android.graphics.Rect rcRightLogo -> e
+    android.graphics.PointF ptTitle -> f
+    android.graphics.PointF ptDesc -> g
+    void CalcLayoutParams(android.graphics.Rect,android.graphics.Rect,android.graphics.Rect,android.graphics.Rect,android.graphics.Point,android.graphics.Point,android.graphics.Point) -> a
+    float convertUnitFromDptoPx(float) -> a
+kr.co.darkkaiser.jv.JvActivity -> kr.co.darkkaiser.jv.JvActivity:
+    int LONG_PRESS_TIMEOUT -> b
+    android.app.ProgressDialog mProgressDialog -> c
+    kr.co.darkkaiser.jv.controller.JvMemorizeList mJvMemorizeList -> d
+    android.os.Handler mVocabularyDataLoadHandler -> e
+    android.os.Handler mCustomEventHandler -> f
+    boolean $assertionsDisabled -> a
+    int[] $SWITCH_TABLE$kr$co$darkkaiser$jv$controller$JvMemorizeTargetItem -> g
+    void onCreate(android.os.Bundle) -> onCreate
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    boolean reloadPreference() -> a
+    void refreshMemorizeVocabulary() -> b
+    void showMemorizeVocabulary(kr.co.darkkaiser.jv.data.JapanVocabulary) -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    void onBackPressed() -> onBackPressed
+    java.util.ArrayList checkNewVocabularyDb() -> c
+    boolean updateVocabularyDb(java.lang.String,java.lang.String) -> a
+    void loadMemorizeTargetVocabularyData(boolean) -> a
+    void adjustVocabularySeekBar(android.content.SharedPreferences) -> a
+    android.app.ProgressDialog access$0(kr.co.darkkaiser.jv.JvActivity) -> a
+    void access$1(kr.co.darkkaiser.jv.JvActivity) -> b
+    void access$2(kr.co.darkkaiser.jv.JvActivity) -> c
+    void access$3(kr.co.darkkaiser.jv.JvActivity,android.app.ProgressDialog) -> a
+    android.os.Handler access$4(kr.co.darkkaiser.jv.JvActivity) -> d
+    void access$5(kr.co.darkkaiser.jv.JvActivity,java.lang.String,java.lang.String,boolean) -> a
+    kr.co.darkkaiser.jv.controller.JvMemorizeList access$6(kr.co.darkkaiser.jv.JvActivity) -> e
+    void access$7(kr.co.darkkaiser.jv.JvActivity,kr.co.darkkaiser.jv.data.JapanVocabulary) -> a
+    void access$8(kr.co.darkkaiser.jv.JvActivity) -> f
+    java.util.ArrayList access$9(kr.co.darkkaiser.jv.JvActivity) -> g
+    boolean access$10(kr.co.darkkaiser.jv.JvActivity,java.lang.String,java.lang.String) -> a
+    void access$11(kr.co.darkkaiser.jv.JvActivity,boolean,boolean,boolean) -> a
+    void access$12$8f914e3(kr.co.darkkaiser.jv.JvActivity) -> h
+    int[] $SWITCH_TABLE$kr$co$darkkaiser$jv$controller$JvMemorizeTargetItem() -> d
+kr.co.darkkaiser.jv.JvActivity$1 -> kr.co.darkkaiser.jv.q:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+kr.co.darkkaiser.jv.JvActivity$1$1 -> kr.co.darkkaiser.jv.h:
+    kr.co.darkkaiser.jv.JvActivity$1 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$1$2 -> kr.co.darkkaiser.jv.e:
+    kr.co.darkkaiser.jv.JvActivity$1 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$1$3 -> kr.co.darkkaiser.jv.f:
+    kr.co.darkkaiser.jv.JvActivity$1 this$1 -> a
+    java.lang.String val$newVocabularyDbVersion -> b
+    java.lang.String val$newVocabularyDbFileHash -> c
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$1$4 -> kr.co.darkkaiser.jv.g:
+    kr.co.darkkaiser.jv.JvActivity$1 this$1 -> a
+    java.lang.String val$newVocabularyDbVersion -> b
+    java.lang.String val$newVocabularyDbFileHash -> c
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$10 -> kr.co.darkkaiser.jv.d:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void run() -> run
+kr.co.darkkaiser.jv.JvActivity$11 -> kr.co.darkkaiser.jv.c:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void run() -> run
+kr.co.darkkaiser.jv.JvActivity$12 -> kr.co.darkkaiser.jv.b:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void run() -> run
+kr.co.darkkaiser.jv.JvActivity$13 -> kr.co.darkkaiser.jv.a:
+    boolean mIsUpdateVocabularyDb -> a
+    java.lang.String mNewVocabularyDbVersion -> b
+    java.lang.String mNewVocabularyDbFileHash -> c
+    kr.co.darkkaiser.jv.JvActivity this$0 -> d
+    java.lang.Thread setValues(java.lang.String,java.lang.String,boolean) -> a
+    void run() -> run
+kr.co.darkkaiser.jv.JvActivity$2 -> kr.co.darkkaiser.jv.p:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+kr.co.darkkaiser.jv.JvActivity$2$1 -> kr.co.darkkaiser.jv.k:
+    kr.co.darkkaiser.jv.JvActivity$2 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$2$2 -> kr.co.darkkaiser.jv.j:
+    kr.co.darkkaiser.jv.JvActivity$2 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$3 -> kr.co.darkkaiser.jv.o:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+kr.co.darkkaiser.jv.JvActivity$4 -> kr.co.darkkaiser.jv.n:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    android.view.View makeView() -> makeView
+kr.co.darkkaiser.jv.JvActivity$5 -> kr.co.darkkaiser.jv.m:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    android.view.View makeView() -> makeView
+kr.co.darkkaiser.jv.JvActivity$6 -> kr.co.darkkaiser.jv.l:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.JvActivity$7 -> kr.co.darkkaiser.jv.s:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+kr.co.darkkaiser.jv.JvActivity$8 -> kr.co.darkkaiser.jv.t:
+    kr.co.darkkaiser.jv.JvActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+kr.co.darkkaiser.jv.JvActivity$9 -> kr.co.darkkaiser.jv.u:
+    boolean mIsNowNetworkConnected -> a
+    boolean mIsVocabularyUpdateOnStarted -> b
+    kr.co.darkkaiser.jv.JvActivity this$0 -> c
+    java.lang.Thread setValues(boolean,boolean) -> a
+    void run() -> run
+kr.co.darkkaiser.jv.JvHelper -> kr.co.darkkaiser.jv.i:
+    java.util.ArrayList getLatestVocabularyDbInfo() -> a
+kr.co.darkkaiser.jv.JvPathManager -> kr.co.darkkaiser.jv.r:
+    kr.co.darkkaiser.jv.JvPathManager mInstance -> a
+    java.lang.String mJvVocabularyDbPath -> b
+    java.lang.String mJvUserVocubularyInfoFilePath -> c
+    boolean $assertionsDisabled -> d
+    kr.co.darkkaiser.jv.JvPathManager getInstance() -> a
+    boolean init(android.content.Context) -> a
+    void callUseSDCardCount(android.content.Context,java.lang.String,java.lang.String) -> a
+    java.lang.String getVocabularyDbPath() -> b
+    java.lang.String getUserVocabularyInfoFilePath() -> c
+    boolean isReadyIoDevice() -> d
+    void copyFile(java.lang.String,java.lang.String) -> a
+kr.co.darkkaiser.jv.controller.JvList -> kr.co.darkkaiser.jv.b.b:
+    kr.co.darkkaiser.jv.data.JapanVocabulary getCurrentVocabulary() -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary previousVocabulary(java.lang.StringBuilder) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary nextVocabulary(java.lang.StringBuilder) -> b
+kr.co.darkkaiser.jv.controller.JvListManager -> kr.co.darkkaiser.jv.b.d:
+    kr.co.darkkaiser.jv.controller.JvList mJvList -> a
+    void setVocabularySeekList(kr.co.darkkaiser.jv.controller.JvList) -> a
+    boolean isValid() -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary nextVocabulary(java.lang.StringBuilder) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary previousVocabulary(java.lang.StringBuilder) -> b
+    kr.co.darkkaiser.jv.data.JapanVocabulary getCurrentVocabulary() -> b
+kr.co.darkkaiser.jv.controller.JvMemorizeList -> kr.co.darkkaiser.jv.b.c:
+    java.util.Random mRandom -> a
+    java.util.ArrayList mJvList -> b
+    kr.co.darkkaiser.jv.helper.CircularBuffer mJvListMemorizeSequence -> c
+    int mMemorizeCompletedCount -> d
+    int mCurrentPosition -> e
+    int mMemorizeOrderMethod -> f
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem mJvMemorizeTargetItem -> g
+    boolean $assertionsDisabled -> h
+    boolean reloadPreference(android.content.SharedPreferences) -> a
+    void loadData(android.content.SharedPreferences,boolean) -> a
+    boolean isValidVocabularyPosition() -> b
+    int getCount() -> c
+    void setMemorizeCompletedAtVocabularyPosition() -> d
+    long getIdxAtVocabularyPosition() -> e
+    void saveVocabularyPosition(android.content.SharedPreferences) -> b
+    int getCurrentPosition() -> f
+    kr.co.darkkaiser.jv.data.JapanVocabulary getCurrentVocabulary() -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary movePosition(int) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary previousVocabulary(java.lang.StringBuilder) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary nextVocabulary(java.lang.StringBuilder) -> b
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem getMemorizeTargetItem() -> g
+    java.lang.StringBuilder getMemorizeVocabularyInfo() -> h
+kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem -> kr.co.darkkaiser.jv.b.a:
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem VOCABULARY -> a
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem VOCABULARY_GANA -> b
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem[] ENUM$VALUES -> c
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem[] values() -> values
+    kr.co.darkkaiser.jv.controller.JvMemorizeTargetItem valueOf(java.lang.String) -> valueOf
+kr.co.darkkaiser.jv.controller.JvSearchList -> kr.co.darkkaiser.jv.b.e:
+    int mCurrentPosition -> a
+    java.util.ArrayList mJvListData -> b
+    boolean $assertionsDisabled -> c
+    kr.co.darkkaiser.jv.data.JapanVocabulary getCurrentVocabulary() -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary previousVocabulary(java.lang.StringBuilder) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary nextVocabulary(java.lang.StringBuilder) -> b
+    boolean isValid() -> b
+kr.co.darkkaiser.jv.data.JapanVocabulary -> kr.co.darkkaiser.jv.a.a:
+    long mIdx -> a
+    java.lang.String mVocabulary -> b
+    java.lang.String mVocabularyGana -> c
+    java.lang.String mVocabularyTranslation -> d
+    long mRegistrationDateUTC -> e
+    boolean mMemorizeTarget -> f
+    boolean mMemorizeCompleted -> g
+    long mMemorizeCompletedCount -> h
+    boolean $assertionsDisabled -> i
+    long getIdx() -> a
+    long getRegistrationDate() -> b
+    java.lang.String getRegistrationDateString() -> c
+    java.lang.String getVocabulary() -> d
+    java.lang.String getVocabularyGana() -> e
+    java.lang.String getVocabularyTranslation() -> f
+    boolean isMemorizeTarget() -> g
+    void setMemorizeTarget(boolean,boolean) -> a
+    boolean isMemorizeCompleted() -> h
+    void setMemorizeCompleted(boolean,boolean,boolean) -> a
+    void setFirstOnceMemorizeCompletedCount(long) -> a
+    long getMemorizeCompletedCount() -> i
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator -> kr.co.darkkaiser.jv.a.b:
+    java.util.Comparator mJvVocabularyComparator -> a
+    java.util.Comparator mJvVocabularyGanaComparator -> b
+    java.util.Comparator mJvVocabularyTranslationComparator -> c
+    java.util.Comparator mJvRegistrationDateUpComparator -> d
+    java.util.Comparator mJvRegistrationDateDownComparator -> e
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator$1 -> kr.co.darkkaiser.jv.a.g:
+    java.text.Collator collator -> a
+    int compare(java.lang.Object,java.lang.Object) -> compare
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator$2 -> kr.co.darkkaiser.jv.a.f:
+    java.text.Collator collator -> a
+    int compare(java.lang.Object,java.lang.Object) -> compare
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator$3 -> kr.co.darkkaiser.jv.a.e:
+    java.text.Collator collator -> a
+    int compare(java.lang.Object,java.lang.Object) -> compare
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator$4 -> kr.co.darkkaiser.jv.a.d:
+    int compare(java.lang.Object,java.lang.Object) -> compare
+kr.co.darkkaiser.jv.data.JapanVocabularyComparator$5 -> kr.co.darkkaiser.jv.a.h:
+    int compare(java.lang.Object,java.lang.Object) -> compare
+kr.co.darkkaiser.jv.data.JapanVocabularyManager -> kr.co.darkkaiser.jv.a.c:
+    kr.co.darkkaiser.jv.data.JapanVocabularyManager mInstance -> a
+    android.database.sqlite.SQLiteDatabase mJvVocabularySqLite -> b
+    java.util.Hashtable mJvTable -> c
+    boolean $assertionsDisabled -> d
+    kr.co.darkkaiser.jv.data.JapanVocabularyManager getInstance() -> a
+    boolean initDataFromDB(android.content.Context) -> a
+    void searchVocabulary(android.content.Context,kr.co.darkkaiser.jv.view.list.JvSearchListCondition,java.util.ArrayList) -> a
+    kr.co.darkkaiser.jv.data.JapanVocabulary getJapanVocabulary(long) -> a
+    int getMemorizeTargetJvList(java.util.ArrayList) -> a
+    void rememorizeAllMemorizeTarget() -> b
+    void writeUserVocabularyInfo() -> c
+    boolean updateMemorizeField(int,boolean,java.util.ArrayList) -> a
+    java.lang.String getJapanVocabularyDetailDescription(java.lang.String) -> a
+    java.lang.String getJapanVocabularyExample(long) -> b
+    java.util.ArrayList getVocabularyInfo() -> d
+    long getUpdatedJapanVocabularyInfo(long,java.lang.StringBuilder) -> a
+kr.co.darkkaiser.jv.helper.ByteUtils -> kr.co.darkkaiser.jv.helper.c:
+    java.lang.Byte DEFAULT_BYTE -> a
+    java.lang.String toHexString(byte[]) -> a
+kr.co.darkkaiser.jv.helper.CircularBuffer -> kr.co.darkkaiser.jv.helper.b:
+    int mHead -> a
+    int mTail -> b
+    java.lang.Object[] mBufferData -> c
+    void push(java.lang.Object) -> a
+    java.lang.Object pop() -> a
+    java.lang.Object popNoRemove() -> b
+    void clear() -> c
+kr.co.darkkaiser.jv.helper.FileHash -> kr.co.darkkaiser.jv.helper.a:
+    boolean $assertionsDisabled -> a
+    byte[] getHash(java.io.File) -> a
+kr.co.darkkaiser.jv.helper.LinearLayoutForPatternBackground -> kr.co.darkkaiser.jv.helper.LinearLayoutForPatternBackground:
+    android.graphics.drawable.Drawable background -> a
+    void dispatchDraw(android.graphics.Canvas) -> dispatchDraw
+kr.co.darkkaiser.jv.view.detail.JvDetailActivity -> kr.co.darkkaiser.jv.view.detail.JvDetailActivity:
+    android.view.GestureDetector mGestureScanner -> a
+    kr.co.darkkaiser.jv.controller.JvListManager mJvListManager -> b
+    boolean $assertionsDisabled -> c
+    void setVocabularySeekList(kr.co.darkkaiser.jv.controller.JvList) -> a
+    void onCreate(android.os.Bundle) -> onCreate
+    void onDestroy() -> onDestroy
+    void updateDetailVocabularyInfo(kr.co.darkkaiser.jv.data.JapanVocabulary) -> a
+    boolean onDown(android.view.MotionEvent) -> onDown
+    boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
+    void onLongPress(android.view.MotionEvent) -> onLongPress
+    boolean onScroll(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onScroll
+    void onShowPress(android.view.MotionEvent) -> onShowPress
+    boolean onSingleTapUp(android.view.MotionEvent) -> onSingleTapUp
+    void onClick(android.view.View) -> onClick
+    boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+    boolean dispatchTouchEvent(android.view.MotionEvent) -> dispatchTouchEvent
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity -> kr.co.darkkaiser.jv.view.list.JvSearchListActivity:
+    android.view.WindowManager mWindowManager -> a
+    android.content.SharedPreferences mPreferences -> b
+    android.app.ProgressDialog mProgressDialog -> c
+    kr.co.darkkaiser.jv.view.list.JvSearchListAdapter mJvListAdapter -> d
+    java.util.ArrayList mJvListData -> e
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod mJvListSortMethod -> f
+    java.lang.Thread mJvListSearchThread -> g
+    kr.co.darkkaiser.jv.view.list.JvSearchListCondition mJvListSearchCondition -> h
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity$ScrollBarThumb mScrollThumb -> i
+    boolean mUseModeScrollBarThumb -> j
+    boolean mVisibleScrollBarThumb -> k
+    android.view.WindowManager$LayoutParams mScrollBarThumbLayout -> l
+    int mActivityResultCode -> m
+    android.os.Handler mJvListDataChangedHandler -> n
+    android.os.Handler mScrollBarThumbEventHandler -> o
+    boolean $assertionsDisabled -> p
+    int[] $SWITCH_TABLE$kr$co$darkkaiser$jv$view$list$JvSearchListSortMethod -> q
+    void onCreate(android.os.Bundle) -> onCreate
+    void updateJLPTLevelButtonText() -> a
+    void onBackPressed() -> onBackPressed
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void memorizeSetupVocabulary(int,boolean) -> a
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    void startSortList(kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod) -> a
+    void onListItemClick(android.widget.ListView,android.view.View,int,long) -> onListItemClick
+    void searchVocabulary() -> b
+    void updateVocabularyInfo() -> c
+    void onClick(android.view.View) -> onClick
+    void onCreateContextMenu(android.view.ContextMenu,android.view.View,android.view.ContextMenu$ContextMenuInfo) -> onCreateContextMenu
+    boolean onContextItemSelected(android.view.MenuItem) -> onContextItemSelected
+    void onScroll(android.widget.AbsListView,int,int,int) -> onScroll
+    void onScrollStateChanged(android.widget.AbsListView,int) -> onScrollStateChanged
+    void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    kr.co.darkkaiser.jv.view.list.JvSearchListAdapter access$0(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> a
+    void access$1(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> b
+    android.app.ProgressDialog access$2(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> c
+    void access$3$2237cbea(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> d
+    void access$4$2b52edbb(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> e
+    int access$5(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> f
+    void access$6(kr.co.darkkaiser.jv.view.list.JvSearchListActivity,int) -> a
+    void access$7$55a6baf6(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> g
+    void access$8$55a6baf6(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> h
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity$ScrollBarThumb access$9(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> i
+    java.util.ArrayList access$10(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> j
+    void access$11(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> k
+    android.os.Handler access$12(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> l
+    android.view.WindowManager$LayoutParams access$13(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> m
+    android.view.WindowManager access$14(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> n
+    android.os.Handler access$15(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> o
+    void access$16(kr.co.darkkaiser.jv.view.list.JvSearchListActivity,int,boolean) -> a
+    android.content.SharedPreferences access$17(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> p
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod access$18(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> q
+    int[] $SWITCH_TABLE$kr$co$darkkaiser$jv$view$list$JvSearchListSortMethod() -> d
+    java.lang.Thread access$20(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> r
+    kr.co.darkkaiser.jv.view.list.JvSearchListCondition access$21(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> s
+    void access$22(kr.co.darkkaiser.jv.view.list.JvSearchListActivity) -> t
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$1 -> kr.co.darkkaiser.jv.view.list.p:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$10 -> kr.co.darkkaiser.jv.view.list.c:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$11 -> kr.co.darkkaiser.jv.view.list.d:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$2 -> kr.co.darkkaiser.jv.view.list.k:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$3 -> kr.co.darkkaiser.jv.view.list.j:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    int val$itemId -> b
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$4 -> kr.co.darkkaiser.jv.view.list.i:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    int val$itemId -> b
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$5 -> kr.co.darkkaiser.jv.view.list.h:
+    int mMenuItemId -> a
+    boolean mNotSearchVocabularyTargetCancel -> b
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> c
+    java.lang.Thread setValues(int,boolean) -> a
+    void run() -> run
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$6 -> kr.co.darkkaiser.jv.view.list.o:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void run() -> run
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$7 -> kr.co.darkkaiser.jv.view.list.n:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void onCancel(android.content.DialogInterface) -> onCancel
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$8 -> kr.co.darkkaiser.jv.view.list.m:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int,boolean) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$9 -> kr.co.darkkaiser.jv.view.list.l:
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$JvListSearchThread -> kr.co.darkkaiser.jv.view.list.q:
+    kr.co.darkkaiser.jv.view.list.JvSearchListCondition mJvListSearchCondition -> a
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> b
+    boolean $assertionsDisabled -> c
+    void run() -> run
+kr.co.darkkaiser.jv.view.list.JvSearchListActivity$ScrollBarThumb -> kr.co.darkkaiser.jv.view.list.f:
+    android.widget.ListView mListView -> a
+    int mThumbHeight -> b
+    int mTitleBarHeight -> c
+    int mListViewTraverseHeight -> d
+    boolean mAccInitiated -> e
+    kr.co.darkkaiser.jv.view.list.JvSearchListActivity this$0 -> f
+    boolean $assertionsDisabled -> g
+    void reset() -> a
+    int getScrollBarThumbLayoutX() -> b
+    void onItemScroll$4868d30e(int,int) -> a
+    boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+    int getTitleBarHeight() -> c
+kr.co.darkkaiser.jv.view.list.JvSearchListAdapter -> kr.co.darkkaiser.jv.view.list.g:
+    int mLayout -> a
+    android.content.Context mContext -> b
+    java.util.ArrayList mJvList -> c
+    android.os.Handler mJvListDataChangedHandler -> d
+    android.view.LayoutInflater mLayoutInflater -> e
+    boolean $assertionsDisabled -> f
+    int getCount() -> getCount
+    long getItemId(int) -> getItemId
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    java.lang.Object getItem(int) -> getItem
+    java.util.ArrayList access$1(kr.co.darkkaiser.jv.view.list.JvSearchListAdapter) -> a
+    android.os.Handler access$2(kr.co.darkkaiser.jv.view.list.JvSearchListAdapter) -> b
+kr.co.darkkaiser.jv.view.list.JvSearchListAdapter$1 -> kr.co.darkkaiser.jv.view.list.e:
+    kr.co.darkkaiser.jv.view.list.JvSearchListAdapter this$0 -> a
+    void onClick(android.view.View) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListAdapter$2 -> kr.co.darkkaiser.jv.view.list.a:
+    kr.co.darkkaiser.jv.view.list.JvSearchListAdapter this$0 -> a
+    void onClick(android.view.View) -> onClick
+kr.co.darkkaiser.jv.view.list.JvSearchListCondition -> kr.co.darkkaiser.jv.view.list.r:
+    android.content.Context mContext -> a
+    android.content.SharedPreferences mPreferences -> b
+    java.lang.String mScSearchWord -> c
+    int mScMemorizeTargetPosition -> d
+    int mScMemorizeCompletedPosition -> e
+    boolean mScAllRegDateSearch -> f
+    java.lang.String mScFirstSearchDate -> g
+    java.lang.String mScLastSearchDate -> h
+    boolean[] mScCheckedJLPTLevelArray -> i
+    boolean $assertionsDisabled -> j
+    java.lang.String getSearchWord() -> a
+    void setSearchWord(java.lang.String) -> a
+    int getMemorizeTargetPosition() -> b
+    void setMemorizeTargetPosition(int) -> a
+    int getMemorizeCompletedPosition() -> c
+    void setMemorizeCompletedPosition(int) -> b
+    boolean isAllRegDateSearch() -> d
+    void setAllRegDateSearch(boolean) -> a
+    java.lang.String getFirstSearchDate() -> e
+    java.lang.String getLastSearchDate() -> f
+    void setSearchDateRange(java.lang.String,java.lang.String) -> a
+    boolean[] getCheckedJLPTLevelArray() -> g
+    void setCheckedJLPTLevel(int,boolean) -> a
+    void commit() -> h
+kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod -> kr.co.darkkaiser.jv.view.list.b:
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod VOCABULARY -> a
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod VOCABULARY_GANA -> b
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod VOCABULARY_TRANSLATION -> c
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod REGISTRATION_DATE_UP -> d
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod REGISTRATION_DATE_DOWN -> e
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod[] ENUM$VALUES -> f
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod[] values() -> values
+    kr.co.darkkaiser.jv.view.list.JvSearchListSortMethod valueOf(java.lang.String) -> valueOf
+kr.co.darkkaiser.jv.view.option.OptionActivity -> kr.co.darkkaiser.jv.view.option.OptionActivity:
+    java.lang.String appVersion -> a
+    java.lang.String installedDbVersion -> b
+    android.preference.PreferenceScreen prefJvDbVersion -> c
+    kr.co.darkkaiser.jv.view.option.OptionActivity$DoConfirmVocabularyDbJob doConfirmVocabularyDbJob -> d
+    void onCreate(android.os.Bundle) -> onCreate
+    void onDestroy() -> onDestroy
+    void onResume() -> onResume
+    void onPause() -> onPause
+    void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
+    android.preference.PreferenceScreen access$0(kr.co.darkkaiser.jv.view.option.OptionActivity) -> a
+    java.lang.String access$1(kr.co.darkkaiser.jv.view.option.OptionActivity) -> b
+    java.lang.String access$2(kr.co.darkkaiser.jv.view.option.OptionActivity) -> c
+    void access$3(kr.co.darkkaiser.jv.view.option.OptionActivity,android.preference.PreferenceScreen) -> a
+kr.co.darkkaiser.jv.view.option.OptionActivity$DoConfirmVocabularyDbJob -> kr.co.darkkaiser.jv.view.option.a:
+    kr.co.darkkaiser.jv.view.option.OptionActivity this$0 -> a
+    java.lang.String doInBackground$4af589aa() -> a
+    void onPostExecute(java.lang.Object) -> onPostExecute
+    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
