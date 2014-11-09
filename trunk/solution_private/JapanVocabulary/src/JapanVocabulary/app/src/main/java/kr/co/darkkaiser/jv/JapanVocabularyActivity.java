@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import kr.co.darkkaiser.jv.common.JvDefines;
+import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.JvPathManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
@@ -58,7 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
-//@@@@@
+//@@@@@ todo
 public class JapanVocabularyActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "JapanVocabularyActivity";
@@ -200,8 +200,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			
 			@Override
 			public void onClick(View v) {
-				SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
+				SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+				if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
 					// 진동을 발생시킨다.
 					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 					vibrator.vibrate(30);
@@ -216,8 +216,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         	
 			@Override
 			public void onClick(View v) {
-				SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(JvDefines.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
+				SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+				if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
 					// 진동을 발생시킨다.
 					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 					vibrator.vibrate(30);
@@ -228,8 +228,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		});
 
         // 시작시 단어 업데이트할지의 여부를 확인한 후, 단어 데이터를 업데이트한다. 
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		boolean isVocabularyUpdateOnStarted = preferences.getBoolean(JvDefines.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, true);
+		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, true);
 
         // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어 데이터를 업데이트한다.
         boolean isNowNetworkConnected = false;
@@ -424,11 +424,11 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	}
 
 	private boolean reloadPreference() {
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
 		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
-		if (preferences.getBoolean(JvDefines.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, true) == true) {
+		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, true) == true) {
 			vocabularyTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			vocabularyTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));						
 			vocabularyTranslationTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -440,7 +440,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			vocabularyTranslationTextSwitcher.setOutAnimation(null);			
 		}
 
-		if (preferences.getBoolean(JvDefines.JV_SPN_SHOW_VOCABULARY_TRANSLATION, false) == false) {
+		if (preferences.getBoolean(Constants.JV_SPN_SHOW_VOCABULARY_TRANSLATION, false) == false) {
 			vocabularyTranslationTextSwitcher.setVisibility(View.GONE);
 		} else {
 			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
@@ -614,7 +614,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			return;
 		}
 
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mMemorizeList.saveVocabularyPosition(preferences);
 
 		super.onBackPressed();
@@ -809,8 +809,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 	private ArrayList<String> checkNewVocabularyDb() {
 		// 로컬 단어 DB의 버전정보를 구한다.
-		SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		String localDbVersion = mPreferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
+		SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
 
 		try {
 			ArrayList<String> vocaDbInfo = JapanVocabularyDbHelper.getLatestVocabularyDbInfoList();
@@ -823,7 +823,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
             // @@@@@ 임시주석
 //			// 단어 DB의 갱신 여부를 확인한다.
 //			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
-//					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(JvDefines.JV_DB_VERSION_FROM_ASSETS) == false) {
+//					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(Constants.JV_DB_VERSION_FROM_ASSETS) == false) {
 //				return vocaDbInfo;
 //			}
 		} catch (Exception e) {
@@ -888,7 +888,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 		// 단어 DB 파일을 내려받는다.
 		try {
-			URL url = new URL(JvDefines.JV_DB_DOWNLOAD_URL);
+			URL url = new URL(Constants.JV_DB_DOWNLOAD_URL);
 
 			URLConnection con = url.openConnection();
 			int contentLength = con.getContentLength();
@@ -946,8 +946,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 					fos.write(baf.toByteArray());
 					fos.close();
 
-					SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-					mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+					SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+					mPreferences.edit().putString(Constants.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
 				} else {
 					File f = new File(String.format("%s.tmp", jvDbPath));
 					f.delete();
@@ -970,8 +970,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 						f.renameTo(dstFile);
 
 						updateSucceeded = true;
-						SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-						mPreferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+						SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+						mPreferences.edit().putString(Constants.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
 					} else {
 						f.delete();
 
@@ -1020,14 +1020,14 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
 			mVocabularyDataLoadHandler.sendMessage(msg);
 		} else if (updateSucceeded == true) {
-			SharedPreferences mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-			long prevMaxIdx = mPreferences.getLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
+			SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+			long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
 			
 			StringBuilder sb = new StringBuilder();
 			long newMaxIdx = JapanVocabularyManager.getInstance().getUpdatedJapanVocabularyInfo(prevMaxIdx, sb);
 
 			if (newMaxIdx != -1) {
-				mPreferences.edit().putLong(JvDefines.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
+				mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
 				
 				// 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
 				if (prevMaxIdx != -1) {
@@ -1055,7 +1055,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mMemorizeList.loadData(preferences, launchApp);
 
 		adjustVocabularySeekBar(preferences);
@@ -1070,7 +1070,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
 
 		// '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
-		if (memorizeVocabularyCount == 0 || Integer.parseInt(preferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
+		if (memorizeVocabularyCount == 0 || Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
 			msg.arg1 = 0;
 		} else {
 			msg.arg1 = 1;

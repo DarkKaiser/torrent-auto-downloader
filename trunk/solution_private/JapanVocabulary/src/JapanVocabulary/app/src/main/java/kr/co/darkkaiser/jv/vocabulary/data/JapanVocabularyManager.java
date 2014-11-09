@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-//@@@@@
+//@@@@@ TODO
 public class JapanVocabularyManager {
 
 	private static final String TAG = "JvManager";
@@ -142,16 +142,16 @@ public class JapanVocabularyManager {
 		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbPath()) == false;
 //@@@@@
 //		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
-//		SharedPreferences preferences = context.getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+//		SharedPreferences preferences = context.getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
 //
 //		// 단어 DB 파일이 존재하는지 확인한다.
 //		File f = new File(jvDbPath);
 //		if (f.exists() == true) {
 //			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
-//			String jvDbVersion = preferences.getString(JvDefines.JV_SPN_DB_VERSION, "");
+//			String jvDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, "");
 //			if (jvDbVersion.equals("") == false) {
-//				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
-//				int assetsDbVersion = Integer.parseInt(JvDefines.JV_DB_VERSION_FROM_ASSETS.substring(JvDefines.JV_DB_VERSION_PREFIX.length()));
+//				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(Constants.JV_DB_VERSION_PREFIX.length()));
+//				int assetsDbVersion = Integer.parseInt(Constants.JV_DB_VERSION_FROM_ASSETS.substring(Constants.JV_DB_VERSION_PREFIX.length()));
 //
 //				if (currentDbVersion >= assetsDbVersion) {
 //					return;
@@ -168,14 +168,14 @@ public class JapanVocabularyManager {
 //	        try {
 //	            outFile.createNewFile();
 //	            os = new FileOutputStream(outFile);
-//	            is = context.getAssets().open(JvDefines.JV_VOCABULARY_DB);
+//	            is = context.getAssets().open(Constants.JV_VOCABULARY_DB);
 //
 //	            byte[] buffer = new byte[is.available()];
 //
 //	            is.read(buffer);
 //	            os.write(buffer);
 //
-//				preferences.edit().putString(JvDefines.JV_SPN_DB_VERSION, JvDefines.JV_DB_VERSION_FROM_ASSETS).commit();
+//				preferences.edit().putString(Constants.JV_SPN_DB_VERSION, Constants.JV_DB_VERSION_FROM_ASSETS).commit();
 //	        } catch (Exception e) {
 //	            e.printStackTrace();
 //	        } finally {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import kr.co.darkkaiser.jv.common.JvDefines;
+import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.common.MemorizeTargetItem;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
@@ -15,7 +15,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-//@@@@@
+//@@@@@todo
 public class MemorizeTargetVocabularyList implements IVocabularyList {
 	
 	private Random mRandom = new Random();
@@ -36,7 +36,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	private int mMemorizeOrderMethod = 0/* 랜덤 */;
 
     // (환경설정 값)화면에 출력 할 암기 대상 단어의 항목(한자, 히라가나/가타가나)
-	private MemorizeTargetItem mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
+	private MemorizeTarget mMemorizeTarget = MemorizeTarget.VOCABULARY;
 
 	public MemorizeTargetVocabularyList() {
 		
@@ -46,17 +46,17 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		assert preferences != null;
 
 		// 화면에 출력 할 암기 대상 단어의 항목을 읽는다.
-		String memorizeTargetItem = preferences.getString(JvDefines.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
+		String memorizeTargetItem = preferences.getString(Constants.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
 		if (TextUtils.equals(memorizeTargetItem, "0") == true)
-			mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY;
+			mMemorizeTarget = MemorizeTarget.VOCABULARY;
 		else
-			mMemorizeTargetItem = MemorizeTargetItem.VOCABULARY_GANA;
+			mMemorizeTarget = MemorizeTarget.VOCABULARY_GANA;
 
 		// 단어 암기 순서를 읽는다.
 		int prevMemorizeOrderMethod = mMemorizeOrderMethod;
-		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
+		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
 
-		return (mMemorizeOrderMethod != prevMemorizeOrderMethod ? true : false);
+		return (mMemorizeOrderMethod != prevMemorizeOrderMethod);
 	}
 
 	public synchronized void loadData(SharedPreferences preferences, boolean launchApp) {
@@ -89,14 +89,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 
 	public synchronized boolean isValidVocabularyPosition() {
-		if (mCurrentPosition < 0)
-			return false;
-		
-		if (mCurrentPosition >= mVocabularyListData.size())
-			return false;
-		
-		return true;
-	}
+        return mCurrentPosition >= 0 && mCurrentPosition < mVocabularyListData.size();
+    }
 	
 	public synchronized int getCount() {
 		return mVocabularyListData.size();
@@ -127,10 +121,10 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	private void loadVocabularyPosition(SharedPreferences preferences) {
 		assert preferences != null;
 
-		int latestMemorizeOrderMethod = preferences.getInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, 0/* 랜덤 */);
+		int latestMemorizeOrderMethod = preferences.getInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, 0/* 랜덤 */);
 		if (latestMemorizeOrderMethod == mMemorizeOrderMethod && mMemorizeOrderMethod != 0/* 랜덤 */) {
 			int prevCurrentPosition = mCurrentPosition;
-			mCurrentPosition = preferences.getInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
+			mCurrentPosition = preferences.getInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
 			
 			if (isValidVocabularyPosition() == false) {
 				mCurrentPosition = prevCurrentPosition;
@@ -142,14 +136,14 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		assert preferences != null;
 
 		Editor edit = preferences.edit();
-		edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, mMemorizeOrderMethod);
+		edit.putInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, mMemorizeOrderMethod);
 		if (mMemorizeOrderMethod == 0/* 랜덤 */) {
-			edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
+			edit.putInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
 		} else {
 			if (mCurrentPosition != -1) {
-				edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition - 1);
+				edit.putInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition - 1);
 			} else {
-				edit.putInt(JvDefines.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition);
+				edit.putInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, mCurrentPosition);
 			}			
 		}
 		
@@ -189,7 +183,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		if (value != null) {
 			int prevCurrentPosition = mCurrentPosition;
 
-			mCurrentPosition = (int)value;
+			mCurrentPosition = value;
 			if (isValidVocabularyPosition() == true) {
 				return mVocabularyListData.get(mCurrentPosition);
 			} else {
@@ -219,7 +213,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			if (isValidVocabularyPosition() == true) {
 				Integer value = mVocabularyListMemorizeSequence.popNoRemove();
 				if (value != null) {
-					if (mCurrentPosition != (int)value) {
+					if (mCurrentPosition != value) {
 						mVocabularyListMemorizeSequence.push(mCurrentPosition);
 					}
 				} else {
@@ -277,8 +271,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		return null;
 	}
 	
-	public MemorizeTargetItem getMemorizeTargetItem() {
-		return mMemorizeTargetItem;
+	public MemorizeTarget getMemorizeTargetItem() {
+		return mMemorizeTarget;
 	}
 
 	public StringBuilder getMemorizeVocabularyInfo() {

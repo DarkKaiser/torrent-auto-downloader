@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.view.list;
 
-//@@@@@
+//@@@@@ todo
 public enum JvSearchListSortMethod {
 
 	// 한자

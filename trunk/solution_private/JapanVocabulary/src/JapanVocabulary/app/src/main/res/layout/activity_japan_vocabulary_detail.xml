@@ -5,24 +5,9 @@
     android:layout_height="fill_parent"
     android:clickable="true"
     >
-    <!-- @@@@@ -->
-	<com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
-		android:id="@+id/xmladview"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		app:appcode="wCr75ZtDLm"
-		app:effect="RightSlide"
-		app:gps="off"
-		app:allowcall="true"
-		app:dynamicReloadInterval="true"
-		app:reloadInterval="20"
-		app:bannerHeight="Fixed"
-		/>
-	<ScrollView 
+	<ScrollView
 	   	android:layout_width="fill_parent"
 	   	android:layout_height="fill_parent"
-	   	android:layout_above="@id/xmladview"
 	   	android:scrollbarStyle="outsideOverlay"
 	   	>
 		<LinearLayout 
@@ -153,7 +138,6 @@
 		android:id="@+id/move_vocabulary_area"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/xmladview"
 		android:paddingLeft="10dp"
 		android:paddingTop="10dp"
 		android:paddingRight="10dp"

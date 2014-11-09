@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-import kr.co.darkkaiser.jv.common.JvDefines;
+import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
@@ -61,7 +61,7 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-//@@@@@
+//@@@@@ todo
 public class JvSearchListActivity extends ListActivity implements OnClickListener, OnScrollListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
@@ -107,8 +107,8 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		setTitle(String.format("%s - 단어검색", getResources().getString(R.string.app_name)));
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
-		mPreferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSortMethod = JvSearchListSortMethod.valueOf(mPreferences.getString(JvDefines.JV_SPN_LIST_SORT_METHOD, JvSearchListSortMethod.REGISTRATION_DATE_DOWN.name()));
+		mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		mJvListSortMethod = JvSearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, JvSearchListSortMethod.REGISTRATION_DATE_DOWN.name()));
 		mJvListSearchCondition = new JvSearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
@@ -412,7 +412,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 			@Override
 			public void run() {
 				// 변경된 정렬 방법을 저장한다.
-				mPreferences.edit().putString(JvDefines.JV_SPN_LIST_SORT_METHOD, mJvListSortMethod.name()).commit();
+				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mJvListSortMethod.name()).commit();
 
 				// 리스트 데이터 정렬합니다.
 				sortList();

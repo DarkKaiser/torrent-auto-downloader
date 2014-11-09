@@ -9,7 +9,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 
-import kr.co.darkkaiser.jv.common.JvDefines;
+import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyDbHelper;
 import kr.co.darkkaiser.jv.R;
 
@@ -24,7 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferenceManager().setSharedPreferencesName(JvDefines.JV_SHARED_PREFERENCE_NAME);
+		getPreferenceManager().setSharedPreferencesName(Constants.JV_SHARED_PREFERENCE_NAME);
 		addPreferencesFromResource(R.xml.pref_settings_activity);
 
 		try {
@@ -33,8 +33,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			e.printStackTrace();
 		}
 
-		SharedPreferences preferences = getSharedPreferences(JvDefines.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		installedDbVersion = preferences.getString(JvDefines.JV_SPN_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		installedDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
 
         prefJvDbVersion = (PreferenceScreen)findPreference("jv_program_info");
 		prefJvDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
@@ -66,6 +66,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
 	}
 	
 	private class DoConfirmVocabularyDbJob extends AsyncTask<String, Integer, String> {

@@ -1,7 +1,7 @@
 package kr.co.darkkaiser.jv.common;
 
-//@@@@@
-public class JvDefines {
+//@@@@@ todo
+public class Constants {
 
     /*
      * 공용 환경설정 이름
@@ -84,7 +84,7 @@ public class JvDefines {
     public static final String JV_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/jv2.db";
 
     /*
-     * 단어 DB 버전 정보 확인 URL @@@@@
+     * 단어 DB 버전 정보 확인 URL @@@@@ url 변경
      */
     public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.xml";
 

@@ -16,9 +16,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import kr.co.darkkaiser.jv.common.JvDefines;
+import kr.co.darkkaiser.jv.common.Constants;
 
-// @@@@@
+// @@@@@ todo
 public class JvPathManager {
 
 	private static final String TAG = "JvPathManager";
@@ -42,11 +42,11 @@ public class JvPathManager {
 	public boolean init(Context context) {
 		assert context != null;
 		
-		String jvVocabularyDbPath = context.getDatabasePath(JvDefines.JV_VOCABULARY_DB).getAbsolutePath();
-		String jvUserVocubularyInfoFilePath = context.getDatabasePath(JvDefines.JV_USER_VOCABULARY_INFO_FILE).getAbsolutePath();
+		String jvVocabularyDbPath = context.getDatabasePath(Constants.JV_VOCABULARY_DB).getAbsolutePath();
+		String jvUserVocubularyInfoFilePath = context.getDatabasePath(Constants.JV_USER_VOCABULARY_INFO_FILE).getAbsolutePath();
 		
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
-		String path = jvVocabularyDbPath.substring(0, jvVocabularyDbPath.length() - JvDefines.JV_VOCABULARY_DB.length());
+		String path = jvVocabularyDbPath.substring(0, jvVocabularyDbPath.length() - Constants.JV_VOCABULARY_DB.length());
 		File f = new File(path);
 		if (f.exists() == false) {
 			if (f.mkdirs() == false) {
@@ -56,10 +56,10 @@ public class JvPathManager {
 		}
 
 		// SDCARD 영역에 기존 단어 DB 파일이 존재하는지 확인한 후 존재한다면 복사한 후 삭제한다.
-		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
+		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), Constants.JV_MAIN_FOLDER_NAME);
 		f = new File(appMainPath);
 		if (f.exists() == true) {
-			String sdcJvVocabularyDbPath = String.format("%s%s", appMainPath, JvDefines.JV_VOCABULARY_DB);
+			String sdcJvVocabularyDbPath = String.format("%s%s", appMainPath, Constants.JV_VOCABULARY_DB);
 
 			// 단어 DB 파일을 확인한다.
 			f = new File(sdcJvVocabularyDbPath);
@@ -72,7 +72,7 @@ public class JvPathManager {
 				
 				f.delete();
 				
-				String sdcJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
+				String sdcJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, Constants.JV_USER_VOCABULARY_INFO_FILE);
 
 				// 사용자 정보 DB 파일을 확인한다.
 				f = new File(sdcJvUserVocubularyInfoFilePath);
@@ -87,7 +87,7 @@ public class JvPathManager {
 					}
 					
 					// 파일명을 백업해둔다.
-					String sdcJvUserVocubularyInfoBackupFilePath = String.format("%s%s.backup", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
+					String sdcJvUserVocubularyInfoBackupFilePath = String.format("%s%s.backup", appMainPath, Constants.JV_USER_VOCABULARY_INFO_FILE);
 					f.renameTo(new File(sdcJvUserVocubularyInfoBackupFilePath));
 				}
 			}
@@ -104,14 +104,14 @@ public class JvPathManager {
 		assert param1 != null && param2 != null;
 
 //		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
-//		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), JvDefines.JV_MAIN_FOLDER_NAME);
+//		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), Constants.JV_MAIN_FOLDER_NAME);
 //		File f = new File(appMainPath);
 //		if (f.exists() == false) {
 //			f.mkdir();
 //		}
 //
-//		mJvVocabularyDbPath = String.format("%s%s", appMainPath, JvDefines.JV_VOCABULARY_DB);
-//		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, JvDefines.JV_USER_VOCABULARY_INFO_FILE);
+//		mJvVocabularyDbPath = String.format("%s%s", appMainPath, Constants.JV_VOCABULARY_DB);
+//		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, Constants.JV_USER_VOCABULARY_INFO_FILE);
 
 		try {
 			// 단어 DB 파일의 경로가 SDCARD를 사용하는 사용자를 카운트하기 위해 웹페이지를 호출한다. 

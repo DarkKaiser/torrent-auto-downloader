@@ -1,6 +1,6 @@
-package kr.co.darkkaiser.jv.common;
+package kr.co.darkkaiser.jv.vocabulary;
 
-public enum MemorizeTargetItem {
+public enum MemorizeTarget {
 
 	// 한자
 	VOCABULARY,
