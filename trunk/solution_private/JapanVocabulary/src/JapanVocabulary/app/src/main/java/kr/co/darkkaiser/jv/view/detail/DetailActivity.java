@@ -146,6 +146,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
             mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
 
+            // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
+            AQuery aq = new AQuery(DetailActivity.this);
+            aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
+            aq.id(R.id.move_vocabulary_button_panel).visible();
+
             SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
                 // 진동을 발생시킨다.
@@ -243,7 +248,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
                     aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
 
-                    // 이전/다음 버튼이 이미 숨겨졌으므로, 일정시간 이후에 숨겨지도록 하는 기능을 중지한다.
+                    // 이전/다음 버튼이 이미 숨겨져 있으므로, 일정시간 이후에 숨겨지도록 하는 기능을 중지한다.
                     mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
                 } else {
                     aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
