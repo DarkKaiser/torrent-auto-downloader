@@ -8,6 +8,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 
+// TODO 프로요에서 액션바가 제대로 표시되지 않음
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     @Override
