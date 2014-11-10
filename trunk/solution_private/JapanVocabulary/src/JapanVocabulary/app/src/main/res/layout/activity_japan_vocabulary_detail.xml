@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#000000"
     android:clickable="true"
     >
 	<ScrollView
-        android:id="@+id/ddd"
+        android:id="@+id/vocabulary_detail_info_panel"
 	   	android:layout_width="fill_parent"
 	   	android:layout_height="fill_parent"
 	   	android:scrollbarStyle="outsideOverlay"
-        android:background="#00000000"
 	   	>
 		<LinearLayout 
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
+		    android:layout_height="wrap_content"
 		    >
 	    	<RelativeLayout
 	    		android:layout_width="fill_parent"
 	    		android:layout_height="wrap_content"
-	    		android:background="@color/jv_detail_title_bg"
+	    		android:background="@color/detail_activity_title_background"
 	    		>
 		    	<TextView 
 			    	android:layout_width="fill_parent" 
-			    	android:layout_height="wrap_content" 
-			    	android:textSize="15dp"
-			    	android:text="한자"
-			    	/>
+			    	android:layout_height="wrap_content"
+                    android:text="@string/vocabulary_hanja"
+                    android:textSize="15dp"
+                    tools:ignore="SpUsage"
+                    />
                 <TextView
-                    android:id="@+id/memorize_uncompleted_text"
+                    android:id="@+id/memorize_uncompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="미암기"
-                    android:textColor="@color/memorize_uncompleted_text"
+                    android:text="@string/memorize_uncompleted"
+                    android:textColor="@color/memorize_uncompleted"
                     android:textSize="15dp"
+                    tools:ignore="SpUsage"
                     />
 	    	</RelativeLayout>
 	    	<RelativeLayout
 	    		android:layout_width="fill_parent"
 	    		android:layout_height="wrap_content"
-	    		android:background="@color/jv_detail_content_bg"
+	    		android:background="@color/detail_activity_content_background"
 	    		>
 				<TextView
 					android:id="@+id/vocabulary"
@@ -49,102 +52,102 @@
 			    	android:layout_height="wrap_content" 
 			    	android:typeface="serif"
 			    	android:textSize="26dp"
-			    	/>
-			    <LinearLayout 
-		    		android:orientation="vertical"
-		    		android:layout_width="wrap_content"
-		    		android:layout_height="wrap_content"
-		    		android:layout_alignParentRight="true"
-		    		android:gravity="right"
-		    		>
-			    	<TextView
-			    		android:id="@+id/memorize_completed_count_text"
-				    	android:layout_width="wrap_content" 
-				    	android:layout_height="wrap_content"
-                        android:textColor="@color/memorize_completed_count_text"
-				    	android:textSize="15dp"
-				    	/>
-		    	</LinearLayout>
+                    tools:ignore="SpUsage"
+                    />
+                <TextView
+                    android:id="@+id/memorize_completed_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/memorize_completed_count"
+                    android:textSize="15dp"
+                    tools:ignore="SpUsage"
+                    />
 	    	</RelativeLayout>
 			<TextView
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_title_bg"
-		    	android:textSize="15dp"
-		    	android:text="히라가나/가타카나"
-		    	/>
+		    	android:background="@color/detail_activity_title_background"
+                android:text="@string/vocabulary_gana"
+                android:textSize="15dp"
+                tools:ignore="SpUsage"
+                />
 			<TextView
 				android:id="@+id/vocabulary_gana"
 		    	android:layout_width="wrap_content" 
 		    	android:layout_height="wrap_content" 
-		    	android:layout_alignParentLeft="true"
-		    	android:background="@color/jv_detail_content_bg"
+		    	android:background="@color/detail_activity_content_background"
 		    	android:gravity="left"
 		    	android:typeface="serif"
 		    	android:textSize="26dp"
-		    	/>
+                tools:ignore="SpUsage"
+                />
 			<TextView 
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_title_bg"
-		    	android:textSize="15dp"
-		    	android:text="뜻"
-		    	/>
+		    	android:background="@color/detail_activity_title_background"
+		    	android:text="@string/vocabulary_translation"
+                android:textSize="15dp"
+                tools:ignore="SpUsage"
+                />
 			<TextView
 				android:id="@+id/vocabulary_translation"
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_content_bg"
+		    	android:background="@color/detail_activity_content_background"
 		    	android:gravity="left"
 		    	android:typeface="serif"
 		    	android:textSize="26dp"
-		    	/>
+                tools:ignore="SpUsage"
+                />
 			<TextView 
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_title_bg"
-		    	android:textSize="15dp"
-		    	android:text="상세 설명"
+		    	android:background="@color/detail_activity_title_background"
+		    	android:text="@string/vocabulary_detail_description"
+                android:textSize="15dp"
+                tools:ignore="SpUsage"
 		    	/>
 			<TextView
 				android:id="@+id/vocabulary_detail_info"
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_content_bg"
+		    	android:background="@color/detail_activity_content_background"
 		    	android:gravity="left"
 		    	android:typeface="serif"
 		    	android:textSize="26dp"
-		    	/>
+                tools:ignore="SpUsage"
+                />
 			<TextView 
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_title_bg"
+		    	android:background="@color/detail_activity_title_background"
 		    	android:textSize="15dp"
-		    	android:text="예문"
+		    	android:text="@string/vocabulary_example"
+                tools:ignore="SpUsage"
 		    	/>
 			<TextView
 				android:id="@+id/vocabulary_example"
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
-		    	android:background="@color/jv_detail_content_bg"
+		    	android:background="@color/detail_activity_content_background"
 		    	android:gravity="left"
 		    	android:typeface="serif"
 		    	android:textSize="15dp"
+                tools:ignore="SpUsage"
 		    	/>
 		</LinearLayout>
 	</ScrollView>
 	<RelativeLayout
-		android:id="@+id/move_vocabulary_area"
+		android:id="@+id/move_vocabulary_button_panel"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
 		android:paddingLeft="10dp"
-		android:paddingTop="10dp"
-		android:paddingRight="10dp"
-		android:paddingBottom="10dp"
-		android:visibility="invisible"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentLeft="false"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
         >
 	    <ImageButton
 			android:id="@+id/prev_vocabulary"
@@ -154,7 +157,8 @@
 	    	android:layout_alignParentBottom="true"
 	    	android:src="@drawable/prev_vocabulary_button"
 	    	android:background="#00000000"
-	    	/>
+            android:contentDescription="@null"
+            />
 	    <ImageButton
 			android:id="@+id/next_vocabulary"
 	    	android:layout_width="wrap_content"
@@ -163,6 +167,7 @@
 	    	android:layout_alignParentBottom="true"
 	    	android:src="@drawable/next_vocabulary_button"
 	    	android:background="#00000000"
-	    	/>
+            android:contentDescription="@null"
+            />
 	</RelativeLayout>
 </RelativeLayout>

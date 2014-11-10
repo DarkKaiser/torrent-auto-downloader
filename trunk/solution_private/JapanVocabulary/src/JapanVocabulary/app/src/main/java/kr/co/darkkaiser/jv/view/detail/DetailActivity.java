@@ -44,10 +44,10 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 	private static VocabularyListWrapper mVocabularyListWrapper = new VocabularyListWrapper();
 
     // 이전/다음 버튼이 화면에 나타나고 나서 일정시간 이후에 버튼을 자동으로 숨기기 위한 핸들러
-    private Handler mPervNextVocabularyButtonInVisibleHandler = null;
+    private Handler mPervNextVocabularyButtonInVisibleHandler = new Handler();
 
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
-    private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
+    private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 2000;
 
     public static void setVocabularySeekList(IVocabularyList vocabularyList) {
 		mVocabularyListWrapper.setVocabularySeekList(vocabularyList);
@@ -80,9 +80,12 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 					vocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
 			}
 		} else {
-            aq.id(R.id.move_vocabulary_area).visible();
+            aq.id(R.id.move_vocabulary_button_panel).visible();
             aq.id(R.id.prev_vocabulary).clicked(this, "onClick");
             aq.id(R.id.next_vocabulary).clicked(this, "onClick");
+
+            // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
+            mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
 		}
 
 		if (vocabulary == null) {
@@ -99,16 +102,12 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         mGestureDetector = new GestureDetector(DetailActivity.this, simpleOnGestureListener);
 
         // 스크롤뷰에 제스처를 등록한다.
-        aq.id(R.id.ddd).getView().setOnTouchListener(new View.OnTouchListener() {
+        aq.id(R.id.vocabulary_detail_info_panel).getView().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return mGestureDetector.onTouchEvent(motionEvent);
             }
         });
-
-        // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
-        mPervNextVocabularyButtonInVisibleHandler = new Handler();
-        mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
     }
 
 	@Override
@@ -133,9 +132,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {
 			assert memorizeCompletedCount > 0;
-            aq.id(R.id.memorize_uncompleted_text).gone();
+            aq.id(R.id.memorize_uncompleted).gone();
 		} else {
-            aq.id(R.id.memorize_uncompleted_text).visible();
+            aq.id(R.id.memorize_uncompleted).visible();
 		}
         aq.id(R.id.memorize_completed_count_text).text(String.format("총 %d회 암기완료", memorizeCompletedCount));
 	}
@@ -231,7 +230,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             if (mVocabularyListWrapper.isValid() == true) {
                 AQuery aq = new AQuery(DetailActivity.this);
 
-                if (aq.id(R.id.move_vocabulary_area).getView().getVisibility() == View.VISIBLE) {
+                if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
                     int rawX = (int)e.getRawX();
                     int rawY = (int)e.getRawY();
 
@@ -242,12 +241,12 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                     if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
                         return false;
 
-                    aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+                    aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
 
                     // 이전/다음 버튼이 이미 숨겨졌으므로, 일정시간 이후에 숨겨지도록 하는 기능을 중지한다.
                     mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
                 } else {
-                    aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
+                    aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
 
                     // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
                     mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
@@ -267,8 +266,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         @Override
         public void run() {
             AQuery aq = new AQuery(DetailActivity.this);
-            if (aq.id(R.id.move_vocabulary_area).getView().getVisibility() == View.VISIBLE) {
-                aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+            if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
+                aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
             }
         }
 
