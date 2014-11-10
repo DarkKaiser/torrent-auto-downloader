@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -25,9 +25,9 @@ import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
+// todo 액션바 이전 누르면 화면 리프레쉬 되는거 해결
 // todo 액션바에 암기완료/암기미완료 토글버튼 추가
 // todo 이전/다음 버튼 이미지 심플하게 변경
-//@@@@@ todo 이전/다음 버튼 일정 시간지나면 사라지도록
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
 	// 상세정보 페이지에서 이전/다음 버튼으로 암기단어를 변경하면 호출한 페이지에서도
@@ -43,7 +43,13 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     // 이전/다음 단어로 이동하기 위한 단어리스트 래퍼객체
 	private static VocabularyListWrapper mVocabularyListWrapper = new VocabularyListWrapper();
 
-	public static void setVocabularySeekList(IVocabularyList vocabularyList) {
+    // 이전/다음 버튼이 화면에 나타나고 나서 일정시간 이후에 버튼을 자동으로 숨기기 위한 핸들러
+    private Handler mPervNextVocabularyButtonInVisibleHandler = null;
+
+    // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
+    private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
+
+    public static void setVocabularySeekList(IVocabularyList vocabularyList) {
 		mVocabularyListWrapper.setVocabularySeekList(vocabularyList);
 	}
 
@@ -99,11 +105,16 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 return mGestureDetector.onTouchEvent(motionEvent);
             }
         });
-	}
+
+        // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
+        mPervNextVocabularyButtonInVisibleHandler = new Handler();
+        mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
+    }
 
 	@Override
 	protected void onDestroy() {
-		setVocabularySeekList(null);
+        mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
+        setVocabularySeekList(null);
 		super.onDestroy();
 	}
 
@@ -132,6 +143,10 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     @Override
     public void onClick(View v) {
         if (mVocabularyListWrapper.isValid() == true) {
+            // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
+            mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
+            mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
+
             SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
                 // 진동을 발생시킨다.
@@ -217,14 +232,33 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                         return false;
 
                     aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+
+                    // 이전/다음 버튼이 이미 숨겨졌으므로, 일정시간 이후에 숨겨지도록 하는 기능을 중지한다.
+                    mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
                 } else {
                     aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
+
+                    // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
+                    mPervNextVocabularyButtonInVisibleHandler.removeCallbacks(mMoveVocabularyAreaVisibleRunnable);
+                    mPervNextVocabularyButtonInVisibleHandler.postDelayed(mMoveVocabularyAreaVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
                 }
 
                 return true;
             }
 
             return super.onSingleTapConfirmed(e);
+        }
+
+    };
+
+    private Runnable mMoveVocabularyAreaVisibleRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            AQuery aq = new AQuery(DetailActivity.this);
+            if (aq.id(R.id.move_vocabulary_area).getView().getVisibility() == View.VISIBLE) {
+                aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+            }
         }
 
     };
