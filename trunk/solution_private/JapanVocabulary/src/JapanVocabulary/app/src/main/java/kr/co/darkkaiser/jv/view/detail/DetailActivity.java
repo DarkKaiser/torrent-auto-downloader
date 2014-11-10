@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +26,6 @@ import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
-// todo 액션바 이전 누르면 화면 리프레쉬 되는거 해결
 // todo 액션바에 암기완료/암기미완료 토글버튼 추가
 // todo 이전/다음 버튼 이미지 심플하게 변경
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
@@ -174,6 +174,17 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {

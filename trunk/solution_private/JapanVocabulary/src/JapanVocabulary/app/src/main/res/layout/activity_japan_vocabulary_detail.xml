@@ -10,6 +10,7 @@
 	   	android:layout_width="fill_parent"
 	   	android:layout_height="fill_parent"
 	   	android:scrollbarStyle="outsideOverlay"
+        android:background="#00000000"
 	   	>
 		<LinearLayout 
 		    android:orientation="vertical"
