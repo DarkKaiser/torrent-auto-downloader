@@ -550,7 +550,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);
 		TextView searchVocabularyCount = (TextView)findViewById(R.id.search_vocabulary_count);
 		TextView memorizeTargetCount = (TextView)findViewById(R.id.memorize_target_count);
-		TextView memorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count);
+		TextView memorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count_text);
 
 		allVocabularyCount.setText(String.format("%d개", vocabularyInfo.get(0)));
 		searchVocabularyCount.setText(String.format("%d개", mJvListData.size()));

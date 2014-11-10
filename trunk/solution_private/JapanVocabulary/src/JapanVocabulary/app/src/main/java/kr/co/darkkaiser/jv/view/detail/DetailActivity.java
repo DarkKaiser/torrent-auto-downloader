@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.jv.view.detail;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,23 +7,17 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.util.DebugUtils;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
-import kr.co.darkkaiser.jv.BuildConfig;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
@@ -35,10 +27,11 @@ import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
 // todo 액션바에 암기완료/암기미완료 토글버튼 추가
 // todo 이전/다음 버튼 이미지 심플하게 변경
-// todo 이전/다음으로 넘어갈때 화면 전환
-public class DetailActivity extends ActionBarActivity implements OnGestureListener, OnClickListener {
+//@@@@@ todo 이전/다음 버튼 일정 시간지나면 사라지도록
+public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
-	// 암기단어의 위치가 바뀌면 호출자 인텐트로 넘겨 줄 액티비티 결과 값
+	// 상세정보 페이지에서 이전/다음 버튼으로 암기단어를 변경하면 호출한 페이지에서도
+	// 변경된 단어로 바로 보여주도록 하기 위해 호출자 인텐트로 넘겨 줄 액티비티 결과 값
 	public static final int ACTIVITY_RESULT_POSITION_CHANGED = 1;
 
 	private static final int SWIPE_MIN_DISTANCE = 100;
@@ -55,12 +48,11 @@ public class DetailActivity extends ActionBarActivity implements OnGestureListen
 	}
 
     @Override
-//@@@@@ todo
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_japan_vocabulary_detail);
 
-        // @@@@@ appcompat
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AQuery aq = new AQuery(this);
 
@@ -82,18 +74,9 @@ public class DetailActivity extends ActionBarActivity implements OnGestureListen
 					vocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
 			}
 		} else {
-			ImageButton prevVocabulary = (ImageButton)findViewById(R.id.prev_vocabulary);
-			ImageButton nextVocabulary = (ImageButton)findViewById(R.id.next_vocabulary);
-
-			prevVocabulary.setAlpha(100.f);
-			nextVocabulary.setAlpha(100.f);
-			prevVocabulary.setOnClickListener(this);
-			nextVocabulary.setOnClickListener(this);
-
-            // @@@@@ 처음 안 보이게
-//			RelativeLayout layout = (RelativeLayout)findViewById(R.id.move_vocabulary_area);
-//			layout.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-//			layout.setVisibility(View.VISIBLE);
+            aq.id(R.id.move_vocabulary_area).visible();
+            aq.id(R.id.prev_vocabulary).clicked(this, "onClick");
+            aq.id(R.id.next_vocabulary).clicked(this, "onClick");
 		}
 
 		if (vocabulary == null) {
@@ -107,7 +90,15 @@ public class DetailActivity extends ActionBarActivity implements OnGestureListen
 		updateVocabularyDetailInfo(vocabulary);
 
 		// 제스쳐 감지 객체를 생성한다.
-		mGestureDetector = new GestureDetector(DetailActivity.this, this);
+        mGestureDetector = new GestureDetector(DetailActivity.this, simpleOnGestureListener);
+
+        // 스크롤뷰에 제스처를 등록한다.
+        aq.id(R.id.ddd).getView().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        });
 	}
 
 	@Override
@@ -116,36 +107,26 @@ public class DetailActivity extends ActionBarActivity implements OnGestureListen
 		super.onDestroy();
 	}
 
-    //@@@@@ todo
 	private void updateVocabularyDetailInfo(JapanVocabulary vocabulary) {
 		assert vocabulary != null;
 
         AQuery aq = new AQuery(this);
+        JapanVocabularyManager vm = JapanVocabularyManager.getInstance();
 
         aq.id(R.id.vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.vocabulary_gana).text(vocabulary.getVocabularyGana());
         aq.id(R.id.vocabulary_translation).text(vocabulary.getVocabularyTranslation());
+        aq.id(R.id.vocabulary_detail_info).text(vm.getVocabularyDetailDescription(vocabulary));
+        aq.id(R.id.vocabulary_example).text(Html.fromHtml(vm.getVocabularyExample(vocabulary)));
 
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {
 			assert memorizeCompletedCount > 0;
-
-            aq.id(R.id.memorize_completed_info1).text(String.format("총 %d회 암기 완료", memorizeCompletedCount)).textColor(getResources().getColor(R.color.jv_detail_memorize_completed_count_text));
-
-            aq.id(R.id.memorize_completed_info2).text("").gone();
+            aq.id(R.id.memorize_uncompleted_text).gone();
 		} else {
-            aq.id(R.id.memorize_completed_info1).text("미암기").textColor(getResources().getColor(R.color.jv_detail_memorize_uncompleted_text));
-
-			if (memorizeCompletedCount > 0) {
-                aq.id(R.id.memorize_completed_info2).text(String.format("총 %d회 암기 완료", memorizeCompletedCount)).textColor(getResources().getColor(R.color.jv_detail_memorize_completed_count_text)).visible();
-			} else {
-                aq.id(R.id.memorize_completed_info2).text("").gone();
-			}
+            aq.id(R.id.memorize_uncompleted_text).visible();
 		}
-
-        JapanVocabularyManager japanVocabularyManager = JapanVocabularyManager.getInstance();
-        aq.id(R.id.vocabulary_detail_info).text(japanVocabularyManager.getJapanVocabularyDetailDescription(vocabulary.getVocabulary()));
-        aq.id(R.id.vocabulary_example).text(Html.fromHtml(japanVocabularyManager.getJapanVocabularyExample(vocabulary.getIdx())));
+        aq.id(R.id.memorize_completed_count_text).text(String.format("총 %d회 암기완료", memorizeCompletedCount));
 	}
 
     @Override
@@ -180,101 +161,72 @@ public class DetailActivity extends ActionBarActivity implements OnGestureListen
         }
     }
 
-    @Override
-	public boolean onDown(MotionEvent e) {
-		return false;
-	}
+    GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		try {
-            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                return false;
-
-            // right to left swipe
-            /*
-            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                Toast.makeText(getApplicationContext(), "Left Swipe", Toast.LENGTH_SHORT).show();
-            }
-            */
-
-            // left to right swipe
-            if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                finish();
-            }
-
-            // down to up swipe
-            /*
-            else if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                Toast.makeText(getApplicationContext(), "Swipe up", Toast.LENGTH_SHORT).show();
-            }
-            */
-
-            // up to down swipe
-            /*
-            else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                Toast.makeText(getApplicationContext(), "Swipe down", Toast.LENGTH_SHORT).show();
-            }
-            */
-        } catch (Exception ignored) {
-        }
-
-		return true;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		return true;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-
-	}
-
-	@Override
-//@@@@@ todo 일정 시간지나면 사라지도록
-    // http://ukzzang.tistory.com/45 double ㅇㄹ때ㅡㄴ 호출안되게
-	public boolean onSingleTapUp(MotionEvent e) {
-		if (mVocabularyListWrapper.isValid() == true) {
-            AQuery aq = new AQuery(this);
-
-			if (aq.id(R.id.move_vocabulary_area).getView().getVisibility() == View.VISIBLE) {
-                int rawX = (int)e.getRawX();
-                int rawY = (int)e.getRawY();
-
-                Rect prevVocabularyRect = new Rect();
-                Rect nextVocabularyRect = new Rect();
-                aq.id(R.id.prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
-                aq.id(R.id.next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
-                if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            try {
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
 
-                aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(this, android.R.anim.fade_out)).invisible();
-			} else {
-                aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(this, android.R.anim.fade_in)).visible();
-			}
+                // right to left swipe
+                /*
+                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    Toast.makeText(getApplicationContext(), "Left Swipe", Toast.LENGTH_SHORT).show();
+                }
+                */
 
-			return true;
-		}
+                // left to right swipe
+                if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    finish();
+                }
 
-		return false;
-	}
+                // down to up swipe
+                /*
+                else if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                    Toast.makeText(getApplicationContext(), "Swipe up", Toast.LENGTH_SHORT).show();
+                }
+                */
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		return mGestureDetector.onTouchEvent(event);
-	}
+                // up to down swipe
+                /*
+                else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                    Toast.makeText(getApplicationContext(), "Swipe down", Toast.LENGTH_SHORT).show();
+                }
+                */
+            } catch (Exception ignored) {
+            }
 
-	@Override
-	public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-		super.dispatchTouchEvent(ev);
-		return mGestureDetector.onTouchEvent(ev);
-	}
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            if (mVocabularyListWrapper.isValid() == true) {
+                AQuery aq = new AQuery(DetailActivity.this);
+
+                if (aq.id(R.id.move_vocabulary_area).getView().getVisibility() == View.VISIBLE) {
+                    int rawX = (int)e.getRawX();
+                    int rawY = (int)e.getRawY();
+
+                    Rect prevVocabularyRect = new Rect();
+                    Rect nextVocabularyRect = new Rect();
+                    aq.id(R.id.prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
+                    aq.id(R.id.next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
+                    if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
+                        return false;
+
+                    aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+                } else {
+                    aq.id(R.id.move_vocabulary_area).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
+                }
+
+                return true;
+            }
+
+            return super.onSingleTapConfirmed(e);
+        }
+
+    };
 
 }

@@ -6,6 +6,7 @@
     android:clickable="true"
     >
 	<ScrollView
+        android:id="@+id/ddd"
 	   	android:layout_width="fill_parent"
 	   	android:layout_height="fill_parent"
 	   	android:scrollbarStyle="outsideOverlay"
@@ -26,13 +27,15 @@
 			    	android:textSize="15dp"
 			    	android:text="한자"
 			    	/>
-		    	<TextView
-		    		android:id="@+id/registration_date"
-			    	android:layout_width="wrap_content" 
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentRight="true"
-			    	android:textSize="15dp"
-			    	/>
+                <TextView
+                    android:id="@+id/memorize_uncompleted_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="미암기"
+                    android:textColor="@color/memorize_uncompleted_text"
+                    android:textSize="15dp"
+                    />
 	    	</RelativeLayout>
 	    	<RelativeLayout
 	    		android:layout_width="fill_parent"
@@ -53,21 +56,16 @@
 		    		android:layout_alignParentRight="true"
 		    		android:gravity="right"
 		    		>
-			    	<TextView 
-			    		android:id="@+id/memorize_completed_info1"
-				    	android:layout_width="wrap_content" 
-				    	android:layout_height="wrap_content" 
-				    	android:textSize="15dp"
-				    	/>
 			    	<TextView
-			    		android:id="@+id/memorize_completed_info2"
+			    		android:id="@+id/memorize_completed_count_text"
 				    	android:layout_width="wrap_content" 
-				    	android:layout_height="wrap_content" 
+				    	android:layout_height="wrap_content"
+                        android:textColor="@color/memorize_completed_count_text"
 				    	android:textSize="15dp"
 				    	/>
 		    	</LinearLayout>
 	    	</RelativeLayout>
-			<TextView 
+			<TextView
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
 		    	android:background="@color/jv_detail_title_bg"
@@ -138,12 +136,15 @@
 		android:id="@+id/move_vocabulary_area"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
 		android:paddingLeft="10dp"
 		android:paddingTop="10dp"
 		android:paddingRight="10dp"
-		android:paddingBottom="25px"
+		android:paddingBottom="10dp"
 		android:visibility="invisible"
-		>
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        >
 	    <ImageButton
 			android:id="@+id/prev_vocabulary"
 	    	android:layout_width="wrap_content"

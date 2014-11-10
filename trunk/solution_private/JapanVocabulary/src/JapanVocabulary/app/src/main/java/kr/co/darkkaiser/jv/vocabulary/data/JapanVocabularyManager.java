@@ -457,10 +457,13 @@ public class JapanVocabularyManager {
 		return true;
 	}
 
-	public synchronized String getJapanVocabularyDetailDescription(String vocabulary) {
+	public synchronized String getVocabularyDetailDescription(JapanVocabulary vocabulary) {
+        String voc;
+        voc = vocabulary.getVocabulary();
+
 		StringBuilder sbResult = new StringBuilder();
 		if (mJvVocabularySqLite != null) {
-			for (int index = 0; index < vocabulary.length(); ++index) {
+			for (int index = 0; index < voc.length(); ++index) {
 				Cursor cursor = null;
 
 				try {
@@ -471,7 +474,7 @@ public class JapanVocabularyManager {
 					     .append("       JLPT_CLASS, ")
 					     .append("       TRANSLATION ")
 					     .append("  FROM TBL_HANJA ")
-					     .append(" WHERE CHARACTER='").append(vocabulary.charAt(index)).append("' ")
+					     .append(" WHERE CHARACTER='").append(voc.charAt(index)).append("' ")
 					     .append(" LIMIT 1");
 
 					cursor = mJvVocabularySqLite.rawQuery(sbSQL.toString(), null);
@@ -512,7 +515,9 @@ public class JapanVocabularyManager {
 		return sbResult.toString();
 	}
 	
-	public synchronized String getJapanVocabularyExample(long idx) {
+	public synchronized String getVocabularyExample(JapanVocabulary vocabulary) {
+        long idx = vocabulary.getIdx();
+
 		StringBuilder sbResult = new StringBuilder();
 		if (mJvVocabularySqLite != null) {
 			Cursor cursor = null;
