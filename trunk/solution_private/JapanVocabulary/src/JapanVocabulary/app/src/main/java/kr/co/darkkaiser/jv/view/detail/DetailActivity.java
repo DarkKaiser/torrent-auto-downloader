@@ -141,11 +141,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     @Override
     public void onClick(View v) {
         if (mVocabularyListWrapper.isValid() == true) {
-            // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
-            AQuery aq = new AQuery(DetailActivity.this);
-            aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
-            aq.id(R.id.move_vocabulary_button_panel).visible();
-
             resetInVisiblePrevNextVocabularyButtonAnimate();
 
             SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -282,8 +277,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                     aq.id(R.id.next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
                     if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
                         return false;
-                } else {
-                    aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_in)).visible();
                 }
 
                 return true;
@@ -307,6 +300,13 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     };
 
     private void resetInVisiblePrevNextVocabularyButtonAnimate() {
+        AQuery aq = new AQuery(DetailActivity.this);
+        if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
+            // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
+            aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
+            aq.id(R.id.move_vocabulary_button_panel).visible();
+        }
+
         // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
         mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
         mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
