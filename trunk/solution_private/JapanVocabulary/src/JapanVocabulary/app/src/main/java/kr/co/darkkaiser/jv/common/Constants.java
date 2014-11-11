@@ -86,6 +86,6 @@ public class Constants {
     /*
      * 단어 DB 버전 정보 확인 URL @@@@@ url 변경
      */
-    public static final String JV_DB_VERSION_CHECK_URL = "http://darkkaiser.cafe24.com/data/jv2_db_update_check.xml";
+    public static final String JV_DB_CHECKSUM_URL = "http://darkkaiser.cafe24.com/data/jvdb.json";
 
 }
