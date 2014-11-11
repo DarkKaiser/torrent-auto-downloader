@@ -5,6 +5,10 @@
     <string name="activity_detail_label">상세정보</string>
     <string name="activity_environment_setting_label">설정</string>
 
+    <string name="prev_vocabulary_button">《</string>
+    <string name="next_vocabulary_button">다음 단어 》</string>
+    <string name="memorise_method_info">암기 완료 단어는 화면을 꾸~욱 눌러주세요.</string>
+
     <string name="vocabulary_hanja">한자</string>
     <string name="vocabulary_gana">히라가나/가타카나</string>
     <string name="vocabulary_translation">뜻</string>

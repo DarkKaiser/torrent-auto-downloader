@@ -122,9 +122,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         AQuery aq = new AQuery(this);
         JapanVocabularyManager vm = JapanVocabularyManager.getInstance();
 
-        aq.id(R.id.vocabulary).text(vocabulary.getVocabulary());
+        aq.id(R.id.tsw_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.vocabulary_gana).text(vocabulary.getVocabularyGana());
-        aq.id(R.id.vocabulary_translation).text(vocabulary.getVocabularyTranslation());
+        aq.id(R.id.tsw_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
         aq.id(R.id.vocabulary_detail_info).text(vm.getVocabularyDetailDescription(vocabulary));
         aq.id(R.id.vocabulary_example).text(Html.fromHtml(vm.getVocabularyExample(vocabulary)));
 
@@ -300,11 +300,13 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     };
 
     private void resetInVisiblePrevNextVocabularyButtonAnimate() {
-        AQuery aq = new AQuery(DetailActivity.this);
-        if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
-            // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
-            aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
-            aq.id(R.id.move_vocabulary_button_panel).visible();
+        if (mVocabularyListWrapper != null && mVocabularyListWrapper.isValid()) {
+            AQuery aq = new AQuery(DetailActivity.this);
+            if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
+                // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
+                aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
+                aq.id(R.id.move_vocabulary_button_panel).visible();
+            }
         }
 
         // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.

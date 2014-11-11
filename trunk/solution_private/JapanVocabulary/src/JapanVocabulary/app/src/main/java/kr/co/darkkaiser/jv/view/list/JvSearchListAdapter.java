@@ -65,9 +65,9 @@ public class JvSearchListAdapter extends BaseAdapter {
 		}
 
 		TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
-		TextView vocabulary = (TextView) convertView.findViewById(R.id.vocabulary);
+		TextView vocabulary = (TextView) convertView.findViewById(R.id.tsw_vocabulary);
 		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.vocabulary_gana);
-		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.vocabulary_translation);
+		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.tsw_vocabulary_translation);
 		TextView registrationDate = (TextView) convertView.findViewById(R.id.registration_date);
 		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.vocabulary_memorize_completed);
 		CheckBox memorizeTarget = (CheckBox) convertView.findViewById(R.id.memorize_target);

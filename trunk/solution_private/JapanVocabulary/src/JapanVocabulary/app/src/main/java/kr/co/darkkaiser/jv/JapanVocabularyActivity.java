@@ -1,26 +1,5 @@
 package kr.co.darkkaiser.jv;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-
-import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.util.JvPathManager;
-import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
-import kr.co.darkkaiser.jv.util.ByteUtils;
-import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyDbHelper;
-import kr.co.darkkaiser.jv.view.detail.DetailActivity;
-import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
-import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
-
-import org.apache.http.util.ByteArrayBuffer;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -42,12 +21,11 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.View.OnTouchListener;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -57,6 +35,29 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
+
+import com.androidquery.AQuery;
+
+import org.apache.http.util.ByteArrayBuffer;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
+import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.util.ByteUtils;
+import kr.co.darkkaiser.jv.util.FileHash;
+import kr.co.darkkaiser.jv.util.JvPathManager;
+import kr.co.darkkaiser.jv.view.detail.DetailActivity;
+import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
+import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 //@@@@@ todo
 public class JapanVocabularyActivity extends Activity implements OnTouchListener {
@@ -89,6 +90,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	private MemorizeTargetVocabularyList mMemorizeList = new MemorizeTargetVocabularyList();
 
     @Override
+    // @@@@@
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_japan_vocabulary);
@@ -113,14 +115,12 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         }
         */
 
-        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
         moveVocabularyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mMemorizeList.getCurrentPosition() + 1).append("번째");
-				setTitle(sb.toString());
+                setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");
 			}
 
 			@Override
@@ -132,10 +132,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				if (fromUser == true) {
 					showMemorizeVocabulary(mMemorizeList.movePosition(progress));
-					
-					StringBuilder sb = new StringBuilder();
-					sb.append(getResources().getString(R.string.app_name)).append(" - ").append(mMemorizeList.getCurrentPosition() + 1).append("번째");
-					setTitle(sb.toString());
+
+                    setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");
 				}
 			}
 		});
@@ -143,7 +141,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
-        TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
+        TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
         vocabularyTextSwitcher.setOnTouchListener(this);
         vocabularyTextSwitcher.setFactory(new ViewFactory() {
 			
@@ -159,7 +157,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			}
 		});
         
-        TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
+        TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
         vocabularyTranslationTextSwitcher.setOnTouchListener(this);
         vocabularyTranslationTextSwitcher.setFactory(new ViewFactory() {
 
@@ -311,12 +309,12 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.jv_main_menu, menu);
+        getMenuInflater().inflate(R.menu.jv_main_menu, menu);
 		return true;
     }
 
 	@Override
+    // @@@@@
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.jvm_show_all_vocabulary:
@@ -357,7 +355,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // @@@@@
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == R.id.jvm_show_all_vocabulary) {
@@ -426,155 +425,129 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	private boolean reloadPreference() {
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
-		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
-		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
-		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, true) == true) {
-			vocabularyTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-			vocabularyTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));						
-			vocabularyTranslationTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
-			vocabularyTranslationTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));						
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, getResources().getBoolean(R.bool.fade_effect_next_vocabulary_item_default_value)) == true) {
+			tswVocabulary.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+			tswVocabulary.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+			tswVocabularyTranslation.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+			tswVocabularyTranslation.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 		} else {
-			vocabularyTextSwitcher.setInAnimation(null);
-			vocabularyTextSwitcher.setOutAnimation(null);			
-			vocabularyTranslationTextSwitcher.setInAnimation(null);
-			vocabularyTranslationTextSwitcher.setOutAnimation(null);			
+			tswVocabulary.setInAnimation(null);
+			tswVocabulary.setOutAnimation(null);
+			tswVocabularyTranslation.setInAnimation(null);
+			tswVocabularyTranslation.setOutAnimation(null);
 		}
 
-		if (preferences.getBoolean(Constants.JV_SPN_SHOW_VOCABULARY_TRANSLATION, false) == false) {
-			vocabularyTranslationTextSwitcher.setVisibility(View.GONE);
+		if (preferences.getBoolean(Constants.JV_SPN_SHOW_VOCABULARY_TRANSLATION, getResources().getBoolean(R.bool.show_vocabulary_translation_item_default_value)) == false) {
+			tswVocabularyTranslation.setVisibility(View.GONE);
 		} else {
-			vocabularyTranslationTextSwitcher.setVisibility(View.VISIBLE);
+			tswVocabularyTranslation.setVisibility(View.VISIBLE);
 		}
 
 		boolean result = mMemorizeList.reloadPreference(preferences);
 		adjustVocabularySeekBar(preferences);
 		return result;
 	}
-	
-	private void refreshMemorizeVocabulary() {
-		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
-		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 
-		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
-		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
-		vocabularyTextSwitcher.setText("");
-		vocabularyTranslationTextSwitcher.setText("");
+    private void showCurrentMemorizeVocabulary() {
+		JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
 
-		JapanVocabulary jpVocabulary = mMemorizeList.getCurrentVocabulary();
-		if (jpVocabulary != null) {
-			switch (mMemorizeList.getMemorizeTargetItem()) {
-			case VOCABULARY:
-				vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
-				break;
-
-			case VOCABULARY_GANA:
-				vocabularyTextSwitcher.setText(jpVocabulary.getVocabularyGana());
-				break;
-
-			default:
-				assert false;
-				break;
-			}
-			
-			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
-		}
-	}
-
-	private void showCurrentMemorizeVocabulary() {
-		JapanVocabulary jpVocabulary = mMemorizeList.getCurrentVocabulary();
-
-		if (jpVocabulary != null) {
-			showMemorizeVocabulary(jpVocabulary);
-		}
+		if (vocabulary != null)
+			showMemorizeVocabulary(vocabulary);
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
-		moveVocabularyBar.setProgress(mMemorizeList.getCurrentPosition());
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
-	private void showPrevMemorizeVocabulary() {
+    private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		JapanVocabulary jpVocabulary = mMemorizeList.previousVocabulary(sbErrMessage);
-		
-		if (jpVocabulary == null) {
-			if (sbErrMessage.length() > 0) {
+		JapanVocabulary vocabulary = mMemorizeList.previousVocabulary(sbErrMessage);
+
+		if (vocabulary == null) {
+			if (sbErrMessage.length() > 0)
 				Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
-			}
 		} else {
-			showMemorizeVocabulary(jpVocabulary);
+			showMemorizeVocabulary(vocabulary);
 		}
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
-		moveVocabularyBar.setProgress(mMemorizeList.getCurrentPosition());
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
-	
+
+    private void refreshMemorizeVocabulary() {
+        // @@@@@ 임시
+        JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+        showMemorizeVocabulary(vocabulary);
+    }
+
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		JapanVocabulary jpVocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
-		
-		if (jpVocabulary == null && sbErrMessage.length() > 0) {
+		JapanVocabulary vocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
+
+		if (vocabulary == null && sbErrMessage.length() > 0)
 			Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
-		}
-		
-		showMemorizeVocabulary(jpVocabulary);
-		
+
+		showMemorizeVocabulary(vocabulary);
+
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
-		moveVocabularyBar.setProgress(mMemorizeList.getCurrentPosition());
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
-	
-	private void showMemorizeVocabulary(JapanVocabulary jpVocabulary) {
-		TextView etcInfo = (TextView)findViewById(R.id.etc_info);
-		TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary);
-		TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.vocabulary_translation);
 
-		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로
-		// 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
-		vocabularyTextSwitcher.setText("");
-		vocabularyTranslationTextSwitcher.setText("");
+    private void showMemorizeVocabulary(JapanVocabulary vocabulary) {
+        AQuery aq = new AQuery(this);
 
-		if (jpVocabulary != null) {
-			if (jpVocabulary.isMemorizeCompleted() == true) {
-				etcInfo.setText(String.format("총 %d회 암기 완료", jpVocabulary.getMemorizeCompletedCount()));
-				etcInfo.setTextColor(getResources().getColor(R.color.jv_main_memorize_completed_count_text));
-				etcInfo.setVisibility(View.VISIBLE);
-			} else {
-				etcInfo.setVisibility(View.INVISIBLE);
-			}
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+
+		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
+		tswVocabulary.setText("");
+		tswVocabularyTranslation.setText("");
+
+		if (vocabulary != null) {
+			if (vocabulary.isMemorizeCompleted() == true)
+                aq.id(R.id.tv_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.main_activity_memorize_completed_count)).visible();
+			else
+                aq.id(R.id.tv_memorize_completed_info).invisible();
 
 			switch (mMemorizeList.getMemorizeTargetItem()) {
 			case VOCABULARY:
-				vocabularyTextSwitcher.setText(jpVocabulary.getVocabulary());
+				tswVocabulary.setText(vocabulary.getVocabulary());
 				break;
 
 			case VOCABULARY_GANA:
-				vocabularyTextSwitcher.setText(jpVocabulary.getVocabularyGana());
+				tswVocabulary.setText(vocabulary.getVocabularyGana());
 				break;
 				
 			default:
 				assert false;
 				break;
 			}
-			
-			vocabularyTranslationTextSwitcher.setText(jpVocabulary.getVocabularyTranslation());
+
+			tswVocabularyTranslation.setText(vocabulary.getVocabularyTranslation());
 		} else {
-			etcInfo.setVisibility(View.INVISIBLE);
+            aq.id(R.id.tv_memorize_completed_info).invisible();
 		}
 	}
 
-	private void updateJvMemorizeInfo() {
+    private void updateVocabularyMemorizeInfo() {
+        AQuery aq = new AQuery(this);
+
 		StringBuilder sb = mMemorizeList.getMemorizeVocabularyInfo();
-		if (sb != null) {
-			TextView info = (TextView)findViewById(R.id.jv_info);
-			info.setText(sb.toString());			
-		}
+		if (sb != null)
+            aq.id(R.id.tv_vocabulary_memorize_info).text(sb.toString());
+		else
+            aq.id(R.id.tv_vocabulary_memorize_info).text("");
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
+    // @@@@@
+    public boolean onTouch(View v, MotionEvent event) {
     	if (mMemorizeList.isValidVocabularyPosition() == true &&
-    			(v.getId() == R.id.vocabulary_container || v.getId() == R.id.vocabulary || v.getId() == R.id.vocabulary_translation)) {
+    			(v.getId() == R.id.vocabulary_container || v.getId() == R.id.tsw_vocabulary || v.getId() == R.id.tsw_vocabulary_translation)) {
 
         	switch (event.getAction()) {
 		    	case MotionEvent.ACTION_DOWN:
@@ -607,20 +580,22 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	}
 
 	@Override
-	public void onBackPressed() {
+    public void onBackPressed() {
 		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
 			mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 2000);
 			Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
+        // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mMemorizeList.saveVocabularyPosition(preferences);
 
 		super.onBackPressed();
 	}
 
-	private Handler mVocabularyDataLoadHandler = new Handler() {
+    // @@@@@
+    private Handler mVocabularyDataLoadHandler = new Handler() {
 		
 		@Override
 		public void handleMessage(Message msg) {
@@ -628,7 +603,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				if (mProgressDialog != null)
 					mProgressDialog.setMessage((String)msg.obj);
 			} else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
-		    	updateJvMemorizeInfo();
+		    	updateVocabularyMemorizeInfo();
 	        	showNextMemorizeVocabulary();
 
 				if (mProgressDialog != null)
@@ -727,13 +702,13 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 					})
     				.show();
 			} else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
-				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
+				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
 
-				if (msg.arg1 == 1/* VISIBLE */) {
+				if (msg.arg1 == View.VISIBLE) {
 					if (moveVocabularyBar.getVisibility() != View.VISIBLE) {
-						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, android.R.anim.fade_in));
 						moveVocabularyBar.setVisibility(View.VISIBLE);
-					}
+                        moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, android.R.anim.fade_in));
+                    }
 				} else {
 					if (moveVocabularyBar.getVisibility() != View.GONE) {
 						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, android.R.anim.fade_out));
@@ -744,7 +719,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		};
 	};
 
-	private Handler mCustomEventHandler = new Handler() {
+    // @@@@@
+    private Handler mCustomEventHandler = new Handler() {
 
 		@Override
     	public void handleMessage(Message msg){
@@ -767,7 +743,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    							vibrator.vibrate(30);
 
 	    							mMemorizeList.setMemorizeCompletedAtVocabularyPosition();
-	    							updateJvMemorizeInfo();
+	    							updateVocabularyMemorizeInfo();
 	    							showNextMemorizeVocabulary();
 
 	    							dialog.dismiss();
@@ -786,7 +762,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    		case MSG_CUSTOM_EVT_TAP:
 	    			long idx = mMemorizeList.getIdxAtVocabularyPosition();
 	    			if (idx != -1) {
-	    				if (findViewById(R.id.jv_vocabulary_seekbar).getVisibility() == View.VISIBLE)
+	    				if (findViewById(R.id.vocabulary_seekbar).getVisibility() == View.VISIBLE)
 	    					DetailActivity.setVocabularySeekList(mMemorizeList);
 	    				else
 	    					DetailActivity.setVocabularySeekList(null);
@@ -807,7 +783,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
     	}
     };
 
-	private ArrayList<String> checkNewVocabularyDb() {
+    // @@@@@
+    private ArrayList<String> checkNewVocabularyDb() {
 		// 로컬 단어 DB의 버전정보를 구한다.
 		SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
@@ -838,7 +815,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		return null;
 	}
 
-	private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
+    // @@@@@
+    private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
 		if (isUpdateVocabularyDb == true)
 			mProgressDialog = ProgressDialog.show(JapanVocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
 		else
@@ -879,7 +857,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
    		.start();
 	}
 
-	private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
+    // @@@@@
+    private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
 		assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
 		Message msg = null;
@@ -998,6 +977,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		return updateSucceeded;
 	}
 
+    // @@@@@
 	private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean updateSucceeded) {
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
@@ -1049,6 +1029,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
 
+    // @@@@@
 	private void loadMemorizeTargetVocabularyData(boolean launchApp) {
 		Message msg = Message.obtain();
 		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
@@ -1064,24 +1045,25 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	private void adjustVocabularySeekBar(SharedPreferences preferences) {
 		assert preferences != null;
 
-		int memorizeVocabularyCount = mMemorizeList.getCount();
+        Message msg = Message.obtain();
+        msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
 
-		Message msg = Message.obtain();
-		msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
+        int memorizeVocabularyCount = mMemorizeList.getCount();
 
-		// '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
-		if (memorizeVocabularyCount == 0 || Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, "0")) == 0) {
-			msg.arg1 = 0;
+        // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
+		if (memorizeVocabularyCount == 0 ||
+                Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, String.format("%d", getResources().getInteger(R.integer.memorize_order_method_item_default_value)))) == 0) {
+			msg.arg1 = View.INVISIBLE;
 		} else {
-			msg.arg1 = 1;
+			msg.arg1 = View.VISIBLE;
 
-			SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.jv_vocabulary_seekbar);
-			moveVocabularyBar.setProgress(0);
-			moveVocabularyBar.setMax(memorizeVocabularyCount - 1);
-			moveVocabularyBar.incrementProgressBy(1);
+			SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+			vocabularySeekBar.setProgress(0);
+			vocabularySeekBar.setMax(memorizeVocabularyCount - 1);
+			vocabularySeekBar.incrementProgressBy(1);
 		}
 
-		mVocabularyDataLoadHandler.sendMessage(msg);					
+		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
-	
+
 }

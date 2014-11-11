@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-    <color name="memorize_uncompleted">#ffff4d00</color>
-    <color name="memorize_completed_count">#ff4870ff</color>
+    <color name="main_activity_memorize_completed_count">#ff4870ff</color>
 
+    <color name="detail_activity_memorize_uncompleted">#ffff4d00</color>
+    <color name="detail_activity_memorize_completed_count">#ff4870ff</color>
     <color name="detail_activity_title_background">#99333333</color>
     <color name="detail_activity_content_background">#000000</color>
 
@@ -17,7 +18,6 @@
 
 
     <!-- @@@@@ -->
-	<color name="jv_main_memorize_completed_count_text">#5070ff</color>
 	<color name="jv_listitem_memorize_completed_bg">#15cccccc</color>
 	<color name="jv_listitem_memorize_uncompleted_bg">#15000000</color>
 </resources>

@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="@string/vocabulary_memorize_uncompleted"
-                    android:textColor="@color/memorize_uncompleted"
+                    android:textColor="@color/detail_activity_memorize_uncompleted"
                     android:textSize="15dp"
                     tools:ignore="SpUsage"
                     />
@@ -47,7 +47,7 @@
 	    		android:background="@color/detail_activity_content_background"
 	    		>
 				<TextView
-					android:id="@+id/vocabulary"
+					android:id="@+id/tsw_vocabulary"
 			    	android:layout_width="fill_parent" 
 			    	android:layout_height="wrap_content" 
 			    	android:typeface="serif"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/memorize_completed_count"
+                    android:textColor="@color/detail_activity_memorize_completed_count"
                     android:textSize="15dp"
                     tools:ignore="SpUsage"
                     />
@@ -91,7 +91,7 @@
                 tools:ignore="SpUsage"
                 />
 			<TextView
-				android:id="@+id/vocabulary_translation"
+				android:id="@+id/tsw_vocabulary_translation"
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content" 
 		    	android:background="@color/detail_activity_content_background"
