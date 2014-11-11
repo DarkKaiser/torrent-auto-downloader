@@ -64,7 +64,7 @@
             android:visibility="gone"
             />
         <Button
-            android:id="@+id/prev_vocabulary"
+            android:id="@+id/btn_prev_vocabulary"
             android:layout_width="42dp"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
@@ -74,11 +74,11 @@
             tools:ignore="SpUsage"
             />
         <Button
-            android:id="@+id/next_vocabulary"
+            android:id="@+id/btn_next_vocabulary"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/prev_vocabulary"
+            android:layout_toRightOf="@id/btn_prev_vocabulary"
             android:text="@string/next_vocabulary_button"
             android:textSize="15dp"
             tools:ignore="SpUsage"
@@ -87,7 +87,7 @@
             android:id="@+id/memorize_method_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/next_vocabulary"
+            android:layout_above="@id/btn_next_vocabulary"
             android:gravity="center"
             android:text="@string/memorize_method_info"
             android:textColor="#99999999"

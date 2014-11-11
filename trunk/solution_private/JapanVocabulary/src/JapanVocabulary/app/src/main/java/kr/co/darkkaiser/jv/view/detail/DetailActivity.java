@@ -80,8 +80,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 			}
 		} else {
             aq.id(R.id.move_vocabulary_button_panel).visible();
-            aq.id(R.id.prev_vocabulary).clicked(this, "onClick");
-            aq.id(R.id.next_vocabulary).clicked(this, "onClick");
+            aq.id(R.id.btn_prev_vocabulary).clicked(this, "onClick");
+            aq.id(R.id.btn_next_vocabulary).clicked(this, "onClick");
 
             // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
             mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
@@ -154,11 +154,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             StringBuilder sbErrMessage = new StringBuilder();
 
             switch (v.getId()) {
-            case R.id.prev_vocabulary:
+            case R.id.btn_prev_vocabulary:
                 vocabulary = mVocabularyListWrapper.previousVocabulary(sbErrMessage);
                 break;
 
-            case R.id.next_vocabulary:
+            case R.id.btn_next_vocabulary:
                 vocabulary = mVocabularyListWrapper.nextVocabulary(sbErrMessage);
                 break;
             }
@@ -273,8 +273,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
                     Rect prevVocabularyRect = new Rect();
                     Rect nextVocabularyRect = new Rect();
-                    aq.id(R.id.prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
-                    aq.id(R.id.next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
+                    aq.id(R.id.btn_prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
+                    aq.id(R.id.btn_next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
                     if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
                         return false;
                 }

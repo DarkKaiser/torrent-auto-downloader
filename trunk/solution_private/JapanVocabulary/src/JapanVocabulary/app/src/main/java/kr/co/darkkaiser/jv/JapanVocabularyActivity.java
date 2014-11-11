@@ -28,7 +28,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
@@ -95,6 +94,8 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_japan_vocabulary);
 
+        AQuery aq = new AQuery(this);
+
         // SD 카드의 상태를 확인한다.
         /* 단어DB의 위치를 SDCARD에서 어플 설치폴더로 옮김에 따라 주석 처리한다.
         String sdStatus = Environment.getExternalStorageState();
@@ -141,37 +142,37 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
-        TextSwitcher vocabularyTextSwitcher = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
-        vocabularyTextSwitcher.setOnTouchListener(this);
-        vocabularyTextSwitcher.setFactory(new ViewFactory() {
-			
-			@Override
-			public View makeView() {
-				TextView tv = new TextView(JapanVocabularyActivity.this);
-		        tv.setGravity(Gravity.CENTER);
-		        tv.setTypeface(Typeface.SERIF);
-		        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
-		        tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
+        tswVocabulary.setOnTouchListener(this);
+        tswVocabulary.setFactory(new ViewFactory() {
 
-		        return tv;
-			}
-		});
+            @Override
+            public View makeView() {
+                TextView tv = new TextView(JapanVocabularyActivity.this);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTypeface(Typeface.SERIF);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
+                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+                return tv;
+            }
+        });
         
-        TextSwitcher vocabularyTranslationTextSwitcher = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
-        vocabularyTranslationTextSwitcher.setOnTouchListener(this);
-        vocabularyTranslationTextSwitcher.setFactory(new ViewFactory() {
+        TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+        tswVocabularyTranslation.setOnTouchListener(this);
+        tswVocabularyTranslation.setFactory(new ViewFactory() {
 
-			@Override
-			public View makeView() {
-				TextView tv = new TextView(JapanVocabularyActivity.this);
-		        tv.setGravity(Gravity.CENTER);
-		        tv.setTypeface(Typeface.SERIF);
-		        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-		        tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            @Override
+            public View makeView() {
+                TextView tv = new TextView(JapanVocabularyActivity.this);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTypeface(Typeface.SERIF);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-		        return tv;
-			}
-		});
+                return tv;
+            }
+        });
 
         // 환경설정 값을 로드한다.
         reloadPreference();
@@ -193,37 +194,35 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
         	return;
         }
 
-        Button prevVocabulary = (Button)findViewById(R.id.prev_vocabulary);
-        prevVocabulary.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
-					// 진동을 발생시킨다.
-					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-					vibrator.vibrate(30);
-				}
+        aq.id(R.id.btn_prev_vocabulary).clicked(new View.OnClickListener() {
 
-				showPrevMemorizeVocabulary();				
-			}
-		});
-        
-        Button nextVocabulary = (Button)findViewById(R.id.next_vocabulary);
-        nextVocabulary.setOnClickListener(new View.OnClickListener() {
-        	
-			@Override
-			public void onClick(View v) {
-				SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
-					// 진동을 발생시킨다.
-					Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-					vibrator.vibrate(30);
-				}
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
+                    // 진동을 발생시킨다.
+                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(30);
+                }
 
-				showNextMemorizeVocabulary();
-			}
-		});
+                showPrevMemorizeVocabulary();
+            }
+        });
+
+        aq.id(R.id.btn_next_vocabulary).clicked(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
+                    // 진동을 발생시킨다.
+                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(30);
+                }
+
+                showNextMemorizeVocabulary();
+            }
+        });
 
         // 시작시 단어 업데이트할지의 여부를 확인한 후, 단어 데이터를 업데이트한다. 
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);

@@ -150,7 +150,7 @@
         android:layout_alignParentBottom="true"
         >
 	    <ImageButton
-			android:id="@+id/prev_vocabulary"
+			android:id="@+id/btn_prev_vocabulary"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentLeft="true"
@@ -160,7 +160,7 @@
             android:contentDescription="@null"
             />
 	    <ImageButton
-			android:id="@+id/next_vocabulary"
+			android:id="@+id/btn_next_vocabulary"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_alignParentRight="true"
