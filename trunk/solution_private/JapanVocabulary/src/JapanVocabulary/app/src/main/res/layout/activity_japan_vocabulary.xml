@@ -38,7 +38,7 @@
             android:visibility="invisible"
             />
         <TextView
-            android:id="@+id/tv_vocabulary_memorize_info"
+            android:id="@+id/tv_memorize_vocabulary_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/next_vocabulary"
             android:gravity="center"
-            android:text="@string/memorise_method_info"
+            android:text="@string/memorize_method_info"
             android:textColor="#99999999"
             android:textSize="13dp"
             tools:ignore="SpUsage"

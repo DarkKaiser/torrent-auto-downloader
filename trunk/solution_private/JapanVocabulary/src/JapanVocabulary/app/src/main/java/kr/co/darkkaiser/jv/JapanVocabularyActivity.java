@@ -422,7 +422,13 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		}
 	}
 
-	private boolean reloadPreference() {
+    private void refreshMemorizeVocabulary() {
+        // @@@@@ 임시
+        JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+        showMemorizeVocabulary(vocabulary);
+    }
+
+    private boolean reloadPreference() {
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
@@ -477,12 +483,6 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
-    private void refreshMemorizeVocabulary() {
-        // @@@@@ 임시
-        JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
-        showMemorizeVocabulary(vocabulary);
-    }
-
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
 		JapanVocabulary vocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
@@ -533,50 +533,14 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		}
 	}
 
-    private void updateVocabularyMemorizeInfo() {
+    private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
 
 		StringBuilder sb = mMemorizeList.getMemorizeVocabularyInfo();
 		if (sb != null)
-            aq.id(R.id.tv_vocabulary_memorize_info).text(sb.toString());
+            aq.id(R.id.tv_memorize_vocabulary_info).text(sb.toString());
 		else
-            aq.id(R.id.tv_vocabulary_memorize_info).text("");
-	}
-
-	@Override
-    // @@@@@
-    public boolean onTouch(View v, MotionEvent event) {
-    	if (mMemorizeList.isValidVocabularyPosition() == true &&
-    			(v.getId() == R.id.vocabulary_container || v.getId() == R.id.tsw_vocabulary || v.getId() == R.id.tsw_vocabulary_translation)) {
-
-        	switch (event.getAction()) {
-		    	case MotionEvent.ACTION_DOWN:
-		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-		    		mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
-		    		break;
-
-		    	case MotionEvent.ACTION_MOVE:
-		    		// 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
-		    		// mHandler.removeMessages(LONG_PRESS);
-		    		break;
-
-		    	case MotionEvent.ACTION_UP:
-		    		// MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
-		    		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
-		    			mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-		    			mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
-		    		}
-		    		break;
-		    	
-		    	case MotionEvent.ACTION_CANCEL:
-		    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-		    		break;
-        	}
-    	} else {
-    		mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-    	}
-
-    	return true;
+            aq.id(R.id.tv_memorize_vocabulary_info).text("");
 	}
 
 	@Override
@@ -603,7 +567,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				if (mProgressDialog != null)
 					mProgressDialog.setMessage((String)msg.obj);
 			} else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
-		    	updateVocabularyMemorizeInfo();
+		    	updateMemorizeVocabularyInfo();
 	        	showNextMemorizeVocabulary();
 
 				if (mProgressDialog != null)
@@ -719,12 +683,46 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		};
 	};
 
-    // @@@@@
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (mMemorizeList.isValidVocabularyPosition() == true &&
+                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.tsw_vocabulary || v.getId() == R.id.tsw_vocabulary_translation)) {
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                    mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    // 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
+                    // mHandler.removeMessages(LONG_PRESS);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    // MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
+                    if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
+                        mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                        mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
+                    }
+                    break;
+
+                case MotionEvent.ACTION_CANCEL:
+                    mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                    break;
+            }
+        } else {
+            mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+        }
+
+        return true;
+    }
+
     private Handler mCustomEventHandler = new Handler() {
 
 		@Override
     	public void handleMessage(Message msg){
-    		switch(msg.what) {
+    		switch (msg.what) {
 	    		case MSG_CUSTOM_EVT_LONG_PRESS:
 	    			if (mMemorizeList.isValidVocabularyPosition() == true) {
 						// 진동을 발생시킨다.
@@ -735,7 +733,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    					.setTitle("암기완료")
 	    					.setMessage("단어 암기를 완료하셨나요?")
 	    					.setPositiveButton("예", new DialogInterface.OnClickListener() {
-	    						
+
 	    						@Override
 	    						public void onClick(DialogInterface dialog, int which) {
 	    							// 진동을 발생시킨다.
@@ -743,7 +741,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    							vibrator.vibrate(30);
 
 	    							mMemorizeList.setMemorizeCompletedAtVocabularyPosition();
-	    							updateVocabularyMemorizeInfo();
+	    							updateMemorizeVocabularyInfo();
 	    							showNextMemorizeVocabulary();
 
 	    							dialog.dismiss();
@@ -767,6 +765,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    				else
 	    					DetailActivity.setVocabularySeekList(null);
 
+                        // 상세정보 페이지를 연다.
 	    				Intent intent = new Intent(JapanVocabularyActivity.this, DetailActivity.class);
 	    				intent.putExtra("idx", idx);
 	    				startActivityForResult(intent, R.id.vocabulary_detail_info);
