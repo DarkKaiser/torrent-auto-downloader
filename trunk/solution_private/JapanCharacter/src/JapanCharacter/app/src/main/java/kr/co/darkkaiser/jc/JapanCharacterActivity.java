@@ -81,7 +81,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
             }
         });
 
-        Button nextButton = (Button)findViewById(R.id.nextCharacter);
+        Button nextButton = (Button)findViewById(R.id.next_character);
         nextButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

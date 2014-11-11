@@ -22,7 +22,7 @@
         app:bannerHeight="Fixed"
         />
     <Button
-        android:id="@+id/nextCharacter"
+        android:id="@+id/next_character"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_above="@id/xmladview"
@@ -32,7 +32,7 @@
         android:id="@+id/jc_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/nextCharacter"
+        android:layout_above="@id/next_character"
         android:gravity="center"
         android:text="@string/screen_tab_info"
         android:textSize="13dp"
