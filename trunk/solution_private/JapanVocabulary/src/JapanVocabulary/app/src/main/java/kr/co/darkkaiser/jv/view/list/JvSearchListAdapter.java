@@ -58,7 +58,7 @@ public class JvSearchListAdapter extends BaseAdapter {
 		JapanVocabulary jpVocabulary = mJvList.get(position);
 		if (jpVocabulary == null) {
 			convertView.findViewById(R.id.memorize_target).setVisibility(View.INVISIBLE);
-			convertView.findViewById(R.id.memorize_completed).setVisibility(View.INVISIBLE);
+			convertView.findViewById(R.id.vocabulary_memorize_completed).setVisibility(View.INVISIBLE);
 			
 			assert false;
 			return convertView;
@@ -69,7 +69,7 @@ public class JvSearchListAdapter extends BaseAdapter {
 		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.vocabulary_gana);
 		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.vocabulary_translation);
 		TextView registrationDate = (TextView) convertView.findViewById(R.id.registration_date);
-		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.memorize_completed);
+		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.vocabulary_memorize_completed);
 		CheckBox memorizeTarget = (CheckBox) convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout) convertView.findViewById(R.id.memorize_bg);
 

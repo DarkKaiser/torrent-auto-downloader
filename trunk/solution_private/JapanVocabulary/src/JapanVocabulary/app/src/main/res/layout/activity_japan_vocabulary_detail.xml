@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="@string/memorize_uncompleted"
+                    android:text="@string/vocabulary_memorize_uncompleted"
                     android:textColor="@color/memorize_uncompleted"
                     android:textSize="15dp"
                     tools:ignore="SpUsage"

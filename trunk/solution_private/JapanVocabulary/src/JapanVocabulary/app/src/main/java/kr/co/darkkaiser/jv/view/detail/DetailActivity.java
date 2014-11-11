@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.GestureDetector;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +27,6 @@ import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
-// todo 액션바에 암기완료/암기미완료 토글버튼 추가
 // todo 이전/다음 버튼 이미지 심플하게 변경
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
@@ -181,10 +181,36 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_japan_vocabulary_detail, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+
+            case R.id.vocabulary_rememorize:
+                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                return true;
+
+            case R.id.vocabulary_memorize_completed:
+                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                return true;
+
+            case R.id.add_vocabulary_memorize_target:
+                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                return true;
+
+            case R.id.remove_vocabulary_memorize_target:
+                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
         }
 

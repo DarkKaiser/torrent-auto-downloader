@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/vocabulary_rememorize"
+        android:title="@string/vocabulary_rememorize"
+        />
+    <item
+		android:id="@+id/vocabulary_memorize_completed"
+		android:title="@string/vocabulary_memorize_completed"
+        />
+    <item
+        android:id="@+id/add_vocabulary_memorize_target"
+        android:title="@string/add_vocabulary_memorize_target"
+        />
+    <item
+        android:id="@+id/remove_vocabulary_memorize_target"
+        android:title="@string/remove_vocabulary_memorize_target"
+        />
+
+</menu>

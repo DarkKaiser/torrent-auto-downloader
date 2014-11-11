@@ -10,7 +10,12 @@
     <string name="vocabulary_translation">뜻</string>
     <string name="vocabulary_detail_description">상세설명</string>
     <string name="vocabulary_example">예문</string>
-    <string name="memorize_uncompleted">미암기</string>
+    <string name="vocabulary_memorize_uncompleted">미암기</string>
+
+    <string name="vocabulary_rememorize">다시 암기하기</string>
+    <string name="vocabulary_memorize_completed">암기완료</string>
+    <string name="add_vocabulary_memorize_target">암기대상 목록에 추가</string>
+    <string name="remove_vocabulary_memorize_target">암기대상 목록에서 제거</string>
 
     <string name="unknown_app_version">알 수 없음</string>
     <string name="unknown_vocabulary_db_version">알 수 없음</string>
