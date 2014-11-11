@@ -27,7 +27,6 @@ import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
-// todo 이전/다음 버튼 이미지 심플하게 변경
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
 	// 상세정보 페이지에서 이전/다음 버튼으로 암기단어를 변경하면 호출한 페이지에서도
