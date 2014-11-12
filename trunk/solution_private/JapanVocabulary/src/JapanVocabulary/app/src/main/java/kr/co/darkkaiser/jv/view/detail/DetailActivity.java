@@ -55,7 +55,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_japan_vocabulary_detail);
+		setContentView(R.layout.activity_vocabulary_detail);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -174,7 +174,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_japan_vocabulary_detail, menu);
+        getMenuInflater().inflate(R.menu.activity_vocabulary_detail, menu);
         return true;
     }
 
