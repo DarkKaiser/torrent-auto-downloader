@@ -45,7 +45,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"
-            android:progressDrawable="@drawable/custom_seekbar"
+            android:progressDrawable="@drawable/av_vocabulary_seekbar"
             android:visibility="gone"
             />
         <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"

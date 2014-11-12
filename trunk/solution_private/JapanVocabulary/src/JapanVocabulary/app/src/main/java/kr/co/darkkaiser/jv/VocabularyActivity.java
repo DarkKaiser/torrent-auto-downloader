@@ -700,7 +700,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		if (isUpdateVocabularyDb == true)
 			mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
 		else
-			mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
+			mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.", true, false);
 
 		new Thread() {
 
@@ -909,19 +909,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
 
-    // @@@@@
-	private void loadMemorizeTargetVocabularyData(boolean launchApp) {
-		Message msg = Message.obtain();
-		msg.what = MSG_PROGRESS_DIALOG_REFRESH;
-		msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
-		mVocabularyDataLoadHandler.sendMessage(msg);
-
-		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mMemorizeList.loadData(preferences, launchApp);
-
-		adjustVocabularySeekBar(preferences);
-	}
-
 	private void adjustVocabularySeekBar(SharedPreferences preferences) {
 		assert preferences != null;
 
@@ -1028,9 +1015,9 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     // @@@@@
     private ArrayList<String> checkNewVocabularyDb() {
-        // 로컬 단어 DB의 버전정보를 구한다.
-        SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
+        // 로컬 단어DB의 버전정보를 구한다.
+        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        String localDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, "");
 
         try {
             ArrayList<String> vocaDbInfo = VocabularyDbHelper.getLatestVocabularyDbInfoList();
@@ -1041,21 +1028,35 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                 newVocabularyDbVersion = vocaDbInfo.get(0);
 
             // @@@@@ 임시주석
-//			// 단어 DB의 갱신 여부를 확인한다.
-//			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
-//					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(Constants.JV_DB_VERSION_FROM_ASSETS) == false) {
-//				return vocaDbInfo;
-//			}
+			// 단어 DB의 갱신 여부를 확인한다.
+			if (newVocabularyDbVersion != null
+                    && TextUtils.isEmpty(newVocabularyDbVersion) == false
+                    && newVocabularyDbVersion.equals(localDbVersion) == false) {
+				return vocaDbInfo;
+			}
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
 
             Message msg = Message.obtain();
             msg.what = MSG_TOAST_SHOW;
-            msg.obj = "단어 DB의 업데이트  여부를 확인할 수 없습니다.";
+            msg.obj = "단어DB의 업데이트  여부를 확인할 수 없습니다.";
             mVocabularyDataLoadHandler.sendMessage(msg);
         }
 
         return null;
+    }
+
+    // @@@@@
+    private void loadMemorizeTargetVocabularyData(boolean launchApp) {
+        Message msg = Message.obtain();
+        msg.what = MSG_PROGRESS_DIALOG_REFRESH;
+        msg.obj = "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.";
+        mVocabularyDataLoadHandler.sendMessage(msg);
+
+        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        mMemorizeList.loadData(preferences, launchApp);
+
+        adjustVocabularySeekBar(preferences);
     }
 
 }
