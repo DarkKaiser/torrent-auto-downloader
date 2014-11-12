@@ -27,6 +27,8 @@
         android:layout_height="60dp"
         android:layout_above="@id/xmladview"
         android:text="@string/next_character"
+        android:textSize="17dp"
+        tools:ignore="SpUsage"
         />
     <TextView
         android:id="@+id/character_info"
@@ -35,7 +37,7 @@
         android:layout_above="@id/next_character"
         android:gravity="center"
         android:text="@string/screen_tab_info"
-        android:textSize="13dp"
+        android:textSize="12dp"
         android:textColor="@color/jc_main_information_text"
         tools:ignore="SpUsage"
         />
