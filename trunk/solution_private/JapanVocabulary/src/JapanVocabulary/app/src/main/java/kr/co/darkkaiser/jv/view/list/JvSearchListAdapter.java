@@ -59,18 +59,18 @@ public class JvSearchListAdapter extends BaseAdapter {
 		Vocabulary jpVocabulary = mJvList.get(position);
 		if (jpVocabulary == null) {
 			convertView.findViewById(R.id.memorize_target).setVisibility(View.INVISIBLE);
-			convertView.findViewById(R.id.vocabulary_memorize_completed).setVisibility(View.INVISIBLE);
+			convertView.findViewById(R.id.avd_vocabulary_memorize_completed).setVisibility(View.INVISIBLE);
 			
 			assert false;
 			return convertView;
 		}
 
 		TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
-		TextView vocabulary = (TextView) convertView.findViewById(R.id.tsw_vocabulary);
-		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.vocabulary_gana);
-		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.tsw_vocabulary_translation);
+		TextView vocabulary = (TextView) convertView.findViewById(R.id.avd_vocabulary);
+		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.avd_vocabulary_gana);
+		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.avd_vocabulary_translation);
 		TextView registrationDate = (TextView) convertView.findViewById(R.id.registration_date);
-		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.vocabulary_memorize_completed);
+		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.avd_vocabulary_memorize_completed);
 		CheckBox memorizeTarget = (CheckBox) convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout) convertView.findViewById(R.id.memorize_bg);
 

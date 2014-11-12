@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/vocabulary_rememorize"
-        android:title="@string/vocabulary_rememorize"
+        android:id="@+id/avd_vocabulary_rememorize"
+        android:title="@string/avd_vocabulary_rememorize"
         />
     <item
-		android:id="@+id/vocabulary_memorize_completed"
-		android:title="@string/vocabulary_memorize_completed"
+		android:id="@+id/avd_vocabulary_memorize_completed"
+		android:title="@string/avd_vocabulary_memorize_completed"
         />
     <item
-        android:id="@+id/add_vocabulary_memorize_target"
-        android:title="@string/add_vocabulary_memorize_target"
+        android:id="@+id/avd_add_vocabulary_memorize_target"
+        android:title="@string/avd_add_vocabulary_memorize_target"
         />
     <item
-        android:id="@+id/remove_vocabulary_memorize_target"
-        android:title="@string/remove_vocabulary_memorize_target"
+        android:id="@+id/avd_remove_vocabulary_memorize_target"
+        android:title="@string/avd_remove_vocabulary_memorize_target"
         />
 
 </menu>

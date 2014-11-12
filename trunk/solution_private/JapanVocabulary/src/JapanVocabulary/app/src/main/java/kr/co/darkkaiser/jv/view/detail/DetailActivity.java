@@ -79,9 +79,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 					vocabulary = VocabularyManager.getInstance().getVocabulary(idx);
 			}
 		} else {
-            aq.id(R.id.move_vocabulary_button_panel).visible();
-            aq.id(R.id.btn_prev_vocabulary).clicked(this, "onClick");
-            aq.id(R.id.btn_next_vocabulary).clicked(this, "onClick");
+            aq.id(R.id.avd_move_vocabulary_button_panel).visible();
+            aq.id(R.id.avd_prev_vocabulary).clicked(this, "onClick");
+            aq.id(R.id.avd_next_vocabulary).clicked(this, "onClick");
 
             // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
             mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
@@ -101,7 +101,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         mGestureDetector = new GestureDetector(DetailActivity.this, simpleOnGestureListener);
 
         // 스크롤뷰에 제스처를 등록한다.
-        aq.id(R.id.vocabulary_detail_info_panel).getView().setOnTouchListener(new View.OnTouchListener() {
+        aq.id(R.id.avd_vocabulary_detail_info_panel).getView().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return mGestureDetector.onTouchEvent(motionEvent);
@@ -122,20 +122,20 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         AQuery aq = new AQuery(this);
         VocabularyManager vm = VocabularyManager.getInstance();
 
-        aq.id(R.id.tsw_vocabulary).text(vocabulary.getVocabulary());
-        aq.id(R.id.vocabulary_gana).text(vocabulary.getVocabularyGana());
-        aq.id(R.id.tsw_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
-        aq.id(R.id.vocabulary_detail_info).text(vm.getVocabularyDetailDescription(vocabulary));
-        aq.id(R.id.vocabulary_example).text(Html.fromHtml(vm.getVocabularyExample(vocabulary)));
+        aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
+        aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
+        aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
+        aq.id(R.id.avd_vocabulary_detail_info).text(vm.getVocabularyDetailDescription(vocabulary));
+        aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(vm.getVocabularyExample(vocabulary)));
 
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {
 			assert memorizeCompletedCount > 0;
-            aq.id(R.id.memorize_uncompleted).gone();
+            aq.id(R.id.avd_memorize_uncompleted).gone();
 		} else {
-            aq.id(R.id.memorize_uncompleted).visible();
+            aq.id(R.id.avd_memorize_uncompleted).visible();
 		}
-        aq.id(R.id.memorize_completed_count_text).text(String.format("총 %d회 암기완료", memorizeCompletedCount));
+        aq.id(R.id.avd_memorize_completed_count_text).text(String.format("총 %d회 암기완료", memorizeCompletedCount));
 	}
 
     @Override
@@ -154,11 +154,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             StringBuilder sbErrMessage = new StringBuilder();
 
             switch (v.getId()) {
-            case R.id.btn_prev_vocabulary:
+            case R.id.avd_prev_vocabulary:
                 vocabulary = mVocabularyListWrapper.previousVocabulary(sbErrMessage);
                 break;
 
-            case R.id.btn_next_vocabulary:
+            case R.id.avd_next_vocabulary:
                 vocabulary = mVocabularyListWrapper.nextVocabulary(sbErrMessage);
                 break;
             }
@@ -185,22 +185,22 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 finish();
                 return true;
 
-            case R.id.vocabulary_rememorize:
+            case R.id.avd_vocabulary_rememorize:
                 // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
-            case R.id.vocabulary_memorize_completed:
+            case R.id.avd_vocabulary_memorize_completed:
                 // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
-            case R.id.add_vocabulary_memorize_target:
+            case R.id.avd_add_vocabulary_memorize_target:
                 // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
-            case R.id.remove_vocabulary_memorize_target:
+            case R.id.avd_remove_vocabulary_memorize_target:
                 // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
@@ -267,14 +267,14 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             if (mVocabularyListWrapper.isValid() == true) {
                 AQuery aq = new AQuery(DetailActivity.this);
 
-                if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
+                if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
                     int rawX = (int)e.getRawX();
                     int rawY = (int)e.getRawY();
 
                     Rect prevVocabularyRect = new Rect();
                     Rect nextVocabularyRect = new Rect();
-                    aq.id(R.id.btn_prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
-                    aq.id(R.id.btn_next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
+                    aq.id(R.id.avd_prev_vocabulary).getView().getGlobalVisibleRect(prevVocabularyRect);
+                    aq.id(R.id.avd_next_vocabulary).getView().getGlobalVisibleRect(nextVocabularyRect);
                     if (prevVocabularyRect.contains(rawX, rawY) == true || nextVocabularyRect.contains(rawX, rawY) == true)
                         return false;
                 }
@@ -292,8 +292,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         @Override
         public void run() {
             AQuery aq = new AQuery(DetailActivity.this);
-            if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
-                aq.id(R.id.move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
+            if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
+                aq.id(R.id.avd_move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
             }
         }
 
@@ -302,10 +302,10 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private void resetInVisiblePrevNextVocabularyButtonAnimate() {
         if (mVocabularyListWrapper != null && mVocabularyListWrapper.isValid()) {
             AQuery aq = new AQuery(DetailActivity.this);
-            if (aq.id(R.id.move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
+            if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
                 // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
-                aq.id(R.id.move_vocabulary_button_panel).getView().clearAnimation();
-                aq.id(R.id.move_vocabulary_button_panel).visible();
+                aq.id(R.id.avd_move_vocabulary_button_panel).getView().clearAnimation();
+                aq.id(R.id.avd_move_vocabulary_button_panel).visible();
             }
         }
 

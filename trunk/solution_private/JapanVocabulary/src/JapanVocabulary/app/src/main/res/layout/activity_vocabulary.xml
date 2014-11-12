@@ -69,7 +69,7 @@
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:text="@string/prev_vocabulary_button"
+            android:text="@string/av_prev_vocabulary"
             android:textSize="15dp"
             tools:ignore="SpUsage"
             />
@@ -79,7 +79,7 @@
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/btn_prev_vocabulary"
-            android:text="@string/next_vocabulary_button"
+            android:text="@string/av_next_vocabulary"
             android:textSize="15dp"
             tools:ignore="SpUsage"
             />
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/btn_next_vocabulary"
             android:gravity="center"
-            android:text="@string/memorize_method_info"
+            android:text="@string/av_memorize_method_info"
             android:textColor="#99999999"
             android:textSize="13dp"
             tools:ignore="SpUsage"
@@ -102,16 +102,16 @@
             android:layout_below="@id/vocabulary_seekbar"
             >
             <TextSwitcher
-                android:id="@+id/tsw_vocabulary"
+                android:id="@+id/avd_vocabulary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 />
             <TextSwitcher
-                android:id="@+id/tsw_vocabulary_translation"
+                android:id="@+id/avd_vocabulary_translation"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tsw_vocabulary"
+                android:layout_below="@id/avd_vocabulary"
                 android:layout_centerInParent="true"
                 />
         </RelativeLayout>

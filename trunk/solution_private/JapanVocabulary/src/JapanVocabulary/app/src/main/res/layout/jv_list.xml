@@ -93,7 +93,7 @@
 				    	android:textColor="#cccccc"
 				    	/>
 				    <TextView
-				    	android:id="@+id/memorize_completed_count_text"
+				    	android:id="@+id/avd_memorize_completed_count_text"
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"

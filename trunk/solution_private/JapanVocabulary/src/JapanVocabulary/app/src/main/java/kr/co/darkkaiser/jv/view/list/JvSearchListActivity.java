@@ -387,7 +387,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == R.id.jvm_preferences) {
 			// 수행 작업 없음
-		} else if (requestCode == R.id.vocabulary_detail_info) {
+		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
 			DetailActivity.setVocabularySeekList(null);
 
 			// 상세페이지가 열릴 때 스크롤바를 커스텀 숨기도록 한다.
@@ -450,7 +450,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, DetailActivity.class);
 			intent.putExtra("idx", mJvListData.get(position).getIdx());
-			startActivityForResult(intent, R.id.vocabulary_detail_info);
+			startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
 		}
 	}
 
@@ -550,7 +550,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);
 		TextView searchVocabularyCount = (TextView)findViewById(R.id.search_vocabulary_count);
 		TextView memorizeTargetCount = (TextView)findViewById(R.id.memorize_target_count);
-		TextView memorizeCompletedCount = (TextView)findViewById(R.id.memorize_completed_count_text);
+		TextView memorizeCompletedCount = (TextView)findViewById(R.id.avd_memorize_completed_count_text);
 
 		allVocabularyCount.setText(String.format("%d개", vocabularyInfo.get(0)));
 		searchVocabularyCount.setText(String.format("%d개", mJvListData.size()));

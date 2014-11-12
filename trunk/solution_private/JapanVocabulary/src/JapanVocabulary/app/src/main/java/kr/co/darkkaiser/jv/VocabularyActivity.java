@@ -54,8 +54,8 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 //@@@@@ todo
@@ -142,7 +142,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
-        TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
+        TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
         tswVocabulary.setOnTouchListener(this);
         tswVocabulary.setFactory(new ViewFactory() {
 
@@ -157,8 +157,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                 return tv;
             }
         });
-        
-        TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+
+        TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
         tswVocabularyTranslation.setOnTouchListener(this);
         tswVocabularyTranslation.setFactory(new ViewFactory() {
 
@@ -414,7 +414,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
-		} else if (requestCode == R.id.vocabulary_detail_info) {
+		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
 			DetailActivity.setVocabularySeekList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
@@ -430,8 +430,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private boolean reloadPreference() {
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
-		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
-		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
 		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, getResources().getBoolean(R.bool.fade_effect_next_vocabulary_item_default_value)) == true) {
 			tswVocabulary.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			tswVocabulary.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
@@ -499,8 +499,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
         AQuery aq = new AQuery(this);
 
-		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
-		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.tsw_vocabulary_translation);
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
 
 		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
 		tswVocabulary.setText("");
@@ -508,7 +508,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		if (vocabulary != null) {
 			if (vocabulary.isMemorizeCompleted() == true)
-                aq.id(R.id.tv_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.main_activity_memorize_completed_count)).visible();
+                aq.id(R.id.tv_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.av_memorize_completed_count)).visible();
 			else
                 aq.id(R.id.tv_memorize_completed_info).invisible();
 
@@ -685,7 +685,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (mMemorizeList.isValidVocabularyPosition() == true &&
-                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.tsw_vocabulary || v.getId() == R.id.tsw_vocabulary_translation)) {
+                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.avd_vocabulary || v.getId() == R.id.avd_vocabulary_translation)) {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -767,7 +767,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                         // 상세정보 페이지를 연다.
 	    				Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
 	    				intent.putExtra("idx", idx);
-	    				startActivityForResult(intent, R.id.vocabulary_detail_info);
+	    				startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
 	    			}
 	    			break;
 
