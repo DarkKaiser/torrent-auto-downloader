@@ -761,13 +761,12 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     // @@@@@
     private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
-        if (isUpdateVocabularyDb == true)
+        if (isUpdateVocabularyDb)
             mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
         else
             mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.", true, false);
 
         new Thread() {
-
             // 단어 DB를 업데이트 할지에 대한 플래그
             private boolean mIsUpdateVocabularyDb = false;
 
@@ -797,8 +796,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                 initVocabularyDataAndStartMemorize(true, true, updateSucceeded);
             };
         }
-                .setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
-                .start();
+        .setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
+        .start();
     }
 
     // @@@@@
@@ -936,7 +935,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     // @@@@@
     private Handler mVocabularyDataLoadHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
@@ -1042,17 +1040,17 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                         })
                         .show();
             } else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
-                SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+                SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 
                 if (msg.arg1 == View.VISIBLE) {
-                    if (moveVocabularyBar.getVisibility() != View.VISIBLE) {
-                        moveVocabularyBar.setVisibility(View.VISIBLE);
-                        moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));
+                    if (vocabularySeekBar.getVisibility() != View.VISIBLE) {
+                        vocabularySeekBar.setVisibility(View.VISIBLE);
+                        vocabularySeekBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));
                     }
                 } else {
-                    if (moveVocabularyBar.getVisibility() != View.GONE) {
-                        moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
-                        moveVocabularyBar.setVisibility(View.GONE);
+                    if (vocabularySeekBar.getVisibility() != View.GONE) {
+                        vocabularySeekBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
+                        vocabularySeekBar.setVisibility(View.GONE);
                     }
                 }
             }
