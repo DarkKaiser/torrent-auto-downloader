@@ -61,7 +61,7 @@ import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList
 //@@@@@ todo
 public class VocabularyActivity extends Activity implements OnTouchListener {
 
-	private static final String TAG = "JapanVocabularyActivity";
+	private static final String TAG = "VocabularyActivity";
 
 	private static final int MSG_TOAST_SHOW = 1;
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
@@ -92,7 +92,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     // @@@@@
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_japan_vocabulary);
+        setContentView(R.layout.activity_vocabulary);
 
         AQuery aq = new AQuery(this);
 
@@ -308,7 +308,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.jv_main_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_vocabulary, menu);
 		return true;
     }
 

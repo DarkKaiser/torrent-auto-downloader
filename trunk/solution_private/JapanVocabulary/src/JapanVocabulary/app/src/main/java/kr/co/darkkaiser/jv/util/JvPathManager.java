@@ -33,6 +33,7 @@ public class JvPathManager {
 	}
 
 	public JvPathManager() {
+
 	}
 
 	public static JvPathManager getInstance() {
@@ -50,7 +51,6 @@ public class JvPathManager {
 		File f = new File(path);
 		if (f.exists() == false) {
 			if (f.mkdirs() == false) {
-				callUseSDCardCount(context, "mkdirs() function failed", path);
 				return false;
 			}
 		}
@@ -67,7 +67,6 @@ public class JvPathManager {
 				try {
 					copyFile(sdcJvVocabularyDbPath, jvVocabularyDbPath);
 				} catch (IOException e) {
-					callUseSDCardCount(context, "copyFile() function failed.", "");
 				}
 				
 				f.delete();
@@ -98,40 +97,7 @@ public class JvPathManager {
 
 		return true;
 	}
-	
-	private void callUseSDCardCount(Context context, String param1, String param2) {
-		assert context != null;
-		assert param1 != null && param2 != null;
 
-//		// 데이터베이스 파일, 사용자의 단어에 대한 정보를 저장한 파일이 위치하는 경로를 구한다.
-//		String appMainPath = String.format("%s/%s/", Environment.getExternalStorageDirectory().getAbsolutePath(), Constants.JV_MAIN_FOLDER_NAME);
-//		File f = new File(appMainPath);
-//		if (f.exists() == false) {
-//			f.mkdir();
-//		}
-//
-//		mJvVocabularyDbPath = String.format("%s%s", appMainPath, Constants.JV_VOCABULARY_DB);
-//		mJvUserVocubularyInfoFilePath = String.format("%s%s", appMainPath, Constants.JV_USER_VOCABULARY_INFO_FILE);
-
-		try {
-			// 단어 DB 파일의 경로가 SDCARD를 사용하는 사용자를 카운트하기 위해 웹페이지를 호출한다. 
-			URL url = new URL(String.format("http://darkkaiser.cafe24.com/data/jv_sdcard_check2.php?param1=%s&param2=%s", URLEncoder.encode(param1, "UTF-8"), URLEncoder.encode(param2, "UTF-8")));
-			URLConnection conn = url.openConnection();
-			conn.setDoOutput(true);
-
-			OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
-			osw.write("");
-			osw.flush();
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
-			while (br.readLine() != null) {
-			}
-			br.close();
-		} catch (Exception e) {
-			Log.d(TAG, e.getMessage());
-		}
-	}
-	
 	public String getVocabularyDbPath() {
 		assert TextUtils.isEmpty(mJvVocabularyDbPath) == false;
 		return mJvVocabularyDbPath;
