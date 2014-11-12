@@ -23,7 +23,7 @@ import com.androidquery.AQuery;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
@@ -76,7 +76,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 				long idx = intent.getLongExtra("idx", -1);
 
 				if (idx != -1)
-					vocabulary = JapanVocabularyManager.getInstance().getJapanVocabulary(idx);
+					vocabulary = VocabularyManager.getInstance().getVocabulary(idx);
 			}
 		} else {
             aq.id(R.id.move_vocabulary_button_panel).visible();
@@ -120,7 +120,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		assert vocabulary != null;
 
         AQuery aq = new AQuery(this);
-        JapanVocabularyManager vm = JapanVocabularyManager.getInstance();
+        VocabularyManager vm = VocabularyManager.getInstance();
 
         aq.id(R.id.tsw_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.vocabulary_gana).text(vocabulary.getVocabularyGana());

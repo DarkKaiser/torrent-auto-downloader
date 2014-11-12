@@ -22,11 +22,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 //@@@@@ TODO
-public class JapanVocabularyManager {
+public class VocabularyManager {
 
 	private static final String TAG = "JvManager";
 
-	private static JapanVocabularyManager mInstance = null;
+	private static VocabularyManager mInstance = null;
 	private SQLiteDatabase mJvVocabularySqLite = null;
 
 	/*
@@ -35,13 +35,13 @@ public class JapanVocabularyManager {
 	private Hashtable<Long, Vocabulary> mJvTable = new Hashtable<Long, Vocabulary>();
 
 	static {
-		mInstance = new JapanVocabularyManager();
+		mInstance = new VocabularyManager();
 	}
 
-	private JapanVocabularyManager() {
+	private VocabularyManager() {
 	}
 
-	public static JapanVocabularyManager getInstance() {
+	public static VocabularyManager getInstance() {
 		return mInstance;
 	}
 
@@ -362,7 +362,7 @@ public class JapanVocabularyManager {
 		}
 	}
 
-	public synchronized Vocabulary getJapanVocabulary(long idx) {
+	public synchronized Vocabulary getVocabulary(long idx) {
 		return mJvTable.get(idx);
 	}
 
@@ -575,7 +575,7 @@ public class JapanVocabularyManager {
 		return result;
 	}
 
-	public synchronized long getUpdatedJapanVocabularyInfo(long prevMaxIdx, StringBuilder sb) {
+	public synchronized long getUpdatedVocabularyInfo(long prevMaxIdx, StringBuilder sb) {
 		assert sb != null;
 
 		long newMaxIdx = -1;

@@ -54,7 +54,7 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
@@ -331,7 +331,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				@Override
 	   			public void run() {
 					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-					JapanVocabularyManager.getInstance().rememorizeAllMemorizeTarget();
+					VocabularyManager.getInstance().rememorizeAllMemorizeTarget();
 
 			        // 암기할 단어 데이터를 로드합니다.
 			        loadMemorizeTargetVocabularyData(false);
@@ -983,7 +983,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		mVocabularyDataLoadHandler.sendMessage(msg);
 
 		// DB에서 단어 데이터를 읽어들인다.
-		if (JapanVocabularyManager.getInstance().initDataFromDB(this) == false) {
+		if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
 			msg = Message.obtain();
 			msg.what = MSG_TOAST_SHOW;
 			msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
@@ -1002,7 +1002,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 			long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
 			
 			StringBuilder sb = new StringBuilder();
-			long newMaxIdx = JapanVocabularyManager.getInstance().getUpdatedJapanVocabularyInfo(prevMaxIdx, sb);
+			long newMaxIdx = VocabularyManager.getInstance().getUpdatedVocabularyInfo(prevMaxIdx, sb);
 
 			if (newMaxIdx != -1) {
 				mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();

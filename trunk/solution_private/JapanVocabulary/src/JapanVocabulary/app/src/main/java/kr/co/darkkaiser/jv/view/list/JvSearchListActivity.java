@@ -7,9 +7,9 @@ import java.util.Collections;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 
@@ -371,7 +371,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 						}
 					}
 
-					JapanVocabularyManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);					
+					VocabularyManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);
 				}
 
 				Message msg = Message.obtain();
@@ -428,13 +428,13 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		synchronized (mJvListData) {
 			switch (mJvListSortMethod) {
 			case VOCABULARY:
-				Collections.sort(mJvListData, JapanVocabularyComparator.mVocabularyComparator);
+				Collections.sort(mJvListData, VocabularyComparator.mVocabularyComparator);
 				break;
 			case VOCABULARY_GANA:
-				Collections.sort(mJvListData, JapanVocabularyComparator.mVocabularyGanaComparator);
+				Collections.sort(mJvListData, VocabularyComparator.mVocabularyGanaComparator);
 				break;
 			case VOCABULARY_TRANSLATION:
-				Collections.sort(mJvListData, JapanVocabularyComparator.mVocabularyTranslationComparator);
+				Collections.sort(mJvListData, VocabularyComparator.mVocabularyTranslationComparator);
 				break;
 			}
 		}
@@ -531,7 +531,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 			synchronized (mJvListData) {
 				mJvListData.clear();
-				JapanVocabularyManager.getInstance().searchVocabulary(JvSearchListActivity.this, mJvListSearchCondition, mJvListData);
+				VocabularyManager.getInstance().searchVocabulary(JvSearchListActivity.this, mJvListSearchCondition, mJvListData);
 			}
 
 			sortList();
@@ -544,7 +544,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	}
 
 	private void updateVocabularyInfo() {
-		ArrayList<Integer> vocabularyInfo = JapanVocabularyManager.getInstance().getVocabularyInfo();
+		ArrayList<Integer> vocabularyInfo = VocabularyManager.getInstance().getVocabularyInfo();
 		assert vocabularyInfo.size() == 3;
 
 		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);

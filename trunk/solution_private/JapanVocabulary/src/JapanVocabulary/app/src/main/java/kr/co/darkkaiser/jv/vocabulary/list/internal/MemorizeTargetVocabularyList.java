@@ -7,9 +7,9 @@ import java.util.Random;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.CircularBuffer;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -64,20 +64,20 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		mVocabularyListData.clear();
 		mCurrentPosition = -1;
 		mVocabularyListMemorizeSequence.clear();
-		mMemorizeCompletedCount = JapanVocabularyManager.getInstance().getMemorizeTargetJvList(mVocabularyListData);
+		mMemorizeCompletedCount = VocabularyManager.getInstance().getMemorizeTargetJvList(mVocabularyListData);
 
 		assert mMemorizeCompletedCount >= 0;
 		assert mMemorizeCompletedCount <= mVocabularyListData.size();
 	
 		switch (mMemorizeOrderMethod) {
 		case 1:
-			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyComparator);
+			Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
 			break;
 		case 3:
-			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyGanaComparator);
+			Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
 			break;
 		case 2:
-			Collections.sort(mVocabularyListData, JapanVocabularyComparator.mVocabularyTranslationComparator);
+			Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
 			break;
 		default:
 			break;
