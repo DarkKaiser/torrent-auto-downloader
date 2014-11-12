@@ -58,7 +58,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
-//@@@@@ todo
+//@@@@@ todo actionbaractivity
 public class VocabularyActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "VocabularyActivity";
@@ -89,7 +89,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 	private MemorizeTargetVocabularyList mMemorizeList = new MemorizeTargetVocabularyList();
 
     @Override
-    // @@@@@
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
@@ -97,6 +96,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         AQuery aq = new AQuery(this);
 
         // SD 카드의 상태를 확인한다.
+        // @@@@@ 확인필요, 현재 방식이 외부 스토리지가 아닌가?
         /* 단어DB의 위치를 SDCARD에서 어플 설치폴더로 옮김에 따라 주석 처리한다.
         String sdStatus = Environment.getExternalStorageState();
         if (sdStatus.equals(Environment.MEDIA_UNMOUNTED) == true) {
@@ -116,43 +116,41 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         }
         */
 
-        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-        moveVocabularyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-                setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");
-			}
+        SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+        vocabularySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");// @@@@@ 번째를 뺄지 생각, 혹은 다른곳으로 옮길지
+            }
 
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				setTitle(String.format("%s", getResources().getString(R.string.app_name)));
-			}
-			
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				if (fromUser == true) {
-					showMemorizeVocabulary(mMemorizeList.movePosition(progress));
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setTitle(String.format("%s", getResources().getString(R.string.app_name)));
+            }
 
-                    setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");
-				}
-			}
-		});
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser == true) {
+                    showMemorizeVocabulary(mMemorizeList.movePosition(progress));
 
-        RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
+                    setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");// @@@@@ 번째를 뺄지 생각, 혹은 다른곳으로 옮길지
+                }
+            }
+        });
+
+        RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.av_vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
         TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
         tswVocabulary.setOnTouchListener(this);
         tswVocabulary.setFactory(new ViewFactory() {
-
             @Override
             public View makeView() {
                 TextView tv = new TextView(VocabularyActivity.this);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTypeface(Typeface.SERIF);
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
-                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
                 return tv;
             }
@@ -161,14 +159,13 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
         tswVocabularyTranslation.setOnTouchListener(this);
         tswVocabularyTranslation.setFactory(new ViewFactory() {
-
             @Override
             public View makeView() {
                 TextView tv = new TextView(VocabularyActivity.this);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTypeface(Typeface.SERIF);
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+                tv.setLayoutParams(new TextSwitcher.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
                 return tv;
             }
@@ -177,7 +174,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         // 환경설정 값을 로드한다.
         reloadPreference();
 
-        // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.
+        // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.@@@@@
         if (JvPathManager.getInstance().init(this) == false) {
         	new AlertDialog.Builder(this)
     			.setTitle("오류")
@@ -194,8 +191,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         	return;
         }
 
-        aq.id(R.id.btn_prev_vocabulary).clicked(new View.OnClickListener() {
-
+        aq.id(R.id.av_prev_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -209,8 +205,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             }
         });
 
-        aq.id(R.id.btn_next_vocabulary).clicked(new View.OnClickListener() {
-
+        aq.id(R.id.av_next_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -224,89 +219,11 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             }
         });
 
-        // 시작시 단어 업데이트할지의 여부를 확인한 후, 단어 데이터를 업데이트한다. 
-		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, true);
-
-        // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어 데이터를 업데이트한다.
-        boolean isNowNetworkConnected = false;
-		ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-		if (activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting() == true) {
-			isNowNetworkConnected = true;
-		}
-
-		if (isNowNetworkConnected == true && isVocabularyUpdateOnStarted == true) {
-			// 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "단어 DB의 업데이트 여부를 확인하는 중 입니다.", true, false);
-		} else {
-			// 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);			
-		}
-
-   		new Thread() {
-
-   			// 현재 네트워크(3G 혹은 와이파이)에 연결되어 있는지의 여부를 나타낸다.
-   			private boolean mIsNowNetworkConnected = false;
-   			private boolean mIsVocabularyUpdateOnStarted = true;
-
-   			public Thread setValues(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted) {
-   				mIsNowNetworkConnected = isNowNetworkConnected;
-   				mIsVocabularyUpdateOnStarted = isVocabularyUpdateOnStarted;
-   				return this;
-   			}
-
-			@Override
-   			public void run() {
-				if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
-					ArrayList<String> newVocaInfo = checkNewVocabularyDb();
-					String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
-
-					if (newVocaInfo != null) {
-						if (newVocaInfo.size() >= 1)
-							newVocabularyDbVersion = newVocaInfo.get(0);
-
-						if (newVocaInfo.size() >= 2)
-							newVocabularyDbFileHash = newVocaInfo.get(1);
-					}
-
-					if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false) {
-						// 현재 연결된 네트워크가 3G 연결인지 확인한다.
-						ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-						NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-						if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
-							Bundle bundle = new Bundle();
-							bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbVersion);
-							bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbFileHash);
-							
-							Message msg = Message.obtain();
-							msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION;
-			                msg.setData(bundle);
-
-							mVocabularyDataLoadHandler.sendMessage(msg);
-						} else {
-							// 새로운 단어 DB로 갱신합니다.
-							boolean updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
-
-							// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-							initVocabularyDataAndStartMemorize(true, true, updateSucceeded);
-						}
-					} else {
-						// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-						initVocabularyDataAndStartMemorize(true, true, false);
-					}
-				} else {
-					// 단어 데이터를 초기화한 후, 암기를 시작합니다.
-					initVocabularyDataAndStartMemorize(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, false);
-				}
-   			};
-   		}
-   		.setValues(isNowNetworkConnected, isVocabularyUpdateOnStarted)
-   		.start();
+        // 단어DB에서 단어를 읽어들입니다.
+        loadVocabularyDb();
     }
 
-	@Override
+    @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_vocabulary, menu);
 		return true;
@@ -580,7 +497,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 				mVocabularyDataLoadHandler.sendMessage(msg2);
 			} else if (msg.what == MSG_VOCABULARY_MAINBAR_VISIBILITY) {
 				// 단어 정보 헤더를 화면에 보이도록 한다.
-				RelativeLayout layout = (RelativeLayout)findViewById(R.id.jv_main_header);
+				RelativeLayout layout = (RelativeLayout)findViewById(R.id.av_memorize_info_header);
 				if (layout.getVisibility() != View.VISIBLE) {
 					layout.setVisibility(View.VISIBLE);					
 					layout.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.slide_top_to_bottom));
@@ -685,7 +602,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (mMemorizeList.isValidVocabularyPosition() == true &&
-                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
+                (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -777,38 +694,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     		}
     	}
     };
-
-    // @@@@@
-    private ArrayList<String> checkNewVocabularyDb() {
-		// 로컬 단어 DB의 버전정보를 구한다.
-		SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
-
-		try {
-			ArrayList<String> vocaDbInfo = VocabularyDbHelper.getLatestVocabularyDbInfoList();
-			assert vocaDbInfo.size() == 2;
-			
-			String newVocabularyDbVersion = "";
-			if (vocaDbInfo.size() >= 1)
-				newVocabularyDbVersion = vocaDbInfo.get(0);
-
-            // @@@@@ 임시주석
-//			// 단어 DB의 갱신 여부를 확인한다.
-//			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
-//					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(Constants.JV_DB_VERSION_FROM_ASSETS) == false) {
-//				return vocaDbInfo;
-//			}
-		} catch (Exception e) {
-			Log.d(TAG, e.getMessage());
-
-			Message msg = Message.obtain();
-			msg.what = MSG_TOAST_SHOW;
-			msg.obj = "단어 DB의 업데이트  여부를 확인할 수 없습니다.";
-			mVocabularyDataLoadHandler.sendMessage(msg);
-		}
-		
-		return null;
-	}
 
     // @@@@@
     private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
@@ -1060,5 +945,117 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
+
+    private void loadVocabularyDb() {
+        // 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
+        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, getResources().getBoolean(R.bool.vocabulary_update_on_started_item_default_value));
+
+        // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어DB를 업데이트한다.
+        boolean isNowConnectedNetwork = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting() == true) isNowConnectedNetwork = true;
+
+        // 프로그레스 대화상자를 보인다.
+        if (isNowConnectedNetwork == true && isVocabularyUpdateOnStarted == true)
+            mProgressDialog = ProgressDialog.show(this, null, "단어 DB의 업데이트 여부를 확인하는 중 입니다.", true, false);
+        else
+            mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
+
+        new Thread() {
+            // 현재 네트워크(3G 혹은 와이파이)에 연결되어 있는지의 여부를 나타낸다.
+            private boolean mIsNowConnectedNetwork = false;
+
+            private boolean mIsVocabularyUpdateOnStarted = true;
+
+            public Thread setValues(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted) {
+                mIsNowConnectedNetwork = isNowNetworkConnected;
+                mIsVocabularyUpdateOnStarted = isVocabularyUpdateOnStarted;
+                return this;
+            }
+
+            // @@@@@
+            @Override
+            public void run() {
+                if (mIsNowConnectedNetwork == true && mIsVocabularyUpdateOnStarted == true) {
+                    ArrayList<String> newVocaInfo = checkNewVocabularyDb();
+                    String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
+
+                    if (newVocaInfo != null) {
+                        if (newVocaInfo.size() >= 1)
+                            newVocabularyDbVersion = newVocaInfo.get(0);
+
+                        if (newVocaInfo.size() >= 2)
+                            newVocabularyDbFileHash = newVocaInfo.get(1);
+                    }
+
+                    if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false) {
+                        // 현재 연결된 네트워크가 3G 연결인지 확인한다.
+                        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                        if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbVersion);
+                            bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbFileHash);
+
+                            Message msg = Message.obtain();
+                            msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION;
+                            msg.setData(bundle);
+
+                            mVocabularyDataLoadHandler.sendMessage(msg);
+                        } else {
+                            // 새로운 단어 DB로 갱신합니다.
+                            boolean updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
+
+                            // 단어 데이터를 초기화한 후, 암기를 시작합니다.
+                            initVocabularyDataAndStartMemorize(true, true, updateSucceeded);
+                        }
+                    } else {
+                        // 단어 데이터를 초기화한 후, 암기를 시작합니다.
+                        initVocabularyDataAndStartMemorize(true, true, false);
+                    }
+                } else {
+                    // 단어 데이터를 초기화한 후, 암기를 시작합니다.
+                    initVocabularyDataAndStartMemorize(mIsNowConnectedNetwork, mIsVocabularyUpdateOnStarted, false);
+                }
+            }
+        }
+        .setValues(isNowConnectedNetwork, isVocabularyUpdateOnStarted)
+        .start();
+    }
+
+    // @@@@@
+    private ArrayList<String> checkNewVocabularyDb() {
+        // 로컬 단어 DB의 버전정보를 구한다.
+        SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
+
+        try {
+            ArrayList<String> vocaDbInfo = VocabularyDbHelper.getLatestVocabularyDbInfoList();
+            assert vocaDbInfo.size() == 2;
+
+            String newVocabularyDbVersion = "";
+            if (vocaDbInfo.size() >= 1)
+                newVocabularyDbVersion = vocaDbInfo.get(0);
+
+            // @@@@@ 임시주석
+//			// 단어 DB의 갱신 여부를 확인한다.
+//			if (newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false &&
+//					newVocabularyDbVersion.equals(localDbVersion) == false && newVocabularyDbVersion.equals(Constants.JV_DB_VERSION_FROM_ASSETS) == false) {
+//				return vocaDbInfo;
+//			}
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+
+            Message msg = Message.obtain();
+            msg.what = MSG_TOAST_SHOW;
+            msg.obj = "단어 DB의 업데이트  여부를 확인할 수 없습니다.";
+            mVocabularyDataLoadHandler.sendMessage(msg);
+        }
+
+        return null;
+    }
 
 }

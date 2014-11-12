@@ -7,7 +7,7 @@
 		android:icon="@android:drawable/ic_menu_agenda" 
 		android:title="단어검색"
         />
-	<item 
+	<item
 		android:id="@+id/jvm_all_rememorize"
 		android:icon="@android:drawable/ic_menu_revert" 
 		android:title="암기대상 단어 재암기"
@@ -15,7 +15,7 @@
 	<item 
 		android:id="@+id/jvm_preferences"
 		android:icon="@android:drawable/ic_menu_preferences" 
-		android:title="환경설정"
+		android:title="@string/activity_environment_setting_label"
         />
 
 </menu>

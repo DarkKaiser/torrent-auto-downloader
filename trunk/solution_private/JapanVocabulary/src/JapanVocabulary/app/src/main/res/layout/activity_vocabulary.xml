@@ -5,27 +5,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     >
-    <!-- @@@@@ -->
-    <!--
-    	<com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
-		android:id="@+id/xmladview"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		app:appcode="wCr75ZtDLm"
-		app:effect="RightSlide"
-		app:gps="off"
-		app:allowcall="true"
-		app:dynamicReloadInterval="true"
-		app:reloadInterval="20"
-		app:bannerHeight="Fixed"
-		/>
-    -->
     <RelativeLayout
-        android:id="@+id/jv_main_header"
+        android:id="@+id/av_memorize_info_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/vocabulary_info_bar"
         android:gravity="bottom"
         android:visibility="invisible"
         >
@@ -34,8 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:textSize="15dp"
             android:visibility="invisible"
+            android:textSize="15dp"
+            tools:ignore="SpUsage"
             />
         <TextView
             android:id="@+id/av_memorize_vocabulary_info"
@@ -43,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textSize="15dp"
+            tools:ignore="SpUsage"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -63,42 +48,55 @@
             android:progressDrawable="@drawable/custom_seekbar"
             android:visibility="gone"
             />
+        <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
+            android:id="@+id/xmladview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:appcode="wCr75ZtDLm"
+            app:effect="RightSlide"
+            app:gps="off"
+            app:allowcall="true"
+            app:dynamicReloadInterval="true"
+            app:reloadInterval="20"
+            app:bannerHeight="Fixed"
+            />
         <Button
-            android:id="@+id/btn_prev_vocabulary"
+            android:id="@+id/av_prev_vocabulary"
             android:layout_width="42dp"
             android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/xmladview"
             android:layout_alignParentLeft="true"
             android:text="@string/av_prev_vocabulary"
             android:textSize="15dp"
             tools:ignore="SpUsage"
             />
         <Button
-            android:id="@+id/btn_next_vocabulary"
+            android:id="@+id/av_next_vocabulary"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/btn_prev_vocabulary"
+            android:layout_above="@id/xmladview"
+            android:layout_toRightOf="@id/av_prev_vocabulary"
             android:text="@string/av_next_vocabulary"
             android:textSize="15dp"
             tools:ignore="SpUsage"
             />
         <TextView
-            android:id="@+id/memorize_method_info"
+            android:id="@+id/av_memorize_method_comment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/btn_next_vocabulary"
+            android:layout_above="@id/av_next_vocabulary"
             android:gravity="center"
-            android:text="@string/av_memorize_method_info"
+            android:text="@string/av_memorize_method_comment"
             android:textColor="#99999999"
             android:textSize="13dp"
             tools:ignore="SpUsage"
             />
         <RelativeLayout
-            android:id="@+id/vocabulary_container"
+            android:id="@+id/av_vocabulary_container"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/memorize_method_info"
+            android:layout_above="@id/av_memorize_method_comment"
             android:layout_below="@id/av_vocabulary_seekbar"
             >
             <TextSwitcher
@@ -116,5 +114,4 @@
                 />
         </RelativeLayout>
     </RelativeLayout>
-
 </LinearLayout>
