@@ -78,7 +78,7 @@
             android:layout_above="@id/xmladview"
             android:layout_toRightOf="@id/av_prev_vocabulary"
             android:text="@string/av_next_vocabulary"
-            android:textSize="15dp"
+            android:textSize="17dp"
             tools:ignore="SpUsage"
             />
         <TextView
@@ -89,7 +89,7 @@
             android:gravity="center"
             android:text="@string/av_memorize_method_comment"
             android:textColor="#99999999"
-            android:textSize="13dp"
+            android:textSize="12dp"
             tools:ignore="SpUsage"
             />
         <RelativeLayout
