@@ -76,7 +76,7 @@ public class Constants {
     /*
      * 사용자의 단어에 대한 정보를 저장한 파일명 @@@@@
      */
-    public static final String JV_USER_VOCABULARY_INFO_FILE = "jv2_user.db";
+    public static final String JV_USER_DB = "jv2_user.db";
     
     /*
      * 단어 DB 다운로드 URL @@@@@

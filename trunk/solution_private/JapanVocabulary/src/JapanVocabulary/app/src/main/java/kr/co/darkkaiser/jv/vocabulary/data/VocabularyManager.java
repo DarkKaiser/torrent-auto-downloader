@@ -11,7 +11,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import kr.co.darkkaiser.jv.util.JvPathManager;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 import android.content.Context;

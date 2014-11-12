@@ -97,9 +97,7 @@ public class Vocabulary {
 	public void setMemorizeTarget(boolean flag, boolean isUpdateToDB) {
 		mMemorizeTarget = flag;
 
-		if (isUpdateToDB == true) {
-			VocabularyManager.getInstance().writeUserVocabularyInfo();
-		}
+		if (isUpdateToDB == true) VocabularyManager.getInstance().writeUserVocabularyInfo();
 	}
 
 	public boolean isMemorizeCompleted() {
@@ -112,18 +110,13 @@ public class Vocabulary {
 
 		mMemorizeCompleted = flag;
 
-		if (isUpdateToDB == true) {
-			VocabularyManager.getInstance().writeUserVocabularyInfo();
-		}
+		if (isUpdateToDB == true) VocabularyManager.getInstance().writeUserVocabularyInfo();
 	}
 
 	public void setFirstOnceMemorizeCompletedCount(long count) {
 		// 최초 1회만 초기화가 이루어지도록 한다.
-		if (mMemorizeCompletedCount == 0) {
-			mMemorizeCompletedCount = count;
-		} else {
-			assert false;
-		}
+		if (mMemorizeCompletedCount == 0) mMemorizeCompletedCount = count;
+        else assert false;
 	}
 
 	public long getMemorizeCompletedCount() {

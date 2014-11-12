@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.util.JvPathManager;
+import kr.co.darkkaiser.jv.vocabulary.data.JvPathManager;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
