@@ -22,7 +22,7 @@ import com.androidquery.AQuery;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
@@ -62,7 +62,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         AQuery aq = new AQuery(this);
 
         // 상세 정보를 출력할 단어에 대한 정보를 구한다.
-		JapanVocabulary vocabulary = null;
+		Vocabulary vocabulary = null;
 
 		if (mVocabularyListWrapper.isValid() == true)
 			vocabulary = mVocabularyListWrapper.getCurrentVocabulary();
@@ -116,7 +116,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		super.onDestroy();
 	}
 
-	private void updateVocabularyDetailInfo(JapanVocabulary vocabulary) {
+	private void updateVocabularyDetailInfo(Vocabulary vocabulary) {
 		assert vocabulary != null;
 
         AQuery aq = new AQuery(this);
@@ -150,7 +150,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 vibrator.vibrate(30);
             }
 
-            JapanVocabulary vocabulary = null;
+            Vocabulary vocabulary = null;
             StringBuilder sbErrMessage = new StringBuilder();
 
             switch (v.getId()) {

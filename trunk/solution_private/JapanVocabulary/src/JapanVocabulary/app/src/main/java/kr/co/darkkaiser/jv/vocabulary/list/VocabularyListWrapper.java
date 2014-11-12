@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.list;
 
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 
 public class VocabularyListWrapper {
 	
@@ -14,21 +14,21 @@ public class VocabularyListWrapper {
 		mVocabularyList = vocabularyList;
 	}
 
-	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
+	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		if (isValid() == false)
 			return null;
 
 		return mVocabularyList.nextVocabulary(sbErrMessage);
 	}
 
-	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrMessage) {
+	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrMessage) {
 		if (isValid() == false)
 			return null;
 
 		return mVocabularyList.previousVocabulary(sbErrMessage);
 	}
 
-	public synchronized JapanVocabulary getCurrentVocabulary() {
+	public synchronized Vocabulary getCurrentVocabulary() {
 		if (isValid() == false)
 			return null;
 

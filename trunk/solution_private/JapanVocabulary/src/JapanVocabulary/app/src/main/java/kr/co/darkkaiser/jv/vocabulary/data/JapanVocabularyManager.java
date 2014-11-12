@@ -32,7 +32,7 @@ public class JapanVocabularyManager {
 	/*
 	 * 전체 일본어 단어 리스트 테이블
 	 */
-	private Hashtable<Long, JapanVocabulary> mJvTable = new Hashtable<Long, JapanVocabulary>();
+	private Hashtable<Long, Vocabulary> mJvTable = new Hashtable<Long, Vocabulary>();
 
 	static {
 		mInstance = new JapanVocabularyManager();
@@ -83,7 +83,7 @@ public class JapanVocabularyManager {
 				{
 					long idx = cursor.getLong(0/* IDX */);
 					
-		    		mJvTable.put(idx, new JapanVocabulary(idx,
+		    		mJvTable.put(idx, new Vocabulary(idx,
 							  cursor.getLong(4/* REGISTRATION_DATE */),
 							  cursor.getString(1/* VOCABULARY */),
 							  cursor.getString(2/* VOCABULARY_GANA */),
@@ -113,7 +113,7 @@ public class JapanVocabularyManager {
 
 					if (token.countTokens() == 4) {
 						long idx = Long.parseLong(token.nextToken());
-						JapanVocabulary jpVocabulary = mJvTable.get(idx);
+						Vocabulary jpVocabulary = mJvTable.get(idx);
 
 						if (jpVocabulary != null) {
 							jpVocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
@@ -192,7 +192,7 @@ public class JapanVocabularyManager {
 //	    }
 	}
 
-	public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<JapanVocabulary> jvList) {
+	public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<Vocabulary> jvList) {
 		assert context != null;
 
 		if (mJvVocabularySqLite != null) {
@@ -315,18 +315,18 @@ public class JapanVocabularyManager {
 						memorizeCompleted = true;
 
 					for (int index = 0; index < idxList.size(); ++index) {
-						JapanVocabulary japanVocabulary = mJvTable.get(idxList.get(index));
-						if (memorizeTargetPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeTarget() != memorizeTarget)
+						Vocabulary vocabulary = mJvTable.get(idxList.get(index));
+						if (memorizeTargetPosition != 0/*모든 단어*/ && vocabulary.isMemorizeTarget() != memorizeTarget)
 							continue;
-						if (memorizeCompletedPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeCompleted() != memorizeCompleted)
+						if (memorizeCompletedPosition != 0/*모든 단어*/ && vocabulary.isMemorizeCompleted() != memorizeCompleted)
 							continue;
 						
-						jvList.add(japanVocabulary);
+						jvList.add(vocabulary);
 					}
 				} else {
 					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 모든 단어를 반환한다.
 					if (memorizeTargetPosition == 0/*모든 단어*/ && memorizeCompletedPosition == 0/*모든 단어*/) {
-						for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); )
+						for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); )
 							jvList.add(e.nextElement());
 						
 						return;
@@ -339,14 +339,14 @@ public class JapanVocabularyManager {
 					if (memorizeCompletedPosition == 1/*암기 완료된 단어*/)
 						memorizeCompleted = true;
 
-					for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-						JapanVocabulary japanVocabulary = e.nextElement();
-						if (memorizeTargetPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeTarget() != memorizeTarget)
+					for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+						Vocabulary vocabulary = e.nextElement();
+						if (memorizeTargetPosition != 0/*모든 단어*/ && vocabulary.isMemorizeTarget() != memorizeTarget)
 							continue;
-						if (memorizeCompletedPosition != 0/*모든 단어*/ && japanVocabulary.isMemorizeCompleted() != memorizeCompleted)
+						if (memorizeCompletedPosition != 0/*모든 단어*/ && vocabulary.isMemorizeCompleted() != memorizeCompleted)
 							continue;
 						
-						jvList.add(japanVocabulary);
+						jvList.add(vocabulary);
 					}
 				}
 			} catch (SQLiteException e) {
@@ -362,14 +362,14 @@ public class JapanVocabularyManager {
 		}
 	}
 
-	public synchronized JapanVocabulary getJapanVocabulary(long idx) {
+	public synchronized Vocabulary getJapanVocabulary(long idx) {
 		return mJvTable.get(idx);
 	}
 
-	public synchronized int getMemorizeTargetJvList(ArrayList<JapanVocabulary> jvList) {
+	public synchronized int getMemorizeTargetJvList(ArrayList<Vocabulary> jvList) {
 		int mJvMemorizeCompletedCount = 0;
-		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jpVocabulary = e.nextElement();
+		for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary jpVocabulary = e.nextElement();
 			if (jpVocabulary.isMemorizeTarget() == true) {
 				jvList.add(jpVocabulary);
 
@@ -382,19 +382,19 @@ public class JapanVocabularyManager {
 	}
 
 	public synchronized void rememorizeAllMemorizeTarget() {
-		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jv = e.nextElement();
+		for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary jv = e.nextElement();
 			if (jv.isMemorizeTarget() == true)
 				jv.setMemorizeCompleted(false, false, false);
 		}
 		
-		writeUserJapanVocabularyInfo();
+		writeUserVocabularyInfo();
 	}
 
-	public synchronized void writeUserJapanVocabularyInfo() {
+	public synchronized void writeUserVocabularyInfo() {
 		StringBuilder sb = new StringBuilder();
-		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jpVocabulary = e.nextElement();
+		for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary jpVocabulary = e.nextElement();
 
 			sb.append(jpVocabulary.getIdx())
 			  .append("|")
@@ -427,7 +427,7 @@ public class JapanVocabularyManager {
 
 	public synchronized boolean updateMemorizeField(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
 		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
-			JapanVocabulary jv = null;
+			Vocabulary jv = null;
 			for (int index = 0; index < idxList.size(); ++index) {
 				jv = mJvTable.get(idxList.get(index));
 
@@ -439,8 +439,8 @@ public class JapanVocabularyManager {
 				mJvTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
 		} else if (menuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
 			if (notSearchVocabularyTargetCancel == true) {
-				for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-					JapanVocabulary jpVocabulary = e.nextElement();
+				for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+					Vocabulary jpVocabulary = e.nextElement();
 					jpVocabulary.setMemorizeTarget(false, false);
 				}
 			}
@@ -452,12 +452,12 @@ public class JapanVocabularyManager {
 				mJvTable.get(idxList.get(index)).setMemorizeTarget(false, false);
 		}
 		
-		writeUserJapanVocabularyInfo();
+		writeUserVocabularyInfo();
 
 		return true;
 	}
 
-	public synchronized String getVocabularyDetailDescription(JapanVocabulary vocabulary) {
+	public synchronized String getVocabularyDetailDescription(Vocabulary vocabulary) {
         String voc;
         voc = vocabulary.getVocabulary();
 
@@ -515,7 +515,7 @@ public class JapanVocabularyManager {
 		return sbResult.toString();
 	}
 	
-	public synchronized String getVocabularyExample(JapanVocabulary vocabulary) {
+	public synchronized String getVocabularyExample(Vocabulary vocabulary) {
         long idx = vocabulary.getIdx();
 
 		StringBuilder sbResult = new StringBuilder();
@@ -558,8 +558,8 @@ public class JapanVocabularyManager {
 	public synchronized ArrayList<Integer> getVocabularyInfo() {
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
-		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jv = e.nextElement();
+		for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary jv = e.nextElement();
 			if (jv.isMemorizeTarget() == true)
 				++memorizeTargetCount;
 			if (jv.isMemorizeCompleted() == true)
@@ -580,8 +580,8 @@ public class JapanVocabularyManager {
 
 		long newMaxIdx = -1;
 		long updateVocabularyCount = 0;
-		for (Enumeration<JapanVocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
-			JapanVocabulary jpVocabulary = e.nextElement();
+		for (Enumeration<Vocabulary> e = mJvTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary jpVocabulary = e.nextElement();
 			if (jpVocabulary.getIdx() > prevMaxIdx) {
 				++updateVocabularyCount;
 

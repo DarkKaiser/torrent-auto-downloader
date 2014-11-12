@@ -53,9 +53,9 @@ import kr.co.darkkaiser.jv.util.JvPathManager;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 //@@@@@ todo
@@ -423,7 +423,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
     private void refreshMemorizeVocabulary() {
         // @@@@@ 임시
-        JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+        Vocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
         showMemorizeVocabulary(vocabulary);
     }
 
@@ -456,7 +456,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	}
 
     private void showCurrentMemorizeVocabulary() {
-		JapanVocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+		Vocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
 
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
@@ -468,7 +468,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
     private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		JapanVocabulary vocabulary = mMemorizeList.previousVocabulary(sbErrMessage);
+		Vocabulary vocabulary = mMemorizeList.previousVocabulary(sbErrMessage);
 
 		if (vocabulary == null) {
 			if (sbErrMessage.length() > 0)
@@ -484,7 +484,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		JapanVocabulary vocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
+		Vocabulary vocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
 
 		if (vocabulary == null && sbErrMessage.length() > 0)
 			Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
@@ -496,7 +496,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
-    private void showMemorizeVocabulary(JapanVocabulary vocabulary) {
+    private void showMemorizeVocabulary(Vocabulary vocabulary) {
         AQuery aq = new AQuery(this);
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.tsw_vocabulary);
@@ -788,7 +788,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 		String localDbVersion = mPreferences.getString(Constants.JV_SPN_DB_VERSION, "");
 
 		try {
-			ArrayList<String> vocaDbInfo = JapanVocabularyDbHelper.getLatestVocabularyDbInfoList();
+			ArrayList<String> vocaDbInfo = VocabularyDbHelper.getLatestVocabularyDbInfoList();
 			assert vocaDbInfo.size() == 2;
 			
 			String newVocabularyDbVersion = "";

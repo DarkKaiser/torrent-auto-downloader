@@ -3,7 +3,8 @@ package kr.co.darkkaiser.jv.view.list;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,11 +20,11 @@ public class JvSearchListAdapter extends BaseAdapter {
 
 	private int mLayout;
 	private Context mContext = null;
-	private ArrayList<JapanVocabulary> mJvList = null;
+	private ArrayList<Vocabulary> mJvList = null;
 	private Handler mJvListDataChangedHandler = null;
 	private LayoutInflater mLayoutInflater = null;
 
-	public JvSearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<JapanVocabulary> jvList) {
+	public JvSearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<Vocabulary> jvList) {
 		mLayout = layout;
 		mJvList = jvList;
 		mContext = context;
@@ -55,7 +56,7 @@ public class JvSearchListAdapter extends BaseAdapter {
 			convertView = mLayoutInflater.inflate(mLayout, parent, false);
 		}
 
-		JapanVocabulary jpVocabulary = mJvList.get(position);
+		Vocabulary jpVocabulary = mJvList.get(position);
 		if (jpVocabulary == null) {
 			convertView.findViewById(R.id.memorize_target).setVisibility(View.INVISIBLE);
 			convertView.findViewById(R.id.vocabulary_memorize_completed).setVisibility(View.INVISIBLE);

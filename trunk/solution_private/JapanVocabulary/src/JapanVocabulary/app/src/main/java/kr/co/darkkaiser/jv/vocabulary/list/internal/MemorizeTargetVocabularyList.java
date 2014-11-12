@@ -6,8 +6,8 @@ import java.util.Random;
 
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.util.CircularBuffer;
@@ -21,7 +21,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	private Random mRandom = new Random();
 
 	// 암기대상 단어 리스트
-	private ArrayList<JapanVocabulary> mVocabularyListData = new ArrayList<JapanVocabulary>();
+	private ArrayList<Vocabulary> mVocabularyListData = new ArrayList<Vocabulary>();
 
 	// 암기대상 단어 암기순서 버퍼
 	private CircularBuffer<Integer> mVocabularyListMemorizeSequence = new CircularBuffer<Integer>();
@@ -98,7 +98,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
 	public synchronized void setMemorizeCompletedAtVocabularyPosition() {
 		if (isValidVocabularyPosition() == true) {
-			JapanVocabulary jpVocabulary = mVocabularyListData.get(mCurrentPosition);
+			Vocabulary jpVocabulary = mVocabularyListData.get(mCurrentPosition);
 			if (jpVocabulary != null && jpVocabulary.isMemorizeCompleted() == false) {
 				++mMemorizeCompletedCount;
 				jpVocabulary.setMemorizeCompleted(true, true, true);							
@@ -155,7 +155,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public synchronized JapanVocabulary getCurrentVocabulary() {
+	public synchronized Vocabulary getCurrentVocabulary() {
 		if (isValidVocabularyPosition() == true) {
 			return mVocabularyListData.get(mCurrentPosition);
 		}
@@ -163,7 +163,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		return null;
 	}
 	
-	public synchronized JapanVocabulary movePosition(int position) {
+	public synchronized Vocabulary movePosition(int position) {
 		int prevCurrentPosition = mCurrentPosition;
 
 		mCurrentPosition = position;
@@ -178,7 +178,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 	
 	@Override
-	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
+	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
 		Integer value = mVocabularyListMemorizeSequence.pop();
 		if (value != null) {
 			int prevCurrentPosition = mCurrentPosition;
@@ -198,7 +198,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
+	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		assert sbErrMessage != null;
 		
 		if (mVocabularyListData.isEmpty() == true || mMemorizeCompletedCount >= mVocabularyListData.size()) {

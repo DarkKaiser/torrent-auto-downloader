@@ -2,15 +2,15 @@ package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import java.util.ArrayList;
 
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 
 public class SearchResultVocabularyList implements IVocabularyList {
 
 	private int mCurrentPosition = -1;
-	private ArrayList<JapanVocabulary> mVocabularyListData = null;
+	private ArrayList<Vocabulary> mVocabularyListData = null;
 
-	public SearchResultVocabularyList(ArrayList<JapanVocabulary> vocabularyListData, int position) {
+	public SearchResultVocabularyList(ArrayList<Vocabulary> vocabularyListData, int position) {
 		assert position != -1;
 		assert vocabularyListData != null;
 
@@ -19,7 +19,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public synchronized JapanVocabulary getCurrentVocabulary() {
+	public synchronized Vocabulary getCurrentVocabulary() {
 		if (isValid() == true) {
 			return mVocabularyListData.get(mCurrentPosition);
 		}
@@ -28,7 +28,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public synchronized JapanVocabulary previousVocabulary(StringBuilder sbErrorMessage) {
+	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
 		int prevCurrentPosition = mCurrentPosition;
 
 		--mCurrentPosition;
@@ -43,7 +43,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 	}
 
 	@Override
-	public synchronized JapanVocabulary nextVocabulary(StringBuilder sbErrMessage) {
+	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		int nextCurrentPosition = mCurrentPosition;
 
 		++mCurrentPosition;

@@ -1,13 +1,13 @@
 package kr.co.darkkaiser.jv.vocabulary.list;
 
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 
 public interface IVocabularyList {
 
-    public JapanVocabulary getCurrentVocabulary();
+    public Vocabulary getCurrentVocabulary();
 
-    public JapanVocabulary previousVocabulary(StringBuilder sbErrMessage);
+    public Vocabulary previousVocabulary(StringBuilder sbErrMessage);
 
-    public JapanVocabulary nextVocabulary(StringBuilder sbErrMessage);
+    public Vocabulary nextVocabulary(StringBuilder sbErrMessage);
 
 }

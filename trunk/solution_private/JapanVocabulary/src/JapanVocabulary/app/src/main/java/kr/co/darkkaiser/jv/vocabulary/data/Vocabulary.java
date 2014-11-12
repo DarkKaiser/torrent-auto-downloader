@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import java.util.Calendar;
 
-public class JapanVocabulary {
+public class Vocabulary {
 
 	private long mIdx = -1;
 
@@ -29,7 +29,7 @@ public class JapanVocabulary {
     // 단어가 등록된 날짜(UTC)
     private long mRegistrationDateUTC;
 
-	public JapanVocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
+	public Vocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
 		assert idx != -1;
 		assert utcDateTime > 0;
 		assert TextUtils.isEmpty(vocabulary) == false;
@@ -98,7 +98,7 @@ public class JapanVocabulary {
 		mMemorizeTarget = flag;
 
 		if (isUpdateToDB == true) {
-			JapanVocabularyManager.getInstance().writeUserJapanVocabularyInfo();
+			JapanVocabularyManager.getInstance().writeUserVocabularyInfo();
 		}
 	}
 
@@ -113,7 +113,7 @@ public class JapanVocabulary {
 		mMemorizeCompleted = flag;
 
 		if (isUpdateToDB == true) {
-			JapanVocabularyManager.getInstance().writeUserJapanVocabularyInfo();
+			JapanVocabularyManager.getInstance().writeUserVocabularyInfo();
 		}
 	}
 

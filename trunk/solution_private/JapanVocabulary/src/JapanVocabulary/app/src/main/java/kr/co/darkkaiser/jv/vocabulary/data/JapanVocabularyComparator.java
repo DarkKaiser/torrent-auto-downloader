@@ -5,29 +5,29 @@ import java.util.Comparator;
 
 public class JapanVocabularyComparator {
 	
-	public final static Comparator<JapanVocabulary> mVocabularyComparator = new Comparator<JapanVocabulary>() {
+	public final static Comparator<Vocabulary> mVocabularyComparator = new Comparator<Vocabulary>() {
 		private final Collator collator = Collator.getInstance();
 
 		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
+		public int compare(Vocabulary lhs, Vocabulary rhs) {
 			return collator.compare(lhs.getVocabulary(), rhs.getVocabulary());
 		}
 	};
 
-	public final static Comparator<JapanVocabulary> mVocabularyGanaComparator = new Comparator<JapanVocabulary>() {
+	public final static Comparator<Vocabulary> mVocabularyGanaComparator = new Comparator<Vocabulary>() {
 		private final Collator collator = Collator.getInstance();
 
 		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
+		public int compare(Vocabulary lhs, Vocabulary rhs) {
 			return collator.compare(lhs.getVocabularyGana(), rhs.getVocabularyGana());
 		}
 	};
 
-	public final static Comparator<JapanVocabulary> mVocabularyTranslationComparator = new Comparator<JapanVocabulary>() {
+	public final static Comparator<Vocabulary> mVocabularyTranslationComparator = new Comparator<Vocabulary>() {
 		private final Collator collator = Collator.getInstance();
 
 		@Override
-		public int compare(JapanVocabulary lhs, JapanVocabulary rhs) {
+		public int compare(Vocabulary lhs, Vocabulary rhs) {
 			return collator.compare(lhs.getVocabularyTranslation(), rhs.getVocabularyTranslation());
 		}
 	};

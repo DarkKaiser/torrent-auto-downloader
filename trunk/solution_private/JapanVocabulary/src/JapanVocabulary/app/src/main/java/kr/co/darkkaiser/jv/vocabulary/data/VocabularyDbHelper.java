@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
-public class JapanVocabularyDbHelper {
+public class VocabularyDbHelper {
 
 	public static ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
         String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
@@ -38,6 +38,17 @@ public class JapanVocabularyDbHelper {
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
             return jsonObject.getString("version");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static String getLatestVocabularyDbFileHash() throws Exception {
+        try {
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
+            return jsonObject.getString("sha1");
         } catch (Exception e) {
             e.printStackTrace();
         }

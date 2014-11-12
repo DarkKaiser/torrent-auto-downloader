@@ -6,8 +6,8 @@ import java.util.Collections;
 
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.JapanVocabularyManager;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
@@ -79,7 +79,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	private ProgressDialog mProgressDialog = null;
 
 	private JvSearchListAdapter mJvListAdapter = null;
-	private ArrayList<JapanVocabulary> mJvListData = null;
+	private ArrayList<Vocabulary> mJvListData = null;
 	private JvSearchListSortMethod mJvListSortMethod = JvSearchListSortMethod.REGISTRATION_DATE_DOWN;
 
 	private Thread mJvListSearchThread = null;
@@ -112,7 +112,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		mJvListSearchCondition = new JvSearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
-		mJvListData = new ArrayList<JapanVocabulary>();
+		mJvListData = new ArrayList<Vocabulary>();
 		mJvListAdapter = new JvSearchListAdapter(this, R.layout.jv_listitem, mJvListDataChangedHandler, mJvListData);
 		setListAdapter(mJvListAdapter);
 		
@@ -335,7 +335,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 			
 			@Override
 			public void run() {
-				JapanVocabulary jpVocabulary = null;
+				Vocabulary jpVocabulary = null;
 				ArrayList<Long> idxList = new ArrayList<Long>();
 
 				synchronized (mJvListData) {
