@@ -19,8 +19,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	
 	private String appVersion = null;
 	private String installedDbVersion = null;
-	private PreferenceScreen prefJvDbVersion = null;
-	private DoConfirmVocabularyDbJob doConfirmVocabularyDbJob = null;
+	private PreferenceScreen prefDbVersion = null;
+	private DoConfirmVocabularyDbAsyncTask doConfirmVocabularyDbAsyncTask = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +38,18 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		installedDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
 
-        prefJvDbVersion = (PreferenceScreen)findPreference("jv_program_info");
-		prefJvDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
+        prefDbVersion = (PreferenceScreen)findPreference("jv_program_info");
+		prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
 
 		// 최신 단어DB의 버전 정보를 확인합니다.
-		doConfirmVocabularyDbJob = new DoConfirmVocabularyDbJob();
-		doConfirmVocabularyDbJob.execute();
+		doConfirmVocabularyDbAsyncTask = new DoConfirmVocabularyDbAsyncTask();
+		doConfirmVocabularyDbAsyncTask.execute();
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (doConfirmVocabularyDbJob != null)
-			doConfirmVocabularyDbJob.cancel(true);
+		if (doConfirmVocabularyDbAsyncTask != null)
+			doConfirmVocabularyDbAsyncTask.cancel(true);
 
 		super.onDestroy();
 	}
@@ -71,7 +71,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 	}
 	
-	private class DoConfirmVocabularyDbJob extends AsyncTask<String, Integer, String> {
+	private class DoConfirmVocabularyDbAsyncTask extends AsyncTask<String, Integer, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -89,9 +89,9 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 		@Override
         protected void onPostExecute(String result) {
-			if (prefJvDbVersion != null) {
-                prefJvDbVersion = (PreferenceScreen)findPreference("jv_program_info");
-				prefJvDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
+			if (prefDbVersion != null) {
+                prefDbVersion = (PreferenceScreen)findPreference("jv_program_info");
+				prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
 			}
         }
 
