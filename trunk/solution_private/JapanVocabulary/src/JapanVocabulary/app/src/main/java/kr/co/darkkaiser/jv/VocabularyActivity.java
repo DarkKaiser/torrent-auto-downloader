@@ -59,7 +59,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 //@@@@@ todo
-public class JapanVocabularyActivity extends Activity implements OnTouchListener {
+public class VocabularyActivity extends Activity implements OnTouchListener {
 
 	private static final String TAG = "JapanVocabularyActivity";
 
@@ -148,7 +148,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
             @Override
             public View makeView() {
-                TextView tv = new TextView(JapanVocabularyActivity.this);
+                TextView tv = new TextView(VocabularyActivity.this);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTypeface(Typeface.SERIF);
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 70);
@@ -164,7 +164,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
             @Override
             public View makeView() {
-                TextView tv = new TextView(JapanVocabularyActivity.this);
+                TextView tv = new TextView(VocabularyActivity.this);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTypeface(Typeface.SERIF);
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
@@ -583,12 +583,12 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				RelativeLayout layout = (RelativeLayout)findViewById(R.id.jv_main_header);
 				if (layout.getVisibility() != View.VISIBLE) {
 					layout.setVisibility(View.VISIBLE);					
-					layout.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, R.anim.slide_top_to_bottom));
+					layout.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.slide_top_to_bottom));
 				}				
 			} else if (msg.what == MSG_TOAST_SHOW) {
-				Toast.makeText(JapanVocabularyActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
+				Toast.makeText(VocabularyActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
 			} else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
-	        	new AlertDialog.Builder(JapanVocabularyActivity.this)
+	        	new AlertDialog.Builder(VocabularyActivity.this)
         			.setTitle("알림")
         			.setMessage("Wi-Fi/3G등의 데이터 네트워크 상태가 불안정하여 단어 DB의 업데이트 여부를 확인할 수 없습니다.")
         			.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -606,7 +606,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 					TextView jpVocabularyUpdateInfo = (TextView)v.findViewById(R.id.jv_update_info);
 					jpVocabularyUpdateInfo.setText(msg.getData().getString("JV_UPDATE_INFO"));
 
-		        	new AlertDialog.Builder(JapanVocabularyActivity.this)
+		        	new AlertDialog.Builder(VocabularyActivity.this)
 		        		.setTitle("단어 업데이트 정보")
 		        		.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
 		        			@Override
@@ -622,7 +622,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 
 				int totalVocabularyDbSize = msg.getData().getInt("TOTAL_VOCABULARY_DB_SIZE");
 
-				mProgressDialog = new ProgressDialog(JapanVocabularyActivity.this);
+				mProgressDialog = new ProgressDialog(VocabularyActivity.this);
 				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 				mProgressDialog.setMessage("단어 DB를 업데이트하고 있습니다.");
 				mProgressDialog.setMax(totalVocabularyDbSize);
@@ -638,7 +638,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
 				
-				mProgressDialog = ProgressDialog.show(JapanVocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
+				mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
 			} else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION) {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();
@@ -646,7 +646,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				final String newVocabularyDbVersion = msg.getData().getString("NEW_VOCABULARY_DB_VERSION");
 				final String newVocabularyDbFileHash = msg.getData().getString("NEW_VOCABULARY_DB_FILE_HASH");
 
-	        	new AlertDialog.Builder(JapanVocabularyActivity.this)
+	        	new AlertDialog.Builder(VocabularyActivity.this)
     				.setTitle("알림")
     				.setMessage("3G 네트워크로 접속되었습니다. 데이터 통화료가 부과될 수 있습니다. 단어 DB를 업데이트하시겠습니까?")
     				.setPositiveButton("사용함", new DialogInterface.OnClickListener() {
@@ -670,11 +670,11 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 				if (msg.arg1 == View.VISIBLE) {
 					if (moveVocabularyBar.getVisibility() != View.VISIBLE) {
 						moveVocabularyBar.setVisibility(View.VISIBLE);
-                        moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, android.R.anim.fade_in));
+                        moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));
                     }
 				} else {
 					if (moveVocabularyBar.getVisibility() != View.GONE) {
-						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(JapanVocabularyActivity.this, android.R.anim.fade_out));
+						moveVocabularyBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
 						moveVocabularyBar.setVisibility(View.GONE);
 					}
 				}
@@ -728,7 +728,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 						vibrator.vibrate(30);	    					
 
-	    				new AlertDialog.Builder(JapanVocabularyActivity.this)
+	    				new AlertDialog.Builder(VocabularyActivity.this)
 	    					.setTitle("암기완료")
 	    					.setMessage("단어 암기를 완료하셨나요?")
 	    					.setPositiveButton("예", new DialogInterface.OnClickListener() {
@@ -765,7 +765,7 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
 	    					DetailActivity.setVocabularySeekList(null);
 
                         // 상세정보 페이지를 연다.
-	    				Intent intent = new Intent(JapanVocabularyActivity.this, DetailActivity.class);
+	    				Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
 	    				intent.putExtra("idx", idx);
 	    				startActivityForResult(intent, R.id.vocabulary_detail_info);
 	    			}
@@ -816,9 +816,9 @@ public class JapanVocabularyActivity extends Activity implements OnTouchListener
     // @@@@@
     private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
 		if (isUpdateVocabularyDb == true)
-			mProgressDialog = ProgressDialog.show(JapanVocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
+			mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
 		else
-			mProgressDialog = ProgressDialog.show(JapanVocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
+			mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
 
 		new Thread() {
 
