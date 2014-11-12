@@ -30,7 +30,7 @@
         android:visibility="invisible"
         >
         <TextView
-            android:id="@+id/tv_memorize_completed_info"
+            android:id="@+id/av_memorize_completed_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -38,7 +38,7 @@
             android:visibility="invisible"
             />
         <TextView
-            android:id="@+id/tv_memorize_vocabulary_info"
+            android:id="@+id/av_memorize_vocabulary_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -50,7 +50,7 @@
         android:layout_height="fill_parent"
         >
         <SeekBar
-            android:id="@+id/vocabulary_seekbar"
+            android:id="@+id/av_vocabulary_seekbar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -99,19 +99,19 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@id/memorize_method_info"
-            android:layout_below="@id/vocabulary_seekbar"
+            android:layout_below="@id/av_vocabulary_seekbar"
             >
             <TextSwitcher
-                android:id="@+id/avd_vocabulary"
+                android:id="@+id/av_vocabulary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 />
             <TextSwitcher
-                android:id="@+id/avd_vocabulary_translation"
+                android:id="@+id/av_vocabulary_translation"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/avd_vocabulary"
+                android:layout_below="@id/av_vocabulary"
                 android:layout_centerInParent="true"
                 />
         </RelativeLayout>

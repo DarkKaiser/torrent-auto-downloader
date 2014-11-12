@@ -4,12 +4,19 @@
     <string name="app_name">일본어 단어 암기</string>
     <string name="activity_detail_label">상세정보</string>
     <string name="activity_environment_setting_label">설정</string>
+
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
     <string name="unknown_app_version">알 수 없음</string>
     <string name="unknown_vocabulary_db_version">알 수 없음</string>
 
     <string name="av_prev_vocabulary">《</string>
     <string name="av_next_vocabulary">다음 단어 》</string>
     <string name="av_memorize_method_info">암기 완료 단어는 화면을 꾸~욱 눌러주세요.</string>
+    <string name="av_app_terminate_when_back_press">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
+
+    <string name="av_memorize_completed_ad_title">암기완료</string>
+    <string name="av_memorize_completed_ad_message">단어 암기를 완료하셨나요?</string>
 
     <string name="avd_vocabulary_hanja">한자</string>
     <string name="avd_vocabulary_gana">히라가나/가타카나</string>

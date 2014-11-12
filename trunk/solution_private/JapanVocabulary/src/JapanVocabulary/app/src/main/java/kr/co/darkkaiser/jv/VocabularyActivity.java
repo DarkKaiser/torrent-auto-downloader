@@ -116,7 +116,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         }
         */
 
-        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+        SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
         moveVocabularyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			
 			@Override
@@ -142,7 +142,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         RelativeLayout vocabularyContainer = (RelativeLayout)findViewById(R.id.vocabulary_container);
         vocabularyContainer.setOnTouchListener(this);
 
-        TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
+        TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
         tswVocabulary.setOnTouchListener(this);
         tswVocabulary.setFactory(new ViewFactory() {
 
@@ -158,7 +158,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             }
         });
 
-        TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
+        TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
         tswVocabularyTranslation.setOnTouchListener(this);
         tswVocabularyTranslation.setFactory(new ViewFactory() {
 
@@ -430,8 +430,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private boolean reloadPreference() {
 		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
-		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
-		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
 		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, getResources().getBoolean(R.bool.fade_effect_next_vocabulary_item_default_value)) == true) {
 			tswVocabulary.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			tswVocabulary.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
@@ -462,7 +462,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 			showMemorizeVocabulary(vocabulary);
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
@@ -478,7 +478,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		}
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
@@ -492,15 +492,15 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		showMemorizeVocabulary(vocabulary);
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
 	}
 
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
         AQuery aq = new AQuery(this);
 
-		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.avd_vocabulary);
-		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.avd_vocabulary_translation);
+		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
 
 		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
 		tswVocabulary.setText("");
@@ -508,9 +508,9 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		if (vocabulary != null) {
 			if (vocabulary.isMemorizeCompleted() == true)
-                aq.id(R.id.tv_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.av_memorize_completed_count)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.av_memorize_completed_count)).visible();
 			else
-                aq.id(R.id.tv_memorize_completed_info).invisible();
+                aq.id(R.id.av_memorize_completed_info).invisible();
 
 			switch (mMemorizeList.getMemorizeTargetItem()) {
 			case VOCABULARY:
@@ -528,7 +528,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 			tswVocabularyTranslation.setText(vocabulary.getVocabularyTranslation());
 		} else {
-            aq.id(R.id.tv_memorize_completed_info).invisible();
+            aq.id(R.id.av_memorize_completed_info).invisible();
 		}
 	}
 
@@ -537,16 +537,16 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		StringBuilder sb = mMemorizeList.getMemorizeVocabularyInfo();
 		if (sb != null)
-            aq.id(R.id.tv_memorize_vocabulary_info).text(sb.toString());
+            aq.id(R.id.av_memorize_vocabulary_info).text(sb.toString());
 		else
-            aq.id(R.id.tv_memorize_vocabulary_info).text("");
+            aq.id(R.id.av_memorize_vocabulary_info).text("");
 	}
 
 	@Override
     public void onBackPressed() {
 		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
 			mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 2000);
-			Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.av_app_terminate_when_back_press), Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -665,7 +665,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 					})
     				.show();
 			} else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
-				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+				SeekBar moveVocabularyBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 
 				if (msg.arg1 == View.VISIBLE) {
 					if (moveVocabularyBar.getVisibility() != View.VISIBLE) {
@@ -679,36 +679,36 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 					}
 				}
 			}
-		};
-	};
+		}
+    };
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (mMemorizeList.isValidVocabularyPosition() == true &&
-                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.avd_vocabulary || v.getId() == R.id.avd_vocabulary_translation)) {
+                (v.getId() == R.id.vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN:
+                mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                // 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
+                // mHandler.removeMessages(LONG_PRESS);
+                break;
+
+            case MotionEvent.ACTION_UP:
+                // MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
+                if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
                     mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                    mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
-                    break;
+                    mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
+                }
+                break;
 
-                case MotionEvent.ACTION_MOVE:
-                    // 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
-                    // mHandler.removeMessages(LONG_PRESS);
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    // MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
-                    if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
-                        mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                        mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
-                    }
-                    break;
-
-                case MotionEvent.ACTION_CANCEL:
-                    mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                    break;
+            case MotionEvent.ACTION_CANCEL:
+                mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                break;
             }
         } else {
             mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
@@ -718,65 +718,62 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     }
 
     private Handler mCustomEventHandler = new Handler() {
-
 		@Override
     	public void handleMessage(Message msg){
     		switch (msg.what) {
-	    		case MSG_CUSTOM_EVT_LONG_PRESS:
-	    			if (mMemorizeList.isValidVocabularyPosition() == true) {
-						// 진동을 발생시킨다.
-						Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-						vibrator.vibrate(30);	    					
+            case MSG_CUSTOM_EVT_LONG_PRESS:
+                if (mMemorizeList.isValidVocabularyPosition() == true) {
+                    // 진동을 발생시킨다.
+                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(30);
 
-	    				new AlertDialog.Builder(VocabularyActivity.this)
-	    					.setTitle("암기완료")
-	    					.setMessage("단어 암기를 완료하셨나요?")
-	    					.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(VocabularyActivity.this)
+                        .setTitle(getString(R.string.av_memorize_completed_ad_title))
+                        .setMessage(getString(R.string.av_memorize_completed_ad_message))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 진동을 발생시킨다.
+                                Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                vibrator.vibrate(30);
 
-	    						@Override
-	    						public void onClick(DialogInterface dialog, int which) {
-	    							// 진동을 발생시킨다.
-	    							Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-	    							vibrator.vibrate(30);
+                                mMemorizeList.setMemorizeCompletedAtVocabularyPosition();
+                                updateMemorizeVocabularyInfo();
+                                showNextMemorizeVocabulary();
 
-	    							mMemorizeList.setMemorizeCompletedAtVocabularyPosition();
-	    							updateMemorizeVocabularyInfo();
-	    							showNextMemorizeVocabulary();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .show();
+                }
+                break;
 
-	    							dialog.dismiss();
-	    						}
-	    					})
-	    					.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-	    						
-	    						@Override
-	    						public void onClick(DialogInterface dialog, int which) {
-	    						}
-	    					})
-	    					.show();
-					}
-	    			break;
-			
-	    		case MSG_CUSTOM_EVT_TAP:
-	    			long idx = mMemorizeList.getIdxAtVocabularyPosition();
-	    			if (idx != -1) {
-	    				if (findViewById(R.id.vocabulary_seekbar).getVisibility() == View.VISIBLE)
-	    					DetailActivity.setVocabularySeekList(mMemorizeList);
-	    				else
-	    					DetailActivity.setVocabularySeekList(null);
+            case MSG_CUSTOM_EVT_TAP:
+                long idx = mMemorizeList.getIdxAtVocabularyPosition();
+                if (idx != -1) {
+                    if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
+                        DetailActivity.setVocabularySeekList(mMemorizeList);
+                    else
+                        DetailActivity.setVocabularySeekList(null);
 
-                        // 상세정보 페이지를 연다.
-	    				Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
-	    				intent.putExtra("idx", idx);
-	    				startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
-	    			}
-	    			break;
+                    // 상세정보 페이지를 연다.
+                    Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
+                    intent.putExtra("idx", idx);
+                    startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
+                }
+                break;
 
-	    		case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
-	    			// 수행하는 작업 없음
-	    			break;
-	    			
-				default:
-					 throw new RuntimeException("Unknown message " + msg);
+            case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
+                // 수행하는 작업 없음
+                break;
+
+            default:
+                 throw new RuntimeException("Unknown message " + msg);
     		}
     	}
     };
@@ -1055,7 +1052,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		} else {
 			msg.arg1 = View.VISIBLE;
 
-			SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.vocabulary_seekbar);
+			SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
 			vocabularySeekBar.setProgress(0);
 			vocabularySeekBar.setMax(memorizeVocabularyCount - 1);
 			vocabularySeekBar.incrementProgressBy(1);
