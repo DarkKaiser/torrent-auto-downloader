@@ -95,27 +95,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
         AQuery aq = new AQuery(this);
 
-        // SD 카드의 상태를 확인한다.
-        // @@@@@ 확인필요, 현재 방식이 외부 스토리지가 아닌가?
-        /* 단어DB의 위치를 SDCARD에서 어플 설치폴더로 옮김에 따라 주석 처리한다.
-        String sdStatus = Environment.getExternalStorageState();
-        if (sdStatus.equals(Environment.MEDIA_UNMOUNTED) == true) {
-        	new AlertDialog.Builder(this)
-        		.setTitle("SD 카드 오류")
-        		.setMessage("SD 카드가 마운트 해제되어 있습니다. 단어 데이터를 로드할 수 없습니다.")
-        		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-					
-        			@Override
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				})
-        		.show();
-
-        	return;
-        }
-        */
-
         SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
         vocabularySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
