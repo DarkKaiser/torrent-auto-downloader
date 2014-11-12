@@ -64,7 +64,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
                                 dlg.setContentView(R.layout.activity_japan_character_description);
                                 dlg.setCanceledOnTouchOutside(true);
 
-                                TextView descriptionTv = (TextView)dlg.findViewById(R.id.description);
+                                TextView descriptionTv = (TextView)dlg.findViewById(R.id.character_description);
                                 descriptionTv.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
 
                                 dlg.show();

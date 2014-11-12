@@ -18,7 +18,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         addPreferencesFromResource(R.xml.pref_settings_activity);
 
         CheckBoxPreference chkYoum = (CheckBoxPreference)findPreference("chk_youm");
-        if (getPreferenceScreen().getSharedPreferences().getBoolean("chk_hiragana", true) == true || getPreferenceScreen().getSharedPreferences().getBoolean("chk_gatakana", true) == true) {
+        if (getPreferenceScreen().getSharedPreferences().getBoolean("chk_hiragana", true) || getPreferenceScreen().getSharedPreferences().getBoolean("chk_gatakana", true)) {
             chkYoum.setEnabled(true);
         } else {
             chkYoum.setEnabled(false);
@@ -32,11 +32,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
             e.printStackTrace();
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(getString(R.string.app_name)).append(" ").append(getString(R.string.program_version)).append(" ").append(versionName);
-
         PreferenceScreen prefProgramInfo = (PreferenceScreen)findPreference("jc_program_info");
-        prefProgramInfo.setSummary(sb.toString());
+        prefProgramInfo.setSummary(getString(R.string.app_name) + " " + getString(R.string.program_version) + " " + versionName);
     }
 
     @Override
@@ -62,7 +59,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         CheckBoxPreference chkHiragana = (CheckBoxPreference)findPreference("chk_hiragana");
         CheckBoxPreference chkGatakana = (CheckBoxPreference)findPreference("chk_gatakana");
 
-        if (chkHiragana.isChecked() == true || chkGatakana.isChecked() == true) {
+        if (chkHiragana.isChecked() || chkGatakana.isChecked()) {
             chkYoum.setEnabled(true);
         } else {
             chkYoum.setEnabled(false);
