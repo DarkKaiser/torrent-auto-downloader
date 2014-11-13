@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.vocabulary.data.JvPathManager;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
@@ -153,12 +153,11 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         reloadPreference();
 
         // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.@@@@@
-        if (JvPathManager.getInstance().init(this) == false) {
+        if (VocabularyDbHelper.getInstance().init(this) == false) {
         	new AlertDialog.Builder(this)
     			.setTitle("오류")
     			.setMessage("사용 가능한 저장 장치를 확인할 수 없습니다. 단어 데이터를 로드할 수 없습니다.")
     			.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-				
     				@Override
     				public void onClick(DialogInterface dialog, int which) {
     					finish();
@@ -659,7 +658,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         String localDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
 
         try {
-            ArrayList<String> vocaDbInfo = JvPathManager.getLatestVocabularyDbInfoList();
+            ArrayList<String> vocaDbInfo = VocabularyDbHelper.getInstance().getLatestVocabularyDbInfoList();
             assert vocaDbInfo.size() == 2;
 
             String newVocabularyDbVersion = "";
@@ -784,7 +783,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
         Message msg = null;
         boolean updateSucceeded = false;
-        String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
+        String jvDbPath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
 
         // 단어 DB 파일을 내려받는다.
         try {

@@ -19,25 +19,24 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
-// @@@@@ todo
-public class JvPathManager {
+public class VocabularyDbHelper {
 
-	private static final String TAG = "JvPathManager";
+	private static final String TAG = "VocabularyDbHelper";
 
-	private static JvPathManager mInstance = null;
+	private static VocabularyDbHelper mInstance = null;
 
     private String mUserDbFilePath = null;
     private String mVocabularyDbFilePath = null;
 
 	static {
-		mInstance = new JvPathManager();
+		mInstance = new VocabularyDbHelper();
 	}
 
-	public JvPathManager() {
+	public VocabularyDbHelper() {
 
 	}
 
-	public static JvPathManager getInstance() {
+	public static VocabularyDbHelper getInstance() {
 		return mInstance;
 	}
 
@@ -79,8 +78,9 @@ public class JvPathManager {
         return !(TextUtils.isEmpty(mVocabularyDbFilePath) == true || TextUtils.isEmpty(mUserDbFilePath) == true);
 	}
 
-    public static ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
-        String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
+    public ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
+        String newVocabularyDbVersion = "";
+        String newVocabularyDbFileHash = "";
 
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
@@ -97,7 +97,7 @@ public class JvPathManager {
         return result;
     }
 
-    public static String getLatestVocabularyDbVersion() throws Exception {
+    public String getLatestVocabularyDbVersion() throws Exception {
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
             return jsonObject.getString("version");
@@ -108,7 +108,7 @@ public class JvPathManager {
         return "";
     }
 
-    public static String getLatestVocabularyDbFileHash() throws Exception {
+    public String getLatestVocabularyDbFileHash() throws Exception {
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
             return jsonObject.getString("sha1");
@@ -119,16 +119,14 @@ public class JvPathManager {
         return "";
     }
 
-    public static String getStringFromUrl(String url) throws UnsupportedEncodingException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(getInputStreamFromUrl(url), "UTF-8"));
-
+    private String getStringFromUrl(String url) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
 
         try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(getInputStreamFromUrl(url), "UTF-8"));
+
             String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
+            while ((line = br.readLine()) != null) sb.append(line);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +134,7 @@ public class JvPathManager {
         return sb.toString();
     }
 
-    public static InputStream getInputStreamFromUrl(String url) {
+    private InputStream getInputStreamFromUrl(String url) {
         InputStream contentStream = null;
 
         try {

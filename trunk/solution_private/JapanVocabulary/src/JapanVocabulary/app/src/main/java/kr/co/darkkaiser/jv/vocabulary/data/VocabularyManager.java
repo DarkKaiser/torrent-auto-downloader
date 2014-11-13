@@ -63,7 +63,7 @@ public class VocabularyManager {
 			}
 
 			// 일본어 단어를 읽어들인다.
-			mJvVocabularySqLite = SQLiteDatabase.openDatabase(JvPathManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			mJvVocabularySqLite = SQLiteDatabase.openDatabase(VocabularyDbHelper.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 			if (mJvVocabularySqLite == null)
 				return false;
 
@@ -102,7 +102,7 @@ public class VocabularyManager {
 
 		// 사용자 파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
-			File f = new File(JvPathManager.getInstance().getUserDbFilePath());
+			File f = new File(VocabularyDbHelper.getInstance().getUserDbFilePath());
 			if (f.exists() == true) {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
@@ -138,7 +138,7 @@ public class VocabularyManager {
 
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbFilePath()) == false;
+		assert TextUtils.isEmpty(VocabularyDbHelper.getInstance().getVocabularyDbFilePath()) == false;
 //@@@@@
 //		String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
 //		SharedPreferences preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -406,7 +406,7 @@ public class VocabularyManager {
 		}
 
 		try {
-			String jvUserVocabularyInfoFilePath = JvPathManager.getInstance().getUserDbFilePath();
+			String jvUserVocabularyInfoFilePath = VocabularyDbHelper.getInstance().getUserDbFilePath();
 
 			File fileOrg = new File(jvUserVocabularyInfoFilePath);
 			File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");
