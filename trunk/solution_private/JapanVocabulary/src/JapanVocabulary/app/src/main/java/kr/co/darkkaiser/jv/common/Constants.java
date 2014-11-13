@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.common;
 
-//@@@@@ todo
+//@@@@@ todo 환경설정과 키이름이 일치하지 않는거 같음,확인필요
 public class Constants {
 
     /*
@@ -72,7 +72,7 @@ public class Constants {
 	 * 일본어 단어 DB 파일명 @@@@@
 	 */
     public static final String VOCABULARY_DB_FILENAME_V2 = "jv2.db";
-    public static final String VOCABULARY_DB_FILENAME_V3 = "jv3.db";
+    public static final String VOCABULARY_DB_FILENAME_V3 = "jv2.db";//@@@@@
 
     /*
      * 사용자의 단어에 대한 정보를 저장한 파일명 @@@@@

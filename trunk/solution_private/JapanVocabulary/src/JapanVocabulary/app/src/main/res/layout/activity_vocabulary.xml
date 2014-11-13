@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:visibility="invisible"
-            android:textSize="15dp"
+            android:textSize="11dp"
             tools:ignore="SpUsage"
             />
         <TextView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="15dp"
+            android:textSize="11dp"
             tools:ignore="SpUsage"
             />
     </RelativeLayout>
@@ -89,7 +89,7 @@
             android:gravity="center"
             android:text="@string/av_memorize_method_comment"
             android:textColor="#99999999"
-            android:textSize="12dp"
+            android:textSize="11dp"
             tools:ignore="SpUsage"
             />
         <RelativeLayout

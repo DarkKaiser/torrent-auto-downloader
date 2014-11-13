@@ -32,7 +32,7 @@ public class VocabularyDbHelper {
 		mInstance = new VocabularyDbHelper();
 	}
 
-	public VocabularyDbHelper() {
+	private VocabularyDbHelper() {
 
 	}
 
