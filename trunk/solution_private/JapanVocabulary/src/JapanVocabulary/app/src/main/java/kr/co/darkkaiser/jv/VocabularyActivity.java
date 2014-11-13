@@ -571,6 +571,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		mVocabularyDataLoadHandler.sendMessage(msg);
 	}
 
+    // @@@@@
     private void loadVocabularyDb() {
         // 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
         SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -665,7 +666,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             if (vocaDbInfo.size() >= 1)
                 newVocabularyDbVersion = vocaDbInfo.get(0);
 
-            // @@@@@ 임시주석
 			// 단어 DB의 갱신 여부를 확인한다.
 			if (newVocabularyDbVersion != null
                     && TextUtils.isEmpty(newVocabularyDbVersion) == false
