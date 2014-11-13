@@ -64,32 +64,13 @@ public class VocabularyDbHelper {
 		return true;
 	}
 
+    public boolean readyDbStorage() {
+        return !(TextUtils.isEmpty(mVocabularyDbFilePath) == true || TextUtils.isEmpty(mUserDbFilePath) == true);
+    }
+
     public String getUserDbFilePath() { return mUserDbFilePath; }
 
 	public String getVocabularyDbFilePath() { return mVocabularyDbFilePath; }
-
-	public boolean readyDbStorage() {
-        return !(TextUtils.isEmpty(mVocabularyDbFilePath) == true || TextUtils.isEmpty(mUserDbFilePath) == true);
-	}
-
-    public ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
-        String newVocabularyDbVersion = "";
-        String newVocabularyDbFileHash = "";
-
-        try {
-            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
-            newVocabularyDbVersion = jsonObject.getString("version");
-            newVocabularyDbFileHash = jsonObject.getString("sha1");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(newVocabularyDbVersion);
-        result.add(newVocabularyDbFileHash);
-
-        return result;
-    }
 
     public String getLatestVocabularyDbVersion() throws Exception {
         try {
@@ -111,6 +92,25 @@ public class VocabularyDbHelper {
         }
 
         return "";
+    }
+
+    public ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
+        String newVocabularyDbVersion = "";
+        String newVocabularyDbFileHash = "";
+
+        try {
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
+            newVocabularyDbVersion = jsonObject.getString("version");
+            newVocabularyDbFileHash = jsonObject.getString("sha1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(newVocabularyDbVersion);
+        result.add(newVocabularyDbFileHash);
+
+        return result;
     }
 
     private String getStringFromUrl(String url) throws UnsupportedEncodingException {
