@@ -4,7 +4,7 @@
         android:title="@string/as_vocabulary_memorize_config_category"
         >
         <ListPreference
-            android:key="jv_memorize_target"
+            android:key="jv_memorize_target_item"
             android:title="@string/as_memorize_target_item"
             android:summary="@string/as_memorize_target_summary"
             android:defaultValue="@integer/memorize_target_item_default_value"

@@ -46,7 +46,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		assert preferences != null;
 
 		// 화면에 출력 할 암기 대상 단어의 항목을 읽는다.
-		String memorizeTargetItem = preferences.getString(Constants.JV_SPN_MEMORIZE_TARGET_ITEM, "0");
+		String memorizeTargetItem = preferences.getString(Constants.SP_MEMORIZE_TARGET_ITEM, "0");
 		if (TextUtils.equals(memorizeTargetItem, "0") == true)
 			mMemorizeTarget = MemorizeTarget.VOCABULARY;
 		else
@@ -54,7 +54,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
 		// 단어 암기 순서를 읽는다.
 		int prevMemorizeOrderMethod = mMemorizeOrderMethod;
-		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, "0"));
+		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(Constants.SP_MEMORIZE_ORDER_METHOD, "0"));
 
 		return (mMemorizeOrderMethod != prevMemorizeOrderMethod);
 	}

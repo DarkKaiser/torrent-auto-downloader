@@ -172,7 +172,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
+                if (preferences.getBoolean(Constants.SP_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -186,7 +186,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
+                if (preferences.getBoolean(Constants.SP_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -326,7 +326,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
 		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
-		if (preferences.getBoolean(Constants.JV_SPN_FADE_EFFECT_NEXT_VOCABULARY, getResources().getBoolean(R.bool.fade_effect_next_vocabulary_item_default_value)) == true) {
+		if (preferences.getBoolean(Constants.SP_FADE_EFFECT_NEXT_VOCABULARY, getResources().getBoolean(R.bool.fade_effect_next_vocabulary_item_default_value)) == true) {
 			tswVocabulary.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			tswVocabulary.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 			tswVocabularyTranslation.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -338,7 +338,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 			tswVocabularyTranslation.setOutAnimation(null);
 		}
 
-		if (preferences.getBoolean(Constants.JV_SPN_SHOW_VOCABULARY_TRANSLATION, getResources().getBoolean(R.bool.show_vocabulary_translation_item_default_value)) == false) {
+		if (preferences.getBoolean(Constants.SP_SHOW_VOCABULARY_TRANSLATION, getResources().getBoolean(R.bool.show_vocabulary_translation_item_default_value)) == false) {
 			tswVocabularyTranslation.setVisibility(View.GONE);
 		} else {
 			tswVocabularyTranslation.setVisibility(View.VISIBLE);
@@ -557,7 +557,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
         // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
 		if (memorizeVocabularyCount == 0 ||
-                Integer.parseInt(preferences.getString(Constants.JV_SPN_MEMORIZE_ORDER_METHOD, String.format("%d", getResources().getInteger(R.integer.memorize_order_method_item_default_value)))) == 0) {
+                Integer.parseInt(preferences.getString(Constants.SP_MEMORIZE_ORDER_METHOD, String.format("%d", getResources().getInteger(R.integer.memorize_order_method_item_default_value)))) == 0) {
 			msg.arg1 = View.INVISIBLE;
 		} else {
 			msg.arg1 = View.VISIBLE;
@@ -574,7 +574,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private void loadVocabularyDb() {
         // 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
         SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, getResources().getBoolean(R.bool.vocabulary_update_on_started_item_default_value));
+        boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.SP_VOCABULARY_UPDATE_ON_STARTED, getResources().getBoolean(R.bool.vocabulary_update_on_started_item_default_value));
 
         // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어DB를 업데이트한다.
         boolean isNowConnectedNetwork = false;
