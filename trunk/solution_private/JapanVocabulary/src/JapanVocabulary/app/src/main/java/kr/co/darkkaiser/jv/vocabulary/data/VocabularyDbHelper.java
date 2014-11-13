@@ -23,14 +23,14 @@ public class VocabularyDbHelper {
 
 	private static final String TAG = "VocabularyDbHelper";
 
-	private static VocabularyDbHelper mInstance = null;
+    private static VocabularyDbHelper mInstance;
 
     private String mUserDbFilePath = null;
     private String mVocabularyDbFilePath = null;
 
-	static {
-		mInstance = new VocabularyDbHelper();
-	}
+    static {
+        mInstance = new VocabularyDbHelper();
+    }
 
 	private VocabularyDbHelper() {
 
@@ -47,11 +47,11 @@ public class VocabularyDbHelper {
         String vocabularyDbFilePath = context.getDatabasePath(Constants.VOCABULARY_DB_FILENAME_V3).getAbsolutePath();
 
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
-		String packageDbPath = vocabularyDbFilePath.substring(0, vocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
-		File f = new File(packageDbPath);
+		String dbPath = vocabularyDbFilePath.substring(0, vocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
+		File f = new File(dbPath);
 		if (f.exists() == false) {
 			if (f.mkdirs() == false) {
-                Log.d(TAG, String.format("패키지DB 경로 생성이 실패하였습니다(%s).", packageDbPath));
+                Log.d(TAG, String.format("패키지DB 경로 생성이 실패하였습니다(%s).", dbPath));
                 return false;
 			}
 		}
@@ -64,15 +64,9 @@ public class VocabularyDbHelper {
 		return true;
 	}
 
-	public String getVocabularyDbFilePath() {
-		assert TextUtils.isEmpty(mVocabularyDbFilePath) == false;
-		return mVocabularyDbFilePath;
-	}
-	
-	public String getUserDbFilePath() {
-		assert TextUtils.isEmpty(mUserDbFilePath) == false;
-		return mUserDbFilePath;
-	}
+    public String getUserDbFilePath() { return mUserDbFilePath; }
+
+	public String getVocabularyDbFilePath() { return mVocabularyDbFilePath; }
 
 	public boolean readyDbStorage() {
         return !(TextUtils.isEmpty(mVocabularyDbFilePath) == true || TextUtils.isEmpty(mUserDbFilePath) == true);
