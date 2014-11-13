@@ -76,7 +76,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				String latestVocabularyDbVersion = VocabularyDbHelper.getLatestVocabularyDbVersion();
+				String latestVocabularyDbVersion = VocabularyDbHelper.getInstance().getLatestVocabularyDbVersion();
 
 				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false)
                     return latestVocabularyDbVersion;

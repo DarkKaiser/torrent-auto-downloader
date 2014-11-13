@@ -43,11 +43,11 @@ public class VocabularyDbHelper {
 	public boolean init(Context context) {
 		assert context != null;
 
-        String userDbFilePath = context.getDatabasePath(Constants.JV_USER_DB_V3).getAbsolutePath();
-        String vocabularyDbFilePath = context.getDatabasePath(Constants.JV_VOCABULARY_DB_V3).getAbsolutePath();
+        String userDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
+        String vocabularyDbFilePath = context.getDatabasePath(Constants.VOCABULARY_DB_FILENAME_V3).getAbsolutePath();
 
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
-		String packageDbPath = vocabularyDbFilePath.substring(0, vocabularyDbFilePath.length() - Constants.JV_VOCABULARY_DB_V3.length());
+		String packageDbPath = vocabularyDbFilePath.substring(0, vocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
 		File f = new File(packageDbPath);
 		if (f.exists() == false) {
 			if (f.mkdirs() == false) {

@@ -152,12 +152,12 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         // 환경설정 값을 로드한다.
         reloadPreference();
 
-        // 어플에서 사용하는 데이터 파일의 경로 정보를 초기화한다.@@@@@
+        // 사용하는 단어DB의 경로 정보를 초기화한다.
         if (VocabularyDbHelper.getInstance().init(this) == false) {
         	new AlertDialog.Builder(this)
-    			.setTitle("오류")
-    			.setMessage("사용 가능한 저장 장치를 확인할 수 없습니다. 단어 데이터를 로드할 수 없습니다.")
-    			.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+    			.setTitle(getString(R.string.error))
+    			.setMessage(getString(R.string.cannot_access_db_storage))
+    			.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
     				@Override
     				public void onClick(DialogInterface dialog, int which) {
     					finish();

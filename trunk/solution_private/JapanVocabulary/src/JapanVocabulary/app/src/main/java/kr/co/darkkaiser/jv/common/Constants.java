@@ -67,18 +67,18 @@ public class Constants {
 	 * sdcard에 생성되는 프로그램 폴더명
 	 */
 	public static final String JV_MAIN_FOLDER_NAME = "JapanVocabulary";
-	
-	/*
+
+    /*
 	 * 일본어 단어 DB 파일명 @@@@@
 	 */
-    public static final String JV_VOCABULARY_DB_V3 = "jv3.db";
-    public static final String JV_VOCABULARY_DB_V2 = "jv2.db";//@@@@@
+    public static final String VOCABULARY_DB_FILENAME_V2 = "jv2.db";
+    public static final String VOCABULARY_DB_FILENAME_V3 = "jv3.db";
 
     /*
      * 사용자의 단어에 대한 정보를 저장한 파일명 @@@@@
      */
-    public static final String JV_USER_DB_V3 = "jv3_user.db";
-    public static final String JV_USER_DB_V2 = "jv2_user.db";// @@@@@
+    public static final String USER_DB_FILENAME_V2 = "jv2_user.db";
+    public static final String USER_DB_FILENAME_V3 = "jv3_user.db";
 
     /*
      * 단어 DB 다운로드 URL @@@@@
