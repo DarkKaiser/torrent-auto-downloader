@@ -46,6 +46,8 @@ public class JvPathManager {
 			}
 		}
 
+        // @@@@@ DB 마이그레이션
+
         mUserDbPath = userDbPath;
         mVocabularyDbPath = vocabularyDbPath;
 

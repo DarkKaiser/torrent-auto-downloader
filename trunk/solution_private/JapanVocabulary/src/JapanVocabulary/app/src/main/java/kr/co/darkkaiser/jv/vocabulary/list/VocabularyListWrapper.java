@@ -36,10 +36,7 @@ public class VocabularyListWrapper {
 	}
 
     public synchronized boolean isValid() {
-        if (mVocabularyList == null)
-            return false;
-
-        return true;
+        return mVocabularyList != null;
     }
 
 }

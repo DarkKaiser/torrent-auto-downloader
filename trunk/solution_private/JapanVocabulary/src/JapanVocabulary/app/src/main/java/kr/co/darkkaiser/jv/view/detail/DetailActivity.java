@@ -90,7 +90,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		if (vocabulary == null) {
 			assert false;
 
-			Toast.makeText(this, "단어의 상세 정보를 얻을 수 없습니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.avd_nofind_vocabulary_detail_info), Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
@@ -135,7 +135,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		} else {
             aq.id(R.id.avd_memorize_uncompleted).visible();
 		}
-        aq.id(R.id.avd_memorize_completed_count_text).text(String.format("총 %d회 암기완료", memorizeCompletedCount));
+        aq.id(R.id.avd_memorize_completed_count_text).text(String.format(getString(R.string.avd_vocabulary_memorize_completed_count), memorizeCompletedCount));
 	}
 
     @Override

@@ -23,6 +23,8 @@
     <string name="avd_vocabulary_translation">뜻</string>
     <string name="avd_vocabulary_detail_description">상세설명</string>
     <string name="avd_vocabulary_example">예문</string>
+    <string name="avd_vocabulary_memorize_completed_count">총 %d회 암기완료</string>
+    <string name="avd_nofind_vocabulary_detail_info">단어의 상세정보를 얻을 수 없습니다.</string>
     <string name="avd_vocabulary_memorize_uncompleted">미암기</string>
     <string name="avd_vocabulary_rememorize">다시 암기하기</string>
     <string name="avd_vocabulary_memorize_completed">암기완료</string>
