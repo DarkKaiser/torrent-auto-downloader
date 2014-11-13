@@ -143,7 +143,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         if (mVocabularyListWrapper.isValid() == true) {
             resetInVisiblePrevNextVocabularyButtonAnimate();
 
-            SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, true) == true) {
                 // 진동을 발생시킨다.
                 Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);

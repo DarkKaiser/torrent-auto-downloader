@@ -63,7 +63,7 @@ public class VocabularyManager {
 			}
 
 			// 일본어 단어를 읽어들인다.
-			mJvVocabularySqLite = SQLiteDatabase.openDatabase(JvPathManager.getInstance().getVocabularyDbPath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			mJvVocabularySqLite = SQLiteDatabase.openDatabase(JvPathManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 			if (mJvVocabularySqLite == null)
 				return false;
 
@@ -102,7 +102,7 @@ public class VocabularyManager {
 
 		// 사용자 파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
-			File f = new File(JvPathManager.getInstance().getUserVocabularyInfoFilePath());
+			File f = new File(JvPathManager.getInstance().getUserDbFilePath());
 			if (f.exists() == true) {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
@@ -138,16 +138,16 @@ public class VocabularyManager {
 
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbPath()) == false;
+		assert TextUtils.isEmpty(JvPathManager.getInstance().getVocabularyDbFilePath()) == false;
 //@@@@@
-//		String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
-//		SharedPreferences preferences = context.getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+//		String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
+//		SharedPreferences preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
 //
 //		// 단어 DB 파일이 존재하는지 확인한다.
 //		File f = new File(jvDbPath);
 //		if (f.exists() == true) {
 //			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
-//			String jvDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, "");
+//			String jvDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
 //			if (jvDbVersion.equals("") == false) {
 //				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(Constants.JV_DB_VERSION_PREFIX.length()));
 //				int assetsDbVersion = Integer.parseInt(Constants.JV_DB_VERSION_FROM_ASSETS.substring(Constants.JV_DB_VERSION_PREFIX.length()));
@@ -158,7 +158,7 @@ public class VocabularyManager {
 //			}
 //		}
 //
-//		if (JvPathManager.getInstance().isReadyIoDevice() == true) {
+//		if (JvPathManager.getInstance().readyDbStorage() == true) {
 //	        File outFile = new File(jvDbPath);
 //
 //	        InputStream is = null;
@@ -174,7 +174,7 @@ public class VocabularyManager {
 //	            is.read(buffer);
 //	            os.write(buffer);
 //
-//				preferences.edit().putString(Constants.JV_SPN_DB_VERSION, Constants.JV_DB_VERSION_FROM_ASSETS).commit();
+//				preferences.edit().putString(Constants.SP_DB_VERSION, Constants.JV_DB_VERSION_FROM_ASSETS).commit();
 //	        } catch (Exception e) {
 //	            e.printStackTrace();
 //	        } finally {
@@ -406,7 +406,7 @@ public class VocabularyManager {
 		}
 
 		try {
-			String jvUserVocabularyInfoFilePath = JvPathManager.getInstance().getUserVocabularyInfoFilePath();
+			String jvUserVocabularyInfoFilePath = JvPathManager.getInstance().getUserDbFilePath();
 
 			File fileOrg = new File(jvUserVocabularyInfoFilePath);
 			File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");

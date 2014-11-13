@@ -107,7 +107,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		setTitle(String.format("%s - 단어검색", getResources().getString(R.string.app_name)));
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
-		mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mJvListSortMethod = JvSearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, JvSearchListSortMethod.REGISTRATION_DATE_DOWN.name()));
 		mJvListSearchCondition = new JvSearchListCondition(this, mPreferences);
 

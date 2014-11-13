@@ -54,7 +54,6 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
@@ -173,7 +172,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         aq.id(R.id.av_prev_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                 if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -187,7 +186,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         aq.id(R.id.av_next_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                 if (preferences.getBoolean(Constants.JV_SPN_VIBRATE_NEXT_VOCABULARY, getResources().getBoolean(R.bool.vibrate_next_vocabulary_item_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -324,7 +323,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     }
 
     private boolean reloadPreference() {
-		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
 		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
@@ -447,7 +446,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 		}
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
-		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		mMemorizeList.saveVocabularyPosition(preferences);
 
 		super.onBackPressed();
@@ -575,7 +574,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     private void loadVocabularyDb() {
         // 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
-        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         boolean isVocabularyUpdateOnStarted = preferences.getBoolean(Constants.JV_SPN_VOCABULARY_UPDATE_ON_STARTED, getResources().getBoolean(R.bool.vocabulary_update_on_started_item_default_value));
 
         // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어DB를 업데이트한다.
@@ -656,11 +655,11 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     // @@@@@
     private ArrayList<String> checkNewVocabularyDb() {
         // 로컬 단어DB의 버전정보를 구한다.
-        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        String localDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, "");
+        SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        String localDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
 
         try {
-            ArrayList<String> vocaDbInfo = VocabularyDbHelper.getLatestVocabularyDbInfoList();
+            ArrayList<String> vocaDbInfo = JvPathManager.getLatestVocabularyDbInfoList();
             assert vocaDbInfo.size() == 2;
 
             String newVocabularyDbVersion = "";
@@ -709,7 +708,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
             mVocabularyDataLoadHandler.sendMessage(msg);
         } else if (updateSucceeded == true) {
-            SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+            SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
@@ -785,7 +784,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
         Message msg = null;
         boolean updateSucceeded = false;
-        String jvDbPath = JvPathManager.getInstance().getVocabularyDbPath();
+        String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
 
         // 단어 DB 파일을 내려받는다.
         try {
@@ -847,8 +846,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                     fos.write(baf.toByteArray());
                     fos.close();
 
-                    SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                    mPreferences.edit().putString(Constants.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+                    SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                    mPreferences.edit().putString(Constants.SP_DB_VERSION, newVocabularyDbVersion).commit();
                 } else {
                     File f = new File(String.format("%s.tmp", jvDbPath));
                     f.delete();
@@ -871,8 +870,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                         f.renameTo(dstFile);
 
                         updateSucceeded = true;
-                        SharedPreferences mPreferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                        mPreferences.edit().putString(Constants.JV_SPN_DB_VERSION, newVocabularyDbVersion).commit();
+                        SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                        mPreferences.edit().putString(Constants.SP_DB_VERSION, newVocabularyDbVersion).commit();
                     } else {
                         f.delete();
 
@@ -906,7 +905,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         msg.obj = "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.";
         mVocabularyDataLoadHandler.sendMessage(msg);
 
-        SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         mMemorizeList.loadData(preferences, launchApp);
 
         adjustVocabularySeekBar(preferences);

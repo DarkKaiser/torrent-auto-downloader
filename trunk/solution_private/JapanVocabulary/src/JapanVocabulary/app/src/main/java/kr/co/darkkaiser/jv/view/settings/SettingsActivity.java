@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.JvPathManager;
 
 // TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
@@ -26,7 +26,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferenceManager().setSharedPreferencesName(Constants.JV_SHARED_PREFERENCE_NAME);
+		getPreferenceManager().setSharedPreferencesName(Constants.SHARED_PREFERENCE_NAME);
 		addPreferencesFromResource(R.xml.pref_settings_activity);
 
 		try {
@@ -35,8 +35,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			e.printStackTrace();
 		}
 
-		SharedPreferences preferences = getSharedPreferences(Constants.JV_SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		installedDbVersion = preferences.getString(Constants.JV_SPN_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		installedDbVersion = preferences.getString(Constants.SP_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
 
         prefDbVersion = (PreferenceScreen)findPreference("jv_program_info");
 		prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
@@ -76,7 +76,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				String latestVocabularyDbVersion = VocabularyDbHelper.getLatestVocabularyDbVersion();
+				String latestVocabularyDbVersion = JvPathManager.getLatestVocabularyDbVersion();
 
 				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false)
                     return latestVocabularyDbVersion;
