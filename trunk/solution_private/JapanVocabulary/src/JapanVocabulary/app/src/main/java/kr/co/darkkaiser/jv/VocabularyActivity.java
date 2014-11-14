@@ -98,20 +98,16 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         vocabularySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");// @@@@@ 번째를 뺄지 생각, 혹은 다른곳으로 옮길지
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                setTitle(String.format("%s", getResources().getString(R.string.app_name)));
             }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser == true) {
                     showMemorizeVocabulary(mMemorizeList.movePosition(progress));
-
-                    setTitle(getResources().getString(R.string.app_name) + " - " + (mMemorizeList.getCurrentPosition() + 1) + "번째");// @@@@@ 번째를 뺄지 생각, 혹은 다른곳으로 옮길지
                 }
             }
         });
