@@ -15,10 +15,10 @@ namespace JapanVocabularyDbManager
 {
     public partial class frmMain : Form
     {
-        private static string DB_FILE_NAME = "jv2.db";
+        private static string DB_FILE_NAME = "vocabulary_v3.db";
         private static string DATA_FOLDER_NAME = ".";
 
-        private SQLiteConnection dbConn = null;
+        private SQLiteConnection _dbConn = null;
 
         public frmMain()
         {
@@ -27,7 +27,7 @@ namespace JapanVocabularyDbManager
 
         #region 이벤트 핸들러
 
-        private void frmJWM_Load(object sender, EventArgs e)
+        private void frmMain_Load(object sender, EventArgs e)
         {
             // 프로그램을 초기화합니다.
             cboWordSearchItem.Items.Add("단어");
@@ -94,7 +94,7 @@ namespace JapanVocabularyDbManager
 
         private void dataWordGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
-            using (SQLiteCommand cmd = dbConn.CreateCommand())
+            using (SQLiteCommand cmd = _dbConn.CreateCommand())
             {
                 cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY WHERE idx = {0};", e.Row.Cells[0].Value);
                 cmd.ExecuteNonQuery();
@@ -103,7 +103,7 @@ namespace JapanVocabularyDbManager
 
         private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
-            using (SQLiteCommand cmd = dbConn.CreateCommand())
+            using (SQLiteCommand cmd = _dbConn.CreateCommand())
             {
                 cmd.CommandText = string.Format("DELETE FROM TBL_HANJA WHERE idx = {0};", e.Row.Cells[0].Value);
                 cmd.ExecuteNonQuery();
@@ -210,7 +210,7 @@ namespace JapanVocabularyDbManager
             form.Vocabulary = rc[0].Cells[1].Value.ToString();
             form.VocabularyGana = rc[0].Cells[2].Value.ToString();
             form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
-            form.DbConnection = dbConn;
+            form.DbConnection = _dbConn;
 
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -225,7 +225,7 @@ namespace JapanVocabularyDbManager
                 // 데이터를 읽어들입니다.
                 string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
 
-                SQLiteCommand cmd = new SQLiteCommand(strSQL, dbConn);
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, _dbConn);
                 cmd.CommandType = CommandType.Text;
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -263,7 +263,7 @@ namespace JapanVocabularyDbManager
             form.SoundRead = rc[0].Cells[2].Value.ToString();
             form.MeanRead = rc[0].Cells[3].Value.ToString();
             form.Translation = rc[0].Cells[4].Value.ToString();
-            form.DbConnection = dbConn;
+            form.DbConnection = _dbConn;
 
             string jlptLevel = rc[0].Cells[5].Value.ToString();
             if (jlptLevel == "")
@@ -291,7 +291,7 @@ namespace JapanVocabularyDbManager
         private void btnWordAdd_Click(object sender, EventArgs e)
         {
             frmVocabulary form = new frmVocabulary();
-            form.DbConnection = dbConn;
+            form.DbConnection = _dbConn;
             form.EditMode = false;
 
             if (form.ShowDialog() == DialogResult.OK)
@@ -301,7 +301,7 @@ namespace JapanVocabularyDbManager
         private void btnHanjaAdd_Click(object sender, EventArgs e)
         {
             frmHanja form = new frmHanja();
-            form.DbConnection = dbConn;
+            form.DbConnection = _dbConn;
             form.EditMode = false;
 
             if (form.ShowDialog() == DialogResult.OK)
@@ -317,10 +317,10 @@ namespace JapanVocabularyDbManager
             errorMessage = string.Empty;
 
             // DB가 이미 오픈되어 있는 경우는 먼저 닫는다.
-            if (dbConn != null)
+            if (_dbConn != null)
                 DisconnectDB();
 
-            Debug.Assert(dbConn == null);
+            Debug.Assert(_dbConn == null);
 
             // Data 폴더가 존재하지 않는 경우 폴더를 생성한다.
             string dataPath = string.Format(@"{0}\{1}\", Directory.GetCurrentDirectory(), DATA_FOLDER_NAME);
@@ -337,14 +337,14 @@ namespace JapanVocabularyDbManager
             }
 
             // DB를 오픈한다.
-            dbConn = new SQLiteConnection(string.Format("Data Source={0}/{1}", DATA_FOLDER_NAME, DB_FILE_NAME));
-            dbConn.Open();
+            _dbConn = new SQLiteConnection(string.Format("Data Source={0}/{1}", DATA_FOLDER_NAME, DB_FILE_NAME));
+            _dbConn.Open();
 
             // DB에 필요한 테이블이 존재하는지 확인한다.
             try
             {
                 List<string> tableList = new List<string>();
-                using (SQLiteCommand cmd = dbConn.CreateCommand())
+                using (SQLiteCommand cmd = _dbConn.CreateCommand())
                 {
                     cmd.CommandText = "  SELECT name FROM (" +
                                       "                       SELECT * " + 
@@ -386,10 +386,10 @@ namespace JapanVocabularyDbManager
 
         private bool DisconnectDB()
         {
-            if (dbConn != null)
-                dbConn.Close();
+            if (this._dbConn != null)
+                this._dbConn.Close();
 
-            dbConn = null;
+            this._dbConn = null;
 
             return true;
         }
@@ -402,7 +402,7 @@ namespace JapanVocabularyDbManager
 
         private void FillVocabularyData(string sqlWhere)
         {
-            Debug.Assert(dbConn != null);
+            Debug.Assert(_dbConn != null);
 
             // 전체 행을 삭제합니다.
             dataWordGridView.Rows.Clear();
@@ -414,7 +414,7 @@ namespace JapanVocabularyDbManager
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
-                SQLiteCommand cmd = new SQLiteCommand(strSQL, dbConn);
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, _dbConn);
                 cmd.CommandType = CommandType.Text;
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -436,7 +436,7 @@ namespace JapanVocabularyDbManager
 
         private void FillHanjaData(string sqlWhere)
         {
-            Debug.Assert(dbConn != null);
+            Debug.Assert(_dbConn != null);
 
             // 전체 행을 삭제합니다.
             dataHanjaGridView.Rows.Clear();
@@ -448,7 +448,7 @@ namespace JapanVocabularyDbManager
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
-                SQLiteCommand cmd = new SQLiteCommand(strSQL, dbConn);
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, _dbConn);
                 cmd.CommandType = CommandType.Text;
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())

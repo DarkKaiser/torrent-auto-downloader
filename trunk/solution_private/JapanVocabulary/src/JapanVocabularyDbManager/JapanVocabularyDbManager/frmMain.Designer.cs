@@ -63,11 +63,13 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbpHanja.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataHanjaGridView)).BeginInit();
             this.tbpWord.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -250,7 +252,7 @@
             this.tbpWord.Location = new System.Drawing.Point(4, 22);
             this.tbpWord.Name = "tbpWord";
             this.tbpWord.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpWord.Size = new System.Drawing.Size(1045, 688);
+            this.tbpWord.Size = new System.Drawing.Size(1064, 436);
             this.tbpWord.TabIndex = 0;
             this.tbpWord.Text = "단어";
             this.tbpWord.UseVisualStyleBackColor = true;
@@ -277,7 +279,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataWordGridView);
-            this.splitContainer1.Size = new System.Drawing.Size(1039, 682);
+            this.splitContainer1.Size = new System.Drawing.Size(1058, 430);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -368,7 +370,7 @@
             this.dataWordGridView.ReadOnly = true;
             this.dataWordGridView.RowTemplate.Height = 23;
             this.dataWordGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataWordGridView.Size = new System.Drawing.Size(1039, 642);
+            this.dataWordGridView.Size = new System.Drawing.Size(1058, 390);
             this.dataWordGridView.TabIndex = 2;
             this.dataWordGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataWordGridView_CellMouseDoubleClick);
             this.dataWordGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataWordGridView_RowPostPaint);
@@ -416,29 +418,31 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1053, 714);
+            this.tabControl1.Size = new System.Drawing.Size(1072, 462);
             this.tabControl1.TabIndex = 0;
             // 
-            // frmJWM
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1053, 714);
+            this.ClientSize = new System.Drawing.Size(1072, 462);
             this.Controls.Add(this.tabControl1);
-            this.Name = "frmJWM";
+            this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "일본어 단어 관리";
-            this.Load += new System.EventHandler(this.frmJWM_Load);
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.tbpHanja.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataHanjaGridView)).EndInit();
             this.tbpWord.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataWordGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
