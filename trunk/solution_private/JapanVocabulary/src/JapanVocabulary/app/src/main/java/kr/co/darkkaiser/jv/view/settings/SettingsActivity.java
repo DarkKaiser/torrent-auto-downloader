@@ -38,7 +38,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 		installedDbVersion = preferences.getString(Constants.SP_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
 
-        prefDbVersion = (PreferenceScreen)findPreference("jv_program_info");
+        prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
 		prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
 
 		// 최신 단어DB의 버전 정보를 확인합니다.
@@ -90,7 +90,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		@Override
         protected void onPostExecute(String result) {
 			if (prefDbVersion != null) {
-                prefDbVersion = (PreferenceScreen)findPreference("jv_program_info");
+                prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
 				prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
 			}
         }

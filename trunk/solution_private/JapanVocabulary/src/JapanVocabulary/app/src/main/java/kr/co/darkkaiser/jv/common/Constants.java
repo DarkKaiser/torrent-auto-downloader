@@ -13,31 +13,6 @@ public class Constants {
     public static final String SP_DB_VERSION = "jv_db_ver";
 
     /*
-     * 암기대상 단어(공용 환경설정 키이름)
-     */
-    public static final String SP_MEMORIZE_TARGET_ITEM = "jv_memorize_target_item";
-    
-    /*
-     * 단어 암기시 뜻 보이기 여부(공용 환경설정 키이름)
-     */
-    public static final String SP_SHOW_VOCABULARY_TRANSLATION = "jv_show_vocabulary_translation";
-    
-    /*
-     * 단어 전환시 페이드효과 적용 여부(공용 환경설정 키이름)
-     */
-    public static final String SP_FADE_EFFECT_NEXT_VOCABULARY = "jv_fade_effect_next_vocabulary";
-
-    /*
-     * 단어 전환시 진동발생 여부(공용 환경설정 키이름)
-     */
-    public static final String SP_VIBRATE_NEXT_VOCABULARY = "jv_vibrate_next_vocabulary";
-
-    /*
-     * 단어 암기순서(공용 환경설정 키이름)
-     */
-    public static final String SP_MEMORIZE_ORDER_METHOD = "jv_memorize_order_method";
-
-    /*
      * 가장 최근에 사용자가 암기했던 저장된 단어 암기 순서(공용 환경설정 키이름)@@@@@
      */
     public static final String JV_SPN_MEMORIZE_ORDER_METHOD_LATEST = "jv_memorize_order_method_latest";
@@ -52,11 +27,6 @@ public class Constants {
      */
     public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
     
-    /*
-     * 시작시 단어DB 업데이트 여부(공용 환경설정 키이름)
-     */
-    public static final String SP_VOCABULARY_UPDATE_ON_STARTED = "jv_vocabulary_update_on_started";
-
     /*
      * 가장 마지막에 업데이트 한 단어DB의 Max IDX 값 @@@@@
      */

@@ -4,66 +4,66 @@
         android:title="@string/as_vocabulary_memorize_config_category"
         >
         <ListPreference
-            android:key="jv_memorize_target_item"
-            android:title="@string/as_memorize_target_item"
+            android:key="@string/as_memorize_target_key"
+            android:title="@string/as_memorize_target_title"
             android:summary="@string/as_memorize_target_summary"
-            android:defaultValue="@integer/memorize_target_item_default_value"
-            android:entries="@array/memorize_target_item_entry"
-            android:entryValues="@array/memorize_target_item_entry_values"
-            android:dialogTitle="@string/as_memorize_target_item_entry_dialog_title"
+            android:defaultValue="@integer/memorize_target_default_value"
+            android:entries="@array/memorize_target_entries"
+            android:entryValues="@array/memorize_target_entry_values"
+            android:dialogTitle="@string/as_memorize_target_dialog_title"
             />
         <CheckBoxPreference
-            android:key="jv_show_vocabulary_translation"
-            android:title="@string/as_show_vocabulary_translation_item"
+            android:key="@string/as_show_vocabulary_translation_key"
+            android:title="@string/as_show_vocabulary_translation_title"
             android:summaryOn="@string/as_show_vocabulary_translation_summary_on"
             android:summaryOff="@string/as_show_vocabulary_translation_summary_off"
-            android:defaultValue="@bool/show_vocabulary_translation_item_default_value"
+            android:defaultValue="@bool/show_vocabulary_translation_default_value"
             />
         <CheckBoxPreference
-            android:key="jv_fade_effect_next_vocabulary"
-            android:title="@string/as_fade_effect_next_vocabulary_item"
+            android:key="@string/as_fade_effect_next_vocabulary_key"
+            android:title="@string/as_fade_effect_next_vocabulary_title"
             android:summaryOn="@string/as_fade_effect_next_vocabulary_summary_on"
             android:summaryOff="@string/as_fade_effect_next_vocabulary_summary_off"
-            android:defaultValue="@bool/fade_effect_next_vocabulary_item_default_value"
+            android:defaultValue="@bool/fade_effect_next_vocabulary_default_value"
             />
         <CheckBoxPreference
-            android:key="jv_vibrate_next_vocabulary"
-            android:title="@string/as_vibrate_next_vocabulary_item"
+            android:key="@string/as_vibrate_next_vocabulary_key"
+            android:title="@string/as_vibrate_next_vocabulary_title"
             android:summaryOn="@string/as_vibrate_next_vocabulary_summary_on"
             android:summaryOff="@string/as_vibrate_next_vocabulary_summary_off"
-            android:defaultValue="@bool/vibrate_next_vocabulary_item_default_value"
+            android:defaultValue="@bool/vibrate_next_vocabulary_default_value"
             />
         <ListPreference
-            android:key="jv_memorize_order_method"
-            android:title="@string/as_memorize_order_method_item"
+            android:key="@string/as_memorize_order_method_key"
+            android:title="@string/as_memorize_order_method_title"
             android:summary="@string/as_memorize_order_method_summary"
-            android:defaultValue="@integer/memorize_order_method_item_default_value"
+            android:defaultValue="@integer/memorize_order_method_default_value"
             android:entries="@array/memorize_order_method_item_entry"
             android:entryValues="@array/memorize_order_method_item_entry_values"
-            android:dialogTitle="@string/as_memorize_order_method_item_entry_dialog_title"
+            android:dialogTitle="@string/as_memorize_order_method_dialog_title"
             />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="@string/as_vocabulary_update_config_category"
         >
         <CheckBoxPreference
-            android:key="jv_vocabulary_update_on_started"
-            android:title="@string/as_vocabulary_update_on_started_item"
+            android:key="@string/as_vocabulary_update_on_started_key"
+            android:title="@string/as_vocabulary_update_on_started_title"
             android:summaryOn="@string/as_vocabulary_update_on_started_summary_on"
             android:summaryOff="@string/as_vocabulary_update_on_started_summary_off"
-            android:defaultValue="@bool/vocabulary_update_on_started_item_default_value"
+            android:defaultValue="@bool/vocabulary_update_on_started_default_value"
             />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/as_program_info_category"
         >
         <PreferenceScreen
-            android:key="jv_program_info"
-            android:title="@string/as_program_info_item"
+            android:key="@string/as_program_info_key"
+            android:title="@string/as_program_info_title"
             android:summary="@null"
             />
         <PreferenceScreen
-            android:title="@string/as_developer_info_item"
+            android:title="@string/as_developer_info_title"
             android:summary="@string/as_developer_info_summary"
             >
             <intent

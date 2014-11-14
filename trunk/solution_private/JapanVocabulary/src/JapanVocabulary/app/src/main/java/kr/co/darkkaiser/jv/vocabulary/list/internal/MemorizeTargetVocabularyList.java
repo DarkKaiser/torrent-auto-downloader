@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
@@ -11,6 +12,8 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 import kr.co.darkkaiser.jv.util.CircularBuffer;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
@@ -42,11 +45,11 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		
 	}
 
-	public boolean reloadPreference(SharedPreferences preferences) {
+	public boolean reloadPreference(SharedPreferences preferences, Context context) {
 		assert preferences != null;
 
 		// 화면에 출력 할 암기 대상 단어의 항목을 읽는다.
-		String memorizeTargetItem = preferences.getString(Constants.SP_MEMORIZE_TARGET_ITEM, "0");
+		String memorizeTargetItem = preferences.getString(context.getString(R.string.as_memorize_target_key), "0");
 		if (TextUtils.equals(memorizeTargetItem, "0") == true)
 			mMemorizeTarget = MemorizeTarget.VOCABULARY;
 		else
@@ -54,7 +57,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
 		// 단어 암기 순서를 읽는다.
 		int prevMemorizeOrderMethod = mMemorizeOrderMethod;
-		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(Constants.SP_MEMORIZE_ORDER_METHOD, "0"));
+		mMemorizeOrderMethod = Integer.parseInt(preferences.getString(context.getString(R.string.as_memorize_order_method_key), "0"));
 
 		return (mMemorizeOrderMethod != prevMemorizeOrderMethod);
 	}

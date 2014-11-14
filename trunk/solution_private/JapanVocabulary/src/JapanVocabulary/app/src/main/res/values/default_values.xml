@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="memorize_target_item_default_value">0</integer>
-    <bool name="show_vocabulary_translation_item_default_value">false</bool>
-    <bool name="fade_effect_next_vocabulary_item_default_value">true</bool>
-    <bool name="vibrate_next_vocabulary_item_default_value">true</bool>
-    <bool name="vocabulary_update_on_started_item_default_value">true</bool>
-    <integer name="memorize_order_method_item_default_value">0</integer>
+    <integer name="memorize_target_default_value">0</integer>
+    <bool name="show_vocabulary_translation_default_value">false</bool>
+    <bool name="fade_effect_next_vocabulary_default_value">true</bool>
+    <bool name="vibrate_next_vocabulary_default_value">true</bool>
+    <bool name="vocabulary_update_on_started_default_value">true</bool>
+    <integer name="memorize_order_method_default_value">0</integer>
 
 </resources>
