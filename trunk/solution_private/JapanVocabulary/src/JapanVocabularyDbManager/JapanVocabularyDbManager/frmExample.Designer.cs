@@ -1,4 +1,4 @@
-﻿namespace JapanWordManager
+﻿namespace JapanVocabularyDbManager
 {
     partial class frmExample
     {

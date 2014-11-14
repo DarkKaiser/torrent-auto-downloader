@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-namespace JapanWordManager
+namespace JapanVocabularyDbManager
 {
     public partial class frmExample : Form
     {

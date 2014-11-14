@@ -11,7 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 
-namespace JapanWordManager
+namespace JapanVocabularyDbManager
 {
     public partial class frmJWM : Form
     {
