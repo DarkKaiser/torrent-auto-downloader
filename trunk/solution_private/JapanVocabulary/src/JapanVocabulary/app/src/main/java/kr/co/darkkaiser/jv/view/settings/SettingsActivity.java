@@ -15,6 +15,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 
 // TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
+// TODO 환경설정으로 예문에 후리가나 표시여부 지정하기
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	
 	private String appVersion = null;
