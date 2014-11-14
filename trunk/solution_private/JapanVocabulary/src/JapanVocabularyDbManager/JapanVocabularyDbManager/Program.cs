@@ -15,7 +15,7 @@ namespace JapanVocabularyDbManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmJWM());
+            Application.Run(new frmMain());
         }
     }
 }

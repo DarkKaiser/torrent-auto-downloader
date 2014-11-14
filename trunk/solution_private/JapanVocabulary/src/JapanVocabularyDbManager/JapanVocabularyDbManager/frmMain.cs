@@ -13,14 +13,14 @@ using System.Xml;
 
 namespace JapanVocabularyDbManager
 {
-    public partial class frmJWM : Form
+    public partial class frmMain : Form
     {
         private static string DB_FILE_NAME = "jv2.db";
         private static string DATA_FOLDER_NAME = ".";
 
         private SQLiteConnection dbConn = null;
 
-        public frmJWM()
+        public frmMain()
         {
             InitializeComponent();
         }
