@@ -681,58 +681,6 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     }
 
     // @@@@@
-    private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean updateSucceeded) {
-        Message msg = Message.obtain();
-        msg.what = MSG_PROGRESS_DIALOG_REFRESH;
-        msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
-        mVocabularyDataLoadHandler.sendMessage(msg);
-
-        // DB에서 단어 데이터를 읽어들인다.
-        if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
-            msg = Message.obtain();
-            msg.what = MSG_TOAST_SHOW;
-            msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
-            mVocabularyDataLoadHandler.sendMessage(msg);
-        }
-
-        // 암기할 단어 데이터를 로드합니다.
-        loadMemorizeTargetVocabularyData(true);
-
-        if (nowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
-            msg = Message.obtain();
-            msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
-            mVocabularyDataLoadHandler.sendMessage(msg);
-        } else if (updateSucceeded == true) {
-            SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-            long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
-
-            StringBuilder sb = new StringBuilder();
-            long newMaxIdx = VocabularyManager.getInstance().getUpdatedVocabularyInfo(prevMaxIdx, sb);
-
-            if (newMaxIdx != -1) {
-                mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
-
-                // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
-                if (prevMaxIdx != -1) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("JV_UPDATE_INFO", sb.toString());
-
-                    msg = Message.obtain();
-                    msg.what = MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW;
-                    msg.setData(bundle);
-
-                    mVocabularyDataLoadHandler.sendMessage(msg);
-                }
-            }
-        }
-
-        // 단어 암기를 시작합니다.
-        msg = Message.obtain();
-        msg.what = MSG_VOCABULARY_MEMORIZE_START;
-        mVocabularyDataLoadHandler.sendMessage(msg);
-    }
-
-    // @@@@@
     private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
         if (isUpdateVocabularyDb)
             mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
@@ -894,6 +842,58 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     }
 
     // @@@@@
+    private void initVocabularyDataAndStartMemorize(boolean nowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean updateSucceeded) {
+        Message msg = Message.obtain();
+        msg.what = MSG_PROGRESS_DIALOG_REFRESH;
+        msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
+        mVocabularyDataLoadHandler.sendMessage(msg);
+
+        // DB에서 단어 데이터를 읽어들인다.
+        if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
+            msg = Message.obtain();
+            msg.what = MSG_TOAST_SHOW;
+            msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
+            mVocabularyDataLoadHandler.sendMessage(msg);
+        }
+
+        // 암기할 단어 데이터를 로드합니다.
+        loadMemorizeTargetVocabularyData(true);
+
+        if (nowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
+            msg = Message.obtain();
+            msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
+            mVocabularyDataLoadHandler.sendMessage(msg);
+        } else if (updateSucceeded == true) {
+            SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+            long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
+
+            StringBuilder sb = new StringBuilder();
+            long newMaxIdx = VocabularyManager.getInstance().getUpdatedVocabularyInfo(prevMaxIdx, sb);
+
+            if (newMaxIdx != -1) {
+                mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
+
+                // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
+                if (prevMaxIdx != -1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("JV_UPDATE_INFO", sb.toString());
+
+                    msg = Message.obtain();
+                    msg.what = MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW;
+                    msg.setData(bundle);
+
+                    mVocabularyDataLoadHandler.sendMessage(msg);
+                }
+            }
+        }
+
+        // 단어 암기를 시작합니다.
+        msg = Message.obtain();
+        msg.what = MSG_VOCABULARY_MEMORIZE_START;
+        mVocabularyDataLoadHandler.sendMessage(msg);
+    }
+
+    // @@@@@
     private void loadMemorizeTargetVocabularyData(boolean launchApp) {
         Message msg = Message.obtain();
         msg.what = MSG_PROGRESS_DIALOG_REFRESH;
@@ -998,14 +998,12 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                         .setTitle("알림")
                         .setMessage("3G 네트워크로 접속되었습니다. 데이터 통화료가 부과될 수 있습니다. 단어 DB를 업데이트하시겠습니까?")
                         .setPositiveButton("사용함", new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, true);
                             }
                         })
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, false);
