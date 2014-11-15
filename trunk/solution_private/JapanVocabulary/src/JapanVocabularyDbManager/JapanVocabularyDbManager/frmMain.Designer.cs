@@ -51,17 +51,18 @@
             this.btnWordAdd = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cboWordSearchItem = new System.Windows.Forms.ComboBox();
-            this.txtWordSearchWord = new System.Windows.Forms.TextBox();
-            this.btnWordAll = new System.Windows.Forms.Button();
+            this.txtVocabularySearchWord = new System.Windows.Forms.TextBox();
+            this.btnVocabularyShowAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnWordSearch = new System.Windows.Forms.Button();
-            this.dataWordGridView = new System.Windows.Forms.DataGridView();
+            this.btnVocabularySearch = new System.Windows.Forms.Button();
+            this.dataVocabularyGridView = new System.Windows.Forms.DataGridView();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -73,7 +74,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataWordGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataVocabularyGridView)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +84,7 @@
             this.tbpHanja.Location = new System.Drawing.Point(4, 22);
             this.tbpHanja.Name = "tbpHanja";
             this.tbpHanja.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpHanja.Size = new System.Drawing.Size(1045, 688);
+            this.tbpHanja.Size = new System.Drawing.Size(990, 694);
             this.tbpHanja.TabIndex = 1;
             this.tbpHanja.Text = "한자";
             this.tbpHanja.UseVisualStyleBackColor = true;
@@ -110,7 +111,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.dataHanjaGridView);
-            this.splitContainer2.Size = new System.Drawing.Size(1039, 682);
+            this.splitContainer2.Size = new System.Drawing.Size(984, 688);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -201,7 +202,7 @@
             this.dataHanjaGridView.ReadOnly = true;
             this.dataHanjaGridView.RowTemplate.Height = 23;
             this.dataHanjaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataHanjaGridView.Size = new System.Drawing.Size(1039, 645);
+            this.dataHanjaGridView.Size = new System.Drawing.Size(984, 651);
             this.dataHanjaGridView.TabIndex = 0;
             this.dataHanjaGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataHanjaGridView_CellMouseDoubleClick);
             this.dataHanjaGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataHanjaGridView_RowPostPaint);
@@ -252,7 +253,7 @@
             this.tbpWord.Location = new System.Drawing.Point(4, 22);
             this.tbpWord.Name = "tbpWord";
             this.tbpWord.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpWord.Size = new System.Drawing.Size(1064, 436);
+            this.tbpWord.Size = new System.Drawing.Size(990, 694);
             this.tbpWord.TabIndex = 0;
             this.tbpWord.Text = "단어";
             this.tbpWord.UseVisualStyleBackColor = true;
@@ -271,21 +272,21 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnWordAdd);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.cboWordSearchItem);
-            this.splitContainer1.Panel1.Controls.Add(this.txtWordSearchWord);
-            this.splitContainer1.Panel1.Controls.Add(this.btnWordAll);
+            this.splitContainer1.Panel1.Controls.Add(this.txtVocabularySearchWord);
+            this.splitContainer1.Panel1.Controls.Add(this.btnVocabularyShowAll);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnWordSearch);
+            this.splitContainer1.Panel1.Controls.Add(this.btnVocabularySearch);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.dataWordGridView);
-            this.splitContainer1.Size = new System.Drawing.Size(1058, 430);
+            this.splitContainer1.Panel2.Controls.Add(this.dataVocabularyGridView);
+            this.splitContainer1.Size = new System.Drawing.Size(984, 688);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.TabIndex = 1;
             // 
             // btnWordAdd
             // 
-            this.btnWordAdd.Location = new System.Drawing.Point(582, 7);
+            this.btnWordAdd.Location = new System.Drawing.Point(572, 7);
             this.btnWordAdd.Name = "btnWordAdd";
             this.btnWordAdd.Size = new System.Drawing.Size(75, 23);
             this.btnWordAdd.TabIndex = 6;
@@ -296,86 +297,102 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 12);
+            this.label2.Location = new System.Drawing.Point(0, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 12);
+            this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 5;
-            this.label2.Text = "검색 항목";
+            this.label2.Text = "검색항목";
             // 
             // cboWordSearchItem
             // 
             this.cboWordSearchItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboWordSearchItem.FormattingEnabled = true;
-            this.cboWordSearchItem.Location = new System.Drawing.Point(61, 8);
+            this.cboWordSearchItem.Items.AddRange(new object[] {
+            "단어",
+            "히라가나/가타가나",
+            "설명"});
+            this.cboWordSearchItem.Location = new System.Drawing.Point(54, 8);
             this.cboWordSearchItem.Name = "cboWordSearchItem";
-            this.cboWordSearchItem.Size = new System.Drawing.Size(155, 20);
+            this.cboWordSearchItem.Size = new System.Drawing.Size(114, 20);
             this.cboWordSearchItem.TabIndex = 4;
             // 
-            // txtWordSearchWord
+            // txtVocabularySearchWord
             // 
-            this.txtWordSearchWord.Location = new System.Drawing.Point(270, 8);
-            this.txtWordSearchWord.Name = "txtWordSearchWord";
-            this.txtWordSearchWord.Size = new System.Drawing.Size(144, 21);
-            this.txtWordSearchWord.TabIndex = 3;
-            this.txtWordSearchWord.TextChanged += new System.EventHandler(this.txtWordSearchWord_TextChanged);
-            this.txtWordSearchWord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtWordSearchWord_KeyPress);
+            this.txtVocabularySearchWord.Location = new System.Drawing.Point(235, 8);
+            this.txtVocabularySearchWord.Name = "txtVocabularySearchWord";
+            this.txtVocabularySearchWord.Size = new System.Drawing.Size(144, 21);
+            this.txtVocabularySearchWord.TabIndex = 3;
+            this.txtVocabularySearchWord.TextChanged += new System.EventHandler(this.txtVocabularySearchWord_TextChanged);
+            this.txtVocabularySearchWord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVocabularySearchWord_KeyPress);
             // 
-            // btnWordAll
+            // btnVocabularyShowAll
             // 
-            this.btnWordAll.Location = new System.Drawing.Point(493, 7);
-            this.btnWordAll.Name = "btnWordAll";
-            this.btnWordAll.Size = new System.Drawing.Size(75, 23);
-            this.btnWordAll.TabIndex = 2;
-            this.btnWordAll.Text = "전체(&A)";
-            this.btnWordAll.UseVisualStyleBackColor = true;
-            this.btnWordAll.Click += new System.EventHandler(this.btnWordAll_Click);
+            this.btnVocabularyShowAll.Location = new System.Drawing.Point(483, 7);
+            this.btnVocabularyShowAll.Name = "btnVocabularyShowAll";
+            this.btnVocabularyShowAll.Size = new System.Drawing.Size(75, 23);
+            this.btnVocabularyShowAll.TabIndex = 2;
+            this.btnVocabularyShowAll.Text = "전체(&A)";
+            this.btnVocabularyShowAll.UseVisualStyleBackColor = true;
+            this.btnVocabularyShowAll.Click += new System.EventHandler(this.btnVocabularyShowAll_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(228, 13);
+            this.label1.Location = new System.Drawing.Point(193, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "검색어";
             // 
-            // btnWordSearch
+            // btnVocabularySearch
             // 
-            this.btnWordSearch.Enabled = false;
-            this.btnWordSearch.Location = new System.Drawing.Point(417, 7);
-            this.btnWordSearch.Name = "btnWordSearch";
-            this.btnWordSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnWordSearch.TabIndex = 0;
-            this.btnWordSearch.Text = "검색(&S)";
-            this.btnWordSearch.UseVisualStyleBackColor = true;
-            this.btnWordSearch.Click += new System.EventHandler(this.btnWordSearch_Click);
+            this.btnVocabularySearch.Enabled = false;
+            this.btnVocabularySearch.Location = new System.Drawing.Point(407, 7);
+            this.btnVocabularySearch.Name = "btnVocabularySearch";
+            this.btnVocabularySearch.Size = new System.Drawing.Size(75, 23);
+            this.btnVocabularySearch.TabIndex = 0;
+            this.btnVocabularySearch.Text = "검색(&S)";
+            this.btnVocabularySearch.UseVisualStyleBackColor = true;
+            this.btnVocabularySearch.Click += new System.EventHandler(this.btnVocabularySearch_Click);
             // 
-            // dataWordGridView
+            // dataVocabularyGridView
             // 
-            this.dataWordGridView.AllowUserToAddRows = false;
+            this.dataVocabularyGridView.AllowUserToAddRows = false;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataWordGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataWordGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataWordGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataWordGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataVocabularyGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataVocabularyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataVocabularyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column4,
             this.Column1,
             this.Column2,
             this.Column3,
-            this.Column10});
-            this.dataWordGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataWordGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataWordGridView.MultiSelect = false;
-            this.dataWordGridView.Name = "dataWordGridView";
-            this.dataWordGridView.ReadOnly = true;
-            this.dataWordGridView.RowTemplate.Height = 23;
-            this.dataWordGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataWordGridView.Size = new System.Drawing.Size(1058, 390);
-            this.dataWordGridView.TabIndex = 2;
-            this.dataWordGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataWordGridView_CellMouseDoubleClick);
-            this.dataWordGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataWordGridView_RowPostPaint);
-            this.dataWordGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataWordGridView_UserDeletedRow);
-            this.dataWordGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataWordGridView_UserDeletingRow);
+            this.Column10,
+            this.Column12});
+            this.dataVocabularyGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataVocabularyGridView.Location = new System.Drawing.Point(0, 0);
+            this.dataVocabularyGridView.MultiSelect = false;
+            this.dataVocabularyGridView.Name = "dataVocabularyGridView";
+            this.dataVocabularyGridView.ReadOnly = true;
+            this.dataVocabularyGridView.RowTemplate.Height = 23;
+            this.dataVocabularyGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataVocabularyGridView.Size = new System.Drawing.Size(984, 648);
+            this.dataVocabularyGridView.TabIndex = 2;
+            this.dataVocabularyGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataVocabularyGridView_CellMouseDoubleClick);
+            this.dataVocabularyGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataVocabularyGridView_RowPostPaint);
+            this.dataVocabularyGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataVocabularyGridView_UserDeletedRow);
+            this.dataVocabularyGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataVocabularyGridView_UserDeletingRow);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tbpWord);
+            this.tabControl1.Controls.Add(this.tbpHanja);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(5, 5);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(998, 720);
+            this.tabControl1.TabIndex = 0;
             // 
             // Column4
             // 
@@ -410,26 +427,22 @@
             this.Column10.Name = "Column10";
             this.Column10.ReadOnly = true;
             // 
-            // tabControl1
+            // Column12
             // 
-            this.tabControl1.Controls.Add(this.tbpWord);
-            this.tabControl1.Controls.Add(this.tbpHanja);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1072, 462);
-            this.tabControl1.TabIndex = 0;
+            this.Column12.HeaderText = "사용유무";
+            this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1072, 462);
+            this.ClientSize = new System.Drawing.Size(1008, 730);
             this.Controls.Add(this.tabControl1);
             this.Name = "frmMain";
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "일본어 단어 관리";
+            this.Text = "일본어 단어DB 관리자";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tbpHanja.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -444,7 +457,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataWordGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataVocabularyGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -458,11 +471,11 @@
         private System.Windows.Forms.Button btnWordAdd;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboWordSearchItem;
-        private System.Windows.Forms.TextBox txtWordSearchWord;
-        private System.Windows.Forms.Button btnWordAll;
+        private System.Windows.Forms.TextBox txtVocabularySearchWord;
+        private System.Windows.Forms.Button btnVocabularyShowAll;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnWordSearch;
-        private System.Windows.Forms.DataGridView dataWordGridView;
+        private System.Windows.Forms.Button btnVocabularySearch;
+        private System.Windows.Forms.DataGridView dataVocabularyGridView;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.DataGridView dataHanjaGridView;
@@ -484,6 +497,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
 
     }
 }
