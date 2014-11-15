@@ -36,8 +36,7 @@ public class Constants {
 	 * 단어DB 파일명
 	 */
     public static final String VOCABULARY_DB_FILENAME_V2 = "jv2.db";
-    public static final String VOCABULARY_DB_FILENAME_V3 = "jv2.db";//@@@@@
-//    public static final String VOCABULARY_DB_FILENAME_V3 = "vocabulary_v3.db";
+    public static final String VOCABULARY_DB_FILENAME_V3 = "vocabulary_v3.db";
 
     /*
      * 사용자의 암기정보를 저장한 DB 파일명
@@ -53,6 +52,6 @@ public class Constants {
     /*
      * 단어DB 버전정보 체크 URL
      */
-    public static final String JV_DB_CHECKSUM_URL = "http://darkkaiser.cafe24.com/data/jvdb.json";
+    public static final String JV_DB_CHECKSUM_URL = "http://darkkaiser.cafe24.com/data/vocabulary_v3.json";
 
 }

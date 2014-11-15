@@ -1,33 +1,32 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.util.CircularBuffer;
 import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.util.CircularBuffer;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.text.TextUtils;
-
-//@@@@@todo
 public class MemorizeTargetVocabularyList implements IVocabularyList {
-	
+
 	private Random mRandom = new Random();
 
 	// 암기대상 단어 리스트
 	private ArrayList<Vocabulary> mVocabularyListData = new ArrayList<Vocabulary>();
 
-	// 암기대상 단어 암기순서 버퍼
-	private CircularBuffer<Integer> mVocabularyListMemorizeSequence = new CircularBuffer<Integer>();
+	// 암기대상 단어의 암기순서
+	private CircularBuffer<Integer> mVocabularyListMemorizeOrder = new CircularBuffer<Integer>();
 
 	// 암기대상 단어 리스트 중에서 암기 완료한 단어의 갯수
 	private int mMemorizeCompletedCount = 0;
@@ -45,6 +44,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		
 	}
 
+    // @@@@@
 	public boolean reloadPreference(SharedPreferences preferences, Context context) {
 		assert preferences != null;
 
@@ -62,11 +62,12 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		return (mMemorizeOrderMethod != prevMemorizeOrderMethod);
 	}
 
-	public synchronized void loadData(SharedPreferences preferences, boolean launchApp) {
+    // @@@@@
+    public synchronized void loadData(SharedPreferences preferences, boolean executeFromApp) {
 		// 암기 대상 단어들만을 필터링한다.
 		mVocabularyListData.clear();
 		mCurrentPosition = -1;
-		mVocabularyListMemorizeSequence.clear();
+		mVocabularyListMemorizeOrder.clear();
 		mMemorizeCompletedCount = VocabularyManager.getInstance().getMemorizeTargetJvList(mVocabularyListData);
 
 		assert mMemorizeCompletedCount >= 0;
@@ -85,43 +86,44 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		default:
 			break;
 		}
-		
-		if (launchApp == true) {
-			loadVocabularyPosition(preferences);
-		}
+
+		if (executeFromApp == true) loadVocabularyPosition(preferences);
 	}
 
-	public synchronized boolean isValidVocabularyPosition() {
-        return mCurrentPosition >= 0 && mCurrentPosition < mVocabularyListData.size();
-    }
-	
-	public synchronized int getCount() {
+    public synchronized int getCount() {
 		return mVocabularyListData.size();
 	}
 
-	public synchronized void setMemorizeCompletedAtVocabularyPosition() {
-		if (isValidVocabularyPosition() == true) {
-			Vocabulary jpVocabulary = mVocabularyListData.get(mCurrentPosition);
-			if (jpVocabulary != null && jpVocabulary.isMemorizeCompleted() == false) {
+    public synchronized boolean isValidPosition() {
+        return mCurrentPosition >= 0 && mCurrentPosition < mVocabularyListData.size();
+    }
+
+    // @@@@@
+    public synchronized void setMemorizeCompletedAtVocabularyPosition() {
+		if (isValidPosition() == true) {
+			Vocabulary vocabulary = mVocabularyListData.get(mCurrentPosition);
+			if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
 				++mMemorizeCompletedCount;
-				jpVocabulary.setMemorizeCompleted(true, true, true);							
+				vocabulary.setMemorizeCompleted(true, true, true);
 			}
 		} else {
 			assert false;
 		}
 	}
 
-	public synchronized long getIdxAtVocabularyPosition() {
-		if (isValidVocabularyPosition() == true) {
+    // @@@@@
+    public synchronized long getIdxAtVocabularyPosition() {
+		if (isValidPosition() == true) {
 			return mVocabularyListData.get(mCurrentPosition).getIdx();
 		} else {
 			assert false;
 		}
-		
+
 		return -1;
 	}
 
-	private void loadVocabularyPosition(SharedPreferences preferences) {
+    // @@@@@
+    private void loadVocabularyPosition(SharedPreferences preferences) {
 		assert preferences != null;
 
 		int latestMemorizeOrderMethod = preferences.getInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_LATEST, 0/* 랜덤 */);
@@ -129,13 +131,14 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			int prevCurrentPosition = mCurrentPosition;
 			mCurrentPosition = preferences.getInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
 			
-			if (isValidVocabularyPosition() == false) {
+			if (isValidPosition() == false) {
 				mCurrentPosition = prevCurrentPosition;
 			}
 		}
 	}
 
-	public void saveVocabularyPosition(SharedPreferences preferences) {
+    // @@@@@
+    public void saveVocabularyPosition(SharedPreferences preferences) {
 		assert preferences != null;
 
 		Editor edit = preferences.edit();
@@ -152,25 +155,28 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		
 		edit.commit();
 	}
-	
-	public synchronized int getCurrentPosition() {
+
+    // @@@@@
+    public synchronized int getCurrentPosition() {
 		return mCurrentPosition;
 	}
 
 	@Override
-	public synchronized Vocabulary getCurrentVocabulary() {
-		if (isValidVocabularyPosition() == true) {
+    // @@@@@
+    public synchronized Vocabulary getCurrentVocabulary() {
+		if (isValidPosition() == true) {
 			return mVocabularyListData.get(mCurrentPosition);
 		}
 
 		return null;
 	}
-	
+
+    // @@@@@
 	public synchronized Vocabulary movePosition(int position) {
 		int prevCurrentPosition = mCurrentPosition;
 
 		mCurrentPosition = position;
-		if (isValidVocabularyPosition() == true) {
+		if (isValidPosition() == true) {
 			return mVocabularyListData.get(mCurrentPosition);
 		} else {
 			assert false;
@@ -181,13 +187,14 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 	
 	@Override
-	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		Integer value = mVocabularyListMemorizeSequence.pop();
+    // @@@@@
+    public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
+		Integer value = mVocabularyListMemorizeOrder.pop();
 		if (value != null) {
 			int prevCurrentPosition = mCurrentPosition;
 
 			mCurrentPosition = value;
-			if (isValidVocabularyPosition() == true) {
+			if (isValidPosition() == true) {
 				return mVocabularyListData.get(mCurrentPosition);
 			} else {
 				assert false;
@@ -201,6 +208,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	}
 
 	@Override
+    // @@@@@
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		assert sbErrMessage != null;
 		
@@ -213,14 +221,14 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
 			sbErrMessage.append("암기 할 단어가 없습니다.");
 		} else {
-			if (isValidVocabularyPosition() == true) {
-				Integer value = mVocabularyListMemorizeSequence.popNoRemove();
+			if (isValidPosition() == true) {
+				Integer value = mVocabularyListMemorizeOrder.popNoRemove();
 				if (value != null) {
 					if (mCurrentPosition != value) {
-						mVocabularyListMemorizeSequence.push(mCurrentPosition);
+						mVocabularyListMemorizeOrder.push(mCurrentPosition);
 					}
 				} else {
-					mVocabularyListMemorizeSequence.push(mCurrentPosition);
+					mVocabularyListMemorizeOrder.push(mCurrentPosition);
 				}
 			}
 
@@ -266,20 +274,22 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 				assert bFindSucceeded == true;
 			}
 
-			if (isValidVocabularyPosition() == true) {
+			if (isValidPosition() == true) {
 				return mVocabularyListData.get(mCurrentPosition);
 			}
 		}
 
 		return null;
 	}
-	
+
+    // @@@@@
 	public MemorizeTarget getMemorizeTargetItem() {
 		return mMemorizeTarget;
 	}
 
-	public StringBuilder getMemorizeVocabularyInfo() {
-		assert isValidVocabularyPosition() == true;
+    // @@@@@
+    public StringBuilder getMemorizeVocabularyInfo() {
+		assert isValidPosition() == true;
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("암기완료 ").append(mMemorizeCompletedCount).append("개 / 전체 ").append(mVocabularyListData.size()).append("개");

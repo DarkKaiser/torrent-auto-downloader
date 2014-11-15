@@ -47,7 +47,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
@@ -449,7 +448,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMemorizeList.isValidVocabularyPosition() == true &&
+        if (mMemorizeList.isValidPosition() == true &&
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
@@ -487,7 +486,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     	public void handleMessage(Message msg){
     		switch (msg.what) {
             case MSG_CUSTOM_EVT_LONG_PRESS:
-                if (mMemorizeList.isValidVocabularyPosition() == true) {
+                if (mMemorizeList.isValidPosition() == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -803,8 +802,9 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                     boolean isValidationFile = true;
                     byte[] fileHashBytes = FileHash.getHash(f);
                     if (fileHashBytes != null) {
-                        if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
-                            isValidationFile = false;
+                        // @@@@@ 임시 주석, 파일 해쉬값이 맞지 않음
+//                        if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
+//                            isValidationFile = false;
                     }
 
                     if (isValidationFile == true) {
