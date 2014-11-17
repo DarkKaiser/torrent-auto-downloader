@@ -48,11 +48,11 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.FileHash;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
@@ -72,16 +72,15 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
 	private static final int MSG_VOCABULARY_MAINBAR_VISIBILITY = 11;
 
-    // @@@@@
-    private static final int ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY = 1;
-    private static final int ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO = 2;
-    private static final int ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY = 3;
-
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
-	// 롱 터치를 판단하는 시간 값
+    private static final int RQCODE_SEARCH_MEMORIZE_VOCABULARY = 1;
+    private static final int RQCODE_VOCABULARY_DETAIL_INFO = 2;
+    private static final int RQCODE_OPEN_SETTINGS_ACTIVITY = 3;
+
+    // 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
 	// 긴 작업동안 화면에 작업중임을 보여 줄 대화상자
@@ -148,9 +147,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             }
         });
 
-        // 환경설정 값을 로드한다.
+        // 환경설정 정보를 로드한다.
         reloadPreference();
 
+        // @@@@@
         // 사용하는 단어DB의 경로 정보를 초기화한다.
         if (VocabularyDbHelper.getInstance().init(this) == false) {
         	new AlertDialog.Builder(this)
@@ -206,12 +206,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     }
 
 	@Override
-    // @@@@@
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.av_search_memorize_vocabulary:
 			Intent intent = new Intent(this, JvSearchListActivity.class);
-			startActivityForResult(intent, ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY);
+			startActivityForResult(intent, RQCODE_SEARCH_MEMORIZE_VOCABULARY);
 			return true;
 
 		case R.id.av_rememorize_all:
@@ -223,6 +222,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	   		new Thread() {
 				@Override
 	   			public void run() {
+                    // @@@@@
 					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
 					VocabularyManager.getInstance().rememorizeAllMemorizeTarget();
 
@@ -232,14 +232,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 					Message msg = Message.obtain();
 					msg.what = MSG_VOCABULARY_MEMORIZE_START;
 					mVocabularyDataLoadHandler.sendMessage(msg);
-	   			};
+	   			}
 	   		}
 	   		.start();
 
 			return true;
 
 		case R.id.av_open_settings_activity:
-			startActivityForResult(new Intent(this, SettingsActivity.class), ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY);
+			startActivityForResult(new Intent(this, SettingsActivity.class), RQCODE_OPEN_SETTINGS_ACTIVITY);
 			return true;
 		}
 
@@ -251,7 +251,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY) {
+		if (requestCode == RQCODE_SEARCH_MEMORIZE_VOCABULARY) {
 			assert mProgressDialog == null;
 
 			// 환경설정 값이 바뀌었는지 확인한다.
@@ -286,7 +286,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
-		} else if (requestCode == ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY) {
+		} else if (requestCode == RQCODE_OPEN_SETTINGS_ACTIVITY) {
 			if (reloadPreference() == true) {
 				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
@@ -307,7 +307,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
-		} else if (requestCode == ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO) {
+		} else if (requestCode == RQCODE_VOCABULARY_DETAIL_INFO) {
 			DetailActivity.setVocabularySeekList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
@@ -337,15 +337,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			tswVocabularyTranslation.setOutAnimation(null);
 		}
 
-		if (preferences.getBoolean(getString(R.string.as_show_vocabulary_translation_key), getResources().getBoolean(R.bool.show_vocabulary_translation_default_value)) == false) {
-			tswVocabularyTranslation.setVisibility(View.GONE);
-		} else {
-			tswVocabularyTranslation.setVisibility(View.VISIBLE);
-		}
+		if (preferences.getBoolean(getString(R.string.as_show_vocabulary_translation_key), getResources().getBoolean(R.bool.show_vocabulary_translation_default_value)) == false)
+            tswVocabularyTranslation.setVisibility(View.GONE);
+        else
+            tswVocabularyTranslation.setVisibility(View.VISIBLE);
 
-		boolean result = mMemorizeTargetVocabularyList.reloadPreference(this, preferences);
-		adjustVocabularySeekBar(preferences);
-		return result;
+        return mMemorizeTargetVocabularyList.reloadPreference(this, preferences);
 	}
 
     private void showCurrentMemorizeVocabulary() {
@@ -428,7 +425,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
 
-        // @@@@@
 		String memorizeVocabularyInfo = mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo();
 		if (TextUtils.isEmpty(memorizeVocabularyInfo) == false)
             aq.id(R.id.av_memorize_vocabulary_info).text(memorizeVocabularyInfo);
@@ -533,7 +529,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
                     intent.putExtra("idx", idx);
-                    startActivityForResult(intent, ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO);
+                    startActivityForResult(intent, RQCODE_VOCABULARY_DETAIL_INFO);
                 }
                 break;
 
@@ -557,7 +553,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
 		if (memorizeVocabularyCount == 0 ||
-                Integer.parseInt(preferences.getString(getString(R.string.as_memorize_order_method_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_method_default_value)))) == 0) {
+                Integer.parseInt(preferences.getString(getString(R.string.as_memorize_order_method_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_method_default_value)))) == 0/* 랜덤 */) {
 			msg.arg1 = View.INVISIBLE;
 		} else {
 			msg.arg1 = View.VISIBLE;
@@ -934,6 +930,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             } else if (msg.what == MSG_VOCABULARY_MAINBAR_VISIBILITY) {
                 // 단어 정보 헤더를 화면에 보이도록 한다.
                 RelativeLayout layout = (RelativeLayout)findViewById(R.id.av_memorize_info_header);
+                // @@@@@ 애니메이션 효과 없애기??
                 if (layout.getVisibility() != View.VISIBLE) {
                     layout.setVisibility(View.VISIBLE);
                     layout.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.slide_top_to_bottom));
