@@ -306,9 +306,9 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 			return true;
 
-		case R.id.jvm_preferences:
+		case R.id.av_open_settings_activity:
 			// 설정 페이지를 띄운다.
-			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.jvm_preferences);
+			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.av_open_settings_activity);
 			mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
 			setResult(mActivityResultCode);
 
@@ -385,7 +385,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == R.id.jvm_preferences) {
+		if (requestCode == R.id.av_open_settings_activity) {
 			// 수행 작업 없음
 		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
 			DetailActivity.setVocabularySeekList(null);

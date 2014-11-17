@@ -22,6 +22,9 @@
     <string name="av_memorize_completed_ad_title">암기완료</string>
     <string name="av_memorize_completed_ad_message">단어를 암기하셨습니까?</string>
 
+    <string name="av_search_memorize_vocabulary">암기단어 검색</string>
+    <string name="av_rememorize_all">암기대상 단어 재암기</string>
+
     <string name="avd_vocabulary_hanja">한자</string>
     <string name="avd_vocabulary_gana">히라가나/가타카나</string>
     <string name="avd_vocabulary_translation">뜻</string>

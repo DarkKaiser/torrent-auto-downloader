@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.jv;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -56,8 +56,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
-//@@@@@ todo actionbaractivity
-public class VocabularyActivity extends Activity implements OnTouchListener {
+public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
 
 	private static final String TAG = "VocabularyActivity";
 
@@ -72,6 +71,11 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 	private static final int MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW = 9;
 	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
 	private static final int MSG_VOCABULARY_MAINBAR_VISIBILITY = 11;
+
+    // @@@@@
+    private static final int ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY = 1;
+    private static final int ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO = 2;
+    private static final int ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY = 3;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -205,12 +209,12 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     // @@@@@
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.jvm_show_all_vocabulary:
+		case R.id.av_search_memorize_vocabulary:
 			Intent intent = new Intent(this, JvSearchListActivity.class);
-			startActivityForResult(intent, R.id.jvm_show_all_vocabulary);
+			startActivityForResult(intent, ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY);
 			return true;
 
-		case R.id.jvm_all_rememorize:
+		case R.id.av_rememorize_all:
 			assert mProgressDialog == null;
 
 			// 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
@@ -234,8 +238,8 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 			return true;
 
-		case R.id.jvm_preferences:
-			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.jvm_preferences);
+		case R.id.av_open_settings_activity:
+			startActivityForResult(new Intent(this, SettingsActivity.class), ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY);
 			return true;
 		}
 
@@ -247,7 +251,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == R.id.jvm_show_all_vocabulary) {
+		if (requestCode == ACTIVITY_REQUESTCODE_SEARCH_MEMORIZE_VOCABULARY) {
 			assert mProgressDialog == null;
 
 			// 환경설정 값이 바뀌었는지 확인한다.
@@ -282,7 +286,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
-		} else if (requestCode == R.id.jvm_preferences) {
+		} else if (requestCode == ACTIVITY_REQUESTCODE_OPEN_SETTINGS_ACTIVITY) {
 			if (reloadPreference() == true) {
 				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
@@ -303,7 +307,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
 				refreshMemorizeVocabulary();
 			}
-		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
+		} else if (requestCode == ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO) {
 			DetailActivity.setVocabularySeekList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
@@ -424,6 +428,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
 
+        // @@@@@
 		String memorizeVocabularyInfo = mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo();
 		if (TextUtils.isEmpty(memorizeVocabularyInfo) == false)
             aq.id(R.id.av_memorize_vocabulary_info).text(memorizeVocabularyInfo);
@@ -528,7 +533,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
                     intent.putExtra("idx", idx);
-                    startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
+                    startActivityForResult(intent, ACTIVITY_REQUESTCODE_VOCABULARY_DETAIL_INFO);
                 }
                 break;
 

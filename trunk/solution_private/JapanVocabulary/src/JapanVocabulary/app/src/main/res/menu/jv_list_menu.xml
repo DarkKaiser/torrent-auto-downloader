@@ -42,7 +42,7 @@
 		</menu>
 	</item>
 	<item
-		android:id="@+id/jvm_preferences"
+		android:id="@+id/av_open_settings_activity"
 		android:icon="@android:drawable/ic_menu_preferences"
 		android:title="환경설정"/>
 </menu>
