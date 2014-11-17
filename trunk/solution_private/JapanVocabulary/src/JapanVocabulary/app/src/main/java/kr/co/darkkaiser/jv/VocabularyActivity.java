@@ -84,7 +84,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 	private ProgressDialog mProgressDialog = null;
 
 	// 암기 단어 관련 정보 객체
-	private MemorizeTargetVocabularyList mMemorizeList = new MemorizeTargetVocabularyList();
+	private MemorizeTargetVocabularyList mMemorizeTargetVocabularyList = new MemorizeTargetVocabularyList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser == true) {
-                    showMemorizeVocabulary(mMemorizeList.movePosition(progress));
+                    showMemorizeVocabulary(mMemorizeTargetVocabularyList.moveVocabularyPosition(progress));
                 }
             }
         });
@@ -312,7 +312,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
     private void refreshMemorizeVocabulary() {
         // @@@@@ 임시
-        Vocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+        Vocabulary vocabulary = mMemorizeTargetVocabularyList.getCurrentVocabulary();
         showMemorizeVocabulary(vocabulary);
     }
 
@@ -339,25 +339,25 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 			tswVocabularyTranslation.setVisibility(View.VISIBLE);
 		}
 
-		boolean result = mMemorizeList.reloadPreference(preferences, this);
+		boolean result = mMemorizeTargetVocabularyList.reloadPreference(this, preferences);
 		adjustVocabularySeekBar(preferences);
 		return result;
 	}
 
     private void showCurrentMemorizeVocabulary() {
-		Vocabulary vocabulary = mMemorizeList.getCurrentVocabulary();
+		Vocabulary vocabulary = mMemorizeTargetVocabularyList.getCurrentVocabulary();
 
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentVocabularyPosition());
 	}
 
     private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		Vocabulary vocabulary = mMemorizeList.previousVocabulary(sbErrMessage);
+		Vocabulary vocabulary = mMemorizeTargetVocabularyList.previousVocabulary(sbErrMessage);
 
 		if (vocabulary == null) {
 			if (sbErrMessage.length() > 0)
@@ -368,12 +368,12 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentVocabularyPosition());
 	}
 
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		Vocabulary vocabulary = mMemorizeList.nextVocabulary(sbErrMessage);
+		Vocabulary vocabulary = mMemorizeTargetVocabularyList.nextVocabulary(sbErrMessage);
 
 		if (vocabulary == null && sbErrMessage.length() > 0)
 			Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
@@ -382,7 +382,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentVocabularyPosition());
 	}
 
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
@@ -401,7 +401,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 			else
                 aq.id(R.id.av_memorize_completed_info).invisible();
 
-			switch (mMemorizeList.getMemorizeTargetItem()) {
+			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
 			case VOCABULARY:
 				tswVocabulary.setText(vocabulary.getVocabulary());
 				break;
@@ -424,7 +424,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
 
-		StringBuilder sb = mMemorizeList.getMemorizeVocabularyInfo();
+		StringBuilder sb = mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo();
 		if (sb != null)
             aq.id(R.id.av_memorize_vocabulary_info).text(sb.toString());
 		else
@@ -441,14 +441,14 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mMemorizeList.saveVocabularyPosition(preferences);
+		mMemorizeTargetVocabularyList.saveVocabularyPosition(preferences);
 
 		super.onBackPressed();
 	}
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMemorizeList.isValidPosition() == true &&
+        if (mMemorizeTargetVocabularyList.isValidVocabularyPosition() == true &&
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
@@ -486,7 +486,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
     	public void handleMessage(Message msg){
     		switch (msg.what) {
             case MSG_CUSTOM_EVT_LONG_PRESS:
-                if (mMemorizeList.isValidPosition() == true) {
+                if (mMemorizeTargetVocabularyList.isValidVocabularyPosition() == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -501,7 +501,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                                 Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                                 vibrator.vibrate(30);
 
-                                mMemorizeList.setMemorizeCompletedAtVocabularyPosition();
+                                mMemorizeTargetVocabularyList.setMemorizeCompletedAtVocabularyPosition();
                                 updateMemorizeVocabularyInfo();
                                 showNextMemorizeVocabulary();
 
@@ -518,10 +518,10 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
                 break;
 
             case MSG_CUSTOM_EVT_TAP:
-                long idx = mMemorizeList.getIdxAtVocabularyPosition();
+                long idx = mMemorizeTargetVocabularyList.getIdxAtVocabularyPosition();
                 if (idx != -1) {
                     if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
-                        DetailActivity.setVocabularySeekList(mMemorizeList);
+                        DetailActivity.setVocabularySeekList(mMemorizeTargetVocabularyList);
                     else
                         DetailActivity.setVocabularySeekList(null);
 
@@ -548,7 +548,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         Message msg = Message.obtain();
         msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
 
-        int memorizeVocabularyCount = mMemorizeList.getCount();
+        int memorizeVocabularyCount = mMemorizeTargetVocabularyList.getVocabularyCount();
 
         // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
 		if (memorizeVocabularyCount == 0 ||
@@ -901,7 +901,7 @@ public class VocabularyActivity extends Activity implements OnTouchListener {
         mVocabularyDataLoadHandler.sendMessage(msg);
 
         SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        mMemorizeList.loadData(preferences, launchApp);
+        mMemorizeTargetVocabularyList.loadData(preferences, launchApp);
 
         adjustVocabularySeekBar(preferences);
     }

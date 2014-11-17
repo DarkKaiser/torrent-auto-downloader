@@ -11,10 +11,10 @@
 	</string-array>
 
     <string-array name="memorize_order_method_item_entry">
-        <item>무작위 암기</item>
-        <item>한자 오름차순 암기</item>
-        <item>뜻 오름차순 암기</item>
-        <item>히라가나/가타카나 오름차순 암기</item>
+        <item>무작위순</item>
+        <item>한자순</item>
+        <item>뜻순</item>
+        <item>히라가나/가타카나순</item>
     </string-array>
     <string-array name="memorize_order_method_item_entry_values">
         <item>0</item>

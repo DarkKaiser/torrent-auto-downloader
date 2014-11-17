@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 
+// @@@@@
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
