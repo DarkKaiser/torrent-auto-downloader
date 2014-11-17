@@ -47,7 +47,8 @@ public class Constants {
     /*
      * 단어 DB 다운로드 URL @@@@@ 2개 이상으로 변경
      */
-    public static final String JV_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/jv2.db";
+    // public static final String JV_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/jv2.db";
+    public static final String JV_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/vocabulary_v3.db";
 
     /*
      * 단어DB 버전정보 체크 URL

@@ -47,6 +47,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
@@ -797,9 +798,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     boolean isValidationFile = true;
                     byte[] fileHashBytes = FileHash.getHash(f);
                     if (fileHashBytes != null) {
-                        // @@@@@ 임시 주석, 파일 해쉬값이 맞지 않음
-//                        if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
-//                            isValidationFile = false;
+                        if (newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == false)
+                            isValidationFile = false;
                     }
 
                     if (isValidationFile == true) {
