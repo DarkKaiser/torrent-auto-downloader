@@ -47,7 +47,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
@@ -77,9 +76,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
-    private static final int RQCODE_SEARCH_MEMORIZE_VOCABULARY = 1;
-    private static final int RQCODE_VOCABULARY_DETAIL_INFO = 2;
-    private static final int RQCODE_OPEN_SETTINGS_ACTIVITY = 3;
+    private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 1;
+    private static final int REQ_CODE_VOCABULARY_DETAIL_INFO = 2;
+    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
 
     // 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
@@ -210,7 +209,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		switch (item.getItemId()) {
 		case R.id.av_search_memorize_vocabulary:
 			Intent intent = new Intent(this, JvSearchListActivity.class);
-			startActivityForResult(intent, RQCODE_SEARCH_MEMORIZE_VOCABULARY);
+			startActivityForResult(intent, REQ_CODE_SEARCH_MEMORIZE_VOCABULARY);
 			return true;
 
 		case R.id.av_rememorize_all:
@@ -239,7 +238,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			return true;
 
 		case R.id.av_open_settings_activity:
-			startActivityForResult(new Intent(this, SettingsActivity.class), RQCODE_OPEN_SETTINGS_ACTIVITY);
+			startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
 			return true;
 		}
 
@@ -251,7 +250,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RQCODE_SEARCH_MEMORIZE_VOCABULARY) {
+		if (requestCode == REQ_CODE_SEARCH_MEMORIZE_VOCABULARY) {
 			assert mProgressDialog == null;
 
 			// 환경설정 값이 바뀌었는지 확인한다.
@@ -284,9 +283,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		   		.start();
 			} else {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
-				refreshMemorizeVocabulary();
+                showCurrentMemorizeVocabulary();
 			}
-		} else if (requestCode == RQCODE_OPEN_SETTINGS_ACTIVITY) {
+		} else if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
 			if (reloadPreference() == true) {
 				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
@@ -305,20 +304,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		   		.start();
 		   	} else {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
-				refreshMemorizeVocabulary();
+                showCurrentMemorizeVocabulary();
 			}
-		} else if (requestCode == RQCODE_VOCABULARY_DETAIL_INFO) {
+		} else if (requestCode == REQ_CODE_VOCABULARY_DETAIL_INFO) {
 			DetailActivity.setVocabularySeekList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
 		}
 	}
-
-    private void refreshMemorizeVocabulary() {
-        // @@@@@ 임시
-        Vocabulary vocabulary = mMemorizeTargetVocabularyList.getCurrentVocabulary();
-        showMemorizeVocabulary(vocabulary);
-    }
 
     private boolean reloadPreference() {
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -529,7 +522,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
                     intent.putExtra("idx", idx);
-                    startActivityForResult(intent, RQCODE_VOCABULARY_DETAIL_INFO);
+                    startActivityForResult(intent, REQ_CODE_VOCABULARY_DETAIL_INFO);
                 }
                 break;
 
