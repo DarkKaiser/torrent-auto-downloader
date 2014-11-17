@@ -21,14 +21,13 @@ import java.util.StringTokenizer;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
 
-// @@@@@
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
 
 	private static VocabularyManager mInstance = null;
 
-	private SQLiteDatabase mVocabularySqlite = null;
+	private SQLiteDatabase mVocabularyDatabase = null;
 
 	/*
 	 * 전체 단어리스트 테이블
@@ -61,14 +60,14 @@ public class VocabularyManager {
 		Cursor cursor = null;
 
 		try {
-			if (mVocabularySqlite != null) {
-				mVocabularySqlite.close();
-				mVocabularySqlite = null;
+			if (mVocabularyDatabase != null) {
+				mVocabularyDatabase.close();
+				mVocabularyDatabase = null;
 			}
 
 			// 일본어 단어를 읽어들인다.
-			mVocabularySqlite = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
-			if (mVocabularySqlite == null)
+			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			if (mVocabularyDatabase == null)
 				return false;
 
 			StringBuilder sbSQL = new StringBuilder();
@@ -79,7 +78,7 @@ public class VocabularyManager {
 			     .append("         REGISTRATION_DATE ")
 			     .append("    FROM TBL_VOCABULARY ");
 
-			cursor = mVocabularySqlite.rawQuery(sbSQL.toString(), null);
+			cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 			if (cursor.moveToFirst() == true) {
 				do
@@ -116,12 +115,12 @@ public class VocabularyManager {
 
 					if (token.countTokens() == 4) {
 						long idx = Long.parseLong(token.nextToken());
-						Vocabulary jpVocabulary = mVocabularyTable.get(idx);
+						Vocabulary vocabulary = mVocabularyTable.get(idx);
 
-						if (jpVocabulary != null) {
-							jpVocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
-							jpVocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
-							jpVocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false, false);
+						if (vocabulary != null) {
+							vocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
+							vocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
+							vocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false, false);
 						} else {
 							assert false;
 						}
@@ -162,14 +161,13 @@ public class VocabularyManager {
 //				}
 //			}
 //		}
-//
 	}
 
     // @@@@@
     public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<Vocabulary> jvList) {
 		assert context != null;
 
-		if (mVocabularySqlite != null) {
+		if (mVocabularyDatabase != null) {
 			Cursor cursor = null;
 
 			try {
@@ -257,7 +255,7 @@ public class VocabularyManager {
 				ArrayList<Long> idxList = new ArrayList<Long>();
 
 				if (hasSearchCondition == true) {
-					cursor = mVocabularySqlite.rawQuery(sbSQL.toString(), null);
+					cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 					if (cursor.moveToFirst() == true) {
 						do
@@ -441,7 +439,7 @@ public class VocabularyManager {
         voc = vocabulary.getVocabulary();
 
 		StringBuilder sbResult = new StringBuilder();
-		if (mVocabularySqlite != null) {
+		if (mVocabularyDatabase != null) {
 			for (int index = 0; index < voc.length(); ++index) {
 				Cursor cursor = null;
 
@@ -456,7 +454,7 @@ public class VocabularyManager {
 					     .append(" WHERE CHARACTER='").append(voc.charAt(index)).append("' ")
 					     .append(" LIMIT 1");
 
-					cursor = mVocabularySqlite.rawQuery(sbSQL.toString(), null);
+					cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 					if (cursor.moveToFirst() == true) {
 						if (sbResult.length() > 0)
@@ -499,7 +497,7 @@ public class VocabularyManager {
         long idx = vocabulary.getIdx();
 
 		StringBuilder sbResult = new StringBuilder();
-		if (mVocabularySqlite != null) {
+		if (mVocabularyDatabase != null) {
 			Cursor cursor = null;
 			
 			try {
@@ -509,7 +507,7 @@ public class VocabularyManager {
 				     .append("  FROM TBL_VOCABULARY_EXAMPLE ")
 				     .append(" WHERE V_IDX=").append(idx);
 
-				cursor = mVocabularySqlite.rawQuery(sbSQL.toString(), null);
+				cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 				if (cursor.moveToFirst() == true) {
 					do
