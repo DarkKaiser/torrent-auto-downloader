@@ -67,8 +67,6 @@ public class VocabularyManager {
 
 			// 일본어 단어를 읽어들인다.
 			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
-			if (mVocabularyDatabase == null)
-				return false;
 
 			StringBuilder sbSQL = new StringBuilder();
 			sbSQL.append("  SELECT IDX, ")
