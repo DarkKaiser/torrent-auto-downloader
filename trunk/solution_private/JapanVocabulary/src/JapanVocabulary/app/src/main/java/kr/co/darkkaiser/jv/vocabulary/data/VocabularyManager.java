@@ -67,7 +67,7 @@ public class VocabularyManager {
 			}
 
 			// 일본어 단어를 읽어들인다.
-			mVocabularySqlite = SQLiteDatabase.openDatabase(VocabularyDbHelper.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			mVocabularySqlite = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 			if (mVocabularySqlite == null)
 				return false;
 
@@ -106,7 +106,7 @@ public class VocabularyManager {
 
 		// 사용자 파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
-			File f = new File(VocabularyDbHelper.getInstance().getUserDbFilePath());
+			File f = new File(VocabularyDbManager.getInstance().getUserDbFilePath());
 			if (f.exists() == true) {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
@@ -143,7 +143,7 @@ public class VocabularyManager {
     // @@@@@
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(VocabularyDbHelper.getInstance().getVocabularyDbFilePath()) == false;
+		assert TextUtils.isEmpty(VocabularyDbManager.getInstance().getVocabularyDbFilePath()) == false;
 //@@@@@
 //		String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
 //		SharedPreferences preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -163,37 +163,6 @@ public class VocabularyManager {
 //			}
 //		}
 //
-//		if (JvPathManager.getInstance().readyDbStorage() == true) {
-//	        File outFile = new File(jvDbPath);
-//
-//	        InputStream is = null;
-//	        OutputStream os = null;
-//
-//	        try {
-//	            outFile.createNewFile();
-//	            os = new FileOutputStream(outFile);
-//	            is = context.getAssets().open(Constants.JV_VOCABULARY_DB);
-//
-//	            byte[] buffer = new byte[is.available()];
-//
-//	            is.read(buffer);
-//	            os.write(buffer);
-//
-//				preferences.edit().putString(Constants.SP_DB_VERSION, Constants.JV_DB_VERSION_FROM_ASSETS).commit();
-//	        } catch (Exception e) {
-//	            e.printStackTrace();
-//	        } finally {
-//	            try {
-//	            	if (is != null)
-//	            		is.close();
-//
-//	            	if (os != null)
-//	            		os.close();
-//	            } catch (IOException e) {
-//	                e.printStackTrace();
-//	            }
-//	        }
-//	    }
 	}
 
     // @@@@@
@@ -415,7 +384,7 @@ public class VocabularyManager {
 		}
 
 		try {
-			String jvUserVocabularyInfoFilePath = VocabularyDbHelper.getInstance().getUserDbFilePath();
+			String jvUserVocabularyInfoFilePath = VocabularyDbManager.getInstance().getUserDbFilePath();
 
 			File fileOrg = new File(jvUserVocabularyInfoFilePath);
 			File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");

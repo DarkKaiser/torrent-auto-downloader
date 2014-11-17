@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.data;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -19,54 +18,59 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
-public class VocabularyDbHelper {
+public class VocabularyDbManager {
 
-	private static final String TAG = "VocabularyDbHelper";
+	private static final String TAG = "VocabularyDbManager";
 
-    private static VocabularyDbHelper mInstance;
+    private static VocabularyDbManager mInstance;
 
     private String mUserDbFilePath = null;
     private String mVocabularyDbFilePath = null;
 
     static {
-        mInstance = new VocabularyDbHelper();
+        mInstance = new VocabularyDbManager();
     }
 
-	private VocabularyDbHelper() {
+	private VocabularyDbManager() {
 
 	}
 
-	public static VocabularyDbHelper getInstance() {
+	public static VocabularyDbManager getInstance() {
 		return mInstance;
 	}
 
-	public boolean init(Context context) {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public boolean init(Context context) {
 		assert context != null;
 
-        String userDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
-        String vocabularyDbFilePath = context.getDatabasePath(Constants.VOCABULARY_DB_FILENAME_V3).getAbsolutePath();
+        String v3UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
+        String v3VocabularyDbFilePath = context.getDatabasePath(Constants.VOCABULARY_DB_FILENAME_V3).getAbsolutePath();
 
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
-		String dbPath = vocabularyDbFilePath.substring(0, vocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
-		File f = new File(dbPath);
-		if (f.exists() == false) {
-			if (f.mkdirs() == false) {
+		String dbPath = v3VocabularyDbFilePath.substring(0, v3VocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
+		File file1 = new File(dbPath);
+		if (file1.exists() == false) {
+			if (file1.mkdirs() == false) {
                 Log.d(TAG, String.format("패키지DB 경로 생성이 실패하였습니다(%s).", dbPath));
                 return false;
 			}
 		}
 
-        // @@@@@ 이전 DB 마이그레이션
+        // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
+        String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
+        file1 = new File(v2UserDbFilePath);
+        if (file1.exists() == true) {
+            File file2 = new File(v3UserDbFilePath);
+            if (file2.exists() == false) file1.renameTo(new File(v3UserDbFilePath));
+            else file1.delete();
+        }
 
-        mUserDbFilePath = userDbFilePath;
-        mVocabularyDbFilePath = vocabularyDbFilePath;
+        // 단어DB 파일 정보를 저장한다.
+        mUserDbFilePath = v3UserDbFilePath;
+        mVocabularyDbFilePath = v3VocabularyDbFilePath;
 
 		return true;
 	}
-
-    public boolean readyDbStorage() {
-        return !(TextUtils.isEmpty(mVocabularyDbFilePath) == true || TextUtils.isEmpty(mUserDbFilePath) == true);
-    }
 
     public String getUserDbFilePath() { return mUserDbFilePath; }
 

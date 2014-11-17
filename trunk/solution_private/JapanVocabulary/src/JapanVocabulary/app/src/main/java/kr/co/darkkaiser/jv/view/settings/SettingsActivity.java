@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
 
 // TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
@@ -77,7 +77,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				String latestVocabularyDbVersion = VocabularyDbHelper.getInstance().getLatestVocabularyDbVersion();
+				String latestVocabularyDbVersion = VocabularyDbManager.getInstance().getLatestVocabularyDbVersion();
 
 				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false)
                     return latestVocabularyDbVersion;

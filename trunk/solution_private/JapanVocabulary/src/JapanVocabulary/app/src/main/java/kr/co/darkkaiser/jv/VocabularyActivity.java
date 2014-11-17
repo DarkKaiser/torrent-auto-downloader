@@ -52,7 +52,7 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbHelper;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
@@ -150,9 +150,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         // 환경설정 정보를 로드한다.
         reloadPreference();
 
-        // @@@@@
-        // 사용하는 단어DB의 경로 정보를 초기화한다.
-        if (VocabularyDbHelper.getInstance().init(this) == false) {
+        // 단어DB 관리자 객체를 초기화한다.
+        if (VocabularyDbManager.getInstance().init(this) == false) {
         	new AlertDialog.Builder(this)
     			.setTitle(getString(R.string.error))
     			.setMessage(getString(R.string.cannot_access_db_storage))
@@ -655,7 +654,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         String localDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
 
         try {
-            ArrayList<String> vocaDbInfo = VocabularyDbHelper.getInstance().getLatestVocabularyDbInfoList();
+            ArrayList<String> vocaDbInfo = VocabularyDbManager.getInstance().getLatestVocabularyDbInfoList();
             assert vocaDbInfo.size() == 2;
 
             String newVocabularyDbVersion = "";
@@ -727,7 +726,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         Message msg = null;
         boolean updateSucceeded = false;
-        String jvDbPath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
+        String jvDbPath = VocabularyDbManager.getInstance().getVocabularyDbFilePath();
 
         // 단어 DB 파일을 내려받는다.
         try {
