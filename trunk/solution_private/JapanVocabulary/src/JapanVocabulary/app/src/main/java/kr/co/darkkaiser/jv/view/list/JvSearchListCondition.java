@@ -126,29 +126,29 @@ public class JvSearchListCondition {
 			assert false;
 	}
 
-	public void commit() {
-		Editor editor = mPreferences.edit();
-		assert editor != null;
+    public void commit() {
+        Editor editor = mPreferences.edit();
+        assert editor != null;
 
-		editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);		
-		editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
-		editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
-		editor.putBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, mScAllRegDateSearch);
-		editor.putString(JV_SPN_FIRST_SEARCH_DATE_SC, mScFirstSearchDate);
-		editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
+        editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);
+        editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
+        editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
+        editor.putBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, mScAllRegDateSearch);
+        editor.putString(JV_SPN_FIRST_SEARCH_DATE_SC, mScFirstSearchDate);
+        editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
 
-		// JLPT 각 급수별 검색 여부 플래그를 저장한다.
-		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
-		CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+        // JLPT 각 급수별 검색 여부 플래그를 저장한다.
+        CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
+        CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
 
-		assert jlptLevelList.length == jlptLevelListValues.length;
-		assert jlptLevelList.length == mScCheckedJLPTLevelArray.length;
+        assert jlptLevelList.length == jlptLevelListValues.length;
+        assert jlptLevelList.length == mScCheckedJLPTLevelArray.length;
 
-		for (int index = 0; index < jlptLevelList.length; ++index) {
-			editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
-		}
+        for (int index = 0; index < jlptLevelList.length; ++index) {
+            editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
+        }
 
-		editor.commit();
-	}
+        editor.commit();
+    }
 
 }

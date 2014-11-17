@@ -14,7 +14,7 @@ public enum JvSearchListSortMethod {
 	
 	// 단어 등록일(올림차순)
 	REGISTRATION_DATE_UP,
-	
+
 	// 단어 등록일(내림차순)
 	REGISTRATION_DATE_DOWN
 
