@@ -715,6 +715,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     }
 
     // @@@@@
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
@@ -900,14 +901,15 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         adjustVocabularySeekBar(preferences);
     }
 
-    // @@@@@
     private Handler mVocabularyDataLoadHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
+                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.setMessage((String)msg.obj);
             } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
+                // @@@@@
                 updateMemorizeVocabularyInfo();
                 showNextMemorizeVocabulary();
 
@@ -921,6 +923,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 msg2.what = MSG_VOCABULARY_MAINBAR_VISIBILITY;
                 mVocabularyDataLoadHandler.sendMessage(msg2);
             } else if (msg.what == MSG_VOCABULARY_MAINBAR_VISIBILITY) {
+                // @@@@@
                 // 단어 정보 헤더를 화면에 보이도록 한다.
                 RelativeLayout layout = (RelativeLayout)findViewById(R.id.av_memorize_info_header);
                 // @@@@@ 애니메이션 효과 없애기??
@@ -931,6 +934,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             } else if (msg.what == MSG_TOAST_SHOW) {
                 Toast.makeText(VocabularyActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
             } else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
+                // @@@@@
                 new AlertDialog.Builder(VocabularyActivity.this)
                         .setTitle("알림")
                         .setMessage("Wi-Fi/3G등의 데이터 네트워크 상태가 불안정하여 단어 DB의 업데이트 여부를 확인할 수 없습니다.")
@@ -942,6 +946,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         })
                         .show();
             } else if (msg.what == MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW) {
+                // @@@@@
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate(R.layout.jv_update_info_view, null);
 
@@ -960,6 +965,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             .show();
                 }
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_START) {
+                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
@@ -973,16 +979,19 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 mProgressDialog.setProgress(0);
                 mProgressDialog.show();
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOADING) {
+                // @@@@@
                 if (mProgressDialog != null) {
                     int recvVocabularyDbSize = msg.getData().getInt("RECV_VOCABULARY_DB_SIZE");
                     mProgressDialog.setProgress(recvVocabularyDbSize);
                 }
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_END) {
+                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
                 mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION) {
+                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
