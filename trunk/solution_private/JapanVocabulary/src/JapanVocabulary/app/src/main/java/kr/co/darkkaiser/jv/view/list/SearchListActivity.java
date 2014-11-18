@@ -252,25 +252,25 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.jvlm_sort_vocabulary:
+		case R.id.avsl_sort_vocabulary_hanja:
 			startSortList(SearchListSortMethod.VOCABULARY);
 			return true;
-		case R.id.jvlm_sort_vocabulary_gana:
+		case R.id.avsl_sort_vocabulary_gana:
 			startSortList(SearchListSortMethod.VOCABULARY_GANA);
 			return true;
-		case R.id.jvlm_sort_vocabulary_translation:
+		case R.id.avsl_sort_vocabulary_translation:
 			startSortList(SearchListSortMethod.VOCABULARY_TRANSLATION);
 			return true;
-		case R.id.jvlm_all_rememorize: 				// 검색된 전체 단어 재암기
-		case R.id.jvlm_all_memorize_completed: 		// 검색된 전체 단어 암기 완료
-		case R.id.jvlm_all_memorize_target: 		// 검색된 전체 단어 암기 대상 만들기
-		case R.id.jvlm_all_memorize_target_cancel: 	// 검색된 전체 단어 암기 대상 해제
+		case R.id.avsl_rememorize_all: 				// 검색된 전체 단어 재암기
+		case R.id.avsl_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
+		case R.id.avsl_make_memorize_target_all: 		// 검색된 전체 단어 암기 대상 만들기
+		case R.id.avsl_memorize_target_cancel_all: 	// 검색된 전체 단어 암기 대상 해제
 			// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 값을 설정한다.
 			mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
 			setResult(mActivityResultCode);
 
 			final int itemId = item.getItemId();
-			if (item.getItemId() == R.id.jvlm_all_memorize_target) {
+			if (item.getItemId() == R.id.avsl_make_memorize_target_all) {
 				new AlertDialog.Builder(this)
 					.setTitle("암기 대상 상태로 만들기")
 					.setMessage("검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기 대상 상태로, 검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기 대상 상태로 만듭니다.")
@@ -330,19 +330,19 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 				ArrayList<Long> idxList = new ArrayList<Long>();
 
 				synchronized (mJvListData) {
-					if (mMenuItemId == R.id.jvlm_all_rememorize) { 						// 검색된 전체 단어 재암기
+					if (mMenuItemId == R.id.avsl_rememorize_all) { 						// 검색된 전체 단어 재암기
 						for (int index = 0; index < mJvListData.size(); ++index) {
 							jpVocabulary = mJvListData.get(index);
 							if (jpVocabulary.isMemorizeTarget() == false || jpVocabulary.isMemorizeCompleted() == true)
 								idxList.add(jpVocabulary.getIdx());
 						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_completed) { 		// 검색된 전체 단어 암기 완료
+					} else if (mMenuItemId == R.id.avsl_memorize_completed_all) { 		// 검색된 전체 단어 암기 완료
 						for (int index = 0; index < mJvListData.size(); ++index) {
 							jpVocabulary = mJvListData.get(index);
 							if (jpVocabulary.isMemorizeCompleted() == false)
 								idxList.add(jpVocabulary.getIdx());
 						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_target) { 			// 검색된 전체 단어 암기 대상 만들기
+					} else if (mMenuItemId == R.id.avsl_make_memorize_target_all) { 			// 검색된 전체 단어 암기 대상 만들기
 						if (mNotSearchVocabularyTargetCancel == true) {
 							for (int index = 0; index < mJvListData.size(); ++index) {
 								idxList.add(mJvListData.get(index).getIdx());
@@ -354,7 +354,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 									idxList.add(jpVocabulary.getIdx());
 							}							
 						}
-					} else if (mMenuItemId == R.id.jvlm_all_memorize_target_cancel) { 	// 검색된 전체 단어 암기 대상 해제
+					} else if (mMenuItemId == R.id.avsl_memorize_target_cancel_all) { 	// 검색된 전체 단어 암기 대상 해제
 						for (int index = 0; index < mJvListData.size(); ++index) {
 							jpVocabulary = mJvListData.get(index);
 							if (jpVocabulary.isMemorizeTarget() == true)

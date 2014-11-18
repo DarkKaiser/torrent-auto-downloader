@@ -405,7 +405,7 @@ public class VocabularyManager {
 
     // @@@@@
     public synchronized boolean updateMemorizeField(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
-		if (menuItemId == R.id.jvlm_all_rememorize) {							// 검색된 전체 단어 재암기
+		if (menuItemId == R.id.avsl_rememorize_all) {							// 검색된 전체 단어 재암기
 			Vocabulary jv = null;
 			for (int index = 0; index < idxList.size(); ++index) {
 				jv = mVocabularyTable.get(idxList.get(index));
@@ -413,10 +413,10 @@ public class VocabularyManager {
 				jv.setMemorizeTarget(true, false);
 				jv.setMemorizeCompleted(false, false, false);
 			}
-		} else if (menuItemId == R.id.jvlm_all_memorize_completed) {			// 검색된 전체 단어 암기 완료
+		} else if (menuItemId == R.id.avsl_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
 			for (int index = 0; index < idxList.size(); ++index)
 				mVocabularyTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
-		} else if (menuItemId == R.id.jvlm_all_memorize_target) {				// 검색된 전체 단어 암기 대상 만들기
+		} else if (menuItemId == R.id.avsl_make_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
 			if (notSearchVocabularyTargetCancel == true) {
 				for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
 					Vocabulary jpVocabulary = e.nextElement();
@@ -426,7 +426,7 @@ public class VocabularyManager {
 
 			for (int index = 0; index < idxList.size(); ++index)
 				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(true, false);
-		} else if (menuItemId == R.id.jvlm_all_memorize_target_cancel) {		// 검색된 전체 단어 암기 대상 해제
+		} else if (menuItemId == R.id.avsl_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
 			for (int index = 0; index < idxList.size(); ++index)
 				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(false, false);
 		}

@@ -29,6 +29,10 @@
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 
+    <string name="avsl_sort">정렬</string>
+    <string name="avsl_sort_vocabulary_hanja">한자</string>
+    <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
+    <string name="avsl_sort_vocabulary_translation">뜻</string>
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
 
     <string name="avd_vocabulary_hanja">한자</string>

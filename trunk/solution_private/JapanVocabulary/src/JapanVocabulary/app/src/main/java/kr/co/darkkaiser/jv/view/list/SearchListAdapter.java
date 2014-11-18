@@ -22,15 +22,14 @@ public class SearchListAdapter extends BaseAdapter {
 	private int mLayout;
 	private Context mContext = null;
 	private ArrayList<Vocabulary> mVocabularyList = null;
-	private Handler mJvListDataChangedHandler = null;
+	private Handler mVocabularyListDataChangedHandler = null;
 	private LayoutInflater mLayoutInflater = null;
 
-    // @@@@@
-	public SearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<Vocabulary> jvList) {
+	public SearchListAdapter(Context context, int layout, Handler vocabularyListDataChangedHandler, ArrayList<Vocabulary> vocabularyList) {
 		mLayout = layout;
-		mVocabularyList = jvList;
-		mContext = context;
-		mJvListDataChangedHandler = jvListDataChangedHandler;
+        mContext = context;
+        mVocabularyList = vocabularyList;
+		mVocabularyListDataChangedHandler = vocabularyListDataChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -55,7 +54,8 @@ public class SearchListAdapter extends BaseAdapter {
 	@Override
     // @@@@@
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) convertView = mLayoutInflater.inflate(mLayout, parent, false);
+		if (convertView == null)
+            convertView = mLayoutInflater.inflate(mLayout, parent, false);
 
         Vocabulary vocabulary = mVocabularyList.get(position);
         if (vocabulary == null) {
@@ -99,7 +99,7 @@ public class SearchListAdapter extends BaseAdapter {
 					mVocabularyList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+					mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
 				}
 			}
 		});
@@ -115,7 +115,7 @@ public class SearchListAdapter extends BaseAdapter {
 					mVocabularyList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+					mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
 				}
 			}
 		});

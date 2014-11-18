@@ -2,42 +2,51 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
-    <!-- @@@@@ -->
-	<item 
-		android:title="정렬"
-		android:icon="@android:drawable/ic_menu_sort_alphabetically">
+	<item
+		android:title="@string/avsl_sort"
+		android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:orderInCategory="0"
+        myapp:showAsAction="ifRoom"
+        >
 		<menu>
 			<item 
-				android:id="@+id/jvlm_sort_vocabulary"
-				android:title="한자"/>
+				android:id="@+id/avsl_sort_vocabulary_hanja"
+				android:title="@string/avsl_sort_vocabulary_hanja"
+                />
 			<item 
-				android:id="@+id/jvlm_sort_vocabulary_translation"
-				android:title="한자 뜻"/>
+				android:id="@+id/avsl_sort_vocabulary_translation"
+				android:title="@string/avsl_sort_vocabulary_translation"
+                />
 			<item 
-				android:id="@+id/jvlm_sort_vocabulary_gana"
-				android:title="히라가나/가타카나"/>
+				android:id="@+id/avsl_sort_vocabulary_gana"
+				android:title="@string/avsl_sort_vocabulary_gana"
+                />
 		</menu>
 	</item>
-	<item 
-		android:title="검색된 전체 단어"
-		android:titleCondensed="암기 설정"
+    <!-- @@@@@ -->
+	<item
+		android:title="검색된 전체 단어 암기 설정"
 		android:icon="@android:drawable/ic_menu_manage"
         android:orderInCategory="1"
         myapp:showAsAction="never"
         >
 		<menu>
 			<item 
-				android:id="@+id/jvlm_all_rememorize"
-				android:title="재암기하기"/>
+				android:id="@+id/avsl_rememorize_all"
+				android:title="재암기하기"
+                />
 			<item 
-				android:id="@+id/jvlm_all_memorize_completed"
-				android:title="암기 완료 상태로 만들기"/>
+				android:id="@+id/avsl_memorize_completed_all"
+				android:title="암기 완료 상태 만들기"
+                />
 			<item 
-				android:id="@+id/jvlm_all_memorize_target"
-				android:title="암기 대상 상태로 만들기..."/>
+				android:id="@+id/avsl_make_memorize_target_all"
+				android:title="암기 대상 상태 만들기..."
+                />
 			<item 
-				android:id="@+id/jvlm_all_memorize_target_cancel"
-				android:title="암기 대상 상태를 해제하기"/>
+				android:id="@+id/avsl_memorize_target_cancel_all"
+				android:title="암기 대상 상태 해제하기"
+                />
 		</menu>
 	</item>
 	<item

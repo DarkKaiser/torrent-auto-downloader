@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.jv.view.list;
 
-//@@@@@ todo
 public enum SearchListSortMethod {
 
 	// 한자
