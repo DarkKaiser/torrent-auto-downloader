@@ -82,8 +82,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int REQ_CODE_VOCABULARY_DETAIL_INFO = 2;
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
 
-    // @@@@@ 단어DB를 업데이트 완료한 이후에 업데이트 정보를 보여주기 위해 사용되는 키
-    private static final String KEY_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO_KEY";
+    private static final String EXTRA_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO";
 
     // 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
@@ -875,7 +874,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
                 if (prevMaxIdx != -1) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(KEY_VOCABULARY_UPDATE_INFO, sb.toString());
+                    bundle.putString(EXTRA_VOCABULARY_UPDATE_INFO, sb.toString());
 
                     msg = Message.obtain();
                     msg.what = MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG;
@@ -955,7 +954,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 if (v != null) {
                     TextView tvVocabularyUpdateInfo = (TextView)v.findViewById(R.id.vvui_vocabulary_update_info);
-                    tvVocabularyUpdateInfo.setText(msg.getData().getString(KEY_VOCABULARY_UPDATE_INFO));
+                    tvVocabularyUpdateInfo.setText(msg.getData().getString(EXTRA_VOCABULARY_UPDATE_INFO));
 
                     new AlertDialog.Builder(VocabularyActivity.this)
                             .setTitle(getString(R.string.vvui_dialog_title))

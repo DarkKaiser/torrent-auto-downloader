@@ -9,18 +9,22 @@
         myapp:showAsAction="ifRoom"
         >
 		<menu>
-			<item 
-				android:id="@+id/avsl_sort_vocabulary_hanja"
-				android:title="@string/avsl_sort_vocabulary_hanja"
-                />
-			<item 
-				android:id="@+id/avsl_sort_vocabulary_translation"
-				android:title="@string/avsl_sort_vocabulary_translation"
-                />
-			<item 
-				android:id="@+id/avsl_sort_vocabulary_gana"
-				android:title="@string/avsl_sort_vocabulary_gana"
-                />
+            <group
+                android:checkableBehavior="single"
+                >
+                <item
+                    android:id="@+id/avsl_sort_vocabulary_hanja"
+                    android:title="@string/avsl_sort_vocabulary_hanja"
+                    />
+                <item
+                    android:id="@+id/avsl_sort_vocabulary_translation"
+                    android:title="@string/avsl_sort_vocabulary_translation"
+                    />
+                <item
+                    android:id="@+id/avsl_sort_vocabulary_gana"
+                    android:title="@string/avsl_sort_vocabulary_gana"
+                    />
+            </group>
 		</menu>
 	</item>
 	<item

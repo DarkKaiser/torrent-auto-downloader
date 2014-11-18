@@ -246,6 +246,9 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_vocabulary_search_list, menu);
+
+        // @@@@@ 정렬메뉴 선택항목 선택된 상태로 나타나도록 하기
+
 		return true;
 	}
 

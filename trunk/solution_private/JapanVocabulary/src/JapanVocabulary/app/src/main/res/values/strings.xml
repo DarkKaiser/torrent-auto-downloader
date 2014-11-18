@@ -25,19 +25,19 @@
     <string name="av_memorize_completed_ad_message">단어를 암기하셨습니까?</string>
 
     <string name="av_search_memorize_vocabulary">암기단어 검색</string>
-    <string name="av_rememorize_all">암기대상 단어 재암기</string>
+    <string name="av_rememorize_all">암기단어 재암기</string>
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 
-    <string name="avsl_sort">정렬</string>
+    <string name="avsl_sort">정렬…</string>
     <string name="avsl_sort_vocabulary_hanja">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
     <string name="avsl_sort_vocabulary_translation">뜻</string>
-    <string name="avsl_search_result_settings">검색된 전체 단어 암기 설정…</string>
-    <string name="avsl_search_result_vocabulary_rememorize_all">검색단어 모두 재암기하기</string>
-    <string name="avsl_search_result_vocabulary_memorize_completed_all">검색단어 모두 암기 완료 상태 만들기</string>
-    <string name="avsl_search_result_vocabulary_memorize_target_all">검색단어 모두 암기 대상 상태 만들기…</string>
-    <string name="avsl_search_result_vocabulary_memorize_target_cancel_all">검색단어 모두 암기 대상 상태 해제하기</string>
+    <string name="avsl_search_result_settings">암기상태 변경…</string>
+    <string name="avsl_search_result_vocabulary_rememorize_all">검색된 단어 재암기</string>
+    <string name="avsl_search_result_vocabulary_memorize_completed_all">검색된 단어 암기완료</string>
+    <string name="avsl_search_result_vocabulary_memorize_target_all">검색된 단어 암기대상 설정…</string>
+    <string name="avsl_search_result_vocabulary_memorize_target_cancel_all">검색된 단어 암기대상 해제</string>
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
 
     <string name="avd_vocabulary_hanja">한자</string>
