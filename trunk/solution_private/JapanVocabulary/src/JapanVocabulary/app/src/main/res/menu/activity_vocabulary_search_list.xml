@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto">
+
     <!-- @@@@@ -->
 	<item 
 		android:title="정렬"
@@ -14,18 +16,15 @@
 			<item 
 				android:id="@+id/jvlm_sort_vocabulary_gana"
 				android:title="히라가나/가타카나"/>
-			<item 
-				android:id="@+id/jvlm_sort_registration_date_up"
-				android:title="단어 등록일(올림차순)"/>
-			<item 
-				android:id="@+id/jvlm_sort_registration_date_down"
-				android:title="단어 등록일(내림차순)"/>
 		</menu>
 	</item>
 	<item 
 		android:title="검색된 전체 단어"
 		android:titleCondensed="암기 설정"
-		android:icon="@android:drawable/ic_menu_manage">
+		android:icon="@android:drawable/ic_menu_manage"
+        android:orderInCategory="1"
+        myapp:showAsAction="never"
+        >
 		<menu>
 			<item 
 				android:id="@+id/jvlm_all_rememorize"
@@ -42,7 +41,11 @@
 		</menu>
 	</item>
 	<item
-		android:id="@+id/av_open_settings_activity"
+		android:id="@+id/avsl_open_settings_activity"
 		android:icon="@android:drawable/ic_menu_preferences"
-		android:title="환경설정"/>
+		android:title="@string/activity_environment_setting_label"
+        android:orderInCategory="2"
+        myapp:showAsAction="never"
+        />
+
 </menu>

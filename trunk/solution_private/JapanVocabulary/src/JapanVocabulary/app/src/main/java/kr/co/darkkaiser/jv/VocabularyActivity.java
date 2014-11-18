@@ -28,6 +28,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
@@ -50,7 +51,7 @@ import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.ByteUtils;
 import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
-import kr.co.darkkaiser.jv.view.list.JvSearchListActivity;
+import kr.co.darkkaiser.jv.view.list.SearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
@@ -59,7 +60,7 @@ import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList
 
 public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
 
-	private static final String TAG = "VocabularyActivity";
+    private static final String TAG = "VocabularyActivity";
 
 	private static final int MSG_TOAST_SHOW = 1;
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
@@ -69,7 +70,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
-	private static final int MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW = 9;
+	private static final int MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG = 9;
 	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
 	private static final int MSG_VOCABULARY_MAINBAR_VISIBILITY = 11;
 
@@ -81,10 +82,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int REQ_CODE_VOCABULARY_DETAIL_INFO = 2;
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
 
+    // @@@@@ 단어DB를 업데이트 완료한 이후에 업데이트 정보를 보여주기 위해 사용되는 키
+    private static final String KEY_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO_KEY";
+
     // 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
-	// 긴 작업동안 화면에 작업중임을 보여 줄 대화상자
+    // 긴 작업동안 화면에 작업중임을 보여 줄 대화상자
 	private ProgressDialog mProgressDialog = null;
 
 	// 암기 단어 관련 정보 객체
@@ -209,7 +213,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.av_search_memorize_vocabulary:
-			Intent intent = new Intent(this, JvSearchListActivity.class);
+			Intent intent = new Intent(this, SearchListActivity.class);
 			startActivityForResult(intent, REQ_CODE_SEARCH_MEMORIZE_VOCABULARY);
 			return true;
 
@@ -261,9 +265,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			boolean mustReloadJvData = false;
 
 			// 환경설정의 값이 변경된 경우는 해당 값을 다시 읽어들인다.
-			if ((resultCode & JvSearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == JvSearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED)
+			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED)
 				mustReloadJvData = reloadPreference();
-			if ((resultCode & JvSearchListActivity.ACTIVITY_RESULT_DATA_CHANGED) == JvSearchListActivity.ACTIVITY_RESULT_DATA_CHANGED)
+			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_DATA_CHANGED) == SearchListActivity.ACTIVITY_RESULT_DATA_CHANGED)
 				mustReloadJvData = true;
 
 			if (mustReloadJvData == true) {
@@ -871,10 +875,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
                 if (prevMaxIdx != -1) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("JV_UPDATE_INFO", sb.toString());
+                    bundle.putString(KEY_VOCABULARY_UPDATE_INFO, sb.toString());
 
                     msg = Message.obtain();
-                    msg.what = MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW;
+                    msg.what = MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG;
                     msg.setData(bundle);
 
                     mVocabularyDataLoadHandler.sendMessage(msg);
@@ -945,18 +949,17 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             }
                         })
                         .show();
-            } else if (msg.what == MSG_VOCABULARY_DATA_UPDATE_INFO_DIALOG_SHOW) {
-                // @@@@@
+            } else if (msg.what == MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG) {
                 LayoutInflater inflater = getLayoutInflater();
-                View v = inflater.inflate(R.layout.jv_update_info_view, null);
+                View v = inflater.inflate(R.layout.view_vocabulary_update_info, new LinearLayout(VocabularyActivity.this), false);
 
                 if (v != null) {
-                    TextView jpVocabularyUpdateInfo = (TextView)v.findViewById(R.id.jv_update_info);
-                    jpVocabularyUpdateInfo.setText(msg.getData().getString("JV_UPDATE_INFO"));
+                    TextView tvVocabularyUpdateInfo = (TextView)v.findViewById(R.id.vvui_vocabulary_update_info);
+                    tvVocabularyUpdateInfo.setText(msg.getData().getString(KEY_VOCABULARY_UPDATE_INFO));
 
                     new AlertDialog.Builder(VocabularyActivity.this)
-                            .setTitle("단어 업데이트 정보")
-                            .setPositiveButton("닫기", new DialogInterface.OnClickListener() {
+                            .setTitle(getString(R.string.vvui_dialog_title))
+                            .setPositiveButton(getString(R.string.close), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                 }

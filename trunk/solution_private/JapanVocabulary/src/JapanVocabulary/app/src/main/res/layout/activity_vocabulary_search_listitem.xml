@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
    	android:layout_width="fill_parent"
    	android:layout_height="wrap_content"
 	>
@@ -35,19 +36,9 @@
 				android:singleLine="true"
 				android:textColor="#ffffff"
 				android:textSize="15dp"
-				/>
+                tools:ignore="SpUsage"
+                />
 			<TextView
-				android:id="@+id/registration_date"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:gravity="right|top"
-				android:typeface="serif"
-				android:singleLine="true"
-				android:textSize="12dp"
-				android:textColor="#777777"
-				/>
-			<TextView 
 				android:id="@+id/avd_vocabulary_gana"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
@@ -57,6 +48,7 @@
 				android:singleLine="true"
 				android:textColor="#ffffff"
 				android:textSize="15dp"
+                tools:ignore="SpUsage"
 				/>
 			<TextView 
 				android:id="@+id/avd_vocabulary_translation"
@@ -68,6 +60,7 @@
 				android:singleLine="true"
 				android:textColor="#ffffff"
 				android:textSize="15dp"
+                tools:ignore="SpUsage"
 				/>
 			<CheckBox
 				android:id="@+id/avd_vocabulary_memorize_completed"
@@ -85,6 +78,7 @@
 	    	    android:focusable="false"
 	        	android:button="@drawable/custom_checkbox"
 	        	android:paddingLeft="25dp"
+                tools:ignore="SpUsage"
 	        	/>
 			<CheckBox
 				android:id="@+id/memorize_target"
@@ -103,6 +97,7 @@
 	        	android:button="@drawable/custom_checkbox"
 	        	android:paddingLeft="25dp"
 	        	android:paddingRight="10dp"
+                tools:ignore="SpUsage"
 	        	/>
 		</RelativeLayout>
 	</LinearLayout>

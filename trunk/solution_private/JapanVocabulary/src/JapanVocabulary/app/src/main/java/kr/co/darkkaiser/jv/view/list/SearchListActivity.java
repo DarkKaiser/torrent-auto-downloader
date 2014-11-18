@@ -62,7 +62,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 //@@@@@ todo
-public class JvSearchListActivity extends ListActivity implements OnClickListener, OnScrollListener {
+public class SearchListActivity extends ListActivity implements OnClickListener, OnScrollListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
@@ -78,12 +78,12 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	private SharedPreferences mPreferences = null;
 	private ProgressDialog mProgressDialog = null;
 
-	private JvSearchListAdapter mJvListAdapter = null;
+	private SearchListAdapter mJvListAdapter = null;
 	private ArrayList<Vocabulary> mJvListData = null;
-	private JvSearchListSortMethod mJvListSortMethod = JvSearchListSortMethod.REGISTRATION_DATE_DOWN;
+	private SearchListSortMethod mJvListSortMethod = SearchListSortMethod.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;
-	private JvSearchListCondition mJvListSearchCondition = null;
+	private SearchListCondition mJvListSearchCondition = null;
 
 	private ScrollBarThumb mScrollThumb = null;
 	private boolean mUseModeScrollBarThumb = false;
@@ -95,7 +95,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.jv_list);
+		setContentView(R.layout.activity_vocabulary_search_list);
 
 		mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		assert mWindowManager != null;
@@ -103,17 +103,14 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		// 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
-		// 타이틀을 설정한다.
-		setTitle(String.format("%s - 단어검색", getResources().getString(R.string.app_name)));
-
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSortMethod = JvSearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, JvSearchListSortMethod.REGISTRATION_DATE_DOWN.name()));
-		mJvListSearchCondition = new JvSearchListCondition(this, mPreferences);
+		mJvListSortMethod = SearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSortMethod.VOCABULARY.name()));
+		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
 		mJvListData = new ArrayList<Vocabulary>();
-		mJvListAdapter = new JvSearchListAdapter(this, R.layout.jv_listitem, mJvListDataChangedHandler, mJvListData);
+		mJvListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mJvListDataChangedHandler, mJvListData);
 		setListAdapter(mJvListAdapter);
 		
 		//
@@ -248,7 +245,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.jv_list_menu, menu);
+		inflater.inflate(R.menu.activity_vocabulary_search_list, menu);
 		return true;
 	}
 
@@ -256,19 +253,13 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.jvlm_sort_vocabulary:
-			startSortList(JvSearchListSortMethod.VOCABULARY);
+			startSortList(SearchListSortMethod.VOCABULARY);
 			return true;
 		case R.id.jvlm_sort_vocabulary_gana:
-			startSortList(JvSearchListSortMethod.VOCABULARY_GANA);
+			startSortList(SearchListSortMethod.VOCABULARY_GANA);
 			return true;
 		case R.id.jvlm_sort_vocabulary_translation:
-			startSortList(JvSearchListSortMethod.VOCABULARY_TRANSLATION);
-			return true;
-		case R.id.jvlm_sort_registration_date_up:
-			startSortList(JvSearchListSortMethod.REGISTRATION_DATE_UP);
-			return true;
-		case R.id.jvlm_sort_registration_date_down:
-			startSortList(JvSearchListSortMethod.REGISTRATION_DATE_DOWN);
+			startSortList(SearchListSortMethod.VOCABULARY_TRANSLATION);
 			return true;
 		case R.id.jvlm_all_rememorize: 				// 검색된 전체 단어 재암기
 		case R.id.jvlm_all_memorize_completed: 		// 검색된 전체 단어 암기 완료
@@ -306,9 +297,9 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 			return true;
 
-		case R.id.av_open_settings_activity:
+		case R.id.avsl_open_settings_activity:
 			// 설정 페이지를 띄운다.
-			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.av_open_settings_activity);
+			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.avsl_open_settings_activity);
 			mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
 			setResult(mActivityResultCode);
 
@@ -385,7 +376,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == R.id.av_open_settings_activity) {
+		if (requestCode == R.id.avsl_open_settings_activity) {
 			// 수행 작업 없음
 		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
 			DetailActivity.setVocabularySeekList(null);
@@ -398,7 +389,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void startSortList(JvSearchListSortMethod jvListSortMethod) {
+	private void startSortList(SearchListSortMethod jvListSortMethod) {
 		if (mJvListSortMethod == jvListSortMethod)
 			return;
 
@@ -497,7 +488,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 						mJvListData.clear();						
 					}
 
-					Toast.makeText(JvSearchListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SearchListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
 
 					Message msg = Message.obtain();
 					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
@@ -517,9 +508,9 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 	public class JvListSearchThread extends Thread {
 
-		private JvSearchListCondition mJvListSearchCondition = null;
+		private SearchListCondition mJvListSearchCondition = null;
 
-		public JvListSearchThread(JvSearchListCondition jvListSearchCondition) {
+		public JvListSearchThread(SearchListCondition jvListSearchCondition) {
 			assert jvListSearchCondition != null;
 			mJvListSearchCondition = jvListSearchCondition;
 		}
@@ -531,7 +522,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 
 			synchronized (mJvListData) {
 				mJvListData.clear();
-				VocabularyManager.getInstance().searchVocabulary(JvSearchListActivity.this, mJvListSearchCondition, mJvListData);
+				VocabularyManager.getInstance().searchVocabulary(SearchListActivity.this, mJvListSearchCondition, mJvListData);
 			}
 
 			sortList();
@@ -564,7 +555,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		case R.id.sc_jlpt_level:
 		{
 			boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
-			new AlertDialog.Builder(JvSearchListActivity.this)
+			new AlertDialog.Builder(SearchListActivity.this)
 					.setTitle("검색 조건")
 					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
 						
@@ -627,7 +618,7 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 			Button btnSearchDateLast = (Button)v;
 			String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
 			new DatePickerDialog(
-					JvSearchListActivity.this,
+					SearchListActivity.this,
 					new DatePickerDialog.OnDateSetListener() {
 						
 						@Override
@@ -716,14 +707,14 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		getMenuInflater().inflate(R.menu.jv_list_context_menu, menu);
+		getMenuInflater().inflate(R.menu.activity_vocabulary_search_list_context, menu);
 		menu.setHeaderTitle("작업");
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.jvlm_remove_vocabulary:
+		case R.id.avsl_exclude_vocabulary:
 			AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
 			mJvListData.remove(menuInfo.position);
 			
@@ -937,6 +928,6 @@ public class JvSearchListActivity extends ListActivity implements OnClickListene
 		
 			return contentViewTop - statusBarHeight;				
 		}
-	};
+	}
 
 }

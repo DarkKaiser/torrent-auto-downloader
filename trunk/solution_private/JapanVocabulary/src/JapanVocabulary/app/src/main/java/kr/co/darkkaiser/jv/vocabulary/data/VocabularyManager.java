@@ -19,8 +19,9 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.view.list.JvSearchListCondition;
+import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 
+// todo 너무 무분별하게 사용됨
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
@@ -54,6 +55,7 @@ public class VocabularyManager {
 		if (mVocabularyTable.isEmpty() == false)
 			mVocabularyTable.clear();
 
+        // @@@@@
 		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 assets에서 복사하도록 한다.
 		checkJpVocabularyDatabaseFile(context);
 
@@ -68,12 +70,13 @@ public class VocabularyManager {
 			// 일본어 단어를 읽어들인다.
 			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
-			StringBuilder sbSQL = new StringBuilder();
-			sbSQL.append("  SELECT IDX, ")
+			StringBuilder sbSQL;
+            sbSQL = new StringBuilder();
+            sbSQL.append("  SELECT IDX, ")
 			     .append("         VOCABULARY, ")
 			     .append("         VOCABULARY_GANA, ")
 			     .append("         VOCABULARY_TRANSLATION, ")
-			     .append("         REGISTRATION_DATE ")
+			     .append("         INPUT_DATE ")
 			     .append("    FROM TBL_VOCABULARY ");
 
 			cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
@@ -101,13 +104,15 @@ public class VocabularyManager {
 				cursor.close();
 		}
 
-		// 사용자 파일에서 단어 암기에 대한 정보를 읽어들인다.
+		// 사용자 암기정보 DB파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
+            assert TextUtils.isEmpty(VocabularyDbManager.getInstance().getUserDbFilePath()) == false;
+
 			File f = new File(VocabularyDbManager.getInstance().getUserDbFilePath());
 			if (f.exists() == true) {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
-				String line = null;
+				String line;
 				while ((line = br.readLine()) != null) {
 					StringTokenizer token = new StringTokenizer(line, "|");
 
@@ -162,7 +167,7 @@ public class VocabularyManager {
 	}
 
     // @@@@@
-    public synchronized void searchVocabulary(Context context, JvSearchListCondition searchCondition, ArrayList<Vocabulary> jvList) {
+    public synchronized void searchVocabulary(Context context, SearchListCondition searchCondition, ArrayList<Vocabulary> jvList) {
 		assert context != null;
 
 		if (mVocabularyDatabase != null) {

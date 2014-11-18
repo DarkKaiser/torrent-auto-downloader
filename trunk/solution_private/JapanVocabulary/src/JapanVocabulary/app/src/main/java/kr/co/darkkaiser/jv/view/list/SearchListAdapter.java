@@ -15,18 +15,20 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-//@@@@@
-public class JvSearchListAdapter extends BaseAdapter {
+import com.androidquery.AQuery;
+
+public class SearchListAdapter extends BaseAdapter {
 
 	private int mLayout;
 	private Context mContext = null;
-	private ArrayList<Vocabulary> mJvList = null;
+	private ArrayList<Vocabulary> mVocabularyList = null;
 	private Handler mJvListDataChangedHandler = null;
 	private LayoutInflater mLayoutInflater = null;
 
-	public JvSearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<Vocabulary> jvList) {
+    // @@@@@
+	public SearchListAdapter(Context context, int layout, Handler jvListDataChangedHandler, ArrayList<Vocabulary> jvList) {
 		mLayout = layout;
-		mJvList = jvList;
+		mVocabularyList = jvList;
 		mContext = context;
 		mJvListDataChangedHandler = jvListDataChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -34,15 +36,15 @@ public class JvSearchListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mJvList.size();
+		return mVocabularyList.size();
 	}
 
 	@Override
 	public String getItem(int position) {
-		assert mJvList != null;
-		assert mJvList.get(position) != null;
+		assert mVocabularyList != null;
+		assert mVocabularyList.get(position) != null;
 
-		return mJvList.get(position).getVocabulary();
+		return mVocabularyList.get(position).getVocabulary();
 	}
 
 	@Override
@@ -51,35 +53,31 @@ public class JvSearchListAdapter extends BaseAdapter {
 	}
 
 	@Override
+    // @@@@@
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(mLayout, parent, false);
-		}
+		if (convertView == null) convertView = mLayoutInflater.inflate(mLayout, parent, false);
 
-		Vocabulary jpVocabulary = mJvList.get(position);
-		if (jpVocabulary == null) {
-			convertView.findViewById(R.id.memorize_target).setVisibility(View.INVISIBLE);
-			convertView.findViewById(R.id.avd_vocabulary_memorize_completed).setVisibility(View.INVISIBLE);
-			
-			assert false;
-			return convertView;
-		}
+        Vocabulary vocabulary = mVocabularyList.get(position);
+        if (vocabulary == null) {
+            convertView.findViewById(R.id.memorize_target).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.avd_vocabulary_memorize_completed).setVisibility(View.INVISIBLE);
 
-		TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
-		TextView vocabulary = (TextView) convertView.findViewById(R.id.avd_vocabulary);
-		TextView vocabularyGana = (TextView) convertView.findViewById(R.id.avd_vocabulary_gana);
-		TextView vocabularyTranslation = (TextView) convertView.findViewById(R.id.avd_vocabulary_translation);
-		TextView registrationDate = (TextView) convertView.findViewById(R.id.registration_date);
+            assert false;
+            return convertView;
+        }
+
+        AQuery aq = new AQuery(convertView);
+
+        TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
 		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.avd_vocabulary_memorize_completed);
 		CheckBox memorizeTarget = (CheckBox) convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout) convertView.findViewById(R.id.memorize_bg);
 
-		vocabulary.setText(String.format("%s (%d회)", jpVocabulary.getVocabulary(), jpVocabulary.getMemorizeCompletedCount()));
-		registrationDate.setText(String.format("%s:%s", "등록일", jpVocabulary.getRegistrationDateString()));
-		vocabularyGana.setText(jpVocabulary.getVocabularyGana());
-		vocabularyTranslation.setText(jpVocabulary.getVocabularyTranslation());
+        aq.id(R.id.avd_vocabulary).text(String.format("%s (%d회)", vocabulary.getVocabulary(), vocabulary.getMemorizeCompletedCount()));
+        aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
+        aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
 
-		if (jpVocabulary.isMemorizeCompleted() == true) {
+		if (vocabulary.isMemorizeCompleted() == true) {
 			memorizeCompleted.setChecked(true);
 			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.memorize_bar));
 			layoutMemorizeBg.setBackgroundColor(mContext.getResources().getColor(R.color.jv_listitem_memorize_completed_bg));
@@ -90,19 +88,18 @@ public class JvSearchListAdapter extends BaseAdapter {
 		}
 
 		memorizeTarget.setTag(position);
-		memorizeTarget.setChecked(jpVocabulary.isMemorizeTarget());
-		
-		memorizeTarget.setOnClickListener(new View.OnClickListener() {
+		memorizeTarget.setChecked(vocabulary.isMemorizeTarget());
 
+		memorizeTarget.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CheckBox cboMemorizeTarget = (CheckBox)v;
 				int position = (Integer)cboMemorizeTarget.getTag();
-				if (position < mJvList.size()) {
-					mJvList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
+				if (position < mVocabularyList.size()) {
+					mVocabularyList.get(position).setMemorizeTarget(cboMemorizeTarget.isChecked(), true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(JvSearchListActivity.MSG_CHANGED_LIST_DATA);					
+					mJvListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
 				}
 			}
 		});
@@ -110,16 +107,15 @@ public class JvSearchListAdapter extends BaseAdapter {
 		memorizeCompleted.setTag(position);
 
 		memorizeCompleted.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				CheckBox cboMemorizeCompleted = (CheckBox)v;
 				int position = (Integer)cboMemorizeCompleted.getTag();
-				if (position < mJvList.size()) {
-					mJvList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
+				if (position < mVocabularyList.size()) {
+					mVocabularyList.get(position).setMemorizeCompleted(cboMemorizeCompleted.isChecked(), true, true);
 
 					// 화면을 업데이트합니다.
-					mJvListDataChangedHandler.sendEmptyMessage(JvSearchListActivity.MSG_CHANGED_LIST_DATA);					
+					mJvListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
 				}
 			}
 		});
