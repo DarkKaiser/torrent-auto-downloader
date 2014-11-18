@@ -23,29 +23,27 @@
                 />
 		</menu>
 	</item>
-    <!-- @@@@@ -->
 	<item
-		android:title="검색된 전체 단어 암기 설정"
-		android:icon="@android:drawable/ic_menu_manage"
+		android:title="@string/avsl_search_result_settings"
         android:orderInCategory="1"
         myapp:showAsAction="never"
         >
 		<menu>
-			<item 
-				android:id="@+id/avsl_rememorize_all"
-				android:title="재암기하기"
+			<item
+				android:id="@+id/avsl_search_result_vocabulary_rememorize_all"
+				android:title="@string/avsl_search_result_vocabulary_rememorize_all"
+                />
+			<item
+				android:id="@+id/avsl_search_result_vocabulary_memorize_completed_all"
+				android:title="@string/avsl_search_result_vocabulary_memorize_completed_all"
                 />
 			<item 
-				android:id="@+id/avsl_memorize_completed_all"
-				android:title="암기 완료 상태 만들기"
+				android:id="@+id/avsl_search_result_vocabulary_memorize_target_all"
+				android:title="@string/avsl_search_result_vocabulary_memorize_target_all"
                 />
 			<item 
-				android:id="@+id/avsl_make_memorize_target_all"
-				android:title="암기 대상 상태 만들기..."
-                />
-			<item 
-				android:id="@+id/avsl_memorize_target_cancel_all"
-				android:title="암기 대상 상태 해제하기"
+				android:id="@+id/avsl_search_result_vocabulary_memorize_target_cancel_all"
+				android:title="@string/avsl_search_result_vocabulary_memorize_target_cancel_all"
                 />
 		</menu>
 	</item>

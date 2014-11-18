@@ -68,7 +68,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         AQuery aq = new AQuery(convertView);
 
-        TextView memorizeBar = (TextView) convertView.findViewById(R.id.memorize_bar);
+        TextView memorizeBar = (TextView) convertView.findViewById(R.id.avsl_memorize_bar);
 		CheckBox memorizeCompleted = (CheckBox) convertView.findViewById(R.id.avd_vocabulary_memorize_completed);
 		CheckBox memorizeTarget = (CheckBox) convertView.findViewById(R.id.memorize_target);
 		LinearLayout layoutMemorizeBg = (LinearLayout) convertView.findViewById(R.id.memorize_bg);
@@ -79,11 +79,11 @@ public class SearchListAdapter extends BaseAdapter {
 
 		if (vocabulary.isMemorizeCompleted() == true) {
 			memorizeCompleted.setChecked(true);
-			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.memorize_bar));
+			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.avsl_memorize_bar));
 			layoutMemorizeBg.setBackgroundColor(mContext.getResources().getColor(R.color.jv_listitem_memorize_completed_bg));
 		} else {
 			memorizeCompleted.setChecked(false);
-			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.unmemorize_bar));
+			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.avsl_unmemorize_bar));
 			layoutMemorizeBg.setBackgroundColor(mContext.getResources().getColor(R.color.jv_listitem_memorize_uncompleted_bg));
 		}
 

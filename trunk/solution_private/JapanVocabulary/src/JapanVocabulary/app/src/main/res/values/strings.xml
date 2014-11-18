@@ -3,7 +3,7 @@
 
     <string name="app_name">일본어 단어 암기</string>
     <string name="activity_detail_label">상세정보</string>
-    <string name="activity_search_list_label">단어검색</string>
+    <string name="activity_search_list_label">암기단어 검색</string>
     <string name="activity_environment_setting_label">설정</string>
 
     <string name="yes">예</string>
@@ -33,6 +33,11 @@
     <string name="avsl_sort_vocabulary_hanja">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
     <string name="avsl_sort_vocabulary_translation">뜻</string>
+    <string name="avsl_search_result_settings">검색된 전체 단어 암기 설정…</string>
+    <string name="avsl_search_result_vocabulary_rememorize_all">검색단어 모두 재암기하기</string>
+    <string name="avsl_search_result_vocabulary_memorize_completed_all">검색단어 모두 암기 완료 상태 만들기</string>
+    <string name="avsl_search_result_vocabulary_memorize_target_all">검색단어 모두 암기 대상 상태 만들기…</string>
+    <string name="avsl_search_result_vocabulary_memorize_target_cancel_all">검색단어 모두 암기 대상 상태 해제하기</string>
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
 
     <string name="avd_vocabulary_hanja">한자</string>
