@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -51,7 +50,6 @@ public class SearchListAdapter extends BaseAdapter {
 	}
 
 	@Override
-    // @@@@@
 	public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) convertView = mLayoutInflater.inflate(mLayout, parent, false);
 
@@ -61,13 +59,14 @@ public class SearchListAdapter extends BaseAdapter {
         if (vocabulary == null) {
             assert false;
 
-            aq.id(R.id.avsli_memorize_bar).visibility(View.GONE);
-            aq.id(R.id.memorize_bg).visibility(View.GONE);
-            return convertView;
-        }
+            aq.id(R.id.avsli_vocabulary_panel).invisible();
+            aq.id(R.id.avsli_vocabulary_memorize_bar).invisible();
 
-        aq.id(R.id.memorize_bg).visibility(View.VISIBLE);
-        aq.id(R.id.avsli_memorize_bar).visibility(View.VISIBLE);
+            return convertView;
+        } else {
+            aq.id(R.id.avsli_vocabulary_panel).visible();
+            aq.id(R.id.avsli_vocabulary_memorize_bar).visible();
+        }
 
         aq.id(R.id.avsli_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avsli_vocabulary_gana).text(vocabulary.getVocabularyGana());
@@ -75,20 +74,19 @@ public class SearchListAdapter extends BaseAdapter {
 
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (memorizeCompletedCount > 0)
-            aq.id(R.id.avsli_memorize_completed_count).text(String.format(mContext.getString(R.string.avsli_vocabulary_memorize_completed_count), memorizeCompletedCount));
+            aq.id(R.id.avsli_vocabulary_memorize_completed_count).text(String.format(mContext.getString(R.string.avsli_vocabulary_memorize_completed_count), memorizeCompletedCount)).visible();
         else
-            aq.id(R.id.avsli_memorize_completed_count).text("");
+            aq.id(R.id.avsli_vocabulary_memorize_completed_count).invisible();
 
-        TextView memorizeBar = (TextView) convertView.findViewById(R.id.avsli_memorize_bar);
 		if (vocabulary.isMemorizeCompleted() == true) {
-			memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.avsli_memorize_bar));
-            aq.id(R.id.memorize_bg).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_completed_bar));
-		} else {
-            memorizeBar.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.avsli_unmemorize_bar));
-            aq.id(R.id.memorize_bg).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_uncompleted_bar));
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_completed));
+            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_completed_bar));
+        } else {
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_uncompleted));
+            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_uncompleted_bar));
         }
 
-        aq.id(R.id.avsli_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
+        aq.id(R.id.avsli_vocabulary_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
@@ -103,7 +101,7 @@ public class SearchListAdapter extends BaseAdapter {
             }
         });
 
-        aq.id(R.id.avsli_memorize_completed).tag(position).checked(vocabulary.isMemorizeCompleted()).clicked(new View.OnClickListener() {
+        aq.id(R.id.avsli_vocabulary_memorize_completed).tag(position).checked(vocabulary.isMemorizeCompleted()).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
