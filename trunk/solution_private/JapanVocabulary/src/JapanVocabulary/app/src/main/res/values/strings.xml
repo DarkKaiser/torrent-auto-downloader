@@ -40,6 +40,8 @@
     <string name="avsl_search_result_vocabulary_memorize_target_cancel_all">검색된 단어 암기대상 해제</string>
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
 
+    <string name="avsli_vocabulary_memorize_completed_count">총 %d회 암기완료</string>
+
     <string name="avd_vocabulary_hanja">한자</string>
     <string name="avd_vocabulary_gana">히라가나/가타카나</string>
     <string name="avd_vocabulary_translation">뜻</string>

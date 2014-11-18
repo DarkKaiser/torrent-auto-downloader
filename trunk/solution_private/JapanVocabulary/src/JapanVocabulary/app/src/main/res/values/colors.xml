@@ -8,16 +8,8 @@
     <color name="avd_title_background">#99333333</color>
     <color name="avd_content_background">#000000</color>
 
+	<color name="avsli_memorize_completed_bar">#10cccccc</color>
+    <color name="avsli_memorize_uncompleted_bar">#00000000</color>
+    <color name="avsli_memorize_completed_count">#ff4870ff</color>
 
-
-
-
-
-
-
-
-
-    <!-- @@@@@ -->
-	<color name="jv_listitem_memorize_completed_bg">#15cccccc</color>
-	<color name="jv_listitem_memorize_uncompleted_bg">#15000000</color>
 </resources>
