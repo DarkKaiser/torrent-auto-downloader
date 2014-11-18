@@ -92,7 +92,7 @@ public class SearchListAdapter extends BaseAdapter {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
                 int position = (Integer) cbMemorizeTarget.getTag();
                 if (position < mVocabularyList.size()) {
-                    // @@@@@
+                    // @@@@@ manager로 변경???
                     mVocabularyList.get(position).setMemorizeTarget(cbMemorizeTarget.isChecked(), true);
 
                     // 화면을 업데이트합니다.
@@ -107,7 +107,7 @@ public class SearchListAdapter extends BaseAdapter {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
                 int position = (Integer) cbMemorizeCompleted.getTag();
                 if (position < mVocabularyList.size()) {
-                    // @@@@@
+                    // @@@@@ manager로 변경???
                     mVocabularyList.get(position).setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true, true);
 
                     // 화면을 업데이트합니다.

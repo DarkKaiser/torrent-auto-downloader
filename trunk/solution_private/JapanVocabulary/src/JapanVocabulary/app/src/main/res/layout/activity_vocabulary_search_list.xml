@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
     >
     <!-- @@@@@ -->
 	<LinearLayout
 	    android:orientation="vertical"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    >
 		<LinearLayout
 			android:id="@+id/vocabulary_info_area"
 		    android:orientation="vertical"
-		    android:layout_width="fill_parent"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center"
 		    >
 			<TableLayout
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:stretchColumns="2"
 				android:padding="5px"
@@ -29,17 +30,19 @@
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="전체단어 : "
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				    <TextView
 				    	android:id="@+id/all_vocabulary_count"
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="0개"
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
+                        tools:ignore="SpUsage"
 				    	/>
 				    <TextView
 				    	android:layout_width="wrap_content"
@@ -50,17 +53,19 @@
 				    	android:layout_height="wrap_content"
 				    	android:textColor="#cccccc"
 				    	android:text="전체암기대상 : "
-				    	android:textSize="15dp"
-				    	/>
+				    	android:textSize="13dp"
+                        tools:ignore="SpUsage"
+                        />
 				    <TextView
 				    	android:id="@+id/memorize_target_count"
-				    	android:layout_width="fill_parent"
+				    	android:layout_width="match_parent"
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="0개"
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				</TableRow>
 				<TableRow>
 				    <TextView
@@ -68,18 +73,20 @@
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="검색된단어 : "
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				    <TextView
 				    	android:id="@+id/search_vocabulary_count"
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="0개"
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				    <TextView
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
@@ -88,18 +95,20 @@
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:text="전체암기완료 : "
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				    <TextView
 				    	android:id="@+id/avd_memorize_completed_count_text"
 				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:layout_gravity="right"
 				    	android:text="0개"
-				    	android:textSize="15dp"
+				    	android:textSize="13dp"
 				    	android:textColor="#cccccc"
-				    	/>
+                        tools:ignore="SpUsage"
+                        />
 				</TableRow>
 			</TableLayout>
 			<TextView
@@ -108,20 +117,21 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:text="표시 될 단어가 없습니다."
-				android:textSize="15dp"
+				android:textSize="13dp"
 				android:textColor="#cccccc"
-				/>
+                tools:ignore="SpUsage"
+                />
 		</LinearLayout>
 		<ListView
 			android:id="@android:id/list"
-			android:layout_width="fill_parent" 
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			/>
 	</LinearLayout>
 	<SlidingDrawer
 		android:id="@+id/search_sliding_drawer"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:handle="@+id/sd_handle"
 		android:content="@+id/sd_content"
 		android:orientation="vertical"
@@ -129,36 +139,36 @@
 		>
 	    <ImageButton
 			android:id="@+id/sd_handle"
-	    	android:layout_width="fill_parent"
+	    	android:layout_width="match_parent"
 	    	android:layout_height="wrap_content"
 	    	android:background="@drawable/sd_handle"
 	    	/>
 		<LinearLayout
 			android:id="@+id/sd_content"
 			android:orientation="vertical"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
 		    android:background="#0a0a0a"
 		    android:clickable="true"
 		    >
 			<RelativeLayout
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
 				>
 				<TextView
 					android:id="@+id/sc_content_first_line" 
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="1px"
 					android:background="#636563"
 					/>
 				<LinearLayout
 					android:id="@+id/sc_area_tail" 
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_alignParentBottom="true"
 					>
 					<TableLayout
-						android:layout_width="fill_parent"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:paddingTop="5px"
 						android:paddingLeft="10px"
@@ -170,13 +180,13 @@
 						<TableRow>
 						 	<Button
 								android:id="@+id/search_start" 
-								android:layout_width="fill_parent" 
+								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 						 		android:text="검색" 
 								/>
 						 	<Button
 								android:id="@+id/search_cancel" 
-								android:layout_width="fill_parent" 
+								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 						 		android:text="취소"
 								/>
@@ -184,19 +194,19 @@
 					</TableLayout>
 				</LinearLayout>
 				<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
 					android:layout_above="@id/sc_area_tail"
 					android:layout_below="@id/sc_content_first_line"
 					>
 					<ScrollView
 						android:orientation="vertical"
-						android:layout_width="fill_parent"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						>
 						<LinearLayout
 							android:orientation="vertical"
-						    android:layout_width="fill_parent"
+						    android:layout_width="match_parent"
 						    android:layout_height="wrap_content"
 						    android:paddingTop="13dp"
 						    android:paddingLeft="10dp"
@@ -204,7 +214,7 @@
 						    android:paddingBottom="10dp"
 						    >
 							<TableLayout
-								android:layout_width="fill_parent"
+								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								android:stretchColumns="*"
 								>
@@ -225,7 +235,7 @@
 									<EditText
 										android:id="@+id/sc_search_word" 
 										android:hint="검색어를 입력하세요."
-										android:layout_width="fill_parent"
+										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:layout_marginLeft="15dp"
 										android:layout_marginRight="15dp"
@@ -245,7 +255,7 @@
 								<TableRow>
 									<Spinner
 										android:id="@+id/sc_memorize_target" 
-										android:layout_width="fill_parent" 
+										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:layout_marginLeft="15dp"
 										android:layout_marginRight="15dp"
@@ -256,7 +266,7 @@
 									>
 									<Spinner
 										android:id="@+id/sc_memorize_completed" 
-										android:layout_width="fill_parent" 
+										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:layout_marginLeft="15dp"
 										android:layout_marginRight="15dp"
@@ -275,7 +285,7 @@
 								</TableRow>
 								<TableRow>
 									<TableLayout
-										android:layout_width="fill_parent"
+										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:stretchColumns="0,2"
 										android:layout_marginLeft="15dp"
@@ -284,7 +294,7 @@
 										<TableRow>
 											<Button
 												android:id="@+id/sc_first_search_date"
-												android:layout_width="fill_parent"
+												android:layout_width="match_parent"
 												android:layout_height="wrap_content"
 												android:enabled="false" 
 												/>
@@ -297,7 +307,7 @@
 												/>
 											<Button  
 												android:id="@+id/sc_last_search_date"
-												android:layout_width="fill_parent"
+												android:layout_width="match_parent"
 												android:layout_height="wrap_content"
 												android:enabled="false"
 												/>
@@ -308,7 +318,7 @@
 									android:paddingBottom="13px"
 									>
 									<LinearLayout
-									    android:layout_width="fill_parent"
+									    android:layout_width="match_parent"
 									    android:layout_height="wrap_content"
 										android:layout_marginLeft="15dp"
 										android:layout_marginRight="15dp"
@@ -341,7 +351,7 @@
 									>
 									<Button
 										android:id="@+id/sc_jlpt_level"
-										android:layout_width="fill_parent"
+										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:layout_marginLeft="15dp"
 										android:layout_marginRight="15dp"
