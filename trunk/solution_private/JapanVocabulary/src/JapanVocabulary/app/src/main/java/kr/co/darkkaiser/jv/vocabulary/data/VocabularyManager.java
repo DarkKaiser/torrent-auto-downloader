@@ -121,9 +121,9 @@ public class VocabularyManager {
 						Vocabulary vocabulary = mVocabularyTable.get(idx);
 
 						if (vocabulary != null) {
-							vocabulary.setFirstOnceMemorizeCompletedCount(Long.parseLong(token.nextToken()));
-							vocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
-							vocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false, false);
+							vocabulary.setMemorizeCompletedCount(Long.parseLong(token.nextToken()));
+							vocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false);
+							vocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
 						} else {
 							assert false;
 						}
@@ -362,7 +362,7 @@ public class VocabularyManager {
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
 			Vocabulary jv = e.nextElement();
 			if (jv.isMemorizeTarget() == true)
-				jv.setMemorizeCompleted(false, false, false);
+				jv.setMemorizeCompleted(false, false);
 		}
 
 		writeUserVocabularyInfo();
@@ -410,25 +410,25 @@ public class VocabularyManager {
 			for (int index = 0; index < idxList.size(); ++index) {
 				jv = mVocabularyTable.get(idxList.get(index));
 
-				jv.setMemorizeTarget(true, false);
-				jv.setMemorizeCompleted(false, false, false);
+				jv.setMemorizeTarget(true);
+				jv.setMemorizeCompleted(false, false);
 			}
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
 			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeCompleted(true, true, false);
+				mVocabularyTable.get(idxList.get(index)).setMemorizeCompleted(true, true);
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
 			if (notSearchVocabularyTargetCancel == true) {
 				for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
 					Vocabulary jpVocabulary = e.nextElement();
-					jpVocabulary.setMemorizeTarget(false, false);
+					jpVocabulary.setMemorizeTarget(false);
 				}
 			}
 
 			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(true, false);
+				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(true);
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
 			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(false, false);
+				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(false);
 		}
 		
 		writeUserVocabularyInfo();

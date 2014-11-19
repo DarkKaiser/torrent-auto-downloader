@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 
 public class SearchListAdapter extends BaseAdapter {
 
@@ -93,7 +94,8 @@ public class SearchListAdapter extends BaseAdapter {
                 int position = (Integer) cbMemorizeTarget.getTag();
                 if (position < mVocabularyList.size()) {
                     // @@@@@ manager로 변경???
-                    mVocabularyList.get(position).setMemorizeTarget(cbMemorizeTarget.isChecked(), true);
+                    mVocabularyList.get(position).setMemorizeTarget(cbMemorizeTarget.isChecked());
+                    VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
                     mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
@@ -108,7 +110,8 @@ public class SearchListAdapter extends BaseAdapter {
                 int position = (Integer) cbMemorizeCompleted.getTag();
                 if (position < mVocabularyList.size()) {
                     // @@@@@ manager로 변경???
-                    mVocabularyList.get(position).setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true, true);
+                    mVocabularyList.get(position).setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
+                    VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
                     mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);

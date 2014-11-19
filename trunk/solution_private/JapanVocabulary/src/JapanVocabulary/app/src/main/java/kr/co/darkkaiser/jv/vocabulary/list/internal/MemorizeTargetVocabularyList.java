@@ -72,7 +72,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			Vocabulary vocabulary = mVocabularyListData.get(mCurrentPosition);
 			if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
 				++mMemorizeCompletedCount;
-				vocabulary.setMemorizeCompleted(true, true, true);
+				vocabulary.setMemorizeCompleted(true, true);
+                VocabularyManager.getInstance().writeUserVocabularyInfo();
 			}
 		} else {
 			assert false;
