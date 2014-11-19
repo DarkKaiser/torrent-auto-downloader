@@ -175,9 +175,6 @@ public class VocabularyManager {
 				String searchWord = searchCondition.getSearchWord().trim();
 				int memorizeTargetPosition = searchCondition.getMemorizeTargetPosition();
 				int memorizeCompletedPosition = searchCondition.getMemorizeCompletedPosition();
-				boolean allRegDateSearch = searchCondition.isAllRegDateSearch();
-				String firstSearchDate = searchCondition.getFirstSearchDate();
-				String lastSearchDate = searchCondition.getLastSearchDate();
 				boolean[] checkedItems = searchCondition.getCheckedJLPTLevelArray();
 
 				boolean hasSearchCondition = false;
@@ -227,30 +224,6 @@ public class VocabularyManager {
 				if (TextUtils.isEmpty(searchWord) == false) {
 					hasSearchCondition = true;
 					sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
-				}
-
-				// '단어 등록일' 검색 조건 추가
-				if (allRegDateSearch == false) {
-					try {
-						hasSearchCondition = true;
-						long firstSearchDateValue = new SimpleDateFormat("yyyy/MM/dd").parse(firstSearchDate).getTime();
-						long lastSearchDateValue = new SimpleDateFormat("yyyy/MM/dd").parse(lastSearchDate).getTime();
-
-						if (firstSearchDateValue > lastSearchDateValue) {
-							long temp = firstSearchDateValue;
-							firstSearchDateValue = lastSearchDateValue;
-							lastSearchDateValue = temp;
-						}
-						
-						// 검색 종료일에 검색 종료일의 마지막 시간값을 더한다. 
-						lastSearchDateValue += (86400000 - 1);
-
-						sbSQL.append(" AND REGISTRATION_DATE >= ").append(firstSearchDateValue)
-						 	 .append(" AND REGISTRATION_DATE <= ").append(lastSearchDateValue);
-					} catch (ParseException e) {
-						Log.e(TAG, e.getMessage());
-						return;
-					}
 				}
 
 				ArrayList<Long> idxList = new ArrayList<Long>();

@@ -1,28 +1,14 @@
 package kr.co.darkkaiser.jv.view.list;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-
-import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.R;
-import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
-import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
-import kr.co.darkkaiser.jv.view.detail.DetailActivity;
-import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -32,7 +18,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -40,29 +28,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
-//@@@@@ todo
-public class SearchListActivity extends ListActivity implements OnClickListener, OnScrollListener {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+
+import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.view.detail.DetailActivity;
+import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
+
+public class SearchListActivity extends ActionBarActivity implements OnClickListener, OnScrollListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
@@ -79,7 +80,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	private ProgressDialog mProgressDialog = null;
 
 	private SearchListAdapter mJvListAdapter = null;
-	private ArrayList<Vocabulary> mJvListData = null;
+	private ArrayList<Vocabulary> mVocabularyListData = null;
 	private SearchListSortMethod mJvListSortMethod = SearchListSortMethod.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;
@@ -92,8 +93,34 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 
 	private int mActivityResultCode = 0;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    private ListView mListView = null;
+
+    // @@@@@
+    protected ListView getListView() {
+        if (mListView == null)
+            mListView = (ListView)findViewById(android.R.id.list);
+
+        return mListView;
+    }
+
+    // @@@@@
+    protected void setListAdapter(ListAdapter adapter) {
+        getListView().setAdapter(adapter);
+    }
+
+    // @@@@@
+    protected ListAdapter getListAdapter() {
+        ListAdapter adapter = getListView().getAdapter();
+        if (adapter instanceof HeaderViewListAdapter) {
+            return ((HeaderViewListAdapter)adapter).getWrappedAdapter();
+        } else {
+            return adapter;
+        }
+    }
+
+    @Override
+    // @@@@@
+    protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
 
@@ -109,8 +136,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
-		mJvListData = new ArrayList<Vocabulary>();
-		mJvListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mJvListDataChangedHandler, mJvListData);
+		mVocabularyListData = new ArrayList<Vocabulary>();
+		mJvListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
 		setListAdapter(mJvListAdapter);
 		
 		//
@@ -162,39 +189,6 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		scMemorizeCompletedSpinner.setPrompt("검색 조건");
 		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompletedPosition());
 
-		// 단어 등록일 검색 조건
-		Button btnLastSearchDate = (Button)findViewById(R.id.sc_last_search_date);
-		Button btnFirstSearchDate = (Button)findViewById(R.id.sc_first_search_date);
-		CheckBox cboAllRegDateSearch = (CheckBox)findViewById(R.id.sc_all_reg_date_search);
-
-		if (mJvListSearchCondition.isAllRegDateSearch() == true) {
-			cboAllRegDateSearch.setChecked(true);
-
-			Calendar currentDate = Calendar.getInstance();
-			btnLastSearchDate.setText(String.format("%04d/%02d/%02d",
-					currentDate.get(Calendar.YEAR),
-					currentDate.get(Calendar.MONTH) + 1,
-					currentDate.get(Calendar.DATE)));
-			
-			currentDate.add(Calendar.DAY_OF_MONTH, -7);
-			btnFirstSearchDate.setText(String.format("%04d/%02d/%02d",
-					currentDate.get(Calendar.YEAR), 
-					currentDate.get(Calendar.MONTH) + 1, 
-					currentDate.get(Calendar.DATE)));
-		} else {
-			cboAllRegDateSearch.setChecked(false);
-
-			btnFirstSearchDate.setText(mJvListSearchCondition.getFirstSearchDate());
-			btnLastSearchDate.setText(mJvListSearchCondition.getLastSearchDate());
-
-			btnLastSearchDate.setEnabled(true);
-			btnFirstSearchDate.setEnabled(true);
-		}
-
-		btnLastSearchDate.setOnClickListener(this);
-		btnFirstSearchDate.setOnClickListener(this);
-		cboAllRegDateSearch.setOnClickListener(this);
-
 		// JLPT 급수 검색 조건
 		updateJLPTLevelButtonText();
 		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
@@ -209,7 +203,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		searchVocabulary();
 	}
 
-	private void updateJLPTLevelButtonText() {
+    // @@@@@
+    private void updateJLPTLevelButtonText() {
 		String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
 		boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
 		assert items.length == checkedItems.length;
@@ -232,18 +227,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onBackPressed() {
-		SlidingDrawer searchSlidingDrawer = (SlidingDrawer) findViewById(R.id.search_sliding_drawer);
-		if (searchSlidingDrawer.isOpened() == true) {
-			searchSlidingDrawer.animateClose();
-			return;
-		}
-
-		super.onBackPressed();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    // @@@@@
+    public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_vocabulary_search_list, menu);
 
@@ -253,7 +238,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    // @@@@@
+    public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.avsl_sort_vocabulary_hanja:
 			startSortList(SearchListSortMethod.VOCABULARY);
@@ -311,8 +297,9 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 
 		return false;
 	}
-	
-	private void memorizeSetupVocabulary(int menuId, boolean notSearchVocabularyTargetCancel) {
+
+    // @@@@@
+    private void memorizeSetupVocabulary(int menuId, boolean notSearchVocabularyTargetCancel) {
 		// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
 		mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
 
@@ -332,34 +319,34 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 				Vocabulary jpVocabulary = null;
 				ArrayList<Long> idxList = new ArrayList<Long>();
 
-				synchronized (mJvListData) {
+				synchronized (mVocabularyListData) {
 					if (mMenuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 전체 단어 재암기
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jpVocabulary = mJvListData.get(index);
+						for (int index = 0; index < mVocabularyListData.size(); ++index) {
+							jpVocabulary = mVocabularyListData.get(index);
 							if (jpVocabulary.isMemorizeTarget() == false || jpVocabulary.isMemorizeCompleted() == true)
 								idxList.add(jpVocabulary.getIdx());
 						}
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) { 		// 검색된 전체 단어 암기 완료
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jpVocabulary = mJvListData.get(index);
+						for (int index = 0; index < mVocabularyListData.size(); ++index) {
+							jpVocabulary = mVocabularyListData.get(index);
 							if (jpVocabulary.isMemorizeCompleted() == false)
 								idxList.add(jpVocabulary.getIdx());
 						}
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 전체 단어 암기 대상 만들기
 						if (mNotSearchVocabularyTargetCancel == true) {
-							for (int index = 0; index < mJvListData.size(); ++index) {
-								idxList.add(mJvListData.get(index).getIdx());
+							for (int index = 0; index < mVocabularyListData.size(); ++index) {
+								idxList.add(mVocabularyListData.get(index).getIdx());
 							}							
 						} else {
-							for (int index = 0; index < mJvListData.size(); ++index) {
-								jpVocabulary = mJvListData.get(index);
+							for (int index = 0; index < mVocabularyListData.size(); ++index) {
+								jpVocabulary = mVocabularyListData.get(index);
 								if (jpVocabulary.isMemorizeTarget() == false)
 									idxList.add(jpVocabulary.getIdx());
 							}							
 						}
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) { 	// 검색된 전체 단어 암기 대상 해제
-						for (int index = 0; index < mJvListData.size(); ++index) {
-							jpVocabulary = mJvListData.get(index);
+						for (int index = 0; index < mVocabularyListData.size(); ++index) {
+							jpVocabulary = mVocabularyListData.get(index);
 							if (jpVocabulary.isMemorizeTarget() == true)
 								idxList.add(jpVocabulary.getIdx());
 						}
@@ -370,7 +357,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 
 				Message msg = Message.obtain();
 				msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-				mJvListDataChangedHandler.sendMessage(msg);
+				mVocabularyDataChangedHandler.sendMessage(msg);
 			};
 		}
 		.setValues(menuId, notSearchVocabularyTargetCancel)
@@ -378,7 +365,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // @@@@@
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == R.id.avsl_open_settings_activity) {
 			// 수행 작업 없음
 		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
@@ -392,7 +380,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void startSortList(SearchListSortMethod jvListSortMethod) {
+    // @@@@@
+    private void startSortList(SearchListSortMethod jvListSortMethod) {
 		if (mJvListSortMethod == jvListSortMethod)
 			return;
 
@@ -413,42 +402,44 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 
 				Message msg = Message.obtain();
 				msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-				mJvListDataChangedHandler.sendMessage(msg);
+				mVocabularyDataChangedHandler.sendMessage(msg);
 			};
 		}.start();
 	}
 
-	private void sortList() {
-		synchronized (mJvListData) {
+    // @@@@@
+    private void sortList() {
+		synchronized (mVocabularyListData) {
 			switch (mJvListSortMethod) {
 			case VOCABULARY:
-				Collections.sort(mJvListData, VocabularyComparator.mVocabularyComparator);
+				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
 				break;
 			case VOCABULARY_GANA:
-				Collections.sort(mJvListData, VocabularyComparator.mVocabularyGanaComparator);
+				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
 				break;
 			case VOCABULARY_TRANSLATION:
-				Collections.sort(mJvListData, VocabularyComparator.mVocabularyTranslationComparator);
+				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
 				break;
 			}
 		}
 	}
 
-	@Override
+	//@@@@@@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
+	//@@@@@	super.onListItemClick(l, v, position, id);
 
-		synchronized (mJvListData) {
-			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mJvListData, position));
+		synchronized (mVocabularyListData) {
+			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mVocabularyListData, position));
 			
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, DetailActivity.class);
-			intent.putExtra("idx", mJvListData.get(position).getIdx());
+			intent.putExtra("idx", mVocabularyListData.get(position).getIdx());
 			startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
 		}
 	}
 
-	private Handler mJvListDataChangedHandler = new Handler() {
+    // @@@@@
+    private Handler mVocabularyDataChangedHandler = new Handler() {
 		
 		@Override
 		public void handleMessage(Message msg) {
@@ -472,7 +463,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		};
 	};
 
-	private void searchVocabulary() {
+    // @@@@@
+    private void searchVocabulary() {
 		mUseModeScrollBarThumb = false;
 
 		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
@@ -486,30 +478,31 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 						mJvListSearchThread.interrupt();
 					}
 
-					synchronized (mJvListData) {
+					synchronized (mVocabularyListData) {
 						// 검색을 취소하였으므로 단어를 모두 제거한다.
-						mJvListData.clear();						
+						mVocabularyListData.clear();
 					}
 
 					Toast.makeText(SearchListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
 
 					Message msg = Message.obtain();
 					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-					mJvListDataChangedHandler.sendMessage(msg);
+					mVocabularyDataChangedHandler.sendMessage(msg);
 				}
 			});
 		}
 		
 		// 검색을 시작하기 전 리스트의 내용을 모두 지운다.
 		// 이유) 검색 스레드에서 리스트를 모두 지운후 검색을 하였을 때 간혹 오류가 발생하는 경우 있음
-		mJvListData.clear();
+		mVocabularyListData.clear();
 		mJvListAdapter.notifyDataSetChanged();
 
 		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
 		mJvListSearchThread.start();
 	}
 
-	public class JvListSearchThread extends Thread {
+    // @@@@@
+    public class JvListSearchThread extends Thread {
 
 		private SearchListCondition mJvListSearchCondition = null;
 
@@ -523,21 +516,22 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 			// 현재 검색되는 검색 정보를 저장해 놓는다.
 			mJvListSearchCondition.commit();
 
-			synchronized (mJvListData) {
-				mJvListData.clear();
-				VocabularyManager.getInstance().searchVocabulary(SearchListActivity.this, mJvListSearchCondition, mJvListData);
+			synchronized (mVocabularyListData) {
+				mVocabularyListData.clear();
+				VocabularyManager.getInstance().searchVocabulary(SearchListActivity.this, mJvListSearchCondition, mVocabularyListData);
 			}
 
 			sortList();
 
 			Message msg = Message.obtain();
 			msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-			mJvListDataChangedHandler.sendMessage(msg);
+			mVocabularyDataChangedHandler.sendMessage(msg);
 		};
 
 	}
 
-	private void updateVocabularyInfo() {
+    // @@@@@
+    private void updateVocabularyInfo() {
 		ArrayList<Integer> vocabularyInfo = VocabularyManager.getInstance().getVocabularyInfo();
 		assert vocabularyInfo.size() == 3;
 
@@ -547,13 +541,14 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		TextView memorizeCompletedCount = (TextView)findViewById(R.id.avd_memorize_completed_count_text);
 
 		allVocabularyCount.setText(String.format("%d개", vocabularyInfo.get(0)));
-		searchVocabularyCount.setText(String.format("%d개", mJvListData.size()));
+		searchVocabularyCount.setText(String.format("%d개", mVocabularyListData.size()));
 		memorizeTargetCount.setText(String.format("%d개", vocabularyInfo.get(1)));
 		memorizeCompletedCount.setText(String.format("%d개", vocabularyInfo.get(2)));
 	}
 
 	@Override
-	public void onClick(View v) {
+    // @@@@@
+    public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.sc_jlpt_level:
 		{
@@ -581,86 +576,6 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		}
 			break;
 
-		case R.id.sc_first_search_date:
-		{
-			Button btnSearchDateFirst = (Button)v;
-			String searchDateString = btnSearchDateFirst.getText().toString().replace("/", "");
-			new DatePickerDialog(
-					this,
-					new DatePickerDialog.OnDateSetListener() {
-						
-						@Override
-						public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-							Button searchDateFirst = (Button)findViewById(R.id.sc_first_search_date);
-							searchDateFirst.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-
-							// 검색 종료일보다 최근 날짜이면 검색 종료일도 변경한다.
-							Calendar calSearchDateFirst = Calendar.getInstance();
-							calSearchDateFirst.set(year, monthOfYear, dayOfMonth);
-
-							Button searchDateLast = (Button)findViewById(R.id.sc_last_search_date);
-							String searchDateLastString = searchDateLast.getText().toString().replace("/", "");
-
-							Calendar calSearchDateLast = Calendar.getInstance();
-							calSearchDateLast.set(Integer.parseInt(searchDateLastString.substring(0, 4)),
-									Integer.parseInt(searchDateLastString.substring(4, 6)) - 1,
-									Integer.parseInt(searchDateLastString.substring(6, 8)));
-
-							if (calSearchDateFirst.after(calSearchDateLast) == true)
-								searchDateLast.setText(searchDateFirst.getText());
-						}
-					},
-					Integer.parseInt(searchDateString.substring(0, 4)),
-					Integer.parseInt(searchDateString.substring(4, 6)) - 1,
-					Integer.parseInt(searchDateString.substring(6, 8))).show();
-		}
-			break;
-
-		case R.id.sc_last_search_date:
-		{
-			Button btnSearchDateLast = (Button)v;
-			String searchDateString = btnSearchDateLast.getText().toString().replace("/", "");
-			new DatePickerDialog(
-					SearchListActivity.this,
-					new DatePickerDialog.OnDateSetListener() {
-						
-						@Override
-						public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-							Button searchDateLast = (Button)findViewById(R.id.sc_last_search_date);
-							searchDateLast.setText(String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth));
-
-							// 검색 시작일보다 이전 날짜이면 검색 시작일도 변경한다.
-							Calendar calSearchDateLast = Calendar.getInstance();
-							calSearchDateLast.set(year, monthOfYear, dayOfMonth);
-
-							Button searchDateFirst = (Button)findViewById(R.id.sc_first_search_date);
-							String searchDateFirstString = searchDateFirst.getText().toString().replace("/", "");
-
-							Calendar calSearchDateFirst = Calendar.getInstance();
-							calSearchDateFirst.set(Integer.parseInt(searchDateFirstString.substring(0, 4)),
-									Integer.parseInt(searchDateFirstString.substring(4, 6)) - 1,
-									Integer.parseInt(searchDateFirstString.substring(6, 8)));
-
-							if (calSearchDateLast.before(calSearchDateFirst) == true)
-								searchDateFirst.setText(searchDateLast.getText());
-						}
-					},
-					Integer.parseInt(searchDateString.substring(0, 4)),
-					Integer.parseInt(searchDateString.substring(4, 6)) - 1,
-					Integer.parseInt(searchDateString.substring(6, 8))).show();
-		}
-			break;
-
-		case R.id.sc_all_reg_date_search:
-		{
-			CheckBox cboAllRegDateSearch = (CheckBox)v;
-			Button btnSearchDateFirst = (Button) findViewById(R.id.sc_first_search_date);
-			Button btnSearchDateLast = (Button) findViewById(R.id.sc_last_search_date);
-			btnSearchDateFirst.setEnabled(!cboAllRegDateSearch.isChecked());
-			btnSearchDateLast.setEnabled(!cboAllRegDateSearch.isChecked());
-		}
-			break;
-
 		case R.id.search_start:
 		{
 			// 소프트 키보드가 나타나 있다면 숨긴다.
@@ -675,16 +590,11 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 			EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
 			Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
 			Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
-			CheckBox scAllRegDateSearchCheckBox = (CheckBox)findViewById(R.id.sc_all_reg_date_search);
-			Button scSearchDateFirstButton = (Button)findViewById(R.id.sc_first_search_date);
-			Button scSearchDateLastButton = (Button)findViewById(R.id.sc_last_search_date);
 
 			mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
 			mJvListSearchCondition.setMemorizeTargetPosition(scMemorizeTargetSpinner.getSelectedItemPosition());
 			mJvListSearchCondition.setMemorizeCompletedPosition(scMemorizeCompletedSpinner.getSelectedItemPosition());
-			mJvListSearchCondition.setAllRegDateSearch(scAllRegDateSearchCheckBox.isChecked());
-			mJvListSearchCondition.setSearchDateRange(scSearchDateFirstButton.getText().toString(), scSearchDateLastButton.getText().toString());
-			
+
 			// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
 			// 대신 commit()은 검색을 시작하기 전에 하도록 변경한다.
 			// mJvListSearchCondition.commit();
@@ -708,18 +618,20 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    // @@@@@
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.activity_vocabulary_search_list_context, menu);
 		menu.setHeaderTitle("작업");
 	}
 
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+    // @@@@@
+    public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.avsl_exclude_vocabulary:
 			AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-			mJvListData.remove(menuInfo.position);
+			mVocabularyListData.remove(menuInfo.position);
 			
 			updateVocabularyInfo();
 			mJvListAdapter.notifyDataSetChanged();
@@ -730,7 +642,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    // @@@@@
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		if (mUseModeScrollBarThumb == true) {
 			if (mVisibleScrollBarThumb == false) {
 				mVisibleScrollBarThumb = true;
@@ -742,14 +655,15 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		} else {
 			SlidingDrawer searchSlidingDrawer = (SlidingDrawer) findViewById(R.id.search_sliding_drawer);
 			if (searchSlidingDrawer.isOpened() == false) {
-				if (mJvListData.size() >= 50)
+				if (mVocabularyListData.size() >= 50)
 					mUseModeScrollBarThumb = true;				
 			}
 		}
 	}
 
 	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
+    // @@@@@
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
 		switch (scrollState) {
 		case SCROLL_STATE_IDLE:
     		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
@@ -762,7 +676,8 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		}
 	}
 
-	private Handler mScrollBarThumbEventHandler = new Handler() {
+    // @@@@@
+    private Handler mScrollBarThumbEventHandler = new Handler() {
 
 		@Override
     	public void handleMessage(Message msg){
@@ -781,6 +696,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
     };
 
 	@Override
+    // @@@@@
 	public void onConfigurationChanged(Configuration newConfig) {
 		// 화면이 회전되었을 경우를 위해 좌표값을 다시 계산한다.
 		mScrollBarThumbLayout.x = mScrollThumb.getScrollBarThumbLayoutX();
@@ -789,6 +705,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		super.onConfigurationChanged(newConfig);
 	}
 
+    // @@@@@
 	public class ScrollBarThumb extends ImageView {
 
 		private ListView mListView = null;
@@ -825,11 +742,12 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 			Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 			BitmapDrawable drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.scrollbar_thumb);
 
-			if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
-				return display.getWidth() - drawable.getIntrinsicWidth();
-			} else {
-				return display.getHeight() - drawable.getIntrinsicWidth();
-			}
+            return 0;//@@@@@ 임시주석
+//			if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+//				return display.getWidth() - drawable.getIntrinsicWidth();
+//			} else {
+//				return display.getHeight() - drawable.getIntrinsicWidth();
+//			}
 		}
 
 		public void onItemScroll(int firstVisibleItem, int visibleItemCount, int totalItemCount) {

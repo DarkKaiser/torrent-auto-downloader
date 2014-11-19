@@ -7,16 +7,16 @@
     >
     <!-- @@@@@ -->
 	<LinearLayout
-	    android:orientation="vertical"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 		<LinearLayout
-			android:id="@+id/vocabulary_info_area"
-		    android:orientation="vertical"
+			android:id="@+id/avsl_vocabulary_info_panel"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
 		    >
 			<TableLayout
 				android:layout_width="match_parent"
@@ -128,6 +128,7 @@
 			android:layout_height="wrap_content"
 			/>
 	</LinearLayout>
+    <!-- @@@@@ -->
 	<SlidingDrawer
 		android:id="@+id/search_sliding_drawer"
 		android:layout_width="match_parent"
@@ -282,58 +283,6 @@
 										android:textColor="#cccccc"
 										android:textSize="15dp"
 										/>
-								</TableRow>
-								<TableRow>
-									<TableLayout
-										android:layout_width="match_parent"
-										android:layout_height="wrap_content"
-										android:stretchColumns="0,2"
-										android:layout_marginLeft="15dp"
-										android:layout_marginRight="15dp"
-										>
-										<TableRow>
-											<Button
-												android:id="@+id/sc_first_search_date"
-												android:layout_width="match_parent"
-												android:layout_height="wrap_content"
-												android:enabled="false" 
-												/>
-											<TextView
-												android:text=" ~ "
-												android:layout_width="wrap_content"
-												android:layout_height="wrap_content"
-												android:textColor="#cccccc"
-												android:textSize="15dp"
-												/>
-											<Button  
-												android:id="@+id/sc_last_search_date"
-												android:layout_width="match_parent"
-												android:layout_height="wrap_content"
-												android:enabled="false"
-												/>
-										</TableRow>
-									</TableLayout>
-								</TableRow>
-								<TableRow
-									android:paddingBottom="13px"
-									>
-									<LinearLayout
-									    android:layout_width="match_parent"
-									    android:layout_height="wrap_content"
-										android:layout_marginLeft="15dp"
-										android:layout_marginRight="15dp"
-										android:gravity="right"
-									    >
-										<CheckBox
-											android:id="@+id/sc_all_reg_date_search"
-											android:layout_width="wrap_content"
-											android:layout_height="wrap_content"
-											android:text="모든 등록일 검색"
-											android:textColor="#cccccc"
-											android:textSize="15dp"
-											android:checked="true"
-											/>
-									</LinearLayout>
 								</TableRow>
 								<TableRow
 									android:paddingBottom="10px"

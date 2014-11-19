@@ -12,9 +12,6 @@ public class SearchListCondition {
 	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";
 	private static final String JV_SPN_MEMORIZE_TARGET_SC = "sc_memorize_target_position";
 	private static final String JV_SPN_MEMORIZE_COMPLETED_SC = "sc_memorize_completed_position";
-	private static final String JV_SPN_ALL_REG_DATE_SEARCH_SC = "sc_all_reg_date_search";
-	private static final String JV_SPN_FIRST_SEARCH_DATE_SC = "sc_first_search_date";
-	private static final String JV_SPN_LAST_SEARCH_DATE_SC = "sc_last_search_date";
 	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
 
 	private Context mContext = null;
@@ -23,9 +20,6 @@ public class SearchListCondition {
 	private String mScSearchWord = null;
 	private int mScMemorizeTargetPosition = 0;
 	private int mScMemorizeCompletedPosition = 0;
-	private boolean mScAllRegDateSearch = true;
-	private String mScFirstSearchDate = null;
-	private String mScLastSearchDate = null;
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
 	public SearchListCondition(Context context, SharedPreferences preferences) {
@@ -35,13 +29,6 @@ public class SearchListCondition {
 		mScSearchWord = mPreferences.getString(JV_SPN_SEARCH_WORD_SC, "");
 		mScMemorizeTargetPosition = mPreferences.getInt(JV_SPN_MEMORIZE_TARGET_SC, 0);
 		mScMemorizeCompletedPosition = mPreferences.getInt(JV_SPN_MEMORIZE_COMPLETED_SC, 0);
-		mScAllRegDateSearch = mPreferences.getBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, true);
-		mScFirstSearchDate = mPreferences.getString(JV_SPN_FIRST_SEARCH_DATE_SC, "");
-		mScLastSearchDate = mPreferences.getString(JV_SPN_LAST_SEARCH_DATE_SC, "");
-
-		if (TextUtils.isEmpty(mScFirstSearchDate) == true || TextUtils.isEmpty(mScLastSearchDate) == true) {
-			mScAllRegDateSearch = true;
-		}
 
 		// JLPT 각 급수별 검색 여부 플래그를 읽어들인다.
 		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
@@ -85,31 +72,6 @@ public class SearchListCondition {
 		mScMemorizeCompletedPosition = scPosition;
 	}
 	
-	public boolean isAllRegDateSearch() {
-		return mScAllRegDateSearch;
-	}
-
-	public void setAllRegDateSearch(boolean flag) {
-		assert mPreferences != null;
-		
-		mScAllRegDateSearch = flag;
-	}
-	
-	public String getFirstSearchDate() {
-		return mScFirstSearchDate;
-	}
-	
-	public String getLastSearchDate() {
-		return mScLastSearchDate;
-	}
-
-	public void setSearchDateRange(String firstSearchDate, String lastSearchDate) {
-		assert mPreferences != null;
-
-		mScFirstSearchDate = firstSearchDate;
-		mScLastSearchDate = lastSearchDate;
-	}
-
 	public boolean [] getCheckedJLPTLevelArray() {
 		assert mContext != null;
 		assert mScCheckedJLPTLevelArray != null;
@@ -133,9 +95,6 @@ public class SearchListCondition {
         editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);
         editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
         editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
-        editor.putBoolean(JV_SPN_ALL_REG_DATE_SEARCH_SC, mScAllRegDateSearch);
-        editor.putString(JV_SPN_FIRST_SEARCH_DATE_SC, mScFirstSearchDate);
-        editor.putString(JV_SPN_LAST_SEARCH_DATE_SC, mScLastSearchDate);
 
         // JLPT 각 급수별 검색 여부 플래그를 저장한다.
         CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
