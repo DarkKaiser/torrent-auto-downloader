@@ -118,60 +118,6 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         mVocabularyListMemorizeOrder.clear();
     }
 
-    public void writePosition(SharedPreferences preferences) {
-        assert preferences != null;
-
-        Editor edit = preferences.edit();
-        edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_ORDER, mMemorizeOrder.ordinal());
-        if (mMemorizeOrder == MemorizeOrder.RANDOM)
-            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
-        else
-            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
-
-        edit.commit();
-    }
-
-    // @@@@@
-    public synchronized void setMemorizeCompletedAtVocabularyPosition() {
-        if (isValidPosition() == true) {
-            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-                ++mMemorizeCompletedCount;
-                vocabulary.setMemorizeCompleted(true, true);
-                VocabularyManager.getInstance().writeUserVocabularyInfo();
-            }
-        } else {
-            assert false;
-        }
-    }
-
-    @Override
-    public boolean isValid() {
-        return true;
-    }
-
-    public synchronized boolean isValidPosition() {
-        return mPosition >= 0 && mPosition < mVocabularyListData.size();
-    }
-
-    public synchronized int getPosition() {
-		return mPosition;
-	}
-
-	public synchronized Vocabulary movePosition(int position) {
-		int prevPosition = mPosition;
-
-		mPosition = position;
-		if (isValidPosition() == true) {
-			return mVocabularyListData.get(mPosition);
-		} else {
-			assert false;
-			mPosition = prevPosition;
-		}
-
-		return null;
-	}
-
     @Override
     public synchronized Vocabulary getVocabulary() {
         if (isValidPosition() == true)
@@ -281,8 +227,60 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		return null;
 	}
 
+    public synchronized void setMemorizeCompleted() {
+        if (isValidPosition() == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
+            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
+                ++mMemorizeCompletedCount;
+                vocabulary.setMemorizeCompleted(true, true);
+            }
+        } else {
+            assert false;
+        }
+    }
+
     public synchronized int getCount() {
         return mVocabularyListData.size();
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    public synchronized boolean isValidPosition() {
+        return mPosition >= 0 && mPosition < mVocabularyListData.size();
+    }
+
+    public synchronized int getPosition() {
+        return mPosition;
+    }
+
+    public synchronized Vocabulary movePosition(int position) {
+        int prevPosition = mPosition;
+
+        mPosition = position;
+        if (isValidPosition() == true) {
+            return mVocabularyListData.get(mPosition);
+        } else {
+            assert false;
+            mPosition = prevPosition;
+        }
+
+        return null;
+    }
+
+    public void writePosition(SharedPreferences preferences) {
+        assert preferences != null;
+
+        Editor edit = preferences.edit();
+        edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_ORDER, mMemorizeOrder.ordinal());
+        if (mMemorizeOrder == MemorizeOrder.RANDOM)
+            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
+        else
+            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
+
+        edit.commit();
     }
 
     public synchronized MemorizeTarget getMemorizeTarget() {

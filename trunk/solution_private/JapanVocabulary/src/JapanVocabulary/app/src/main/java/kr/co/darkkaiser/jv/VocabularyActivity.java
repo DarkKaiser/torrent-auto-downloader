@@ -499,7 +499,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                                 Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                                 vibrator.vibrate(30);
 
-                                mMemorizeTargetVocabularyList.setMemorizeCompletedAtVocabularyPosition();
+                                mMemorizeTargetVocabularyList.setMemorizeCompleted();
+                                VocabularyManager.getInstance().writeUserVocabularyInfo();// @@@@@ 위 함수에서 빼냄
                                 updateMemorizeVocabularyInfo();
                                 showNextMemorizeVocabulary();
 
