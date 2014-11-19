@@ -227,18 +227,6 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		return null;
 	}
 
-    public synchronized void setMemorizeCompleted() {
-        if (isValidPosition() == true) {
-            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-                ++mMemorizeCompletedCount;
-                vocabulary.setMemorizeCompleted(true, true);
-            }
-        } else {
-            assert false;
-        }
-    }
-
     public synchronized int getCount() {
         return mVocabularyListData.size();
     }
@@ -281,6 +269,18 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
             edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
 
         edit.commit();
+    }
+
+    public synchronized void setMemorizeCompleted() {
+        if (isValidPosition() == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
+            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
+                ++mMemorizeCompletedCount;
+                vocabulary.setMemorizeCompleted(true, true);
+            }
+        } else {
+            assert false;
+        }
     }
 
     public synchronized MemorizeTarget getMemorizeTarget() {
