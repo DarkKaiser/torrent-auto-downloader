@@ -931,7 +931,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 // @@@@@ 애니메이션 효과 없애기??
                 if (layout.getVisibility() != View.VISIBLE) {
                     layout.setVisibility(View.VISIBLE);
-                    layout.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.slide_top_to_bottom));
                 }
             } else if (msg.what == MSG_TOAST_SHOW) {
                 Toast.makeText(VocabularyActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
