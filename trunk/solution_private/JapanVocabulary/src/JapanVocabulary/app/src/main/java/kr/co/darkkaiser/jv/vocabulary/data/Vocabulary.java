@@ -97,7 +97,8 @@ public class Vocabulary {
 	public void setMemorizeTarget(boolean flag, boolean isUpdateToDB) {
 		mMemorizeTarget = flag;
 
-		if (isUpdateToDB == true) VocabularyManager.getInstance().writeUserVocabularyInfo();
+		if (isUpdateToDB == true)
+            VocabularyManager.getInstance().writeUserVocabularyInfo();
 	}
 
 	public boolean isMemorizeCompleted() {

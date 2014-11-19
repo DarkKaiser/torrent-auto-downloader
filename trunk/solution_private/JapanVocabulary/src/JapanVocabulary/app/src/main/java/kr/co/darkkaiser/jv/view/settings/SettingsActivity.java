@@ -16,6 +16,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
 // TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
 // TODO 환경설정으로 예문에 후리가나 표시여부 지정하기
+@SuppressWarnings("deprecation")
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	
 	private String appVersion = null;
@@ -58,7 +59,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	@Override
 	protected void onResume() {
 		super.onResume();
-		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
@@ -73,7 +74,6 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	}
 	
 	private class DoConfirmVocabularyDbAsyncTask extends AsyncTask<String, Integer, String> {
-
 		@Override
 		protected String doInBackground(String... params) {
 			try {
@@ -95,7 +95,6 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 				prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
 			}
         }
-
 	}
 
 }

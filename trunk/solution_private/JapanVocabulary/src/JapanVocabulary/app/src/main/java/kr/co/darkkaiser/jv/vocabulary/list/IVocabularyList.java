@@ -10,4 +10,6 @@ public interface IVocabularyList {
 
     public Vocabulary nextVocabulary(StringBuilder sbErrMessage);
 
+    public boolean isValid();
+
 }

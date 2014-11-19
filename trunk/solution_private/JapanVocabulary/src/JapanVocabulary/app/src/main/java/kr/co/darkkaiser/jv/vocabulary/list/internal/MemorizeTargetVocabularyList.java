@@ -280,4 +280,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         return "암기완료 " + mMemorizeCompletedCount + "개 / 전체 " + mVocabularyListData.size() + "개";
 	}
 
+    @Override
+    public boolean isValid() {
+        // @@@@@
+        return false;
+    }
 }

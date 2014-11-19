@@ -10,22 +10,22 @@ public class VocabularyListWrapper {
 
 	}
 
-	public synchronized void setVocabularySeekList(IVocabularyList vocabularyList) {
+	public synchronized void setVocabularyList(IVocabularyList vocabularyList) {
 		mVocabularyList = vocabularyList;
 	}
+
+    public synchronized Vocabulary previousVocabulary(StringBuilder sbErrMessage) {
+        if (isValid() == false)
+            return null;
+
+        return mVocabularyList.previousVocabulary(sbErrMessage);
+    }
 
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
 		if (isValid() == false)
 			return null;
 
 		return mVocabularyList.nextVocabulary(sbErrMessage);
-	}
-
-	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrMessage) {
-		if (isValid() == false)
-			return null;
-
-		return mVocabularyList.previousVocabulary(sbErrMessage);
 	}
 
 	public synchronized Vocabulary getCurrentVocabulary() {
@@ -36,7 +36,7 @@ public class VocabularyListWrapper {
 	}
 
     public synchronized boolean isValid() {
-        return mVocabularyList != null;
+        return mVocabularyList != null && mVocabularyList.isValid();
     }
 
 }

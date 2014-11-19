@@ -382,7 +382,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		if (requestCode == R.id.avsl_open_settings_activity) {
 			// 수행 작업 없음
 		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
-			DetailActivity.setVocabularySeekList(null);
+			DetailActivity.setSeekVocabularyList(null);
 
 			// 상세페이지가 열릴 때 스크롤바를 커스텀 숨기도록 한다.
     		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
@@ -439,7 +439,7 @@ public class SearchListActivity extends ListActivity implements OnClickListener,
 		super.onListItemClick(l, v, position, id);
 
 		synchronized (mJvListData) {
-			DetailActivity.setVocabularySeekList(new SearchResultVocabularyList(mJvListData, position));
+			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mJvListData, position));
 			
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, DetailActivity.class);

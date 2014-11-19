@@ -8,21 +8,15 @@ import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 public class SearchResultVocabularyList implements IVocabularyList {
 
 	private int mCurrentPosition = -1;
-	private ArrayList<Vocabulary> mVocabularyListData = null;
 
-	public SearchResultVocabularyList(ArrayList<Vocabulary> vocabularyListData, int position) {
+	private ArrayList<Vocabulary> mVocabularyList = null;
+
+	public SearchResultVocabularyList(ArrayList<Vocabulary> vocabularyList, int position) {
 		assert position != -1;
-		assert vocabularyListData != null;
+		assert vocabularyList != null;
 
         mCurrentPosition = position;
-        mVocabularyListData = vocabularyListData;
-	}
-
-	@Override
-	public synchronized Vocabulary getCurrentVocabulary() {
-		if (isValid() == true) return mVocabularyListData.get(mCurrentPosition);
-
-		return null;
+        mVocabularyList = vocabularyList;
 	}
 
 	@Override
@@ -31,7 +25,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 		--mCurrentPosition;
 		if (isValid() == true) {
-			return mVocabularyListData.get(mCurrentPosition);
+			return mVocabularyList.get(mCurrentPosition);
 		} else {
 			mCurrentPosition = olcCurrentPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
@@ -46,7 +40,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 		++mCurrentPosition;
 		if (isValid() == true) {
-			return mVocabularyListData.get(mCurrentPosition);
+			return mVocabularyList.get(mCurrentPosition);
 		} else {
 			mCurrentPosition = oldCurrentPosition;
 			sbErrMessage.append("다음 단어가 없습니다.");
@@ -55,8 +49,17 @@ public class SearchResultVocabularyList implements IVocabularyList {
 		return null;
 	}
 
-	private synchronized boolean isValid() {
-        return mVocabularyListData != null && !(mCurrentPosition < 0 || mCurrentPosition >= mVocabularyListData.size());
+    @Override
+    public synchronized Vocabulary getCurrentVocabulary() {
+        if (isValid() == true)
+            return mVocabularyList.get(mCurrentPosition);
+
+        return null;
+    }
+
+    @Override
+	public synchronized boolean isValid() {
+        return mVocabularyList != null && !(mCurrentPosition < 0 || mCurrentPosition >= mVocabularyList.size());
     }
 	
 }

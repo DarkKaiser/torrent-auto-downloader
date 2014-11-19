@@ -112,9 +112,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser == true) {
+                if (fromUser == true)
                     showMemorizeVocabulary(mMemorizeTargetVocabularyList.movePosition(progress));
-                }
             }
         });
 
@@ -151,25 +150,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             }
         });
 
-        // 환경설정 정보를 로드한다.
-        reloadPreference();
-
-        // 단어DB 관리자 객체를 초기화한다.
-        if (VocabularyDbManager.getInstance().init(this) == false) {
-        	new AlertDialog.Builder(this)
-    			.setTitle(getString(R.string.error))
-    			.setMessage(getString(R.string.cannot_access_db_storage))
-    			.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-    				@Override
-    				public void onClick(DialogInterface dialog, int which) {
-    					finish();
-    				}
-    			})
-    			.show();
-
-        	return;
-        }
-
         aq.id(R.id.av_prev_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,6 +177,25 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 showNextMemorizeVocabulary();
             }
         });
+
+        // 환경설정 정보를 로드한다.
+        reloadPreference();
+
+        // 단어DB 관리자 객체를 초기화한다.
+        if (VocabularyDbManager.getInstance().init(this) == false) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.error))
+                    .setMessage(getString(R.string.cannot_access_db_storage))
+                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+
+            return;
+        }
 
         // 단어DB에서 단어를 읽어들입니다.
         loadVocabularyDb();
@@ -311,7 +310,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 showCurrentMemorizeVocabulary();
 			}
 		} else if (requestCode == REQ_CODE_VOCABULARY_DETAIL_INFO) {
-			DetailActivity.setVocabularySeekList(null);
+			DetailActivity.setSeekVocabularyList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
 		}
@@ -519,9 +518,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 long idx = mMemorizeTargetVocabularyList.getCurrentVocabularyIdx();
                 if (idx != -1) {
                     if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
-                        DetailActivity.setVocabularySeekList(mMemorizeTargetVocabularyList);
+                        DetailActivity.setSeekVocabularyList(mMemorizeTargetVocabularyList);
                     else
-                        DetailActivity.setVocabularySeekList(null);
+                        DetailActivity.setSeekVocabularyList(null);
 
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);

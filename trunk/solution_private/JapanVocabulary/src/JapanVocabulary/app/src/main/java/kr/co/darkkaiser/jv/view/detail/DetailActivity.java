@@ -48,8 +48,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
 
-    public static void setVocabularySeekList(IVocabularyList vocabularyList) {
-		mVocabularyListWrapper.setVocabularySeekList(vocabularyList);
+    public static void setSeekVocabularyList(IVocabularyList vocabularyList) {
+		mVocabularyListWrapper.setVocabularyList(vocabularyList);
 	}
 
     @Override
@@ -69,7 +69,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
 		if (vocabulary == null) {
 			// 이전/다음 단어로 이동하기 위한 관리자 객체가 유효하지 않으므로 null로 설정한다.
-			setVocabularySeekList(null);
+			setSeekVocabularyList(null);
 
 			Intent intent = getIntent();
 			if (intent != null) {
@@ -112,7 +112,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 	@Override
 	protected void onDestroy() {
         mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
-        setVocabularySeekList(null);
+        setSeekVocabularyList(null);
 		super.onDestroy();
 	}
 
@@ -210,7 +210,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     }
 
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
-
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
@@ -284,11 +283,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
             return super.onSingleTapConfirmed(e);
         }
-
     };
 
     private Runnable mPrevNextVocabularyButtonVisibleRunnable = new Runnable() {
-
         @Override
         public void run() {
             AQuery aq = new AQuery(DetailActivity.this);
@@ -296,7 +293,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 aq.id(R.id.avd_move_vocabulary_button_panel).animate(AnimationUtils.loadAnimation(DetailActivity.this, android.R.anim.fade_out)).invisible();
             }
         }
-
     };
 
     private void resetInVisiblePrevNextVocabularyButtonAnimate() {
