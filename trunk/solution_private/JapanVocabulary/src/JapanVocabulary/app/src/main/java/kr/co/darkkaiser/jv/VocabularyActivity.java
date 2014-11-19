@@ -445,7 +445,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMemorizeTargetVocabularyList.isValidPosition() == true &&
+        if (mMemorizeTargetVocabularyList.isValid() == true &&
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
@@ -483,7 +483,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     	public void handleMessage(Message msg){
     		switch (msg.what) {
             case MSG_CUSTOM_EVT_LONG_PRESS:
-                if (mMemorizeTargetVocabularyList.isValidPosition() == true) {
+                if (mMemorizeTargetVocabularyList.isValid() == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);

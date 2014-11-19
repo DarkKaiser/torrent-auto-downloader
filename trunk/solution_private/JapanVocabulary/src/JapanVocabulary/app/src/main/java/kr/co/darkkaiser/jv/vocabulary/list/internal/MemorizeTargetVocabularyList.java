@@ -68,7 +68,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
     // @@@@@
     public synchronized void setMemorizeCompletedAtVocabularyPosition() {
-		if (isValidPosition() == true) {
+		if (isValid() == true) {
 			Vocabulary vocabulary = mVocabularyListData.get(mCurrentPosition);
 			if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
 				++mMemorizeCompletedCount;
@@ -118,7 +118,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			int prevCurrentPosition = mCurrentPosition;
 			mCurrentPosition = preferences.getInt(Constants.JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST, -1);
 
-			if (isValidPosition() == false) {
+			if (isValid() == false) {
 				mCurrentPosition = prevCurrentPosition;
 			}
 		}
@@ -143,7 +143,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		edit.commit();
 	}
 
-    public synchronized boolean isValidPosition() {
+    @Override
+    public synchronized boolean isValid() {
         return mCurrentPosition >= 0 && mCurrentPosition < mVocabularyListData.size();
     }
 
@@ -155,7 +156,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 		int prevCurrentPosition = mCurrentPosition;
 
 		mCurrentPosition = position;
-		if (isValidPosition() == true) {
+		if (isValid() == true) {
 			return mVocabularyListData.get(mCurrentPosition);
 		} else {
 			assert false;
@@ -167,7 +168,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
     @Override
     public synchronized Vocabulary getCurrentVocabulary() {
-        if (isValidPosition() == true) return mVocabularyListData.get(mCurrentPosition);
+        if (isValid() == true)
+            return mVocabularyListData.get(mCurrentPosition);
+
         return null;
     }
 
@@ -186,7 +189,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 			int prevCurrentPosition = mCurrentPosition;
 
 			mCurrentPosition = value;
-			if (isValidPosition() == true) {
+			if (isValid() == true) {
 				return mVocabularyListData.get(mCurrentPosition);
 			} else {
 				assert false;
@@ -210,7 +213,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
 			sbErrMessage.append("암기 할 단어가 없습니다.");
 		} else {
-			if (isValidPosition() == true) {
+			if (isValid() == true) {
 				Integer value = mVocabularyListMemorizeOrder.popNoRemove();
 				if (value != null) {
 					if (mCurrentPosition != value)
@@ -262,7 +265,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 				assert bFindSucceeded == true;
 			}
 
-			if (isValidPosition() == true) return mVocabularyListData.get(mCurrentPosition);
+			if (isValid() == true) return mVocabularyListData.get(mCurrentPosition);
 		}
 
 		return null;
@@ -277,13 +280,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
     }
 
     public synchronized String getMemorizeVocabularyInfo() {
-		assert isValidPosition() == true;
+        assert isValid() == true;
         return "암기완료 " + mMemorizeCompletedCount + "개 / 전체 " + mVocabularyListData.size() + "개";
-	}
-
-    @Override
-    public boolean isValid() {
-        // @@@@@
-        return false;
     }
+
 }
