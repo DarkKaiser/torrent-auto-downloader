@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 
-// todo 너무 무분별하게 사용됨
+// todo 너무 무분별하게 사용되어 지고 있음
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
@@ -30,10 +30,8 @@ public class VocabularyManager {
 
 	private SQLiteDatabase mVocabularyDatabase = null;
 
-	/*
-	 * 전체 단어리스트 테이블
-	 */
-	private Hashtable<Long/* 인덱스 */, Vocabulary/* 단어 */> mVocabularyTable = new Hashtable<Long, Vocabulary>();
+    // 전체 단어리스트 테이블
+	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> mVocabularyTable = new Hashtable<Long, Vocabulary>();
 
 	static {
 		mInstance = new VocabularyManager();
