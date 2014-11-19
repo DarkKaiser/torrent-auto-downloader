@@ -50,7 +50,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 	}
 
     @Override
-    public synchronized Vocabulary getCurrentVocabulary() {
+    public synchronized Vocabulary getVocabulary() {
         if (isValid() == true)
             return mVocabularyList.get(mCurrentPosition);
 

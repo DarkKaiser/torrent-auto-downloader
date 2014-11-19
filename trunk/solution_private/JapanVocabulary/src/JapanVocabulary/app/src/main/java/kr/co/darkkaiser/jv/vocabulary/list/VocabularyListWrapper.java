@@ -32,7 +32,7 @@ public class VocabularyListWrapper {
 		if (isValid() == false)
 			return null;
 
-		return mVocabularyList.getCurrentVocabulary();
+		return mVocabularyList.getVocabulary();
 	}
 
     public synchronized boolean isValid() {

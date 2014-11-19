@@ -178,9 +178,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             }
         });
 
-        // 환경설정 정보를 로드한다.
-        reloadPreference();
-
         // 단어DB 관리자 객체를 초기화한다.
         if (VocabularyDbManager.getInstance().init(this) == false) {
             new AlertDialog.Builder(this)
@@ -196,6 +193,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             return;
         }
+
+        // 환경설정 정보를 읽어들인다.
+        reloadPreference();
 
         // 단어DB에서 단어를 읽어들입니다.
         loadVocabularyDb();
@@ -342,14 +342,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	}
 
     private void showCurrentMemorizeVocabulary() {
-		Vocabulary vocabulary = mMemorizeTargetVocabularyList.getCurrentVocabulary();
+		Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
 
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
 	}
 
     private void showPrevMemorizeVocabulary() {
@@ -365,7 +365,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
 	}
 
 	private void showNextMemorizeVocabulary() {
@@ -379,7 +379,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
 		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getCurrentPosition());
+		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
 	}
 
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
@@ -445,7 +445,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMemorizeTargetVocabularyList.isValid() == true &&
+        if (mMemorizeTargetVocabularyList.isValidPosition() == true &&
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
@@ -483,7 +483,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     	public void handleMessage(Message msg){
     		switch (msg.what) {
             case MSG_CUSTOM_EVT_LONG_PRESS:
-                if (mMemorizeTargetVocabularyList.isValid() == true) {
+                if (mMemorizeTargetVocabularyList.isValidPosition() == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -515,7 +515,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 break;
 
             case MSG_CUSTOM_EVT_TAP:
-                long idx = mMemorizeTargetVocabularyList.getCurrentVocabularyIdx();
+                long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
                 if (idx != -1) {
                     if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
                         DetailActivity.setSeekVocabularyList(mMemorizeTargetVocabularyList);

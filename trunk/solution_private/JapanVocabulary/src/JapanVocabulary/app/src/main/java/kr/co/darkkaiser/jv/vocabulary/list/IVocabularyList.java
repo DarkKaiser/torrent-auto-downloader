@@ -4,7 +4,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 
 public interface IVocabularyList {
 
-    public Vocabulary getCurrentVocabulary();
+    public Vocabulary getVocabulary();
 
     public Vocabulary previousVocabulary(StringBuilder sbErrMessage);
 

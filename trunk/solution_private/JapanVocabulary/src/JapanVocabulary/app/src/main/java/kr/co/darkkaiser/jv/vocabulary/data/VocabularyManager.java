@@ -342,7 +342,7 @@ public class VocabularyManager {
 	}
 
     // @@@@@
-    public synchronized int getMemorizeTargetJvList(ArrayList<Vocabulary> jvList) {
+    public synchronized int getMemorizeTargetVocabularyList(ArrayList<Vocabulary> jvList) {
 		int mJvMemorizeCompletedCount = 0;
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
 			Vocabulary jpVocabulary = e.nextElement();
