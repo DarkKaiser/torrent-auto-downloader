@@ -10,7 +10,7 @@
         android:layout_width="2dp"
         android:layout_height="match_parent"
         android:contentDescription="@null"
-        android:background="@color/avsli_vocabulary_memorize_completed_bar"
+        android:background="@color/avsli_vocabulary_memorize_bar_completed"
         />
     <RelativeLayout
         android:id="@+id/avsli_vocabulary_panel"

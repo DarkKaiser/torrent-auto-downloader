@@ -368,7 +368,7 @@ public class VocabularyManager {
 		writeUserVocabularyInfo();
 	}
 
-    // @@@@@
+    // @@@@@ DB로 변경
     public synchronized void writeUserVocabularyInfo() {
 		StringBuilder sb = new StringBuilder();
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {

@@ -21,14 +21,15 @@ public class SearchListAdapter extends BaseAdapter {
 	private int mLayout;
 	private Context mContext = null;
     private LayoutInflater mLayoutInflater = null;
-    private ArrayList<Vocabulary> mVocabularyList = null;
-    private Handler mVocabularyListDataChangedHandler = null;
+    private Handler mVocabularyChangedHandler = null;
 
-	public SearchListAdapter(Context context, int layout, Handler vocabularyListDataChangedHandler, ArrayList<Vocabulary> vocabularyList) {
+    private ArrayList<Vocabulary> mVocabularyList = null;
+
+	public SearchListAdapter(Context context, int layout, Handler vocabularyChangedHandler, ArrayList<Vocabulary> vocabularyList) {
 		mLayout = layout;
         mContext = context;
         mVocabularyList = vocabularyList;
-		mVocabularyListDataChangedHandler = vocabularyListDataChangedHandler;
+		mVocabularyChangedHandler = vocabularyChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -52,17 +53,15 @@ public class SearchListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) convertView = mLayoutInflater.inflate(mLayout, parent, false);
+        if (convertView == null)
+            convertView = mLayoutInflater.inflate(mLayout, parent, false);
 
         AQuery aq = new AQuery(convertView);
 
         Vocabulary vocabulary = mVocabularyList.get(position);
         if (vocabulary == null) {
-            assert false;
-
             aq.id(R.id.avsli_vocabulary_panel).invisible();
             aq.id(R.id.avsli_vocabulary_memorize_bar).invisible();
-
             return convertView;
         } else {
             aq.id(R.id.avsli_vocabulary_panel).visible();
@@ -81,24 +80,23 @@ public class SearchListAdapter extends BaseAdapter {
 
 		if (vocabulary.isMemorizeCompleted() == true) {
             aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_completed));
-            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_completed_bar));
+            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_bar_completed));
         } else {
             aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_uncompleted));
-            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_uncompleted_bar));
+            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_bar_uncompleted));
         }
 
         aq.id(R.id.avsli_vocabulary_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
-                int position = (Integer) cbMemorizeTarget.getTag();
+                int position = (Integer)cbMemorizeTarget.getTag();
                 if (position < mVocabularyList.size()) {
-                    // @@@@@ manager로 변경???
                     mVocabularyList.get(position).setMemorizeTarget(cbMemorizeTarget.isChecked());
                     VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
-                    mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+                    mVocabularyChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
                 }
             }
         });
@@ -107,14 +105,13 @@ public class SearchListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
-                int position = (Integer) cbMemorizeCompleted.getTag();
+                int position = (Integer)cbMemorizeCompleted.getTag();
                 if (position < mVocabularyList.size()) {
-                    // @@@@@ manager로 변경???
                     mVocabularyList.get(position).setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
                     VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
-                    mVocabularyListDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+                    mVocabularyChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
                 }
             }
         });
