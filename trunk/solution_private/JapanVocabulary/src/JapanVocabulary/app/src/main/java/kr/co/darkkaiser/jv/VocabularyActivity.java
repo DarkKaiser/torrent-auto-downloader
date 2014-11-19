@@ -728,7 +728,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 단어 DB 파일을 내려받는다.
         try {
-            URL url = new URL(Constants.JV_DB_DOWNLOAD_URL);
+            URL url = new URL(Constants.VOCABULARY_DB_DOWNLOAD_URL);
 
             URLConnection con = url.openConnection();
             int contentLength = con.getContentLength();

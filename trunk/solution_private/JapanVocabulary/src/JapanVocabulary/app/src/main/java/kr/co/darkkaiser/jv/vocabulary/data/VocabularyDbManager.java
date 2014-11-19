@@ -56,6 +56,7 @@ public class VocabularyDbManager {
 			}
 		}
 
+        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함
         // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
         String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
         file1 = new File(v2UserDbFilePath);
@@ -78,7 +79,7 @@ public class VocabularyDbManager {
 
     public String getLatestVocabularyDbVersion() throws Exception {
         try {
-            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
             return jsonObject.getString("version");
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +90,7 @@ public class VocabularyDbManager {
 
     public String getLatestVocabularyDbFileHash() throws Exception {
         try {
-            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
             return jsonObject.getString("sha1");
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,20 +100,20 @@ public class VocabularyDbManager {
     }
 
     public ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
-        String newVocabularyDbVersion = "";
-        String newVocabularyDbFileHash = "";
+        String vocabularyDbVersion = "";
+        String vocabularyDbFileHash = "";
 
         try {
-            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.JV_DB_CHECKSUM_URL));
-            newVocabularyDbVersion = jsonObject.getString("version");
-            newVocabularyDbFileHash = jsonObject.getString("sha1");
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
+            vocabularyDbVersion = jsonObject.getString("version");
+            vocabularyDbFileHash = jsonObject.getString("sha1");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         ArrayList<String> result = new ArrayList<String>();
-        result.add(newVocabularyDbVersion);
-        result.add(newVocabularyDbFileHash);
+        result.add(vocabularyDbVersion);
+        result.add(vocabularyDbFileHash);
 
         return result;
     }
