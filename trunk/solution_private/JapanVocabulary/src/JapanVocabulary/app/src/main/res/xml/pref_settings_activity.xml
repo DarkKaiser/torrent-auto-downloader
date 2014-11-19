@@ -34,13 +34,13 @@
             android:defaultValue="@bool/vibrate_next_vocabulary_default_value"
             />
         <ListPreference
-            android:key="@string/as_memorize_order_method_key"
-            android:title="@string/as_memorize_order_method_title"
-            android:summary="@string/as_memorize_order_method_summary"
-            android:defaultValue="@integer/memorize_order_method_default_value"
-            android:entries="@array/memorize_order_method_item_entry"
-            android:entryValues="@array/memorize_order_method_item_entry_values"
-            android:dialogTitle="@string/as_memorize_order_method_dialog_title"
+            android:key="@string/as_memorize_order_key"
+            android:title="@string/as_memorize_order_title"
+            android:summary="@string/as_memorize_order_summary"
+            android:defaultValue="@integer/memorize_order_default_value"
+            android:entries="@array/memorize_order_item_entry"
+            android:entryValues="@array/memorize_order_item_entry_values"
+            android:dialogTitle="@string/as_memorize_order_dialog_title"
             />
     </PreferenceCategory>
     <PreferenceCategory 

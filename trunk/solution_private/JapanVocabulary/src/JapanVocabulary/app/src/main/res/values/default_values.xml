@@ -6,6 +6,6 @@
     <bool name="fade_effect_next_vocabulary_default_value">true</bool>
     <bool name="vibrate_next_vocabulary_default_value">true</bool>
     <bool name="vocabulary_update_on_started_default_value">true</bool>
-    <integer name="memorize_order_method_default_value">0</integer>
+    <integer name="memorize_order_default_value">0</integer>
 
 </resources>

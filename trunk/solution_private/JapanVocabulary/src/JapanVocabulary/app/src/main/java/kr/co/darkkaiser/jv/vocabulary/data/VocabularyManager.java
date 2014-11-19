@@ -11,8 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -312,20 +310,27 @@ public class VocabularyManager {
 		return mVocabularyTable.get(idx);
 	}
 
-    // @@@@@
-    public synchronized int getMemorizeTargetVocabularyList(ArrayList<Vocabulary> jvList) {
-		int mJvMemorizeCompletedCount = 0;
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary jpVocabulary = e.nextElement();
-			if (jpVocabulary.isMemorizeTarget() == true) {
-				jvList.add(jpVocabulary);
+    /**
+     * 암기대상 단어리스트 및 암기대상 단어리스트중에서의 암기완료 단어 갯수를 반환합니다.
+     *
+     * @param vocabularyList 암기대상 단어리스트
+     * @return 암기완료 단어 갯수
+     */
+    public synchronized int getMemorizeTargetVocabularyList(ArrayList<Vocabulary> vocabularyList) {
+        assert vocabularyList != null;
 
-				if (jpVocabulary.isMemorizeCompleted() == true)
-					++mJvMemorizeCompletedCount;
+		int memorizeCompletedCount = 0;
+		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+			Vocabulary vocabulary = e.nextElement();
+			if (vocabulary.isMemorizeTarget() == true) {
+				vocabularyList.add(vocabulary);
+
+				if (vocabulary.isMemorizeCompleted() == true)
+					++memorizeCompletedCount;
 			}
 		}
 
-		return mJvMemorizeCompletedCount;
+		return memorizeCompletedCount;
 	}
 
     // @@@@@

@@ -15,12 +15,12 @@ public class Constants {
     /*
      * 가장 최근에 사용자가 암기했던 저장된 단어 암기 순서(공용 환경설정 키이름)@@@@@
      */
-    public static final String JV_SPN_MEMORIZE_ORDER_METHOD_LATEST = "jv_memorize_order_method_latest";
-    
+    public static final String LATEST_VOCABULARY_MEMORIZE_ORDER = "latest_vocabulary_memorize_order";
+
     /*
      * 가장 최근에 사용자가 암기했던 저장된 단어 암기 순서의 인덱스(공용 환경설정 키이름)@@@@@
      */
-    public static final String JV_SPN_MEMORIZE_ORDER_METHOD_INDEX_LATEST = "jv_memorize_order_method_index_latest";
+    public static final String LATEST_VOCABULARY_MEMORIZE_POSITION = "latest_vocabulary_memorize_position";
 
     /*
      * 리스트 정렬 방법(공용 환경설정 키이름)@@@@@

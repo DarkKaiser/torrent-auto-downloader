@@ -53,6 +53,7 @@ import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.SearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
+import kr.co.darkkaiser.jv.vocabulary.MemorizeOrder;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
@@ -338,7 +339,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         else
             tswVocabularyTranslation.setVisibility(View.VISIBLE);
 
-        return mMemorizeTargetVocabularyList.reloadPreference(this, preferences);
+        return mMemorizeTargetVocabularyList.init(this, preferences);
 	}
 
     private void showCurrentMemorizeVocabulary() {
@@ -438,7 +439,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mMemorizeTargetVocabularyList.saveVocabularyPosition(preferences);
+		mMemorizeTargetVocabularyList.writePosition(preferences);
 
 		super.onBackPressed();
 	}
@@ -549,7 +550,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
 		if (memorizeVocabularyCount == 0 ||
-                Integer.parseInt(preferences.getString(getString(R.string.as_memorize_order_method_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_method_default_value)))) == 0/* 랜덤 */) {
+                Integer.parseInt(preferences.getString(getString(R.string.as_memorize_order_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_default_value)))) == MemorizeOrder.RANDOM.ordinal()) {
 			msg.arg1 = View.INVISIBLE;
 		} else {
 			msg.arg1 = View.VISIBLE;
@@ -891,14 +892,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     }
 
     // @@@@@
-    private void loadMemorizeTargetVocabularyData(boolean launchApp) {
+    private void loadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
         Message msg = Message.obtain();
         msg.what = MSG_PROGRESS_DIALOG_REFRESH;
         msg.obj = "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.";
         mVocabularyDataLoadHandler.sendMessage(msg);
 
         SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        mMemorizeTargetVocabularyList.loadVocabularyData(preferences, launchApp);
+        mMemorizeTargetVocabularyList.loadVocabularyData(preferences, firstLoadVocabularyData);
 
         adjustVocabularySeekBar(preferences);
     }
@@ -913,7 +914,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
                 // @@@@@
                 updateMemorizeVocabularyInfo();
-                showNextMemorizeVocabulary();
+                showCurrentMemorizeVocabulary();
 
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
