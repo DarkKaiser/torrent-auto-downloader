@@ -336,9 +336,9 @@ public class VocabularyManager {
     // @@@@@
     public synchronized void rememorizeAllMemorizeTarget() {
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary jv = e.nextElement();
-			if (jv.isMemorizeTarget() == true)
-				jv.setMemorizeCompleted(false, false);
+			Vocabulary vocabulary = e.nextElement();
+			if (vocabulary.isMemorizeTarget() == true)
+				vocabulary.setMemorizeCompleted(false, false);
 		}
 
 		writeUserVocabularyInfo();
@@ -471,20 +471,30 @@ public class VocabularyManager {
 		return sbResult.toString();
 	}
 
-    // @@@@@
+    /**
+     * 단어에 등록된 예문을 반환합니다.
+     *
+     * @param vocabulary 단어 객체
+     * @return 단어에 등록된 예문
+     */
+    @SuppressWarnings("StringBufferReplaceableByString")
     public synchronized String getVocabularyExample(Vocabulary vocabulary) {
-        long idx = vocabulary.getIdx();
+        assert vocabulary != null;
 
-		StringBuilder sbResult = new StringBuilder();
-		if (mVocabularyDatabase != null) {
-			Cursor cursor = null;
-			
-			try {
-				StringBuilder sbSQL = new StringBuilder();
-				sbSQL.append("SELECT VOCABULARY, ")
-				     .append("       VOCABULARY_TRANSLATION ")
-				     .append("  FROM TBL_VOCABULARY_EXAMPLE ")
-				     .append(" WHERE V_IDX=").append(idx);
+        StringBuilder sbResult = new StringBuilder();
+
+        if (mVocabularyDatabase != null) {
+            Cursor cursor = null;
+
+            try {
+                StringBuilder sbSQL = new StringBuilder();
+				sbSQL.append(" SELECT VOCABULARY, VOCABULARY_TRANSLATION ")
+				     .append("   FROM TBL_VOCABULARY_EXAMPLE ")
+                     .append("  WHERE IDX IN ( SELECT E_IDX ")
+                     .append("                   FROM TBL_VOCABULARY_EXAMPLE_MAPP ")
+                     .append("                  WHERE V_IDX = ").append(vocabulary.getIdx())
+                     .append("        ) ")
+                     .append("    AND USE_YN = 'Y' ");
 
 				cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
@@ -493,7 +503,7 @@ public class VocabularyManager {
 					{
 						if (sbResult.length() > 0)
 							sbResult.append("<br><br>");
-						
+
 						sbResult.append(cursor.getString(0/* VOCABULARY */)).append("<br>").append(cursor.getString(1/* VOCABULARY_TRANSLATION */));
 					} while (cursor.moveToNext());
 				}
