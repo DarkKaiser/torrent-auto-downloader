@@ -42,15 +42,12 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 	private MemorizeTarget mMemorizeTarget = MemorizeTarget.VOCABULARY;
 
 	public MemorizeTargetVocabularyList() {
-		
+		clearVocabularyData();
 	}
 
-    // @@@@@
-	public boolean init(Context context, SharedPreferences preferences) {
+	public void resetMemorizeSettings(Context context, SharedPreferences preferences) {
         assert context != null;
         assert preferences != null;
-
-        // @@@@@ clearVocabularyData();
 
         // 화면에 출력 할 암기대상 단어의 항목을 읽는다.
         String memorizeTarget = preferences.getString(context.getString(R.string.as_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
@@ -71,8 +68,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         else
             mMemorizeOrder = MemorizeOrder.RANDOM;
 
-        // 단어 암기순서가 변경되어 암기대상 단어를 재로드해야하는지의 여부를 반환한다.
-		return (mMemorizeOrder != prevMemorizeOrder);
+        // 단어 암기순서가 변경되어 암기대상 단어를 재로드해야 하는 경우라면 이전에 읽어들인 암기대상 단어를 모두 제거한다.
+        if (mMemorizeOrder != prevMemorizeOrder)
+            clearVocabularyData();
 	}
 
     public synchronized void loadVocabularyData(SharedPreferences preferences, boolean firstLoadVocabularyData) {
@@ -269,7 +267,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         edit.commit();
     }
 
-    // @@@@@
+    // @@@@@ 함수명 고민
     public synchronized void setMemorizeCompleted() {
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
