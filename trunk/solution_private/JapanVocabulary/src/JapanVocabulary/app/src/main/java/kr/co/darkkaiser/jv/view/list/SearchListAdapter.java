@@ -60,12 +60,12 @@ public class SearchListAdapter extends BaseAdapter {
 
         Vocabulary vocabulary = mVocabularyList.get(position);
         if (vocabulary == null) {
+            aq.id(R.id.avsli_memorize_bar).invisible();
             aq.id(R.id.avsli_vocabulary_panel).invisible();
-            aq.id(R.id.avsli_vocabulary_memorize_bar).invisible();
             return convertView;
         } else {
+            aq.id(R.id.avsli_memorize_bar).visible();
             aq.id(R.id.avsli_vocabulary_panel).visible();
-            aq.id(R.id.avsli_vocabulary_memorize_bar).visible();
         }
 
         aq.id(R.id.avsli_vocabulary).text(vocabulary.getVocabulary());
@@ -74,19 +74,19 @@ public class SearchListAdapter extends BaseAdapter {
 
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (memorizeCompletedCount > 0)
-            aq.id(R.id.avsli_vocabulary_memorize_completed_count).text(String.format(mContext.getString(R.string.avsli_vocabulary_memorize_completed_count), memorizeCompletedCount)).visible();
+            aq.id(R.id.avsli_memorize_completed_count).text(String.format(mContext.getString(R.string.avsli_memorize_completed_count), memorizeCompletedCount)).visible();
         else
-            aq.id(R.id.avsli_vocabulary_memorize_completed_count).invisible();
+            aq.id(R.id.avsli_memorize_completed_count).invisible();
 
 		if (vocabulary.isMemorizeCompleted() == true) {
+            aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_completed));
             aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_completed));
-            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_bar_completed));
         } else {
+            aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_uncompleted));
             aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_uncompleted));
-            aq.id(R.id.avsli_vocabulary_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_memorize_bar_uncompleted));
         }
 
-        aq.id(R.id.avsli_vocabulary_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
+        aq.id(R.id.avsli_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
@@ -101,7 +101,7 @@ public class SearchListAdapter extends BaseAdapter {
             }
         });
 
-        aq.id(R.id.avsli_vocabulary_memorize_completed).tag(position).checked(vocabulary.isMemorizeCompleted()).clicked(new View.OnClickListener() {
+        aq.id(R.id.avsli_memorize_completed).tag(position).checked(vocabulary.isMemorizeCompleted()).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     >
     <RelativeLayout
         android:id="@+id/av_memorize_info_header"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom"
         android:visibility="invisible"
@@ -31,12 +31,12 @@
             />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
         <SeekBar
             android:id="@+id/av_vocabulary_seekbar"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:maxHeight="3dp"
@@ -50,7 +50,7 @@
             />
         <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
             android:id="@+id/xmladview"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:appcode="wCr75ZtDLm"
@@ -73,7 +73,7 @@
             />
         <Button
             android:id="@+id/av_next_vocabulary"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_above="@id/xmladview"
             android:layout_toRightOf="@id/av_prev_vocabulary"
@@ -83,7 +83,7 @@
             />
         <TextView
             android:id="@+id/av_memorize_method_comment"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/av_next_vocabulary"
             android:gravity="center"
@@ -94,20 +94,20 @@
             />
         <RelativeLayout
             android:id="@+id/av_vocabulary_container"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_above="@id/av_memorize_method_comment"
             android:layout_below="@id/av_vocabulary_seekbar"
             >
             <TextSwitcher
                 android:id="@+id/av_vocabulary"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 />
             <TextSwitcher
                 android:id="@+id/av_vocabulary_translation"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/av_vocabulary"
                 android:layout_centerInParent="true"

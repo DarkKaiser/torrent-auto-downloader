@@ -271,12 +271,14 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         edit.commit();
     }
 
+    // @@@@@
     public synchronized void setMemorizeCompleted() {
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
                 ++mMemorizeCompletedCount;
                 vocabulary.setMemorizeCompleted(true, true);
+                // @@@@@@ VocabularyManager.getInstance().writeUserVocabularyInfo(); listadapter에서는 사용했음
             }
         } else {
             assert false;
