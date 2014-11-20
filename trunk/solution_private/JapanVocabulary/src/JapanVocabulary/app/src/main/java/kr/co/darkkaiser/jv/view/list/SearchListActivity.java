@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.jv.view.list;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,8 +37,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
@@ -51,7 +48,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 
 import kr.co.darkkaiser.jv.R;
@@ -81,6 +77,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 	private SearchListAdapter mJvListAdapter = null;
 	private ArrayList<Vocabulary> mVocabularyListData = null;// @@@@@ SearchResultVocabularyList로 변경하는건???
+    // @@@@@ private SearchResultVocabularyList mSearchResultVocabularyList = new SearchResultVocabularyList();
 	private SearchListSortMethod mJvListSortMethod = SearchListSortMethod.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;

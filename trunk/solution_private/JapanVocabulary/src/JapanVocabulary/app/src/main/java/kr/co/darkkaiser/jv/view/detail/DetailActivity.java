@@ -120,13 +120,12 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		assert vocabulary != null;
 
         AQuery aq = new AQuery(this);
-        VocabularyManager vm = VocabularyManager.getInstance();
 
         aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
         aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
-        aq.id(R.id.avd_vocabulary_detail_info).text(vm.getVocabularyDetailDescription(vocabulary));
-        aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(vm.getVocabularyExample(vocabulary)));
+        aq.id(R.id.avd_vocabulary_detail_info).text(VocabularyManager.getInstance().getVocabularyDetailDescription(vocabulary));
+        aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(vocabulary)));
 
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {

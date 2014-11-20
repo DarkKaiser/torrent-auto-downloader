@@ -196,7 +196,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         }
 
         // 환경설정 정보를 읽어들인다.
-        reloadPreference();
+        resetSettings();
 
         // 단어DB에서 단어를 읽어들입니다.
         loadVocabularyDb();
@@ -265,7 +265,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 			// 환경설정의 값이 변경된 경우는 해당 값을 다시 읽어들인다.
 			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
-                 reloadPreference();
+                 resetSettings();
                 if (mMemorizeTargetVocabularyList.getCount() == 0)
                     mustReloadJvData = true;
             }
@@ -293,7 +293,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 showCurrentMemorizeVocabulary();
 			}
 		} else if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
-            reloadPreference();
+            resetSettings();
 			if (mMemorizeTargetVocabularyList.getCount() == 0) {
 				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
 				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
@@ -321,8 +321,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		}
 	}
 
-    // @@@@@
-    private void reloadPreference() {
+    private void resetSettings() {
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);

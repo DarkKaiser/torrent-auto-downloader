@@ -7,7 +7,7 @@ import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
 
 public class SearchResultVocabularyList implements IVocabularyList {
 
-	private int mCurrentPosition = -1;
+	private int mPosition = -1;
 
 	private ArrayList<Vocabulary> mVocabularyList = null;
 
@@ -15,19 +15,19 @@ public class SearchResultVocabularyList implements IVocabularyList {
 		assert position != -1;
 		assert vocabularyList != null;
 
-        mCurrentPosition = position;
+        mPosition = position;
         mVocabularyList = vocabularyList;
 	}
 
 	@Override
 	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		int olcCurrentPosition = mCurrentPosition;
+		int olcPosition = mPosition;
 
-		--mCurrentPosition;
+		--mPosition;
 		if (isValid() == true) {
-			return mVocabularyList.get(mCurrentPosition);
+			return mVocabularyList.get(mPosition);
 		} else {
-			mCurrentPosition = olcCurrentPosition;
+			mPosition = olcPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
 		}
 
@@ -36,13 +36,13 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 	@Override
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
-		int oldCurrentPosition = mCurrentPosition;
+		int oldPosition = mPosition;
 
-		++mCurrentPosition;
+		++mPosition;
 		if (isValid() == true) {
-			return mVocabularyList.get(mCurrentPosition);
+			return mVocabularyList.get(mPosition);
 		} else {
-			mCurrentPosition = oldCurrentPosition;
+			mPosition = oldPosition;
 			sbErrMessage.append("다음 단어가 없습니다.");
 		}
 
@@ -52,14 +52,14 @@ public class SearchResultVocabularyList implements IVocabularyList {
     @Override
     public synchronized Vocabulary getVocabulary() {
         if (isValid() == true)
-            return mVocabularyList.get(mCurrentPosition);
+            return mVocabularyList.get(mPosition);
 
         return null;
     }
 
     @Override
 	public synchronized boolean isValid() {
-        return mVocabularyList != null && !(mCurrentPosition < 0 || mCurrentPosition >= mVocabularyList.size());
+        return mVocabularyList != null && !(mPosition < 0 || mPosition >= mVocabularyList.size());
     }
 	
 }
