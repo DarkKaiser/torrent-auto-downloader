@@ -78,7 +78,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	private SearchListAdapter mJvListAdapter = null;
 	private ArrayList<Vocabulary> mVocabularyListData = null;// @@@@@ SearchResultVocabularyList로 변경하는건???
     // @@@@@ private SearchResultVocabularyList mSearchResultVocabularyList = new SearchResultVocabularyList();
-	private SearchListSortMethod mJvListSortMethod = SearchListSortMethod.VOCABULARY;
+	private SearchListSortMethod mSearchListSortMethod = SearchListSortMethod.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;
 	private SearchListCondition mJvListSearchCondition = null;
@@ -129,7 +129,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSortMethod = SearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSortMethod.VOCABULARY.name()));
+		mSearchListSortMethod = SearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSortMethod.VOCABULARY.name()));
 		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
@@ -379,10 +379,10 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
     // @@@@@
     private void startSortList(SearchListSortMethod jvListSortMethod) {
-		if (mJvListSortMethod == jvListSortMethod)
+		if (mSearchListSortMethod == jvListSortMethod)
 			return;
 
-		mJvListSortMethod = jvListSortMethod;
+		mSearchListSortMethod = jvListSortMethod;
 
 		// 정렬중에 프로그레스 대화상자를 보인다.
 		assert mProgressDialog == null;
@@ -392,7 +392,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 			@Override
 			public void run() {
 				// 변경된 정렬 방법을 저장한다.
-				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mJvListSortMethod.name()).commit();
+				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mSearchListSortMethod.name()).commit();
 
 				// 리스트 데이터 정렬합니다.
 				sortList();
@@ -407,7 +407,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
     // @@@@@
     private void sortList() {
 		synchronized (mVocabularyListData) {
-			switch (mJvListSortMethod) {
+			switch (mSearchListSortMethod) {
 			case VOCABULARY:
 				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
 				break;
