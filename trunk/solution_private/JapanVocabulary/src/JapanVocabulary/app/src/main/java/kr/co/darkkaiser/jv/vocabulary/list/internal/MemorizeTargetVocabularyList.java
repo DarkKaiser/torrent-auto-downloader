@@ -50,30 +50,28 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         assert context != null;
         assert preferences != null;
 
-        clearVocabularyData();
+        // @@@@@ clearVocabularyData();
 
         // 화면에 출력 할 암기대상 단어의 항목을 읽는다.
         String memorizeTarget = preferences.getString(context.getString(R.string.as_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
-        if (TextUtils.equals(memorizeTarget, Integer.toString(MemorizeTarget.VOCABULARY.ordinal())) == true)
-            mMemorizeTarget = MemorizeTarget.VOCABULARY;
-        else if (TextUtils.equals(memorizeTarget, Integer.toString(MemorizeTarget.VOCABULARY_GANA.ordinal())) == true)
+        if (TextUtils.equals(memorizeTarget, Integer.toString(MemorizeTarget.VOCABULARY_GANA.ordinal())) == true)
             mMemorizeTarget = MemorizeTarget.VOCABULARY_GANA;
         else
-            assert false;
+            mMemorizeTarget = MemorizeTarget.VOCABULARY;
 
 		// 단어 암기순서를 읽는다.
 		MemorizeOrder prevMemorizeOrder = mMemorizeOrder;
 		int memorizeOrder = Integer.parseInt(preferences.getString(context.getString(R.string.as_memorize_order_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_order_default_value))));
-        if (memorizeOrder == MemorizeOrder.RANDOM.ordinal())
-            mMemorizeOrder = MemorizeOrder.RANDOM;
-        else if (memorizeOrder == MemorizeOrder.VOCABULARY.ordinal())
+        if (memorizeOrder == MemorizeOrder.VOCABULARY.ordinal())
             mMemorizeOrder = MemorizeOrder.VOCABULARY;
         else if (memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION.ordinal())
             mMemorizeOrder = MemorizeOrder.VOCABULARY_TRANSLATION;
         else if (memorizeOrder == MemorizeOrder.VOCABULARY_GANA.ordinal())
             mMemorizeOrder = MemorizeOrder.VOCABULARY_GANA;
+        else
+            mMemorizeOrder = MemorizeOrder.RANDOM;
 
-        // 암기대상 단어를 재로드해야하는가?@@@@@ 재로드는 필요없고 정렬만 다시 하면됨
+        // 단어 암기순서가 변경되어 암기대상 단어를 재로드해야하는지의 여부를 반환한다.
 		return (mMemorizeOrder != prevMemorizeOrder);
 	}
 
@@ -284,6 +282,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
             assert false;
         }
     }
+
+    public synchronized MemorizeOrder getMemorizeOrder() { return mMemorizeOrder; }
 
     public synchronized MemorizeTarget getMemorizeTarget() {
         return mMemorizeTarget;

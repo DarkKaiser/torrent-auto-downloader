@@ -80,7 +80,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	private ProgressDialog mProgressDialog = null;
 
 	private SearchListAdapter mJvListAdapter = null;
-	private ArrayList<Vocabulary> mVocabularyListData = null;
+	private ArrayList<Vocabulary> mVocabularyListData = null;// @@@@@ SearchResultVocabularyList로 변경하는건???
 	private SearchListSortMethod mJvListSortMethod = SearchListSortMethod.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;
