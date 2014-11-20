@@ -75,7 +75,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	private SharedPreferences mPreferences = null;
 	private ProgressDialog mProgressDialog = null;
 
-	private SearchListAdapter mJvListAdapter = null;
+	private SearchListAdapter mVocabularyListAdapter = null;
 	private ArrayList<Vocabulary> mVocabularyListData = null;// @@@@@ SearchResultVocabularyList로 변경하는건???
     // @@@@@ private SearchResultVocabularyList mSearchResultVocabularyList = new SearchResultVocabularyList();
 	private SearchListSortMethod mSearchListSortMethod = SearchListSortMethod.VOCABULARY;
@@ -134,8 +134,8 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 		// 단어 리스트를 초기화한다.
 		mVocabularyListData = new ArrayList<Vocabulary>();
-		mJvListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
-		setListAdapter(mJvListAdapter);
+		mVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
+		setListAdapter(mVocabularyListAdapter);
 		
 		//
 		// Thumb 관련 객체를 초기화합니다.
@@ -313,40 +313,35 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 			
 			@Override
 			public void run() {
-				Vocabulary jpVocabulary = null;
 				ArrayList<Long> idxList = new ArrayList<Long>();
 
 				synchronized (mVocabularyListData) {
 					if (mMenuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 전체 단어 재암기
-						for (int index = 0; index < mVocabularyListData.size(); ++index) {
-							jpVocabulary = mVocabularyListData.get(index);
-							if (jpVocabulary.isMemorizeTarget() == false || jpVocabulary.isMemorizeCompleted() == true)
-								idxList.add(jpVocabulary.getIdx());
-						}
+                        for (Vocabulary vocabulary : mVocabularyListData) {
+                            if (vocabulary.isMemorizeTarget() == false || vocabulary.isMemorizeCompleted() == true)
+                                idxList.add(vocabulary.getIdx());
+                        }
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) { 		// 검색된 전체 단어 암기 완료
-						for (int index = 0; index < mVocabularyListData.size(); ++index) {
-							jpVocabulary = mVocabularyListData.get(index);
-							if (jpVocabulary.isMemorizeCompleted() == false)
-								idxList.add(jpVocabulary.getIdx());
-						}
+                        for (Vocabulary vocabulary : mVocabularyListData) {
+                            if (vocabulary.isMemorizeCompleted() == false)
+                                idxList.add(vocabulary.getIdx());
+                        }
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 전체 단어 암기 대상 만들기
 						if (mNotSearchVocabularyTargetCancel == true) {
-							for (int index = 0; index < mVocabularyListData.size(); ++index) {
-								idxList.add(mVocabularyListData.get(index).getIdx());
-							}							
+                            for (Vocabulary vocabulary : mVocabularyListData) {
+                                idxList.add(vocabulary.getIdx());
+                            }
 						} else {
-							for (int index = 0; index < mVocabularyListData.size(); ++index) {
-								jpVocabulary = mVocabularyListData.get(index);
-								if (jpVocabulary.isMemorizeTarget() == false)
-									idxList.add(jpVocabulary.getIdx());
-							}							
+                            for (Vocabulary vocabulary : mVocabularyListData) {
+                                if (vocabulary.isMemorizeTarget() == false)
+                                    idxList.add(vocabulary.getIdx());
+                            }
 						}
 					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) { 	// 검색된 전체 단어 암기 대상 해제
-						for (int index = 0; index < mVocabularyListData.size(); ++index) {
-							jpVocabulary = mVocabularyListData.get(index);
-							if (jpVocabulary.isMemorizeTarget() == true)
-								idxList.add(jpVocabulary.getIdx());
-						}
+                        for (Vocabulary vocabulary : mVocabularyListData) {
+                            if (vocabulary.isMemorizeTarget() == true)
+                                idxList.add(vocabulary.getIdx());
+                        }
 					}
 
 					VocabularyManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);
@@ -441,7 +436,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == MSG_COMPLETED_LIST_DATA_UPDATE) {
-				mJvListAdapter.notifyDataSetChanged();
+				mVocabularyListAdapter.notifyDataSetChanged();
 				updateVocabularyInfo();
 
 				if (mProgressDialog != null)
@@ -450,7 +445,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 				mProgressDialog = null;
 				mJvListSearchThread = null;
 			} else if (msg.what == MSG_CHANGED_LIST_DATA) {
-				mJvListAdapter.notifyDataSetChanged();
+				mVocabularyListAdapter.notifyDataSetChanged();
 				updateVocabularyInfo();
 
 				// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
@@ -492,7 +487,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 		// 검색을 시작하기 전 리스트의 내용을 모두 지운다.
 		// 이유) 검색 스레드에서 리스트를 모두 지운후 검색을 하였을 때 간혹 오류가 발생하는 경우 있음
 		mVocabularyListData.clear();
-		mJvListAdapter.notifyDataSetChanged();
+		mVocabularyListAdapter.notifyDataSetChanged();
 
 		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
 		mJvListSearchThread.start();
@@ -631,7 +626,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 			mVocabularyListData.remove(menuInfo.position);
 			
 			updateVocabularyInfo();
-			mJvListAdapter.notifyDataSetChanged();
+			mVocabularyListAdapter.notifyDataSetChanged();
 			break;
 		}
 
