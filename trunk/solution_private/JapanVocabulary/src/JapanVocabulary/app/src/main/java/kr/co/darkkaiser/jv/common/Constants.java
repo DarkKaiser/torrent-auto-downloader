@@ -10,17 +10,17 @@ public class Constants {
     /*
      * 로컬에 설치된 단어DB 버전(공용 환경설정 키이름)
      */
-    public static final String SP_DB_VERSION = "jv_db_ver";
+    public static final String SPKEY_DB_VERSION = "jv_db_ver";
 
     /*
-     * 가장 최근에 사용자가 암기했던 저장된 단어 암기 순서(공용 환경설정 키이름)@@@@@
+     * 가장 최근에 사용자가 암기했던 저장된 단어암기 순서(공용 환경설정 키이름)
      */
-    public static final String LATEST_VOCABULARY_MEMORIZE_ORDER = "latest_vocabulary_memorize_order";
+    public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER = "latest_vocabulary_memorize_order";
 
     /*
-     * 가장 최근에 사용자가 암기했던 저장된 단어 암기 순서의 인덱스(공용 환경설정 키이름)@@@@@
+     * 가장 최근에 사용자가 암기했던 저장된 단어암기 순서의 인덱스(공용 환경설정 키이름)
      */
-    public static final String LATEST_VOCABULARY_MEMORIZE_POSITION = "latest_vocabulary_memorize_position";
+    public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION = "latest_vocabulary_memorize_position";
 
     /*
      * 리스트 정렬 방법(공용 환경설정 키이름)@@@@@
@@ -47,7 +47,6 @@ public class Constants {
     /*
      * 단어 DB 다운로드 URL @@@@@ 2개 이상으로 변경
      */
-    // public static final String VOCABULARY_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/jv2.db";
     public static final String VOCABULARY_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/vocabulary_v3.db";
 
     /*

@@ -150,7 +150,7 @@ public class VocabularyManager {
 //		File f = new File(jvDbPath);
 //		if (f.exists() == true) {
 //			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
-//			String jvDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
+//			String jvDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, "");
 //			if (jvDbVersion.equals("") == false) {
 //				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(Constants.JV_DB_VERSION_PREFIX.length()));
 //				int assetsDbVersion = Integer.parseInt(Constants.JV_DB_VERSION_FROM_ASSETS.substring(Constants.JV_DB_VERSION_PREFIX.length()));

@@ -96,9 +96,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
 
         if (firstLoadVocabularyData == true) {
             // 암기순서가 랜덤순이 아닐경우 마지막에 암기한 단어의 위치를 읽어들인다.
-            int latestMemorizeOrder = preferences.getInt(Constants.LATEST_VOCABULARY_MEMORIZE_ORDER, MemorizeOrder.RANDOM.ordinal());
+            int latestMemorizeOrder = preferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER, MemorizeOrder.RANDOM.ordinal());
             if (latestMemorizeOrder == mMemorizeOrder.ordinal() && mMemorizeOrder != MemorizeOrder.RANDOM) {
-                mPosition = preferences.getInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
+                mPosition = preferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
 
                 if (isValidPosition() == false)
                     mPosition = -1;
@@ -258,11 +258,11 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         assert preferences != null;
 
         Editor edit = preferences.edit();
-        edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_ORDER, mMemorizeOrder.ordinal());
+        edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER, mMemorizeOrder.ordinal());
         if (mMemorizeOrder == MemorizeOrder.RANDOM)
-            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
+            edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
         else
-            edit.putInt(Constants.LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
+            edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
 
         edit.commit();
     }

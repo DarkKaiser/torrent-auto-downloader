@@ -171,7 +171,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                 if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                     // 진동을 발생시킨다.
-                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
                 }
 
@@ -655,7 +655,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private ArrayList<String> checkNewVocabularyDb() {
         // 로컬 단어DB의 버전정보를 구한다.
         SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        String localDbVersion = preferences.getString(Constants.SP_DB_VERSION, "");
+        String localDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, "");
 
         try {
             ArrayList<String> vocaDbInfo = VocabularyDbManager.getInstance().getLatestVocabularyDbInfoList();
@@ -794,7 +794,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     fos.close();
 
                     SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                    mPreferences.edit().putString(Constants.SP_DB_VERSION, newVocabularyDbVersion).commit();
+                    mPreferences.edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
                 } else {
                     File f = new File(String.format("%s.tmp", jvDbPath));
                     f.delete();
@@ -818,7 +818,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                         updateSucceeded = true;
                         SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                        mPreferences.edit().putString(Constants.SP_DB_VERSION, newVocabularyDbVersion).commit();
+                        mPreferences.edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
                     } else {
                         f.delete();
 
