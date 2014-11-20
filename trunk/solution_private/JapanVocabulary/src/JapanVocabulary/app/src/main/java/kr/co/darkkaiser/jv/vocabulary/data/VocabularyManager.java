@@ -505,9 +505,8 @@ public class VocabularyManager {
 			}
 		}
 		
-		if (sbResult.length() == 0) {
-			sbResult.append("등록된 예문이 없습니다.");
-		}
+		if (sbResult.length() == 0)
+            sbResult.append("등록된 예문이 없습니다.");
 		
 		return sbResult.toString();
 	}
@@ -517,10 +516,10 @@ public class VocabularyManager {
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary jv = e.nextElement();
-			if (jv.isMemorizeTarget() == true)
+			Vocabulary vocabulary = e.nextElement();
+			if (vocabulary.isMemorizeTarget() == true)
 				++memorizeTargetCount;
-			if (jv.isMemorizeCompleted() == true)
+			if (vocabulary.isMemorizeCompleted() == true)
 				++memorizeCompletedCount;
 		}
 		
@@ -540,21 +539,20 @@ public class VocabularyManager {
 		long newMaxIdx = -1;
 		long updateVocabularyCount = 0;
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary jpVocabulary = e.nextElement();
-			if (jpVocabulary.getIdx() > prevMaxIdx) {
+			Vocabulary vocabulary = e.nextElement();
+			if (vocabulary.getIdx() > prevMaxIdx) {
 				++updateVocabularyCount;
 
-				if (jpVocabulary.getIdx() > newMaxIdx) {
-					newMaxIdx = jpVocabulary.getIdx();
-				}
+				if (vocabulary.getIdx() > newMaxIdx)
+                    newMaxIdx = vocabulary.getIdx();
 
 				// 최대 200개 이상의 단어는 출력되지 않도록 한다.
 				if (updateVocabularyCount < 200) {
-					sb.append(jpVocabulary.getVocabulary())
+					sb.append(vocabulary.getVocabulary())
 					  .append("(")
-					  .append(jpVocabulary.getVocabularyGana())
+					  .append(vocabulary.getVocabularyGana())
 					  .append(") - ")
-					  .append(jpVocabulary.getVocabularyTranslation())
+					  .append(vocabulary.getVocabularyTranslation())
 					  .append("\n");					
 				}
 			}
