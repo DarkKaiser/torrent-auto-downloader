@@ -398,7 +398,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		tswVocabularyTranslation.setText("");
 
 		if (vocabulary != null) {
-			if (vocabulary.isMemorizeCompleted() == true)
+			if (vocabulary.getMemorizeCompletedCount() > 0)
                 aq.id(R.id.av_memorize_completed_info).text(String.format("총 %d회 암기완료", vocabulary.getMemorizeCompletedCount())).textColor(getResources().getColor(R.color.av_memorize_completed_count)).visible();
 			else
                 aq.id(R.id.av_memorize_completed_info).invisible();
@@ -919,7 +919,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
                 // @@@@@
                 updateMemorizeVocabularyInfo();
-                showCurrentMemorizeVocabulary();
+
+                Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
+                if (vocabulary == null)
+                    showNextMemorizeVocabulary();
+                else
+                    showCurrentMemorizeVocabulary();
 
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
