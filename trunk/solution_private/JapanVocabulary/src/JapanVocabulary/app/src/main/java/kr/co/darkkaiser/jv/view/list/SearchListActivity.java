@@ -34,6 +34,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,8 +95,10 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
     // @@@@@
     protected ListView getListView() {
-        if (mListView == null)
+        if (mListView == null) {
             mListView = (ListView)findViewById(android.R.id.list);
+            mListView.setOnItemClickListener(mOnClickListener);
+        }
 
         return mListView;
     }
@@ -114,6 +117,12 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
             return adapter;
         }
     }
+
+    private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            onListItemClick((ListView) parent, v, position, id);
+        }
+    };
 
     @Override
     // @@@@@
@@ -359,7 +368,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	@Override
     // @@@@@
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == R.id.avsl_open_settings_activity) {
+        if (requestCode == R.id.avsl_open_settings_activity) {
 			// 수행 작업 없음
 		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
 			DetailActivity.setSeekVocabularyList(null);
