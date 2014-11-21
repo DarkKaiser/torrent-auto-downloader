@@ -68,7 +68,11 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
 	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
 
-	private WindowManager mWindowManager = null;
+    private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 1;
+    private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
+    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
+
+    private WindowManager mWindowManager = null;
 	private SharedPreferences mPreferences = null;
 	private ProgressDialog mProgressDialog = null;
 
@@ -258,7 +262,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 		case R.id.avsl_open_settings_activity:
 			// 설정 페이지를 띄운다.
-			startActivityForResult(new Intent(this, SettingsActivity.class), R.id.avsl_open_settings_activity);
+			startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
 			mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
 			setResult(mActivityResultCode);
 
@@ -332,9 +336,9 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	@Override
     // @@@@@
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == R.id.avsl_open_settings_activity) {
+        if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
 			// 수행 작업 없음
-		} else if (requestCode == R.id.avd_vocabulary_detail_info) {
+		} else if (requestCode == REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY) {
 			DetailActivity.setSeekVocabularyList(null);
 
 			// 상세페이지가 열릴 때 스크롤바를 커스텀 숨기도록 한다.
@@ -401,7 +405,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, DetailActivity.class);
 			intent.putExtra("idx", mVocabularyListData.get(position).getIdx());
-			startActivityForResult(intent, R.id.avd_vocabulary_detail_info);
+			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
 		}
 	}
 

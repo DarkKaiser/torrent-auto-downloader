@@ -80,7 +80,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
     private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 1;
-    private static final int REQ_CODE_VOCABULARY_DETAIL_INFO = 2;
+    private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
 
     private static final String EXTRA_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO";
@@ -314,7 +314,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
                 showCurrentMemorizeVocabulary();
 			}
-		} else if (requestCode == REQ_CODE_VOCABULARY_DETAIL_INFO) {
+		} else if (requestCode == REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY) {
 			DetailActivity.setSeekVocabularyList(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
@@ -531,7 +531,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
                     intent.putExtra("idx", idx);
-                    startActivityForResult(intent, REQ_CODE_VOCABULARY_DETAIL_INFO);
+                    startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
                 }
                 break;
 
