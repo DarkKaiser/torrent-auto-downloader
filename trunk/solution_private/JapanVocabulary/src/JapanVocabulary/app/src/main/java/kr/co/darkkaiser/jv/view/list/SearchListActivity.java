@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -34,14 +33,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,6 +48,7 @@ import java.util.Collections;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
+import kr.co.darkkaiser.jv.view.ActionBarListActivity;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
@@ -59,7 +56,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
-public class SearchListActivity extends ActionBarActivity implements OnClickListener, OnScrollListener {
+public class SearchListActivity extends ActionBarListActivity implements OnClickListener, OnScrollListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
@@ -89,40 +86,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 	private int mActivityResultCode = 0;
 
-    private ListView mListView = null;
-
     public final Object lock = new Object();
-
-    // @@@@@
-    protected ListView getListView() {
-        if (mListView == null) {
-            mListView = (ListView)findViewById(android.R.id.list);
-            mListView.setOnItemClickListener(mOnClickListener);
-        }
-
-        return mListView;
-    }
-
-    // @@@@@
-    protected void setListAdapter(ListAdapter adapter) {
-        getListView().setAdapter(adapter);
-    }
-
-    // @@@@@
-    protected ListAdapter getListAdapter() {
-        ListAdapter adapter = getListView().getAdapter();
-        if (adapter instanceof HeaderViewListAdapter) {
-            return ((HeaderViewListAdapter)adapter).getWrappedAdapter();
-        } else {
-            return adapter;
-        }
-    }
-
-    private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            onListItemClick((ListView) parent, v, position, id);
-        }
-    };
 
     @Override
     // @@@@@
