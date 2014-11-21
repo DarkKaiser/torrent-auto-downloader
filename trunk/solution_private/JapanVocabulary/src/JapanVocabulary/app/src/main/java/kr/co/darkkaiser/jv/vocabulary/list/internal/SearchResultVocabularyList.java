@@ -9,14 +9,14 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 	private int mPosition = -1;
 
-	private ArrayList<Vocabulary> mVocabularyList = null;
+	private ArrayList<Vocabulary> mVocabularyListData = null;
 
 	public SearchResultVocabularyList(ArrayList<Vocabulary> vocabularyList, int position) {
 		assert position != -1;
 		assert vocabularyList != null;
 
         mPosition = position;
-        mVocabularyList = vocabularyList;
+        mVocabularyListData = vocabularyList;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 		--mPosition;
 		if (isValid() == true) {
-			return mVocabularyList.get(mPosition);
+			return mVocabularyListData.get(mPosition);
 		} else {
 			mPosition = olcPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
@@ -40,7 +40,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
 		++mPosition;
 		if (isValid() == true) {
-			return mVocabularyList.get(mPosition);
+			return mVocabularyListData.get(mPosition);
 		} else {
 			mPosition = oldPosition;
 			sbErrMessage.append("다음 단어가 없습니다.");
@@ -52,14 +52,14 @@ public class SearchResultVocabularyList implements IVocabularyList {
     @Override
     public synchronized Vocabulary getVocabulary() {
         if (isValid() == true)
-            return mVocabularyList.get(mPosition);
+            return mVocabularyListData.get(mPosition);
 
         return null;
     }
 
     @Override
 	public synchronized boolean isValid() {
-        return mVocabularyList != null && !(mPosition < 0 || mPosition >= mVocabularyList.size());
+        return mVocabularyListData != null && !(mPosition < 0 || mPosition >= mVocabularyListData.size());
     }
 	
 }
