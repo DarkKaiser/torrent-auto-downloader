@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
+    <!-- 기본 애플리케이션 테마 -->
     <style name="Theme.AppCompat.Jv" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
         <item name="android:buttonStyle">@android:style/Widget.Button</item>
     </style>
 
@@ -12,7 +11,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">15dp</item>
-        <item name="android:background">@color/avd_title_background</item>
+        <item name="android:background">@color/avd_item_title_background</item>
     </style>
 
     <!-- 상세정보 액티비티 항목 내용 -->
@@ -20,7 +19,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">26dp</item>
-        <item name="android:background">@color/avd_content_background</item>
+        <item name="android:background">@color/avd_item_content_background</item>
         <item name="android:typeface">serif</item>
         <item name="android:gravity">left</item>
     </style>

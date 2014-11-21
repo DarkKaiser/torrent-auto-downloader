@@ -21,11 +21,30 @@
 	    	<RelativeLayout
 	    		android:layout_width="match_parent"
 	    		android:layout_height="wrap_content"
-	    		android:background="@color/avd_title_background"
+	    		android:background="@color/avd_item_title_background"
 	    		>
 		    	<TextView 
                     android:text="@string/avd_vocabulary_hanja"
                     style="@style/VocabularyDetailTitle"
+                    />
+                <TextView
+                    android:id="@+id/avd_memorize_completed_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/avd_memorize_completed_count"
+                    android:textSize="15dp"
+                    tools:ignore="SpUsage"
+                    />
+	    	</RelativeLayout>
+	    	<RelativeLayout
+	    		android:layout_width="match_parent"
+	    		android:layout_height="wrap_content"
+	    		android:background="@color/avd_item_content_background"
+	    		>
+				<TextView
+					android:id="@+id/avd_vocabulary"
+                    style="@style/VocabularyDetailContent"
                     />
                 <TextView
                     android:id="@+id/avd_memorize_uncompleted"
@@ -34,25 +53,6 @@
                     android:layout_alignParentRight="true"
                     android:text="@string/avd_vocabulary_memorize_uncompleted"
                     android:textColor="@color/avd_memorize_uncompleted"
-                    android:textSize="15dp"
-                    tools:ignore="SpUsage"
-                    />
-	    	</RelativeLayout>
-	    	<RelativeLayout
-	    		android:layout_width="match_parent"
-	    		android:layout_height="wrap_content"
-	    		android:background="@color/avd_content_background"
-	    		>
-				<TextView
-					android:id="@+id/avd_vocabulary"
-                    style="@style/VocabularyDetailContent"
-                    />
-                <TextView
-                    android:id="@+id/avd_memorize_completed_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/avd_memorize_completed_count"
                     android:textSize="15dp"
                     tools:ignore="SpUsage"
                     />
@@ -88,7 +88,9 @@
 			<TextView
 				android:id="@+id/avd_vocabulary_example"
                 style="@style/VocabularyDetailContent"
-		    	/>
+                android:textSize="15dp"
+                tools:ignore="SpUsage"
+                />
 		</LinearLayout>
 	</ScrollView>
 	<RelativeLayout
