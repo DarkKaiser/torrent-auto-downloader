@@ -42,7 +42,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SlidingDrawer;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,9 +75,8 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	private ProgressDialog mProgressDialog = null;
 
 	private SearchListAdapter mVocabularyListAdapter = null;
-	private ArrayList<Vocabulary> mVocabularyListData = null;// @@@@@ SearchResultVocabularyList로 변경하는건???
-    // @@@@@ private SearchResultVocabularyList mSearchResultVocabularyList = new SearchResultVocabularyList();
-	private SearchListSortMethod mSearchListSortMethod = SearchListSortMethod.VOCABULARY;
+	private ArrayList<Vocabulary> mVocabularyListData = null;
+	private SearchListSort mSearchListSort = SearchListSort.VOCABULARY;
 
 	private Thread mJvListSearchThread = null;
 	private SearchListCondition mJvListSearchCondition = null;
@@ -91,6 +89,8 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	private int mActivityResultCode = 0;
 
     private ListView mListView = null;
+
+    public final Object lock = new Object();
 
     // @@@@@
     protected ListView getListView() {
@@ -129,7 +129,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mSearchListSortMethod = SearchListSortMethod.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSortMethod.VOCABULARY.name()));
+		mSearchListSort = SearchListSort.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSort.VOCABULARY.name()));
 		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
@@ -239,13 +239,13 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.avsl_sort_vocabulary_hanja:
-			startSortList(SearchListSortMethod.VOCABULARY);
+			startSortList(SearchListSort.VOCABULARY);
 			return true;
 		case R.id.avsl_sort_vocabulary_gana:
-			startSortList(SearchListSortMethod.VOCABULARY_GANA);
+			startSortList(SearchListSort.VOCABULARY_GANA);
 			return true;
 		case R.id.avsl_sort_vocabulary_translation:
-			startSortList(SearchListSortMethod.VOCABULARY_TRANSLATION);
+			startSortList(SearchListSort.VOCABULARY_TRANSLATION);
 			return true;
 		case R.id.avsl_search_result_vocabulary_rememorize_all: 				// 검색된 전체 단어 재암기
 		case R.id.avsl_search_result_vocabulary_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
@@ -373,11 +373,11 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	}
 
     // @@@@@
-    private void startSortList(SearchListSortMethod jvListSortMethod) {
-		if (mSearchListSortMethod == jvListSortMethod)
+    private void startSortList(SearchListSort jvListSortMethod) {
+		if (mSearchListSort == jvListSortMethod)
 			return;
 
-		mSearchListSortMethod = jvListSortMethod;
+		mSearchListSort = jvListSortMethod;
 
 		// 정렬중에 프로그레스 대화상자를 보인다.
 		assert mProgressDialog == null;
@@ -387,7 +387,7 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 			@Override
 			public void run() {
 				// 변경된 정렬 방법을 저장한다.
-				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mSearchListSortMethod.name()).commit();
+				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mSearchListSort.name()).commit();
 
 				// 리스트 데이터 정렬합니다.
 				sortList();
@@ -401,19 +401,21 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
     // @@@@@
     private void sortList() {
-		synchronized (mVocabularyListData) {
-			switch (mSearchListSortMethod) {
-			case VOCABULARY:
-				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
-				break;
-			case VOCABULARY_GANA:
-				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
-				break;
-			case VOCABULARY_TRANSLATION:
-				Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
-				break;
-			}
-		}
+        synchronized (lock) {
+            synchronized (mVocabularyListData) {
+                switch (mSearchListSort) {
+                case VOCABULARY:
+                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
+                    break;
+                case VOCABULARY_GANA:
+                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
+                    break;
+                case VOCABULARY_TRANSLATION:
+                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
+                    break;
+                }
+            }
+        }
 	}
 
 	//@@@@@@Override

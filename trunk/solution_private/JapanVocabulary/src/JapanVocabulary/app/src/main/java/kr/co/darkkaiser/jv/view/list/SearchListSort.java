@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.jv.view.list;
 
-public enum SearchListSortMethod {
+public enum SearchListSort {
 
 	// 한자
 	VOCABULARY,

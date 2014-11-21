@@ -274,7 +274,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
             if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
                 ++mMemorizeCompletedCount;
                 vocabulary.setMemorizeCompleted(true, true);
-                // @@@@@@ VocabularyManager.getInstance().writeUserVocabularyInfo(); listadapter에서는 사용했음
+
+                // @@@@@ 해당 단어만 상태 업데이트
+                VocabularyManager.getInstance().writeUserVocabularyInfo();
             }
         } else {
             assert false;

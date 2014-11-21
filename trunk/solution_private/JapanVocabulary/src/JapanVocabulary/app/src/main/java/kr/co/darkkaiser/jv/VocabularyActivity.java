@@ -504,7 +504,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                                 vibrator.vibrate(30);
 
                                 mMemorizeTargetVocabularyList.setMemorizeCompleted();
-                                VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                                 updateMemorizeVocabularyInfo();
                                 showNextMemorizeVocabulary();

@@ -92,7 +92,10 @@ public class SearchListAdapter extends BaseAdapter {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
                 int position = (Integer)cbMemorizeTarget.getTag();
                 if (position < mVocabularyList.size()) {
-                    mVocabularyList.get(position).setMemorizeTarget(cbMemorizeTarget.isChecked());
+                    Vocabulary vocabulary = mVocabularyList.get(position);
+                    vocabulary.setMemorizeTarget(cbMemorizeTarget.isChecked());
+
+                    // @@@@@ 해당 단어만 상태 업데이트
                     VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
@@ -107,7 +110,10 @@ public class SearchListAdapter extends BaseAdapter {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
                 int position = (Integer)cbMemorizeCompleted.getTag();
                 if (position < mVocabularyList.size()) {
-                    mVocabularyList.get(position).setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
+                    Vocabulary vocabulary = mVocabularyList.get(position);
+                    vocabulary.setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
+
+                    // @@@@@ 해당 단어만 상태 업데이트
                     VocabularyManager.getInstance().writeUserVocabularyInfo();
 
                     // 화면을 업데이트합니다.
