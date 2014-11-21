@@ -25,7 +25,6 @@ import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListWrapper;
 
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
@@ -40,7 +39,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private GestureDetector mGestureDetector = null;
 
     // 이전/다음 단어로 이동하기 위한 단어리스트 래퍼객체
-	private static VocabularyListWrapper mVocabularyListWrapper = new VocabularyListWrapper();
+	private static IVocabularyList mVocabularyList = null;
 
     // 이전/다음 버튼이 화면에 나타나고 나서 일정시간 이후에 버튼을 자동으로 숨기기 위한 핸들러
     private Handler mPrevNextVocabularyButtonInVisibleHandler = new Handler();
@@ -49,7 +48,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
 
     public static void setSeekVocabularyList(IVocabularyList vocabularyList) {
-		mVocabularyListWrapper.setVocabularyList(vocabularyList);
+        mVocabularyList = vocabularyList;
 	}
 
     @Override
@@ -64,8 +63,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         // 상세 정보를 출력할 단어에 대한 정보를 구한다.
 		Vocabulary vocabulary = null;
 
-		if (mVocabularyListWrapper.isValid() == true)
-			vocabulary = mVocabularyListWrapper.getCurrentVocabulary();
+		if (mVocabularyList != null && mVocabularyList.isValid() == true)
+			vocabulary = mVocabularyList.getVocabulary();
 
 		if (vocabulary == null) {
 			// 이전/다음 단어로 이동하기 위한 관리자 객체가 유효하지 않으므로 null로 설정한다.
@@ -139,7 +138,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (mVocabularyListWrapper.isValid() == true) {
+        if (mVocabularyList != null && mVocabularyList.isValid() == true) {
             resetInVisiblePrevNextVocabularyButtonAnimate();
 
             SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
@@ -154,11 +153,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
             switch (v.getId()) {
             case R.id.avd_prev_vocabulary:
-                vocabulary = mVocabularyListWrapper.previousVocabulary(sbErrMessage);
+                vocabulary = mVocabularyList.previousVocabulary(sbErrMessage);
                 break;
 
             case R.id.avd_next_vocabulary:
-                vocabulary = mVocabularyListWrapper.nextVocabulary(sbErrMessage);
+                vocabulary = mVocabularyList.nextVocabulary(sbErrMessage);
                 break;
             }
 
@@ -262,7 +261,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (mVocabularyListWrapper.isValid() == true) {
+            if (mVocabularyList != null && mVocabularyList.isValid() == true) {
                 AQuery aq = new AQuery(DetailActivity.this);
 
                 if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
@@ -295,7 +294,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     };
 
     private void resetInVisiblePrevNextVocabularyButtonAnimate() {
-        if (mVocabularyListWrapper != null && mVocabularyListWrapper.isValid()) {
+        if (mVocabularyList != null && mVocabularyList.isValid()) {
             AQuery aq = new AQuery(DetailActivity.this);
             if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
                 // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
