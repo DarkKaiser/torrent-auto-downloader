@@ -79,9 +79,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 3;
 
-    private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 1;
-    private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
-    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
+    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
+    private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 2;
+    private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 3;
 
     private static final String EXTRA_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO";
 

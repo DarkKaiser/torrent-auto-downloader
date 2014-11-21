@@ -68,9 +68,8 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
 	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
 
-    private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 1;
+    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
-    private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 3;
 
     private WindowManager mWindowManager = null;
 	private SharedPreferences mPreferences = null;
