@@ -1,5 +1,8 @@
 package kr.co.darkkaiser.jv.vocabulary;
 
+/**
+ * 암기대상
+ */
 public enum MemorizeTarget {
 
 	// 한자
