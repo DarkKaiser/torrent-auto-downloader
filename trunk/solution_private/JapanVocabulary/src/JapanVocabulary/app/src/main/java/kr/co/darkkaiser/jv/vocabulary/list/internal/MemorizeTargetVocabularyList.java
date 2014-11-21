@@ -254,7 +254,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList {
         return null;
     }
 
-    public void writePosition(SharedPreferences preferences) {
+    public void savePosition(SharedPreferences preferences) {
         assert preferences != null;
 
         Editor edit = preferences.edit();

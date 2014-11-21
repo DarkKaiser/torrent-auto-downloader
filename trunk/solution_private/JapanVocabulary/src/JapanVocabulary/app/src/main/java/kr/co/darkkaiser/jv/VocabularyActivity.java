@@ -443,7 +443,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mMemorizeTargetVocabularyList.writePosition(preferences);
+		mMemorizeTargetVocabularyList.savePosition(preferences);
 
 		super.onBackPressed();
 	}

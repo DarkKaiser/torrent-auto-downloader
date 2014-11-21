@@ -575,9 +575,6 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 	        EditText searchWord = (EditText)findViewById(R.id.sc_search_word);
 	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
 
-			SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
-			searchSlidingDrawer.animateClose();
-
 			// 설정된 검색 조건들을 저장합니다.
 			EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
 			Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
@@ -601,9 +598,6 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 		    InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 	        EditText searchWord = (EditText)findViewById(R.id.sc_search_word);
 	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
-
-	        SlidingDrawer searchSlidingDrawer = (SlidingDrawer)findViewById(R.id.search_sliding_drawer);
-			searchSlidingDrawer.animateClose();
 
 			break;
 		}
@@ -645,11 +639,8 @@ public class SearchListActivity extends ActionBarActivity implements OnClickList
 
 			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
 		} else {
-			SlidingDrawer searchSlidingDrawer = (SlidingDrawer) findViewById(R.id.search_sliding_drawer);
-			if (searchSlidingDrawer.isOpened() == false) {
-				if (mVocabularyListData.size() >= 50)
-					mUseModeScrollBarThumb = true;				
-			}
+            if (mVocabularyListData.size() >= 50)
+                mUseModeScrollBarThumb = true;
 		}
 	}
 
