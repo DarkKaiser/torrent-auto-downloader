@@ -98,7 +98,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		assert mWindowManager != null;
 
-		// 컨텍스트 메뉴를 등록한다.
+		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
@@ -107,9 +107,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 		// 단어 리스트를 초기화한다.
         mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE));
-//		mVocabularyListData = new ArrayList<Vocabulary>();
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
-//		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 		
 		//
@@ -173,29 +171,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		// 최근의 검색 조건을 이용하여 검색을 수행한다.
 		//
 		searchVocabulary();
-	}
-
-    // @@@@@
-    private void updateJLPTLevelButtonText() {
-		String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
-		boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
-		assert items.length == checkedItems.length;
-
-		StringBuilder sb = new StringBuilder();
-		for (int index = 0; index < checkedItems.length; ++index) {
-			if (checkedItems[index] == true) {
-				if (sb.length() > 0)
-					sb.append(", ");
-
-				sb.append(items[index]);
-			}
-		}
-		
-		if (sb.length() == 0)
-			sb.append("전체 검색\n<선택 항목 없음>");
-
-		Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
-		scJLPTLevelButton.setText(sb.toString());
 	}
 
     @Override
@@ -480,6 +455,29 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
         aq.id(R.id.memorize_target_count).text(String.format("%d개", vocabularyInfo.get(1)));
         aq.id(R.id.avd_memorize_completed_count_text).text(String.format("%d개", vocabularyInfo.get(2)));
 	}
+
+    // @@@@@
+    private void updateJLPTLevelButtonText() {
+        String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
+        boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+        assert items.length == checkedItems.length;
+
+        StringBuilder sb = new StringBuilder();
+        for (int index = 0; index < checkedItems.length; ++index) {
+            if (checkedItems[index] == true) {
+                if (sb.length() > 0)
+                    sb.append(", ");
+
+                sb.append(items[index]);
+            }
+        }
+
+        if (sb.length() == 0)
+            sb.append("전체 검색\n<선택 항목 없음>");
+
+        Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
+        scJLPTLevelButton.setText(sb.toString());
+    }
 
 	@Override
     // @@@@@

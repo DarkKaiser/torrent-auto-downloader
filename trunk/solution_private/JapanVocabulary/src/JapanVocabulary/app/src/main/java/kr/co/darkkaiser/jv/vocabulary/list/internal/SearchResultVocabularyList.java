@@ -70,14 +70,13 @@ public class SearchResultVocabularyList {
     }
 
     public synchronized Vocabulary getVocabulary(int position) {
-        assert position >= 0 && position < mVocabularyListData.size();
+        assert isValidPosition(position);
 
         return mVocabularyListData.get(position);
     }
 
     public synchronized void excludeVocabulary(int position) {
-        assert position >= 0 && position < mVocabularyListData.size();
-
+        assert isValidPosition(position);
         mVocabularyListData.remove(position);
     }
 
@@ -130,30 +129,14 @@ public class SearchResultVocabularyList {
         mSharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, mSearchListSort.name()).commit();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // @@@@@ 함수명 고민
     public synchronized boolean setMemorizeTarget(int position) {
+        if (isValidPosition(position) == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(position);
+//            vocabulary.setMemorizeTarget();
+        } else {
+            assert false;
+        }
         // isValidPosition
 //        Vocabulary vocabulary = mSearchVocabularyList.getVocabulary();
 //        vocabulary.setMemorizeTarget(cbMemorizeTarget.isChecked());
@@ -188,6 +171,10 @@ public class SearchResultVocabularyList {
 //            assert false;
 //        }
         return true;
+    }
+
+    private boolean isValidPosition(int position) {
+        return (position >= 0 && position < mVocabularyListData.size());
     }
 
 }
