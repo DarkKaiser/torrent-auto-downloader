@@ -173,7 +173,7 @@ public class SearchResultVocabularyList {
         return true;
     }
 
-    private boolean isValidPosition(int position) {
+    public synchronized boolean isValidPosition(int position) {
         return (position >= 0 && position < mVocabularyListData.size());
     }
 

@@ -18,9 +18,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,6 +37,7 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListWrapper;
 
 public class SearchListActivity extends ActionBarListActivity implements OnClickListener {
 
@@ -366,12 +365,12 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
         //@@@@@
 //		synchronized (mVocabularyListData) {
-//			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mVocabularyListData, position));
-//
-//			// 단어 상세페이지 호출
-//			Intent intent = new Intent(this, DetailActivity.class);
-//			intent.putExtra("idx", mVocabularyListData.get(position).getIdx());
-//			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListWrapper(mSearchResultVocabularyList, position));
+
+			// 단어 상세페이지 호출
+			Intent intent = new Intent(this, DetailActivity.class);
+			intent.putExtra("idx", mSearchResultVocabularyList.getVocabulary(position).getIdx());
+			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
 //		}
 	}
 

@@ -24,7 +24,7 @@ import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
-import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.IDetailVocabularyList;
 
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
@@ -39,7 +39,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private GestureDetector mGestureDetector = null;
 
     // 이전/다음 단어로 이동하기 위한 단어리스트 래퍼객체
-	private static IVocabularyList mVocabularyList = null;
+	private static IDetailVocabularyList mVocabularyList = null;
 
     // 이전/다음 버튼이 화면에 나타나고 나서 일정시간 이후에 버튼을 자동으로 숨기기 위한 핸들러
     private Handler mPrevNextVocabularyButtonInVisibleHandler = new Handler();
@@ -47,7 +47,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
 
-    public static void setSeekVocabularyList(IVocabularyList vocabularyList) {
+    public static void setSeekVocabularyList(IDetailVocabularyList vocabularyList) {
         mVocabularyList = vocabularyList;
 	}
 

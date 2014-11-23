@@ -4,9 +4,7 @@ import kr.co.darkkaiser.jv.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.text.TextUtils;
 
-//@@@@@ todo
 public class SearchListCondition {
 
 	private static final String JV_SPN_SEARCH_WORD_SC = "sc_search_word";
@@ -15,21 +13,24 @@ public class SearchListCondition {
 	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
 
 	private Context mContext = null;
-	private SharedPreferences mPreferences = null;
+	private SharedPreferences mSharedPreferences = null;
 
-	private String mScSearchWord = null;
+	private String mSearchWord = null;
 	private int mScMemorizeTargetPosition = 0;
 	private int mScMemorizeCompletedPosition = 0;
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
     //@@@@@
-	public SearchListCondition(Context context, SharedPreferences preferences) {
-		mContext = context;
-		mPreferences = preferences;
+	public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
+        assert context != null;
+        assert sharedPreferences != null;
 
-		mScSearchWord = mPreferences.getString(JV_SPN_SEARCH_WORD_SC, "");
-		mScMemorizeTargetPosition = mPreferences.getInt(JV_SPN_MEMORIZE_TARGET_SC, 0);
-		mScMemorizeCompletedPosition = mPreferences.getInt(JV_SPN_MEMORIZE_COMPLETED_SC, 0);
+		mContext = context;
+		mSharedPreferences = sharedPreferences;
+
+		mSearchWord = mSharedPreferences.getString(JV_SPN_SEARCH_WORD_SC, "");
+		mScMemorizeTargetPosition = mSharedPreferences.getInt(JV_SPN_MEMORIZE_TARGET_SC, 0);
+		mScMemorizeCompletedPosition = mSharedPreferences.getInt(JV_SPN_MEMORIZE_COMPLETED_SC, 0);
 
 		// JLPT 각 급수별 검색 여부 플래그를 읽어들인다.
 		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
@@ -39,20 +40,19 @@ public class SearchListCondition {
 
 		mScCheckedJLPTLevelArray = new boolean[jlptLevelList.length];
 		for (int index = 0; index < jlptLevelList.length; ++index) {
-			mScCheckedJLPTLevelArray[index] = mPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), true);
+			mScCheckedJLPTLevelArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), true);
 		}
 	}
 
-    //@@@@@
     public String getSearchWord() {
-		return mScSearchWord;
+		return mSearchWord;
 	}
 
     //@@@@@
     public void setSearchWord(String searchWord) {
-		assert mPreferences != null;
+		assert mSharedPreferences != null;
 		
-		mScSearchWord = searchWord;
+		mSearchWord = searchWord;
 	}
 
     //@@@@@
@@ -62,7 +62,7 @@ public class SearchListCondition {
 
     //@@@@@
     public void setMemorizeTargetPosition(int scPosition) {
-		assert mPreferences != null;
+		assert mSharedPreferences != null;
 		
 		mScMemorizeTargetPosition = scPosition;
 	}
@@ -74,7 +74,7 @@ public class SearchListCondition {
 
     //@@@@@
     public void setMemorizeCompletedPosition(int scPosition) {
-		assert mPreferences != null;
+		assert mSharedPreferences != null;
 		
 		mScMemorizeCompletedPosition = scPosition;
 	}
@@ -89,7 +89,7 @@ public class SearchListCondition {
 
     //@@@@@
     public void setCheckedJLPTLevel(int position, boolean value) {
-		assert mPreferences != null;
+		assert mSharedPreferences != null;
 
 		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position)
 			mScCheckedJLPTLevelArray[position] = value;
@@ -99,10 +99,10 @@ public class SearchListCondition {
 
     //@@@@@
     public void commit() {
-        Editor editor = mPreferences.edit();
+        Editor editor = mSharedPreferences.edit();
         assert editor != null;
 
-        editor.putString(JV_SPN_SEARCH_WORD_SC, mScSearchWord);
+        editor.putString(JV_SPN_SEARCH_WORD_SC, mSearchWord);
         editor.putInt(JV_SPN_MEMORIZE_TARGET_SC, mScMemorizeTargetPosition);
         editor.putInt(JV_SPN_MEMORIZE_COMPLETED_SC, mScMemorizeCompletedPosition);
 
