@@ -29,22 +29,26 @@
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 
-    <string name="avsl_sort">정렬…</string>
-    <string name="avsl_sort_vocabulary_hanja">한자</string>
+    <string name="avsl_sort">정렬</string>
+    <string name="avsl_sort_vocabulary">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
     <string name="avsl_sort_vocabulary_translation">뜻</string>
-    <string name="avsl_search_result_settings">암기상태 변경…</string>
+    <string name="avsl_sort_progress_message">전체 리스트를 정렬중입니다.</string>
+    <string name="avsl_memorize_settings_vocabulary_progress_message">요청하신 작업을 처리 중입니다.</string>
+    <string name="avsl_search_result_settings">암기상태 변경</string>
     <string name="avsl_search_result_vocabulary_rememorize_all">검색된 단어 재암기</string>
     <string name="avsl_search_result_vocabulary_memorize_completed_all">검색된 단어 암기완료</string>
-    <string name="avsl_search_result_vocabulary_memorize_target_all">검색된 단어 암기대상 설정…</string>
+    <string name="avsl_search_result_vocabulary_memorize_target_all">검색된 단어 암기대상 설정</string>
     <string name="avsl_search_result_vocabulary_memorize_target_cancel_all">검색된 단어 암기대상 해제</string>
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
+    <string name="avsl_memorize_settings_vocabulary_ad_title">검색된 단어 암기대상 설정</string>
+    <string name="avsl_memorize_settings_vocabulary_ad_message">검색결과에 포함되지 않은 단어들은 암기대상을 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기대상으로, 검색결과에 포함되지 않은 단어들은 암기대상을 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기대상으로 만듭니다.</string>
 
     <string name="avsli_memorize_target">암기대상</string>
     <string name="avsli_memorize_completed">암기완료</string>
     <string name="avsli_memorize_completed_count">총 %d회 암기완료</string>
 
-    <string name="avd_vocabulary_hanja">한자</string>
+    <string name="avd_vocabulary">한자</string>
     <string name="avd_vocabulary_gana">히라가나/가타카나</string>
     <string name="avd_vocabulary_translation">뜻</string>
     <string name="avd_vocabulary_detail_description">상세설명</string>

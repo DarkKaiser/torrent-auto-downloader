@@ -23,9 +23,9 @@ public class Constants {
     public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION = "latest_vocabulary_memorize_position";
 
     /*
-     * 리스트 정렬 방법(공용 환경설정 키이름)@@@@@
+     * 검색 결과리스트 정렬 방법(공용 환경설정 키이름)
      */
-    public static final String JV_SPN_LIST_SORT_METHOD = "jv_list_sort_method";
+    public static final String SPKEY_SEARCH_LIST_SORT = "search_list_sort";
     
     /*
      * 가장 마지막에 업데이트 한 단어DB의 Max IDX 값 @@@@@

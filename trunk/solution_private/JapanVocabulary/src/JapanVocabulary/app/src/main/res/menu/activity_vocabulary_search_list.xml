@@ -13,8 +13,8 @@
                 android:checkableBehavior="single"
                 >
                 <item
-                    android:id="@+id/avsl_sort_vocabulary_hanja"
-                    android:title="@string/avsl_sort_vocabulary_hanja"
+                    android:id="@+id/avsl_sort_vocabulary"
+                    android:title="@string/avsl_sort_vocabulary"
                     />
                 <item
                     android:id="@+id/avsl_sort_vocabulary_translation"

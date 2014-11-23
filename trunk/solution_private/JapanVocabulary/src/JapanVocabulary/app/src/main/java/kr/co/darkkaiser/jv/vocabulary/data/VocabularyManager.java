@@ -380,7 +380,7 @@ public class VocabularyManager {
 	}
 
     // @@@@@
-    public synchronized boolean updateMemorizeField(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
+    public synchronized boolean memorizeSettingsVocabulary(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
 		if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
 			Vocabulary jv = null;
 			for (int index = 0; index < idxList.size(); ++index) {

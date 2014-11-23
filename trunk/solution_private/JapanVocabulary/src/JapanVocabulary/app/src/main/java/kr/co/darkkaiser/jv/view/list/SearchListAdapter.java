@@ -10,40 +10,44 @@ import android.widget.CheckBox;
 
 import com.androidquery.AQuery;
 
-import java.util.ArrayList;
-
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
 public class SearchListAdapter extends BaseAdapter {
 
 	private int mLayout;
 	private Context mContext = null;
     private LayoutInflater mLayoutInflater = null;
-    private Handler mVocabularyChangedHandler = null;
+    private Handler mVocabularyDataChangedHandler = null;
+    private SearchResultVocabularyList mSearchResultVocabularyList = null;
 
-    private ArrayList<Vocabulary> mVocabularyList = null;
+	public SearchListAdapter(Context context, int layout, Handler vocabularyDataChangedHandler, SearchResultVocabularyList searchResultVocabularyList) {
+        assert context != null;
+        assert searchResultVocabularyList != null;
+        assert vocabularyDataChangedHandler != null;
 
-	public SearchListAdapter(Context context, int layout, Handler vocabularyChangedHandler, ArrayList<Vocabulary> vocabularyList) {
 		mLayout = layout;
         mContext = context;
-        mVocabularyList = vocabularyList;
-		mVocabularyChangedHandler = vocabularyChangedHandler;
+        mSearchResultVocabularyList = searchResultVocabularyList;
+		mVocabularyDataChangedHandler = vocabularyDataChangedHandler;
 		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public int getCount() {
-		return mVocabularyList.size();
+		return mSearchResultVocabularyList.getCount();
 	}
 
 	@Override
 	public String getItem(int position) {
-		assert mVocabularyList != null;
-		assert mVocabularyList.get(position) != null;
+		assert mSearchResultVocabularyList != null;
 
-		return mVocabularyList.get(position).getVocabulary();
+        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
+        if (vocabulary == null)
+            return "";
+
+		return vocabulary.getVocabulary();
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         AQuery aq = new AQuery(convertView);
 
-        Vocabulary vocabulary = mVocabularyList.get(position);
+        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
         if (vocabulary == null) {
             aq.id(R.id.avsli_memorize_bar).invisible();
             aq.id(R.id.avsli_vocabulary_panel).invisible();
@@ -91,15 +95,10 @@ public class SearchListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
                 int position = (Integer)cbMemorizeTarget.getTag();
-                if (position < mVocabularyList.size()) {
-                    Vocabulary vocabulary = mVocabularyList.get(position);
-                    vocabulary.setMemorizeTarget(cbMemorizeTarget.isChecked());
-
-                    // @@@@@ 해당 단어만 상태 업데이트
-                    VocabularyManager.getInstance().writeUserVocabularyInfo();
-
-                    // 화면을 업데이트합니다.
-                    mVocabularyChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+                if (position < mSearchResultVocabularyList.getCount()) {
+                    // 암기대상 설정한 후, 화면을 업데이트합니다.
+                    if (mSearchResultVocabularyList.setMemorizeTarget(position) == true)
+                        mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }
         });
@@ -109,15 +108,10 @@ public class SearchListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
                 int position = (Integer)cbMemorizeCompleted.getTag();
-                if (position < mVocabularyList.size()) {
-                    Vocabulary vocabulary = mVocabularyList.get(position);
-                    vocabulary.setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
-
-                    // @@@@@ 해당 단어만 상태 업데이트
-                    VocabularyManager.getInstance().writeUserVocabularyInfo();
-
-                    // 화면을 업데이트합니다.
-                    mVocabularyChangedHandler.sendEmptyMessage(SearchListActivity.MSG_CHANGED_LIST_DATA);
+                if (position < mSearchResultVocabularyList.getCount()) {
+                    // 암기완료 설정한 후, 화면을 업데이트합니다.
+                    if (mSearchResultVocabularyList.setMemorizeCompleted(position) == true)
+                        mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }
         });

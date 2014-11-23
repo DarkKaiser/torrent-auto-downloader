@@ -24,7 +24,7 @@
 	    		android:background="@color/avd_item_title_background"
 	    		>
 		    	<TextView 
-                    android:text="@string/avd_vocabulary_hanja"
+                    android:text="@string/avd_vocabulary"
                     style="@style/VocabularyDetailTitle"
                     />
                 <TextView

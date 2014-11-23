@@ -8,10 +8,10 @@ public enum SearchListSort {
 	// 한자
 	VOCABULARY,
 
-	// 히라가나/가타카나
-	VOCABULARY_GANA,
+    // 한자 뜻
+    VOCABULARY_TRANSLATION,
 
-	// 한자 뜻
-	VOCABULARY_TRANSLATION
+	// 히라가나/가타카나
+	VOCABULARY_GANA
 
 }

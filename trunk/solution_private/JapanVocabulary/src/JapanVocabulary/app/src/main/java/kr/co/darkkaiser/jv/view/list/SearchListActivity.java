@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +13,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,9 +22,9 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -33,7 +33,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,45 +41,40 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.androidquery.AQuery;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
-import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
 public class SearchListActivity extends ActionBarListActivity implements OnClickListener, OnScrollListener {
 
-	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값, 이 값들은 서로 배타적이어야 함.
+	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
 	public static final int ACTIVITY_RESULT_PREFERENCE_CHANGED = 2;
 
-	public static final int MSG_CHANGED_LIST_DATA = 1;
-	public static final int MSG_COMPLETED_LIST_DATA_UPDATE = 2;
-
-	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
-	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
+    public static final int MSG_SEARCH_RESULT_LIST_DATA_CHANGED = 1;
 
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
+
+	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
+	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
 
     private WindowManager mWindowManager = null;
 	private SharedPreferences mPreferences = null;
 	private ProgressDialog mProgressDialog = null;
 
-	private SearchListAdapter mVocabularyListAdapter = null;
-	private ArrayList<Vocabulary> mVocabularyListData = null;
-	private SearchListSort mSearchListSort = SearchListSort.VOCABULARY;
+    private SearchResultVocabularyList mSearchResultVocabularyList = null;
+    private SearchListAdapter mSearchResultVocabularyListAdapter = null;
 
-	private Thread mJvListSearchThread = null;
 	private SearchListCondition mJvListSearchCondition = null;
 
 	private ScrollBarThumb mScrollThumb = null;
@@ -90,6 +85,9 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	private int mActivityResultCode = 0;
 
     public final Object lock = new Object();
+
+    public SearchListActivity() {
+    }
 
     @Override
     // @@@@@
@@ -105,13 +103,14 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
 		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mSearchListSort = SearchListSort.valueOf(mPreferences.getString(Constants.JV_SPN_LIST_SORT_METHOD, SearchListSort.VOCABULARY.name()));
 		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
 
 		// 단어 리스트를 초기화한다.
-		mVocabularyListData = new ArrayList<Vocabulary>();
-		mVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
-		setListAdapter(mVocabularyListAdapter);
+        mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE));
+//		mVocabularyListData = new ArrayList<Vocabulary>();
+		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
+//		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mVocabularyListData);
+		setListAdapter(mSearchResultVocabularyListAdapter);
 		
 		//
 		// Thumb 관련 객체를 초기화합니다.
@@ -199,321 +198,287 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		scJLPTLevelButton.setText(sb.toString());
 	}
 
-	@Override
-    // @@@@@
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.activity_vocabulary_search_list, menu);
-
-        // @@@@@ 정렬메뉴 선택항목 선택된 상태로 나타나도록 하기
-
-		return true;
+        getMenuInflater().inflate(R.menu.activity_vocabulary_search_list, menu);
+        return true;
 	}
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        SubMenu sm = menu.getItem(0/* 정렬 */).getSubMenu();
+        SearchListSort searchListSort = mSearchResultVocabularyList.getSortMethod();
+        if (searchListSort == SearchListSort.VOCABULARY_GANA)
+            sm.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
+        else if (searchListSort == SearchListSort.VOCABULARY_TRANSLATION)
+            sm.findItem(R.id.avsl_sort_vocabulary_translation).setChecked(true);
+        else
+            sm.findItem(R.id.avsl_sort_vocabulary).setChecked(true);
+
+        return true;
+    }
+
 	@Override
-    // @@@@@
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.avsl_sort_vocabulary_hanja:
-			startSortList(SearchListSort.VOCABULARY);
-			return true;
-		case R.id.avsl_sort_vocabulary_gana:
-			startSortList(SearchListSort.VOCABULARY_GANA);
-			return true;
-		case R.id.avsl_sort_vocabulary_translation:
-			startSortList(SearchListSort.VOCABULARY_TRANSLATION);
-			return true;
-		case R.id.avsl_search_result_vocabulary_rememorize_all: 				// 검색된 전체 단어 재암기
-		case R.id.avsl_search_result_vocabulary_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
-		case R.id.avsl_search_result_vocabulary_memorize_target_all: 		// 검색된 전체 단어 암기 대상 만들기
-		case R.id.avsl_search_result_vocabulary_memorize_target_cancel_all: 	// 검색된 전체 단어 암기 대상 해제
-			// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 값을 설정한다.
-			mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
-			setResult(mActivityResultCode);
+            case R.id.avsl_sort_vocabulary:
+                item.setChecked(true);
+                sortVocabulary(SearchListSort.VOCABULARY);
+                return true;
+            case R.id.avsl_sort_vocabulary_gana:
+                item.setChecked(true);
+                sortVocabulary(SearchListSort.VOCABULARY_GANA);
+                return true;
+            case R.id.avsl_sort_vocabulary_translation:
+                item.setChecked(true);
+                sortVocabulary(SearchListSort.VOCABULARY_TRANSLATION);
+                return true;
+            case R.id.avsl_search_result_vocabulary_rememorize_all: 				// 검색된 전체 단어 재암기
+            case R.id.avsl_search_result_vocabulary_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
+            case R.id.avsl_search_result_vocabulary_memorize_target_all: 		// 검색된 전체 단어 암기 대상 만들기
+            case R.id.avsl_search_result_vocabulary_memorize_target_cancel_all: 	// 검색된 전체 단어 암기 대상 해제
+                // 호출자 액티비티에 데이터가 변경되었음을 알리도록 값을 설정한다.
+                mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+                setResult(mActivityResultCode);
 
-			final int itemId = item.getItemId();
-			if (item.getItemId() == R.id.avsl_search_result_vocabulary_memorize_target_all) {
-				new AlertDialog.Builder(this)
-					.setTitle("암기 대상 상태로 만들기")
-					.setMessage("검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기 대상 상태로, 검색 결과에 포함되지 않은 단어들은 암기 대상 상태를 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기 대상 상태로 만듭니다.")
-					.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                final int itemId = item.getItemId();
+                if (item.getItemId() == R.id.avsl_search_result_vocabulary_memorize_target_all) {
+                    new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.avsl_memorize_settings_vocabulary_ad_title))
+                        .setMessage(getString(R.string.avsl_memorize_settings_vocabulary_ad_message))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                memorizeSettingsVocabulary(itemId, true);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                memorizeSettingsVocabulary(itemId, false);
+                            }
+                        })
+                        .show();
+                } else {
+                    memorizeSettingsVocabulary(itemId, false);
+                }
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-							memorizeSetupVocabulary(itemId, true);
-						}
-					})
-					.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-							memorizeSetupVocabulary(itemId, false);
-						}
-					})
-					.show();
-			} else {
-				memorizeSetupVocabulary(itemId, false);
-			}
+                return true;
+            case R.id.avsl_open_settings_activity:
+                // 설정 페이지를 띄운다.
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
 
-			return true;
+                // 호출자 액티비티에 설정값이 변경되었음을 알리도록 값을 설정한다.
+                mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
+                setResult(mActivityResultCode);
 
-		case R.id.avsl_open_settings_activity:
-			// 설정 페이지를 띄운다.
-			startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
-			mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
-			setResult(mActivityResultCode);
-
-			return true;
+                return true;
 		}
 
 		return false;
 	}
 
-    // @@@@@
-    private void memorizeSetupVocabulary(int menuId, boolean notSearchVocabularyTargetCancel) {
-		// 데이터를 처리하는 도중에 프로그레스 대화상자를 보인다.
-		mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
 
-		new Thread() {
+        // 컨텍스트 메뉴의 헤더타이틀을 현재 선택된 단어로 설정한다.
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        menu.setHeaderTitle(mSearchResultVocabularyListAdapter.getItem(info.position));
 
-			private int mMenuItemId;
-			private boolean mNotSearchVocabularyTargetCancel = false;
+        getMenuInflater().inflate(R.menu.activity_vocabulary_search_list_context, menu);
+    }
 
-			public Thread setValues(int menuItemId, boolean notSearchVocabularyTargetCancel) {
-				mMenuItemId = menuItemId;
-				mNotSearchVocabularyTargetCancel = notSearchVocabularyTargetCancel;
-				return this;
-			}
-			
-			@Override
-			public void run() {
-				ArrayList<Long> idxList = new ArrayList<Long>();
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+            case R.id.avsl_exclude_vocabulary:
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+                mSearchResultVocabularyList.excludeVocabulary(info.position);
 
-				synchronized (mVocabularyListData) {
-					if (mMenuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 전체 단어 재암기
-                        for (Vocabulary vocabulary : mVocabularyListData) {
-                            if (vocabulary.isMemorizeTarget() == false || vocabulary.isMemorizeCompleted() == true)
-                                idxList.add(vocabulary.getIdx());
-                        }
-					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) { 		// 검색된 전체 단어 암기 완료
-                        for (Vocabulary vocabulary : mVocabularyListData) {
-                            if (vocabulary.isMemorizeCompleted() == false)
-                                idxList.add(vocabulary.getIdx());
-                        }
-					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 전체 단어 암기 대상 만들기
-						if (mNotSearchVocabularyTargetCancel == true) {
-                            for (Vocabulary vocabulary : mVocabularyListData) {
-                                idxList.add(vocabulary.getIdx());
-                            }
-						} else {
-                            for (Vocabulary vocabulary : mVocabularyListData) {
-                                if (vocabulary.isMemorizeTarget() == false)
-                                    idxList.add(vocabulary.getIdx());
-                            }
-						}
-					} else if (mMenuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) { 	// 검색된 전체 단어 암기 대상 해제
-                        for (Vocabulary vocabulary : mVocabularyListData) {
-                            if (vocabulary.isMemorizeTarget() == true)
-                                idxList.add(vocabulary.getIdx());
-                        }
-					}
-
-					VocabularyManager.getInstance().updateMemorizeField(mMenuItemId, mNotSearchVocabularyTargetCancel, idxList);
-				}
-
-				Message msg = Message.obtain();
-				msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-				mVocabularyDataChangedHandler.sendMessage(msg);
-			};
+                updateSearchResultVocabularyInfo();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                break;
 		}
-		.setValues(menuId, notSearchVocabularyTargetCancel)
-		.start();		
+
+        return super.onContextItemSelected(item);
+    }
+
+    private void searchVocabulary() {
+        mUseModeScrollBarThumb = false;//@@@@@
+
+        // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
+        mSearchResultVocabularyList.clear();
+        mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                assert mProgressDialog == null;
+
+                // 프로그레스 대화상자를 보인다.
+                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mSearchResultVocabularyList.search(SearchListActivity.this);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                updateSearchResultVocabularyInfo();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+
+                if (mProgressDialog != null)
+                    mProgressDialog.dismiss();
+
+                mProgressDialog = null;
+            }
+        }.execute();
+    }
+
+    private void sortVocabulary(SearchListSort searchListSort) {
+        // 정렬 방법이 변경되지 않았다면 재정렬하지 않도록 한다.
+        if (mSearchResultVocabularyList.getSortMethod() == searchListSort)
+            return;
+
+        mSearchResultVocabularyList.setSortMethod(searchListSort);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                assert mProgressDialog == null;
+
+                // 프로그레스 대화상자를 보인다.
+                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                // 검색결과 단어 리스트를 정렬합니다.
+                mSearchResultVocabularyList.sort();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                updateSearchResultVocabularyInfo();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+
+                if (mProgressDialog != null)
+                    mProgressDialog.dismiss();
+
+                mProgressDialog = null;
+            }
+        }.execute();
+    }
+
+    private void memorizeSettingsVocabulary(final int menuId, final boolean notSearchVocabularyTargetCancel) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                assert mProgressDialog == null;
+
+                // 프로그레스 대화상자를 보인다.
+                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_memorize_settings_vocabulary_progress_message), true, false);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mSearchResultVocabularyList.memorizeSettingsVocabulary(menuId, notSearchVocabularyTargetCancel);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                updateSearchResultVocabularyInfo();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+
+                if (mProgressDialog != null)
+                    mProgressDialog.dismiss();
+
+                mProgressDialog = null;
+            }
+        }.execute();
 	}
 
 	@Override
-    // @@@@@
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
-			// 수행 작업 없음
-		} else if (requestCode == REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY) {
-			DetailActivity.setSeekVocabularyList(null);
+        switch (requestCode) {
+            case REQ_CODE_OPEN_SETTINGS_ACTIVITY:
+                // 수행 작업 없음
+                break;
+            case REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY:
+                DetailActivity.setSeekVocabularyList(null);
 
-			// 상세페이지가 열릴 때 스크롤바를 커스텀 숨기도록 한다.
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
-    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
-		}
+                // @@@@@
+                // 상세페이지가 열릴 때 커스텀 스크롤바를 숨기도록 한다.
+                mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
+                mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
+                break;
+        }
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-    // @@@@@
-    private void startSortList(SearchListSort jvListSortMethod) {
-		if (mSearchListSort == jvListSortMethod)
-			return;
-
-		mSearchListSort = jvListSortMethod;
-
-		// 정렬중에 프로그레스 대화상자를 보인다.
-		assert mProgressDialog == null;
-		mProgressDialog = ProgressDialog.show(this, null, "전체 리스트를 정렬중입니다.", true, false);
-
-		new Thread() {
-			@Override
-			public void run() {
-				// 변경된 정렬 방법을 저장한다.
-				mPreferences.edit().putString(Constants.JV_SPN_LIST_SORT_METHOD, mSearchListSort.name()).commit();
-
-				// 리스트 데이터 정렬합니다.
-				sortList();
-
-				Message msg = Message.obtain();
-				msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-				mVocabularyDataChangedHandler.sendMessage(msg);
-			};
-		}.start();
-	}
-
-    // @@@@@
-    private void sortList() {
-        synchronized (lock) {
-            synchronized (mVocabularyListData) {
-                switch (mSearchListSort) {
-                case VOCABULARY:
-                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
-                    break;
-                case VOCABULARY_GANA:
-                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
-                    break;
-                case VOCABULARY_TRANSLATION:
-                    Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
-                    break;
-                }
-            }
-        }
-	}
-
-	//@@@@@@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-	//@@@@@	super.onListItemClick(l, v, position, id);
+	    super.onListItemClick(l, v, position, id);
 
-		synchronized (mVocabularyListData) {
-			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mVocabularyListData, position));
-			
-			// 단어 상세페이지 호출
-			Intent intent = new Intent(this, DetailActivity.class);
-			intent.putExtra("idx", mVocabularyListData.get(position).getIdx());
-			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
-		}
+        //@@@@@
+//		synchronized (mVocabularyListData) {
+//			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyList(mVocabularyListData, position));
+//
+//			// 단어 상세페이지 호출
+//			Intent intent = new Intent(this, DetailActivity.class);
+//			intent.putExtra("idx", mVocabularyListData.get(position).getIdx());
+//			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+//		}
 	}
 
-    // @@@@@
     private Handler mVocabularyDataChangedHandler = new Handler() {
-		
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.what == MSG_COMPLETED_LIST_DATA_UPDATE) {
-				mVocabularyListAdapter.notifyDataSetChanged();
-				updateVocabularyInfo();
-
-				if (mProgressDialog != null)
-					mProgressDialog.dismiss();
-
-				mProgressDialog = null;
-				mJvListSearchThread = null;
-			} else if (msg.what == MSG_CHANGED_LIST_DATA) {
-				mVocabularyListAdapter.notifyDataSetChanged();
-				updateVocabularyInfo();
+			if (msg.what == MSG_SEARCH_RESULT_LIST_DATA_CHANGED) {
+                updateSearchResultVocabularyInfo();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
 				// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
 				mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
 				setResult(mActivityResultCode);
 			}
-		};
+		}
 	};
 
     // @@@@@
-    private void searchVocabulary() {
-		mUseModeScrollBarThumb = false;
-
-		// 단어 검색이 끝날때까지 진행 대화상자를 보인다.
-		if (mProgressDialog == null) {
-			mProgressDialog = ProgressDialog.show(this, null, "단어를 검색 중입니다.", true, true);
-			mProgressDialog.setOnCancelListener(new OnCancelListener() {
-
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					if (mJvListSearchThread != null) {
-						mJvListSearchThread.interrupt();
-					}
-
-					synchronized (mVocabularyListData) {
-						// 검색을 취소하였으므로 단어를 모두 제거한다.
-						mVocabularyListData.clear();
-					}
-
-					Toast.makeText(SearchListActivity.this, "단어 검색이 취소되었습니다", Toast.LENGTH_SHORT).show();
-
-					Message msg = Message.obtain();
-					msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-					mVocabularyDataChangedHandler.sendMessage(msg);
-				}
-			});
-		}
-		
-		// 검색을 시작하기 전 리스트의 내용을 모두 지운다.
-		// 이유) 검색 스레드에서 리스트를 모두 지운후 검색을 하였을 때 간혹 오류가 발생하는 경우 있음
-		mVocabularyListData.clear();
-		mVocabularyListAdapter.notifyDataSetChanged();
-
-		mJvListSearchThread = new JvListSearchThread(mJvListSearchCondition);
-		mJvListSearchThread.start();
-	}
-
-    // @@@@@
-    public class JvListSearchThread extends Thread {
-
-		private SearchListCondition mJvListSearchCondition = null;
-
-		public JvListSearchThread(SearchListCondition jvListSearchCondition) {
-			assert jvListSearchCondition != null;
-			mJvListSearchCondition = jvListSearchCondition;
-		}
-
-		@Override
-		public void run() {
-			// 현재 검색되는 검색 정보를 저장해 놓는다.
-			mJvListSearchCondition.commit();
-
-			synchronized (mVocabularyListData) {
-				mVocabularyListData.clear();
-				VocabularyManager.getInstance().searchVocabulary(SearchListActivity.this, mJvListSearchCondition, mVocabularyListData);
-			}
-
-			sortList();
-
-			Message msg = Message.obtain();
-			msg.what = MSG_COMPLETED_LIST_DATA_UPDATE;
-			mVocabularyDataChangedHandler.sendMessage(msg);
-		};
-
-	}
-
-    // @@@@@
-    private void updateVocabularyInfo() {
+    private void updateSearchResultVocabularyInfo() {
 		ArrayList<Integer> vocabularyInfo = VocabularyManager.getInstance().getVocabularyInfo();
 		assert vocabularyInfo.size() == 3;
 
-		TextView allVocabularyCount = (TextView)findViewById(R.id.all_vocabulary_count);
-		TextView searchVocabularyCount = (TextView)findViewById(R.id.search_vocabulary_count);
-		TextView memorizeTargetCount = (TextView)findViewById(R.id.memorize_target_count);
-		TextView memorizeCompletedCount = (TextView)findViewById(R.id.avd_memorize_completed_count_text);
-
-		allVocabularyCount.setText(String.format("%d개", vocabularyInfo.get(0)));
-		searchVocabularyCount.setText(String.format("%d개", mVocabularyListData.size()));
-		memorizeTargetCount.setText(String.format("%d개", vocabularyInfo.get(1)));
-		memorizeCompletedCount.setText(String.format("%d개", vocabularyInfo.get(2)));
+        AQuery aq = new AQuery(this);
+        aq.id(R.id.all_vocabulary_count).text(String.format("%d개", vocabularyInfo.get(0)));
+        aq.id(R.id.search_vocabulary_count).text(String.format("%d개", mSearchResultVocabularyList.getCount()));
+        aq.id(R.id.memorize_target_count).text(String.format("%d개", vocabularyInfo.get(1)));
+        aq.id(R.id.avd_memorize_completed_count_text).text(String.format("%d개", vocabularyInfo.get(2)));
 	}
 
 	@Override
@@ -526,7 +491,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 			new AlertDialog.Builder(SearchListActivity.this)
 					.setTitle("검색 조건")
 					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
-						
 								@Override
 								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
 									mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
@@ -534,7 +498,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 							})
 					.setPositiveButton("확인",
 							new DialogInterface.OnClickListener() {
-						
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
@@ -583,43 +546,19 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 	@Override
     // @@@@@
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		getMenuInflater().inflate(R.menu.activity_vocabulary_search_list_context, menu);
-		menu.setHeaderTitle("작업");
-	}
-
-	@Override
-    // @@@@@
-    public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.avsl_exclude_vocabulary:
-			AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-			mVocabularyListData.remove(menuInfo.position);
-			
-			updateVocabularyInfo();
-			mVocabularyListAdapter.notifyDataSetChanged();
-			break;
-		}
-
-		return super.onContextItemSelected(item);
-	}
-
-	@Override
-    // @@@@@
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (mUseModeScrollBarThumb == true) {
-			if (mVisibleScrollBarThumb == false) {
-				mVisibleScrollBarThumb = true;
-				mScrollThumb.setVisibility(View.VISIBLE);
-				getListView().setVerticalScrollBarEnabled(false);
-			}
-
-			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
-		} else {
-            if (mVocabularyListData.size() >= 50)
-                mUseModeScrollBarThumb = true;
-		}
+//		if (mUseModeScrollBarThumb == true) {
+//			if (mVisibleScrollBarThumb == false) {
+//				mVisibleScrollBarThumb = true;
+//				mScrollThumb.setVisibility(View.VISIBLE);
+//				getListView().setVerticalScrollBarEnabled(false);
+//			}
+//
+//			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
+//		} else {
+//            if (mVocabularyListData.size() >= 50)
+//                mUseModeScrollBarThumb = true;
+//		}
 	}
 
 	@Override
@@ -639,7 +578,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
     // @@@@@
     private Handler mScrollBarThumbEventHandler = new Handler() {
-
 		@Override
     	public void handleMessage(Message msg){
     		switch(msg.what) {
