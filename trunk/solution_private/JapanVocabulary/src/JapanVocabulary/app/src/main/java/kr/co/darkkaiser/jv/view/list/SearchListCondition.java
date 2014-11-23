@@ -22,6 +22,7 @@ public class SearchListCondition {
 	private int mScMemorizeCompletedPosition = 0;
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
+    //@@@@@
 	public SearchListCondition(Context context, SharedPreferences preferences) {
 		mContext = context;
 		mPreferences = preferences;
@@ -42,44 +43,52 @@ public class SearchListCondition {
 		}
 	}
 
-	public String getSearchWord() {
+    //@@@@@
+    public String getSearchWord() {
 		return mScSearchWord;
 	}
 
-	public void setSearchWord(String searchWord) {
+    //@@@@@
+    public void setSearchWord(String searchWord) {
 		assert mPreferences != null;
 		
 		mScSearchWord = searchWord;
 	}
 
-	public int getMemorizeTargetPosition() {
+    //@@@@@
+    public int getMemorizeTargetPosition() {
 		return mScMemorizeTargetPosition;
 	}
 
-	public void setMemorizeTargetPosition(int scPosition) {
+    //@@@@@
+    public void setMemorizeTargetPosition(int scPosition) {
 		assert mPreferences != null;
 		
 		mScMemorizeTargetPosition = scPosition;
 	}
 
-	public int getMemorizeCompletedPosition() {
+    //@@@@@
+    public int getMemorizeCompletedPosition() {
 		return mScMemorizeCompletedPosition;
 	}
 
-	public void setMemorizeCompletedPosition(int scPosition) {
+    //@@@@@
+    public void setMemorizeCompletedPosition(int scPosition) {
 		assert mPreferences != null;
 		
 		mScMemorizeCompletedPosition = scPosition;
 	}
-	
-	public boolean [] getCheckedJLPTLevelArray() {
+
+    //@@@@@
+    public boolean [] getCheckedJLPTLevelArray() {
 		assert mContext != null;
 		assert mScCheckedJLPTLevelArray != null;
 	
 		return mScCheckedJLPTLevelArray;
 	}
 
-	public void setCheckedJLPTLevel(int position, boolean value) {
+    //@@@@@
+    public void setCheckedJLPTLevel(int position, boolean value) {
 		assert mPreferences != null;
 
 		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position)
@@ -88,6 +97,7 @@ public class SearchListCondition {
 			assert false;
 	}
 
+    //@@@@@
     public void commit() {
         Editor editor = mPreferences.edit();
         assert editor != null;

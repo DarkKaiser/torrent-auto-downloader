@@ -545,18 +545,18 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	@Override
     // @@@@@
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//		if (mUseModeScrollBarThumb == true) {
-//			if (mVisibleScrollBarThumb == false) {
-//				mVisibleScrollBarThumb = true;
-//				mScrollThumb.setVisibility(View.VISIBLE);
-//				getListView().setVerticalScrollBarEnabled(false);
-//			}
-//
-//			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
-//		} else {
+		if (mUseModeScrollBarThumb == true) {
+			if (mVisibleScrollBarThumb == false) {
+				mVisibleScrollBarThumb = true;
+				mScrollThumb.setVisibility(View.VISIBLE);
+				getListView().setVerticalScrollBarEnabled(false);
+			}
+
+			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
+		} else {
 //            if (mVocabularyListData.size() >= 50)
-//                mUseModeScrollBarThumb = true;
-//		}
+                mUseModeScrollBarThumb = true;
+		}
 	}
 
 	@Override
@@ -639,12 +639,13 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 			Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 			BitmapDrawable drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.scrollbar_thumb);
 
-            return 0;//@@@@@ 임시주석
-//			if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
-//				return display.getWidth() - drawable.getIntrinsicWidth();
-//			} else {
-//				return display.getHeight() - drawable.getIntrinsicWidth();
-//			}
+//            return 0;//@@@@@ 임시주석
+            //noinspection ResourceType
+            if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+				return display.getWidth() - drawable.getIntrinsicWidth();
+			} else {
+				return display.getHeight() - drawable.getIntrinsicWidth();
+			}
 		}
 
 		public void onItemScroll(int firstVisibleItem, int visibleItemCount, int totalItemCount) {
