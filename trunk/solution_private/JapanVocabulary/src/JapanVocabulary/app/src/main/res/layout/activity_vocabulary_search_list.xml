@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <!-- @@@@@ -->
     <LinearLayout
         android:id="@+id/avsl_vocabulary_info_panel"
         android:layout_width="match_parent"
@@ -13,6 +12,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         >
+        <!-- @@@@@ -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -166,11 +166,12 @@
         <TextView
             android:id="@android:id/empty"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="검색된 단어가 없습니다."
-            android:textSize="13dp"
+            android:visibility="gone"
+            android:text="@string/avsl_empty_search_result_list_vocabulary"
             android:textColor="#cccccc"
+            android:textSize="13dp"
             tools:ignore="SpUsage"
             />
     </LinearLayout>

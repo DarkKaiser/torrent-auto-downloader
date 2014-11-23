@@ -43,6 +43,7 @@
     <string name="avsl_exclude_vocabulary">검색목록에서 제외</string>
     <string name="avsl_memorize_settings_vocabulary_ad_title">검색된 단어 암기대상 설정</string>
     <string name="avsl_memorize_settings_vocabulary_ad_message">검색결과에 포함되지 않은 단어들은 암기대상을 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기대상으로, 검색결과에 포함되지 않은 단어들은 암기대상을 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기대상으로 만듭니다.</string>
+    <string name="avsl_empty_search_result_list_vocabulary">검색된 단어가 없습니다.</string>
 
     <string name="avsli_memorize_target">암기대상</string>
     <string name="avsli_memorize_completed">암기완료</string>
