@@ -2,7 +2,7 @@ package kr.co.darkkaiser.jv.vocabulary.list;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 
-public interface IDetailVocabularyList {
+public interface IVocabularyListSeek {
 
     public Vocabulary getVocabulary();
 

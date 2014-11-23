@@ -1,15 +1,15 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.list.IDetailVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
-public class SearchResultVocabularyListWrapper implements IDetailVocabularyList {
+public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 
 	private int mPosition = -1;
 
     private SearchResultVocabularyList mSearchResultVocabularyList = null;
 
-	public SearchResultVocabularyListWrapper(SearchResultVocabularyList searchResultVocabularyList, int position) {
+	public SearchResultVocabularyListSeek(SearchResultVocabularyList searchResultVocabularyList, int position) {
 		assert searchResultVocabularyList != null;
         assert position >= 0 && position < mSearchResultVocabularyList.getCount();
 

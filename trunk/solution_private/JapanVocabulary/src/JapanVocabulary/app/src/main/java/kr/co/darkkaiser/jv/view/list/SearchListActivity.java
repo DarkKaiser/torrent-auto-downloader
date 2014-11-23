@@ -37,7 +37,7 @@ import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListWrapper;
+import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSeek;
 
 public class SearchListActivity extends ActionBarListActivity implements OnClickListener {
 
@@ -365,7 +365,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
         //@@@@@
 //		synchronized (mVocabularyListData) {
-			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListWrapper(mSearchResultVocabularyList, position));
+			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
 
 			// 단어 상세페이지 호출
 			Intent intent = new Intent(this, DetailActivity.class);
