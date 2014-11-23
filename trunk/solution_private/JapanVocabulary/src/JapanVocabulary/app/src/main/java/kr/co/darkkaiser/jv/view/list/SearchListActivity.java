@@ -7,40 +7,26 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -54,7 +40,7 @@ import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
-public class SearchListActivity extends ActionBarListActivity implements OnClickListener, OnScrollListener {
+public class SearchListActivity extends ActionBarListActivity implements OnClickListener {
 
 	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
@@ -65,10 +51,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
 
-	// 리스트뷰의 스크롤이 멈추었을 때 Thumb를 숨기기 위한 메시지
-	private static final int MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE = 1;
-
-    private WindowManager mWindowManager = null;
 	private SharedPreferences mPreferences = null;
 	private ProgressDialog mProgressDialog = null;
 
@@ -76,11 +58,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
     private SearchListAdapter mSearchResultVocabularyListAdapter = null;
 
 	private SearchListCondition mJvListSearchCondition = null;
-
-	private ScrollBarThumb mScrollThumb = null;
-	private boolean mUseModeScrollBarThumb = false;
-	private boolean mVisibleScrollBarThumb = false;
-	private WindowManager.LayoutParams mScrollBarThumbLayout = null;
 
 	private int mActivityResultCode = 0;
 
@@ -94,9 +71,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
 
-		mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-		assert mWindowManager != null;
-
 		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
@@ -109,27 +83,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 		
-		//
-		// Thumb 관련 객체를 초기화합니다.
-		//
-		assert getListView() != null;
-
-		mScrollThumb = new ScrollBarThumb(this, getListView());
-		mScrollThumb.setVisibility(View.INVISIBLE);
-
-		mScrollBarThumbLayout = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-				WindowManager.LayoutParams.TYPE_APPLICATION,
-				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-				PixelFormat.TRANSLUCENT);
-
-		mScrollBarThumbLayout.gravity = Gravity.TOP;
-		mScrollBarThumbLayout.x = mScrollThumb.getScrollBarThumbLayoutX();
-		mScrollBarThumbLayout.y = 0;
-
-		mWindowManager.addView(mScrollThumb, mScrollBarThumbLayout);
-
-		getListView().setOnScrollListener(this);
-
 		//
 		// 검색과 관련된 컨트롤들을 초기화합니다.
 		//
@@ -283,8 +236,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
     }
 
     private void searchVocabulary() {
-        mUseModeScrollBarThumb = false;//@@@@@
-
         // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
         mSearchResultVocabularyList.clear();
         mSearchResultVocabularyListAdapter.notifyDataSetChanged();
@@ -404,11 +355,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
                 break;
             case REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY:
                 DetailActivity.setSeekVocabularyList(null);
-
-                // @@@@@
-                // 상세페이지가 열릴 때 커스텀 스크롤바를 숨기도록 한다.
-                mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
-                mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
                 break;
         }
 
@@ -538,213 +484,6 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
 
 			break;
-		}
-	}
-
-	@Override
-    // @@@@@
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (mUseModeScrollBarThumb == true) {
-			if (mVisibleScrollBarThumb == false) {
-				mVisibleScrollBarThumb = true;
-				mScrollThumb.setVisibility(View.VISIBLE);
-				getListView().setVerticalScrollBarEnabled(false);
-			}
-
-			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
-		} else {
-            if (mSearchResultVocabularyList.getCount() >= 50)
-                mUseModeScrollBarThumb = true;
-		}
-	}
-
-	@Override
-    // @@@@@
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-		switch (scrollState) {
-		case SCROLL_STATE_IDLE:
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
-    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);
-			break;
-
-		case SCROLL_STATE_TOUCH_SCROLL:
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
-			break;
-		}
-	}
-
-    // @@@@@
-    private Handler mScrollBarThumbEventHandler = new Handler() {
-		@Override
-    	public void handleMessage(Message msg){
-    		switch(msg.what) {
-	    		case MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE:
-	    			mUseModeScrollBarThumb = false;
-	    			mVisibleScrollBarThumb = false;
-	    			mScrollThumb.setVisibility(View.INVISIBLE);
-	    			getListView().setVerticalScrollBarEnabled(true);
-	    			break;
-
-				default:
-					 throw new RuntimeException("Unknown message " + msg);
-    		}
-    	}
-    };
-
-	@Override
-    // @@@@@
-	public void onConfigurationChanged(Configuration newConfig) {
-		// 화면이 회전되었을 경우를 위해 좌표값을 다시 계산한다.
-		mScrollBarThumbLayout.x = mScrollThumb.getScrollBarThumbLayoutX();
-		mScrollThumb.reset();
-
-		super.onConfigurationChanged(newConfig);
-	}
-
-    // @@@@@
-	public class ScrollBarThumb extends ImageView {
-
-		private ListView mListView = null;
-
-		private int mThumbHeight = 0;
-		private int mTitleBarHeight = 0;
-
-		// 리스트뷰에서 Thumb 높이를 제외한 크기
-		private int mListViewTraverseHeight = 0;
-
-		// 사용자가 Thumb의 위치를 조정하여 리스트뷰가 스크롤되었을 때 Thumb의 위치를 재조정하지 않도록 막기위한 플래그 변수
-		private boolean mAccInitiated = false;
-
-		public ScrollBarThumb(Context context, ListView listView) {
-			super(context, null);
-
-			mListView = listView;
-			assert mListView != null;
-
-			Drawable drawable = context.getResources().getDrawable(R.drawable.scrollbar_thumb);
-			mThumbHeight = drawable.getIntrinsicHeight();
-			setImageDrawable(drawable);
-			
-			setAlpha(0xD0);
-			setFocusable(false);
-		}
-
-		public void reset() {
-			mTitleBarHeight = 0;
-			mListViewTraverseHeight = 0;
-		}
-
-		public int getScrollBarThumbLayoutX() {
-			Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-			BitmapDrawable drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.scrollbar_thumb);
-
-//            return 0;//@@@@@ 임시주석
-            //noinspection ResourceType
-            if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
-				return display.getWidth() - drawable.getIntrinsicWidth();
-			} else {
-				return display.getHeight() - drawable.getIntrinsicWidth();
-			}
-		}
-
-		public void onItemScroll(int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			assert mListView != null;
-
-			// 사용자가 Thumb의 위치를 조정하여 리스트뷰가 스크롤되었을 때 Thumb의 위치를 재조정하지 않도록 한다.
-			if (mAccInitiated == true) {
-				mAccInitiated = false;
-				return;
-			}
-
-			if (mTitleBarHeight <= 0) {
-				mTitleBarHeight = getTitleBarHeight();
-				assert mTitleBarHeight > 0;
-			}
-
-			// 리스트뷰에서 Thumb 높이를 제외한 크기를 구한다.
-			if (mListViewTraverseHeight <= 0) {
-				mListViewTraverseHeight = mListView.getMeasuredHeight() - mThumbHeight;
-				assert mListViewTraverseHeight > 0;
-			}
-
-			// 글로벌 좌표를 기준으로 리스트뷰의 영역을 구한다.
-			Rect r = new Rect();
-			Point globalOffset = new Point();
-			mListView.getGlobalVisibleRect(r, globalOffset);
-
-			if (totalItemCount == 0)
-				totalItemCount = 1;
-
-			mScrollBarThumbLayout.y = (int)(mListViewTraverseHeight * firstVisibleItem / (float)totalItemCount + (globalOffset.y - mTitleBarHeight));
-
-			// Thumb의 위치를 갱신한다.
-			mWindowManager.updateViewLayout(this, mScrollBarThumbLayout);
-		}
-
-		public boolean onTouchEvent(MotionEvent event) {
-			assert mListView != null;
-
-    		mScrollBarThumbEventHandler.removeMessages(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE);
-
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				return true;
-			} else if (event.getAction() == MotionEvent.ACTION_UP) {
-	    		mScrollBarThumbEventHandler.sendEmptyMessageDelayed(MSG_LISTVIEW_SCROLLBAR_THUMB_HIDE, 1000);				
-			}
-
-			if (mTitleBarHeight <= 0) {
-				mTitleBarHeight = getTitleBarHeight();
-				assert mTitleBarHeight > 0;
-			}
-
-			// 리스트뷰에서 Thumb 높이를 제외한 크기를 구한다.
-			if (mListViewTraverseHeight <= 0) {
-				mListViewTraverseHeight = mListView.getMeasuredHeight() - mThumbHeight;
-				assert mListViewTraverseHeight > 0;
-			}
-
-			// 글로벌 좌표를 기준으로 리스트뷰의 영역을 구한다.
-			Rect r = new Rect();
-			Point globalOffset = new Point();
-			mListView.getGlobalVisibleRect(r, globalOffset);
-
-			// Thumb의 위치를 계산한다.
-			mScrollBarThumbLayout.y = (int)(event.getRawY() - mTitleBarHeight - (mThumbHeight / 2.0));
-
-			if (mScrollBarThumbLayout.y < (globalOffset.y - mTitleBarHeight))
-				mScrollBarThumbLayout.y = globalOffset.y - mTitleBarHeight;
-			
-			// Thumb의 위치를 갱신한다.
-			mWindowManager.updateViewLayout(this, mScrollBarThumbLayout);
-
-			// 리스트뷰에 Thumb가 위치한 비율에 따라 리스트뷰의 스크롤 위치를 조정한다.
-			int fy = mScrollBarThumbLayout.y - globalOffset.y + mTitleBarHeight;
-			if (fy < 0)
-				fy = 0;
-			if (fy >= mListViewTraverseHeight)
-				fy = mListViewTraverseHeight;
-			fy = (int)(mListView.getCount() * (fy / (float)mListViewTraverseHeight) + 0.5);
-
-			if (fy >= mListView.getCount())
-				fy = mListView.getCount() - 1;
-
-			mListView.setSelectionFromTop(fy, 0);				
-
-			// 리스트뷰의 스크롤 위치가 변경될 때 Thumb의 위치를 재조정하지 않기 위한 플래그 값을 설정한다.
-			mAccInitiated = true;
-
-			return true;
-		}
-
-		private int getTitleBarHeight() {
-			Rect r = new Rect();
-			Window window = getWindow();
-			window.getDecorView().getWindowVisibleDisplayFrame(r);
-
-			int statusBarHeight = r.top;
-			int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-		
-			return contentViewTop - statusBarHeight;				
 		}
 	}
 
