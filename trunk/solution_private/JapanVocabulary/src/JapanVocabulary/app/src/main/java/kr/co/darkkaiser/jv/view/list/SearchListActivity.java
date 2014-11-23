@@ -35,6 +35,7 @@ import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
+import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSeek;
@@ -363,15 +364,15 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 	    super.onListItemClick(l, v, position, id);
 
-        //@@@@@
-//		synchronized (mVocabularyListData) {
-			DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
+        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
+        if (vocabulary != null) {
+            DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
 
-			// 단어 상세페이지 호출
-			Intent intent = new Intent(this, DetailActivity.class);
-			intent.putExtra("idx", mSearchResultVocabularyList.getVocabulary(position).getIdx());
-			startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
-//		}
+            // 단어 상세페이지 호출
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("idx", vocabulary.getIdx());
+            startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+        }
 	}
 
     private Handler mVocabularyDataChangedHandler = new Handler() {
