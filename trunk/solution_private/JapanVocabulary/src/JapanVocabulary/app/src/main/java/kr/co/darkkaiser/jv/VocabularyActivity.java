@@ -315,7 +315,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 showCurrentMemorizeVocabulary();
 			}
 		} else if (requestCode == REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY) {
-			DetailActivity.setSeekVocabularyList(null);
+			DetailActivity.setVocabularyListSeek(null);
 			if (resultCode == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED)
 				showCurrentMemorizeVocabulary();
 		}
@@ -524,9 +524,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
                 if (idx != -1) {
                     if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
-                        DetailActivity.setSeekVocabularyList(mMemorizeTargetVocabularyList);
+                        DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
                     else
-                        DetailActivity.setSeekVocabularyList(null);
+                        DetailActivity.setVocabularyListSeek(null);
 
                     // 상세정보 페이지를 연다.
                     Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);

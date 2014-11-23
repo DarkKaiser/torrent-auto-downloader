@@ -356,7 +356,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
                 // 수행 작업 없음
                 break;
             case REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY:
-                DetailActivity.setSeekVocabularyList(null);
+                DetailActivity.setVocabularyListSeek(null);
                 break;
         }
 
@@ -368,7 +368,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
         Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
         if (vocabulary != null) {
-            DetailActivity.setSeekVocabularyList(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
+            DetailActivity.setVocabularyListSeek(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
 
             // 단어 상세페이지 호출
             Intent intent = new Intent(this, DetailActivity.class);

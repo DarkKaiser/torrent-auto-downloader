@@ -23,7 +23,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
     // 검색결과 단어리스트 정렬방법
     private SearchListSort mSearchListSort = SearchListSort.VOCABULARY;
 
-    // 단어리스트 검색조건
+    // 검색단어 검색조건
     private SearchListCondition mSearchListCondition = null;
 
     private SharedPreferences mSharedPreferences = null;

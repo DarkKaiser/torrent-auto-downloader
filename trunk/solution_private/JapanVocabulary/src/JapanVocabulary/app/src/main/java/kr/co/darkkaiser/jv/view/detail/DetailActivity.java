@@ -47,7 +47,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
 
-    public static void setSeekVocabularyList(IVocabularyListSeek vocabularyList) {
+    public static void setVocabularyListSeek(IVocabularyListSeek vocabularyList) {
         mVocabularyList = vocabularyList;
 	}
 
@@ -68,7 +68,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
 		if (vocabulary == null) {
 			// 이전/다음 단어로 이동하기 위한 관리자 객체가 유효하지 않으므로 null로 설정한다.
-			setSeekVocabularyList(null);
+			setVocabularyListSeek(null);
 
 			Intent intent = getIntent();
 			if (intent != null) {
@@ -111,7 +111,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 	@Override
 	protected void onDestroy() {
         mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
-        setSeekVocabularyList(null);
+        setVocabularyListSeek(null);
 		super.onDestroy();
 	}
 
