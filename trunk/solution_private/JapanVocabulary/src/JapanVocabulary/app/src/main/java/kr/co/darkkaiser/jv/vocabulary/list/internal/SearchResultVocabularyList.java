@@ -130,6 +130,10 @@ public class SearchResultVocabularyList implements IVocabularyList {
         mSharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, mSearchListSort.name()).commit();
     }
 
+    public synchronized SearchListCondition getSearchListCondition() {
+        return mSearchListCondition;
+    }
+
     // @@@@@ 함수명 고민
     public synchronized boolean setMemorizeTarget(int position) {
         if (isValidPosition(position) == true) {

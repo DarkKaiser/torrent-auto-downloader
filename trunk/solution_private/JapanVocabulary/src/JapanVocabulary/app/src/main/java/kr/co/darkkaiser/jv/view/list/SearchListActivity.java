@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +41,6 @@ import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSe
 
 public class SearchListActivity extends ActionBarListActivity implements OnClickListener {
 
-	// 호출자 인텐트로 넘겨 줄 액티비티 결과 값
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
 	public static final int ACTIVITY_RESULT_PREFERENCE_CHANGED = 2;
 
@@ -51,22 +49,18 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
 
-	private SharedPreferences mPreferences = null;
-	private ProgressDialog mProgressDialog = null;
-
-    private SearchResultVocabularyList mSearchResultVocabularyList = null;
     private SearchListAdapter mSearchResultVocabularyListAdapter = null;
+    private SearchResultVocabularyList mSearchResultVocabularyList = null;
 
-	private SearchListCondition mJvListSearchCondition = null;
+    private ProgressDialog mProgressDialog = null;
 
-	private int mActivityResultCode = 0;
+    private int mActivityResultCode = 0;
 
     public SearchListActivity() {
 
     }
 
     @Override
-    // @@@@@
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
@@ -74,18 +68,16 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
-		// 이전에 저장해 둔 환경설정 값들을 읽어들인다.
-		mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		mJvListSearchCondition = new SearchListCondition(this, mPreferences);
-
-		// 단어 리스트를 초기화한다.
+		// 리스트뷰를 초기화한다.
         mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE));
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
-		
-		//
-		// 검색과 관련된 컨트롤들을 초기화합니다.
-		//
+
+        // @@@@@
+        //
+        // 검색과 관련된 컨트롤들을 초기화합니다.
+        //
+        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
 
 		// 검색어 검색 조건
 		EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
@@ -403,6 +395,8 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
     // @@@@@
     private void updateJLPTLevelButtonText() {
+        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
         String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
         boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
         assert items.length == checkedItems.length;
@@ -427,7 +421,9 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 	@Override
     // @@@@@
     public void onClick(View v) {
-		switch (v.getId()) {
+        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+        switch (v.getId()) {
 		case R.id.sc_jlpt_level:
 		{
 			boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
@@ -436,7 +432,9 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-									mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
+                                    SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                                    mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
 								}
 							})
 					.setPositiveButton("확인",
