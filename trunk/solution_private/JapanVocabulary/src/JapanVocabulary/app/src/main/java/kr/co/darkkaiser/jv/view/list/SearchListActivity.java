@@ -84,9 +84,8 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 	private int mActivityResultCode = 0;
 
-    public final Object lock = new Object();
-
     public SearchListActivity() {
+
     }
 
     @Override
@@ -554,7 +553,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
 			mScrollThumb.onItemScroll(firstVisibleItem, visibleItemCount, totalItemCount);
 		} else {
-//            if (mVocabularyListData.size() >= 50)
+            if (mSearchResultVocabularyList.getCount() >= 50)
                 mUseModeScrollBarThumb = true;
 		}
 	}
