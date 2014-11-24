@@ -13,7 +13,7 @@ using System.Xml;
 
 namespace JapanVocabularyDbManager
 {
-    /*@@@@@*/public partial class frmMain : Form
+    public partial class frmMain : Form
     {
         private static string DB_FILE_NAME = "vocabulary_v3.db";
 
@@ -26,16 +26,11 @@ namespace JapanVocabularyDbManager
 
         #region 이벤트 핸들러
 
-        /*@@@@@*/private void frmMain_Load(object sender, EventArgs e)
+        private void frmMain_Load(object sender, EventArgs e)
         {
             // 프로그램을 초기화합니다.
             cboWordSearchItem.SelectedIndex = 2/* 설명 */;
-
-            cboHanjaSearchItem.Items.Add("한자");
-            cboHanjaSearchItem.Items.Add("음독");
-            cboHanjaSearchItem.Items.Add("훈독");
-            cboHanjaSearchItem.Items.Add("뜻");
-            cboHanjaSearchItem.SelectedIndex = 3;
+            cboHanjaSearchItem.SelectedIndex = 3/* 뜻 */;
 
             // DB에 연결합니다.
             string errorMessage;
@@ -50,7 +45,7 @@ namespace JapanVocabularyDbManager
             FillData();
         }
         
-        /*@@@@@*/private void txtHanjaSearchWord_TextChanged(object sender, EventArgs e)
+        private void txtHanjaSearchWord_TextChanged(object sender, EventArgs e)
         {
             if (txtHanjaSearchWord.Text.Trim().Length == 0)
                 btnHanjaSearch.Enabled = false;
@@ -58,30 +53,15 @@ namespace JapanVocabularyDbManager
                 btnHanjaSearch.Enabled = true;
         }
 
-        /*@@@@@*/private void btnHanjaAll_Click(object sender, EventArgs e)
+        private void btnHanjaAll_Click(object sender, EventArgs e)
         {
             FillHanjaData(string.Empty);
         }
 
-        /*@@@@@*/private void dataVocabularyGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                e.Cancel = true;
-        }
-       
         /*@@@@@*/private void dataHanjaGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
-        }
-
-        /*@@@@@*/private void dataVocabularyGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-            {
-                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY WHERE idx = {0};", e.Row.Cells[0].Value);
-                cmd.ExecuteNonQuery();
-            }
         }
 
         /*@@@@@*/private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
@@ -93,7 +73,7 @@ namespace JapanVocabularyDbManager
             }
         }
 
-        /*@@@@@*/private void btnHanjaSearch_Click(object sender, EventArgs e)
+        private void btnHanjaSearch_Click(object sender, EventArgs e)
         {
             string searchWord = txtHanjaSearchWord.Text.Trim();
             Debug.Assert(string.IsNullOrEmpty(searchWord) == false);
@@ -101,17 +81,17 @@ namespace JapanVocabularyDbManager
             StringBuilder sb = new StringBuilder();
             switch (cboHanjaSearchItem.SelectedIndex)
             {
-                case 1:
-                    sb.Append("SOUND_READ LIKE ");
+                case 1/* 음독 */:
+                    sb.Append(" SOUND_READ LIKE ");
                     break;
-                case 2:
-                    sb.Append("MEAN_READ LIKE ");
+                case 2/* 훈독 */:
+                    sb.Append(" MEAN_READ LIKE ");
                     break;
-                case 3:
-                    sb.Append("TRANSLATION LIKE ");
+                case 3/* 뜻 */:
+                    sb.Append(" TRANSLATION LIKE ");
                     break;
-                default:
-                    sb.Append("CHARACTER LIKE ");
+                default/* 한자 */:
+                    sb.Append(" CHARACTER LIKE ");
                     break;
             }
 
@@ -122,7 +102,7 @@ namespace JapanVocabularyDbManager
             FillHanjaData(sb.ToString());
         }
 
-        /*@@@@@*/private void dataVocabularyGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        private void dataVocabularyGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             Rectangle rect = new Rectangle(e.RowBounds.Location.X,
                                            e.RowBounds.Location.Y,
@@ -137,7 +117,7 @@ namespace JapanVocabularyDbManager
                                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
-        /*@@@@@*/private void dataHanjaGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        private void dataHanjaGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             Rectangle rect = new Rectangle(e.RowBounds.Location.X,
                                            e.RowBounds.Location.Y,
@@ -400,7 +380,7 @@ namespace JapanVocabularyDbManager
             }
         }
 
-        /*@@@@@*/private void FillHanjaData(string sqlWhere)
+        private void FillHanjaData(string sqlWhere)
         {
             Debug.Assert(this.mDbConnection != null);
 
@@ -410,7 +390,8 @@ namespace JapanVocabularyDbManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, JLPT_CLASS, TRANSLATION FROM TBL_HANJA ";
+                string strSQL = "SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION, USE_YN FROM TBL_HANJA ";
+
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
 
@@ -421,12 +402,12 @@ namespace JapanVocabularyDbManager
                 {
                     while (reader.HasRows == true && reader.Read() == true)
                     {
-                        string strLevel = "";
-                        int nLevel = reader.GetInt32(4/*JLPT_CLASS*/);
-                        if (nLevel != 99)
-                            strLevel = "N" + nLevel;
-
-                        dataHanjaGridView.Rows.Add(reader.GetInt32(0/*IDX*/), reader.GetString(1/*CHARACTER*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/), reader.GetString(5/*TRANSLATION*/), strLevel);
+                        dataHanjaGridView.Rows.Add(reader.GetInt32(0/*IDX*/), 
+                                                   reader.GetString(1/*CHARACTER*/), 
+                                                   reader.GetString(2/*SOUND_READ*/), 
+                                                   reader.GetString(3/*MEAN_READ*/), 
+                                                   reader.GetString(4/*TRANSLATION*/), 
+                                                   reader.GetString(5/* USE_YN */));
                     }
                 }
             }
@@ -484,6 +465,57 @@ namespace JapanVocabularyDbManager
         private void btnVocabularyShowAll_Click(object sender, EventArgs e)
         {
             FillVocabularyData(string.Empty);
+        }
+
+        private void dataVocabularyGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                DataGridView dataGridView = (DataGridView)sender;
+                if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 0)
+                {
+                    Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
+
+                    if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+                        {
+                            cmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET USE_YN='N' WHERE idx = {0};", dataGridView.SelectedRows[0].Cells[0].Value);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        dataGridView.SelectedRows[0].Cells[5/* 사용유무 */].Value = "N";
+
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
+
+        // @@@@@ 한자는 use_yn을 없애고 실제로 삭제로 처리함
+        private void dataHanjaGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                DataGridView dataGridView = (DataGridView)sender;
+                if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 0)
+                {
+                    Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
+
+                    if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+                        {
+                            cmd.CommandText = string.Format("UPDATE TBL_HANJA SET USE_YN='N' WHERE idx = {0};", dataGridView.SelectedRows[0].Cells[0].Value);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        dataGridView.SelectedRows[0].Cells[5/* 사용유무 */].Value = "N";
+
+                        e.Handled = true;
+                    }
+                }
+            }
         }
     }
 }
