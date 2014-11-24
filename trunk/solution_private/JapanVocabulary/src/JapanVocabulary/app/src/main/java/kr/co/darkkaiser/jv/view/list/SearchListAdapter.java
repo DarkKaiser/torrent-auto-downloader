@@ -97,7 +97,7 @@ public class SearchListAdapter extends BaseAdapter {
                 int position = (Integer)cbMemorizeTarget.getTag();
                 if (position < mSearchResultVocabularyList.getCount()) {
                     // 암기대상 설정한 후, 화면을 업데이트합니다.
-                    if (mSearchResultVocabularyList.setMemorizeTarget(position) == true)
+                    if (mSearchResultVocabularyList.setMemorizeTarget(position, cbMemorizeTarget.isChecked()) == true)
                         mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }
@@ -110,7 +110,7 @@ public class SearchListAdapter extends BaseAdapter {
                 int position = (Integer)cbMemorizeCompleted.getTag();
                 if (position < mSearchResultVocabularyList.getCount()) {
                     // 암기완료 설정한 후, 화면을 업데이트합니다.
-                    if (mSearchResultVocabularyList.setMemorizeCompleted(position) == true)
+                    if (mSearchResultVocabularyList.setMemorizeCompleted(position, cbMemorizeCompleted.isChecked()) == true)
                         mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }

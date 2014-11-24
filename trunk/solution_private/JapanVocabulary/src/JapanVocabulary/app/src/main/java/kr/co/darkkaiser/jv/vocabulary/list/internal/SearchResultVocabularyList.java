@@ -115,6 +115,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
         VocabularyManager.getInstance().memorizeSettingsVocabulary(menuId, notSearchVocabularyTargetCancel, idxList);
     }
 
+    @Override
     public synchronized int getCount() {
         return mVocabularyListData.size();
     }
@@ -134,47 +135,35 @@ public class SearchResultVocabularyList implements IVocabularyList {
         return mSearchListCondition;
     }
 
-    // @@@@@ 함수명 고민
-    public synchronized boolean setMemorizeTarget(int position) {
+    public synchronized boolean setMemorizeTarget(int position, boolean flag) {
         if (isValidPosition(position) == true) {
             Vocabulary vocabulary = mVocabularyListData.get(position);
-//            vocabulary.setMemorizeTarget();
+            if (vocabulary != null) {
+                vocabulary.setMemorizeTarget(flag);
+
+                // @@@@@ 해당 단어만 상태 업데이트
+                VocabularyManager.getInstance().writeUserVocabularyInfo();
+            }
         } else {
             assert false;
         }
-        // isValidPosition
-//        Vocabulary vocabulary = mSearchVocabularyList.getVocabulary();
-//        vocabulary.setMemorizeTarget(cbMemorizeTarget.isChecked());
-//
-//        // @@@@@ 해당 단어만 상태 업데이트
-//        VocabularyManager.getInstance().writeUserVocabularyInfo();
 
         return true;
     }
 
-//    // @@@@@ 함수명 고민
-    public synchronized boolean setMemorizeCompleted(int position) {
-        // isValidPosition
-//        Vocabulary vocabulary = mSearchVocabularyList.getVocabulary();
-//        vocabulary.setMemorizeCompleted(cbMemorizeCompleted.isChecked(), true);
-//
-//        // @@@@@ 해당 단어만 상태 업데이트
-//        VocabularyManager.getInstance().writeUserVocabularyInfo();
+    public synchronized boolean setMemorizeCompleted(int position, boolean flag) {
+        if (isValidPosition(position) == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(position);
+            if (vocabulary != null) {
+                vocabulary.setMemorizeCompleted(flag, true);
 
-        /////////////////////////////////////////////////////////////////////////
+                // @@@@@ 해당 단어만 상태 업데이트
+                VocabularyManager.getInstance().writeUserVocabularyInfo();
+            }
+        } else {
+            assert false;
+        }
 
-//        if (isValidPosition() == true) {
-//            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-//            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-//                ++mMemorizeCompletedCount;
-//                vocabulary.setMemorizeCompleted(true, true);
-//
-//                // @@@@@ 해당 단어만 상태 업데이트
-//                VocabularyManager.getInstance().writeUserVocabularyInfo();
-//            }
-//        } else {
-//            assert false;
-//        }
         return true;
     }
 

@@ -224,6 +224,22 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 		return null;
 	}
 
+    public synchronized void setMemorizeCompleted() {
+        if (isValidPosition() == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
+            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
+                ++mMemorizeCompletedCount;
+                vocabulary.setMemorizeCompleted(true, true);
+
+                // @@@@@ 해당 단어만 상태 업데이트
+                VocabularyManager.getInstance().writeUserVocabularyInfo();
+            }
+        } else {
+            assert false;
+        }
+    }
+
+    @Override
     public synchronized int getCount() {
         return mVocabularyListData.size();
     }
@@ -266,22 +282,6 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
             edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, mPosition);
 
         edit.commit();
-    }
-
-    // @@@@@ 함수명 고민
-    public synchronized void setMemorizeCompleted() {
-        if (isValidPosition() == true) {
-            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-                ++mMemorizeCompletedCount;
-                vocabulary.setMemorizeCompleted(true, true);
-
-                // @@@@@ 해당 단어만 상태 업데이트
-                VocabularyManager.getInstance().writeUserVocabularyInfo();
-            }
-        } else {
-            assert false;
-        }
     }
 
     public synchronized MemorizeOrder getMemorizeOrder() { return mMemorizeOrder; }
