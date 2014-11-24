@@ -46,8 +46,7 @@ CREATE TABLE TBL_HANJA (
     CHARACTER               VARCHAR(10),											-- 한자
     SOUND_READ              VARCHAR(50),											-- 음독
     MEAN_READ               VARCHAR(50),											-- 훈독
-    TRANSLATION             TEXT,													-- 뜻
-	USE_YN					VARCHAR(1)												-- 사용 여부
+    TRANSLATION             TEXT													-- 뜻
 );
 
 CREATE UNIQUE INDEX TBL_HANJA_INDEX01 

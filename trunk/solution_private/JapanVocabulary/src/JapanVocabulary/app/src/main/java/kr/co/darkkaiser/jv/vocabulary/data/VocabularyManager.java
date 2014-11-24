@@ -413,25 +413,27 @@ public class VocabularyManager {
 		return true;
 	}
 
-    // @@@@@
+    /**
+     * 단어에 대한 상세설명을 반환합니다.
+     *
+     * @param vocabulary 단어 객체
+     * @return 단어에 대한 상세설명
+     */
+    @SuppressWarnings("StringBufferReplaceableByString")
     public synchronized String getVocabularyDetailDescription(Vocabulary vocabulary) {
-        String voc;
-        voc = vocabulary.getVocabulary();
+        assert vocabulary != null;
 
 		StringBuilder sbResult = new StringBuilder();
 		if (mVocabularyDatabase != null) {
-			for (int index = 0; index < voc.length(); ++index) {
+            String vocabularyHanja = vocabulary.getVocabulary();
+			for (int index = 0; index < vocabularyHanja.length(); ++index) {
 				Cursor cursor = null;
 
 				try {
 					StringBuilder sbSQL = new StringBuilder();
-					sbSQL.append("SELECT CHARACTER, ")
-					     .append("       SOUND_READ, ")
-					     .append("       MEAN_READ, ")
-					     .append("       JLPT_CLASS, ")
-					     .append("       TRANSLATION ")
+					sbSQL.append("SELECT CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION ")
 					     .append("  FROM TBL_HANJA ")
-					     .append(" WHERE CHARACTER='").append(voc.charAt(index)).append("' ")
+					     .append(" WHERE CHARACTER = '").append(vocabularyHanja.charAt(index)).append("' ")
 					     .append(" LIMIT 1");
 
 					cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
@@ -440,25 +442,7 @@ public class VocabularyManager {
 						if (sbResult.length() > 0)
 							sbResult.append("\n\n");
 
-						if (cursor.getLong(3/* JLPT_CLASS */) == 99) {
-							sbResult.append(cursor.getString(0/* CHARACTER */))
-								    .append("\n")
-								    .append(cursor.getString(4/* TRANSLATION */))
-								    .append("\n음독: ")
-								    .append(cursor.getString(1/* SOUND_READ */))
-								    .append("\n훈독: ")
-								    .append(cursor.getString(2/* MEAN_READ */));
-						} else {
-							sbResult.append(cursor.getString(0/* CHARACTER */))
-								    .append(" ( JLPT N")
-								    .append(cursor.getLong(3/* JLPT_CLASS */))
-								    .append(" )\n")
-								    .append(cursor.getString(4/* TRANSLATION */))
-								    .append("\n음독: ")
-								    .append(cursor.getString(1/* SOUND_READ */))
-								    .append("\n훈독: ")
-								    .append(cursor.getString(2/* MEAN_READ */));
-						}
+                        sbResult.append(cursor.getString(0/* CHARACTER */)).append("\n").append(cursor.getString(3/* TRANSLATION */)).append("\n음독: ").append(cursor.getString(1/* SOUND_READ */)).append("\n훈독: ").append(cursor.getString(2/* MEAN_READ */));
 					}
 				} catch (SQLiteException e) {
 					Log.e(TAG, e.getMessage());
