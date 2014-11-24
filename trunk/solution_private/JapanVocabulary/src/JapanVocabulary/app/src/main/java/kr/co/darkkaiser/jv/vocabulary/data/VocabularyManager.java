@@ -171,8 +171,8 @@ public class VocabularyManager {
 
 			try {
 				String searchWord = searchCondition.getSearchWord().trim();
-				int memorizeTargetPosition = searchCondition.getMemorizeTarget();
-				int memorizeCompletedPosition = searchCondition.getMemorizeCompleted();
+				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchCondition.getMemorizeTarget();
+				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchCondition.getMemorizeCompleted();
 				boolean[] checkedItems = searchCondition.getCheckedJLPTLevelArray();
 
 				boolean hasSearchCondition = false;
@@ -244,7 +244,7 @@ public class VocabularyManager {
 						return;
 
 					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 현재까지의 검색 결과를 반환한다.
-					if (memorizeTargetPosition == 0/*모든 단어*/ && memorizeCompletedPosition == 0/*모든 단어*/) {
+					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
 						for (int index = 0; index < idxList.size(); ++index)
 							jvList.add(mVocabularyTable.get(idxList.get(index)));
 						
@@ -253,23 +253,23 @@ public class VocabularyManager {
 
 					boolean memorizeTarget = false;
 					boolean memorizeCompleted = false;
-					if (memorizeTargetPosition == 1/*암기 대상 단어*/)
+					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
 						memorizeTarget = true;
-					if (memorizeCompletedPosition == 1/*암기 완료된 단어*/)
+					if (memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
 						memorizeCompleted = true;
 
 					for (int index = 0; index < idxList.size(); ++index) {
 						Vocabulary vocabulary = mVocabularyTable.get(idxList.get(index));
-						if (memorizeTargetPosition != 0/*모든 단어*/ && vocabulary.isMemorizeTarget() != memorizeTarget)
+						if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
 							continue;
-						if (memorizeCompletedPosition != 0/*모든 단어*/ && vocabulary.isMemorizeCompleted() != memorizeCompleted)
+						if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
 							continue;
 						
 						jvList.add(vocabulary);
 					}
 				} else {
 					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 모든 단어를 반환한다.
-					if (memorizeTargetPosition == 0/*모든 단어*/ && memorizeCompletedPosition == 0/*모든 단어*/) {
+					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
 						for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); )
 							jvList.add(e.nextElement());
 						
@@ -278,16 +278,16 @@ public class VocabularyManager {
 
 					boolean memorizeTarget = false;
 					boolean memorizeCompleted = false;
-					if (memorizeTargetPosition == 1/*암기 대상 단어*/)
+					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
 						memorizeTarget = true;
-					if (memorizeCompletedPosition == 1/*암기 완료된 단어*/)
+					if (memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
 						memorizeCompleted = true;
 
 					for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
 						Vocabulary vocabulary = e.nextElement();
-						if (memorizeTargetPosition != 0/*모든 단어*/ && vocabulary.isMemorizeTarget() != memorizeTarget)
+						if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
 							continue;
-						if (memorizeCompletedPosition != 0/*모든 단어*/ && vocabulary.isMemorizeCompleted() != memorizeCompleted)
+						if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
 							continue;
 						
 						jvList.add(vocabulary);

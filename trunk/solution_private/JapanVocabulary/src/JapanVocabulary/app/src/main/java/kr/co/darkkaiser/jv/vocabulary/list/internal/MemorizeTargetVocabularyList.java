@@ -177,23 +177,23 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 		} else {
 			if (mMemorizeOrder == MemorizeOrder.RANDOM) {
 				int prevPosition = mPosition;
-				int totalUnMemorizeCount = mVocabularyListData.size() - mMemorizeCompletedCount;
+				int totalMemorizeUncompletedCount = mVocabularyListData.size() - mMemorizeCompletedCount;
 
 				do {
-					int unMemorizeCount = 0;
-					int targetUnMemorizeCount = mRandom.nextInt(totalUnMemorizeCount) + 1;
+					int memorizeUncompletedCount = 0;
+					int targetMemorizeUncompletedCount = mRandom.nextInt(totalMemorizeUncompletedCount) + 1;
 
 					for (int index = 0; index < mVocabularyListData.size(); ++index) {
 						if (mVocabularyListData.get(index).isMemorizeCompleted() == false) {
-							++unMemorizeCount;
+							++memorizeUncompletedCount;
 							
-							if (unMemorizeCount == targetUnMemorizeCount) {
+							if (memorizeUncompletedCount == targetMemorizeUncompletedCount) {
 								mPosition = index;
 								break;
 							}
 						}
 					}
-				} while (totalUnMemorizeCount > 1 && prevPosition == mPosition);
+				} while (totalMemorizeUncompletedCount > 1 && prevPosition == mPosition);
 			} else {
 				boolean isFindSucceeded = false;
 				for (int index = mPosition + 1; index < mVocabularyListData.size(); ++index) {

@@ -23,6 +23,16 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="search_condition_memorize_target">
+        <item>전체</item>
+        <item>암기 대상</item>
+        <item>암기 비대상</item>
+    </string-array>
+    <string-array name="search_condition_memorize_completed">
+        <item>전체</item>
+        <item>암기 완료</item>
+        <item>암기 미완료</item>
+    </string-array>
 
 
 
@@ -51,16 +61,6 @@
 
 
 <!-- @@@@@ -->
-	<string-array name="sc_memorize_target">
-		<item>전체 단어</item>
-		<item>암기 대상 단어</item>
-		<item>암기 비대상 단어</item>
-	</string-array>
-	<string-array name="sc_memorize_completed">
-		<item>전체 단어</item>
-		<item>암기 완료된 단어</item>
-		<item>암기 미완료된 단어</item>
-	</string-array>
 	<string-array name="sc_jlpt_level_list">
 		<item>N1 단어</item>
 		<item>N2 단어</item>

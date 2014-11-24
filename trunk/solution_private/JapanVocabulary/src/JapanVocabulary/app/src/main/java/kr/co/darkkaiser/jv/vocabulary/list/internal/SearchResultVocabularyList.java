@@ -49,6 +49,9 @@ public class SearchResultVocabularyList implements IVocabularyList {
         // 이전에 검색된 단어를 제거한다.
         clear();
 
+        // 현재 검색조건을 저장한다.
+        mSearchListCondition.commit();
+
         // 검색 조건에 맞는 단어를 검색한다.
         VocabularyManager.getInstance().searchVocabulary(context, mSearchListCondition, mVocabularyListData);
 

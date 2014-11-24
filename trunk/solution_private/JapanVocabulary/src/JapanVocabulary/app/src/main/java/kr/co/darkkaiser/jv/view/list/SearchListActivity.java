@@ -65,6 +65,8 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
 
+        AQuery aq = new AQuery(this);
+
 		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
@@ -73,46 +75,38 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 
-        // @@@@@
         //
         // 검색과 관련된 컨트롤들을 초기화합니다.
         //
-        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+        SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
 
-		// 검색어 검색 조건
-		EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
-		scSearchWordEditText.setText(mJvListSearchCondition.getSearchWord());
+		// 검색어
+        aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
 
-		// 암기 대상 검색 조건
-		ArrayAdapter<String> scMemorizeTargetAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_target));
-		scMemorizeTargetAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+		// 암기대상
+		ArrayAdapter<String> memorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
+		memorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
 
-		Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
-		scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
-		scMemorizeTargetSpinner.setPrompt("검색 조건");
-		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTarget());
+        aq.id(R.id.avsl_search_condition_memorize_target).adapter(memorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
 
-		// 암기 완료 검색 조건
-		ArrayAdapter<String> scMemorizeCompletedAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sc_memorize_completed));
-		scMemorizeCompletedAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+		// 암기완료
+		ArrayAdapter<String> memorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
+		memorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
 
-		Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
-		scMemorizeCompletedSpinner.setAdapter(scMemorizeCompletedAdapter);
-		scMemorizeCompletedSpinner.setPrompt("검색 조건");
-		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompleted());
+        aq.id(R.id.avsl_search_condition_memorize_completed).adapter(memorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
+        // @@@@@
 		// JLPT 급수 검색 조건
 		updateJLPTLevelButtonText();
 		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
 
+        // @@@@@
 		// 기타
 		findViewById(R.id.search_start).setOnClickListener(this);
 		findViewById(R.id.search_cancel).setOnClickListener(this);
 
 		//
-		// 최근의 검색 조건을 이용하여 검색을 수행한다.
+		// 마지막 검색조건을 이용하여 검색한다.
 		//
 		searchVocabulary();
 	}
@@ -463,17 +457,18 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		{
 			// 소프트 키보드가 나타나 있다면 숨긴다.
 		    InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	        EditText searchWord = (EditText)findViewById(R.id.sc_search_word);
+	        EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
 	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
 
 			// 설정된 검색 조건들을 저장합니다.
-			EditText scSearchWordEditText = (EditText)findViewById(R.id.sc_search_word);
-			Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
-			Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
+			EditText scSearchWordEditText = (EditText)findViewById(R.id.avsl_search_condition_search_word);
+			Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_target);
+			Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_completed);
 
 			mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
-			mJvListSearchCondition.setMemorizeTargetPosition(scMemorizeTargetSpinner.getSelectedItemPosition());
-			mJvListSearchCondition.setMemorizeCompletedPosition(scMemorizeCompletedSpinner.getSelectedItemPosition());
+            //@@@@@
+//			mJvListSearchCondition.setMemorizeTarget(scMemorizeTargetSpinner.getSelectedItemPosition());
+//			mJvListSearchCondition.setMemorizeCompleted(scMemorizeCompletedSpinner.getSelectedItemPosition());
 
 			// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
 			// 대신 commit()은 검색을 시작하기 전에 하도록 변경한다.
@@ -487,7 +482,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		case R.id.search_cancel:
 			// 소프트 키보드가 나타나 있다면 숨긴다.
 		    InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	        EditText searchWord = (EditText)findViewById(R.id.sc_search_word);
+	        EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
 	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
 
 			break;

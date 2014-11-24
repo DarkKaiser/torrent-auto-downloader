@@ -69,7 +69,7 @@
                 android:paddingBottom="27px"
                 >
                 <EditText
-                    android:id="@+id/sc_search_word"
+                    android:id="@+id/avsl_search_condition_search_word"
                     android:hint="검색어를 입력하세요."
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,22 +79,20 @@
             </TableRow>
             <TableRow>
                 <Spinner
-                    android:id="@+id/sc_memorize_target"
+                    android:id="@+id/avsl_search_condition_memorize_target"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:prompt="@string/avsl_search_condition_text"
                     />
             </TableRow>
             <TableRow
                 android:paddingBottom="27px"
                 >
                 <Spinner
-                    android:id="@+id/sc_memorize_completed"
+                    android:id="@+id/avsl_search_condition_memorize_completed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:prompt="@string/avsl_search_condition_text"
                     />
             </TableRow>
             <TableRow
