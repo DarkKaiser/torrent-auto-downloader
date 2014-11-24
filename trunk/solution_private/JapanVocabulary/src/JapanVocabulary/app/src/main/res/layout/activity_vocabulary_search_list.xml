@@ -12,6 +12,52 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#000000"
+            >
+            <TextView
+                android:id="@+id/avsl_vocabulary_count_info_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/avsl_vocabulary_count_info_description"
+                android:textColor="#cccccc"
+                android:textSize="11dp"
+                tools:ignore="SpUsage"
+                />
+            <TextView
+                android:id="@+id/avsl_vocabulary_count_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/avsl_vocabulary_count_info_description"
+                android:text="@null"
+                android:textColor="#cccccc"
+                android:textSize="11dp"
+                tools:ignore="RelativeOverlap,SpUsage"
+                />
+            <TextView
+                android:id="@+id/avsl_vocabulary_memorize_count_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@null"
+                android:textColor="#cccccc"
+                android:textSize="11dp"
+                tools:ignore="SpUsage"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/avsl_vocabulary_memorize_count_info"
+                android:text="@string/avsl_vocabulary_memorize_count_info_description"
+                android:textColor="#cccccc"
+                android:textSize="11dp"
+                tools:ignore="RelativeOverlap,SpUsage"
+                />
+        </RelativeLayout>
         <!-- @@@@@ -->
         <TableLayout
             android:layout_width="match_parent"
@@ -19,92 +65,6 @@
             android:stretchColumns="2"
             android:padding="5px"
             >
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="전체단어 : "
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:id="@+id/all_vocabulary_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="0개"
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#cccccc"
-                    android:text="전체암기대상 : "
-                    android:textSize="13dp"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:id="@+id/memorize_target_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="0개"
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="검색된단어 : "
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:id="@+id/search_vocabulary_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="0개"
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="전체암기완료 : "
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-                <TextView
-                    android:id="@+id/avd_memorize_completed_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="0개"
-                    android:textSize="13dp"
-                    android:textColor="#cccccc"
-                    tools:ignore="SpUsage"
-                    />
-            </TableRow>
             <TableRow
                 android:paddingBottom="27px"
                 >
@@ -169,6 +129,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:visibility="gone"
+            android:paddingTop="10dp"
             android:text="@string/avsl_empty_search_result_list_vocabulary"
             android:textColor="#cccccc"
             android:textSize="13dp"

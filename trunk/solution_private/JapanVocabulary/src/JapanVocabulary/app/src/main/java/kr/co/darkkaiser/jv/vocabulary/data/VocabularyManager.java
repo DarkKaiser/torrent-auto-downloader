@@ -171,8 +171,8 @@ public class VocabularyManager {
 
 			try {
 				String searchWord = searchCondition.getSearchWord().trim();
-				int memorizeTargetPosition = searchCondition.getMemorizeTargetPosition();
-				int memorizeCompletedPosition = searchCondition.getMemorizeCompletedPosition();
+				int memorizeTargetPosition = searchCondition.getMemorizeTarget();
+				int memorizeCompletedPosition = searchCondition.getMemorizeCompleted();
 				boolean[] checkedItems = searchCondition.getCheckedJLPTLevelArray();
 
 				boolean hasSearchCondition = false;
@@ -522,7 +522,7 @@ public class VocabularyManager {
 	}
 
     // @@@@@
-    public synchronized ArrayList<Integer> getVocabularyInfo() {
+    public synchronized ArrayList<Integer> getVocabularyCountInfo() {
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
 		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
@@ -532,7 +532,7 @@ public class VocabularyManager {
 			if (vocabulary.isMemorizeCompleted() == true)
 				++memorizeCompletedCount;
 		}
-		
+
 		ArrayList<Integer> result = new ArrayList<Integer>();
 
 		result.add(mVocabularyTable.size());

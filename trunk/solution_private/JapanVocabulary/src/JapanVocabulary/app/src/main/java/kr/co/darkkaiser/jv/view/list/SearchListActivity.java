@@ -91,7 +91,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.sc_memorize_target);
 		scMemorizeTargetSpinner.setAdapter(scMemorizeTargetAdapter);
 		scMemorizeTargetSpinner.setPrompt("검색 조건");
-		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTargetPosition());
+		scMemorizeTargetSpinner.setSelection(mJvListSearchCondition.getMemorizeTarget());
 
 		// 암기 완료 검색 조건
 		ArrayAdapter<String> scMemorizeCompletedAdapter = new ArrayAdapter<String>(
@@ -101,7 +101,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.sc_memorize_completed);
 		scMemorizeCompletedSpinner.setAdapter(scMemorizeCompletedAdapter);
 		scMemorizeCompletedSpinner.setPrompt("검색 조건");
-		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompletedPosition());
+		scMemorizeCompletedSpinner.setSelection(mJvListSearchCondition.getMemorizeCompleted());
 
 		// JLPT 급수 검색 조건
 		updateJLPTLevelButtonText();
@@ -265,7 +265,7 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
                 // @@@@@ 검색 결과가 없으면 리스트를 안보이게
                 AQuery aq = new AQuery(SearchListActivity.this);
                 aq.id(android.R.id.list).visible();
-                aq.id(android.R.id.empty).gone();
+                aq.id(android.R.id.empty).visible();
 
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
@@ -391,16 +391,13 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 		}
 	};
 
-    // @@@@@
     private void updateSearchResultVocabularyInfo() {
-		ArrayList<Integer> vocabularyInfo = VocabularyManager.getInstance().getVocabularyInfo();
-		assert vocabularyInfo.size() == 3;
+		ArrayList<Integer> vocabularyCountInfo = VocabularyManager.getInstance().getVocabularyCountInfo();
+		assert vocabularyCountInfo.size() == 3;
 
         AQuery aq = new AQuery(this);
-        aq.id(R.id.all_vocabulary_count).text(String.format("%d개", vocabularyInfo.get(0)));
-        aq.id(R.id.search_vocabulary_count).text(String.format("%d개", mSearchResultVocabularyList.getCount()));
-        aq.id(R.id.memorize_target_count).text(String.format("%d개", vocabularyInfo.get(1)));
-        aq.id(R.id.avd_memorize_completed_count_text).text(String.format("%d개", vocabularyInfo.get(2)));
+        aq.id(R.id.avsl_vocabulary_count_info).text(String.format(" %d개/%d개", mSearchResultVocabularyList.getCount(), vocabularyCountInfo.get(0/* 전체 단어 개수 */)));
+        aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(" %d개/%d개", vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
 	}
 
     // @@@@@
