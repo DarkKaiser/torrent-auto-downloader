@@ -239,13 +239,13 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
 
                 assert mProgressDialog == null;
 
-                // @@@@@
+                // 프로그레스 대화상자를 보인다.
+                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
+
+                // 검색을 시작하기 전에 리스트뷰를 보이고, empty는 보이지 않도록 설정한다.
                 AQuery aq = new AQuery(SearchListActivity.this);
                 aq.id(android.R.id.list).visible();
                 aq.id(android.R.id.empty).gone();
-
-                // 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
             }
 
             @Override
@@ -262,10 +262,12 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
-                // @@@@@ 검색 결과가 없으면 리스트를 안보이게
-                AQuery aq = new AQuery(SearchListActivity.this);
-                aq.id(android.R.id.list).visible();
-                aq.id(android.R.id.empty).visible();
+                if (mSearchResultVocabularyList.getCount() == 0) {
+                    // 검색 결과가 없다면, 리스트뷰를 숨기고 empty는 보이도록 설정한다.
+                    AQuery aq = new AQuery(SearchListActivity.this);
+                    aq.id(android.R.id.empty).visible();
+                    aq.id(android.R.id.list).gone();
+                }
 
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
