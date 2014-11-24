@@ -20,9 +20,36 @@ public class SearchListCondition {
         MEMORIZE_UNCOMPLETED
     }
 
+    // @@@@@
+    public enum JlptLevel {
+        N1(1, "N1"),
+        N2(2, "N2"),
+        N3(3, "N3"),
+        N4(4, "N4"),
+        N5(5, "N5"),
+        UNCLASSIFIED(99, "미분류");
+
+        private int mm;
+        private String mstr;
+
+        JlptLevel(int i, String str) {
+            mm = i;
+            mstr = str;
+        }
+
+        public int getValue() {
+            return mm;
+        }
+
+        public String getText() {
+            return mstr;
+        }
+    }
+
     private static final String SPKEY_AVSL_SEARCH_WORD = "avsl_search_word";
     private static final String SPKEY_AVSL_MEMORIZE_TARGET = "avsl_memorize_target";
     private static final String SPKEY_AVSL_MEMORIZE_COMPLETED = "avsl_memorize_completed";
+    private static final String SPKEY_AVSL_JLPT_LEVEL = "avsl_jlpt_level";
 
     private Context mContext = null;
     private SharedPreferences mSharedPreferences = null;
@@ -32,7 +59,6 @@ public class SearchListCondition {
     private MemorizeCompleted mMemorizeCompleted = null;
 
     // @@@@@
-	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
 	public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
@@ -55,7 +81,7 @@ public class SearchListCondition {
 
 		mScCheckedJLPTLevelArray = new boolean[jlptLevelList.length];
 		for (int index = 0; index < jlptLevelList.length; ++index) {
-			mScCheckedJLPTLevelArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), true);
+			mScCheckedJLPTLevelArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_LEVEL, jlptLevelListValues[index]), true);
 		}
 	}
 
@@ -119,7 +145,7 @@ public class SearchListCondition {
         assert jlptLevelList.length == mScCheckedJLPTLevelArray.length;
 
         for (int index = 0; index < jlptLevelList.length; ++index) {
-            editor.putBoolean(String.format("%s_%s", JV_SPN_CHECKED_JLPT_LEVEL_SC, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
+            editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_LEVEL, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
         }
 
         editor.commit();

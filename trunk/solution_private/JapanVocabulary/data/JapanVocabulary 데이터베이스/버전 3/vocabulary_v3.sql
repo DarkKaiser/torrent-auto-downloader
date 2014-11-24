@@ -123,20 +123,6 @@ CREATE UNIQUE INDEX TBL_VOCABULARY_JLPT_CLASS_MAPP_INDEX01
 
 CREATE INDEX TBL_VOCABULARY_JLPT_CLASS_MAPP_INDEX02
                  ON TBL_VOCABULARY_JLPT_CLASS_MAPP(V_IDX);
-				 
-				 
--- 한자/JLPT등급 매핑 테이블
-CREATE TABLE TBL_HANJA_JLPT_CLASS_MAPP (
-    IDX                     INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,		-- 일련번호
-    H_IDX                   INTEGER NOT NULL,										-- TBL_HANJA 일련번호(FK)
-    CODE_ID                 VARCHAR(2)												-- TBL_CODE 코드ID
-);
-
-CREATE UNIQUE INDEX TBL_HANJA_JLPT_CLASS_MAPP_INDEX01 
-                 ON TBL_HANJA_JLPT_CLASS_MAPP(IDX);
-
-CREATE INDEX TBL_HANJA_JLPT_CLASS_MAPP_INDEX02
-                 ON TBL_HANJA_JLPT_CLASS_MAPP(H_IDX);
 
 
 #####################################################################################################
