@@ -19,7 +19,6 @@ import java.util.StringTokenizer;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 
-// todo 너무 무분별하게 사용되어 지고 있음
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
@@ -383,15 +382,15 @@ public class VocabularyManager {
     public synchronized boolean memorizeSettingsVocabulary(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
 		if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
 			Vocabulary jv = null;
-			for (int index = 0; index < idxList.size(); ++index) {
-				jv = mVocabularyTable.get(idxList.get(index));
+            for (Long anIdxList : idxList) {
+                jv = mVocabularyTable.get(anIdxList);
 
-				jv.setMemorizeTarget(true);
-				jv.setMemorizeCompleted(false, false);
-			}
+                jv.setMemorizeTarget(true);
+                jv.setMemorizeCompleted(false, false);
+            }
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
-			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeCompleted(true, true);
+            for (Long anIdxList : idxList)
+                mVocabularyTable.get(anIdxList).setMemorizeCompleted(true, true);
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
 			if (notSearchVocabularyTargetCancel == true) {
 				for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
@@ -400,12 +399,14 @@ public class VocabularyManager {
 				}
 			}
 
-			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(true);
+            for (Long anIdxList : idxList)
+                mVocabularyTable.get(anIdxList).setMemorizeTarget(true);
 		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
-			for (int index = 0; index < idxList.size(); ++index)
-				mVocabularyTable.get(idxList.get(index)).setMemorizeTarget(false);
-		}
+            for (Long anIdxList : idxList)
+                mVocabularyTable.get(anIdxList).setMemorizeTarget(false);
+		} else {
+            assert false;
+        }
 		
 		writeUserVocabularyInfo();
 
@@ -521,7 +522,11 @@ public class VocabularyManager {
 		return sbResult.toString();
 	}
 
-    // @@@@@
+    /**
+     * 전체단어에 대한 단어갯수, 암기대상갯수, 암기완료갯수를 반환합니다.
+     *
+     * @return 단어갯수, 암기대상갯수, 암기완료갯수
+     */
     public synchronized ArrayList<Integer> getVocabularyCountInfo() {
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
@@ -534,11 +539,10 @@ public class VocabularyManager {
 		}
 
 		ArrayList<Integer> result = new ArrayList<Integer>();
-
 		result.add(mVocabularyTable.size());
 		result.add(memorizeTargetCount);
 		result.add(memorizeCompletedCount);
-		
+
 		return result;
 	}
 
