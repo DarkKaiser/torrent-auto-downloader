@@ -31,10 +31,7 @@ public class SearchListCondition {
     private MemorizeTarget mMemorizeTarget = null;
     private MemorizeCompleted mMemorizeCompleted = null;
 
-
-
-
-
+    // @@@@@
 	private static final String JV_SPN_CHECKED_JLPT_LEVEL_SC = "sc_jlpt_level";
 	private boolean[] mScCheckedJLPTLevelArray = null;
 
