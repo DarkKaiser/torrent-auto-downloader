@@ -58,13 +58,13 @@ namespace JapanVocabularyDbManager
             FillHanjaData(string.Empty);
         }
 
-        /*@@@@@*/private void dataHanjaGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        private void dataHanjaGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
 
-        /*@@@@@*/private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        private void dataHanjaGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             using (SQLiteCommand cmd = mDbConnection.CreateCommand())
             {
@@ -390,7 +390,7 @@ namespace JapanVocabularyDbManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION, USE_YN FROM TBL_HANJA ";
+                string strSQL = "SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION FROM TBL_HANJA ";
 
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " WHERE " + sqlWhere;
@@ -406,8 +406,7 @@ namespace JapanVocabularyDbManager
                                                    reader.GetString(1/*CHARACTER*/), 
                                                    reader.GetString(2/*SOUND_READ*/), 
                                                    reader.GetString(3/*MEAN_READ*/), 
-                                                   reader.GetString(4/*TRANSLATION*/), 
-                                                   reader.GetString(5/* USE_YN */));
+                                                   reader.GetString(4/*TRANSLATION*/));
                     }
                 }
             }
@@ -481,32 +480,6 @@ namespace JapanVocabularyDbManager
                         using (SQLiteCommand cmd = mDbConnection.CreateCommand())
                         {
                             cmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET USE_YN='N' WHERE idx = {0};", dataGridView.SelectedRows[0].Cells[0].Value);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        dataGridView.SelectedRows[0].Cells[5/* 사용유무 */].Value = "N";
-
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
-
-        // @@@@@ 한자는 use_yn을 없애고 실제로 삭제로 처리함
-        private void dataHanjaGridView_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                DataGridView dataGridView = (DataGridView)sender;
-                if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 0)
-                {
-                    Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
-
-                    if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = string.Format("UPDATE TBL_HANJA SET USE_YN='N' WHERE idx = {0};", dataGridView.SelectedRows[0].Cells[0].Value);
                             cmd.ExecuteNonQuery();
                         }
 

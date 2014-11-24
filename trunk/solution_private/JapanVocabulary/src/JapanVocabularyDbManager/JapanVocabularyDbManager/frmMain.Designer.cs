@@ -62,7 +62,6 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -189,7 +188,6 @@
             // dataHanjaGridView
             // 
             this.dataHanjaGridView.AllowUserToAddRows = false;
-            this.dataHanjaGridView.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataHanjaGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -199,8 +197,7 @@
             this.Column5,
             this.Column6,
             this.Column7,
-            this.Column8,
-            this.Column11});
+            this.Column8});
             this.dataHanjaGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataHanjaGridView.Location = new System.Drawing.Point(0, 0);
             this.dataHanjaGridView.MultiSelect = false;
@@ -214,7 +211,6 @@
             this.dataHanjaGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataHanjaGridView_RowPostPaint);
             this.dataHanjaGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataHanjaGridView_UserDeletedRow);
             this.dataHanjaGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataHanjaGridView_UserDeletingRow);
-            this.dataHanjaGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataHanjaGridView_KeyDown);
             // 
             // tbpWord
             // 
@@ -434,12 +430,6 @@
             this.Column8.ReadOnly = true;
             this.Column8.Width = 300;
             // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "사용유무";
-            this.Column11.Name = "Column11";
-            this.Column11.ReadOnly = true;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -504,7 +494,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
 
     }
 }
