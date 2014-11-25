@@ -153,7 +153,8 @@ namespace JapanVocabularyDbManager
                                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
-        /*@@@@@*/private void dataVocabularyGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        // @@@@@
+        private void dataVocabularyGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 현재 선택된 행을 얻는다.
             DataGridViewSelectedRowCollection rc = dataVocabularyGridView.SelectedRows;
@@ -163,16 +164,17 @@ namespace JapanVocabularyDbManager
                 return;
 
             frmVocabulary form = new frmVocabulary();
-            form.EditMode = true;
-            form.DbConnection = mDbConnection;
-            form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
-            form.Vocabulary = rc[0].Cells[1].Value.ToString();
-            form.VocabularyGana = rc[0].Cells[2].Value.ToString();
-            form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
+
+            form.EditMode               = true;
+            form.DbConnection           = mDbConnection;
+            form.idx                    = long.Parse(rc[0].Cells[0].Value.ToString());
+            form.Vocabulary             = rc[0].Cells[1].Value.ToString();
+            form.VocabularyGana         = rc[0].Cells[2].Value.ToString();
+            form.VocabularyTranslation  = rc[0].Cells[3].Value.ToString();
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                rc[0].Cells[1].Value = form.Vocabulary;
+                rc[0].Cells[1].Value = form.Vocabulary;// @@@@@ 단어가 변경되면 매핑된 예문도 변경되어져야 함
                 rc[0].Cells[2].Value = form.VocabularyGana;
                 rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
@@ -180,8 +182,9 @@ namespace JapanVocabularyDbManager
             // 예문 카운트를 구하여 업데이트 한다.
             try
             {
+                //@@@@@ 예문테이블에서 use_yn='n'인것은 어케 할것인가?
                 // 데이터를 읽어들입니다.
-                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0} AND USE_YN = 'Y'", long.Parse(rc[0].Cells[0].Value.ToString()));
+                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0} AND USE_YN = 'Y'", long.Parse(rc[0].Cells[0].Value.ToString()));
 
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
                 cmd.CommandType = CommandType.Text;
@@ -194,7 +197,7 @@ namespace JapanVocabularyDbManager
                         if (nCount > 0)
                             rc[0].Cells[4].Value = nCount;
                         else
-                            rc[0].Cells[4].Value = "";
+                            rc[0].Cells[4].Value = "0";
                     }
                 }
             }
@@ -234,11 +237,12 @@ namespace JapanVocabularyDbManager
             form.Dispose();
         }
 
-        /*@@@@@*/private void btnWordAdd_Click(object sender, EventArgs e)
+        private void btnWordAdd_Click(object sender, EventArgs e)
         {
             frmVocabulary form = new frmVocabulary();
-            form.DbConnection = mDbConnection;
-            form.EditMode = false;
+            
+            form.DbConnection   = mDbConnection;
+            form.EditMode       = false;
 
             if (form.ShowDialog() == DialogResult.OK)
                 FillData();
@@ -361,7 +365,7 @@ namespace JapanVocabularyDbManager
                 string strSQL = "SELECT A.IDX, A.VOCABULARY, A.VOCABULARY_GANA, A.VOCABULARY_TRANSLATION, USE_YN, " +
                                 "       ( SELECT COUNT(*) AS EXAMPLE_COUNT " +
                                 "           FROM TBL_VOCABULARY_EXAMPLE_MAPP " +
-                                "          WHERE A.IDX = V_IDX) " +
+                                "          WHERE A.IDX = V_IDX) " + // @@@@@ 예문 use_yn='n'
                                 "  FROM TBL_VOCABULARY A " + 
                                 " WHERE USE_YN = 'Y' ";
 
