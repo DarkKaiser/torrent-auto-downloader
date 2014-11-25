@@ -58,8 +58,29 @@ namespace JapanVocabularyDbManager
             FillHanjaData(string.Empty);
         }
 
+        private void dataHanjaGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 46/* Delete */)
+            {
+                DataGridViewSelectedRowCollection rc = dataHanjaGridView.SelectedRows;
+                if (rc.Count != 1)
+                {
+                    MessageBox.Show("데이터를 삭제하시려면 하나의 행만 선택해주세요!");
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+
         private void dataHanjaGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
+            DataGridViewSelectedRowCollection rc = dataHanjaGridView.SelectedRows;
+            if (rc.Count != 1)
+            {
+                e.Cancel = true;
+                return;
+            }
+                
             if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
@@ -143,11 +164,11 @@ namespace JapanVocabularyDbManager
 
             frmVocabulary form = new frmVocabulary();
             form.EditMode = true;
+            form.DbConnection = mDbConnection;
             form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
             form.Vocabulary = rc[0].Cells[1].Value.ToString();
             form.VocabularyGana = rc[0].Cells[2].Value.ToString();
             form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
-            form.DbConnection = mDbConnection;
 
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -160,7 +181,7 @@ namespace JapanVocabularyDbManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
+                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0} AND USE_YN = 'Y'", long.Parse(rc[0].Cells[0].Value.ToString()));
 
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
                 cmd.CommandType = CommandType.Text;
@@ -184,29 +205,23 @@ namespace JapanVocabularyDbManager
             form.Dispose();
         }
 
-        /*@@@@@*/private void dataHanjaGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dataHanjaGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 현재 선택된 행을 얻는다.
             DataGridViewSelectedRowCollection rc = dataHanjaGridView.SelectedRows;
 
-            Debug.Assert(rc.Count == 1);
             if (rc.Count != 1)
                 return;
 
             frmHanja form = new frmHanja();
-            form.EditMode = true;
-            form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
-            form.Character = rc[0].Cells[1].Value.ToString();
-            form.SoundRead = rc[0].Cells[2].Value.ToString();
-            form.MeanRead = rc[0].Cells[3].Value.ToString();
-            form.Translation = rc[0].Cells[4].Value.ToString();
-            form.DbConnection = mDbConnection;
 
-            string jlptLevel = rc[0].Cells[5].Value.ToString();
-            if (jlptLevel == "")
-                form.JLPTClass = 99;
-            else
-                form.JLPTClass = int.Parse(jlptLevel.Substring(1, 1));
+            form.EditMode       = true;
+            form.DbConnection   = mDbConnection;
+            form.idx            = long.Parse(rc[0].Cells[0].Value.ToString());
+            form.Character      = rc[0].Cells[1].Value.ToString();
+            form.SoundRead      = rc[0].Cells[2].Value.ToString();
+            form.MeanRead       = rc[0].Cells[3].Value.ToString();
+            form.Translation    = rc[0].Cells[4].Value.ToString();
 
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -214,12 +229,6 @@ namespace JapanVocabularyDbManager
                 rc[0].Cells[2].Value = form.SoundRead;
                 rc[0].Cells[3].Value = form.MeanRead;
                 rc[0].Cells[4].Value = form.Translation;
-
-                string strLevel = "";
-                if (form.JLPTClass != 99)
-                    strLevel = "N" + form.JLPTClass;
-
-                rc[0].Cells[5].Value = strLevel;
             }
 
             form.Dispose();
@@ -235,11 +244,12 @@ namespace JapanVocabularyDbManager
                 FillData();
         }
 
-        /*@@@@@*/private void btnHanjaAdd_Click(object sender, EventArgs e)
+        private void btnHanjaAdd_Click(object sender, EventArgs e)
         {
             frmHanja form = new frmHanja();
-            form.DbConnection = mDbConnection;
-            form.EditMode = false;
+
+            form.EditMode       = false;
+            form.DbConnection   = mDbConnection;
 
             if (form.ShowDialog() == DialogResult.OK)
                 FillData();
@@ -298,7 +308,6 @@ namespace JapanVocabularyDbManager
                 checkTableList.Add("TBL_VOCABULARY_EXAMPLE_MAPP");
                 checkTableList.Add("TBL_VOCABULARY_WORD_CLASS_MAPP");
                 checkTableList.Add("TBL_VOCABULARY_JLPT_CLASS_MAPP");
-                checkTableList.Add("TBL_HANJA_JLPT_CLASS_MAPP");
 
                 foreach (string tableName in checkTableList) 
                 {
@@ -353,10 +362,11 @@ namespace JapanVocabularyDbManager
                                 "       ( SELECT COUNT(*) AS EXAMPLE_COUNT " +
                                 "           FROM TBL_VOCABULARY_EXAMPLE_MAPP " +
                                 "          WHERE A.IDX = V_IDX) " +
-                                "  FROM TBL_VOCABULARY A ";
+                                "  FROM TBL_VOCABULARY A " + 
+                                " WHERE USE_YN = 'Y' ";
 
                 if (string.IsNullOrEmpty(sqlWhere) == false)
-                    strSQL += " WHERE " + sqlWhere;
+                    strSQL += " AND " + sqlWhere;
 
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
                 cmd.CommandType = CommandType.Text;
@@ -490,5 +500,20 @@ namespace JapanVocabularyDbManager
                 }
             }
         }
+
+        private void btnHanjaDataAnalyser_Click(object sender, EventArgs e)
+        {
+            // 현재 선택된 행을 얻는다.
+            DataGridViewSelectedRowCollection rc = dataHanjaGridView.SelectedRows;
+
+            if (rc.Count <= 0)
+            {
+                MessageBox.Show("분석작업을 진행 할 선택된 한자가 없습니다!");
+                return;
+            }
+
+            // @@@@@ 한자 분석
+        }
+
     }
 }

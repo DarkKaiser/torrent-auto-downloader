@@ -57,6 +57,7 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,6 +100,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.btnHanjaDataAnalyser);
             this.splitContainer2.Panel1.Controls.Add(this.btnHanjaAdd);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
             this.splitContainer2.Panel1.Controls.Add(this.cboHanjaSearchItem);
@@ -200,7 +202,6 @@
             this.Column8});
             this.dataHanjaGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataHanjaGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataHanjaGridView.MultiSelect = false;
             this.dataHanjaGridView.Name = "dataHanjaGridView";
             this.dataHanjaGridView.ReadOnly = true;
             this.dataHanjaGridView.RowTemplate.Height = 23;
@@ -211,6 +212,7 @@
             this.dataHanjaGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataHanjaGridView_RowPostPaint);
             this.dataHanjaGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataHanjaGridView_UserDeletedRow);
             this.dataHanjaGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataHanjaGridView_UserDeletingRow);
+            this.dataHanjaGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataHanjaGridView_KeyDown);
             // 
             // tbpWord
             // 
@@ -398,6 +400,16 @@
             this.tabControl1.Size = new System.Drawing.Size(998, 720);
             this.tabControl1.TabIndex = 0;
             // 
+            // btnHanjaDataAnalyser
+            // 
+            this.btnHanjaDataAnalyser.Location = new System.Drawing.Point(906, 4);
+            this.btnHanjaDataAnalyser.Name = "btnHanjaDataAnalyser";
+            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(75, 23);
+            this.btnHanjaDataAnalyser.TabIndex = 14;
+            this.btnHanjaDataAnalyser.Text = "분석";
+            this.btnHanjaDataAnalyser.UseVisualStyleBackColor = true;
+            this.btnHanjaDataAnalyser.Click += new System.EventHandler(this.btnHanjaDataAnalyser_Click);
+            // 
             // Column9
             // 
             this.Column9.HeaderText = "idx";
@@ -489,6 +501,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
+        private System.Windows.Forms.Button btnHanjaDataAnalyser;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;

@@ -13,13 +13,11 @@ namespace JapanVocabularyDbManager
     public partial class frmHanja : Form
     {
         public bool EditMode { private get; set; }
-
         public long idx { get; set; }
         public string Character { get; set; }
         public string SoundRead { get; set; }
         public string MeanRead { get; set; }
         public string Translation { get; set; }
-        public int JLPTClass { get; set; }
         public SQLiteConnection DbConnection { private get; set; }
 
         public frmHanja()
@@ -47,15 +45,6 @@ namespace JapanVocabularyDbManager
             txtMeanRead.Text = MeanRead;
             txtTranslation.Text = Translation;
 
-            if (JLPTClass == 99)
-            {
-                cboJlptLevel.SelectedIndex = 5;
-            }
-            else
-            {
-                cboJlptLevel.SelectedIndex = JLPTClass - 1;
-            }
-
             EnableControls();
         }
 
@@ -71,12 +60,9 @@ namespace JapanVocabularyDbManager
             string strSoundRead = txtSoundRead.Text.Trim();
             string strMeanRead = txtMeanRead.Text.Trim();
             string strTranslation = txtTranslation.Text.Trim();
-            int nJlptClass = cboJlptLevel.SelectedIndex + 1;
-            if (nJlptClass == 6)
-                nJlptClass = 99;
 
             // 변경된 것이 없는지 확인한다.
-            if (Character == strCharacter && SoundRead == strSoundRead && MeanRead == strMeanRead && Translation == strTranslation && JLPTClass == nJlptClass)
+            if (Character == strCharacter && SoundRead == strSoundRead && MeanRead == strMeanRead && Translation == strTranslation)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -106,23 +92,20 @@ namespace JapanVocabularyDbManager
                     // 데이터를 갱신한다.
                     using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
                     {
-                        updateCmd.CommandText = string.Format("UPDATE TBL_HANJA SET CHARACTER=?, SOUND_READ=?, MEAN_READ=?, TRANSLATION=?, JLPT_CLASS=? WHERE IDX={0};", idx);
+                        updateCmd.CommandText = string.Format("UPDATE TBL_HANJA SET CHARACTER=?, SOUND_READ=?, MEAN_READ=?, TRANSLATION=? WHERE IDX={0};", idx);
                         SQLiteParameter param1 = new SQLiteParameter();
                         SQLiteParameter param2 = new SQLiteParameter();
                         SQLiteParameter param3 = new SQLiteParameter();
                         SQLiteParameter param4 = new SQLiteParameter();
-                        SQLiteParameter param5 = new SQLiteParameter();
                         updateCmd.Parameters.Add(param1);
                         updateCmd.Parameters.Add(param2);
                         updateCmd.Parameters.Add(param3);
                         updateCmd.Parameters.Add(param4);
-                        updateCmd.Parameters.Add(param5);
 
                         param1.Value = strCharacter;
                         param2.Value = strSoundRead;
                         param3.Value = strMeanRead;
                         param4.Value = strTranslation;
-                        param5.Value = nJlptClass;
 
                         updateCmd.ExecuteNonQuery();
                     }
@@ -162,23 +145,20 @@ namespace JapanVocabularyDbManager
                 // 데이터를 추가한다.
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO TBL_HANJA (CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION, JLPT_CLASS) VALUES (?,?,?,?,?);";
+                    cmd.CommandText = "INSERT INTO TBL_HANJA (CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION) VALUES (?,?,?,?);";
                     SQLiteParameter param1 = new SQLiteParameter();
                     SQLiteParameter param2 = new SQLiteParameter();
                     SQLiteParameter param3 = new SQLiteParameter();
                     SQLiteParameter param4 = new SQLiteParameter();
-                    SQLiteParameter param5 = new SQLiteParameter();
                     cmd.Parameters.Add(param1);
                     cmd.Parameters.Add(param2);
                     cmd.Parameters.Add(param3);
                     cmd.Parameters.Add(param4);
-                    cmd.Parameters.Add(param5);
 
                     param1.Value = strCharacter;
                     param2.Value = strSoundRead;
                     param3.Value = strMeanRead;
                     param4.Value = strTranslation;
-                    param5.Value = nJlptClass;
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -187,7 +167,6 @@ namespace JapanVocabularyDbManager
             SoundRead = strSoundRead;
             MeanRead = strMeanRead;
             Translation = strTranslation;
-            JLPTClass = nJlptClass;
 
             DialogResult = DialogResult.OK;
             Close();
@@ -207,11 +186,6 @@ namespace JapanVocabularyDbManager
         }
 
         private void txtHunDok_TextChanged(object sender, EventArgs e)
-        {
-            EnableControls();
-        }
-
-        private void cboJlptLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
             EnableControls();
         }
@@ -245,9 +219,12 @@ namespace JapanVocabularyDbManager
         {
             txtCharacter.Focus();
 
-            string strClipboardText = Clipboard.GetText();
-            if (strClipboardText.Length == 1)
-                txtCharacter.Text = strClipboardText;
+            if (EditMode == false)
+            {
+                string strClipboardText = Clipboard.GetText();
+                if (strClipboardText.Length == 1)
+                    txtCharacter.Text = strClipboardText;
+            }
         }
 
         #endregion
@@ -257,6 +234,7 @@ namespace JapanVocabularyDbManager
             // 웹 브라우저가 로딩이 완료될 때까지 대기한다.
             if (EditMode == false && e.Url.AbsoluteUri == webBrowser.Url.AbsoluteUri && webBrowser.Url.AbsoluteUri != "about:blank")
             {
+                // @@@@@ 파싱 다시 해야함
                 string strDocumentText = webBrowser.DocumentText;
 
                 int first = strDocumentText.IndexOf(@"class=""entry_result""");
@@ -280,14 +258,6 @@ namespace JapanVocabularyDbManager
                 last = strContent.IndexOf("<dt>", first);
                 if (last == -1)
                     return;
-
-                int jlptClass = 5;
-                int levelPos = strContent.IndexOf("ico_jlpt");
-                if (levelPos != -1)
-                {
-                    string strJLPTLevel = strContent.Substring(levelPos + 8, 1);
-                    jlptClass = int.Parse(strJLPTLevel) - 1;
-                }
 
                 strContent = strContent.Substring(first, last - first);
 
@@ -342,9 +312,6 @@ namespace JapanVocabularyDbManager
                         if (last != -1)
                             txtTranslation.Text = strContent.Substring(first, last - first);
                     }
-
-                    // JLPT 클래스를 지정한다.
-                    cboJlptLevel.SelectedIndex = jlptClass;
                 }
             }
         }
