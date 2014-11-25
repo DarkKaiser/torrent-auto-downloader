@@ -172,7 +172,7 @@ public class VocabularyManager {
 				String searchWord = searchCondition.getSearchWord().trim();
 				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchCondition.getMemorizeTarget();
 				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchCondition.getMemorizeCompleted();
-				boolean[] checkedItems = searchCondition.getCheckedJLPTLevelArray();
+				boolean[] checkedItems = searchCondition.getJLPTRankingArray();
 
 				boolean hasSearchCondition = false;
 				StringBuilder sbSQL = new StringBuilder();
@@ -193,26 +193,26 @@ public class VocabularyManager {
 				} else {
 					hasSearchCondition = true;
 
-					sbSQL.append("SELECT V.IDX ")
-						 .append("  FROM TBL_VOCABULARY AS V ")
-						 .append(" WHERE V.IDX IN (          SELECT DISTINCT V2.IDX ")
-						 .append("                             FROM TBL_HANJA AS A ")
-						 .append("                  LEFT OUTER JOIN TBL_VOCABULARY AS V2 ")
-						 .append("                               ON V2.VOCABULARY LIKE ('%'||A.CHARACTER||'%') ")
-						 .append("                            WHERE 1=1 ")
-						 .append("                              AND A.JLPT_CLASS IN (");
-
-					boolean isAppended = false;
-					String[] items = context.getResources().getStringArray(R.array.sc_jlpt_level_list_values);
-					for (int index = 0; index < checkedItems.length; ++index) {
-						if (checkedItems[index] == true) {
-							if (isAppended == true)
-								sbSQL.append(", ");
-							
-							isAppended = true;
-							sbSQL.append(items[index]);
-						}
-					}
+//					sbSQL.append("SELECT V.IDX ")
+//						 .append("  FROM TBL_VOCABULARY AS V ")
+//						 .append(" WHERE V.IDX IN (          SELECT DISTINCT V2.IDX ")
+//						 .append("                             FROM TBL_HANJA AS A ")
+//						 .append("                  LEFT OUTER JOIN TBL_VOCABULARY AS V2 ")
+//						 .append("                               ON V2.VOCABULARY LIKE ('%'||A.CHARACTER||'%') ")
+//						 .append("                            WHERE 1=1 ")
+//						 .append("                              AND A.JLPT_CLASS IN (");
+//
+//					boolean isAppended = false;
+//					String[] items = context.getResources().getStringArray(R.array.sc_jlpt_level_list_values);
+//					for (int index = 0; index < checkedItems.length; ++index) {
+//						if (checkedItems[index] == true) {
+//							if (isAppended == true)
+//								sbSQL.append(", ");
+//
+//							isAppended = true;
+//							sbSQL.append(items[index]);
+//						}
+//					}
 					
 					sbSQL.append(" ) ) ");
 				}

@@ -20,36 +20,50 @@ public class SearchListCondition {
         MEMORIZE_UNCOMPLETED
     }
 
-    // @@@@@
-    public enum JlptLevel {
-        N1(1, "N1"),
-        N2(2, "N2"),
-        N3(3, "N3"),
-        N4(4, "N4"),
-        N5(5, "N5"),
-        UNCLASSIFIED(99, "미분류");
+    public enum JLPTRanking {
+        N1("01", "N1"),
+        N2("02", "N2"),
+        N3("03", "N3"),
+        N4("04", "N4"),
+        N5("05", "N5"),
+        UNCLASSIFIED("99", "미분류");
 
-        private int mm;
-        private String mstr;
+        private String mCode;
+        private String mName;
 
-        JlptLevel(int i, String str) {
-            mm = i;
-            mstr = str;
+        public static JLPTRanking parseJLPTRanking(int ordinal) {
+            if (ordinal == JLPTRanking.N1.ordinal())
+                return JLPTRanking.N1;
+            else if (ordinal == JLPTRanking.N2.ordinal())
+                return JLPTRanking.N2;
+            else if (ordinal == JLPTRanking.N3.ordinal())
+                return JLPTRanking.N3;
+            else if (ordinal == JLPTRanking.N4.ordinal())
+                return JLPTRanking.N4;
+            else if (ordinal == JLPTRanking.N5.ordinal())
+                return JLPTRanking.N5;
+
+            return JLPTRanking.UNCLASSIFIED;
         }
 
-        public int getValue() {
-            return mm;
+        JLPTRanking(String code, String name) {
+            mCode = code;
+            mName = name;
         }
 
-        public String getText() {
-            return mstr;
+        public String getCode() {
+            return mCode;
+        }
+
+        public String getName() {
+            return mName;
         }
     }
 
     private static final String SPKEY_AVSL_SEARCH_WORD = "avsl_search_word";
     private static final String SPKEY_AVSL_MEMORIZE_TARGET = "avsl_memorize_target";
     private static final String SPKEY_AVSL_MEMORIZE_COMPLETED = "avsl_memorize_completed";
-    private static final String SPKEY_AVSL_JLPT_LEVEL = "avsl_jlpt_level";
+    private static final String SPKEY_AVSL_JLPT_RANKING = "avsl_jlpt_ranking";
 
     private Context mContext = null;
     private SharedPreferences mSharedPreferences = null;
@@ -57,9 +71,7 @@ public class SearchListCondition {
     private String mSearchWord = null;
     private MemorizeTarget mMemorizeTarget = null;
     private MemorizeCompleted mMemorizeCompleted = null;
-
-    // @@@@@
-	private boolean[] mScCheckedJLPTLevelArray = null;
+	private boolean[] mJLPTRankingArray = null;
 
 	public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
         assert context != null;
@@ -72,17 +84,12 @@ public class SearchListCondition {
         mMemorizeTarget = MemorizeTarget.valueOf(mSharedPreferences.getString(SPKEY_AVSL_MEMORIZE_TARGET, MemorizeTarget.ALL.name()));
 		mMemorizeCompleted = MemorizeCompleted.valueOf(mSharedPreferences.getString(SPKEY_AVSL_MEMORIZE_COMPLETED, MemorizeCompleted.ALL.name()));
 
-        // @@@@@
-		// JLPT 각 급수별 검색 여부 플래그를 읽어들인다.
-		CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
-		CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+		// JLPT 급수별 검색여부를 읽어들인다.
+		CharSequence[] aJLPTRanking = mContext.getResources().getTextArray(R.array.search_condition_jlpt_ranking);
 
-		assert jlptLevelList.length == jlptLevelListValues.length;
-
-		mScCheckedJLPTLevelArray = new boolean[jlptLevelList.length];
-		for (int index = 0; index < jlptLevelList.length; ++index) {
-			mScCheckedJLPTLevelArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_LEVEL, jlptLevelListValues[index]), true);
-		}
+        mJLPTRankingArray = new boolean[aJLPTRanking.length];
+		for (int index = 0; index < aJLPTRanking.length; ++index)
+            mJLPTRankingArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), true);
 	}
 
     public String getSearchWord() {
@@ -110,20 +117,13 @@ public class SearchListCondition {
 		mMemorizeCompleted = memorizeCompleted;
 	}
 
-    //@@@@@
-    public boolean [] getCheckedJLPTLevelArray() {
-		assert mContext != null;
-		assert mScCheckedJLPTLevelArray != null;
-	
-		return mScCheckedJLPTLevelArray;
+    public boolean[] getJLPTRankingArray() {
+		return mJLPTRankingArray;
 	}
 
-    //@@@@@
-    public void setCheckedJLPTLevel(int position, boolean value) {
-		assert mSharedPreferences != null;
-
-		if (mScCheckedJLPTLevelArray != null && mScCheckedJLPTLevelArray.length > position)
-			mScCheckedJLPTLevelArray[position] = value;
+    public void setJLPTRanking(int position, boolean value) {
+		if (mJLPTRankingArray != null && mJLPTRankingArray.length > position)
+			mJLPTRankingArray[position] = value;
 		else
 			assert false;
 	}
@@ -136,17 +136,12 @@ public class SearchListCondition {
         editor.putString(SPKEY_AVSL_MEMORIZE_TARGET, mMemorizeTarget.name());
         editor.putString(SPKEY_AVSL_MEMORIZE_COMPLETED, mMemorizeCompleted.name());
 
-        //@@@@@
         // JLPT 각 급수별 검색 여부 플래그를 저장한다.
-        CharSequence[] jlptLevelList = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list);
-        CharSequence[] jlptLevelListValues = mContext.getResources().getTextArray(R.array.sc_jlpt_level_list_values);
+        CharSequence[] aJLPTRanking = mContext.getResources().getTextArray(R.array.search_condition_jlpt_ranking);
+        assert aJLPTRanking.length == mJLPTRankingArray.length;
 
-        assert jlptLevelList.length == jlptLevelListValues.length;
-        assert jlptLevelList.length == mScCheckedJLPTLevelArray.length;
-
-        for (int index = 0; index < jlptLevelList.length; ++index) {
-            editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_LEVEL, jlptLevelListValues[index]), mScCheckedJLPTLevelArray[index]);
-        }
+        for (int index = 0; index < aJLPTRanking.length; ++index)
+            editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), mJLPTRankingArray[index]);
 
         editor.commit();
     }

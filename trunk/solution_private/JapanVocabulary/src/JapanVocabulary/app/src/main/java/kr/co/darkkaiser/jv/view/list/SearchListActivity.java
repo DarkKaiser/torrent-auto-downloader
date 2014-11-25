@@ -20,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -103,18 +102,18 @@ public class SearchListActivity extends ActionBarListActivity {
             public void onClick(View view) {
                 SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
 
-                boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+                boolean[] checkedItems = mJvListSearchCondition.getJLPTRankingArray();
                 new AlertDialog.Builder(SearchListActivity.this)
                         .setTitle("검색 조건")
-                        .setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
+                        .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int item, boolean isChecked) {
                                 SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
 
-                                mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
+                                mJvListSearchCondition.setJLPTRanking(item, isChecked);
                             }
                         })
-                        .setPositiveButton("확인",
+                        .setPositiveButton(getString(R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -157,6 +156,7 @@ public class SearchListActivity extends ActionBarListActivity {
                 searchVocabulary();
             }
         });
+
         // @@@@@
         aq.id(R.id.search_cancel).clicked(new OnClickListener() {
             @Override
@@ -463,25 +463,25 @@ public class SearchListActivity extends ActionBarListActivity {
     private void updateJLPTLevelButtonText() {
         SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
 
-        String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
-        boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
-        assert items.length == checkedItems.length;
+//        String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
+//        boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+//        assert items.length == checkedItems.length;
+//
+//        StringBuilder sb = new StringBuilder();
+//        for (int index = 0; index < checkedItems.length; ++index) {
+//            if (checkedItems[index] == true) {
+//                if (sb.length() > 0)
+//                    sb.append(", ");
+//
+//                sb.append(items[index]);
+//            }
+//        }
 
-        StringBuilder sb = new StringBuilder();
-        for (int index = 0; index < checkedItems.length; ++index) {
-            if (checkedItems[index] == true) {
-                if (sb.length() > 0)
-                    sb.append(", ");
-
-                sb.append(items[index]);
-            }
-        }
-
-        if (sb.length() == 0)
-            sb.append("전체 검색\n<선택 항목 없음>");
-
-        Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
-        scJLPTLevelButton.setText(sb.toString());
+//        if (sb.length() == 0)
+//            sb.append("전체 검색\n<선택 항목 없음>");
+//
+//        Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
+//        scJLPTLevelButton.setText(sb.toString());
     }
 
 }
