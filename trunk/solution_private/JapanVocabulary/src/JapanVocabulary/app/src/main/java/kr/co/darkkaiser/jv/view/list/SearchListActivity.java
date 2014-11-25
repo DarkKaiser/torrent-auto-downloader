@@ -104,7 +104,7 @@ public class SearchListActivity extends ActionBarListActivity {
 
                 boolean[] checkedItems = mJvListSearchCondition.getJLPTRankingArray();
                 new AlertDialog.Builder(SearchListActivity.this)
-                        .setTitle("검색 조건")
+                        .setTitle(getString(R.string.avsl_search_condition_text))
                         .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int item, boolean isChecked) {
@@ -375,7 +375,7 @@ public class SearchListActivity extends ActionBarListActivity {
         }.execute();
     }
 
-    private void memorizeSettingsVocabulary(final int menuId, final boolean notSearchVocabularyTargetCancel) {
+    private void memorizeSettingsVocabulary(final int menuId, final boolean excludeSearchVocabularyTargetCancel) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
@@ -389,7 +389,7 @@ public class SearchListActivity extends ActionBarListActivity {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                mSearchResultVocabularyList.memorizeSettingsVocabulary(menuId, notSearchVocabularyTargetCancel);
+                mSearchResultVocabularyList.memorizeSettingsVocabulary(menuId, excludeSearchVocabularyTargetCancel);
                 return null;
             }
 

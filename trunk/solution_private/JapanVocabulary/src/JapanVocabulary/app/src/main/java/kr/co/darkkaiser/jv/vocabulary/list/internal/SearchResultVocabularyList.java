@@ -84,7 +84,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
         mVocabularyListData.remove(position);
     }
 
-    public synchronized void memorizeSettingsVocabulary(int menuId, boolean notSearchVocabularyTargetCancel) {
+    public synchronized void memorizeSettingsVocabulary(int menuId, boolean excludeSearchVocabularyTargetCancel) {
         ArrayList<Long> idxList = new ArrayList<Long>();
 
         if (menuId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 단어 재암기
@@ -98,7 +98,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
                     idxList.add(vocabulary.getIdx());
             }
         } else if (menuId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 단어 암기대상 설정
-            if (notSearchVocabularyTargetCancel == true) {
+            if (excludeSearchVocabularyTargetCancel == true) {
                 for (Vocabulary vocabulary : mVocabularyListData) {
                     idxList.add(vocabulary.getIdx());
                 }
@@ -115,7 +115,7 @@ public class SearchResultVocabularyList implements IVocabularyList {
             }
         }
 
-        VocabularyManager.getInstance().memorizeSettingsVocabulary(menuId, notSearchVocabularyTargetCancel, idxList);
+        VocabularyManager.getInstance().memorizeSettingsVocabulary(menuId, excludeSearchVocabularyTargetCancel, idxList);
     }
 
     @Override

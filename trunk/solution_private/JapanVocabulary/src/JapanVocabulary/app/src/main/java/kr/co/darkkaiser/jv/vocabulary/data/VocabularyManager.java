@@ -332,87 +332,6 @@ public class VocabularyManager {
 		return memorizeCompletedCount;
 	}
 
-    // @@@@@
-    public synchronized void rememorizeAllMemorizeTarget() {
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary vocabulary = e.nextElement();
-			if (vocabulary.isMemorizeTarget() == true)
-				vocabulary.setMemorizeCompleted(false, false);
-		}
-
-		writeUserVocabularyInfo();
-	}
-
-    // @@@@@ DB로 변경
-    public synchronized void writeUserVocabularyInfo() {
-		StringBuilder sb = new StringBuilder();
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-			Vocabulary jpVocabulary = e.nextElement();
-
-			sb.append(jpVocabulary.getIdx())
-			  .append("|")
-			  .append(jpVocabulary.getMemorizeCompletedCount())
-			  .append("|")
-			  .append(jpVocabulary.isMemorizeTarget() == true ? 1 : 0)
-			  .append("|")
-			  .append(jpVocabulary.isMemorizeCompleted() == true ? 1 : 0)
-			  .append("\n");
-		}
-
-		try {
-			String jvUserVocabularyInfoFilePath = VocabularyDbManager.getInstance().getUserDbFilePath();
-
-			File fileOrg = new File(jvUserVocabularyInfoFilePath);
-			File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");
-
-			FileOutputStream fos = new FileOutputStream(fileTemp);
-			fos.write(sb.toString().getBytes());
-			fos.close();
-
-			if (fileOrg.exists() == true)
-				fileOrg.delete();
-
-			fileTemp.renameTo(fileOrg);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
-
-    // @@@@@
-    public synchronized boolean memorizeSettingsVocabulary(int menuItemId, boolean notSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
-		if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
-			Vocabulary jv = null;
-            for (Long anIdxList : idxList) {
-                jv = mVocabularyTable.get(anIdxList);
-
-                jv.setMemorizeTarget(true);
-                jv.setMemorizeCompleted(false, false);
-            }
-		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
-            for (Long anIdxList : idxList)
-                mVocabularyTable.get(anIdxList).setMemorizeCompleted(true, true);
-		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
-			if (notSearchVocabularyTargetCancel == true) {
-				for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-					Vocabulary jpVocabulary = e.nextElement();
-					jpVocabulary.setMemorizeTarget(false);
-				}
-			}
-
-            for (Long anIdxList : idxList)
-                mVocabularyTable.get(anIdxList).setMemorizeTarget(true);
-		} else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
-            for (Long anIdxList : idxList)
-                mVocabularyTable.get(anIdxList).setMemorizeTarget(false);
-		} else {
-            assert false;
-        }
-		
-		writeUserVocabularyInfo();
-
-		return true;
-	}
-
     /**
      * 단어에 대한 상세설명을 반환합니다.
      *
@@ -529,6 +448,92 @@ public class VocabularyManager {
 
 		return result;
 	}
+
+    /**
+     * 모든 암기대상 단어를 미암기 상태로 설정한다.
+     */
+    public synchronized void rememorizeAllMemorizeTarget() {
+        for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+            Vocabulary vocabulary = e.nextElement();
+            if (vocabulary.isMemorizeTarget() == true)
+                vocabulary.setMemorizeCompleted(false, false);
+        }
+
+        writeUserVocabularyInfo();
+    }
+
+    /**
+     * 인자값으로 넘어 온 단어 idx 리스트의 암기대상, 암기완료 여부를 설정합니다.
+     *
+     * @param menuItemId 메뉴 ID
+     * @param excludeSearchVocabularyTargetCancel 검색결과에 포함되지 않은 단어들을 암기대상에서 제외할지의 여부
+     * @param idxList 단어 idx 리스트
+     */
+    public synchronized void memorizeSettingsVocabulary(int menuItemId, boolean excludeSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
+        if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
+            for (Long idx : idxList) {
+                Vocabulary vocabulary = mVocabularyTable.get(idx);
+
+                vocabulary.setMemorizeTarget(true);
+                vocabulary.setMemorizeCompleted(false, false);
+            }
+        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
+            for (Long idx : idxList)
+                mVocabularyTable.get(idx).setMemorizeCompleted(true, true);
+        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
+            if (excludeSearchVocabularyTargetCancel == true) {
+                for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                    Vocabulary vocabulary = e.nextElement();
+                    vocabulary.setMemorizeTarget(false);
+                }
+            }
+
+            for (Long idx : idxList)
+                mVocabularyTable.get(idx).setMemorizeTarget(true);
+        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
+            for (Long idx : idxList)
+                mVocabularyTable.get(idx).setMemorizeTarget(false);
+        } else {
+            assert false;
+        }
+
+        writeUserVocabularyInfo();
+    }
+
+    // @@@@@ DB로 변경
+    public synchronized void writeUserVocabularyInfo() {
+        StringBuilder sb = new StringBuilder();
+        for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+            Vocabulary jpVocabulary = e.nextElement();
+
+            sb.append(jpVocabulary.getIdx())
+                    .append("|")
+                    .append(jpVocabulary.getMemorizeCompletedCount())
+                    .append("|")
+                    .append(jpVocabulary.isMemorizeTarget() == true ? 1 : 0)
+                    .append("|")
+                    .append(jpVocabulary.isMemorizeCompleted() == true ? 1 : 0)
+                    .append("\n");
+        }
+
+        try {
+            String jvUserVocabularyInfoFilePath = VocabularyDbManager.getInstance().getUserDbFilePath();
+
+            File fileOrg = new File(jvUserVocabularyInfoFilePath);
+            File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");
+
+            FileOutputStream fos = new FileOutputStream(fileTemp);
+            fos.write(sb.toString().getBytes());
+            fos.close();
+
+            if (fileOrg.exists() == true)
+                fileOrg.delete();
+
+            fileTemp.renameTo(fileOrg);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 
     // @@@@@
     public synchronized long getUpdatedVocabularyInfo(long prevMaxIdx, StringBuilder sb) {
