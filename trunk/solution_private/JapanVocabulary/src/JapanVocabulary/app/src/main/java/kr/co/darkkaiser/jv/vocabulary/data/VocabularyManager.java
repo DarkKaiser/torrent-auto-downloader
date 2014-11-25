@@ -42,7 +42,6 @@ public class VocabularyManager {
 		return mInstance;
 	}
 
-    // @@@@@
 	public synchronized boolean initDataFromDB(Context context) {
 		assert context != null;
 		
@@ -62,17 +61,14 @@ public class VocabularyManager {
 				mVocabularyDatabase = null;
 			}
 
-			// 일본어 단어를 읽어들인다.
+			// 단어 데이터를 읽어들인다.
 			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
 			StringBuilder sbSQL;
             sbSQL = new StringBuilder();
-            sbSQL.append("  SELECT IDX, ")
-			     .append("         VOCABULARY, ")
-			     .append("         VOCABULARY_GANA, ")
-			     .append("         VOCABULARY_TRANSLATION, ")
-			     .append("         INPUT_DATE ")
-			     .append("    FROM TBL_VOCABULARY ");
+            sbSQL.append("  SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE ")
+			     .append("    FROM TBL_VOCABULARY ")
+			     .append("   WHERE USE_YN = 'Y' ");
 
 			cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
@@ -82,23 +78,20 @@ public class VocabularyManager {
 					long idx = cursor.getLong(0/* IDX */);
 					
 		    		mVocabularyTable.put(idx, new Vocabulary(idx,
-                            cursor.getLong(4/* REGISTRATION_DATE */),
+                            cursor.getLong(4/* INPUT_DATE */),
                             cursor.getString(1/* VOCABULARY */),
                             cursor.getString(2/* VOCABULARY_GANA */),
                             cursor.getString(3/* VOCABULARY_TRANSLATION */)));
 				} while (cursor.moveToNext());
 			}
-
-			cursor.close();
-			cursor = null;
 		} catch (SQLiteException e) {
-			Log.e(TAG, e.getMessage());
-			return false;
-		} finally {
-			if (cursor != null)
-				cursor.close();
-		}
+            Log.e(TAG, e.getMessage());
+            return false;
+        } finally {
+            if (cursor != null) cursor.close();
+        }
 
+        // @@@@@
 		// 사용자 암기정보 DB파일에서 단어 암기에 대한 정보를 읽어들인다.
 		try {
             assert TextUtils.isEmpty(VocabularyDbManager.getInstance().getUserDbFilePath()) == false;
@@ -162,17 +155,17 @@ public class VocabularyManager {
 	}
 
     // @@@@@
-    public synchronized void searchVocabulary(Context context, SearchListCondition searchCondition, ArrayList<Vocabulary> jvList) {
+    public synchronized void searchVocabulary(Context context, SearchListCondition searchListCondition, ArrayList<Vocabulary> vocabularyList) {
 		assert context != null;
 
 		if (mVocabularyDatabase != null) {
 			Cursor cursor = null;
 
 			try {
-				String searchWord = searchCondition.getSearchWord().trim();
-				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchCondition.getMemorizeTarget();
-				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchCondition.getMemorizeCompleted();
-				boolean[] checkedItems = searchCondition.getJLPTRankingArray();
+				String searchWord = searchListCondition.getSearchWord().trim();
+				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchListCondition.getMemorizeTarget();
+				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchListCondition.getMemorizeCompleted();
+				boolean[] checkedItems = searchListCondition.getJLPTRankingArray();
 
 				boolean hasSearchCondition = false;
 				StringBuilder sbSQL = new StringBuilder();
@@ -244,8 +237,8 @@ public class VocabularyManager {
 
 					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 현재까지의 검색 결과를 반환한다.
 					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
-						for (int index = 0; index < idxList.size(); ++index)
-							jvList.add(mVocabularyTable.get(idxList.get(index)));
+                        for (Long idx : idxList)
+                            vocabularyList.add(mVocabularyTable.get(idx));
 						
 						return;
 					}
@@ -257,20 +250,20 @@ public class VocabularyManager {
 					if (memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
 						memorizeCompleted = true;
 
-					for (int index = 0; index < idxList.size(); ++index) {
-						Vocabulary vocabulary = mVocabularyTable.get(idxList.get(index));
-						if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
-							continue;
-						if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
-							continue;
-						
-						jvList.add(vocabulary);
-					}
+                    for (Long idx : idxList) {
+                        Vocabulary vocabulary = mVocabularyTable.get(idx);
+                        if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
+                            continue;
+                        if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
+                            continue;
+
+                        vocabularyList.add(vocabulary);
+                    }
 				} else {
 					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 모든 단어를 반환한다.
 					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
 						for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); )
-							jvList.add(e.nextElement());
+							vocabularyList.add(e.nextElement());
 						
 						return;
 					}
@@ -289,16 +282,13 @@ public class VocabularyManager {
 						if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
 							continue;
 						
-						jvList.add(vocabulary);
+						vocabularyList.add(vocabulary);
 					}
 				}
 			} catch (SQLiteException e) {
 				Log.e(TAG, e.getMessage());
 			} finally {
-				if (cursor != null) {
-					cursor.close();
-					cursor = null;
-				}
+				if (cursor != null) cursor.close();
 			}
 		} else {
 			assert false;
