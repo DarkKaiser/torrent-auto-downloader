@@ -46,7 +46,7 @@
     <string name="avsl_empty_search_result_list_vocabulary">검색된 단어가 없습니다.</string>
     <string name="avsl_vocabulary_memorize_count_info_description">암기완료/암기대상 :</string>
     <string name="avsl_vocabulary_count_info_description">검색/전체 :</string>
-    <string name="avsl_search_condition_text">검색조건</string>
+    <string name="avsl_search_condition_text">선택</string>
 
     <string name="avsli_memorize_target">암기대상</string>
     <string name="avsli_memorize_completed">암기완료</string>

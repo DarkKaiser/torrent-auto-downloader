@@ -535,8 +535,10 @@ public class VocabularyManager {
         }
     }
 
-    // @@@@@
-    public synchronized long getUpdatedVocabularyInfo(long prevMaxIdx, StringBuilder sb) {
+    /**
+     * 단어DB의 업데이트 정보를 반환합니다.
+     */
+    public synchronized long getVocabularyUpdateInfo(long prevMaxIdx, StringBuilder sb) {
 		assert sb != null;
 
 		long newMaxIdx = -1;
@@ -562,7 +564,7 @@ public class VocabularyManager {
 		}
 
 		if (updateVocabularyCount > 0) {
-			sb.insert(0, String.format("%d개의 단어가 추가되었습니다.\n\n", updateVocabularyCount));
+			sb.insert(0, String.format("%d개의 단어가 갱신되었습니다.\n\n", updateVocabularyCount));
 
 			// 200개 이상의 단어가 업데이트 되었을 경우 '.....' 문자를 마지막에 보이도록 한다.
 			if (updateVocabularyCount > 200) {

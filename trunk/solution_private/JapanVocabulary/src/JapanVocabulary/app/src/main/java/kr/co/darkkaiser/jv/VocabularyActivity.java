@@ -871,7 +871,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
-            long newMaxIdx = VocabularyManager.getInstance().getUpdatedVocabularyInfo(prevMaxIdx, sb);
+            long newMaxIdx = VocabularyManager.getInstance().getVocabularyUpdateInfo(prevMaxIdx, sb);
 
             if (newMaxIdx != -1) {
                 mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
