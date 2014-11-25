@@ -868,13 +868,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             mVocabularyDataLoadHandler.sendMessage(msg);
         } else if (updateSucceeded == true) {
             SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-            long prevMaxIdx = mPreferences.getLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, -1);
+            long prevMaxIdx = mPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
             long newMaxIdx = VocabularyManager.getInstance().getVocabularyUpdateInfo(prevMaxIdx, sb);
 
             if (newMaxIdx != -1) {
-                mPreferences.edit().putLong(Constants.JV_SPN_LAST_UPDATED_MAX_IDX, newMaxIdx).commit();
+                mPreferences.edit().putLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, newMaxIdx).commit();
 
                 // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
                 if (prevMaxIdx != -1) {

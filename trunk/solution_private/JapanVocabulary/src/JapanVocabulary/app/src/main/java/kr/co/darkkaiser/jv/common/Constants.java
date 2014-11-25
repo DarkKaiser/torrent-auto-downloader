@@ -13,6 +13,11 @@ public class Constants {
     public static final String SPKEY_DB_VERSION = "jv_db_ver";
 
     /*
+     * 가장 마지막에 업데이트 한 단어DB의 IDX 최대값(공용 환경설정 키이름)
+     */
+    public static final String SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX = "jv_last_updated_max_idx";
+
+    /*
      * 가장 최근에 사용자가 암기했던 저장된 단어암기 순서(공용 환경설정 키이름)
      */
     public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER = "latest_vocabulary_memorize_order";
@@ -26,11 +31,6 @@ public class Constants {
      * 검색 결과리스트 정렬 방법(공용 환경설정 키이름)
      */
     public static final String SPKEY_SEARCH_LIST_SORT = "search_list_sort";
-    
-    /*
-     * 가장 마지막에 업데이트 한 단어DB의 Max IDX 값 @@@@@
-     */
-    public static final String JV_SPN_LAST_UPDATED_MAX_IDX = "jv_last_updated_max_idx";
 
     /*
 	 * 단어DB 파일명
