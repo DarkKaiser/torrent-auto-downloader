@@ -39,7 +39,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSeek;
 
-public class SearchListActivity extends ActionBarListActivity implements OnClickListener {
+public class SearchListActivity extends ActionBarListActivity {
 
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
 	public static final int ACTIVITY_RESULT_PREFERENCE_CHANGED = 2;
@@ -98,12 +98,75 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
         // @@@@@
 		// JLPT 급수 검색 조건
 		updateJLPTLevelButtonText();
-		findViewById(R.id.sc_jlpt_level).setOnClickListener(this);
+        aq.id(R.id.sc_jlpt_level).clicked(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
+                new AlertDialog.Builder(SearchListActivity.this)
+                        .setTitle("검색 조건")
+                        .setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+                                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                                mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
+                            }
+                        })
+                        .setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
+                                        // mJvListSearchCondition.commit();
+                                        updateJLPTLevelButtonText();
+                                    }
+                                })
+                        .show();
+            }
+        });
 
         // @@@@@
 		// 기타
-		findViewById(R.id.search_start).setOnClickListener(this);
-		findViewById(R.id.search_cancel).setOnClickListener(this);
+        aq.id(R.id.search_start).clicked(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+// 소프트 키보드가 나타나 있다면 숨긴다.
+                InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
+                mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
+
+                // 설정된 검색 조건들을 저장합니다.
+                EditText scSearchWordEditText = (EditText)findViewById(R.id.avsl_search_condition_search_word);
+                Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_target);
+                Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_completed);
+
+                mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
+                //@@@@@
+//			mJvListSearchCondition.setMemorizeTarget(scMemorizeTargetSpinner.getSelectedItemPosition());
+//			mJvListSearchCondition.setMemorizeCompleted(scMemorizeCompletedSpinner.getSelectedItemPosition());
+
+                // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
+                // 대신 commit()은 검색을 시작하기 전에 하도록 변경한다.
+                // mJvListSearchCondition.commit();
+
+                // 설정된 검색 조건을 이용하여 단어를 검색합니다.
+                searchVocabulary();
+            }
+        });
+        // @@@@@
+        aq.id(R.id.search_cancel).clicked(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 소프트 키보드가 나타나 있다면 숨긴다.
+                InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
+                mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
+            }
+        });
 
 		//
 		// 마지막 검색조건을 이용하여 검색한다.
@@ -420,73 +483,5 @@ public class SearchListActivity extends ActionBarListActivity implements OnClick
         Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
         scJLPTLevelButton.setText(sb.toString());
     }
-
-	@Override
-    // @@@@@
-    public void onClick(View v) {
-        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-        switch (v.getId()) {
-		case R.id.sc_jlpt_level:
-		{
-			boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
-			new AlertDialog.Builder(SearchListActivity.this)
-					.setTitle("검색 조건")
-					.setMultiChoiceItems(R.array.sc_jlpt_level_list, checkedItems, new OnMultiChoiceClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-                                    SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                                    mJvListSearchCondition.setCheckedJLPTLevel(item, isChecked);
-								}
-							})
-					.setPositiveButton("확인",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
-									// mJvListSearchCondition.commit();
-									updateJLPTLevelButtonText();
-								}
-							})
-					.show();
-		}
-			break;
-
-		case R.id.search_start:
-		{
-			// 소프트 키보드가 나타나 있다면 숨긴다.
-		    InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	        EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
-
-			// 설정된 검색 조건들을 저장합니다.
-			EditText scSearchWordEditText = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-			Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_target);
-			Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_completed);
-
-			mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
-            //@@@@@
-//			mJvListSearchCondition.setMemorizeTarget(scMemorizeTargetSpinner.getSelectedItemPosition());
-//			mJvListSearchCondition.setMemorizeCompleted(scMemorizeCompletedSpinner.getSelectedItemPosition());
-
-			// 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
-			// 대신 commit()은 검색을 시작하기 전에 하도록 변경한다.
-			// mJvListSearchCondition.commit();
-
-			// 설정된 검색 조건을 이용하여 단어를 검색합니다.
-			searchVocabulary();
-		}
-			break;
-
-		case R.id.search_cancel:
-			// 소프트 키보드가 나타나 있다면 숨긴다.
-		    InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	        EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-	        mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
-
-			break;
-		}
-	}
 
 }
