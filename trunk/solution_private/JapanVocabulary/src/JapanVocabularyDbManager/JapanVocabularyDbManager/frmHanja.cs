@@ -237,118 +237,79 @@ namespace JapanVocabularyDbManager
             // 웹 브라우저가 로딩이 완료될 때까지 대기한다.
             if (EditMode == false && e.Url.AbsoluteUri == webBrowser.Url.AbsoluteUri && webBrowser.Url.AbsoluteUri != "about:blank")
             {
+                // HTML 데이터를 파싱한다.
+                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(webBrowser.DocumentText);
+
                 // @@@@@
-                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                doc.LoadHtml(webBrowser.DocumentText);
-                HtmlAgilityPack.HtmlNode parentNode = doc.DocumentNode.SelectSingleNode("//body");
-
-                HtmlAgilityPack.HtmlNodeCollection nodeList = parentNode.SelectNodes("//div[@class='srch_box']");
-
-                foreach (HtmlAgilityPack.HtmlNode htmlNode in nodeList)
+                HtmlAgilityPack.HtmlNode bodyNode = htmlDoc.DocumentNode.SelectSingleNode("//body");
+                HtmlAgilityPack.HtmlNodeCollection srchBoxNodeList = bodyNode.SelectNodes("//div[@class='srch_box']");
+                foreach (HtmlAgilityPack.HtmlNode srchBoxNode in srchBoxNodeList)
                 {
-                    var u = htmlNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
-                    if (u.InnerText == "今")
+                    var u = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
+                    if (u != null && u.InnerText == txtCharacter.Text.Trim())
                     {
-                        var uuu = htmlNode.SelectNodes("//dl[@class='top_dn']");
+                        String strMeadRead = "";
+                        String strSoundRead = "";
+                        String strTranslation = "";
 
-                        foreach (HtmlAgilityPack.HtmlNode hh in uuu)
+                        // 음독, 훈독이 있는 노드
+                        var htmlNodes = srchBoxNode.SelectNodes("./dl[@class='top_dn']/*");
+                        for (int index = 0; index < htmlNodes.Count; ++index)
                         {
-                            string s = hh.InnerText;
+                            HtmlAgilityPack.HtmlNode htmlNode = htmlNodes.ElementAt(index);
+                            string s = htmlNode.InnerText;
+                            if (s.Equals("음독"))
+                            {
+                                HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
+                                if (htmlNode2 != null)
+                                {
+                                    string s1 = htmlNode2.InnerText;
+                                    int pos = s1.IndexOf('|');
+                                    if (pos != -1)
+                                    {
+                                        s1 = s1.Substring(0, pos - 1);
+                                    }
 
+                                    s1 = s1.Trim();
+                                    strSoundRead = s1;
+                                }
+                            }
+                            else if (s.Equals("훈독"))
+                            {
+                                HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
+                                if (htmlNode2 != null)
+                                {
+                                    string s1 = htmlNode2.InnerText;
+                                    int pos = s1.IndexOf('|');
+                                    if (pos != -1)
+                                    {
+                                        s1 = s1.Substring(0, pos - 1);
+                                    }
 
-
-                            // 뜻
-                            // $x("//div[@class='srch_box']//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']")
+                                    s1 = s1.Trim();
+                                    strMeadRead = s1;
+                                }
+                            }
                         }
-                        
-                        // var user = u.Element("div").Attributes["data-profile"].Value;
+
+                        // 뜻이 있는 노드
+                        var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
+                        if (translationNode != null)
+                            strTranslation = translationNode.InnerText;
+
+                        if (strSoundRead.Length == 0 || strMeadRead.Length == 0 || strTranslation.Length == 0)
+                        {
+                            MessageBox.Show("파싱 실패");
+                            break;
+                        }
+
+                        // 컨트롤에 값을 할당한다.
+                        txtMeanRead.Text = strMeadRead;
+                        txtSoundRead.Text = strSoundRead;
+                        txtTranslation.Text = strTranslation;
 
                         break;
-                    }
-                }
-
-
-
-
-
-
-                // @@@@@ 파싱 다시 해야함
-                string strDocumentText = webBrowser.DocumentText;
-
-                int first = strDocumentText.IndexOf(@"class=""entry_result""");
-                if (first == -1)
-                    return;
-
-                int last = strDocumentText.IndexOf("</dl>", first);
-                if (last == -1)
-                    return;
-
-                string strContent = strDocumentText.Substring(first, last - first);
-
-                first = strContent.IndexOf(txtCharacter.Text.Trim());
-                if (first == -1)
-                    return;
-
-                first = strContent.IndexOf("<dd class=", first);
-                if (first == -1)
-                    return;
-
-                last = strContent.IndexOf("<dt>", first);
-                if (last == -1)
-                    return;
-
-                strContent = strContent.Substring(first, last - first);
-
-                if (string.IsNullOrEmpty(strContent) == false)
-                {
-                    string temp;
-
-                    // 음독을 찾는다.
-                    first = strContent.IndexOf(@"""음독""");
-                    if (first != -1)
-                    {
-                        last = strContent.IndexOf("\r\n", first);
-                        temp = strContent.Substring(first, last - first);
-                        if (string.IsNullOrEmpty(temp) == false)
-                        {
-                            first = temp.IndexOf(@"class=""jp"">");
-                            if (first != -1)
-                            {
-                                first += 11;
-                                last = temp.IndexOf("</span>", first);
-                                if (last != -1)
-                                    txtSoundRead.Text = temp.Substring(first, last - first);
-                            }
-                        }
-                    }
-
-                    // 훈독을 찾는다.
-                    first = strContent.IndexOf(@"""훈독""");
-                    if (first != -1)
-                    {
-                        last = strContent.IndexOf("\r\n", first);
-                        temp = strContent.Substring(first, last - first);
-                        if (string.IsNullOrEmpty(temp) == false)
-                        {
-                            first = temp.IndexOf(@"class=""jp"">");
-                            if (first != -1)
-                            {
-                                first += 11;
-                                last = temp.IndexOf("</span>", first);
-                                if (last != -1)
-                                    txtMeanRead.Text = temp.Substring(first, last - first);
-                            }
-                        }
-                    }
-
-                    // 뜻을 찾는다.
-                    first = strContent.IndexOf(@"<dd class=""stroke"">");
-                    if (first != -1)
-                    {
-                        first += 19;
-                        last = strContent.IndexOf("<em>", first);
-                        if (last != -1)
-                            txtTranslation.Text = strContent.Substring(first, last - first);
                     }
                 }
             }
