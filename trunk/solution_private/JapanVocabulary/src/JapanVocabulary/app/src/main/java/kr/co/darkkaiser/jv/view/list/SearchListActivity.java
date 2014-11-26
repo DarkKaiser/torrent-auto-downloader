@@ -25,6 +25,7 @@ import com.androidquery.AQuery;
 
 import java.util.ArrayList;
 
+import kr.co.darkkaiser.jv.view.MultiSelectSpinner;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;
@@ -120,6 +121,11 @@ public class SearchListActivity extends ActionBarListActivity {
                     aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
                     // @@@@@
+                    MultiSelectSpinner s = (MultiSelectSpinner)v.findViewById(R.id.avsl_jlpt_level);
+                    String[] array = { "one", "two", "three" };
+                    s.setItems(array);
+
+                    // @@@@@
                     // JLPT 급수 검색 조건
                     updateJLPTLevelButtonText();
                     aq.id(R.id.sc_jlpt_level).clicked(new OnClickListener() {
@@ -133,17 +139,13 @@ public class SearchListActivity extends ActionBarListActivity {
                                     .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-                                            SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                                            mJvListSearchCondition.setJLPTRanking(item, isChecked);
+                                            searchListCondition.setJLPTRanking(item, isChecked);
                                         }
                                     })
                                     .setPositiveButton(getString(R.string.ok),
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
-                                                    // mJvListSearchCondition.commit();
                                                     updateJLPTLevelButtonText();
                                                 }
                                             })

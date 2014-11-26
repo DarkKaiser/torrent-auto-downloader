@@ -45,6 +45,12 @@
         <TableRow
             android:paddingBottom="0px"
             >
+            <kr.co.darkkaiser.jv.view.MultiSelectSpinner
+                android:id="@+id/avsl_jlpt_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/avsl_search_condition_text"
+                />
             <Button
                 android:id="@+id/sc_jlpt_level"
                 android:layout_width="match_parent"
