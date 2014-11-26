@@ -48,6 +48,9 @@ public class SearchListActivity extends ActionBarListActivity {
     private SearchListAdapter mSearchResultVocabularyListAdapter = null;
     private SearchResultVocabularyList mSearchResultVocabularyList = null;
 
+    private ArrayAdapter<String> mMemorizeTargetAdapter = null;
+    private ArrayAdapter<String> mMemorizeCompletedAdapter = null;
+
     private ProgressDialog mProgressDialog = null;
 
     private int mActivityResultCode = 0;
@@ -69,7 +72,13 @@ public class SearchListActivity extends ActionBarListActivity {
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 
-		// 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
+        // 검색조건내의 암기대상, 암기완료 스피너 어댑터를 초기화한다.
+        mMemorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
+        mMemorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+        mMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
+        mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+
+        // 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
 		searchVocabulary();
 	}
 
@@ -103,27 +112,12 @@ public class SearchListActivity extends ActionBarListActivity {
 
                 if (v != null) {
                     final AQuery aq = new AQuery(v);
+                    final SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
 
-                    // @@@@@
-                    //
-                    // 검색과 관련된 컨트롤들을 초기화합니다.
-                    //
-                    SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                    // 검색어
+                    // 검색조건 컨트롤을 초기화한다.
                     aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
-
-                    // 암기대상
-                    ArrayAdapter<String> memorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
-                    memorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
-
-                    aq.id(R.id.avsl_search_condition_memorize_target).adapter(memorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
-
-                    // 암기완료
-                    ArrayAdapter<String> memorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
-                    memorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
-
-                    aq.id(R.id.avsl_search_condition_memorize_completed).adapter(memorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
+                    aq.id(R.id.avsl_search_condition_memorize_target).adapter(mMemorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
+                    aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
                     // @@@@@
                     // JLPT 급수 검색 조건
@@ -159,11 +153,9 @@ public class SearchListActivity extends ActionBarListActivity {
 
                     new AlertDialog.Builder(SearchListActivity.this)
                             .setTitle(getString(R.string.avsl_search))
-                            .setPositiveButton(getString(R.string.search), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
-
                                     int memorizeTarget = aq.id(R.id.avsl_search_condition_memorize_target).getSelectedItemPosition();
                                     int memorizeCompleted = aq.id(R.id.avsl_search_condition_memorize_completed).getSelectedItemPosition();
 
@@ -177,7 +169,7 @@ public class SearchListActivity extends ActionBarListActivity {
                                     searchVocabulary();
                                 }
                             })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                 }
