@@ -168,11 +168,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
         }
 
         if (mVocabularyListData.isEmpty() == true || mMemorizeCompletedCount >= mVocabularyListData.size()) {
-			if (mMemorizeOrder == MemorizeOrder.RANDOM)
-                mPosition = -1;
-            else
-                mPosition = mVocabularyListData.size() - 1;
-
+            mPosition = -1;
 			sbErrMessage.append("암기 할 단어가 없습니다.");
 		} else {
 			if (mMemorizeOrder == MemorizeOrder.RANDOM) {
