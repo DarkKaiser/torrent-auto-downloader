@@ -246,14 +246,19 @@ namespace JapanVocabularyDbManager
 
                 foreach (HtmlAgilityPack.HtmlNode htmlNode in nodeList)
                 {
-                    var u = htmlNode.SelectSingleNode("//span[@class='jp']");
+                    var u = htmlNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
                     if (u.InnerText == "今")
                     {
-                        var uuu = htmlNode.SelectNodes("//dl[@class='top_dn']/dd[@class='jp']");
+                        var uuu = htmlNode.SelectNodes("//dl[@class='top_dn']");
 
                         foreach (HtmlAgilityPack.HtmlNode hh in uuu)
                         {
                             string s = hh.InnerText;
+
+
+
+                            // 뜻
+                            // $x("//div[@class='srch_box']//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']")
                         }
                         
                         // var user = u.Element("div").Attributes["data-profile"].Value;
