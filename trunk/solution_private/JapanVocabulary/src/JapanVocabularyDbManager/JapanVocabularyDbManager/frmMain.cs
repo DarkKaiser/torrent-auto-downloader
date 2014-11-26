@@ -10,6 +10,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Diagnostics;
 using System.Xml;
+using System.Net;
 
 namespace JapanVocabularyDbManager
 {
@@ -517,7 +518,125 @@ namespace JapanVocabularyDbManager
             }
 
             // @@@@@ 한자 분석
-        }
+            foreach (DataGridViewRow row in rc)
+            {
+                String strHanja = row.Cells[1].Value.ToString();
+                String mstrSoundRead = row.Cells[2].Value.ToString();
+                String mstrMeanRead = row.Cells[3].Value.ToString();
+                String mstrTranslation = row.Cells[4].Value.ToString();
 
+                WebClient wc = new WebClient();
+                string url = string.Format("http://jpdic.naver.com/search.nhn?query={0}", strHanja);
+                byte[] docBytes = wc.DownloadData(url);
+                string encodeType = wc.ResponseHeaders["Content-Type"];
+
+                string charsetKey = "charset";
+                int pos = encodeType.IndexOf(charsetKey);
+
+                Encoding currentEncoding = Encoding.Default;
+                if (pos != -1)
+                {
+                    pos = encodeType.IndexOf("=", pos + charsetKey.Length);
+                    if (pos != -1)
+                    {
+                        string charset = encodeType.Substring(pos + 1);
+                        currentEncoding = Encoding.GetEncoding(charset);
+                    }
+                }
+
+                string content = currentEncoding.GetString(docBytes);
+
+
+                // HTML 데이터를 파싱한다.
+                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(content);
+
+                // @@@@@
+                HtmlAgilityPack.HtmlNode bodyNode = htmlDoc.DocumentNode.SelectSingleNode("//body");
+                HtmlAgilityPack.HtmlNodeCollection srchBoxNodeList = bodyNode.SelectNodes("//div[@class='srch_box']");
+                foreach (HtmlAgilityPack.HtmlNode srchBoxNode in srchBoxNodeList)
+                {
+                    var u = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
+                    if (u != null && u.InnerText == strHanja)
+                    {
+                        String strMeadRead = "";
+                        String strSoundRead = "";
+                        String strTranslation = "";
+
+                        // 음독, 훈독이 있는 노드
+                        var htmlNodes = srchBoxNode.SelectNodes("./dl[@class='top_dn']/*");
+                        if (htmlNodes != null)
+                        {
+                            for (int index = 0; index < htmlNodes.Count; ++index)
+                            {
+                                HtmlAgilityPack.HtmlNode htmlNode = htmlNodes.ElementAt(index);
+                                string s = htmlNode.InnerText;
+                                if (s.Equals("음독"))
+                                {
+                                    HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNode2 != null)
+                                    {
+                                        string s1 = htmlNode2.InnerText;
+                                        int pos1 = s1.IndexOf('|');
+                                        if (pos1 != -1)
+                                        {
+                                            s1 = s1.Substring(0, pos1 - 1);
+                                        }
+
+                                        s1 = s1.Trim();
+                                        strSoundRead = s1;
+                                    }
+                                }
+                                else if (s.Equals("훈독"))
+                                {
+                                    HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNode2 != null)
+                                    {
+                                        string s1 = htmlNode2.InnerText;
+                                        int pos2 = s1.IndexOf('|');
+                                        if (pos2 != -1)
+                                        {
+                                            s1 = s1.Substring(0, pos2 - 1);
+                                        }
+
+                                        s1 = s1.Trim();
+                                        strMeadRead = s1;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 뜻이 있는 노드
+                        var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
+                        if (translationNode != null)
+                            strTranslation = translationNode.InnerText;
+
+                        //if (strSoundRead.Length == 0 || strMeadRead.Length == 0 || strTranslation.Length == 0)
+                        //{
+                        //    MessageBox.Show("파싱 실패");
+                        //    break;
+                        //}
+
+                        // 값을 비교한다.
+                        if (mstrSoundRead == strSoundRead && mstrMeanRead == mstrMeanRead && mstrTranslation == strTranslation)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Red;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            MessageBox.Show("파싱이 끝났습니다.");
+
+            // 셀 배경 붉은색으로
+            //foreach (DataGridViewRow row in rc)
+            //    row.DefaultCellStyle.BackColor = Color.Red;
+        }
     }
 }
