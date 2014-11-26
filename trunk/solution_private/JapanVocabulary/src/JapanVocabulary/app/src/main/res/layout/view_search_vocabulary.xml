@@ -45,7 +45,7 @@
         <TableRow
             android:paddingBottom="0px"
             >
-            <kr.co.darkkaiser.jv.view.MultiChoiceSpinner
+            <kr.co.darkkaiser.jv.view.widgets.MultiChoiceSpinner
                 android:id="@+id/avsl_jlpt_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -25,7 +25,7 @@ import com.androidquery.AQuery;
 
 import java.util.ArrayList;
 
-import kr.co.darkkaiser.jv.view.MultiChoiceSpinner;
+import kr.co.darkkaiser.jv.view.widgets.MultiChoiceSpinner;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;

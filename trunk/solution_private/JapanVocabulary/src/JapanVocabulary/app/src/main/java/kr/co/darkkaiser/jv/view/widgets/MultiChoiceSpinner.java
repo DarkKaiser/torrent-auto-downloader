@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.view;
+package kr.co.darkkaiser.jv.view.widgets;
 
 import android.app.AlertDialog;
 import android.content.Context;
