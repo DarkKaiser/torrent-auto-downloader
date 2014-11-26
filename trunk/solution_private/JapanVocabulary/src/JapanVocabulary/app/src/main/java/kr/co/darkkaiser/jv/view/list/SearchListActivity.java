@@ -2,7 +2,6 @@ package kr.co.darkkaiser.jv.view.list;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
@@ -17,12 +16,10 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.androidquery.AQuery;
 
@@ -64,8 +61,6 @@ public class SearchListActivity extends ActionBarListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
 
-        AQuery aq = new AQuery(this);
-
 		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
@@ -74,103 +69,7 @@ public class SearchListActivity extends ActionBarListActivity {
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 
-        //
-        // 검색과 관련된 컨트롤들을 초기화합니다.
-        //
-        SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-		// 검색어
-        aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
-
-		// 암기대상
-		ArrayAdapter<String> memorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
-		memorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
-
-        aq.id(R.id.avsl_search_condition_memorize_target).adapter(memorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
-
-		// 암기완료
-		ArrayAdapter<String> memorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
-		memorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
-
-        aq.id(R.id.avsl_search_condition_memorize_completed).adapter(memorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
-
-        // @@@@@
-		// JLPT 급수 검색 조건
-		updateJLPTLevelButtonText();
-        aq.id(R.id.sc_jlpt_level).clicked(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                boolean[] checkedItems = mJvListSearchCondition.getJLPTRankingArray();
-                new AlertDialog.Builder(SearchListActivity.this)
-                        .setTitle(getString(R.string.avsl_search_condition_text))
-                        .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-                                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                                mJvListSearchCondition.setJLPTRanking(item, isChecked);
-                            }
-                        })
-                        .setPositiveButton(getString(R.string.ok),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
-                                        // mJvListSearchCondition.commit();
-                                        updateJLPTLevelButtonText();
-                                    }
-                                })
-                        .show();
-            }
-        });
-
-        // @@@@@
-		// 기타
-        aq.id(R.id.search_start).clicked(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-// 소프트 키보드가 나타나 있다면 숨긴다.
-                InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-                mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
-
-                // 설정된 검색 조건들을 저장합니다.
-                EditText scSearchWordEditText = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-                Spinner scMemorizeTargetSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_target);
-                Spinner scMemorizeCompletedSpinner = (Spinner)findViewById(R.id.avsl_search_condition_memorize_completed);
-
-                mJvListSearchCondition.setSearchWord(scSearchWordEditText.getText().toString().trim());
-                //@@@@@
-//			mJvListSearchCondition.setMemorizeTarget(scMemorizeTargetSpinner.getSelectedItemPosition());
-//			mJvListSearchCondition.setMemorizeCompleted(scMemorizeCompletedSpinner.getSelectedItemPosition());
-
-                // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
-                // 대신 commit()은 검색을 시작하기 전에 하도록 변경한다.
-                // mJvListSearchCondition.commit();
-
-                // 설정된 검색 조건을 이용하여 단어를 검색합니다.
-                searchVocabulary();
-            }
-        });
-
-        // @@@@@
-        aq.id(R.id.search_cancel).clicked(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 소프트 키보드가 나타나 있다면 숨긴다.
-                InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                EditText searchWord = (EditText)findViewById(R.id.avsl_search_condition_search_word);
-                mgr.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
-            }
-        });
-
-		//
-		// 마지막 검색조건을 이용하여 검색한다.
-		//
+		// 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
 		searchVocabulary();
 	}
 
@@ -184,7 +83,7 @@ public class SearchListActivity extends ActionBarListActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        SubMenu sm = menu.getItem(0/* 정렬 */).getSubMenu();
+        SubMenu sm = menu.getItem(1/* 정렬 */).getSubMenu();
         SearchListSort searchListSort = mSearchResultVocabularyList.getSortMethod();
         if (searchListSort == SearchListSort.VOCABULARY_GANA)
             sm.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
@@ -199,6 +98,94 @@ public class SearchListActivity extends ActionBarListActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+            case R.id.avsl_search_vocabulary:
+                View v = getLayoutInflater().inflate(R.layout.view_search_vocabulary, new LinearLayout(SearchListActivity.this), false);
+
+                if (v != null) {
+                    final AQuery aq = new AQuery(v);
+
+                    // @@@@@
+                    //
+                    // 검색과 관련된 컨트롤들을 초기화합니다.
+                    //
+                    SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                    // 검색어
+                    aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
+
+                    // 암기대상
+                    ArrayAdapter<String> memorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
+                    memorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+
+                    aq.id(R.id.avsl_search_condition_memorize_target).adapter(memorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
+
+                    // 암기완료
+                    ArrayAdapter<String> memorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
+                    memorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+
+                    aq.id(R.id.avsl_search_condition_memorize_completed).adapter(memorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
+
+                    // @@@@@
+                    // JLPT 급수 검색 조건
+                    updateJLPTLevelButtonText();
+                    aq.id(R.id.sc_jlpt_level).clicked(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                            boolean[] checkedItems = mJvListSearchCondition.getJLPTRankingArray();
+                            new AlertDialog.Builder(SearchListActivity.this)
+                                    .setTitle(getString(R.string.avsl_search_condition_text))
+                                    .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+                                            SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                                            mJvListSearchCondition.setJLPTRanking(item, isChecked);
+                                        }
+                                    })
+                                    .setPositiveButton(getString(R.string.ok),
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 사용자 경험(화면 멈춤)을 위해 아래 commit() 하는 부분은 주석처리한다.
+                                                    // mJvListSearchCondition.commit();
+                                                    updateJLPTLevelButtonText();
+                                                }
+                                            })
+                                    .show();
+                        }
+                    });
+
+                    new AlertDialog.Builder(SearchListActivity.this)
+                            .setTitle(getString(R.string.avsl_search))
+                            .setPositiveButton(getString(R.string.search), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
+
+                                    int memorizeTarget = aq.id(R.id.avsl_search_condition_memorize_target).getSelectedItemPosition();
+                                    int memorizeCompleted = aq.id(R.id.avsl_search_condition_memorize_completed).getSelectedItemPosition();
+
+                                    searchListCondition.setSearchWord(aq.id(R.id.avsl_search_condition_search_word).getText().toString().trim());
+                                    searchListCondition.setMemorizeTarget(SearchListCondition.MemorizeTarget.parseMemorizeTarget(memorizeTarget));
+                                    searchListCondition.setMemorizeCompleted(SearchListCondition.MemorizeCompleted.parseMemorizeCompleted(memorizeCompleted));
+
+                                    //@@@@@ level
+
+                                    // 설정된 검색 조건을 이용하여 단어를 검색합니다.
+                                    searchVocabulary();
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setView(v)
+                            .show();
+                }
+                return true;
             case R.id.avsl_sort_vocabulary:
                 item.setChecked(true);
                 sortVocabulary(SearchListSort.VOCABULARY);
@@ -222,23 +209,21 @@ public class SearchListActivity extends ActionBarListActivity {
                 final int itemId = item.getItemId();
                 if (item.getItemId() == R.id.avsl_search_result_vocabulary_memorize_target_all) {
                     new AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.avsl_memorize_settings_vocabulary_ad_title))
-                        .setMessage(getString(R.string.avsl_memorize_settings_vocabulary_ad_message))
-                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                memorizeSettingsVocabulary(itemId, true);
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                memorizeSettingsVocabulary(itemId, false);
-                            }
-                        })
-                        .show();
+                            .setTitle(getString(R.string.avsl_memorize_settings_vocabulary_ad_title))
+                            .setMessage(getString(R.string.avsl_memorize_settings_vocabulary_ad_message))
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    memorizeSettingsVocabulary(itemId, true);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    memorizeSettingsVocabulary(itemId, false);
+                                }
+                            })
+                            .show();
                 } else {
                     memorizeSettingsVocabulary(itemId, false);
                 }

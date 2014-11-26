@@ -2,10 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
-	<item
+    <item
+        android:id="@+id/avsl_search_vocabulary"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/avsl_search"
+        android:orderInCategory="0"
+        myapp:showAsAction="ifRoom"
+        />
+    <item
 		android:title="@string/avsl_sort"
 		android:icon="@android:drawable/ic_menu_sort_alphabetically"
-        android:orderInCategory="0"
+        android:orderInCategory="1"
         myapp:showAsAction="ifRoom"
         >
 		<menu>
@@ -29,7 +36,7 @@
 	</item>
 	<item
 		android:title="@string/avsl_search_result_settings"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         myapp:showAsAction="never"
         >
 		<menu>
@@ -55,7 +62,7 @@
 		android:id="@+id/avsl_open_settings_activity"
 		android:icon="@android:drawable/ic_menu_preferences"
 		android:title="@string/activity_environment_setting_label"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         myapp:showAsAction="never"
         />
 

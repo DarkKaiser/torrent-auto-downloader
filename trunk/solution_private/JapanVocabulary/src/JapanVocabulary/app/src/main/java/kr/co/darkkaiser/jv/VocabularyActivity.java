@@ -211,42 +211,42 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.av_search_memorize_vocabulary:
-			Intent intent = new Intent(this, SearchListActivity.class);
-			startActivityForResult(intent, REQ_CODE_SEARCH_MEMORIZE_VOCABULARY);
-			return true;
+            case R.id.av_search_memorize_vocabulary:
+                Intent intent = new Intent(this, SearchListActivity.class);
+                startActivityForResult(intent, REQ_CODE_SEARCH_MEMORIZE_VOCABULARY);
+                return true;
 
-		case R.id.av_rememorize_all:
-			assert mProgressDialog == null;
+            case R.id.av_rememorize_all:
+                assert mProgressDialog == null;
 
-			// 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-			mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
+                // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+                mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
 
-	   		new Thread() {
-				@Override
-	   			public void run() {
-                    // @@@@@
-					// 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-					VocabularyManager.getInstance().rememorizeAllMemorizeTarget();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        // @@@@@
+                        // 암기 대상 단어들을 모두 암기미완료로 리셋한다.
+                        VocabularyManager.getInstance().rememorizeAllMemorizeTarget();
 
-			        // 암기할 단어 데이터를 로드합니다.
-			        loadMemorizeTargetVocabularyData(false);
+                        // 암기할 단어 데이터를 로드합니다.
+                        loadMemorizeTargetVocabularyData(false);
 
-					Message msg = Message.obtain();
-					msg.what = MSG_VOCABULARY_MEMORIZE_START;
-					mVocabularyDataLoadHandler.sendMessage(msg);
-	   			}
-	   		}
-	   		.start();
+                        Message msg = Message.obtain();
+                        msg.what = MSG_VOCABULARY_MEMORIZE_START;
+                        mVocabularyDataLoadHandler.sendMessage(msg);
+                    }
+                }
+                .start();
 
-			return true;
+                return true;
 
-		case R.id.av_open_settings_activity:
-			startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
-			return true;
-		}
+            case R.id.av_open_settings_activity:
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
+                return true;
+        }
 
-		return false;
+        return false;
 	}
 
 	@Override
@@ -404,17 +404,17 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 aq.id(R.id.av_memorize_completed_info).invisible();
 
 			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
-			case VOCABULARY:
-				tswVocabulary.setText(vocabulary.getVocabulary());
-				break;
+                case VOCABULARY:
+                    tswVocabulary.setText(vocabulary.getVocabulary());
+                    break;
 
-			case VOCABULARY_GANA:
-				tswVocabulary.setText(vocabulary.getVocabularyGana());
-				break;
-				
-			default:
-				assert false;
-				break;
+                case VOCABULARY_GANA:
+                    tswVocabulary.setText(vocabulary.getVocabularyGana());
+                    break;
+
+                default:
+                    assert false;
+                    break;
 			}
 
 			tswVocabularyTranslation.setText(vocabulary.getVocabularyTranslation());
@@ -454,27 +454,27 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-                // 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
-                // mHandler.removeMessages(LONG_PRESS);
-                break;
-
-            case MotionEvent.ACTION_UP:
-                // MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
-                if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
+                case MotionEvent.ACTION_DOWN:
                     mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                    mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
-                }
-                break;
+                    mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_LONG_PRESS, event.getDownTime() + LONG_PRESS_TIMEOUT);
+                    break;
 
-            case MotionEvent.ACTION_CANCEL:
-                mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
-                break;
+                case MotionEvent.ACTION_MOVE:
+                    // 약간의 움직임만으로 메시지가 제거되므로 주석처리한다.
+                    // mHandler.removeMessages(LONG_PRESS);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    // MSG_TOUCHEVT_LONG_PRESS 메시지가 처리전이라면 MSG_TOUCHEVT_TAP으로 인식되어 처리된다.
+                    if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_LONG_PRESS) == true) {
+                        mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                        mCustomEventHandler.sendEmptyMessage(MSG_CUSTOM_EVT_TAP);
+                    }
+                    break;
+
+                case MotionEvent.ACTION_CANCEL:
+                    mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
+                    break;
             }
         } else {
             mCustomEventHandler.removeMessages(MSG_CUSTOM_EVT_LONG_PRESS);
@@ -487,60 +487,58 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		@Override
     	public void handleMessage(Message msg){
     		switch (msg.what) {
-            case MSG_CUSTOM_EVT_LONG_PRESS:
-                if (mMemorizeTargetVocabularyList.isValidPosition() == true) {
-                    // 진동을 발생시킨다.
-                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(30);
+                case MSG_CUSTOM_EVT_LONG_PRESS:
+                    if (mMemorizeTargetVocabularyList.isValidPosition() == true) {
+                        // 진동을 발생시킨다.
+                        Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                        vibrator.vibrate(30);
 
-                    new AlertDialog.Builder(VocabularyActivity.this)
-                        .setTitle(getString(R.string.av_memorize_completed_ad_title))
-                        .setMessage(getString(R.string.av_memorize_completed_ad_message))
-                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 진동을 발생시킨다.
-                                Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-                                vibrator.vibrate(30);
+                        new AlertDialog.Builder(VocabularyActivity.this)
+                                .setTitle(getString(R.string.av_memorize_completed_ad_title))
+                                .setMessage(getString(R.string.av_memorize_completed_ad_message))
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 진동을 발생시킨다.
+                                        Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                        vibrator.vibrate(30);
 
-                                mMemorizeTargetVocabularyList.setMemorizeCompleted();
+                                        mMemorizeTargetVocabularyList.setMemorizeCompleted();
 
-                                updateMemorizeVocabularyInfo();
-                                showNextMemorizeVocabulary();
+                                        updateMemorizeVocabularyInfo();
+                                        showNextMemorizeVocabulary();
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                    break;
 
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
-                }
-                break;
+                case MSG_CUSTOM_EVT_TAP:
+                    long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
+                    if (idx != -1) {
+                        if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
+                            DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
+                        else
+                            DetailActivity.setVocabularyListSeek(null);
 
-            case MSG_CUSTOM_EVT_TAP:
-                long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
-                if (idx != -1) {
-                    if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
-                        DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
-                    else
-                        DetailActivity.setVocabularyListSeek(null);
+                        // 상세정보 페이지를 연다.
+                        Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
+                        intent.putExtra("idx", idx);
+                        startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+                    }
+                    break;
 
-                    // 상세정보 페이지를 연다.
-                    Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
-                    intent.putExtra("idx", idx);
-                    startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
-                }
-                break;
+                case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
+                    // 수행하는 작업 없음
+                    break;
 
-            case MSG_CUSTOM_EVT_APP_FINISH_STANDBY:
-                // 수행하는 작업 없음
-                break;
-
-            default:
-                 throw new RuntimeException("Unknown message " + msg);
+                default:
+                     throw new RuntimeException("Unknown message " + msg);
     		}
     	}
     };
@@ -951,7 +949,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         .setTitle("알림")
                         .setMessage("Wi-Fi/3G등의 데이터 네트워크 상태가 불안정하여 단어 DB의 업데이트 여부를 확인할 수 없습니다.")
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }

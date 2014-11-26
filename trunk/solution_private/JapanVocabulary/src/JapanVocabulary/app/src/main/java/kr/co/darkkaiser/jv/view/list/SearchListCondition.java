@@ -11,13 +11,31 @@ public class SearchListCondition {
     public enum MemorizeTarget {
         ALL,
         MEMORIZE_TARGET,
-        MEMORIZE_NON_TARGET
+        MEMORIZE_NON_TARGET;
+
+        public static MemorizeTarget parseMemorizeTarget(int ordinal) {
+            if (ordinal == MemorizeTarget.MEMORIZE_TARGET.ordinal())
+                return MemorizeTarget.MEMORIZE_TARGET;
+            else if (ordinal == MemorizeTarget.MEMORIZE_NON_TARGET.ordinal())
+                return MemorizeTarget.MEMORIZE_NON_TARGET;
+
+            return MemorizeTarget.ALL;
+        }
     }
 
     public enum MemorizeCompleted {
         ALL,
         MEMORIZE_COMPLETED,
-        MEMORIZE_UNCOMPLETED
+        MEMORIZE_UNCOMPLETED;
+
+        public static MemorizeCompleted parseMemorizeCompleted(int ordinal) {
+            if (ordinal == MemorizeCompleted.MEMORIZE_COMPLETED.ordinal())
+                return MemorizeCompleted.MEMORIZE_COMPLETED;
+            else if (ordinal == MemorizeCompleted.MEMORIZE_UNCOMPLETED.ordinal())
+                return MemorizeCompleted.MEMORIZE_UNCOMPLETED;
+
+            return MemorizeCompleted.ALL;
+        }
     }
 
     public enum JLPTRanking {
