@@ -25,7 +25,7 @@ import com.androidquery.AQuery;
 
 import java.util.ArrayList;
 
-import kr.co.darkkaiser.jv.view.MultiSelectSpinner;
+import kr.co.darkkaiser.jv.view.MultiChoiceSpinner;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;
@@ -121,7 +121,7 @@ public class SearchListActivity extends ActionBarListActivity {
                     aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
                     // @@@@@
-                    MultiSelectSpinner s = (MultiSelectSpinner)v.findViewById(R.id.avsl_jlpt_level);
+                    MultiChoiceSpinner s = (MultiChoiceSpinner)v.findViewById(R.id.avsl_jlpt_level);
                     String[] array = { "one", "two", "three" };
                     s.setItems(array);
 
