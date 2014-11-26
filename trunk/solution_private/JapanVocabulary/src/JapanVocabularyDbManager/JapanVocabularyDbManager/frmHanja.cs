@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Net;
+using System.IO;
+using HtmlAgilityPack;
 
 namespace JapanVocabularyDbManager
 {
@@ -234,6 +237,36 @@ namespace JapanVocabularyDbManager
             // 웹 브라우저가 로딩이 완료될 때까지 대기한다.
             if (EditMode == false && e.Url.AbsoluteUri == webBrowser.Url.AbsoluteUri && webBrowser.Url.AbsoluteUri != "about:blank")
             {
+                // @@@@@
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(webBrowser.DocumentText);
+                HtmlAgilityPack.HtmlNode parentNode = doc.DocumentNode.SelectSingleNode("//body");
+
+                HtmlAgilityPack.HtmlNodeCollection nodeList = parentNode.SelectNodes("//div[@class='srch_box']");
+
+                foreach (HtmlAgilityPack.HtmlNode htmlNode in nodeList)
+                {
+                    var u = htmlNode.SelectSingleNode("//span[@class='jp']");
+                    if (u.InnerText == "今")
+                    {
+                        var uuu = htmlNode.SelectNodes("//dl[@class='top_dn']/dd[@class='jp']");
+
+                        foreach (HtmlAgilityPack.HtmlNode hh in uuu)
+                        {
+                            string s = hh.InnerText;
+                        }
+                        
+                        // var user = u.Element("div").Attributes["data-profile"].Value;
+
+                        break;
+                    }
+                }
+
+
+
+
+
+
                 // @@@@@ 파싱 다시 해야함
                 string strDocumentText = webBrowser.DocumentText;
 

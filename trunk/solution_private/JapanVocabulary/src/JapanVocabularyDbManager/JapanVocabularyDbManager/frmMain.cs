@@ -201,7 +201,7 @@ namespace JapanVocabularyDbManager
                     }
                 }
             }
-            catch (SQLiteException ex)
+            catch (SQLiteException)
             {
             }
 

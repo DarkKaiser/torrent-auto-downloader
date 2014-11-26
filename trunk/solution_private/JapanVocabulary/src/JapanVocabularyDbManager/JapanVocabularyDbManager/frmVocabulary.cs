@@ -65,7 +65,7 @@ namespace JapanVocabularyDbManager
                             txtExtensionInfo.Text += string.Format("{0}\r\n음독 : {2}\r\n훈독 : {3}\r\n{1}\r\n\r\n", reader.GetString(1/*CHARACTER*/), reader.GetString(5/*TRANSLATION*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/));
                     }
                 }
-                catch (SQLiteException ex)
+                catch (SQLiteException)
                 {
                 }
             }
@@ -359,7 +359,7 @@ namespace JapanVocabularyDbManager
                     }
                 }
             }
-            catch (SQLiteException e)
+            catch (SQLiteException)
             {
             }
 
