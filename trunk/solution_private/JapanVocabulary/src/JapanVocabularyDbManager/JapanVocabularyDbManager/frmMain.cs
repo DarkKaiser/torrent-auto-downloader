@@ -607,7 +607,8 @@ namespace JapanVocabularyDbManager
                         else
                             row.DefaultCellStyle.BackColor = Color.Red;
 
-                        break;
+                        if (strSoundRead.Length != 0 || strMeadRead.Length != 0 || strTranslation.Length != 0)
+                            break;
                     }
                 }
             }
