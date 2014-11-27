@@ -234,20 +234,21 @@ namespace JapanVocabularyDbManager
 
         private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            // 웹 브라우저가 로딩이 완료될 때까지 대기한다.
+            // 웹 브라우저 로딩이 완료될 때까지 대기한다.
             if (EditMode == false && e.Url.AbsoluteUri == webBrowser.Url.AbsoluteUri && webBrowser.Url.AbsoluteUri != "about:blank")
             {
+                bool parseCompleted = false;
+
                 // HTML 데이터를 파싱한다.
                 HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
                 htmlDoc.LoadHtml(webBrowser.DocumentText);
 
-                // @@@@@
                 HtmlAgilityPack.HtmlNode bodyNode = htmlDoc.DocumentNode.SelectSingleNode("//body");
                 HtmlAgilityPack.HtmlNodeCollection srchBoxNodeList = bodyNode.SelectNodes("//div[@class='srch_box']");
                 foreach (HtmlAgilityPack.HtmlNode srchBoxNode in srchBoxNodeList)
                 {
-                    var u = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
-                    if (u != null && u.InnerText == txtCharacter.Text.Trim())
+                    var characterNodeList = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
+                    if (characterNodeList != null && characterNodeList.InnerText == txtCharacter.Text.Trim())
                     {
                         String strMeadRead = "";
                         String strSoundRead = "";
@@ -255,56 +256,50 @@ namespace JapanVocabularyDbManager
 
                         // 음독, 훈독이 있는 노드
                         var htmlNodes = srchBoxNode.SelectNodes("./dl[@class='top_dn']/*");
-                        for (int index = 0; index < htmlNodes.Count; ++index)
+                        if (htmlNodes != null)
                         {
-                            HtmlAgilityPack.HtmlNode htmlNode = htmlNodes.ElementAt(index);
-                            string s = htmlNode.InnerText;
-                            if (s.Equals("음독"))
+                            for (int index = 0; index < htmlNodes.Count; ++index)
                             {
-                                HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
-                                if (htmlNode2 != null)
+                                HtmlAgilityPack.HtmlNode htmlNode = htmlNodes.ElementAt(index);
+                                if (htmlNode.InnerText.Equals("음독"))
                                 {
-                                    string s1 = htmlNode2.InnerText;
-                                    int pos = s1.IndexOf('|');
-                                    if (pos != -1)
+                                    HtmlAgilityPack.HtmlNode htmlNextNode = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNextNode != null)
                                     {
-                                        s1 = s1.Substring(0, pos - 1);
-                                    }
+                                        string text = htmlNextNode.InnerText;
+                                        int pos = text.IndexOf('|');
+                                        if (pos != -1)
+                                            text = text.Substring(0, pos - 1);
 
-                                    s1 = s1.Trim();
-                                    strSoundRead = s1;
+                                        strSoundRead = text.Trim();
+                                    }
+                                }
+                                else if (htmlNode.InnerText.Equals("훈독"))
+                                {
+                                    HtmlAgilityPack.HtmlNode htmlNextNode = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNextNode != null)
+                                    {
+                                        string text = htmlNextNode.InnerText;
+                                        int pos = text.IndexOf('|');
+                                        if (pos != -1)
+                                            text = text.Substring(0, pos - 1);
+
+                                        strMeadRead = text.Trim();
+                                    }
                                 }
                             }
-                            else if (s.Equals("훈독"))
-                            {
-                                HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
-                                if (htmlNode2 != null)
-                                {
-                                    string s1 = htmlNode2.InnerText;
-                                    int pos = s1.IndexOf('|');
-                                    if (pos != -1)
-                                    {
-                                        s1 = s1.Substring(0, pos - 1);
-                                    }
 
-                                    s1 = s1.Trim();
-                                    strMeadRead = s1;
-                                }
-                            }
+                            // 뜻이 있는 노드
+                            var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
+                            if (translationNode != null)
+                                strTranslation = translationNode.InnerText;
                         }
-
-                        // 뜻이 있는 노드
-                        var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
-                        if (translationNode != null)
-                            strTranslation = translationNode.InnerText;
 
                         if (strSoundRead.Length == 0 || strMeadRead.Length == 0 || strTranslation.Length == 0)
-                        {
-                            MessageBox.Show("파싱 실패");
                             break;
-                        }
 
                         // 컨트롤에 값을 할당한다.
+                        parseCompleted = true;
                         txtMeanRead.Text = strMeadRead;
                         txtSoundRead.Text = strSoundRead;
                         txtTranslation.Text = strTranslation;
@@ -312,6 +307,9 @@ namespace JapanVocabularyDbManager
                         break;
                     }
                 }
+
+                if (parseCompleted == false)
+                    MessageBox.Show("파싱이 실패하였습니다.");
             }
         }
     }

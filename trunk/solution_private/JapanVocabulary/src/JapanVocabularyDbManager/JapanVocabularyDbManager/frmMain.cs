@@ -508,25 +508,24 @@ namespace JapanVocabularyDbManager
 
         private void btnHanjaDataAnalyser_Click(object sender, EventArgs e)
         {
-            // 현재 선택된 행을 얻는다.
+            // 한자가 선택되었는지 확인한다.
             DataGridViewSelectedRowCollection rc = dataHanjaGridView.SelectedRows;
-
             if (rc.Count <= 0)
             {
                 MessageBox.Show("분석작업을 진행 할 선택된 한자가 없습니다!");
                 return;
             }
 
-            // @@@@@ 한자 분석
             foreach (DataGridViewRow row in rc)
             {
-                String strHanja = row.Cells[1].Value.ToString();
-                String mstrSoundRead = row.Cells[2].Value.ToString();
-                String mstrMeanRead = row.Cells[3].Value.ToString();
-                String mstrTranslation = row.Cells[4].Value.ToString();
+                String strSourceHanja = row.Cells[1].Value.ToString();
+                String strSourceSoundRead = row.Cells[2].Value.ToString();
+                String strSourceMeanRead = row.Cells[3].Value.ToString();
+                String strSourceTranslation = row.Cells[4].Value.ToString();
+
+                string url = string.Format("http://jpdic.naver.com/search.nhn?query={0}", strSourceHanja);
 
                 WebClient wc = new WebClient();
-                string url = string.Format("http://jpdic.naver.com/search.nhn?query={0}", strHanja);
                 byte[] docBytes = wc.DownloadData(url);
                 string encodeType = wc.ResponseHeaders["Content-Type"];
 
@@ -544,20 +543,18 @@ namespace JapanVocabularyDbManager
                     }
                 }
 
-                string content = currentEncoding.GetString(docBytes);
-
+                string htmlDocumentContent = currentEncoding.GetString(docBytes);
 
                 // HTML 데이터를 파싱한다.
                 HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                htmlDoc.LoadHtml(content);
+                htmlDoc.LoadHtml(htmlDocumentContent);
 
-                // @@@@@
                 HtmlAgilityPack.HtmlNode bodyNode = htmlDoc.DocumentNode.SelectSingleNode("//body");
                 HtmlAgilityPack.HtmlNodeCollection srchBoxNodeList = bodyNode.SelectNodes("//div[@class='srch_box']");
                 foreach (HtmlAgilityPack.HtmlNode srchBoxNode in srchBoxNodeList)
                 {
-                    var u = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
-                    if (u != null && u.InnerText == strHanja)
+                    var characterNodeList = srchBoxNode.SelectSingleNode("//div[@class='srch_top']//a//span[@class='jp']");
+                    if (characterNodeList != null && characterNodeList.InnerText == strSourceHanja)
                     {
                         String strMeadRead = "";
                         String strSoundRead = "";
@@ -570,73 +567,52 @@ namespace JapanVocabularyDbManager
                             for (int index = 0; index < htmlNodes.Count; ++index)
                             {
                                 HtmlAgilityPack.HtmlNode htmlNode = htmlNodes.ElementAt(index);
-                                string s = htmlNode.InnerText;
-                                if (s.Equals("음독"))
+                                if (htmlNode.InnerText.Equals("음독"))
                                 {
-                                    HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
-                                    if (htmlNode2 != null)
+                                    HtmlAgilityPack.HtmlNode htmlNextNode = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNextNode != null)
                                     {
-                                        string s1 = htmlNode2.InnerText;
-                                        int pos1 = s1.IndexOf('|');
+                                        string text = htmlNextNode.InnerText;
+                                        int pos1 = text.IndexOf('|');
                                         if (pos1 != -1)
-                                        {
-                                            s1 = s1.Substring(0, pos1 - 1);
-                                        }
+                                            text = text.Substring(0, pos1 - 1);
 
-                                        s1 = s1.Trim();
-                                        strSoundRead = s1;
+                                        strSoundRead = text.Trim();
                                     }
                                 }
-                                else if (s.Equals("훈독"))
+                                else if (htmlNode.InnerText.Equals("훈독"))
                                 {
-                                    HtmlAgilityPack.HtmlNode htmlNode2 = htmlNodes.ElementAt(index + 1);
-                                    if (htmlNode2 != null)
+                                    HtmlAgilityPack.HtmlNode htmlNextNode = htmlNodes.ElementAt(index + 1);
+                                    if (htmlNextNode != null)
                                     {
-                                        string s1 = htmlNode2.InnerText;
-                                        int pos2 = s1.IndexOf('|');
+                                        string text = htmlNextNode.InnerText;
+                                        int pos2 = text.IndexOf('|');
                                         if (pos2 != -1)
-                                        {
-                                            s1 = s1.Substring(0, pos2 - 1);
-                                        }
+                                            text = text.Substring(0, pos2 - 1);
 
-                                        s1 = s1.Trim();
-                                        strMeadRead = s1;
+                                        strMeadRead = text.Trim();
                                     }
                                 }
                             }
+
+                            // 뜻이 있는 노드
+                            var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
+                            if (translationNode != null)
+                                strTranslation = translationNode.InnerText;
                         }
-
-                        // 뜻이 있는 노드
-                        var translationNode = srchBoxNode.SelectSingleNode("//dl[@class='top_dn top_dn_v2']/dd[@class='ft_col3']/span[@class='ft_col3']");
-                        if (translationNode != null)
-                            strTranslation = translationNode.InnerText;
-
-                        //if (strSoundRead.Length == 0 || strMeadRead.Length == 0 || strTranslation.Length == 0)
-                        //{
-                        //    MessageBox.Show("파싱 실패");
-                        //    break;
-                        //}
 
                         // 값을 비교한다.
-                        if (mstrSoundRead == strSoundRead && mstrMeanRead == mstrMeanRead && mstrTranslation == strTranslation)
-                        {
+                        if (strSourceSoundRead == strSoundRead && strSourceMeanRead == strMeadRead && strSourceTranslation == strTranslation)
                             row.DefaultCellStyle.BackColor = Color.Yellow;
-                        }
                         else
-                        {
                             row.DefaultCellStyle.BackColor = Color.Red;
-                        }
 
                         break;
                     }
                 }
             }
 
-            MessageBox.Show("파싱이 끝났습니다.");
-
-            // 셀 배경 붉은색으로
-            //foreach (DataGridViewRow row in rc)
-            //    row.DefaultCellStyle.BackColor = Color.Red;
+            MessageBox.Show("파싱이 완료되었습니다.");
         }
     }
 }
