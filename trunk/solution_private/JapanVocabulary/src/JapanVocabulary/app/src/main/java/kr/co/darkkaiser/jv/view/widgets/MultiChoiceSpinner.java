@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
     private String[] mItems = null;
     private boolean[] mSelection = null;
     private ArrayAdapter<String> mProxyAdapter = null;
-    
+
     public MultiChoiceSpinner(Context context) {
         super(context);
 
@@ -87,6 +88,10 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
                     mSelection[j] = true;
             }
         }
+
+        mProxyAdapter.clear();
+        mProxyAdapter.add(buildSelectedItemString());
+        setSelection(0);
     }
     
     public void setSelection(List<String> selection) {
@@ -96,6 +101,10 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
                     mSelection[j] = true;
             }
         }
+
+        mProxyAdapter.clear();
+        mProxyAdapter.add(buildSelectedItemString());
+        setSelection(0);
     }
     
     public void setSelection(int[] selectedIndicies) {
@@ -105,8 +114,25 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
             else
                 throw new IllegalArgumentException("Index " + index + " is out of bounds.");
         }
+
+        mProxyAdapter.clear();
+        mProxyAdapter.add(buildSelectedItemString());
+        setSelection(0);
     }
-    
+
+    public void setSelection(ArrayList<Integer> selectedIndicies) {
+        for (int index : selectedIndicies) {
+            if (index >= 0 && index < mSelection.length)
+                mSelection[index] = true;
+            else
+                throw new IllegalArgumentException("Index " + index + " is out of bounds.");
+        }
+
+        mProxyAdapter.clear();
+        mProxyAdapter.add(buildSelectedItemString());
+        setSelection(0);
+    }
+
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<String>();
         for (int i = 0; i < mItems.length; ++i) {
@@ -138,7 +164,8 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
                 sb.append(mItems[i]);
             }
         }
-        
+
         return sb.toString();
     }
+
 }

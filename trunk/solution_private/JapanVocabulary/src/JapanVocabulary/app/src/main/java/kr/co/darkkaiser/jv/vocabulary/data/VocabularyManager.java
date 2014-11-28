@@ -165,20 +165,20 @@ public class VocabularyManager {
 				String searchWord = searchListCondition.getSearchWord().trim();
 				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchListCondition.getMemorizeTarget();
 				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchListCondition.getMemorizeCompleted();
-				boolean[] checkedItems = searchListCondition.getJLPTRankingArray();
+//				boolean[] checkedItems = searchListCondition.getJLPTRankingSelectedIndicies();
 
 				boolean hasSearchCondition = false;
 				StringBuilder sbSQL = new StringBuilder();
 
 				// 'JLPT 급수' 검색 조건 추가
 				boolean allSearchJLPTLevel = true;
-				for (int index = 1; index < checkedItems.length; ++index) {
-					if (checkedItems[0] != checkedItems[index]) {
-						allSearchJLPTLevel = false;
-						break;
-					}
-				}
-				
+//				for (int index = 1; index < checkedItems.length; ++index) {
+//					if (checkedItems[0] != checkedItems[index]) {
+//						allSearchJLPTLevel = false;
+//						break;
+//					}
+//				}
+//
 				if (allSearchJLPTLevel == true) {
 					sbSQL.append("SELECT V.IDX ")
 				 	 	 .append("  FROM TBL_VOCABULARY AS V ")

@@ -3,7 +3,6 @@ package kr.co.darkkaiser.jv.view.list;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -24,13 +22,14 @@ import android.widget.ListView;
 import com.androidquery.AQuery;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import kr.co.darkkaiser.jv.view.widgets.MultiChoiceSpinner;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.ActionBarListActivity;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
+import kr.co.darkkaiser.jv.view.widgets.MultiChoiceSpinner;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
@@ -93,7 +92,7 @@ public class SearchListActivity extends ActionBarListActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        SubMenu sm = menu.getItem(1/* 정렬 */).getSubMenu();
+        SubMenu sm = menu.getItem(0/* 정렬 */).getSubMenu();
         SearchListSort searchListSort = mSearchResultVocabularyList.getSortMethod();
         if (searchListSort == SearchListSort.VOCABULARY_GANA)
             sm.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
@@ -114,44 +113,14 @@ public class SearchListActivity extends ActionBarListActivity {
                 if (v != null) {
                     final AQuery aq = new AQuery(v);
                     final SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
+                    final MultiChoiceSpinner jlptRankingSpinner = (MultiChoiceSpinner)v.findViewById(R.id.avsl_search_condition_jlpt_ranking);
 
                     // 검색조건 컨트롤을 초기화한다.
+                    jlptRankingSpinner.setItems(searchListCondition.getJLPTRankingNames());
+                    jlptRankingSpinner.setSelection(searchListCondition.getJLPTRankingSelectedIndicies());
                     aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
                     aq.id(R.id.avsl_search_condition_memorize_target).adapter(mMemorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
                     aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
-
-                    // @@@@@
-                    MultiChoiceSpinner s = (MultiChoiceSpinner)v.findViewById(R.id.avsl_jlpt_level);
-                    String[] array = { "one", "two", "three" };
-                    s.setItems(array);
-
-                    // @@@@@
-                    // JLPT 급수 검색 조건
-                    updateJLPTLevelButtonText();
-                    aq.id(R.id.sc_jlpt_level).clicked(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-                            boolean[] checkedItems = mJvListSearchCondition.getJLPTRankingArray();
-                            new AlertDialog.Builder(SearchListActivity.this)
-                                    .setTitle(getString(R.string.avsl_search_condition_text))
-                                    .setMultiChoiceItems(R.array.search_condition_jlpt_ranking, checkedItems, new OnMultiChoiceClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int item, boolean isChecked) {
-                                            searchListCondition.setJLPTRanking(item, isChecked);
-                                        }
-                                    })
-                                    .setPositiveButton(getString(R.string.ok),
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    updateJLPTLevelButtonText();
-                                                }
-                                            })
-                                    .show();
-                        }
-                    });
 
                     new AlertDialog.Builder(SearchListActivity.this)
                             .setTitle(getString(R.string.avsl_search))
@@ -164,8 +133,7 @@ public class SearchListActivity extends ActionBarListActivity {
                                     searchListCondition.setSearchWord(aq.id(R.id.avsl_search_condition_search_word).getText().toString().trim());
                                     searchListCondition.setMemorizeTarget(SearchListCondition.MemorizeTarget.parseMemorizeTarget(memorizeTarget));
                                     searchListCondition.setMemorizeCompleted(SearchListCondition.MemorizeCompleted.parseMemorizeCompleted(memorizeCompleted));
-
-                                    //@@@@@ level
+                                    searchListCondition.setJLPTRanking(jlptRankingSpinner.getSelectedIndicies());
 
                                     // 설정된 검색 조건을 이용하여 단어를 검색합니다.
                                     searchVocabulary();
@@ -437,30 +405,5 @@ public class SearchListActivity extends ActionBarListActivity {
         aq.id(R.id.avsl_vocabulary_count_info).text(String.format(" %d개/%d개", mSearchResultVocabularyList.getCount(), vocabularyCountInfo.get(0/* 전체 단어 개수 */)));
         aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(" %d개/%d개", vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
 	}
-
-    // @@@@@
-    private void updateJLPTLevelButtonText() {
-        SearchListCondition mJvListSearchCondition = mSearchResultVocabularyList.getSearchListCondition();
-
-//        String[] items = getResources().getStringArray(R.array.sc_jlpt_simple_level_list);
-//        boolean[] checkedItems = mJvListSearchCondition.getCheckedJLPTLevelArray();
-//        assert items.length == checkedItems.length;
-//
-//        StringBuilder sb = new StringBuilder();
-//        for (int index = 0; index < checkedItems.length; ++index) {
-//            if (checkedItems[index] == true) {
-//                if (sb.length() > 0)
-//                    sb.append(", ");
-//
-//                sb.append(items[index]);
-//            }
-//        }
-
-//        if (sb.length() == 0)
-//            sb.append("전체 검색\n<선택 항목 없음>");
-//
-//        Button scJLPTLevelButton = (Button)findViewById(R.id.sc_jlpt_level);
-//        scJLPTLevelButton.setText(sb.toString());
-    }
 
 }

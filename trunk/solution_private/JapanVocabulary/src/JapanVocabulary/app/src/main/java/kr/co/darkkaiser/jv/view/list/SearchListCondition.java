@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kr.co.darkkaiser.jv.R;
 
 public class SearchListCondition {
@@ -39,15 +42,12 @@ public class SearchListCondition {
     }
 
     public enum JLPTRanking {
-        N1("01", "N1"),
-        N2("02", "N2"),
-        N3("03", "N3"),
-        N4("04", "N4"),
-        N5("05", "N5"),
-        UNCLASSIFIED("99", "미분류");
-
-        private String mCode;
-        private String mName;
+        N1,
+        N2,
+        N3,
+        N4,
+        N5,
+        UNCLASSIFIED;
 
         public static JLPTRanking parseJLPTRanking(int ordinal) {
             if (ordinal == JLPTRanking.N1.ordinal())
@@ -62,19 +62,6 @@ public class SearchListCondition {
                 return JLPTRanking.N5;
 
             return JLPTRanking.UNCLASSIFIED;
-        }
-
-        JLPTRanking(String code, String name) {
-            mCode = code;
-            mName = name;
-        }
-
-        public String getCode() {
-            return mCode;
-        }
-
-        public String getName() {
-            return mName;
         }
     }
 
@@ -91,7 +78,7 @@ public class SearchListCondition {
     private MemorizeCompleted mMemorizeCompleted = null;
 	private boolean[] mJLPTRankingArray = null;
 
-	public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
+    public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
         assert context != null;
         assert sharedPreferences != null;
 
@@ -135,16 +122,32 @@ public class SearchListCondition {
 		mMemorizeCompleted = memorizeCompleted;
 	}
 
-    public boolean[] getJLPTRankingArray() {
-		return mJLPTRankingArray;
+    public String[] getJLPTRankingNames() {
+        assert mContext != null;
+        return mContext.getResources().getStringArray(R.array.search_condition_jlpt_ranking);
+    }
+
+    public ArrayList<Integer> getJLPTRankingSelectedIndicies() {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        for (int index = 0; index < mJLPTRankingArray.length; ++index) {
+            if (mJLPTRankingArray[index] == true)
+                result.add(index);
+        }
+
+		return result;
 	}
 
-    public void setJLPTRanking(int position, boolean value) {
-		if (mJLPTRankingArray != null && mJLPTRankingArray.length > position)
-			mJLPTRankingArray[position] = value;
-		else
-			assert false;
-	}
+    public void setJLPTRanking(List<Integer> selectedIndicies) {
+        for (int index = 0; index < mJLPTRankingArray.length; ++index)
+                mJLPTRankingArray[index] = false;
+
+        for (Integer index : selectedIndicies) {
+            if (index >= 0 && index < mJLPTRankingArray.length)
+                mJLPTRankingArray[index] = true;
+            else
+                assert false;
+        }
+    }
 
     public void commit() {
         Editor editor = mSharedPreferences.edit();
@@ -155,10 +158,7 @@ public class SearchListCondition {
         editor.putString(SPKEY_AVSL_MEMORIZE_COMPLETED, mMemorizeCompleted.name());
 
         // JLPT 각 급수별 검색 여부 플래그를 저장한다.
-        CharSequence[] aJLPTRanking = mContext.getResources().getTextArray(R.array.search_condition_jlpt_ranking);
-        assert aJLPTRanking.length == mJLPTRankingArray.length;
-
-        for (int index = 0; index < aJLPTRanking.length; ++index)
+        for (int index = 0; index < mJLPTRankingArray.length; ++index)
             editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), mJLPTRankingArray[index]);
 
         editor.commit();

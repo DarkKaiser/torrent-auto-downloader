@@ -34,12 +34,12 @@
         <item>암기 미완료</item>
     </string-array>
 	<string-array name="search_condition_jlpt_ranking">
-		<item>N1 단어</item>
-		<item>N2 단어</item>
-		<item>N3 단어</item>
-		<item>N4 단어</item>
-		<item>N5 단어</item>
-		<item>미분류 단어</item>
+		<item>N1</item>
+		<item>N2</item>
+		<item>N3</item>
+		<item>N4</item>
+		<item>N5</item>
+		<item>미분류</item>
 	</string-array>
 
 </resources>

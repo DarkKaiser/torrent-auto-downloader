@@ -3,19 +3,12 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/avsl_search_vocabulary"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/avsl_search"
-        android:orderInCategory="0"
-        myapp:showAsAction="ifRoom"
-        />
-    <item
 		android:title="@string/avsl_sort"
 		android:icon="@android:drawable/ic_menu_sort_alphabetically"
-        android:orderInCategory="1"
+        android:orderInCategory="0"
         myapp:showAsAction="ifRoom"
         >
-		<menu>
+        <menu>
             <group
                 android:checkableBehavior="single"
                 >
@@ -34,6 +27,13 @@
             </group>
 		</menu>
 	</item>
+    <item
+        android:id="@+id/avsl_search_vocabulary"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/avsl_search"
+        android:orderInCategory="1"
+        myapp:showAsAction="ifRoom"
+        />
 	<item
 		android:title="@string/avsl_search_result_settings"
         android:orderInCategory="2"

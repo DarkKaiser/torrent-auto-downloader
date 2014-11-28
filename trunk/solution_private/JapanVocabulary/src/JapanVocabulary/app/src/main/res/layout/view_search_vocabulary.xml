@@ -46,17 +46,10 @@
             android:paddingBottom="0px"
             >
             <kr.co.darkkaiser.jv.view.widgets.MultiChoiceSpinner
-                android:id="@+id/avsl_jlpt_level"
+                android:id="@+id/avsl_search_condition_jlpt_ranking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:prompt="@string/avsl_search_condition_text"
-                />
-            <Button
-                android:id="@+id/sc_jlpt_level"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 />
         </TableRow>
     </TableLayout>
