@@ -50,7 +50,7 @@ public class VocabularyManager {
     public synchronized boolean initDataFromDB(Context context) {
 		assert context != null;
 
-        UserSQLiteOpenHelper uerSQLiteOpenHelper = new UserSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
+        UserSQLiteOpenHelper userSQLiteOpenHelper = new UserSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
 
         // 이전에 등록된 모든 단어를 제거한다.
         if (mVocabularyTable.isEmpty() == false) {
@@ -106,7 +106,7 @@ public class VocabularyManager {
                 mUserDatabase = null;
             }
 
-            mUserDatabase = uerSQLiteOpenHelper.getWritableDatabase();
+            mUserDatabase = userSQLiteOpenHelper.getWritableDatabase();
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT V_IDX, MEMORIZE_TARGET, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT ")
@@ -141,25 +141,6 @@ public class VocabularyManager {
     // @@@@@
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(VocabularyDbHelper.getInstance().getVocabularyDbFilePath()) == false;
-//@@@@@
-//		String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
-//		SharedPreferences preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-//
-//		// 단어 DB 파일이 존재하는지 확인한다.
-//		File f = new File(jvDbPath);
-//		if (f.exists() == true) {
-//			// 최초 혹은 업데이트로 재설치되는 경우 단어 DB 파일이 존재할 때 단어 버전을 다시 한번 확인한다.
-//			String jvDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, "");
-//			if (jvDbVersion.equals("") == false) {
-//				int currentDbVersion = Integer.parseInt(jvDbVersion.substring(Constants.JV_DB_VERSION_PREFIX.length()));
-//				int assetsDbVersion = Integer.parseInt(Constants.JV_DB_VERSION_FROM_ASSETS.substring(Constants.JV_DB_VERSION_PREFIX.length()));
-//
-//				if (currentDbVersion >= assetsDbVersion) {
-//					return;
-//				}
-//			}
-//		}
 
         String v3UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
         // @@@@@ v2 파일이 db가 아니므로 수정이 필요함, VocabularyManager로 함수를 이동할지 고민
@@ -171,7 +152,6 @@ public class VocabularyManager {
             if (file2.exists() == false) file1.renameTo(new File(v3UserDbFilePath));
             else file1.delete();
         }
-
     }
 
     /**
