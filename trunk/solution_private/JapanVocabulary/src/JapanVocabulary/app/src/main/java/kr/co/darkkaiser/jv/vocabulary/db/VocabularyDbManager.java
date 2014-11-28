@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.jv.vocabulary.data;
+package kr.co.darkkaiser.jv.vocabulary.db;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,7 +24,6 @@ public class VocabularyDbManager {
 
     private static VocabularyDbManager mInstance;
 
-    private String mUserDbFilePath = null;
     private String mVocabularyDbFilePath = null;
 
     static {
@@ -56,7 +55,7 @@ public class VocabularyDbManager {
 			}
 		}
 
-        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함
+        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함, VocabularyManager로 함수를 이동할지 고민
         // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
         String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
         file1 = new File(v2UserDbFilePath);
@@ -67,13 +66,10 @@ public class VocabularyDbManager {
         }
 
         // 단어DB 파일 정보를 저장한다.
-        mUserDbFilePath = v3UserDbFilePath;
         mVocabularyDbFilePath = v3VocabularyDbFilePath;
 
 		return true;
 	}
-
-    public String getUserDbFilePath() { return mUserDbFilePath; }
 
 	public String getVocabularyDbFilePath() { return mVocabularyDbFilePath; }
 

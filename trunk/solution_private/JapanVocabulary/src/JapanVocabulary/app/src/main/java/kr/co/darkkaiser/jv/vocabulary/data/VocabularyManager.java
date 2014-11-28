@@ -8,14 +8,15 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 import kr.co.darkkaiser.jv.R;
+import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
+import kr.co.darkkaiser.jv.vocabulary.db.UserSQLiteOpenHelper;
+import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbManager;
 
 public class VocabularyManager {
 
@@ -23,8 +24,8 @@ public class VocabularyManager {
 
 	private static VocabularyManager mInstance = null;
 
-	private SQLiteDatabase mUserDatabase = null;
-	private SQLiteDatabase mVocabularyDatabase = null;
+    private SQLiteDatabase mUserDatabase = null;
+    private SQLiteDatabase mVocabularyDatabase = null;
 
     // 전체 단어리스트 테이블
 	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> mVocabularyTable = new Hashtable<Long, Vocabulary>();
@@ -47,10 +48,13 @@ public class VocabularyManager {
 	@SuppressWarnings("StringBufferReplaceableByString")
     public synchronized boolean initDataFromDB(Context context) {
 		assert context != null;
-		
-		// 이전에 등록된 모든 단어를 제거한다.
-		if (mVocabularyTable.isEmpty() == false)
-			mVocabularyTable.clear();
+
+        UserSQLiteOpenHelper uerSQLiteOpenHelper = new UserSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
+
+        // 이전에 등록된 모든 단어를 제거한다.
+        if (mVocabularyTable.isEmpty() == false) {
+            mVocabularyTable.clear();
+        }
 
         // @@@@@
 		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 assets에서 복사하도록 한다.
@@ -101,7 +105,7 @@ public class VocabularyManager {
                 mUserDatabase = null;
             }
 
-            mUserDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getUserDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            mUserDatabase = uerSQLiteOpenHelper.getWritableDatabase();
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT V_IDX, MEMORIZE_TARGET, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT ")
@@ -292,6 +296,9 @@ public class VocabularyManager {
         }
     }
 
+    /**
+     * 단어를 반화합니다.
+     */
     public synchronized Vocabulary getVocabulary(long idx) {
 		return mVocabularyTable.get(idx);
 	}
@@ -496,12 +503,15 @@ public class VocabularyManager {
         if (vocabulary == null)
             return;
 
-        // @@@@@ 테이블 있는 상태에서 테스트 못해봄
         ContentValues values = new ContentValues();
         values.put("MEMORIZE_TARGET", vocabulary.isMemorizeTarget() ? "1" : "0");
         values.put("MEMORIZE_COMPLETED", vocabulary.isMemorizeCompleted() ? "1" : "0");
         values.put("MEMORIZE_COMPLETED_COUNT", vocabulary.getMemorizeCompletedCount());
-        mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[]{ Long.toString(vocabulary.getIdx()) });
+        int updateCount = mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[] { Long.toString(vocabulary.getIdx()) });
+        if (updateCount == 0) {
+            values.put("V_IDX", vocabulary.getIdx());
+            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
+        }
     }
 
     /**

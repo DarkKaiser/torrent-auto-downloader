@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyDbManager;
+import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbManager;
 
 // TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
