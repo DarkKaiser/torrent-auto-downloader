@@ -227,8 +227,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
                 ++mMemorizeCompletedCount;
                 vocabulary.setMemorizeCompleted(true, true);
 
-                // @@@@@ 해당 단어만 상태 업데이트
-                VocabularyManager.getInstance().writeUserVocabularyInfo();
+                // 사용자 암기정보를 갱신합니다.
+                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
             }
         } else {
             assert false;

@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -445,7 +446,7 @@ public class VocabularyManager {
                 vocabulary.setMemorizeCompleted(false, false);
         }
 
-        writeUserVocabularyInfo();
+        // @@@@@ writeUserVocabularyInfo();
     }
 
     /**
@@ -483,42 +484,24 @@ public class VocabularyManager {
             assert false;
         }
 
-        writeUserVocabularyInfo();
+//@@@@@        writeUserVocabularyInfo();
     }
 
-    // @@@@@ DB로 변경
-    public synchronized void writeUserVocabularyInfo() {
-        StringBuilder sb = new StringBuilder();
-        for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-            Vocabulary jpVocabulary = e.nextElement();
+    /**
+     * 해당 단어의 사용자 암기정보를 갱신합니다.
+     */
+    public synchronized void updateUserVocabulary(Vocabulary vocabulary) {
+        assert mUserDatabase != null;
 
-            sb.append(jpVocabulary.getIdx())
-                    .append("|")
-                    .append(jpVocabulary.getMemorizeCompletedCount())
-                    .append("|")
-                    .append(jpVocabulary.isMemorizeTarget() == true ? 1 : 0)
-                    .append("|")
-                    .append(jpVocabulary.isMemorizeCompleted() == true ? 1 : 0)
-                    .append("\n");
-        }
+        if (vocabulary == null)
+            return;
 
-        try {
-            String jvUserVocabularyInfoFilePath = VocabularyDbManager.getInstance().getUserDbFilePath();
-
-            File fileOrg = new File(jvUserVocabularyInfoFilePath);
-            File fileTemp = new File(jvUserVocabularyInfoFilePath + ".tmp");
-
-            FileOutputStream fos = new FileOutputStream(fileTemp);
-            fos.write(sb.toString().getBytes());
-            fos.close();
-
-            if (fileOrg.exists() == true)
-                fileOrg.delete();
-
-            fileTemp.renameTo(fileOrg);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+        // @@@@@ 테이블 있는 상태에서 테스트 못해봄
+        ContentValues values = new ContentValues();
+        values.put("MEMORIZE_TARGET", vocabulary.isMemorizeTarget() ? "1" : "0");
+        values.put("MEMORIZE_COMPLETED", vocabulary.isMemorizeCompleted() ? "1" : "0");
+        values.put("MEMORIZE_COMPLETED_COUNT", vocabulary.getMemorizeCompletedCount());
+        mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[]{ Long.toString(vocabulary.getIdx()) });
     }
 
     /**

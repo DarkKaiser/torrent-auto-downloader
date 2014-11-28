@@ -144,8 +144,8 @@ public class SearchResultVocabularyList implements IVocabularyList {
             if (vocabulary != null) {
                 vocabulary.setMemorizeTarget(flag);
 
-                // @@@@@ 해당 단어만 상태 업데이트
-                VocabularyManager.getInstance().writeUserVocabularyInfo();
+                // 사용자 암기정보를 갱신합니다.
+                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
             }
         } else {
             assert false;
@@ -160,8 +160,8 @@ public class SearchResultVocabularyList implements IVocabularyList {
             if (vocabulary != null) {
                 vocabulary.setMemorizeCompleted(flag, true);
 
-                // @@@@@ 해당 단어만 상태 업데이트
-                VocabularyManager.getInstance().writeUserVocabularyInfo();
+                // 사용자 암기정보를 갱신합니다.
+                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
             }
         } else {
             assert false;
