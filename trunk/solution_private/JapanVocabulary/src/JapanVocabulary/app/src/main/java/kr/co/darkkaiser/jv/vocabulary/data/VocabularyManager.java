@@ -7,14 +7,11 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.StringTokenizer;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
@@ -25,6 +22,7 @@ public class VocabularyManager {
 
 	private static VocabularyManager mInstance = null;
 
+	private SQLiteDatabase mUserDatabase = null;
 	private SQLiteDatabase mVocabularyDatabase = null;
 
     // 전체 단어리스트 테이블
@@ -42,7 +40,11 @@ public class VocabularyManager {
 		return mInstance;
 	}
 
-	public synchronized boolean initDataFromDB(Context context) {
+    /**
+     * DB에서 단어 데이터를 모두 읽어들입니다.
+     */
+	@SuppressWarnings("StringBufferReplaceableByString")
+    public synchronized boolean initDataFromDB(Context context) {
 		assert context != null;
 		
 		// 이전에 등록된 모든 단어를 제거한다.
@@ -55,17 +57,16 @@ public class VocabularyManager {
 
 		Cursor cursor = null;
 
+        // 단어 데이터를 읽어들인다.
 		try {
 			if (mVocabularyDatabase != null) {
 				mVocabularyDatabase.close();
 				mVocabularyDatabase = null;
 			}
 
-			// 단어 데이터를 읽어들인다.
 			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
-			StringBuilder sbSQL;
-            sbSQL = new StringBuilder();
+            StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE ")
 			     .append("    FROM TBL_VOCABULARY ")
 			     .append("   WHERE USE_YN = 'Y' ");
@@ -88,43 +89,44 @@ public class VocabularyManager {
             Log.e(TAG, e.getMessage());
             return false;
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null)
+                cursor.close();
         }
 
-        // @@@@@
-		// 사용자 암기정보 DB파일에서 단어 암기에 대한 정보를 읽어들인다.
-		try {
-            assert TextUtils.isEmpty(VocabularyDbManager.getInstance().getUserDbFilePath()) == false;
+        // 사용자 암기정보 데이터를 읽어들인다.
+        try {
+            if (mUserDatabase != null) {
+                mUserDatabase.close();
+                mUserDatabase = null;
+            }
 
-			File f = new File(VocabularyDbManager.getInstance().getUserDbFilePath());
-			if (f.exists() == true) {
-				BufferedReader br = new BufferedReader(new FileReader(f));
+            mUserDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getUserDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
-				String line;
-				while ((line = br.readLine()) != null) {
-					StringTokenizer token = new StringTokenizer(line, "|");
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.append("  SELECT V_IDX, MEMORIZE_TARGET, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT ")
+                 .append("    FROM TBL_USER_VOCABULARY ");
 
-					if (token.countTokens() == 4) {
-						long idx = Long.parseLong(token.nextToken());
-						Vocabulary vocabulary = mVocabularyTable.get(idx);
+            cursor = mUserDatabase.rawQuery(sbSQL.toString(), null);
 
-						if (vocabulary != null) {
-							vocabulary.setMemorizeCompletedCount(Long.parseLong(token.nextToken()));
-							vocabulary.setMemorizeTarget(Long.parseLong(token.nextToken()) == 1 ? true : false);
-							vocabulary.setMemorizeCompleted(Long.parseLong(token.nextToken()) == 1 ? true : false, false);
-						} else {
-							assert false;
-						}
-					} else {
-						assert false;
-					}
-				}
-				
-				br.close();
-			}
+            if (cursor.moveToFirst() == true) {
+                do
+                {
+                    Vocabulary vocabulary = mVocabularyTable.get(cursor.getLong(0/* V_IDX */));
+                    if (vocabulary != null) {
+                        vocabulary.setMemorizeTarget(cursor.getLong(1/* MEMORIZE_COMPLETED_COUNT */) == 1);
+                        vocabulary.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED_COUNT */) == 1, false);
+                        vocabulary.setMemorizeCompletedCount(cursor.getLong(3/* MEMORIZE_COMPLETED_COUNT */));
+                    } else {
+                        assert false;
+                    }
+                } while (cursor.moveToNext());
+            }
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 			return false;
+        } finally {
+            if (cursor != null)
+                cursor.close();
 		}
 
         return true;
@@ -154,146 +156,140 @@ public class VocabularyManager {
 //		}
 	}
 
-    // @@@@@
+    /**
+     * 주어진 조회조건을 이용하여 단어를 검색합니다.
+     */
     public synchronized void searchVocabulary(Context context, SearchListCondition searchListCondition, ArrayList<Vocabulary> vocabularyList) {
 		assert context != null;
+        assert vocabularyList != null;
+        assert searchListCondition != null;
 
-		if (mVocabularyDatabase != null) {
-			Cursor cursor = null;
+        if (mVocabularyDatabase == null) {
+            assert false;
+            return;
+        }
 
-			try {
-				String searchWord = searchListCondition.getSearchWord().trim();
-				SearchListCondition.MemorizeTarget memorizeTargetPosition = searchListCondition.getMemorizeTarget();
-				SearchListCondition.MemorizeCompleted memorizeCompletedPosition = searchListCondition.getMemorizeCompleted();
-//				boolean[] checkedItems = searchListCondition.getJLPTRankingSelectedIndicies();
+        Cursor cursor = null;
 
-				boolean hasSearchCondition = false;
-				StringBuilder sbSQL = new StringBuilder();
+        try {
+            String searchWord = searchListCondition.getSearchWord().trim();
+            SearchListCondition.MemorizeTarget memorizeTarget = searchListCondition.getMemorizeTarget();
+            SearchListCondition.MemorizeCompleted memorizeCompleted = searchListCondition.getMemorizeCompleted();
+			ArrayList<Integer> jlptRankingSelectedIndicies = searchListCondition.getJLPTRankingSelectedIndicies();
 
-				// 'JLPT 급수' 검색 조건 추가
-				boolean allSearchJLPTLevel = true;
-//				for (int index = 1; index < checkedItems.length; ++index) {
-//					if (checkedItems[0] != checkedItems[index]) {
-//						allSearchJLPTLevel = false;
-//						break;
-//					}
-//				}
-//
-				if (allSearchJLPTLevel == true) {
-					sbSQL.append("SELECT V.IDX ")
-				 	 	 .append("  FROM TBL_VOCABULARY AS V ")
-				 	 	 .append(" WHERE 1=1 ");
-				} else {
-					hasSearchCondition = true;
+            // 선택된 JLPT 급수가 없다면 검색을 해도 검색결과가 없을 것이므로 바로 반환한다.
+            if (jlptRankingSelectedIndicies.size() == 0)
+                return;
 
-//					sbSQL.append("SELECT V.IDX ")
-//						 .append("  FROM TBL_VOCABULARY AS V ")
-//						 .append(" WHERE V.IDX IN (          SELECT DISTINCT V2.IDX ")
-//						 .append("                             FROM TBL_HANJA AS A ")
-//						 .append("                  LEFT OUTER JOIN TBL_VOCABULARY AS V2 ")
-//						 .append("                               ON V2.VOCABULARY LIKE ('%'||A.CHARACTER||'%') ")
-//						 .append("                            WHERE 1=1 ")
-//						 .append("                              AND A.JLPT_CLASS IN (");
-//
-//					boolean isAppended = false;
-//					String[] items = context.getResources().getStringArray(R.array.sc_jlpt_level_list_values);
-//					for (int index = 0; index < checkedItems.length; ++index) {
-//						if (checkedItems[index] == true) {
-//							if (isAppended == true)
-//								sbSQL.append(", ");
-//
-//							isAppended = true;
-//							sbSQL.append(items[index]);
-//						}
-//					}
-					
-					sbSQL.append(" ) ) ");
-				}
+            boolean mustDbSelection = false;
+            StringBuilder sbSQL = new StringBuilder();
+            SearchListCondition.JLPTRanking[] jlptRankingValues = SearchListCondition.JLPTRanking.values();
 
-				// '단어 뜻 검색어' 검색 조건 추가
-				if (TextUtils.isEmpty(searchWord) == false) {
-					hasSearchCondition = true;
-					sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
-				}
+            if (jlptRankingValues.length == jlptRankingSelectedIndicies.size()) {
+                sbSQL.append("SELECT V.IDX ")
+                     .append("  FROM TBL_VOCABULARY V ")
+                     .append(" WHERE 1=1 ");
+            } else {
+                mustDbSelection = true;
 
-				ArrayList<Long> idxList = new ArrayList<Long>();
+                sbSQL.append("SELECT V.IDX ")
+                     .append("  FROM TBL_VOCABULARY V ")
+                     .append(" WHERE V.IDX IN (  SELECT DISTINCT V_IDX ")
+                     .append("                     FROM TBL_VOCABULARY_JLPT_CLASS_MAPP ")
+                     .append("                    WHERE 1=1 ")
+                     .append("                      AND CODE_ID IN (");
 
-				if (hasSearchCondition == true) {
-					cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
+                boolean firstOne = true;
+                for (Integer ordinal : jlptRankingSelectedIndicies) {
+                    if (firstOne == false)
+                        sbSQL.append(", ");
 
-					if (cursor.moveToFirst() == true) {
-						do
-						{
-							idxList.add(cursor.getLong(0/* IDX */));
-						} while (cursor.moveToNext());
-					}
+                    firstOne = false;
+                    sbSQL.append("'").append(SearchListCondition.JLPTRanking.parseJLPTRanking(ordinal).getCode()).append("'");
+                }
 
-					cursor.close();
-					cursor = null;
+                sbSQL.append(" ) ) ");
+            }
 
-					// 현재까지의 검색 결과가 없다면 앞으로 더 검색해봐야 의미 없으므로 반환한다.
-					if (idxList.isEmpty() == true)
-						return;
+            // '단어 뜻' 검색 조건 추가
+            if (TextUtils.isEmpty(searchWord) == false) {
+                mustDbSelection = true;
+                sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
+            }
 
-					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 현재까지의 검색 결과를 반환한다.
-					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
-                        for (Long idx : idxList)
-                            vocabularyList.add(mVocabularyTable.get(idx));
-						
-						return;
-					}
+            ArrayList<Long> idxList = new ArrayList<Long>();
 
-					boolean memorizeTarget = false;
-					boolean memorizeCompleted = false;
-					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
-						memorizeTarget = true;
-					if (memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
-						memorizeCompleted = true;
+            if (mustDbSelection == true) {
+                cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
-                    for (Long idx : idxList) {
-                        Vocabulary vocabulary = mVocabularyTable.get(idx);
-                        if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
-                            continue;
-                        if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
-                            continue;
+                if (cursor.moveToFirst() == true) {
+                    do
+                    {
+                        idxList.add(cursor.getLong(0/* IDX */));
+                    } while (cursor.moveToNext());
+                }
 
-                        vocabularyList.add(vocabulary);
-                    }
-				} else {
-					// '암기완료', '암기대상'의 검색 조건이 모든 단어를대상으로 하면 모든 단어를 반환한다.
-					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.ALL && memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.ALL) {
-						for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); )
-							vocabularyList.add(e.nextElement());
-						
-						return;
-					}
+                // 현재까지의 검색결과가 없다면 앞으로 더 검색해봐야 의미 없으므로 바로 반환한다.
+                if (idxList.isEmpty() == true)
+                    return;
 
-					boolean memorizeTarget = false;
-					boolean memorizeCompleted = false;
-					if (memorizeTargetPosition == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
-						memorizeTarget = true;
-					if (memorizeCompletedPosition == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
-						memorizeCompleted = true;
+                // '암기완료', '암기대상'의 검색조건이 모든 단어를 대상으로 하면 현재까지의 검색결과를 반환한다.
+                if (memorizeTarget == SearchListCondition.MemorizeTarget.ALL && memorizeCompleted == SearchListCondition.MemorizeCompleted.ALL) {
+                    for (Long idx : idxList)
+                        vocabularyList.add(mVocabularyTable.get(idx));
 
-					for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-						Vocabulary vocabulary = e.nextElement();
-						if (memorizeTargetPosition != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != memorizeTarget)
-							continue;
-						if (memorizeCompletedPosition != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != memorizeCompleted)
-							continue;
-						
-						vocabularyList.add(vocabulary);
-					}
-				}
-			} catch (SQLiteException e) {
-				Log.e(TAG, e.getMessage());
-			} finally {
-				if (cursor != null) cursor.close();
-			}
-		} else {
-			assert false;
-		}
-	}
+                    return;
+                }
+
+                boolean isMemorizeTarget = false;
+                boolean isMemorizeCompleted = false;
+                if (memorizeTarget == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
+                    isMemorizeTarget = true;
+                if (memorizeCompleted == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
+                    isMemorizeCompleted = true;
+
+                for (Long idx : idxList) {
+                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    if (memorizeTarget != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != isMemorizeTarget)
+                        continue;
+                    if (memorizeCompleted != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != isMemorizeCompleted)
+                        continue;
+
+                    vocabularyList.add(vocabulary);
+                }
+            } else {
+                // '암기완료', '암기대상'의 검색조건이 모든 단어를 대상으로 하면 전체단어를 반환한다.
+                if (memorizeTarget == SearchListCondition.MemorizeTarget.ALL && memorizeCompleted == SearchListCondition.MemorizeCompleted.ALL) {
+                    for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); )
+                        vocabularyList.add(e.nextElement());
+
+                    return;
+                }
+
+                boolean isMemorizeTarget = false;
+                boolean isMemorizeCompleted = false;
+                if (memorizeTarget == SearchListCondition.MemorizeTarget.MEMORIZE_TARGET)
+                    isMemorizeTarget = true;
+                if (memorizeCompleted == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
+                    isMemorizeCompleted = true;
+
+                for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                    Vocabulary vocabulary = e.nextElement();
+                    if (memorizeTarget != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != isMemorizeTarget)
+                        continue;
+                    if (memorizeCompleted != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != isMemorizeCompleted)
+                        continue;
+
+                    vocabularyList.add(vocabulary);
+                }
+            }
+        } catch (SQLiteException e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+    }
 
     public synchronized Vocabulary getVocabulary(long idx) {
 		return mVocabularyTable.get(idx);

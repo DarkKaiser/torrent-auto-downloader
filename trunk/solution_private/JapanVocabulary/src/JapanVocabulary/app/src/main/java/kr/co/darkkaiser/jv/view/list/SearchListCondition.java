@@ -42,12 +42,22 @@ public class SearchListCondition {
     }
 
     public enum JLPTRanking {
-        N1,
-        N2,
-        N3,
-        N4,
-        N5,
-        UNCLASSIFIED;
+        N1("01"),
+        N2("02"),
+        N3("03"),
+        N4("04"),
+        N5("05"),
+        UNCLASSIFIED("99");
+
+        private String mCode;
+
+        JLPTRanking(String code) {
+            mCode = code;
+        }
+
+        public String getCode() {
+            return mCode;
+        }
 
         public static JLPTRanking parseJLPTRanking(int ordinal) {
             if (ordinal == JLPTRanking.N1.ordinal())
