@@ -17,7 +17,7 @@ import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 import kr.co.darkkaiser.jv.vocabulary.db.UserSQLiteOpenHelper;
-import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbManager;
+import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
 public class VocabularyManager {
 
@@ -70,7 +70,7 @@ public class VocabularyManager {
 				mVocabularyDatabase = null;
 			}
 
-			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbManager.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbHelper.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE ")
@@ -141,7 +141,7 @@ public class VocabularyManager {
     // @@@@@
 	private void checkJpVocabularyDatabaseFile(Context context) {
 		assert context != null;
-		assert TextUtils.isEmpty(VocabularyDbManager.getInstance().getVocabularyDbFilePath()) == false;
+		assert TextUtils.isEmpty(VocabularyDbHelper.getInstance().getVocabularyDbFilePath()) == false;
 //@@@@@
 //		String jvDbPath = JvPathManager.getInstance().getVocabularyDbFilePath();
 //		SharedPreferences preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);

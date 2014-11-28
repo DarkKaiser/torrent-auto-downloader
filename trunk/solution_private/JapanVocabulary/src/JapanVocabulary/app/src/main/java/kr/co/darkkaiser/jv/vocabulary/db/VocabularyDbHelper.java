@@ -18,23 +18,23 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
-public class VocabularyDbManager {
+public class VocabularyDbHelper {
 
 	private static final String TAG = "VocabularyDbManager";
 
-    private static VocabularyDbManager mInstance;
+    private static VocabularyDbHelper mInstance;
 
     private String mVocabularyDbFilePath = null;
 
     static {
-        mInstance = new VocabularyDbManager();
+        mInstance = new VocabularyDbHelper();
     }
 
-	private VocabularyDbManager() {
+	private VocabularyDbHelper() {
 
 	}
 
-	public static VocabularyDbManager getInstance() {
+	public static VocabularyDbHelper getInstance() {
 		return mInstance;
 	}
 
