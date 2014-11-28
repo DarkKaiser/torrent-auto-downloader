@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -159,7 +160,19 @@ public class VocabularyManager {
 //				}
 //			}
 //		}
-	}
+
+        String v3UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
+        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함, VocabularyManager로 함수를 이동할지 고민
+        // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
+        String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
+        File file1 = new File(v2UserDbFilePath);
+        if (file1.exists() == true) {
+            File file2 = new File(v3UserDbFilePath);
+            if (file2.exists() == false) file1.renameTo(new File(v3UserDbFilePath));
+            else file1.delete();
+        }
+
+    }
 
     /**
      * 주어진 조회조건을 이용하여 단어를 검색합니다.

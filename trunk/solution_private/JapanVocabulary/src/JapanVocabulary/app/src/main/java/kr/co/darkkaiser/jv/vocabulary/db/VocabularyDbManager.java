@@ -38,34 +38,21 @@ public class VocabularyDbManager {
 		return mInstance;
 	}
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public boolean init(Context context) {
 		assert context != null;
 
-        String v3UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
         String v3VocabularyDbFilePath = context.getDatabasePath(Constants.VOCABULARY_DB_FILENAME_V3).getAbsolutePath();
 
 		// 'databases' 폴더가 존재하는지 확인하여 존재하지 않는다면 폴더를 생성한다.
 		String dbPath = v3VocabularyDbFilePath.substring(0, v3VocabularyDbFilePath.length() - Constants.VOCABULARY_DB_FILENAME_V3.length());
-		File file1 = new File(dbPath);
-		if (file1.exists() == false) {
-			if (file1.mkdirs() == false) {
+		File file = new File(dbPath);
+		if (file.exists() == false) {
+			if (file.mkdirs() == false) {
                 Log.d(TAG, String.format("패키지DB 경로 생성이 실패하였습니다(%s).", dbPath));
                 return false;
 			}
 		}
 
-        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함, VocabularyManager로 함수를 이동할지 고민
-        // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
-        String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
-        file1 = new File(v2UserDbFilePath);
-        if (file1.exists() == true) {
-            File file2 = new File(v3UserDbFilePath);
-            if (file2.exists() == false) file1.renameTo(new File(v3UserDbFilePath));
-            else file1.delete();
-        }
-
-        // 단어DB 파일 정보를 저장한다.
         mVocabularyDbFilePath = v3VocabularyDbFilePath;
 
 		return true;
