@@ -482,5 +482,10 @@ namespace JapanVocabularyDbManager
 
             form.Dispose();
         }
+
+        private void btnAddPossibleExample_Click(object sender, EventArgs e)
+        {
+            // @@@@@
+        }
     }
 }

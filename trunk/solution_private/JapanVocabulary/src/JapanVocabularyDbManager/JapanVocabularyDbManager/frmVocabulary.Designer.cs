@@ -50,6 +50,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.btnAddPossibleExample = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,6 +69,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnAddPossibleExample);
             this.splitContainer1.Panel1.Controls.Add(this.btnExampleCustomAdd);
             this.splitContainer1.Panel1.Controls.Add(this.exampleWebBrowser);
             this.splitContainer1.Panel1.Controls.Add(this.btnAddNoClose);
@@ -296,6 +298,16 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
             // 
+            // btnAddPossibleExample
+            // 
+            this.btnAddPossibleExample.Location = new System.Drawing.Point(389, 722);
+            this.btnAddPossibleExample.Name = "btnAddPossibleExample";
+            this.btnAddPossibleExample.Size = new System.Drawing.Size(96, 42);
+            this.btnAddPossibleExample.TabIndex = 19;
+            this.btnAddPossibleExample.Text = "추가등록가능 예문추가";
+            this.btnAddPossibleExample.UseVisualStyleBackColor = true;
+            this.btnAddPossibleExample.Click += new System.EventHandler(this.btnAddPossibleExample_Click);
+            // 
             // frmVocabulary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -343,6 +355,7 @@
         private System.Windows.Forms.Button btnAddNoClose;
         private System.Windows.Forms.WebBrowser exampleWebBrowser;
         private System.Windows.Forms.Button btnExampleCustomAdd;
+        private System.Windows.Forms.Button btnAddPossibleExample;
 
     }
 }

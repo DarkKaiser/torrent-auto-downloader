@@ -640,6 +640,7 @@ namespace JapanVocabularyDbManager
                 String strVocabulary = row.Cells[1].Value.ToString();
                 char[] caVocabulary = strVocabulary.ToCharArray();
 
+                // @@@@@ 단어에 일본어가 포함되어있는것은 제외시킬것
                 using (SQLiteCommand cmd = mDbConnection.CreateCommand())
                 {
                     StringBuilder sbSQL = new StringBuilder();
