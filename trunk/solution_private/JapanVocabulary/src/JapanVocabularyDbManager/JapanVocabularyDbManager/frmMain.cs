@@ -163,79 +163,51 @@ namespace JapanVocabularyDbManager
             if (rc.Count != 1)
                 return;
 
-            if (e.ColumnIndex == 8)
+            frmVocabulary form = new frmVocabulary();
+
+            // @@@@@ 급수, 품사
+            form.EditMode = true;
+            form.DbConnection = mDbConnection;
+            form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
+            form.Vocabulary = rc[0].Cells[1].Value.ToString();
+            form.VocabularyGana = rc[0].Cells[2].Value.ToString();
+            form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
+
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                Object o = rc[0].Cells[8].Tag;
-                if (o == null)
-                    return;
-
-                String tag = o.ToString();
-                if (tag == "frmHanja")
-                {
-                    // @@@@@
-                }
-                else if (tag == "frmAddPossibleExample")
-                {
-                    // @@@@@
-                    //frmAddPossibleExample form = new frmAddPossibleExample();
-                    //form.idx = idx;
-                    //form.DbConnection = DbConnection;
-                    //form.ExampleInfoList = exampleInfoList;
-
-                    //if (form.ShowDialog() == DialogResult.OK)
-                    //    FillExampleData();
-
-                    //form.Dispose();
-                }
+                rc[0].Cells[1].Value = form.Vocabulary;
+                rc[0].Cells[2].Value = form.VocabularyGana;
+                rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
-            else
+
+            rc[0].Cells[6].Value = "-";
+
+            // 예문 카운트를 구하여 업데이트 한다.
+            try
             {
-                frmVocabulary form = new frmVocabulary();
+                // 데이터를 읽어들입니다.
+                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
 
-                // @@@@@ 급수, 품사
-                form.EditMode = true;
-                form.DbConnection = mDbConnection;
-                form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
-                form.Vocabulary = rc[0].Cells[1].Value.ToString();
-                form.VocabularyGana = rc[0].Cells[2].Value.ToString();
-                form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
+                SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
+                cmd.CommandType = CommandType.Text;
 
-                if (form.ShowDialog() == DialogResult.OK)
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
-                    rc[0].Cells[1].Value = form.Vocabulary;
-                    rc[0].Cells[2].Value = form.VocabularyGana;
-                    rc[0].Cells[3].Value = form.VocabularyTranslation;
-                }
-
-                rc[0].Cells[6].Value = "-";
-
-                // 예문 카운트를 구하여 업데이트 한다.
-                try
-                {
-                    // 데이터를 읽어들입니다.
-                    string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
-
-                    SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
-                    cmd.CommandType = CommandType.Text;
-
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    if (reader.HasRows == true && reader.Read() == true)
                     {
-                        if (reader.HasRows == true && reader.Read() == true)
-                        {
-                            int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
-                            if (nCount > 0)
-                                rc[0].Cells[6].Value = nCount;
-                            else
-                                rc[0].Cells[6].Value = "0";
-                        }
+                        int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
+                        if (nCount > 0)
+                            rc[0].Cells[6].Value = nCount;
+                        else
+                            rc[0].Cells[6].Value = "0";
                     }
                 }
-                catch (SQLiteException)
-                {
-                }
-
-                form.Dispose();
             }
+            catch (SQLiteException)
+            {
+            }
+
+            form.Dispose();
         }
 
         private void dataHanjaGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
