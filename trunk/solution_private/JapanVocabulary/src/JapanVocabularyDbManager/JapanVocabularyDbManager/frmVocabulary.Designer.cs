@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnExampleCustomAdd = new System.Windows.Forms.Button();
             this.exampleWebBrowser = new System.Windows.Forms.WebBrowser();
             this.btnAddNoClose = new System.Windows.Forms.Button();
             this.btnExampleAdd = new System.Windows.Forms.Button();
@@ -49,7 +50,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.btnExampleCustomAdd = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -83,6 +84,16 @@
             this.splitContainer1.SplitterDistance = 494;
             this.splitContainer1.TabIndex = 0;
             // 
+            // btnExampleCustomAdd
+            // 
+            this.btnExampleCustomAdd.Location = new System.Drawing.Point(388, 692);
+            this.btnExampleCustomAdd.Name = "btnExampleCustomAdd";
+            this.btnExampleCustomAdd.Size = new System.Drawing.Size(99, 23);
+            this.btnExampleCustomAdd.TabIndex = 18;
+            this.btnExampleCustomAdd.Text = "예문수동추가";
+            this.btnExampleCustomAdd.UseVisualStyleBackColor = true;
+            this.btnExampleCustomAdd.Click += new System.EventHandler(this.btnExampleCustomAdd_Click);
+            // 
             // exampleWebBrowser
             // 
             this.exampleWebBrowser.Location = new System.Drawing.Point(5, 663);
@@ -107,7 +118,7 @@
             this.btnExampleAdd.Name = "btnExampleAdd";
             this.btnExampleAdd.Size = new System.Drawing.Size(99, 23);
             this.btnExampleAdd.TabIndex = 15;
-            this.btnExampleAdd.Text = "예문 추가";
+            this.btnExampleAdd.Text = "예문자동추가";
             this.btnExampleAdd.UseVisualStyleBackColor = true;
             this.btnExampleAdd.Click += new System.EventHandler(this.btnExampleAdd_Click);
             // 
@@ -210,18 +221,18 @@
             // 
             // txtExtensionInfo
             // 
-            this.txtExtensionInfo.Location = new System.Drawing.Point(126, 168);
+            this.txtExtensionInfo.Location = new System.Drawing.Point(126, 214);
             this.txtExtensionInfo.Multiline = true;
             this.txtExtensionInfo.Name = "txtExtensionInfo";
             this.txtExtensionInfo.ReadOnly = true;
             this.txtExtensionInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtExtensionInfo.Size = new System.Drawing.Size(356, 215);
+            this.txtExtensionInfo.Size = new System.Drawing.Size(356, 168);
             this.txtExtensionInfo.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(63, 171);
+            this.label4.Location = new System.Drawing.Point(63, 217);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 12);
             this.label4.TabIndex = 3;
@@ -233,7 +244,7 @@
             this.txtVocabularyTranslation.Location = new System.Drawing.Point(126, 74);
             this.txtVocabularyTranslation.Multiline = true;
             this.txtVocabularyTranslation.Name = "txtVocabularyTranslation";
-            this.txtVocabularyTranslation.Size = new System.Drawing.Size(356, 87);
+            this.txtVocabularyTranslation.Size = new System.Drawing.Size(356, 62);
             this.txtVocabularyTranslation.TabIndex = 6;
             this.txtVocabularyTranslation.Leave += new System.EventHandler(this.txtDescription_Leave);
             // 
@@ -285,16 +296,6 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
             // 
-            // btnExampleCustomAdd
-            // 
-            this.btnExampleCustomAdd.Location = new System.Drawing.Point(388, 692);
-            this.btnExampleCustomAdd.Name = "btnExampleCustomAdd";
-            this.btnExampleCustomAdd.Size = new System.Drawing.Size(99, 23);
-            this.btnExampleCustomAdd.TabIndex = 18;
-            this.btnExampleCustomAdd.Text = "예문수동추가";
-            this.btnExampleCustomAdd.UseVisualStyleBackColor = true;
-            this.btnExampleCustomAdd.Click += new System.EventHandler(this.btnExampleCustomAdd_Click);
-            // 
             // frmVocabulary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -309,6 +310,7 @@
             this.Shown += new System.EventHandler(this.frmVocabulary_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataExampleGridView)).EndInit();
             this.groupBox1.ResumeLayout(false);

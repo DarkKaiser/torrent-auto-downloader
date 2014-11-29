@@ -9,8 +9,7 @@ CREATE TABLE TBL_CODE (
 	CODE_ID					VARCHAR(2),												-- 코드 ID
 	CODE_NAME				VARCHAR(50),											-- 코드 이름
 	CODE_DESCRIPTION		VARCHAR(50),											-- 코드 설명
-	CODE_ORDER				INTEGER NOT NULL,										-- 코드 순서
-	USE_YN					VARCHAR(1)												-- 코드 사용 여부
+	CODE_ORDER				INTEGER NOT NULL										-- 코드 순서
 );
 
 CREATE UNIQUE INDEX TBL_CODE_INDEX01
@@ -20,24 +19,24 @@ CREATE INDEX TBL_CODE_INDEX02
           ON TBL_CODE(CODE_GRP_ID, CODE_ID);
 
 -- 공통코드 테이블 데이터(품사)
-INSERT INTO TBL_CODE VALUES(  1, 'W01', '01',     '명사', '', 0, 'Y' );
-INSERT INTO TBL_CODE VALUES(  2, 'W01', '02',   '대명사', '', 1, 'Y' );
-INSERT INTO TBL_CODE VALUES(  3, 'W01', '03',     '동사', '', 2, 'Y' );
-INSERT INTO TBL_CODE VALUES(  4, 'W01', '04',     '조사', '', 3, 'Y' );
-INSERT INTO TBL_CODE VALUES(  5, 'W01', '05',   '형용사', '', 4, 'Y' );
-INSERT INTO TBL_CODE VALUES(  6, 'W01', '06',     '접사', '', 5, 'Y' );
-INSERT INTO TBL_CODE VALUES(  7, 'W01', '07',     '부사', '', 6, 'Y' );
-INSERT INTO TBL_CODE VALUES(  8, 'W01', '08',   '감동사', '', 7, 'Y' );
-INSERT INTO TBL_CODE VALUES(  9, 'W01', '09', '형용동사', '', 8, 'Y' );
-INSERT INTO TBL_CODE VALUES( 10, 'W01', '10',     '기타', '', 9, 'Y' );
+INSERT INTO TBL_CODE VALUES(  1, 'W01', '01',     '명사', '', 0 );
+INSERT INTO TBL_CODE VALUES(  2, 'W01', '02',   '대명사', '', 1 );
+INSERT INTO TBL_CODE VALUES(  3, 'W01', '03',     '동사', '', 2 );
+INSERT INTO TBL_CODE VALUES(  4, 'W01', '04',     '조사', '', 3 );
+INSERT INTO TBL_CODE VALUES(  5, 'W01', '05',   '형용사', '', 4 );
+INSERT INTO TBL_CODE VALUES(  6, 'W01', '06',     '접사', '', 5 );
+INSERT INTO TBL_CODE VALUES(  7, 'W01', '07',     '부사', '', 6 );
+INSERT INTO TBL_CODE VALUES(  8, 'W01', '08',   '감동사', '', 7 );
+INSERT INTO TBL_CODE VALUES(  9, 'W01', '09', '형용동사', '', 8 );
+INSERT INTO TBL_CODE VALUES( 10, 'W01', '10',     '기타', '', 9 );
 
 -- 공통코드 테이블 데이터(JLPT 등급)
-INSERT INTO TBL_CODE VALUES( 11, 'J01', '01',     'N1', '', 0, 'Y' );
-INSERT INTO TBL_CODE VALUES( 12, 'J01', '02',     'N2', '', 1, 'Y' );
-INSERT INTO TBL_CODE VALUES( 13, 'J01', '03',     'N3', '', 2, 'Y' );
-INSERT INTO TBL_CODE VALUES( 14, 'J01', '04',     'N4', '', 3, 'Y' );
-INSERT INTO TBL_CODE VALUES( 15, 'J01', '05',     'N5', '', 4, 'Y' );
-INSERT INTO TBL_CODE VALUES( 16, 'J01', '99', '미분류', '', 5, 'Y' );
+INSERT INTO TBL_CODE VALUES( 11, 'J01', '01',     'N1', '', 0 );
+INSERT INTO TBL_CODE VALUES( 12, 'J01', '02',     'N2', '', 1 );
+INSERT INTO TBL_CODE VALUES( 13, 'J01', '03',     'N3', '', 2 );
+INSERT INTO TBL_CODE VALUES( 14, 'J01', '04',     'N4', '', 3 );
+INSERT INTO TBL_CODE VALUES( 15, 'J01', '05',     'N5', '', 4 );
+INSERT INTO TBL_CODE VALUES( 16, 'J01', '99', '미분류', '', 5 );
 
 
 -- 한자 테이블

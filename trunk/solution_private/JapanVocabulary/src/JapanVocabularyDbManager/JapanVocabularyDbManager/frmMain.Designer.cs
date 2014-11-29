@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbpHanja = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
             this.btnHanjaAdd = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cboHanjaSearchItem = new System.Windows.Forms.ComboBox();
@@ -40,6 +41,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnHanjaSearch = new System.Windows.Forms.Button();
             this.dataHanjaGridView = new System.Windows.Forms.DataGridView();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpWord = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnWordAdd = new System.Windows.Forms.Button();
@@ -50,19 +56,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnVocabularySearch = new System.Windows.Forms.Button();
             this.dataVocabularyGridView = new System.Windows.Forms.DataGridView();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -115,6 +118,16 @@
             this.splitContainer2.Size = new System.Drawing.Size(984, 688);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // btnHanjaDataAnalyser
+            // 
+            this.btnHanjaDataAnalyser.Location = new System.Drawing.Point(802, 4);
+            this.btnHanjaDataAnalyser.Name = "btnHanjaDataAnalyser";
+            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(179, 23);
+            this.btnHanjaDataAnalyser.TabIndex = 14;
+            this.btnHanjaDataAnalyser.Text = "네이버 데이터와 비교분석";
+            this.btnHanjaDataAnalyser.UseVisualStyleBackColor = true;
+            this.btnHanjaDataAnalyser.Click += new System.EventHandler(this.btnHanjaDataAnalyser_Click);
             // 
             // btnHanjaAdd
             // 
@@ -214,13 +227,45 @@
             this.dataHanjaGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataHanjaGridView_UserDeletingRow);
             this.dataHanjaGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataHanjaGridView_KeyDown);
             // 
+            // Column9
+            // 
+            this.Column9.HeaderText = "idx";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            this.Column9.Visible = false;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "한자";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "음독";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "훈독";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "뜻";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 300;
+            // 
             // tbpWord
             // 
             this.tbpWord.Controls.Add(this.splitContainer1);
             this.tbpWord.Location = new System.Drawing.Point(4, 22);
             this.tbpWord.Name = "tbpWord";
             this.tbpWord.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpWord.Size = new System.Drawing.Size(990, 694);
+            this.tbpWord.Size = new System.Drawing.Size(1285, 801);
             this.tbpWord.TabIndex = 0;
             this.tbpWord.Text = "단어";
             this.tbpWord.UseVisualStyleBackColor = true;
@@ -247,7 +292,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataVocabularyGridView);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 688);
+            this.splitContainer1.Size = new System.Drawing.Size(1279, 795);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -335,8 +380,11 @@
             this.Column1,
             this.Column2,
             this.Column3,
+            this.Column14,
+            this.Column15,
             this.Column10,
-            this.Column12});
+            this.Column12,
+            this.Column13});
             this.dataVocabularyGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataVocabularyGridView.Location = new System.Drawing.Point(0, 0);
             this.dataVocabularyGridView.MultiSelect = false;
@@ -344,11 +392,22 @@
             this.dataVocabularyGridView.ReadOnly = true;
             this.dataVocabularyGridView.RowTemplate.Height = 23;
             this.dataVocabularyGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataVocabularyGridView.Size = new System.Drawing.Size(984, 648);
+            this.dataVocabularyGridView.Size = new System.Drawing.Size(1279, 755);
             this.dataVocabularyGridView.TabIndex = 2;
             this.dataVocabularyGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataVocabularyGridView_CellMouseDoubleClick);
             this.dataVocabularyGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataVocabularyGridView_RowPostPaint);
             this.dataVocabularyGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataVocabularyGridView_KeyDown);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tbpWord);
+            this.tabControl1.Controls.Add(this.tbpHanja);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(5, 5);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1293, 827);
+            this.tabControl1.TabIndex = 0;
             // 
             // Column4
             // 
@@ -377,76 +436,43 @@
             this.Column3.ReadOnly = true;
             this.Column3.Width = 200;
             // 
+            // Column14
+            // 
+            this.Column14.HeaderText = "품사";
+            this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
+            // 
+            // Column15
+            // 
+            this.Column15.HeaderText = "등급";
+            this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
+            // 
             // Column10
             // 
-            this.Column10.HeaderText = "예문";
+            this.Column10.HeaderText = "예문개수";
             this.Column10.Name = "Column10";
             this.Column10.ReadOnly = true;
+            this.Column10.Width = 90;
             // 
             // Column12
             // 
             this.Column12.HeaderText = "사용유무";
             this.Column12.Name = "Column12";
             this.Column12.ReadOnly = true;
+            this.Column12.Width = 80;
             // 
-            // tabControl1
+            // Column13
             // 
-            this.tabControl1.Controls.Add(this.tbpWord);
-            this.tabControl1.Controls.Add(this.tbpHanja);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(5, 5);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(998, 720);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // btnHanjaDataAnalyser
-            // 
-            this.btnHanjaDataAnalyser.Location = new System.Drawing.Point(906, 4);
-            this.btnHanjaDataAnalyser.Name = "btnHanjaDataAnalyser";
-            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(75, 23);
-            this.btnHanjaDataAnalyser.TabIndex = 14;
-            this.btnHanjaDataAnalyser.Text = "분석";
-            this.btnHanjaDataAnalyser.UseVisualStyleBackColor = true;
-            this.btnHanjaDataAnalyser.Click += new System.EventHandler(this.btnHanjaDataAnalyser_Click);
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "idx";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            this.Column9.Visible = false;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "한자";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "음독";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "훈독";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "뜻";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.Width = 300;
+            this.Column13.HeaderText = "";
+            this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1303, 837);
             this.Controls.Add(this.tabControl1);
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(5);
@@ -495,18 +521,21 @@
         private System.Windows.Forms.Button btnHanjaAll;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnHanjaSearch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.Button btnHanjaDataAnalyser;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
 
     }
 }

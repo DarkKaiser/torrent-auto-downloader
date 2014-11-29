@@ -25,9 +25,7 @@ namespace JapanVocabularyDbManager
         {
             // 그리드에 추가한다.
             foreach (ExampleInfo ex in ExampleInfoList)
-            {
                 dataExampleGridView.Rows.Add(false, ex.example, ex.example_translation);
-            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -49,7 +47,7 @@ namespace JapanVocabularyDbManager
                     try
                     {
                         // 데이터를 읽어들입니다.
-                        string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX = {0} AND VOCABULARY = ""{1}""", idx, example);
+                        string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY_EXAMPLE WHERE VOCABULARY = ""{0}""", example);
                         SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                         cmd.CommandType = CommandType.Text;
 
@@ -57,32 +55,44 @@ namespace JapanVocabularyDbManager
                         {
                             if (reader.HasRows == true)
                             {
-                                MessageBox.Show("DB에 이미 등록된 예문이 포함되어 있습니다. 이 항목은 추가에서 제외됩니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("DB에 이미 등록된 예문이 포함되어 있습니다.\n이 항목은 추가에서 제외됩니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 continue;
                             }
                         }
                     }
                     catch (SQLiteException ex)
                     {
-                        MessageBox.Show(string.Format("데이터 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(string.Format("기존에 등록된 예문인지 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     // 예문을 추가한다.
-                    using (SQLiteCommand cmd = DbConnection.CreateCommand())
+                    using (SQLiteTransaction tran = DbConnection.BeginTransaction())
                     {
-                        cmd.CommandText = "INSERT INTO TBL_VOCABULARY_EXAMPLE (V_IDX, VOCABULARY, VOCABULARY_TRANSLATION) VALUES (?,?,?);";
-                        SQLiteParameter param1 = new SQLiteParameter();
-                        SQLiteParameter param2 = new SQLiteParameter();
-                        SQLiteParameter param3 = new SQLiteParameter();
-                        cmd.Parameters.Add(param1);
-                        cmd.Parameters.Add(param2);
-                        cmd.Parameters.Add(param3);
+                        using (SQLiteCommand cmd = DbConnection.CreateCommand())
+                        {
+                            cmd.CommandText = "INSERT INTO TBL_VOCABULARY_EXAMPLE (VOCABULARY, VOCABULARY_TRANSLATION) VALUES (?,?);";
+                            SQLiteParameter param1 = new SQLiteParameter();
+                            SQLiteParameter param2 = new SQLiteParameter();
+                            cmd.Parameters.Add(param1);
+                            cmd.Parameters.Add(param2);
 
-                        param1.Value = idx;
-                        param2.Value = example;
-                        param3.Value = translation;
-                        cmd.ExecuteNonQuery();
+                            param1.Value = example;
+                            param2.Value = translation;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        using (SQLiteCommand cmd = DbConnection.CreateCommand())
+                        {
+                            cmd.CommandText = "INSERT INTO TBL_VOCABULARY_EXAMPLE_MAPP (V_IDX, E_IDX) VALUES (?, (select last_insert_rowid()) );";
+                            SQLiteParameter param1 = new SQLiteParameter();
+                            cmd.Parameters.Add(param1);
+
+                            param1.Value = idx;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        tran.Commit();
                     }
 
                     hasAddExample = true;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Diagnostics;
 
 namespace JapanVocabularyDbManager
 {
@@ -55,17 +56,17 @@ namespace JapanVocabularyDbManager
                 try
                 {
                     // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, JLPT_CLASS, TRANSLATION FROM TBL_HANJA WHERE CHARACTER = ""{0}""", c);
+                    string strSQL = string.Format(@"SELECT IDX, CHARACTER, SOUND_READ, MEAN_READ, TRANSLATION FROM TBL_HANJA WHERE CHARACTER = ""{0}""", c);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows == true && reader.Read())
-                            txtExtensionInfo.Text += string.Format("{0}\r\n음독 : {2}\r\n훈독 : {3}\r\n{1}\r\n\r\n", reader.GetString(1/*CHARACTER*/), reader.GetString(5/*TRANSLATION*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/));
+                            txtExtensionInfo.Text += string.Format("{0}\r\n음독 : {2}\r\n훈독 : {3}\r\n{1}\r\n\r\n", reader.GetString(1/*CHARACTER*/), reader.GetString(4/*TRANSLATION*/), reader.GetString(2/*SOUND_READ*/), reader.GetString(3/*MEAN_READ*/));
                     }
                 }
-                catch (SQLiteException)
+                catch (Exception)
                 {
                 }
             }
@@ -107,6 +108,7 @@ namespace JapanVocabularyDbManager
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            // @@@@@
             if (addVocabulary() == false)
                 return;
 
@@ -116,6 +118,7 @@ namespace JapanVocabularyDbManager
 
         private void btnAddNoClose_Click(object sender, EventArgs e)
         {
+            // @@@@@
             if (addVocabulary() == false)
                 return;
 
@@ -164,6 +167,7 @@ namespace JapanVocabularyDbManager
 
         private bool addVocabulary()
         {
+            // @@@@@
             string strVocabulary = txtVocabulary.Text.Trim();
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
@@ -313,16 +317,24 @@ namespace JapanVocabularyDbManager
 
         private void dataExampleGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("선택하신 예문 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
 
         private void dataExampleGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
-            using (SQLiteCommand cmd = DbConnection.CreateCommand())
+            using (SQLiteTransaction tran = DbConnection.BeginTransaction())
             {
-                cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE WHERE idx = {0};", e.Row.Cells[0].Value);
-                cmd.ExecuteNonQuery();
+                using (SQLiteCommand cmd = DbConnection.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE WHERE idx = {0};", e.Row.Cells[0].Value);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE E_IDX = {0};", e.Row.Cells[0].Value);
+                    cmd.ExecuteNonQuery();
+                }
+
+                tran.Commit();
             }
 
             // 데이터를 다시 채운다.
@@ -331,6 +343,8 @@ namespace JapanVocabularyDbManager
 
         private void FillExampleData()
         {
+            Debug.Assert(EditMode == true);
+
             if (EditMode == false)
                 return;
 
@@ -342,7 +356,7 @@ namespace JapanVocabularyDbManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = string.Format(@"SELECT IDX, VOCABULARY, VOCABULARY_TRANSLATION FROM TBL_VOCABULARY_EXAMPLE WHERE V_IDX={0}", idx);
+                string strSQL = string.Format(@"SELECT IDX, VOCABULARY, VOCABULARY_TRANSLATION FROM TBL_VOCABULARY_EXAMPLE WHERE IDX IN ( SELECT E_IDX FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0} )", idx);
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                 cmd.CommandType = CommandType.Text;
 
@@ -368,6 +382,8 @@ namespace JapanVocabularyDbManager
 
         private void btnExampleAdd_Click(object sender, EventArgs e)
         {
+            Debug.Assert(EditMode == true);
+
             string strDocumentText = webBrowser1.DocumentText;
             if (strDocumentText.Length == 0)
             {
@@ -375,96 +391,51 @@ namespace JapanVocabularyDbManager
                 return;
             }
 
-            // 데이터를 파싱하여 예문을 추출한다.
-            int first = strDocumentText.IndexOf(@"예문 검색결과");
-            if (first == -1)
+            // HTML 데이터를 파싱한다.
+            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.LoadHtml(strDocumentText);
+
+            HtmlAgilityPack.HtmlNodeCollection exampleNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='section all section_example']/ul[@class='lst']/li");
+            if (exampleNodeList == null)
             {
-                MessageBox.Show("읽어들인 웹페이지에서 예문을 찾을 수 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("웹페이지에서 예문 데이터를 찾을 수 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            first = strDocumentText.IndexOf(@"class=""exam_result""");
-            if (first == -1)
-            {
-                MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            first += 20;
-
-            int last = strDocumentText.IndexOf("</dl>", first);
-            if (last == -1)
-            {
-                MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            strDocumentText = strDocumentText.Substring(first, last - first).Trim();
-
-            string temp;
             List<ExampleInfo> exampleInfoList = new List<ExampleInfo>();
 
-            // DT, DD로 구분
-            first = last = 0;
-            while (true)
+            foreach (HtmlAgilityPack.HtmlNode exampleNode in exampleNodeList)
             {
-                ExampleInfo exInfo = new ExampleInfo();
+                ExampleInfo exampleInfo = new ExampleInfo();
 
-                first = strDocumentText.IndexOf(@"<dt>", last);
-                if (first == -1)
+                // 예문이 있는 노드
+                var exNodeList = exampleNode.SelectNodes("./p[position()=1]/span[position()=1]");
+                if (exNodeList != null)
                 {
-                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                last = strDocumentText.IndexOf(@"</dt>", first);
-                if (last == -1)
-                {
-                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                first += 4;
+                    String example = "";
+                    foreach (HtmlAgilityPack.HtmlNode exNode in exNodeList)
+                        example += exNode.InnerText;
 
-                temp = strDocumentText.Substring(first, last - first).Trim();
-                if (temp.Contains("class='jp'") == true)
-                {
-                    exInfo.example = extract_example(temp);
-                    exInfo.example_translation = "";
-                }
-                else
-                {
-                    exInfo.example = "";
-                    exInfo.example_translation = extract_translation(temp);
+                    example = example.Replace("(", "<sup><font color='#f67474'>");
+                    example = example.Replace(")", "</font></sup>");
+
+                    if (example.Length != 0)
+                        exampleInfo.example = example;
                 }
 
-                first = strDocumentText.IndexOf(@"<dd>", last);
-                if (first == -1)
-                {
-                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                last = strDocumentText.IndexOf(@"</dd>", first);
-                if (last == -1)
-                {
-                    MessageBox.Show("읽어들인 웹페이지의 파싱이 실패하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                first += 4;
+                // 해석이 있는 노드
+                var translationNode = exampleNode.SelectSingleNode("./p[position()=2]");
+                if (translationNode != null)
+                    exampleInfo.example_translation = translationNode.InnerText;
 
-                temp = strDocumentText.Substring(first, last - first).Trim();
-                if (exInfo.example.Length == 0)
-                    exInfo.example = extract_example(temp);
-                else
-                    exInfo.example_translation = extract_translation(temp);
-
-                exampleInfoList.Add(exInfo);
-
-                temp = strDocumentText.Substring(last + 5).Trim();
-                if (temp.Length == 0)
-                    break;
+                // 예문과 뜻이 모두 존재하면 추가한다.
+                if (exampleInfo.example.Length != 0 && exampleInfo.example_translation.Length != 0)
+                    exampleInfoList.Add(exampleInfo);
             }
 
             if (exampleInfoList.Count == 0)
             {
-                MessageBox.Show("예문이 존재하지 않습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("웹페이지에서 예문 데이터가 0개입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -475,138 +446,24 @@ namespace JapanVocabularyDbManager
             form.ExampleInfoList = exampleInfoList;
 
             if (form.ShowDialog() == DialogResult.OK)
-            {
-                // 데이터를 다시 채운다.
                 FillExampleData();
-            }
 
             form.Dispose();
         }
-
-        private string extract_example(string example)
-        {
-            int nFirst = 0;
-            int nLast = 0;
-
-            // img 태그 제거
-            while (true)
-            {
-                nFirst = example.IndexOf(@"<img", 0);
-                if (nFirst == -1)
-                    break;
-                nLast = example.IndexOf(@"/>", nFirst);
-                if (nLast == -1)
-                    break;
-                nLast += 2;
-
-                example = example.Remove(nFirst, nLast - nFirst).Trim();
-            }
-
-            // span 태그 제거
-            while (true)
-            {
-                nFirst = example.IndexOf("\"<span", 0);
-                if (nFirst == -1)
-                    break;
-                nLast = example.IndexOf("/span>\"", nFirst);
-                if (nLast == -1)
-                    break;
-                nLast += 7;
-
-                example = example.Remove(nFirst, nLast - nFirst).Trim();
-            }
-
-            // Span 태그 제거
-            while (true)
-            {
-                nFirst = example.IndexOf(@"<span", 0);
-                if (nFirst == -1)
-                    break;
-                nLast = example.IndexOf(@">", nFirst);
-                if (nLast == -1)
-                    break;
-                nLast += 1;
-
-                example = example.Remove(nFirst, nLast - nFirst).Trim();
-            }
-            example = example.Replace("</span>", "");
-
-            // '→' 이후의 글자 제거
-            nFirst = example.IndexOf(@"→", 0);
-            if (nFirst != -1)
-                example = example.Remove(nFirst, example.Length - nFirst).Trim();
-
-            example = example.Replace("<b>", "");
-            example = example.Replace("</b>", "");
-
-            // <sup> 태그에 <font> 태그 추가
-            example = example.Replace(@"<sup class=""huri"">", "<sup><font color='#f67474'>");
-            example = example.Replace("</sup>", "</font></sup>");
-
-            // ·,- 문자 제거
-            example = example.Replace("·", "");
-            example = example.Replace("-", "");
-
-            return example;
-        }
-
-        private string extract_translation(string mean)
-        {
-            int nFirst = 0;
-            int nLast = 0;
-
-            // img 태그 제거
-            while (true)
-            {
-                nFirst = mean.IndexOf(@"<img", 0);
-                if (nFirst == -1)
-                    break;
-                nLast = mean.IndexOf(@"/>", nFirst);
-                if (nLast == -1)
-                    break;
-                nLast += 2;
-
-                mean = mean.Remove(nFirst, nLast - nFirst).Trim();
-            }
-
-            // Span 태그 제거
-            while (true)
-            {
-                nFirst = mean.IndexOf(@"<span", 0);
-                if (nFirst == -1)
-                    break;
-                nLast = mean.IndexOf(@">", nFirst);
-                if (nLast == -1)
-                    break;
-                nLast += 1;
-
-                mean = mean.Remove(nFirst, nLast - nFirst).Trim();
-            }
-            mean = mean.Replace("</span>", "");
-
-            // '→' 이후의 글자 제거
-            nFirst = mean.IndexOf(@"→", 0);
-            if (nFirst != -1)
-                mean = mean.Remove(nFirst, mean.Length - nFirst).Trim();
-
-            mean = mean.Replace("<b>", "");
-            mean = mean.Replace("</b>", "");
-
-            return mean;
-        }
-
+        
         private void btnExampleCustomAdd_Click(object sender, EventArgs e)
         {
+            Debug.Assert(EditMode == true);
+
             // 예문 대화상자를 연다.
             frmCustomExample form = new frmCustomExample();
             form.idx = idx;
+            form.Vocabulary = Vocabulary;
+            form.VocabularyGana = VocabularyGana;
             form.DbConnection = DbConnection;
 
             if (form.ShowDialog() == DialogResult.OK)
-            {
-                // 데이터를 다시 채운다.
                 FillExampleData();
-            }
 
             form.Dispose();
         }

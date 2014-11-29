@@ -154,7 +154,6 @@ namespace JapanVocabularyDbManager
                                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
-        // @@@@@
         private void dataVocabularyGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 현재 선택된 행을 얻는다.
@@ -166,6 +165,7 @@ namespace JapanVocabularyDbManager
 
             frmVocabulary form = new frmVocabulary();
 
+            // @@@@@
             form.EditMode               = true;
             form.DbConnection           = mDbConnection;
             form.idx                    = long.Parse(rc[0].Cells[0].Value.ToString());
@@ -185,7 +185,7 @@ namespace JapanVocabularyDbManager
             {
                 //@@@@@ 예문테이블에서 use_yn='n'인것은 어케 할것인가?
                 // 데이터를 읽어들입니다.
-                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0} AND USE_YN = 'Y'", long.Parse(rc[0].Cells[0].Value.ToString()));
+                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
 
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
                 cmd.CommandType = CommandType.Text;
@@ -363,12 +363,13 @@ namespace JapanVocabularyDbManager
             try
             {
                 // 데이터를 읽어들입니다.
-                string strSQL = "SELECT A.IDX, A.VOCABULARY, A.VOCABULARY_GANA, A.VOCABULARY_TRANSLATION, USE_YN, " +
-                                "       ( SELECT COUNT(*) AS EXAMPLE_COUNT " +
-                                "           FROM TBL_VOCABULARY_EXAMPLE_MAPP " +
-                                "          WHERE A.IDX = V_IDX) " + // @@@@@ 예문 use_yn='n'
-                                "  FROM TBL_VOCABULARY A " + 
-                                " WHERE USE_YN = 'Y' ";
+                string strSQL = "SELECT A.IDX, A.VOCABULARY, A.VOCABULARY_GANA, A.VOCABULARY_TRANSLATION, A.USE_YN, " +
+                                "       ( SELECT COUNT(*) " +
+                                "           FROM TBL_VOCABULARY_EXAMPLE_MAPP AA, " +
+                                "                TBL_VOCABULARY_EXAMPLE BB " +
+                                "          WHERE AA.V_IDX = A.IDX " +
+                                "            AND AA.E_IDX = BB.IDX ) EXAMPLE_COUNT " +
+                                "  FROM TBL_VOCABULARY A ";
 
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " AND " + sqlWhere;
@@ -383,7 +384,9 @@ namespace JapanVocabularyDbManager
                         dataVocabularyGridView.Rows.Add(reader.GetInt32(0/* IDX */), 
                                                         reader.GetString(1/* VOCABULARY */), 
                                                         reader.GetString(2/* VOCABULARY_GANA */), 
-                                                        reader.GetString(3/* VOCABULARY_TRANSLATION */), 
+                                                        reader.GetString(3/* VOCABULARY_TRANSLATION */),
+                                                        "품사@@@@@",
+                                                        "등급@@@@@",
                                                         reader.GetInt32(5/* EXAMPLE_COUNT */),
                                                         reader.GetString(4/* USE_YN */));
                     }
@@ -490,7 +493,7 @@ namespace JapanVocabularyDbManager
                 {
                     Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
 
-                    if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (MessageBox.Show("선택하신 데이터의 삭제여부 플래그를 'N'로 설정하시겠습니까?", "삭제플래그 설정", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         using (SQLiteCommand cmd = mDbConnection.CreateCommand())
                         {
@@ -498,7 +501,7 @@ namespace JapanVocabularyDbManager
                             cmd.ExecuteNonQuery();
                         }
 
-                        dataGridView.SelectedRows[0].Cells[5/* 사용유무 */].Value = "N";
+                        dataGridView.SelectedRows[0].Cells[7/* 사용유무 */].Value = "N";
 
                         e.Handled = true;
                     }
@@ -617,3 +620,17 @@ namespace JapanVocabularyDbManager
         }
     }
 }
+
+
+/* 추가등록가능예문수@@@@@
+                                "       ( SELECT COUNT(*) " +
+                                "           FROM TBL_VOCABULARY_EXAMPLE AA " +
+                                "          WHERE AA.VOCABULARY LIKE '%'||A.VOCABULARY||'%' " +
+                                "            AND AA.IDX NOT IN ( SELECT E_IDX " +
+                                "                                  FROM TBL_VOCABULARY_EXAMPLE_MAPP AAA, " +
+                                "                                       TBL_VOCABULARY_EXAMPLE BBB " +
+                                "                                 WHERE AAA.V_IDX = A.IDX " +
+                                "                                   AND AAA.E_IDX = BBB.IDX " +
+                                "                                   AND BBB.USE_YN = 'Y' ) " +
+                                "            AND AA.USE_YN = 'Y' ) RG_EXAMPLE_COUNT " +
+*/

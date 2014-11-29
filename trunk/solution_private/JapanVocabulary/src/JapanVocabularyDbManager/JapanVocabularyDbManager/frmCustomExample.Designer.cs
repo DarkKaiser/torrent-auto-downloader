@@ -126,6 +126,7 @@
             this.Name = "frmCustomExample";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmCustomExample";
+            this.Shown += new System.EventHandler(this.frmCustomExample_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
