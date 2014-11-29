@@ -326,9 +326,6 @@ namespace JapanVocabularyDbManager
             {
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE WHERE idx = {0};", e.Row.Cells[0].Value);
-                    cmd.ExecuteNonQuery();
-
                     cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE E_IDX = {0};", e.Row.Cells[0].Value);
                     cmd.ExecuteNonQuery();
                 }
