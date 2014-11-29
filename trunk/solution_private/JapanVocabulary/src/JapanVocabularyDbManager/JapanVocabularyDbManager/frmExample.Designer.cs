@@ -31,10 +31,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.dataExampleGridView = new System.Windows.Forms.DataGridView();
-            this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.Column3 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.dataExampleGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,14 +76,6 @@
             this.dataExampleGridView.TabIndex = 2;
             this.dataExampleGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataExampleGridView_RowEnter);
             // 
-            // webBrowser
-            // 
-            this.webBrowser.Location = new System.Drawing.Point(12, 259);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(692, 65);
-            this.webBrowser.TabIndex = 3;
-            // 
             // Column3
             // 
             this.Column3.HeaderText = "";
@@ -101,6 +93,14 @@
             this.Column2.HeaderText = "해석";
             this.Column2.Name = "Column2";
             this.Column2.Width = 350;
+            // 
+            // webBrowser
+            // 
+            this.webBrowser.Location = new System.Drawing.Point(12, 259);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.Size = new System.Drawing.Size(692, 65);
+            this.webBrowser.TabIndex = 3;
             // 
             // frmExample
             // 

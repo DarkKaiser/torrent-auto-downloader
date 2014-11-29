@@ -66,6 +66,8 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnHanjaExistCheck = new System.Windows.Forms.Button();
+            this.btnAddPossibleExampleCountCheck = new System.Windows.Forms.Button();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -281,6 +283,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnAddPossibleExampleCountCheck);
+            this.splitContainer1.Panel1.Controls.Add(this.btnHanjaExistCheck);
             this.splitContainer1.Panel1.Controls.Add(this.btnWordAdd);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.cboWordSearchItem);
@@ -387,7 +391,6 @@
             this.Column13});
             this.dataVocabularyGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataVocabularyGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataVocabularyGridView.MultiSelect = false;
             this.dataVocabularyGridView.Name = "dataVocabularyGridView";
             this.dataVocabularyGridView.ReadOnly = true;
             this.dataVocabularyGridView.RowTemplate.Height = 23;
@@ -468,6 +471,26 @@
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
             // 
+            // btnHanjaExistCheck
+            // 
+            this.btnHanjaExistCheck.Location = new System.Drawing.Point(1136, 8);
+            this.btnHanjaExistCheck.Name = "btnHanjaExistCheck";
+            this.btnHanjaExistCheck.Size = new System.Drawing.Size(140, 23);
+            this.btnHanjaExistCheck.TabIndex = 7;
+            this.btnHanjaExistCheck.Text = "모든한자등록여부확인";
+            this.btnHanjaExistCheck.UseVisualStyleBackColor = true;
+            this.btnHanjaExistCheck.Click += new System.EventHandler(this.btnHanjaExistCheck_Click);
+            // 
+            // btnAddPossibleExampleCountCheck
+            // 
+            this.btnAddPossibleExampleCountCheck.Location = new System.Drawing.Point(998, 8);
+            this.btnAddPossibleExampleCountCheck.Name = "btnAddPossibleExampleCountCheck";
+            this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(132, 23);
+            this.btnAddPossibleExampleCountCheck.TabIndex = 8;
+            this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수";
+            this.btnAddPossibleExampleCountCheck.UseVisualStyleBackColor = true;
+            this.btnAddPossibleExampleCountCheck.Click += new System.EventHandler(this.btnAddPossibleExampleCountCheck_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -536,6 +559,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
+        private System.Windows.Forms.Button btnHanjaExistCheck;
+        private System.Windows.Forms.Button btnAddPossibleExampleCountCheck;
 
     }
 }

@@ -163,51 +163,79 @@ namespace JapanVocabularyDbManager
             if (rc.Count != 1)
                 return;
 
-            frmVocabulary form = new frmVocabulary();
-
-            // @@@@@ 급수, 품사
-            form.EditMode               = true;
-            form.DbConnection           = mDbConnection;
-            form.idx                    = long.Parse(rc[0].Cells[0].Value.ToString());
-            form.Vocabulary             = rc[0].Cells[1].Value.ToString();
-            form.VocabularyGana         = rc[0].Cells[2].Value.ToString();
-            form.VocabularyTranslation  = rc[0].Cells[3].Value.ToString();
-
-            if (form.ShowDialog() == DialogResult.OK)
+            if (e.ColumnIndex == 8)
             {
-                rc[0].Cells[1].Value = form.Vocabulary;
-                rc[0].Cells[2].Value = form.VocabularyGana;
-                rc[0].Cells[3].Value = form.VocabularyTranslation;
-            }
+                Object o = rc[0].Cells[8].Tag;
+                if (o == null)
+                    return;
 
-            rc[0].Cells[6].Value = "-";
-
-            // 예문 카운트를 구하여 업데이트 한다.
-            try
-            {
-                // 데이터를 읽어들입니다.
-                string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
-
-                SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
-                cmd.CommandType = CommandType.Text;
-
-                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                String tag = o.ToString();
+                if (tag == "frmHanja")
                 {
-                    if (reader.HasRows == true && reader.Read() == true)
-                    {
-                        int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
-                        if (nCount > 0)
-                            rc[0].Cells[6].Value = nCount;
-                        else
-                            rc[0].Cells[6].Value = "0";
-                    }
+                    // @@@@@
+                }
+                else if (tag == "frmAddPossibleExample")
+                {
+                    // @@@@@
+                    //frmAddPossibleExample form = new frmAddPossibleExample();
+                    //form.idx = idx;
+                    //form.DbConnection = DbConnection;
+                    //form.ExampleInfoList = exampleInfoList;
+
+                    //if (form.ShowDialog() == DialogResult.OK)
+                    //    FillExampleData();
+
+                    //form.Dispose();
                 }
             }
-            catch (SQLiteException)
+            else
             {
-            }
+                frmVocabulary form = new frmVocabulary();
 
-            form.Dispose();
+                // @@@@@ 급수, 품사
+                form.EditMode = true;
+                form.DbConnection = mDbConnection;
+                form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
+                form.Vocabulary = rc[0].Cells[1].Value.ToString();
+                form.VocabularyGana = rc[0].Cells[2].Value.ToString();
+                form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
+
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    rc[0].Cells[1].Value = form.Vocabulary;
+                    rc[0].Cells[2].Value = form.VocabularyGana;
+                    rc[0].Cells[3].Value = form.VocabularyTranslation;
+                }
+
+                rc[0].Cells[6].Value = "-";
+
+                // 예문 카운트를 구하여 업데이트 한다.
+                try
+                {
+                    // 데이터를 읽어들입니다.
+                    string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
+
+                    SQLiteCommand cmd = new SQLiteCommand(strSQL, mDbConnection);
+                    cmd.CommandType = CommandType.Text;
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows == true && reader.Read() == true)
+                        {
+                            int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
+                            if (nCount > 0)
+                                rc[0].Cells[6].Value = nCount;
+                            else
+                                rc[0].Cells[6].Value = "0";
+                        }
+                    }
+                }
+                catch (SQLiteException)
+                {
+                }
+
+                form.Dispose();
+            }
         }
 
         private void dataHanjaGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -490,7 +518,7 @@ namespace JapanVocabularyDbManager
             if (e.KeyCode == Keys.Delete)
             {
                 DataGridView dataGridView = (DataGridView)sender;
-                if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 0)
+                if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1)
                 {
                     Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
 
@@ -506,6 +534,11 @@ namespace JapanVocabularyDbManager
 
                         e.Handled = true;
                     }
+                }
+                else if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 1)
+                {
+                    MessageBox.Show("데이터를 삭제하시려면 하나의 행만 선택해주세요!");
+                    e.Handled = true;
                 }
             }
         }
@@ -619,19 +652,122 @@ namespace JapanVocabularyDbManager
 
             MessageBox.Show("파싱이 완료되었습니다.");
         }
+
+        private void btnHanjaExistCheck_Click(object sender, EventArgs e)
+        {
+            // 한자가 선택되었는지 확인한다.
+            DataGridViewSelectedRowCollection rc = dataVocabularyGridView.SelectedRows;
+            if (rc.Count <= 0)
+            {
+                MessageBox.Show("분석작업을 진행 할 선택된 단어가 없습니다!");
+                return;
+            }
+
+            foreach (DataGridViewRow row in rc)
+            {
+                String strVocabulary = row.Cells[1].Value.ToString();
+                char[] caVocabulary = strVocabulary.ToCharArray();
+
+                using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+                {
+                    StringBuilder sbSQL = new StringBuilder();
+                    sbSQL.Append("SELECT COUNT(*) FROM TBL_HANJA WHERE CHARACTER IN (");
+
+                    Boolean isFirstOne = true;
+                    foreach (char c in caVocabulary)
+                    {
+                        if (isFirstOne == false)
+                            sbSQL.Append(", ");
+
+                        isFirstOne = false;
+                        sbSQL.Append("'").Append(c).Append("'");
+                    }
+                    sbSQL.Append(")");
+
+                    cmd.CommandText = sbSQL.ToString();
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        row.Cells[8].Tag = "frmHanja";
+
+                        if (reader.HasRows == true && reader.Read() == true)
+                        {
+                            int nHanjaCount = reader.GetInt32(0/* COUNT */);
+                            if (nHanjaCount == strVocabulary.Length)
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Yellow;
+                                row.Cells[8].Value = "일치";
+                            }
+                            else
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Red;
+                                row.Cells[8].Value = string.Format("불일치({0}/{1})", nHanjaCount, strVocabulary.Length);
+                            }
+                        } else {
+                            row.DefaultCellStyle.BackColor = Color.Red;
+                            row.Cells[8].Value = "파싱 실패";
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show("파싱이 완료되었습니다.");
+        }
+
+        private void btnAddPossibleExampleCountCheck_Click(object sender, EventArgs e)
+        {
+            // 한자가 선택되었는지 확인한다.
+            DataGridViewSelectedRowCollection rc = dataVocabularyGridView.SelectedRows;
+            if (rc.Count <= 0)
+            {
+                MessageBox.Show("분석작업을 진행 할 선택된 단어가 없습니다!");
+                return;
+            }
+
+            foreach (DataGridViewRow row in rc)
+            {
+                long idx = long.Parse(row.Cells[0].Value.ToString());
+                String strVocabulary = row.Cells[1].Value.ToString();
+
+                using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+                {
+                    StringBuilder sbSQL = new StringBuilder();
+                    sbSQL.Append("SELECT COUNT(*) ")
+                         .Append("  FROM TBL_VOCABULARY_EXAMPLE A ")
+                         .Append(" WHERE A.VOCABULARY LIKE '%").Append(strVocabulary.Trim()).Append("%'")
+                         .Append("   AND A.IDX NOT IN ( SELECT AA.E_IDX ")
+                         .Append("                        FROM TBL_VOCABULARY_EXAMPLE_MAPP AA ")
+                         .Append("                       WHERE AA.V_IDX = ").Append(idx)
+                         .Append("                    ) ");
+
+                    cmd.CommandText = sbSQL.ToString();
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        row.Cells[8].Tag = "frmAddPossibleExample";
+
+                        if (reader.HasRows == true && reader.Read() == true)
+                        {
+                            int nCount = reader.GetInt32(0/* COUNT */);
+                            if (nCount == 0)
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Yellow;
+                                row.Cells[8].Value = "없음";
+                            }
+                            else
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Red;
+                                row.Cells[8].Value = nCount.ToString();
+                            }
+                        }
+                        else
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Red;
+                            row.Cells[8].Value = "파싱 실패";
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show("파싱이 완료되었습니다.");
+        }
     }
 }
-
-
-/* 추가등록가능예문수@@@@@
-                                "       ( SELECT COUNT(*) " +
-                                "           FROM TBL_VOCABULARY_EXAMPLE AA " +
-                                "          WHERE AA.VOCABULARY LIKE '%'||A.VOCABULARY||'%' " +
-                                "            AND AA.IDX NOT IN ( SELECT E_IDX " +
-                                "                                  FROM TBL_VOCABULARY_EXAMPLE_MAPP AAA, " +
-                                "                                       TBL_VOCABULARY_EXAMPLE BBB " +
-                                "                                 WHERE AAA.V_IDX = A.IDX " +
-                                "                                   AND AAA.E_IDX = BBB.IDX " +
-                                "                                   AND BBB.USE_YN = 'Y' ) " +
-                                "            AND AA.USE_YN = 'Y' ) RG_EXAMPLE_COUNT " +
-*/

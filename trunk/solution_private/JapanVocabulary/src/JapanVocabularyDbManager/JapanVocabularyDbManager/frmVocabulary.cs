@@ -316,7 +316,7 @@ namespace JapanVocabularyDbManager
 
         private void dataExampleGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            if (MessageBox.Show("선택하신 예문 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("현재 단어에서 선택하신 예문 매핑정보를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
 
@@ -326,8 +326,27 @@ namespace JapanVocabularyDbManager
             {
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE E_IDX = {0};", e.Row.Cells[0].Value);
+                    cmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX = {0} AND E_IDX = {1};", idx, e.Row.Cells[0].Value);
                     cmd.ExecuteNonQuery();
+                }
+
+                using (SQLiteCommand cmd = DbConnection.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT * FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE E_IDX = {0};", e.Row.Cells[0].Value);
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows == false)
+                        {
+                            if (MessageBox.Show("예문하고 매핑되어 있는 단어가 없습니다. 예문까지 완전히 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                using (SQLiteCommand cmd2 = DbConnection.CreateCommand())
+                                {
+                                    cmd2.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_EXAMPLE WHERE IDX = {0};", e.Row.Cells[0].Value);
+                                    cmd2.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                    }
                 }
 
                 tran.Commit();
