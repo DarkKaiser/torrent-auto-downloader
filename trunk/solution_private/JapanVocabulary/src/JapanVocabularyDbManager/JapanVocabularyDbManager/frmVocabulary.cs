@@ -88,6 +88,7 @@ namespace JapanVocabularyDbManager
                 btnExampleCustomAdd.Visible = true;
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
+                txtVocabulary.Enabled = false;
             }
             else
             {
@@ -160,6 +161,7 @@ namespace JapanVocabularyDbManager
                 btnExampleCustomAdd.Visible = true;
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
+                txtVocabulary.Enabled = false;
             }
         }
 

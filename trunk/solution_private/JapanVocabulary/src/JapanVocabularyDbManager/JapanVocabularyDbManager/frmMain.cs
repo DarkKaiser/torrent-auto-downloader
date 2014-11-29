@@ -165,7 +165,7 @@ namespace JapanVocabularyDbManager
 
             frmVocabulary form = new frmVocabulary();
 
-            // @@@@@
+            // @@@@@ 급수, 품사
             form.EditMode               = true;
             form.DbConnection           = mDbConnection;
             form.idx                    = long.Parse(rc[0].Cells[0].Value.ToString());
@@ -175,15 +175,16 @@ namespace JapanVocabularyDbManager
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                rc[0].Cells[1].Value = form.Vocabulary;// @@@@@ 단어가 변경되면 매핑된 예문도 변경되어져야 함
+                rc[0].Cells[1].Value = form.Vocabulary;
                 rc[0].Cells[2].Value = form.VocabularyGana;
                 rc[0].Cells[3].Value = form.VocabularyTranslation;
             }
 
+            rc[0].Cells[6].Value = "-";
+
             // 예문 카운트를 구하여 업데이트 한다.
             try
             {
-                //@@@@@ 예문테이블에서 use_yn='n'인것은 어케 할것인가?
                 // 데이터를 읽어들입니다.
                 string strSQL = string.Format("SELECT COUNT(*) AS EXAMPLE_COUNT FROM TBL_VOCABULARY_EXAMPLE_MAPP WHERE V_IDX={0}", long.Parse(rc[0].Cells[0].Value.ToString()));
 
@@ -196,9 +197,9 @@ namespace JapanVocabularyDbManager
                     {
                         int nCount = reader.GetInt32(0/*EXAMPLE_COUNT*/);
                         if (nCount > 0)
-                            rc[0].Cells[4].Value = nCount;
+                            rc[0].Cells[6].Value = nCount;
                         else
-                            rc[0].Cells[4].Value = "0";
+                            rc[0].Cells[6].Value = "0";
                     }
                 }
             }
