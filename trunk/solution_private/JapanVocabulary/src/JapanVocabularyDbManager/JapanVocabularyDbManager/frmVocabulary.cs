@@ -108,7 +108,6 @@ namespace JapanVocabularyDbManager
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            // @@@@@
             if (addVocabulary() == false)
                 return;
 
@@ -118,7 +117,6 @@ namespace JapanVocabularyDbManager
 
         private void btnAddNoClose_Click(object sender, EventArgs e)
         {
-            // @@@@@
             if (addVocabulary() == false)
                 return;
 
@@ -135,7 +133,7 @@ namespace JapanVocabularyDbManager
                 {
                     if (reader.HasRows == false)
                     {
-                        MessageBox.Show("방금 추가한 단어의 IDX 값을 구하지 못하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("방금 추가한 단어의 IDX 값을 찾지 못하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         DialogResult = DialogResult.OK;
                         Close();
                         return;
@@ -167,7 +165,6 @@ namespace JapanVocabularyDbManager
 
         private bool addVocabulary()
         {
-            // @@@@@
             string strVocabulary = txtVocabulary.Text.Trim();
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
@@ -195,7 +192,7 @@ namespace JapanVocabularyDbManager
                     // 데이터를 갱신한다.
                     using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
                     {
-                        updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, REGISTRATION_DATE=? WHERE IDX={0};", idx);
+                        updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, INPUT_DATE=? WHERE IDX={0};", idx);
                         SQLiteParameter param1 = new SQLiteParameter();
                         SQLiteParameter param2 = new SQLiteParameter();
                         SQLiteParameter param3 = new SQLiteParameter();
@@ -215,7 +212,7 @@ namespace JapanVocabularyDbManager
                 }
                 catch (SQLiteException ex)
                 {
-                    MessageBox.Show(string.Format("데이터 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Format("데이터 저장중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
@@ -241,14 +238,14 @@ namespace JapanVocabularyDbManager
                 }
                 catch (SQLiteException ex)
                 {
-                    MessageBox.Show(string.Format("데이터 확인중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Format("DB에 이미 등록된 단어인지 확인하는 작업중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
                 // 데이터를 추가한다.
                 using (SQLiteCommand cmd = DbConnection.CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, REGISTRATION_DATE) VALUES (?,?,?,?);";
+                    cmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE) VALUES (?,?,?,?);";
                     SQLiteParameter param1 = new SQLiteParameter();
                     SQLiteParameter param2 = new SQLiteParameter();
                     SQLiteParameter param3 = new SQLiteParameter();
