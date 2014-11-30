@@ -115,7 +115,7 @@ namespace JapanVocabularyDbManager
             Close();
         }
 
-        private void dataExampleGridView_RowEnter(object sender, DataGridViewCellEventArgs e)
+        private void dataExampleGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (dataExampleGridView.SelectedRows.Count == 0)
                 return;

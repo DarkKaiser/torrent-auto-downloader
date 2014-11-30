@@ -26,7 +26,7 @@ namespace JapanVocabularyDbManager
         {
             string strExample = txtExample.Text.Trim();
             string strExampleTranslation = txtExampleTranslation.Text.Trim();
-
+            
             if (strExample.Length == 0 || strExampleTranslation.Length == 0)
             {
                 MessageBox.Show("예문이나 뜻이 입력되지 않았습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);

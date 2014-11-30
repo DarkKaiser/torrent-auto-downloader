@@ -74,7 +74,7 @@
             this.dataExampleGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataExampleGridView.Size = new System.Drawing.Size(1191, 241);
             this.dataExampleGridView.TabIndex = 2;
-            this.dataExampleGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataExampleGridView_RowEnter);
+            this.dataExampleGridView.SelectionChanged += new System.EventHandler(this.dataExampleGridView_SelectionChanged);
             // 
             // Column3
             // 
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1215, 335);
+            this.ClientSize = new System.Drawing.Size(1228, 335);
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.dataExampleGridView);
             this.Controls.Add(this.btnOK);
@@ -115,7 +115,7 @@
             this.Name = "frmExample";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "예문";
+            this.Text = "예문자동추가";
             this.Load += new System.EventHandler(this.frmExample_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataExampleGridView)).EndInit();
             this.ResumeLayout(false);

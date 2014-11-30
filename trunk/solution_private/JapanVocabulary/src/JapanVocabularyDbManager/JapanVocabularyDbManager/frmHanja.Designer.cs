@@ -65,7 +65,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser);
-            this.splitContainer1.Size = new System.Drawing.Size(1216, 645);
+            this.splitContainer1.Size = new System.Drawing.Size(1323, 782);
             this.splitContainer1.SplitterDistance = 416;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -188,7 +188,7 @@
             this.webBrowser.Location = new System.Drawing.Point(0, 0);
             this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(796, 645);
+            this.webBrowser.Size = new System.Drawing.Size(903, 782);
             this.webBrowser.TabIndex = 18;
             this.webBrowser.Url = new System.Uri("", System.UriKind.Relative);
             this.webBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_DocumentCompleted);
@@ -197,7 +197,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1216, 645);
+            this.ClientSize = new System.Drawing.Size(1323, 782);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmHanja";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
