@@ -625,6 +625,7 @@ namespace JapanVocabularyDbManager
 
             int nIndex = 0;
             string btnSourceText = btnHanjaExistCheck.Text;
+            string japanGana = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽきゃきゅきょしゃしゅしょちゃちゅちょにゃにゅにょひゃひゅひょみゃみゅみょりゃりゅりょぎゃぎゅぎょじゃじゅじょびゃびゅびょぴゃぴゅぴょアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポキャキュキョシャシュショチャチュチョニャニュニョヒャヒュヒョミャミュミョリャリュリョギャギュギョジャジュジョビャビュビョピャピュピョ";
 
             foreach (DataGridViewRow row in rc)
             {
@@ -640,38 +641,51 @@ namespace JapanVocabularyDbManager
                     StringBuilder sbSQL = new StringBuilder();
                     sbSQL.Append("SELECT COUNT(*) FROM TBL_HANJA WHERE CHARACTER IN (");
 
+                    int nCheckHanjaCount = 0;
                     Boolean isFirstOne = true;
                     foreach (char c in caVocabulary)
                     {
-                        // @@@@@ 단어에 일본어가 포함되어있는것은 제외시킬것
+                        if (japanGana.IndexOf(c) == -1)
+                        {
+                            if (isFirstOne == false)
+                                sbSQL.Append(", ");
 
-                        if (isFirstOne == false)
-                            sbSQL.Append(", ");
-
-                        isFirstOne = false;
-                        sbSQL.Append("'").Append(c).Append("'");
+                            ++nCheckHanjaCount;
+                            isFirstOne = false;
+                            sbSQL.Append("'").Append(c).Append("'");
+                        }
                     }
                     sbSQL.Append(")");
 
-                    cmd.CommandText = sbSQL.ToString();
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    if (nCheckHanjaCount == 0)
                     {
-                        if (reader.HasRows == true && reader.Read() == true)
+                        row.DefaultCellStyle.BackColor = Color.Yellow;
+                        row.Cells[8].Value = "일치";
+                    }
+                    else
+                    {
+                        cmd.CommandText = sbSQL.ToString();
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
                         {
-                            int nHanjaCount = reader.GetInt32(0/* COUNT */);
-                            if (nHanjaCount == strVocabulary.Length)
+                            if (reader.HasRows == true && reader.Read() == true)
                             {
-                                row.DefaultCellStyle.BackColor = Color.Yellow;
-                                row.Cells[8].Value = "일치";
+                                int nHanjaCount = reader.GetInt32(0/* COUNT */);
+                                if (nHanjaCount == nCheckHanjaCount)
+                                {
+                                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                                    row.Cells[8].Value = "일치";
+                                }
+                                else
+                                {
+                                    row.DefaultCellStyle.BackColor = Color.Red;
+                                    row.Cells[8].Value = string.Format("불일치({0}/{1})", nHanjaCount, nCheckHanjaCount);
+                                }
                             }
                             else
                             {
                                 row.DefaultCellStyle.BackColor = Color.Red;
-                                row.Cells[8].Value = string.Format("불일치({0}/{1})", nHanjaCount, strVocabulary.Length);
+                                row.Cells[8].Value = "파싱 실패";
                             }
-                        } else {
-                            row.DefaultCellStyle.BackColor = Color.Red;
-                            row.Cells[8].Value = "파싱 실패";
                         }
                     }
                 }
