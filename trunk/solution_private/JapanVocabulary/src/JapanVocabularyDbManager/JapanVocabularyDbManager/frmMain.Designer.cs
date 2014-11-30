@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbpHanja = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
@@ -128,7 +128,7 @@
             // 
             this.btnHanjaDataAnalyser.Location = new System.Drawing.Point(802, 4);
             this.btnHanjaDataAnalyser.Name = "btnHanjaDataAnalyser";
-            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(179, 23);
+            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(207, 23);
             this.btnHanjaDataAnalyser.TabIndex = 14;
             this.btnHanjaDataAnalyser.Text = "네이버 데이터와 비교분석";
             this.btnHanjaDataAnalyser.UseVisualStyleBackColor = true;
@@ -208,8 +208,8 @@
             // dataHanjaGridView
             // 
             this.dataHanjaGridView.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dataHanjaGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataHanjaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataHanjaGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -305,9 +305,9 @@
             // 
             // btnAddPossibleExampleCountCheck
             // 
-            this.btnAddPossibleExampleCountCheck.Location = new System.Drawing.Point(998, 8);
+            this.btnAddPossibleExampleCountCheck.Location = new System.Drawing.Point(856, 8);
             this.btnAddPossibleExampleCountCheck.Name = "btnAddPossibleExampleCountCheck";
-            this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(132, 23);
+            this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(210, 23);
             this.btnAddPossibleExampleCountCheck.TabIndex = 8;
             this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수";
             this.btnAddPossibleExampleCountCheck.UseVisualStyleBackColor = true;
@@ -315,9 +315,9 @@
             // 
             // btnHanjaExistCheck
             // 
-            this.btnHanjaExistCheck.Location = new System.Drawing.Point(1136, 8);
+            this.btnHanjaExistCheck.Location = new System.Drawing.Point(1072, 8);
             this.btnHanjaExistCheck.Name = "btnHanjaExistCheck";
-            this.btnHanjaExistCheck.Size = new System.Drawing.Size(140, 23);
+            this.btnHanjaExistCheck.Size = new System.Drawing.Size(204, 23);
             this.btnHanjaExistCheck.TabIndex = 7;
             this.btnHanjaExistCheck.Text = "모든한자등록여부확인";
             this.btnHanjaExistCheck.UseVisualStyleBackColor = true;
@@ -398,8 +398,8 @@
             // 
             this.dataVocabularyGridView.AllowUserToAddRows = false;
             this.dataVocabularyGridView.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dataVocabularyGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataVocabularyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataVocabularyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {

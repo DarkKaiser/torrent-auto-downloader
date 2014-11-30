@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using System.Net;
+using System.Threading;
 
 namespace JapanVocabularyDbManager
 {
@@ -82,7 +83,7 @@ namespace JapanVocabularyDbManager
                 return;
             }
                 
-            if (MessageBox.Show("선택하신 데이터를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("선택하신 데이터를 완전히 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
 
@@ -492,9 +493,7 @@ namespace JapanVocabularyDbManager
                 DataGridView dataGridView = (DataGridView)sender;
                 if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1)
                 {
-                    Debug.Assert(dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) == 1);
-
-                    if (MessageBox.Show("선택하신 데이터의 삭제여부 플래그를 'N'로 설정하시겠습니까?", "삭제플래그 설정", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (MessageBox.Show("선택하신 데이터의 삭제여부 플래그를 'N'로 설정하시겠습니까?\n(실제 데이터는 삭제되지 않습니다)", "삭제여부 플래그 설정", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         using (SQLiteCommand cmd = mDbConnection.CreateCommand())
                         {
@@ -509,7 +508,7 @@ namespace JapanVocabularyDbManager
                 }
                 else if (dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected) > 1)
                 {
-                    MessageBox.Show("데이터를 삭제하시려면 하나의 행만 선택해주세요!");
+                    MessageBox.Show("단어 데이터를 삭제하시려면 하나의 행만 선택하여 주세요!");
                     e.Handled = true;
                 }
             }
@@ -525,34 +524,21 @@ namespace JapanVocabularyDbManager
                 return;
             }
 
+            int nIndex = 0;
+            string btnSourceText = btnHanjaDataAnalyser.Text;
+
             foreach (DataGridViewRow row in rc)
             {
+                ++nIndex;
+                btnHanjaDataAnalyser.Text = string.Format("{0}[{1}/{2}]", btnSourceText, nIndex, rc.Count);
+                btnHanjaDataAnalyser.Refresh();
+
                 String strSourceHanja = row.Cells[1].Value.ToString();
                 String strSourceSoundRead = row.Cells[2].Value.ToString();
                 String strSourceMeanRead = row.Cells[3].Value.ToString();
                 String strSourceTranslation = row.Cells[4].Value.ToString();
 
-                string url = string.Format("http://jpdic.naver.com/search.nhn?query={0}", strSourceHanja);
-
-                WebClient wc = new WebClient();
-                byte[] docBytes = wc.DownloadData(url);
-                string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                string charsetKey = "charset";
-                int pos = encodeType.IndexOf(charsetKey);
-
-                Encoding currentEncoding = Encoding.Default;
-                if (pos != -1)
-                {
-                    pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                    if (pos != -1)
-                    {
-                        string charset = encodeType.Substring(pos + 1);
-                        currentEncoding = Encoding.GetEncoding(charset);
-                    }
-                }
-
-                string htmlDocumentContent = currentEncoding.GetString(docBytes);
+                string htmlDocumentContent = LoadWebPage(string.Format("http://jpdic.naver.com/search.nhn?query={0}", strSourceHanja));
 
                 // HTML 데이터를 파싱한다.
                 HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
@@ -622,6 +608,8 @@ namespace JapanVocabularyDbManager
                 }
             }
 
+            btnHanjaDataAnalyser.Text = btnSourceText;
+
             MessageBox.Show("파싱이 완료되었습니다.");
         }
 
@@ -635,12 +623,18 @@ namespace JapanVocabularyDbManager
                 return;
             }
 
+            int nIndex = 0;
+            string btnSourceText = btnHanjaExistCheck.Text;
+
             foreach (DataGridViewRow row in rc)
             {
+                ++nIndex;
+                btnHanjaExistCheck.Text = string.Format("{0}[{1}/{2}]", btnSourceText, nIndex, rc.Count);
+                btnHanjaExistCheck.Refresh();
+
                 String strVocabulary = row.Cells[1].Value.ToString();
                 char[] caVocabulary = strVocabulary.ToCharArray();
 
-                // @@@@@ 단어에 일본어가 포함되어있는것은 제외시킬것
                 using (SQLiteCommand cmd = mDbConnection.CreateCommand())
                 {
                     StringBuilder sbSQL = new StringBuilder();
@@ -649,6 +643,8 @@ namespace JapanVocabularyDbManager
                     Boolean isFirstOne = true;
                     foreach (char c in caVocabulary)
                     {
+                        // @@@@@ 단어에 일본어가 포함되어있는것은 제외시킬것
+
                         if (isFirstOne == false)
                             sbSQL.Append(", ");
 
@@ -660,8 +656,6 @@ namespace JapanVocabularyDbManager
                     cmd.CommandText = sbSQL.ToString();
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        row.Cells[8].Tag = "frmHanja";
-
                         if (reader.HasRows == true && reader.Read() == true)
                         {
                             int nHanjaCount = reader.GetInt32(0/* COUNT */);
@@ -683,6 +677,8 @@ namespace JapanVocabularyDbManager
                 }
             }
 
+            btnHanjaExistCheck.Text = btnSourceText;
+
             MessageBox.Show("파싱이 완료되었습니다.");
         }
 
@@ -696,8 +692,15 @@ namespace JapanVocabularyDbManager
                 return;
             }
 
+            int nIndex = 0;
+            string btnSourceText = btnAddPossibleExampleCountCheck.Text;
+
             foreach (DataGridViewRow row in rc)
             {
+                ++nIndex;
+                btnAddPossibleExampleCountCheck.Text = string.Format("{0}[{1}/{2}]", btnSourceText, nIndex, rc.Count);
+                btnAddPossibleExampleCountCheck.Refresh();
+
                 long idx = long.Parse(row.Cells[0].Value.ToString());
                 String strVocabulary = row.Cells[1].Value.ToString();
 
@@ -715,8 +718,6 @@ namespace JapanVocabularyDbManager
                     cmd.CommandText = sbSQL.ToString();
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        row.Cells[8].Tag = "frmAddPossibleExample";
-
                         if (reader.HasRows == true && reader.Read() == true)
                         {
                             int nCount = reader.GetInt32(0/* COUNT */);
@@ -739,6 +740,8 @@ namespace JapanVocabularyDbManager
                     }
                 }
             }
+
+            btnAddPossibleExampleCountCheck.Text = btnSourceText;
 
             MessageBox.Show("파싱이 완료되었습니다.");
         }
@@ -1193,6 +1196,29 @@ namespace JapanVocabularyDbManager
             }
 
             MessageBox.Show("작업이 완료되었습니다.");
+        }
+
+        private string LoadWebPage(string url)
+        {
+            WebClient wc = new WebClient();
+            byte[] docBytes = wc.DownloadData(url);
+            string encodeType = wc.ResponseHeaders["Content-Type"];
+
+            string charsetKey = "charset";
+            int pos = encodeType.IndexOf(charsetKey);
+
+            Encoding currentEncoding = Encoding.Default;
+            if (pos != -1)
+            {
+                pos = encodeType.IndexOf("=", pos + charsetKey.Length);
+                if (pos != -1)
+                {
+                    string charset = encodeType.Substring(pos + 1);
+                    currentEncoding = Encoding.GetEncoding(charset);
+                }
+            }
+
+            return currentEncoding.GetString(docBytes);
         }
     }
 }
