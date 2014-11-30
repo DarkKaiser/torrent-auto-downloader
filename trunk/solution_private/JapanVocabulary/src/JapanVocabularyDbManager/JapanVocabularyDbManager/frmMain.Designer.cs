@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbpHanja = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
@@ -208,8 +208,8 @@
             // dataHanjaGridView
             // 
             this.dataHanjaGridView.AllowUserToAddRows = false;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataHanjaGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataHanjaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataHanjaGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -398,8 +398,8 @@
             // 
             this.dataVocabularyGridView.AllowUserToAddRows = false;
             this.dataVocabularyGridView.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dataVocabularyGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataVocabularyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataVocabularyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -511,9 +511,9 @@
             // 
             this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
             this.btnExtractVocabulary.Name = "btnExtractVocabulary";
-            this.btnExtractVocabulary.Size = new System.Drawing.Size(211, 23);
+            this.btnExtractVocabulary.Size = new System.Drawing.Size(371, 23);
             this.btnExtractVocabulary.TabIndex = 0;
-            this.btnExtractVocabulary.Text = "네이버에서 단어 추출하기";
+            this.btnExtractVocabulary.Text = "네이버에서 N1~N5 단어 추출하기";
             this.btnExtractVocabulary.UseVisualStyleBackColor = true;
             this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
             // 

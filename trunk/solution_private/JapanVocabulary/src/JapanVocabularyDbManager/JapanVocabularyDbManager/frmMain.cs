@@ -748,7 +748,6 @@ namespace JapanVocabularyDbManager
 
         private void btnExtractVocabulary_Click(object sender, EventArgs e)
         {
-            // @@@@@ 정리
             using (SQLiteTransaction tran = mDbConnection.BeginTransaction())
             {
                 // 테이블을 삭제한다.
@@ -777,425 +776,91 @@ namespace JapanVocabularyDbManager
                     cmd.ExecuteNonQuery();
                 }
 
-                // N1 단어를 추출한다.
-                for (var index = 1; index <= 73; ++index)
-                {
-                    // 네이버에서 데이터를 읽어온다.
-                    string url = string.Format("http://jpdic.naver.com/jlpt/level-1/parts-0/p{0}.nhn", index);
-
-                    WebClient wc = new WebClient();
-                    byte[] docBytes = wc.DownloadData(url);
-                    string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                    string charsetKey = "charset";
-                    int pos = encodeType.IndexOf(charsetKey);
-
-                    Encoding currentEncoding = Encoding.Default;
-                    if (pos != -1)
-                    {
-                        pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                        if (pos != -1)
-                        {
-                            string charset = encodeType.Substring(pos + 1);
-                            currentEncoding = Encoding.GetEncoding(charset);
-                        }
-                    }
-
-                    string htmlDocumentContent = currentEncoding.GetString(docBytes);
-
-                    // 읽어온 데이터를 파싱한다.
-                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                    htmlDoc.LoadHtml(htmlDocumentContent);
-
-                    HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
-                    foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
-                    {
-                        String strVocabulary = "";
-                        String strVocabularyGana = "";
-                        String strVocabularyTranslation = "";
-                        String strWordClass = "";
-                        String strJlptClass = "N1";
-
-                        var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
-                        var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
-
-                        strVocabularyGana = characterNode.InnerText;
-                        int chpos = strVocabularyGana.IndexOf('[');
-                        if (chpos != -1)
-                        {
-                            strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
-                            strVocabularyGana = strVocabularyGana.Substring(0, chpos);
-
-                        }
-
-                        strVocabularyTranslation = translationNode.InnerText;
-                        chpos = strVocabularyTranslation.IndexOf(']');
-                        if (chpos != -1)
-                        {
-                            strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
-                            strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
-                        }
-
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
-                            SQLiteParameter param1 = new SQLiteParameter();
-                            SQLiteParameter param2 = new SQLiteParameter();
-                            SQLiteParameter param3 = new SQLiteParameter();
-                            SQLiteParameter param4 = new SQLiteParameter();
-                            SQLiteParameter param5 = new SQLiteParameter();
-                            cmd.Parameters.Add(param1);
-                            cmd.Parameters.Add(param2);
-                            cmd.Parameters.Add(param3);
-                            cmd.Parameters.Add(param4);
-                            cmd.Parameters.Add(param5);
-
-                            param1.Value = strVocabulary;
-                            param2.Value = strVocabularyGana;
-                            param3.Value = strVocabularyTranslation;
-                            param4.Value = strWordClass;
-                            param5.Value = strJlptClass;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                // N2 단어를 추출한다.
-                for (var index = 1; index <= 60; ++index)
-                {
-                    // 네이버에서 데이터를 읽어온다.
-                    string url = string.Format("http://jpdic.naver.com/jlpt/level-2/parts-0/p{0}.nhn", index);
-
-                    WebClient wc = new WebClient();
-                    byte[] docBytes = wc.DownloadData(url);
-                    string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                    string charsetKey = "charset";
-                    int pos = encodeType.IndexOf(charsetKey);
-
-                    Encoding currentEncoding = Encoding.Default;
-                    if (pos != -1)
-                    {
-                        pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                        if (pos != -1)
-                        {
-                            string charset = encodeType.Substring(pos + 1);
-                            currentEncoding = Encoding.GetEncoding(charset);
-                        }
-                    }
-
-                    string htmlDocumentContent = currentEncoding.GetString(docBytes);
-
-                    // 읽어온 데이터를 파싱한다.
-                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                    htmlDoc.LoadHtml(htmlDocumentContent);
-
-                    HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
-                    foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
-                    {
-                        String strVocabulary = "";
-                        String strVocabularyGana = "";
-                        String strVocabularyTranslation = "";
-                        String strWordClass = "";
-                        String strJlptClass = "N2";
-
-                        var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
-                        var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
-
-                        strVocabularyGana = characterNode.InnerText;
-                        int chpos = strVocabularyGana.IndexOf('[');
-                        if (chpos != -1)
-                        {
-                            strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
-                            strVocabularyGana = strVocabularyGana.Substring(0, chpos);
-
-                        }
-
-                        strVocabularyTranslation = translationNode.InnerText;
-                        chpos = strVocabularyTranslation.IndexOf(']');
-                        if (chpos != -1)
-                        {
-                            strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
-                            strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
-                        }
-
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
-                            SQLiteParameter param1 = new SQLiteParameter();
-                            SQLiteParameter param2 = new SQLiteParameter();
-                            SQLiteParameter param3 = new SQLiteParameter();
-                            SQLiteParameter param4 = new SQLiteParameter();
-                            SQLiteParameter param5 = new SQLiteParameter();
-                            cmd.Parameters.Add(param1);
-                            cmd.Parameters.Add(param2);
-                            cmd.Parameters.Add(param3);
-                            cmd.Parameters.Add(param4);
-                            cmd.Parameters.Add(param5);
-
-                            param1.Value = strVocabulary;
-                            param2.Value = strVocabularyGana;
-                            param3.Value = strVocabularyTranslation;
-                            param4.Value = strWordClass;
-                            param5.Value = strJlptClass;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                // N3 단어를 추출한다.
-                for (var index = 1; index <= 35; ++index)
-                {
-                    // 네이버에서 데이터를 읽어온다.
-                    string url = string.Format("http://jpdic.naver.com/jlpt/level-3/parts-0/p{0}.nhn", index);
-
-                    WebClient wc = new WebClient();
-                    byte[] docBytes = wc.DownloadData(url);
-                    string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                    string charsetKey = "charset";
-                    int pos = encodeType.IndexOf(charsetKey);
-
-                    Encoding currentEncoding = Encoding.Default;
-                    if (pos != -1)
-                    {
-                        pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                        if (pos != -1)
-                        {
-                            string charset = encodeType.Substring(pos + 1);
-                            currentEncoding = Encoding.GetEncoding(charset);
-                        }
-                    }
-
-                    string htmlDocumentContent = currentEncoding.GetString(docBytes);
-
-                    // 읽어온 데이터를 파싱한다.
-                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                    htmlDoc.LoadHtml(htmlDocumentContent);
-
-                    HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
-                    foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
-                    {
-                        String strVocabulary = "";
-                        String strVocabularyGana = "";
-                        String strVocabularyTranslation = "";
-                        String strWordClass = "";
-                        String strJlptClass = "N3";
-
-                        var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
-                        var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
-
-                        strVocabularyGana = characterNode.InnerText;
-                        int chpos = strVocabularyGana.IndexOf('[');
-                        if (chpos != -1)
-                        {
-                            strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
-                            strVocabularyGana = strVocabularyGana.Substring(0, chpos);
-
-                        }
-
-                        strVocabularyTranslation = translationNode.InnerText;
-                        chpos = strVocabularyTranslation.IndexOf(']');
-                        if (chpos != -1)
-                        {
-                            strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
-                            strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
-                        }
-
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
-                            SQLiteParameter param1 = new SQLiteParameter();
-                            SQLiteParameter param2 = new SQLiteParameter();
-                            SQLiteParameter param3 = new SQLiteParameter();
-                            SQLiteParameter param4 = new SQLiteParameter();
-                            SQLiteParameter param5 = new SQLiteParameter();
-                            cmd.Parameters.Add(param1);
-                            cmd.Parameters.Add(param2);
-                            cmd.Parameters.Add(param3);
-                            cmd.Parameters.Add(param4);
-                            cmd.Parameters.Add(param5);
-
-                            param1.Value = strVocabulary;
-                            param2.Value = strVocabularyGana;
-                            param3.Value = strVocabularyTranslation;
-                            param4.Value = strWordClass;
-                            param5.Value = strJlptClass;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                // N4 단어를 추출한다.
-                for (var index = 1; index <= 24; ++index)
-                {
-                    // 네이버에서 데이터를 읽어온다.
-                    string url = string.Format("http://jpdic.naver.com/jlpt/level-4/parts-0/p{0}.nhn", index);
-
-                    WebClient wc = new WebClient();
-                    byte[] docBytes = wc.DownloadData(url);
-                    string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                    string charsetKey = "charset";
-                    int pos = encodeType.IndexOf(charsetKey);
-
-                    Encoding currentEncoding = Encoding.Default;
-                    if (pos != -1)
-                    {
-                        pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                        if (pos != -1)
-                        {
-                            string charset = encodeType.Substring(pos + 1);
-                            currentEncoding = Encoding.GetEncoding(charset);
-                        }
-                    }
-
-                    string htmlDocumentContent = currentEncoding.GetString(docBytes);
-
-                    // 읽어온 데이터를 파싱한다.
-                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                    htmlDoc.LoadHtml(htmlDocumentContent);
-
-                    HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
-                    foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
-                    {
-                        String strVocabulary = "";
-                        String strVocabularyGana = "";
-                        String strVocabularyTranslation = "";
-                        String strWordClass = "";
-                        String strJlptClass = "N4";
-
-                        var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
-                        var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
-
-                        strVocabularyGana = characterNode.InnerText;
-                        int chpos = strVocabularyGana.IndexOf('[');
-                        if (chpos != -1)
-                        {
-                            strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
-                            strVocabularyGana = strVocabularyGana.Substring(0, chpos);
-
-                        }
-
-                        strVocabularyTranslation = translationNode.InnerText;
-                        chpos = strVocabularyTranslation.IndexOf(']');
-                        if (chpos != -1)
-                        {
-                            strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
-                            strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
-                        }
-
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
-                            SQLiteParameter param1 = new SQLiteParameter();
-                            SQLiteParameter param2 = new SQLiteParameter();
-                            SQLiteParameter param3 = new SQLiteParameter();
-                            SQLiteParameter param4 = new SQLiteParameter();
-                            SQLiteParameter param5 = new SQLiteParameter();
-                            cmd.Parameters.Add(param1);
-                            cmd.Parameters.Add(param2);
-                            cmd.Parameters.Add(param3);
-                            cmd.Parameters.Add(param4);
-                            cmd.Parameters.Add(param5);
-
-                            param1.Value = strVocabulary;
-                            param2.Value = strVocabularyGana;
-                            param3.Value = strVocabularyTranslation;
-                            param4.Value = strWordClass;
-                            param5.Value = strJlptClass;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                // N5 단어를 추출한다.
-                for (var index = 1; index <= 14; ++index)
-                {
-                    // 네이버에서 데이터를 읽어온다.
-                    string url = string.Format("http://jpdic.naver.com/jlpt/level-5/parts-0/p{0}.nhn", index);
-
-                    WebClient wc = new WebClient();
-                    byte[] docBytes = wc.DownloadData(url);
-                    string encodeType = wc.ResponseHeaders["Content-Type"];
-
-                    string charsetKey = "charset";
-                    int pos = encodeType.IndexOf(charsetKey);
-
-                    Encoding currentEncoding = Encoding.Default;
-                    if (pos != -1)
-                    {
-                        pos = encodeType.IndexOf("=", pos + charsetKey.Length);
-                        if (pos != -1)
-                        {
-                            string charset = encodeType.Substring(pos + 1);
-                            currentEncoding = Encoding.GetEncoding(charset);
-                        }
-                    }
-
-                    string htmlDocumentContent = currentEncoding.GetString(docBytes);
-
-                    // 읽어온 데이터를 파싱한다.
-                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                    htmlDoc.LoadHtml(htmlDocumentContent);
-
-                    HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
-                    foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
-                    {
-                        String strVocabulary = "";
-                        String strVocabularyGana = "";
-                        String strVocabularyTranslation = "";
-                        String strWordClass = "";
-                        String strJlptClass = "N5";
-
-                        var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
-                        var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
-
-                        strVocabularyGana = characterNode.InnerText;
-                        int chpos = strVocabularyGana.IndexOf('[');
-                        if (chpos != -1)
-                        {
-                            strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
-                            strVocabularyGana = strVocabularyGana.Substring(0, chpos);
-
-                        }
-
-                        strVocabularyTranslation = translationNode.InnerText;
-                        chpos = strVocabularyTranslation.IndexOf(']');
-                        if (chpos != -1)
-                        {
-                            strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
-                            strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
-                        }
-
-                        using (SQLiteCommand cmd = mDbConnection.CreateCommand())
-                        {
-                            cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
-                            SQLiteParameter param1 = new SQLiteParameter();
-                            SQLiteParameter param2 = new SQLiteParameter();
-                            SQLiteParameter param3 = new SQLiteParameter();
-                            SQLiteParameter param4 = new SQLiteParameter();
-                            SQLiteParameter param5 = new SQLiteParameter();
-                            cmd.Parameters.Add(param1);
-                            cmd.Parameters.Add(param2);
-                            cmd.Parameters.Add(param3);
-                            cmd.Parameters.Add(param4);
-                            cmd.Parameters.Add(param5);
-
-                            param1.Value = strVocabulary;
-                            param2.Value = strVocabularyGana;
-                            param3.Value = strVocabularyTranslation;
-                            param4.Value = strWordClass;
-                            param5.Value = strJlptClass;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
+                // N1~N5 단어를 추출한다.
+                int totCount = 73 + 60 + 35 + 24 + 14;
+                string btnSourceText = btnExtractVocabulary.Text;
+
+                ExtractVocabulary(73, 1, "N1", btnSourceText, totCount, 0);
+                ExtractVocabulary(60, 2, "N2", btnSourceText, totCount, 73);
+                ExtractVocabulary(35, 3, "N3", btnSourceText, totCount, 73 + 60);
+                ExtractVocabulary(24, 4, "N4", btnSourceText, totCount, 73 + 60 + 35);
+                ExtractVocabulary(14, 5, "N5", btnSourceText, totCount, 73 + 60 + 35 + 24);
+
+                btnExtractVocabulary.Text = btnSourceText;
 
                 tran.Commit();
             }
 
             MessageBox.Show("작업이 완료되었습니다.");
+        }
+
+        private void ExtractVocabulary(int loopCount, int jlptLevel, string jlptLevelText, string btnSourceText, int totCount, int beginCount)
+        {
+            for (var index = 1; index <= loopCount; ++index)
+            {
+                ++beginCount;
+                btnExtractVocabulary.Text = string.Format("{0}[{1}/{2}]", btnSourceText, beginCount, totCount);
+                btnExtractVocabulary.Refresh();
+
+                // 네이버에서 데이터를 읽어온다.
+                string htmlDocumentContent = LoadWebPage(string.Format("http://jpdic.naver.com/jlpt/level-{0}/parts-0/p{1}.nhn", jlptLevel, index));
+
+                // 읽어온 데이터를 파싱한다.
+                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(htmlDocumentContent);
+
+                HtmlAgilityPack.HtmlNodeCollection jlptNodeList = htmlDoc.DocumentNode.SelectNodes("//div[@class='jlpt_lst']/ul[@class='lst']/li");
+                foreach (HtmlAgilityPack.HtmlNode jlptNode in jlptNodeList)
+                {
+                    String strVocabulary = "";
+                    String strVocabularyGana = "";
+                    String strVocabularyTranslation = "";
+                    String strWordClass = "";
+                    String strJlptClass = jlptLevelText;
+
+                    var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
+                    var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
+
+                    strVocabularyGana = characterNode.InnerText;
+                    int chpos = strVocabularyGana.IndexOf('[');
+                    if (chpos != -1)
+                    {
+                        strVocabulary = strVocabularyGana.Substring(chpos + 1).Replace("[", "").Replace("]", "");
+                        strVocabularyGana = strVocabularyGana.Substring(0, chpos);
+
+                    }
+
+                    strVocabularyTranslation = translationNode.InnerText;
+                    chpos = strVocabularyTranslation.IndexOf(']');
+                    if (chpos != -1)
+                    {
+                        strWordClass = strVocabularyTranslation.Substring(0, chpos).Replace("[", "").Replace("]", "");
+                        strVocabularyTranslation = strVocabularyTranslation.Substring(chpos + 1).Replace("→", "");
+                    }
+
+                    using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "INSERT INTO TBL_EXTRACT_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, WORD_CLASS, JLPT_CLASS) VALUES (?,?,?,?,?);";
+                        SQLiteParameter param1 = new SQLiteParameter();
+                        SQLiteParameter param2 = new SQLiteParameter();
+                        SQLiteParameter param3 = new SQLiteParameter();
+                        SQLiteParameter param4 = new SQLiteParameter();
+                        SQLiteParameter param5 = new SQLiteParameter();
+                        cmd.Parameters.Add(param1);
+                        cmd.Parameters.Add(param2);
+                        cmd.Parameters.Add(param3);
+                        cmd.Parameters.Add(param4);
+                        cmd.Parameters.Add(param5);
+
+                        param1.Value = strVocabulary;
+                        param2.Value = strVocabularyGana;
+                        param3.Value = strVocabularyTranslation;
+                        param4.Value = strWordClass;
+                        param5.Value = strJlptClass;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
         }
 
         private string LoadWebPage(string url)
