@@ -48,6 +48,8 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpWord = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnAddPossibleExampleCountCheck = new System.Windows.Forms.Button();
+            this.btnHanjaExistCheck = new System.Windows.Forms.Button();
             this.btnWordAdd = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cboWordSearchItem = new System.Windows.Forms.ComboBox();
@@ -56,7 +58,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnVocabularySearch = new System.Windows.Forms.Button();
             this.dataVocabularyGridView = new System.Windows.Forms.DataGridView();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,8 +67,9 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnHanjaExistCheck = new System.Windows.Forms.Button();
-            this.btnAddPossibleExampleCountCheck = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tbpEtc = new System.Windows.Forms.TabPage();
+            this.btnExtractVocabulary = new System.Windows.Forms.Button();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -81,6 +83,7 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataVocabularyGridView)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tbpEtc.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbpHanja
@@ -89,7 +92,7 @@
             this.tbpHanja.Location = new System.Drawing.Point(4, 22);
             this.tbpHanja.Name = "tbpHanja";
             this.tbpHanja.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpHanja.Size = new System.Drawing.Size(990, 694);
+            this.tbpHanja.Size = new System.Drawing.Size(1285, 801);
             this.tbpHanja.TabIndex = 1;
             this.tbpHanja.Text = "한자";
             this.tbpHanja.UseVisualStyleBackColor = true;
@@ -117,7 +120,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.dataHanjaGridView);
-            this.splitContainer2.Size = new System.Drawing.Size(984, 688);
+            this.splitContainer2.Size = new System.Drawing.Size(1279, 795);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -221,7 +224,7 @@
             this.dataHanjaGridView.ReadOnly = true;
             this.dataHanjaGridView.RowTemplate.Height = 23;
             this.dataHanjaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataHanjaGridView.Size = new System.Drawing.Size(984, 651);
+            this.dataHanjaGridView.Size = new System.Drawing.Size(1279, 758);
             this.dataHanjaGridView.TabIndex = 0;
             this.dataHanjaGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataHanjaGridView_CellMouseDoubleClick);
             this.dataHanjaGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataHanjaGridView_RowPostPaint);
@@ -299,6 +302,26 @@
             this.splitContainer1.Size = new System.Drawing.Size(1279, 795);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // btnAddPossibleExampleCountCheck
+            // 
+            this.btnAddPossibleExampleCountCheck.Location = new System.Drawing.Point(998, 8);
+            this.btnAddPossibleExampleCountCheck.Name = "btnAddPossibleExampleCountCheck";
+            this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(132, 23);
+            this.btnAddPossibleExampleCountCheck.TabIndex = 8;
+            this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수";
+            this.btnAddPossibleExampleCountCheck.UseVisualStyleBackColor = true;
+            this.btnAddPossibleExampleCountCheck.Click += new System.EventHandler(this.btnAddPossibleExampleCountCheck_Click);
+            // 
+            // btnHanjaExistCheck
+            // 
+            this.btnHanjaExistCheck.Location = new System.Drawing.Point(1136, 8);
+            this.btnHanjaExistCheck.Name = "btnHanjaExistCheck";
+            this.btnHanjaExistCheck.Size = new System.Drawing.Size(140, 23);
+            this.btnHanjaExistCheck.TabIndex = 7;
+            this.btnHanjaExistCheck.Text = "모든한자등록여부확인";
+            this.btnHanjaExistCheck.UseVisualStyleBackColor = true;
+            this.btnHanjaExistCheck.Click += new System.EventHandler(this.btnHanjaExistCheck_Click);
             // 
             // btnWordAdd
             // 
@@ -401,17 +424,6 @@
             this.dataVocabularyGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataVocabularyGridView_RowPostPaint);
             this.dataVocabularyGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataVocabularyGridView_KeyDown);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tbpWord);
-            this.tabControl1.Controls.Add(this.tbpHanja);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(5, 5);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1293, 827);
-            this.tabControl1.TabIndex = 0;
-            // 
             // Column4
             // 
             this.Column4.HeaderText = "idx";
@@ -471,25 +483,39 @@
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
             // 
-            // btnHanjaExistCheck
+            // tabControl1
             // 
-            this.btnHanjaExistCheck.Location = new System.Drawing.Point(1136, 8);
-            this.btnHanjaExistCheck.Name = "btnHanjaExistCheck";
-            this.btnHanjaExistCheck.Size = new System.Drawing.Size(140, 23);
-            this.btnHanjaExistCheck.TabIndex = 7;
-            this.btnHanjaExistCheck.Text = "모든한자등록여부확인";
-            this.btnHanjaExistCheck.UseVisualStyleBackColor = true;
-            this.btnHanjaExistCheck.Click += new System.EventHandler(this.btnHanjaExistCheck_Click);
+            this.tabControl1.Controls.Add(this.tbpWord);
+            this.tabControl1.Controls.Add(this.tbpHanja);
+            this.tabControl1.Controls.Add(this.tbpEtc);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(5, 5);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.RightToLeftLayout = true;
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1293, 827);
+            this.tabControl1.TabIndex = 0;
             // 
-            // btnAddPossibleExampleCountCheck
+            // tbpEtc
             // 
-            this.btnAddPossibleExampleCountCheck.Location = new System.Drawing.Point(998, 8);
-            this.btnAddPossibleExampleCountCheck.Name = "btnAddPossibleExampleCountCheck";
-            this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(132, 23);
-            this.btnAddPossibleExampleCountCheck.TabIndex = 8;
-            this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수";
-            this.btnAddPossibleExampleCountCheck.UseVisualStyleBackColor = true;
-            this.btnAddPossibleExampleCountCheck.Click += new System.EventHandler(this.btnAddPossibleExampleCountCheck_Click);
+            this.tbpEtc.Controls.Add(this.btnExtractVocabulary);
+            this.tbpEtc.Location = new System.Drawing.Point(4, 22);
+            this.tbpEtc.Name = "tbpEtc";
+            this.tbpEtc.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpEtc.Size = new System.Drawing.Size(1285, 801);
+            this.tbpEtc.TabIndex = 2;
+            this.tbpEtc.Text = "기타";
+            this.tbpEtc.UseVisualStyleBackColor = true;
+            // 
+            // btnExtractVocabulary
+            // 
+            this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
+            this.btnExtractVocabulary.Name = "btnExtractVocabulary";
+            this.btnExtractVocabulary.Size = new System.Drawing.Size(211, 23);
+            this.btnExtractVocabulary.TabIndex = 0;
+            this.btnExtractVocabulary.Text = "네이버에서 단어 추출하기";
+            this.btnExtractVocabulary.UseVisualStyleBackColor = true;
+            this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
             // 
             // frmMain
             // 
@@ -517,6 +543,7 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataVocabularyGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tbpEtc.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -561,6 +588,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.Button btnHanjaExistCheck;
         private System.Windows.Forms.Button btnAddPossibleExampleCountCheck;
+        private System.Windows.Forms.TabPage tbpEtc;
+        private System.Windows.Forms.Button btnExtractVocabulary;
 
     }
 }
