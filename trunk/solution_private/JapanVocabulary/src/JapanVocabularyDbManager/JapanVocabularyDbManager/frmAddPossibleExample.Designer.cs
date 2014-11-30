@@ -52,7 +52,6 @@
             this.dataExampleGridView.Location = new System.Drawing.Point(12, 12);
             this.dataExampleGridView.MultiSelect = false;
             this.dataExampleGridView.Name = "dataExampleGridView";
-            this.dataExampleGridView.ReadOnly = true;
             this.dataExampleGridView.RowTemplate.Height = 23;
             this.dataExampleGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataExampleGridView.Size = new System.Drawing.Size(1191, 241);
@@ -91,7 +90,6 @@
             // 
             this.Column3.HeaderText = "";
             this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
             this.Column3.Width = 40;
             // 
             // Column4
