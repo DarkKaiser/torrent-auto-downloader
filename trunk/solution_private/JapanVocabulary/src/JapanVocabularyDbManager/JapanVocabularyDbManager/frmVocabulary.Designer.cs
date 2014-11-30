@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnAddPossibleExample = new System.Windows.Forms.Button();
             this.btnExampleCustomAdd = new System.Windows.Forms.Button();
             this.exampleWebBrowser = new System.Windows.Forms.WebBrowser();
             this.btnAddNoClose = new System.Windows.Forms.Button();
@@ -50,7 +51,8 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.btnAddPossibleExample = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -82,9 +84,19 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer1.Size = new System.Drawing.Size(1347, 812);
+            this.splitContainer1.Size = new System.Drawing.Size(1396, 812);
             this.splitContainer1.SplitterDistance = 494;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // btnAddPossibleExample
+            // 
+            this.btnAddPossibleExample.Location = new System.Drawing.Point(389, 722);
+            this.btnAddPossibleExample.Name = "btnAddPossibleExample";
+            this.btnAddPossibleExample.Size = new System.Drawing.Size(96, 42);
+            this.btnAddPossibleExample.TabIndex = 19;
+            this.btnAddPossibleExample.Text = "추가등록가능 예문추가";
+            this.btnAddPossibleExample.UseVisualStyleBackColor = true;
+            this.btnAddPossibleExample.Click += new System.EventHandler(this.btnAddPossibleExample_Click);
             // 
             // btnExampleCustomAdd
             // 
@@ -166,6 +178,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.btnAddHanja);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -294,25 +308,33 @@
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(849, 812);
+            this.webBrowser1.Size = new System.Drawing.Size(898, 812);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
             // 
-            // btnAddPossibleExample
+            // label5
             // 
-            this.btnAddPossibleExample.Location = new System.Drawing.Point(389, 722);
-            this.btnAddPossibleExample.Name = "btnAddPossibleExample";
-            this.btnAddPossibleExample.Size = new System.Drawing.Size(96, 42);
-            this.btnAddPossibleExample.TabIndex = 19;
-            this.btnAddPossibleExample.Text = "추가등록가능 예문추가";
-            this.btnAddPossibleExample.UseVisualStyleBackColor = true;
-            this.btnAddPossibleExample.Click += new System.EventHandler(this.btnAddPossibleExample_Click);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(58, 153);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 12);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "JLPT 레벨";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(91, 183);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 12);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "품사";
             // 
             // frmVocabulary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1347, 812);
+            this.ClientSize = new System.Drawing.Size(1396, 812);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmVocabulary";
@@ -356,6 +378,8 @@
         private System.Windows.Forms.WebBrowser exampleWebBrowser;
         private System.Windows.Forms.Button btnExampleCustomAdd;
         private System.Windows.Forms.Button btnAddPossibleExample;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
 
     }
 }

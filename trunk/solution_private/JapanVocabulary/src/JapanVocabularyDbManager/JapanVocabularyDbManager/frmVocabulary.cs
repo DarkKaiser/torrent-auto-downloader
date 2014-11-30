@@ -86,6 +86,7 @@ namespace JapanVocabularyDbManager
                 FillExampleData();
                 btnExampleAdd.Visible = true;
                 btnExampleCustomAdd.Visible = true;
+                btnAddPossibleExample.Visible = true;
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
                 txtVocabulary.Enabled = false;
@@ -94,6 +95,7 @@ namespace JapanVocabularyDbManager
             {
                 btnExampleAdd.Visible = false;
                 btnExampleCustomAdd.Visible = false;
+                btnAddPossibleExample.Visible = false;
                 dataExampleGridView.Visible = false;
                 exampleWebBrowser.Visible = false;
             }
@@ -121,6 +123,7 @@ namespace JapanVocabularyDbManager
             if (addVocabulary() == false)
                 return;
 
+            // @@@@@ 단어품사
             if (EditMode == false)
             {
                 EditMode = true;
@@ -159,6 +162,7 @@ namespace JapanVocabularyDbManager
                 FillExampleData();
                 btnExampleAdd.Visible = true;
                 btnExampleCustomAdd.Visible = true;
+                btnAddPossibleExample.Visible = true;
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
                 txtVocabulary.Enabled = false;
@@ -171,6 +175,7 @@ namespace JapanVocabularyDbManager
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
 
+            // @@@@@ 단어 품사
             if (EditMode == true)
             {
                 // 이미 입력된 단어인지 확인한다.
@@ -316,7 +321,7 @@ namespace JapanVocabularyDbManager
 
         private void dataExampleGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            if (MessageBox.Show("현재 단어에서 선택하신 예문 매핑정보를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("현재 단어에서 선택한 예문에 대한 매핑정보를 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
         }
 
@@ -337,7 +342,7 @@ namespace JapanVocabularyDbManager
                     {
                         if (reader.HasRows == false)
                         {
-                            if (MessageBox.Show("예문하고 매핑되어 있는 단어가 없습니다. 예문까지 완전히 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            if (MessageBox.Show("예문과 매핑되어 있는 단어가 더이상 없습니다. 예문까지 완전히 삭제하시겠습니까?", "삭제", MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
                                 using (SQLiteCommand cmd2 = DbConnection.CreateCommand())
                                 {
@@ -485,6 +490,8 @@ namespace JapanVocabularyDbManager
 
         private void btnAddPossibleExample_Click(object sender, EventArgs e)
         {
+            Debug.Assert(EditMode == true);
+
             // @@@@@
         }
     }
