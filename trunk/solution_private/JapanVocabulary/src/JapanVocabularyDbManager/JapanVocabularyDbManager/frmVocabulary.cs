@@ -17,6 +17,13 @@ namespace JapanVocabularyDbManager
         public string example_translation;
     };
 
+    public struct AddPossibleExampleInfo
+    {
+        public long idx;
+        public string example;
+        public string example_translation;
+    };
+
     public partial class frmVocabulary : Form
     {
         public bool EditMode { private get; set; }
@@ -492,7 +499,57 @@ namespace JapanVocabularyDbManager
         {
             Debug.Assert(EditMode == true);
 
-            // @@@@@
+            List<AddPossibleExampleInfo> exampleInfoList = new List<AddPossibleExampleInfo>();
+
+            try
+            {
+                // 데이터를 읽어들입니다.
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT IDX, VOCABULARY, VOCABULARY_TRANSLATION ")
+                     .Append("  FROM TBL_VOCABULARY_EXAMPLE A ")
+                     .Append(" WHERE A.VOCABULARY LIKE '%").Append(Vocabulary.Trim()).Append("%'")
+                     .Append("   AND A.IDX NOT IN ( SELECT AA.E_IDX ")
+                     .Append("                        FROM TBL_VOCABULARY_EXAMPLE_MAPP AA ")
+                     .Append("                       WHERE AA.V_IDX = ").Append(idx)
+                     .Append("                    ) ");
+
+                SQLiteCommand cmd = new SQLiteCommand(sbSQL.ToString(), DbConnection);
+                cmd.CommandType = CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.HasRows == true && reader.Read() == true)
+                    {
+                        AddPossibleExampleInfo exampleInfo = new AddPossibleExampleInfo();
+
+                        exampleInfo.idx = reader.GetInt32(0/*IDX*/);
+                        exampleInfo.example = reader.GetString(1/*VOCABULARY*/);
+                        exampleInfo.example_translation = reader.GetString(2/*VOCABULARY_TRANSLATION*/);
+
+                        exampleInfoList.Add(exampleInfo);
+                    }
+                }
+            }
+            catch (SQLiteException)
+            {
+            }
+
+            if (exampleInfoList.Count == 0)
+            {
+                MessageBox.Show("추가등록 가능한 예문이 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 추가등록가능 예문 대화상자를 연다.
+            frmAddPossibleExample form = new frmAddPossibleExample();
+            form.idx = idx;
+            form.DbConnection = DbConnection;
+            form.ExampleInfoList = exampleInfoList;
+
+            if (form.ShowDialog() == DialogResult.OK)
+                FillExampleData();
+
+            form.Dispose();
         }
     }
 }
