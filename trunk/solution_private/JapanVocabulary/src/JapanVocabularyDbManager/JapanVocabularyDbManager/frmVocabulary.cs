@@ -32,7 +32,15 @@ namespace JapanVocabularyDbManager
         public string Vocabulary { get; set; }
         public string VocabularyGana { get; set; }
         public string VocabularyTranslation { get; set; }
+        public string WordClassCodeString { get; set; }
+        public string JlptClassCodeString { get; set; }
         public SQLiteConnection DbConnection { private get; set; }
+
+        // 품사
+        private string[] mWordClassCodeList = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10" };
+
+        // JLPT 급수
+        private string[] mJlptClassCodeList = { "01", "02", "03", "04", "05", "99" };
 
         public frmVocabulary()
         {
@@ -85,6 +93,39 @@ namespace JapanVocabularyDbManager
             txtVocabularyGana.Text = VocabularyGana;
             txtVocabularyTranslation.Text = VocabularyTranslation;
 
+            // JLPT 급수, 품사를 설정한다.
+            for (int i = 0; i < clbWordClassListBox.Items.Count; ++i)
+                clbWordClassListBox.SetItemCheckState(i, CheckState.Unchecked);
+            for (int i = 0; i < clbJlptClassListBox.Items.Count; ++i)
+                clbJlptClassListBox.SetItemCheckState(i, CheckState.Unchecked);
+
+            string[] wordClasCodeList = WordClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            string[] jlptClasCodeList = JlptClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            for (var index = 0; index < wordClasCodeList.Length; ++index)
+            {
+                string code = wordClasCodeList[index];
+                for (var j = 0; j < mWordClassCodeList.Length; ++j)
+                {
+                    if (mWordClassCodeList[j] == code)
+                    {
+                        clbWordClassListBox.SetItemChecked(index, true);
+                        break;
+                    }
+                }
+            }
+            for (var index = 0; index < jlptClasCodeList.Length; ++index)
+            {
+                string code = jlptClasCodeList[index];
+                for (var j = 0; j < mJlptClassCodeList.Length; ++j)
+                {
+                    if (mJlptClassCodeList[j] == code)
+                    {
+                        clbJlptClassListBox.SetItemChecked(index, true);
+                        break;
+                    }
+                }
+            }
+
             EnableControls();
             CheckVocabularyExtensionInfo();
 
@@ -130,7 +171,6 @@ namespace JapanVocabularyDbManager
             if (addVocabulary() == false)
                 return;
 
-            // @@@@@ 단어품사
             if (EditMode == false)
             {
                 EditMode = true;
@@ -280,6 +320,7 @@ namespace JapanVocabularyDbManager
             Vocabulary = strVocabulary;
             VocabularyGana = strVocabularyGana;
             VocabularyTranslation = strVocabularyTranslation;
+            // @@@@@
 
             return true;
         }

@@ -166,19 +166,21 @@ namespace JapanVocabularyDbManager
 
             frmVocabulary form = new frmVocabulary();
 
-            // @@@@@ 급수, 품사
             form.EditMode = true;
             form.DbConnection = mDbConnection;
             form.idx = long.Parse(rc[0].Cells[0].Value.ToString());
             form.Vocabulary = rc[0].Cells[1].Value.ToString();
             form.VocabularyGana = rc[0].Cells[2].Value.ToString();
             form.VocabularyTranslation = rc[0].Cells[3].Value.ToString();
+            form.WordClassCodeString = rc[0].Cells[9].Value.ToString();
+            form.JlptClassCodeString = rc[0].Cells[10].Value.ToString();
 
             if (form.ShowDialog() == DialogResult.OK)
             {
                 rc[0].Cells[1].Value = form.Vocabulary;
                 rc[0].Cells[2].Value = form.VocabularyGana;
                 rc[0].Cells[3].Value = form.VocabularyTranslation;
+                // @@@@@ 급수, 품사
             }
 
             rc[0].Cells[6].Value = "-";
