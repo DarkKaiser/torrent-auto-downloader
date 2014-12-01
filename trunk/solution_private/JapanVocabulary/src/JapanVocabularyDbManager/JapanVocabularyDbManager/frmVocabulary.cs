@@ -33,7 +33,9 @@ namespace JapanVocabularyDbManager
         public string VocabularyGana { get; set; }
         public string VocabularyTranslation { get; set; }
         public string WordClassCodeString { get; set; }
+        public string WordClassNameString { get; set; }
         public string JlptClassCodeString { get; set; }
+        public string JlptClassNameString { get; set; }
         public SQLiteConnection DbConnection { private get; set; }
 
         // 품사
@@ -176,7 +178,7 @@ namespace JapanVocabularyDbManager
                 EditMode = true;
 
                 // 방금 추가한 단어의 idx 값을 구한다.
-                string strSQL = string.Format(@"SELECT IDX FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}""", txtVocabulary.Text.Trim());
+                string strSQL = string.Format(@"SELECT IDX FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}"" AND VOCABULARY_GANA = ""{1}"" ", txtVocabulary.Text.Trim(), txtVocabularyGana.Text.Trim());
                 SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                 cmd.CommandType = CommandType.Text;
 
@@ -218,6 +220,10 @@ namespace JapanVocabularyDbManager
 
         private bool addVocabulary()
         {
+            string strWordClassCode = "";
+            string strWordClassName = "";
+            string strJlptClassCode = "";
+            string strJlptClassName = "";
             string strVocabulary = txtVocabulary.Text.Trim();
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
@@ -264,7 +270,62 @@ namespace JapanVocabularyDbManager
                             updateCmd.ExecuteNonQuery();
                         }
 
-                        // @@@@@ 품사
+                        using (SQLiteCommand deleteCmd = DbConnection.CreateCommand())
+                        {
+                            deleteCmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_WORD_CLASS_MAPP WHERE V_IDX = {0};", idx);
+                            deleteCmd.ExecuteNonQuery();
+                        }
+                        using (SQLiteCommand deleteCmd = DbConnection.CreateCommand())
+                        {
+                            deleteCmd.CommandText = string.Format("DELETE FROM TBL_VOCABULARY_JLPT_CLASS_MAPP WHERE V_IDX = {0};", idx);
+                            deleteCmd.ExecuteNonQuery();
+                        }
+                        for (var index = 0; index < clbWordClassListBox.Items.Count; ++index)
+                        {
+                            if (clbWordClassListBox.GetItemChecked(index) == true)
+                            {
+                                using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
+                                {
+                                    insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY_WORD_CLASS_MAPP (V_IDX, CODE_ID) VALUES (?,?);";
+                                    SQLiteParameter param1 = new SQLiteParameter();
+                                    SQLiteParameter param2 = new SQLiteParameter();
+                                    insertCmd.Parameters.Add(param1);
+                                    insertCmd.Parameters.Add(param2);
+
+                                    param1.Value = idx;
+                                    param2.Value = mWordClassCodeList[index];
+                                    insertCmd.ExecuteNonQuery();
+
+                                    if (strWordClassCode.Length > 0)
+                                        strWordClassCode += ",";
+                                    strWordClassCode = mWordClassCodeList[index];
+                                    // @@@@@
+                                }
+                            }
+                        }
+                        for (var index = 0; index < clbJlptClassListBox.Items.Count; ++index)
+                        {
+                            if (clbJlptClassListBox.GetItemChecked(index) == true)
+                            {
+                                using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
+                                {
+                                    insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY_JLPT_CLASS_MAPP (V_IDX, CODE_ID) VALUES (?,?);";
+                                    SQLiteParameter param1 = new SQLiteParameter();
+                                    SQLiteParameter param2 = new SQLiteParameter();
+                                    insertCmd.Parameters.Add(param1);
+                                    insertCmd.Parameters.Add(param2);
+
+                                    param1.Value = idx;
+                                    param2.Value = mJlptClassCodeList[index];
+                                    insertCmd.ExecuteNonQuery();
+
+                                    if (strJlptClassCode.Length > 0)
+                                        strJlptClassCode += ",";
+                                    strJlptClassCode = mJlptClassCodeList[index];
+                                    // @@@@@
+                                }
+                            }
+                        }
 
                         tran.Commit();
                     }
@@ -316,7 +377,85 @@ namespace JapanVocabularyDbManager
                             insertCmd.ExecuteNonQuery();
                         }
 
-                        // @@@@@ 품사
+                        // @@@@@ select idx ( select last_insert_rowid() )
+                        // 방금 추가한 단어의 idx 값을 구한다.
+                        long newIdx = 0;
+                        strSQL = string.Format(@"SELECT IDX FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}"" AND VOCABULARY_GANA = ""{1}"" ", txtVocabulary.Text.Trim(), txtVocabularyGana.Text.Trim());
+                        cmd = new SQLiteCommand(strSQL, DbConnection);
+                        cmd.CommandType = CommandType.Text;
+
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows == false)
+                            {
+                                MessageBox.Show("방금 추가한 단어의 IDX 값을 찾지 못하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                DialogResult = DialogResult.OK;
+                                Close();
+                                return false;
+                            }
+
+                            int nRowCount = 0;
+                            while (reader.Read() == true)
+                            {
+                                ++nRowCount;
+                                if (nRowCount >= 2)
+                                {
+                                    MessageBox.Show("방금 추가한 단어의 IDX 값이 2개 이상 존재합니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    DialogResult = DialogResult.OK;
+                                    Close();
+                                    return false;
+                                }
+
+                                newIdx = reader.GetInt32(0/*IDX*/);
+                            }
+                        }
+
+                        for (var index = 0; index < clbWordClassListBox.Items.Count; ++index)
+                        {
+                            if (clbWordClassListBox.GetItemChecked(index) == true)
+                            {
+                                using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
+                                {
+                                    insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY_WORD_CLASS_MAPP (V_IDX, CODE_ID) VALUES (?,?);";
+                                    SQLiteParameter param1 = new SQLiteParameter();
+                                    SQLiteParameter param2 = new SQLiteParameter();
+                                    insertCmd.Parameters.Add(param1);
+                                    insertCmd.Parameters.Add(param2);
+
+                                    param1.Value = newIdx;
+                                    param2.Value = mWordClassCodeList[index];
+                                    insertCmd.ExecuteNonQuery();
+
+                                    if (strWordClassCode.Length > 0)
+                                        strWordClassCode += ",";
+                                    strWordClassCode = mWordClassCodeList[index];
+                                    // @@@@@
+                                }
+                            }
+                        }
+                        for (var index = 0; index < clbJlptClassListBox.Items.Count; ++index)
+                        {
+                            if (clbJlptClassListBox.GetItemChecked(index) == true)
+                            {
+                                using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
+                                {
+                                    insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY_JLPT_CLASS_MAPP (V_IDX, CODE_ID) VALUES (?,?);";
+                                    SQLiteParameter param1 = new SQLiteParameter();
+                                    SQLiteParameter param2 = new SQLiteParameter();
+                                    insertCmd.Parameters.Add(param1);
+                                    insertCmd.Parameters.Add(param2);
+
+                                    param1.Value = newIdx;
+                                    param2.Value = mJlptClassCodeList[index];
+                                    insertCmd.ExecuteNonQuery();
+
+                                    if (strJlptClassCode.Length > 0)
+                                        strJlptClassCode += ",";
+                                    strJlptClassCode = mJlptClassCodeList[index];
+                                    // @@@@@
+                                }
+                            }
+                        }
 
                         tran.Commit();
                     }
@@ -331,7 +470,10 @@ namespace JapanVocabularyDbManager
             Vocabulary = strVocabulary;
             VocabularyGana = strVocabularyGana;
             VocabularyTranslation = strVocabularyTranslation;
-            // @@@@@ 품사
+            WordClassCodeString = strWordClassCode;
+            WordClassNameString = strWordClassName;
+            JlptClassCodeString = strJlptClassCode;
+            JlptClassNameString = strJlptClassName;
 
             return true;
         }
