@@ -222,14 +222,12 @@ namespace JapanVocabularyDbManager
             string strVocabularyGana = txtVocabularyGana.Text.Trim();
             string strVocabularyTranslation = txtVocabularyTranslation.Text.Trim();
 
-            // @@@@@ 단어 품사
             if (EditMode == true)
             {
-                // 이미 입력된 단어인지 확인한다.
                 try
                 {
-                    // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE IDX <> {0} AND VOCABULARY = ""{1}""", idx, strVocabulary);
+                    // 이미 입력된 단어인지 확인한다.
+                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE IDX <> {0} AND VOCABULARY = ""{1}"" AND VOCABULARY_GANA = ""{2}"" ", idx, strVocabulary, strVocabularyGana);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -243,25 +241,32 @@ namespace JapanVocabularyDbManager
                         }
                     }
 
-                    // 데이터를 갱신한다.
-                    using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
+                    using (SQLiteTransaction tran = DbConnection.BeginTransaction())
                     {
-                        updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, INPUT_DATE=? WHERE IDX={0};", idx);
-                        SQLiteParameter param1 = new SQLiteParameter();
-                        SQLiteParameter param2 = new SQLiteParameter();
-                        SQLiteParameter param3 = new SQLiteParameter();
-                        SQLiteParameter param4 = new SQLiteParameter();
-                        updateCmd.Parameters.Add(param1);
-                        updateCmd.Parameters.Add(param2);
-                        updateCmd.Parameters.Add(param3);
-                        updateCmd.Parameters.Add(param4);
+                        // 데이터를 갱신한다.
+                        using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
+                        {
+                            updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, INPUT_DATE=? WHERE IDX={0};", idx);
+                            SQLiteParameter param1 = new SQLiteParameter();
+                            SQLiteParameter param2 = new SQLiteParameter();
+                            SQLiteParameter param3 = new SQLiteParameter();
+                            SQLiteParameter param4 = new SQLiteParameter();
+                            updateCmd.Parameters.Add(param1);
+                            updateCmd.Parameters.Add(param2);
+                            updateCmd.Parameters.Add(param3);
+                            updateCmd.Parameters.Add(param4);
 
-                        param1.Value = strVocabulary;
-                        param2.Value = strVocabularyGana;
-                        param3.Value = strVocabularyTranslation;
-                        param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                            param1.Value = strVocabulary;
+                            param2.Value = strVocabularyGana;
+                            param3.Value = strVocabularyTranslation;
+                            param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
 
-                        updateCmd.ExecuteNonQuery();
+                            updateCmd.ExecuteNonQuery();
+                        }
+
+                        // @@@@@ 품사
+
+                        tran.Commit();
                     }
                 }
                 catch (SQLiteException ex)
@@ -272,11 +277,10 @@ namespace JapanVocabularyDbManager
             }
             else
             {
-                // 이미 입력된 단어인지 확인한다.
                 try
                 {
-                    // 데이터를 읽어들입니다.
-                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}""", strVocabulary);
+                    // 이미 입력된 단어인지 확인한다.
+                    string strSQL = string.Format(@"SELECT * FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}"" AND VOCABULARY_GANA = ""{1}"" ", strVocabulary, strVocabularyGana);
                     SQLiteCommand cmd = new SQLiteCommand(strSQL, DbConnection);
                     cmd.CommandType = CommandType.Text;
 
@@ -289,38 +293,45 @@ namespace JapanVocabularyDbManager
                             return false;
                         }
                     }
+
+                    using (SQLiteTransaction tran = DbConnection.BeginTransaction())
+                    {
+                        // 데이터를 추가한다.
+                        using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
+                        {
+                            insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE) VALUES (?,?,?,?);";
+                            SQLiteParameter param1 = new SQLiteParameter();
+                            SQLiteParameter param2 = new SQLiteParameter();
+                            SQLiteParameter param3 = new SQLiteParameter();
+                            SQLiteParameter param4 = new SQLiteParameter();
+                            insertCmd.Parameters.Add(param1);
+                            insertCmd.Parameters.Add(param2);
+                            insertCmd.Parameters.Add(param3);
+                            insertCmd.Parameters.Add(param4);
+
+                            param1.Value = strVocabulary;
+                            param2.Value = strVocabularyGana;
+                            param3.Value = strVocabularyTranslation;
+                            param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                            insertCmd.ExecuteNonQuery();
+                        }
+
+                        // @@@@@ 품사
+
+                        tran.Commit();
+                    }
                 }
                 catch (SQLiteException ex)
                 {
                     MessageBox.Show(string.Format("DB에 이미 등록된 단어인지 확인하는 작업중에 오류가 발생하였습니다.\r\n\r\n{0}", ex.Message), "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
-
-                // 데이터를 추가한다.
-                using (SQLiteCommand cmd = DbConnection.CreateCommand())
-                {
-                    cmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE) VALUES (?,?,?,?);";
-                    SQLiteParameter param1 = new SQLiteParameter();
-                    SQLiteParameter param2 = new SQLiteParameter();
-                    SQLiteParameter param3 = new SQLiteParameter();
-                    SQLiteParameter param4 = new SQLiteParameter();
-                    cmd.Parameters.Add(param1);
-                    cmd.Parameters.Add(param2);
-                    cmd.Parameters.Add(param3);
-                    cmd.Parameters.Add(param4);
-
-                    param1.Value = strVocabulary;
-                    param2.Value = strVocabularyGana;
-                    param3.Value = strVocabularyTranslation;
-                    param4.Value = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                    cmd.ExecuteNonQuery();
-                }
             }
 
             Vocabulary = strVocabulary;
             VocabularyGana = strVocabularyGana;
             VocabularyTranslation = strVocabularyTranslation;
-            // @@@@@
+            // @@@@@ 품사
 
             return true;
         }
