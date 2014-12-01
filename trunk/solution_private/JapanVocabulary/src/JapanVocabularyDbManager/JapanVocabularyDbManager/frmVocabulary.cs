@@ -298,8 +298,11 @@ namespace JapanVocabularyDbManager
 
                                     if (strWordClassCode.Length > 0)
                                         strWordClassCode += ",";
-                                    strWordClassCode = mWordClassCodeList[index];
-                                    // @@@@@
+                                    strWordClassCode += mWordClassCodeList[index];
+
+                                    if (strWordClassName.Length > 0)
+                                        strWordClassName += ",";
+                                    strWordClassName += clbWordClassListBox.Items[index].ToString();
                                 }
                             }
                         }
@@ -321,8 +324,11 @@ namespace JapanVocabularyDbManager
 
                                     if (strJlptClassCode.Length > 0)
                                         strJlptClassCode += ",";
-                                    strJlptClassCode = mJlptClassCodeList[index];
-                                    // @@@@@
+                                    strJlptClassCode += mJlptClassCodeList[index];
+
+                                    if (strJlptClassName.Length > 0)
+                                        strJlptClassName += ",";
+                                    strJlptClassName += clbJlptClassListBox.Items[index].ToString();
                                 }
                             }
                         }
@@ -377,9 +383,8 @@ namespace JapanVocabularyDbManager
                             insertCmd.ExecuteNonQuery();
                         }
 
-                        // @@@@@ select idx ( select last_insert_rowid() )
                         // 방금 추가한 단어의 idx 값을 구한다.
-                        long newIdx = 0;
+                        long newIdx = -1;
                         strSQL = string.Format(@"SELECT IDX FROM TBL_VOCABULARY WHERE VOCABULARY = ""{0}"" AND VOCABULARY_GANA = ""{1}"" ", txtVocabulary.Text.Trim(), txtVocabularyGana.Text.Trim());
                         cmd = new SQLiteCommand(strSQL, DbConnection);
                         cmd.CommandType = CommandType.Text;
@@ -389,8 +394,7 @@ namespace JapanVocabularyDbManager
                             if (reader.HasRows == false)
                             {
                                 MessageBox.Show("방금 추가한 단어의 IDX 값을 찾지 못하였습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                DialogResult = DialogResult.OK;
-                                Close();
+                                txtVocabulary.Focus();
                                 return false;
                             }
 
@@ -401,8 +405,7 @@ namespace JapanVocabularyDbManager
                                 if (nRowCount >= 2)
                                 {
                                     MessageBox.Show("방금 추가한 단어의 IDX 값이 2개 이상 존재합니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    DialogResult = DialogResult.OK;
-                                    Close();
+                                    txtVocabulary.Focus();
                                     return false;
                                 }
 
@@ -428,8 +431,11 @@ namespace JapanVocabularyDbManager
 
                                     if (strWordClassCode.Length > 0)
                                         strWordClassCode += ",";
-                                    strWordClassCode = mWordClassCodeList[index];
-                                    // @@@@@
+                                    strWordClassCode += mWordClassCodeList[index];
+
+                                    if (strWordClassName.Length > 0)
+                                        strWordClassName += ",";
+                                    strWordClassName += clbWordClassListBox.Items[index].ToString();
                                 }
                             }
                         }
@@ -451,8 +457,11 @@ namespace JapanVocabularyDbManager
 
                                     if (strJlptClassCode.Length > 0)
                                         strJlptClassCode += ",";
-                                    strJlptClassCode = mJlptClassCodeList[index];
-                                    // @@@@@
+                                    strJlptClassCode += mJlptClassCodeList[index];
+
+                                    if (strJlptClassName.Length > 0)
+                                        strJlptClassName += ",";
+                                    strJlptClassName += clbJlptClassListBox.Items[index].ToString();
                                 }
                             }
                         }
