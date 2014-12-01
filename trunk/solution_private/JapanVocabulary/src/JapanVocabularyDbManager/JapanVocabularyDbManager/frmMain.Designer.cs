@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbpHanja = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
@@ -58,6 +58,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnVocabularySearch = new System.Windows.Forms.Button();
             this.dataVocabularyGridView = new System.Windows.Forms.DataGridView();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tbpEtc = new System.Windows.Forms.TabPage();
+            this.btnExtractVocabulary = new System.Windows.Forms.Button();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -67,9 +70,8 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tbpEtc = new System.Windows.Forms.TabPage();
-            this.btnExtractVocabulary = new System.Windows.Forms.Button();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -208,8 +210,8 @@
             // dataHanjaGridView
             // 
             this.dataHanjaGridView.AllowUserToAddRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataHanjaGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataHanjaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataHanjaGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -398,8 +400,8 @@
             // 
             this.dataVocabularyGridView.AllowUserToAddRows = false;
             this.dataVocabularyGridView.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataVocabularyGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataVocabularyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataVocabularyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -411,7 +413,9 @@
             this.Column15,
             this.Column10,
             this.Column12,
-            this.Column13});
+            this.Column13,
+            this.Column16,
+            this.Column11});
             this.dataVocabularyGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataVocabularyGridView.Location = new System.Drawing.Point(0, 0);
             this.dataVocabularyGridView.Name = "dataVocabularyGridView";
@@ -423,6 +427,40 @@
             this.dataVocabularyGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataVocabularyGridView_CellMouseDoubleClick);
             this.dataVocabularyGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataVocabularyGridView_RowPostPaint);
             this.dataVocabularyGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataVocabularyGridView_KeyDown);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tbpWord);
+            this.tabControl1.Controls.Add(this.tbpHanja);
+            this.tabControl1.Controls.Add(this.tbpEtc);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(5, 5);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.RightToLeftLayout = true;
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1293, 827);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tbpEtc
+            // 
+            this.tbpEtc.Controls.Add(this.btnExtractVocabulary);
+            this.tbpEtc.Location = new System.Drawing.Point(4, 22);
+            this.tbpEtc.Name = "tbpEtc";
+            this.tbpEtc.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpEtc.Size = new System.Drawing.Size(1285, 801);
+            this.tbpEtc.TabIndex = 2;
+            this.tbpEtc.Text = "기타";
+            this.tbpEtc.UseVisualStyleBackColor = true;
+            // 
+            // btnExtractVocabulary
+            // 
+            this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
+            this.btnExtractVocabulary.Name = "btnExtractVocabulary";
+            this.btnExtractVocabulary.Size = new System.Drawing.Size(371, 23);
+            this.btnExtractVocabulary.TabIndex = 0;
+            this.btnExtractVocabulary.Text = "네이버에서 N1~N5 단어 추출하기";
+            this.btnExtractVocabulary.UseVisualStyleBackColor = true;
+            this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
             // 
             // Column4
             // 
@@ -483,39 +521,19 @@
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
             // 
-            // tabControl1
+            // Column16
             // 
-            this.tabControl1.Controls.Add(this.tbpWord);
-            this.tabControl1.Controls.Add(this.tbpHanja);
-            this.tabControl1.Controls.Add(this.tbpEtc);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(5, 5);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.RightToLeftLayout = true;
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1293, 827);
-            this.tabControl1.TabIndex = 0;
+            this.Column16.HeaderText = "wordClassCode";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
+            this.Column16.Visible = false;
             // 
-            // tbpEtc
+            // Column11
             // 
-            this.tbpEtc.Controls.Add(this.btnExtractVocabulary);
-            this.tbpEtc.Location = new System.Drawing.Point(4, 22);
-            this.tbpEtc.Name = "tbpEtc";
-            this.tbpEtc.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpEtc.Size = new System.Drawing.Size(1285, 801);
-            this.tbpEtc.TabIndex = 2;
-            this.tbpEtc.Text = "기타";
-            this.tbpEtc.UseVisualStyleBackColor = true;
-            // 
-            // btnExtractVocabulary
-            // 
-            this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
-            this.btnExtractVocabulary.Name = "btnExtractVocabulary";
-            this.btnExtractVocabulary.Size = new System.Drawing.Size(371, 23);
-            this.btnExtractVocabulary.TabIndex = 0;
-            this.btnExtractVocabulary.Text = "네이버에서 N1~N5 단어 추출하기";
-            this.btnExtractVocabulary.UseVisualStyleBackColor = true;
-            this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
+            this.Column11.HeaderText = "jlptClassCode";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
+            this.Column11.Visible = false;
             // 
             // frmMain
             // 
@@ -577,6 +595,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.Button btnHanjaExistCheck;
+        private System.Windows.Forms.Button btnAddPossibleExampleCountCheck;
+        private System.Windows.Forms.TabPage tbpEtc;
+        private System.Windows.Forms.Button btnExtractVocabulary;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
@@ -586,10 +608,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
-        private System.Windows.Forms.Button btnHanjaExistCheck;
-        private System.Windows.Forms.Button btnAddPossibleExampleCountCheck;
-        private System.Windows.Forms.TabPage tbpEtc;
-        private System.Windows.Forms.Button btnExtractVocabulary;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
 
     }
 }

@@ -366,11 +366,33 @@ namespace JapanVocabularyDbManager
             {
                 // 데이터를 읽어들입니다.
                 string strSQL = "SELECT A.IDX, A.VOCABULARY, A.VOCABULARY_GANA, A.VOCABULARY_TRANSLATION, A.USE_YN, " +
-                                "       ( SELECT COUNT(*) " +
-                                "           FROM TBL_VOCABULARY_EXAMPLE_MAPP AA, " +
-                                "                TBL_VOCABULARY_EXAMPLE BB " +
-                                "          WHERE AA.V_IDX = A.IDX " +
-                                "            AND AA.E_IDX = BB.IDX ) EXAMPLE_COUNT " +
+                                "       (   SELECT COUNT(*) " +
+                                "             FROM TBL_VOCABULARY_EXAMPLE_MAPP AA, " +
+                                "                  TBL_VOCABULARY_EXAMPLE BB " +
+                                "            WHERE AA.V_IDX = A.IDX " +
+                                "              AND AA.E_IDX = BB.IDX ) EXAMPLE_COUNT, " +
+                                "       IFNULL((   SELECT GROUP_CONCAT(AA.CODE_ID, ',') " +
+                                "                    FROM TBL_VOCABULARY_WORD_CLASS_MAPP AA " +
+                                "                   WHERE AA.V_IDX = A.IDX" +
+                                "                GROUP BY AA.V_IDX ), '') WORD_CLASS_CODE, " +
+                                "       IFNULL((   SELECT GROUP_CONCAT(BB.CODE_NAME, ',') " +
+                                "                    FROM TBL_VOCABULARY_WORD_CLASS_MAPP AA, " +
+                                "                         TBL_CODE BB " +
+                                "                   WHERE AA.V_IDX = A.IDX" +
+                                "                     AND AA.CODE_ID = BB.CODE_ID " +
+                                "                     AND BB.CODE_GRP_ID = 'W01' " +
+                                "                GROUP BY AA.V_IDX ), '') WORD_CLASS_TEXT, " +
+                                "       IFNULL((   SELECT GROUP_CONCAT(AA.CODE_ID, ',') " +
+                                "                    FROM TBL_VOCABULARY_JLPT_CLASS_MAPP AA " +
+                                "                   WHERE AA.V_IDX = A.IDX" +
+                                "                GROUP BY AA.V_IDX ), '') JLPT_CLASS_CODE, " +
+                                "       IFNULL((   SELECT GROUP_CONCAT(BB.CODE_NAME, ',') " +
+                                "                    FROM TBL_VOCABULARY_JLPT_CLASS_MAPP AA, " +
+                                "                         TBL_CODE BB " +
+                                "                   WHERE AA.V_IDX = A.IDX" +
+                                "                     AND AA.CODE_ID = BB.CODE_ID " +
+                                "                     AND BB.CODE_GRP_ID = 'J01' " +
+                                "                GROUP BY AA.V_IDX ), '') JLPT_CLASS_TEXT " +
                                 "  FROM TBL_VOCABULARY A ";
 
                 if (string.IsNullOrEmpty(sqlWhere) == false)
@@ -387,14 +409,17 @@ namespace JapanVocabularyDbManager
                                                         reader.GetString(1/* VOCABULARY */), 
                                                         reader.GetString(2/* VOCABULARY_GANA */), 
                                                         reader.GetString(3/* VOCABULARY_TRANSLATION */),
-                                                        "품사@@@@@",
-                                                        "등급@@@@@",
+                                                        reader.GetString(7/* WORD_CLASS_TEXT */),
+                                                        reader.GetString(9/* JLPT_CLASS_TEXT */),
                                                         reader.GetInt32(5/* EXAMPLE_COUNT */),
-                                                        reader.GetString(4/* USE_YN */));
+                                                        reader.GetString(4/* USE_YN */),
+                                                        "",
+                                                        reader.GetString(6/* WORD_CLASS_CODE */),
+                                                        reader.GetString(8/* JLPT_CLASS_CODE */));
                     }
                 }
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
