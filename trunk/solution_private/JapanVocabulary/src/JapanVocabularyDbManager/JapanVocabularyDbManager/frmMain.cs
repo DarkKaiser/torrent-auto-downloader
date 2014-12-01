@@ -931,5 +931,51 @@ namespace JapanVocabularyDbManager
 
             return currentEncoding.GetString(docBytes);
         }
+
+        private void btnExampleTrimCheck_Click(object sender, EventArgs e)
+        {
+            int nIndex = 0;
+            string trimTargetResult = "";
+            string btnSourceText = btnExampleTrimCheck.Text;
+
+            using (SQLiteCommand cmd = mDbConnection.CreateCommand())
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT IDX, VOCABULARY, VOCABULARY_TRANSLATION ")
+                     .Append("  FROM TBL_VOCABULARY_EXAMPLE ");
+
+                cmd.CommandText = sbSQL.ToString();
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows == true && reader.Read() == true)
+                    {
+                        ++nIndex;
+                        btnExampleTrimCheck.Text = string.Format("{0}[{1}]", btnSourceText, nIndex);
+                        btnExampleTrimCheck.Refresh();
+
+                        long idx = reader.GetInt32(0/* IDX */);
+                        string vocabulary = reader.GetString(1/* VOCABULARY */);
+                        string vocabularyTranslation = reader.GetString(2/* VOCABULARY_TRANSLATION */);
+
+                        string vocabularyTrim = vocabulary.Trim();
+                        string vocabularyTranslationTrim = vocabularyTranslation.Trim();
+                        if (vocabulary != vocabularyTrim || vocabularyTranslation != vocabularyTranslationTrim)
+                        {
+                            if (trimTargetResult != "")
+                                trimTargetResult += "\n";
+
+                            trimTargetResult += string.Format("{0}, {1}", idx, vocabulary);
+                        }
+                    }
+                }
+            }
+
+            btnExampleTrimCheck.Text = btnSourceText;
+
+            if (trimTargetResult != "")
+                MessageBox.Show("작업이 완료되었습니다. trim 대상이 존재합니다.\n\n" + trimTargetResult);
+            else
+                MessageBox.Show("작업이 완료되었습니다. 앞뒤로 공백있는 예문이 없습니다.");
+        }
     }
 }

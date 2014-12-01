@@ -39,6 +39,8 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.clbWordClassListBox = new System.Windows.Forms.CheckedListBox();
+            this.clbJlptClassListBox = new System.Windows.Forms.CheckedListBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnAddHanja = new System.Windows.Forms.Button();
@@ -53,8 +55,6 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.clbJlptClassListBox = new System.Windows.Forms.CheckedListBox();
-            this.clbWordClassListBox = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -199,10 +199,48 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
+            // clbWordClassListBox
+            // 
+            this.clbWordClassListBox.CheckOnClick = true;
+            this.clbWordClassListBox.FormattingEnabled = true;
+            this.clbWordClassListBox.Items.AddRange(new object[] {
+            "명사",
+            "대명사",
+            "동사",
+            "조사",
+            "형용사",
+            "접사",
+            "부사",
+            "감동사",
+            "형용동사",
+            "기타"});
+            this.clbWordClassListBox.Location = new System.Drawing.Point(78, 221);
+            this.clbWordClassListBox.MultiColumn = true;
+            this.clbWordClassListBox.Name = "clbWordClassListBox";
+            this.clbWordClassListBox.Size = new System.Drawing.Size(404, 100);
+            this.clbWordClassListBox.TabIndex = 15;
+            // 
+            // clbJlptClassListBox
+            // 
+            this.clbJlptClassListBox.CheckOnClick = true;
+            this.clbJlptClassListBox.FormattingEnabled = true;
+            this.clbJlptClassListBox.Items.AddRange(new object[] {
+            "N1",
+            "N2",
+            "N3",
+            "N4",
+            "N5",
+            "미분류"});
+            this.clbJlptClassListBox.Location = new System.Drawing.Point(78, 147);
+            this.clbJlptClassListBox.MultiColumn = true;
+            this.clbJlptClassListBox.Name = "clbJlptClassListBox";
+            this.clbJlptClassListBox.Size = new System.Drawing.Size(404, 68);
+            this.clbJlptClassListBox.TabIndex = 14;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(46, 248);
+            this.label6.Location = new System.Drawing.Point(46, 221);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(29, 12);
             this.label6.TabIndex = 13;
@@ -211,7 +249,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 174);
+            this.label5.Location = new System.Drawing.Point(10, 147);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 12);
             this.label5.TabIndex = 12;
@@ -259,18 +297,18 @@
             // 
             // txtExtensionInfo
             // 
-            this.txtExtensionInfo.Location = new System.Drawing.Point(81, 358);
+            this.txtExtensionInfo.Location = new System.Drawing.Point(78, 330);
             this.txtExtensionInfo.Multiline = true;
             this.txtExtensionInfo.Name = "txtExtensionInfo";
             this.txtExtensionInfo.ReadOnly = true;
             this.txtExtensionInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtExtensionInfo.Size = new System.Drawing.Size(401, 107);
+            this.txtExtensionInfo.Size = new System.Drawing.Size(404, 138);
             this.txtExtensionInfo.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 358);
+            this.label4.Location = new System.Drawing.Point(15, 330);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 12);
             this.label4.TabIndex = 3;
@@ -282,7 +320,7 @@
             this.txtVocabularyTranslation.Location = new System.Drawing.Point(78, 74);
             this.txtVocabularyTranslation.Multiline = true;
             this.txtVocabularyTranslation.Name = "txtVocabularyTranslation";
-            this.txtVocabularyTranslation.Size = new System.Drawing.Size(404, 94);
+            this.txtVocabularyTranslation.Size = new System.Drawing.Size(404, 67);
             this.txtVocabularyTranslation.TabIndex = 6;
             this.txtVocabularyTranslation.Leave += new System.EventHandler(this.txtDescription_Leave);
             // 
@@ -333,42 +371,6 @@
             this.webBrowser1.Size = new System.Drawing.Size(898, 882);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Url = new System.Uri("http://jpdic.naver.com/", System.UriKind.Absolute);
-            // 
-            // clbJlptClassListBox
-            // 
-            this.clbJlptClassListBox.FormattingEnabled = true;
-            this.clbJlptClassListBox.Items.AddRange(new object[] {
-            "N1",
-            "N2",
-            "N3",
-            "N4",
-            "N5",
-            "미분류"});
-            this.clbJlptClassListBox.Location = new System.Drawing.Point(78, 174);
-            this.clbJlptClassListBox.MultiColumn = true;
-            this.clbJlptClassListBox.Name = "clbJlptClassListBox";
-            this.clbJlptClassListBox.Size = new System.Drawing.Size(404, 68);
-            this.clbJlptClassListBox.TabIndex = 14;
-            // 
-            // clbWordClassListBox
-            // 
-            this.clbWordClassListBox.FormattingEnabled = true;
-            this.clbWordClassListBox.Items.AddRange(new object[] {
-            "명사",
-            "대명사",
-            "동사",
-            "조사",
-            "형용사",
-            "접사",
-            "부사",
-            "감동사",
-            "형용동사",
-            "기타"});
-            this.clbWordClassListBox.Location = new System.Drawing.Point(78, 248);
-            this.clbWordClassListBox.MultiColumn = true;
-            this.clbWordClassListBox.Name = "clbWordClassListBox";
-            this.clbWordClassListBox.Size = new System.Drawing.Size(404, 100);
-            this.clbWordClassListBox.TabIndex = 15;
             // 
             // frmVocabulary
             // 

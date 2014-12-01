@@ -110,7 +110,7 @@ namespace JapanVocabularyDbManager
                 {
                     if (mWordClassCodeList[j] == code)
                     {
-                        clbWordClassListBox.SetItemChecked(index, true);
+                        clbWordClassListBox.SetItemChecked(j, true);
                         break;
                     }
                 }
@@ -122,7 +122,7 @@ namespace JapanVocabularyDbManager
                 {
                     if (mJlptClassCodeList[j] == code)
                     {
-                        clbJlptClassListBox.SetItemChecked(index, true);
+                        clbJlptClassListBox.SetItemChecked(j, true);
                         break;
                     }
                 }
