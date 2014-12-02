@@ -400,7 +400,8 @@ namespace JapanVocabularyDbManager
                                 "                     AND AA.CODE_ID = BB.CODE_ID " +
                                 "                     AND BB.CODE_GRP_ID = 'J01' " +
                                 "                GROUP BY AA.V_IDX ), '') JLPT_CLASS_TEXT " +
-                                "  FROM TBL_VOCABULARY A ";
+                                "  FROM TBL_VOCABULARY A " +
+                                " WHERE 1=1 ";
 
                 if (string.IsNullOrEmpty(sqlWhere) == false)
                     strSQL += " AND " + sqlWhere;
@@ -496,13 +497,13 @@ namespace JapanVocabularyDbManager
             switch (cboWordSearchItem.SelectedIndex)
             {
                 case 1/* 히라가나/가타가나 */:
-                    sb.Append(" VOCABULARY_GANA LIKE ");
+                    sb.Append(" A.VOCABULARY_GANA LIKE ");
                     break;
                 case 2/* 설명 */:
-                    sb.Append(" VOCABULARY_TRANSLATION LIKE ");
+                    sb.Append(" A.VOCABULARY_TRANSLATION LIKE ");
                     break;
                 default/* 단어 */:
-                    sb.Append(" VOCABULARY LIKE ");
+                    sb.Append(" A.VOCABULARY LIKE ");
                     break;
             }
 
