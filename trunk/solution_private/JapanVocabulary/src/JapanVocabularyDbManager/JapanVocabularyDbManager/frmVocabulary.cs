@@ -140,6 +140,10 @@ namespace JapanVocabularyDbManager
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
                 txtVocabulary.Enabled = false;
+
+                List<AddPossibleExampleInfo> exampleInfoList = AddPossibleExampleList();
+                if (exampleInfoList.Count == 0)
+                    btnAddPossibleExample.Enabled = false;
             }
             else
             {
@@ -215,6 +219,10 @@ namespace JapanVocabularyDbManager
                 dataExampleGridView.Visible = true;
                 exampleWebBrowser.Visible = true;
                 txtVocabulary.Enabled = false;
+
+                List<AddPossibleExampleInfo> exampleInfoList = AddPossibleExampleList();
+                if (exampleInfoList.Count == 0)
+                    btnAddPossibleExample.Enabled = false;
             }
         }
 
@@ -702,6 +710,28 @@ namespace JapanVocabularyDbManager
         {
             Debug.Assert(EditMode == true);
 
+            List<AddPossibleExampleInfo> exampleInfoList = AddPossibleExampleList();
+
+            if (exampleInfoList.Count == 0)
+            {
+                MessageBox.Show("추가등록 가능한 예문이 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 추가등록가능 예문 대화상자를 연다.
+            frmAddPossibleExample form = new frmAddPossibleExample();
+            form.idx = idx;
+            form.DbConnection = DbConnection;
+            form.ExampleInfoList = exampleInfoList;
+
+            if (form.ShowDialog() == DialogResult.OK)
+                FillExampleData();
+
+            form.Dispose();
+        }
+
+        private List<AddPossibleExampleInfo> AddPossibleExampleList()
+        {
             List<AddPossibleExampleInfo> exampleInfoList = new List<AddPossibleExampleInfo>();
 
             try
@@ -737,22 +767,7 @@ namespace JapanVocabularyDbManager
             {
             }
 
-            if (exampleInfoList.Count == 0)
-            {
-                MessageBox.Show("추가등록 가능한 예문이 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // 추가등록가능 예문 대화상자를 연다.
-            frmAddPossibleExample form = new frmAddPossibleExample();
-            form.idx = idx;
-            form.DbConnection = DbConnection;
-            form.ExampleInfoList = exampleInfoList;
-
-            if (form.ShowDialog() == DialogResult.OK)
-                FillExampleData();
-
-            form.Dispose();
+            return exampleInfoList;
         }
     }
 }
