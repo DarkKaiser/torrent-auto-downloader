@@ -30,7 +30,7 @@
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 
-    <string name="avsl_search">검색</string>
+    <string name="avsl_search">단어검색</string>
     <string name="avsl_sort">정렬</string>
     <string name="avsl_sort_vocabulary">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
@@ -48,7 +48,11 @@
     <string name="avsl_empty_search_result_list_vocabulary">검색된 단어가 없습니다.</string>
     <string name="avsl_vocabulary_memorize_count_info_description">암기완료/암기대상 :</string>
     <string name="avsl_vocabulary_count_info_description">검색/전체 :</string>
-    <string name="avsl_search_condition_text">선택</string>
+    <string name="avsl_search_condition_select_text">선택</string>
+    <string name="avsl_search_condition_search_word">검색어</string>
+    <string name="avsl_search_condition_search_word_hint">검색어를 입력하세요.</string>
+    <string name="avsl_search_condition_memorize_target">검색대상</string>
+    <string name="avsl_search_condition_jlpt_rating">JLPT 급수</string>
 
     <string name="avsli_memorize_target">암기대상</string>
     <string name="avsli_memorize_completed">암기완료</string>

@@ -52,7 +52,7 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
     @Override
     public boolean performClick() {
         new AlertDialog.Builder(getContext())
-                .setTitle(getResources().getString(R.string.avsl_search_condition_text))
+                .setTitle(getResources().getString(R.string.avsl_search_condition_select_text))
                 .setMultiChoiceItems(mItems, mSelection, this)
                 .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
