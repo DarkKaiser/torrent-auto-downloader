@@ -12,14 +12,13 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         >
-        <!-- @@@@@ 패널 배경 고민 -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#99333333"
+            android:background="#000000"
             android:paddingTop="3dp"
-            android:paddingBottom="3dp"
+            android:paddingBottom="4dp"
             >
             <TextView
                 android:id="@+id/avsl_vocabulary_count_info_description"
@@ -61,6 +60,11 @@
                 tools:ignore="RelativeOverlap,SpUsage"
                 />
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#313031"
+            />
         <TextView
             android:id="@android:id/empty"
             android:layout_width="wrap_content"
