@@ -45,9 +45,10 @@ public class Constants {
     public static final String USER_DB_FILENAME_V3 = "vocabulary_user_v3.db";
 
     /*
-     * 단어 DB 다운로드 URL @@@@@ 2개 이상으로 변경
+     * 단어 DB 다운로드 URL
      */
-    public static final String VOCABULARY_DB_DOWNLOAD_URL = "http://darkkaiser.cafe24.com/data/vocabulary_v3.db";
+    public static final String VOCABULARY_DB_DOWNLOAD_URL_1 = "http://darkkaiser.gonetis.com:55580/download/vocabulary_v3.db";
+    public static final String VOCABULARY_DB_DOWNLOAD_URL_2 = "http://darkkaiser.cafe24.com/data/vocabulary_v3.db";
 
     /*
      * 단어DB 버전정보 체크 URL
