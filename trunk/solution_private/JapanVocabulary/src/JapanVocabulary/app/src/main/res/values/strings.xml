@@ -27,12 +27,13 @@
     <string name="av_memorize_completed_ad_message">단어를 암기하셨습니까?</string>
 
     <string name="av_vocabulary_db_download_on_mobile_network_ad_title">알림</string>
-    <string name="av_vocabulary_db_download_on_mobile_network_ad_message">3G 네트워크로 접속되었습니다. 데이터 통화료가 부과될 수 있습니다. 단어 DB를 업데이트하시겠습니까?</string>
+    <string name="av_vocabulary_db_download_on_mobile_network_ad_message">3G 네트워크로 접속되었습니다. 데이터 통화료가 부과될 수 있습니다.\n\n단어 DB를 업데이트하시겠습니까?</string>
 
     <string name="av_search_memorize_vocabulary">암기단어 검색</string>
     <string name="av_rememorize_all">암기단어 재암기</string>
 
-    <string name="av_check_latest_vocabulary_db_pd_message">단어 DB의 업데이트 여부를 확인하는 중 입니다.</string>
+    <string name="av_update_vocabulary_db_pd_message">단어 DB를 업데이트하고 있습니다.</string>
+    <string name="av_latest_vocabulary_db_check_pd_message">단어 DB의 업데이트 여부를 확인하는 중 입니다.</string>
     <string name="av_load_memorize_target_vocabulary_pd_message">암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.</string>
 
     <string name="vvui_dialog_title">업데이트 정보</string>

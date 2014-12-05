@@ -66,13 +66,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int MSG_TOAST_SHOW = 1;
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
 	private static final int MSG_VOCABULARY_MEMORIZE_START = 3;
-	private static final int MSG_NETWORK_DISCONNECTED_DIALOG_SHOW = 4;
-	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK = 5;
-	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
-	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
-	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
-	private static final int MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG = 9;
-	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
+    private static final int MSG_NETWORK_DISCONNECTED_DIALOG_SHOW = 4;
+    private static final int MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK = 5;
+    private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
+    private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
+    private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
+    private static final int MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG = 9;
+    private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -222,7 +222,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 // 프로그레스 대화상자를 보인다.
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true)
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_check_latest_vocabulary_db_pd_message), true, false);
+                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_latest_vocabulary_db_check_pd_message), true, false);
                 else
                     mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
@@ -235,11 +235,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     String[] newVocabularyDbInfo = { "", "" };
 
                     if (true/* @@@@@ */ ||
-                            VocabularyDbHelper.getInstance().canUpgradeVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
+                            VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
                         // 현재 연결된 네트워크가 3G 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                        if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
+                        if (true/* @@@@@ */ || mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
                             // 3G 연결인 경우 사용자에게 단어DB를 다운받을지의 여부를 확인한 후 다운로드 받도록 한다.
                             Bundle bundle = new Bundle();
                             bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbInfo[0]);
@@ -633,44 +633,42 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	}
 
     // @@@@@
-    private void updateAndInitVocabularyDataOnMobileNetwork(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
-        if (isUpdateVocabularyDb)
-            mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "단어 DB를 업데이트하고 있습니다.", true, false);
-        else
-            mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.", true, false);
+    private void updateAndInitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
+        assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
+        assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
 
-        new Thread() {
-            // 단어 DB를 업데이트 할지에 대한 플래그
-            private boolean mIsUpdateVocabularyDb = false;
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
 
-            // 새로 업데이트 할 단어 DB의 버전 및 파일 해쉬값
-            private String mNewVocabularyDbVersion = null;
-            private String mNewVocabularyDbFileHash = null;
-
-            public Thread setValues(String newVocabularyDbVersion, String newVocabularyDbFileHash, boolean isUpdateVocabularyDb) {
-                assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
-
-                mIsUpdateVocabularyDb = isUpdateVocabularyDb;
-                mNewVocabularyDbVersion = newVocabularyDbVersion;
-                mNewVocabularyDbFileHash = newVocabularyDbFileHash;
-
-                return this;
+                // 프로그레스 대화상자를 보인다.
+                if (isUpdateVocabularyDb == true)
+                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_update_vocabulary_db_pd_message), true, false);
+                else
+                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
 
             @Override
-            public void run() {
+            protected Void doInBackground(Void... voids) {
+                // @@@@@
                 boolean updateSucceeded = false;
-                if (mIsUpdateVocabularyDb == true) {
+                if (isUpdateVocabularyDb == true) {
                     // 새로운 단어 DB로 갱신합니다.
-                    updateSucceeded = updateVocabularyDb(mNewVocabularyDbVersion, mNewVocabularyDbFileHash);
+                    updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
                 }
 
                 // 단어 데이터를 초기화한 후, 암기를 시작합니다.
                 initVocabularyDataAndMemorizeStart(true, true, updateSucceeded);
-            };
-        }
-        .setValues(newVocabularyDbVersion, newVocabularyDbFileHash, isUpdateVocabularyDb)
-        .start();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
     }
 
     // @@@@@
@@ -796,26 +794,21 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     // @@@@@
     private void initVocabularyDataAndMemorizeStart(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
-        Message msg = Message.obtain();
-        msg.what = MSG_PROGRESS_DIALOG_REFRESH;
-        msg.obj = getString(R.string.av_load_memorize_target_vocabulary_pd_message);
-        mLoadVocabularyDataHandler.sendMessage(msg);
+        assert mProgressDialog != null;
+        assert mProgressDialog.isShowing() == true;
+
+        mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
         // DB에서 단어 데이터를 읽어들인다.
         if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
-            msg = Message.obtain();
-            msg.what = MSG_TOAST_SHOW;
-            msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
-            mLoadVocabularyDataHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, "단어 DB에서 데이터의 로딩이 실패하였습니다.").sendToTarget();
         }
 
         // 암기할 단어 데이터를 로드합니다.
         loadMemorizeTargetVocabularyData(true);
 
         if (isNowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
-            msg = Message.obtain();
-            msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
-            mLoadVocabularyDataHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_DIALOG_SHOW).sendToTarget();
         } else if (isUpdateSucceeded == true) {
             SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             long prevMaxIdx = mPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
@@ -831,7 +824,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     Bundle bundle = new Bundle();
                     bundle.putString(EXTRA_VOCABULARY_UPDATE_INFO, sb.toString());
 
-                    msg = Message.obtain();
+                    Message msg = Message.obtain();
                     msg.what = MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG;
                     msg.setData(bundle);
 
@@ -843,13 +836,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     // @@@@@
     private void loadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
-        Message msg = Message.obtain();
-        msg.what = MSG_PROGRESS_DIALOG_REFRESH;
-        msg.obj = getString(R.string.av_load_memorize_target_vocabulary_pd_message);
-        mLoadVocabularyDataHandler.sendMessage(msg);
-        // 확인
-//        mLoadVocabularyDataHandler.sendMessage(mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)));
-//        mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
+        assert mProgressDialog != null;
+        assert mProgressDialog.isShowing() == true;
+
+        mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         mMemorizeTargetVocabularyList.loadVocabularyData(sharedPreferences, firstLoadVocabularyData);
@@ -857,9 +847,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         adjustVocabularySeekBar(sharedPreferences);
 
         // 단어 암기를 시작합니다.
-        msg = Message.obtain();
-        msg.what = MSG_VOCABULARY_MEMORIZE_START;
-        mLoadVocabularyDataHandler.sendMessage(msg);
+        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_MEMORIZE_START).sendToTarget();
     }
 
     private Handler mLoadVocabularyDataHandler = new Handler() {

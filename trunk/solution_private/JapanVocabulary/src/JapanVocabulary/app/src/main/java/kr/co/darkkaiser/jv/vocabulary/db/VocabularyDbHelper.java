@@ -103,7 +103,7 @@ public class VocabularyDbHelper {
         return result;
     }
 
-    public boolean canUpgradeVocabularyDb(SharedPreferences sharedPreferences, String[] result) {
+    public boolean canUpdateVocabularyDb(SharedPreferences sharedPreferences, String[] result) {
         assert sharedPreferences != null;
 
         if (result.length != 2)
