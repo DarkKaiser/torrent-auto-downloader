@@ -73,7 +73,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
 	private static final int MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG = 9;
 	private static final int MSG_VOCABULARY_SEEKBAR_VISIBILITY = 10;
-	private static final int MSG_VOCABULARY_MAINBAR_VISIBILITY = 11;
 
     private static final int MSG_CUSTOM_EVT_TAP = 1;
     private static final int MSG_CUSTOM_EVT_LONG_PRESS = 2;
@@ -231,10 +230,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                         // 암기할 단어 데이터를 로드합니다.
                         loadMemorizeTargetVocabularyData(false);
-
-                        Message msg = Message.obtain();
-                        msg.what = MSG_VOCABULARY_MEMORIZE_START;
-                        mVocabularyDataLoadHandler.sendMessage(msg);
                     }
                 }
                 .start();
@@ -281,11 +276,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		   			public void run() {
 				        // 암기할 단어 데이터를 로드합니다.
 				        loadMemorizeTargetVocabularyData(false);
-
-						Message msg = Message.obtain();
-						msg.what = MSG_VOCABULARY_MEMORIZE_START;
-						mVocabularyDataLoadHandler.sendMessage(msg);
-		   			};
+		   			}
 		   		}
 		   		.start();
 			} else {
@@ -303,11 +294,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		   			public void run() {
 				        // 암기할 단어 데이터를 로드합니다.
 				        loadMemorizeTargetVocabularyData(false);
-
-						Message msg = Message.obtain();
-						msg.what = MSG_VOCABULARY_MEMORIZE_START;
-						mVocabularyDataLoadHandler.sendMessage(msg);
-		   			};
+		   			}
 		   		}
 		   		.start();
 		   	} else {
@@ -564,7 +551,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			vocabularySeekBar.incrementProgressBy(1);
 		}
 
-		mVocabularyDataLoadHandler.sendMessage(msg);
+		mLoadVocabularyDataHandler.sendMessage(msg);
 	}
 
     // @@@@@
@@ -626,7 +613,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION;
                             msg.setData(bundle);
 
-                            mVocabularyDataLoadHandler.sendMessage(msg);
+                            mLoadVocabularyDataHandler.sendMessage(msg);
                         } else {
                             // 새로운 단어 DB로 갱신합니다.
                             boolean updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
@@ -674,7 +661,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             Message msg = Message.obtain();
             msg.what = MSG_TOAST_SHOW;
             msg.obj = "단어DB의 업데이트  여부를 확인할 수 없습니다.";
-            mVocabularyDataLoadHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.sendMessage(msg);
         }
 
         return null;
@@ -732,7 +719,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 단어 DB 파일을 내려받는다.
         try {
-            URL url = new URL(Constants.VOCABULARY_DB_DOWNLOAD_URL_1);
+            URL url = new URL(Constants.VOCABULARY_DB_DOWNLOAD_URL_2);
 
             URLConnection con = url.openConnection();
             int contentLength = con.getContentLength();
@@ -745,10 +732,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             msg = Message.obtain();
             msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_START;
             msg.setData(bundle);
-            mVocabularyDataLoadHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.sendMessage(msg);
 
             // 해당 메시지의 처리가 완료될 때까지 대기한다.
-            while (mVocabularyDataLoadHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOAD_START) == true) {
+            while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOAD_START) == true) {
                 Thread.sleep(10);
             }
 
@@ -766,11 +753,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 msg = Message.obtain();
                 msg.what = MSG_VOCABULARY_DATA_DOWNLOADING;
                 msg.setData(bundle);
-                mVocabularyDataLoadHandler.sendMessage(msg);
+                mLoadVocabularyDataHandler.sendMessage(msg);
             }
 
             // 해당 메시지의 처리가 완료될 때까지 대기한다.
-            while (mVocabularyDataLoadHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true) {
+            while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true) {
                 Thread.sleep(10);
             }
 
@@ -780,7 +767,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 msg = Message.obtain();
                 msg.what = MSG_TOAST_SHOW;
                 msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
-                mVocabularyDataLoadHandler.sendMessage(msg);
+                mLoadVocabularyDataHandler.sendMessage(msg);
             } else {
                 if (TextUtils.isEmpty(newVocabularyDbFileHash) == true) {
                     File f = new File(jvDbPath);
@@ -822,7 +809,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         msg = Message.obtain();
                         msg.what = MSG_TOAST_SHOW;
                         msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).";
-                        mVocabularyDataLoadHandler.sendMessage(msg);
+                        mLoadVocabularyDataHandler.sendMessage(msg);
                     }
                 }
             }
@@ -832,12 +819,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             msg = Message.obtain();
             msg.what = MSG_TOAST_SHOW;
             msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
-            mVocabularyDataLoadHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.sendMessage(msg);
         }
 
         msg = Message.obtain();
         msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_END;
-        mVocabularyDataLoadHandler.sendMessage(msg);
+        mLoadVocabularyDataHandler.sendMessage(msg);
 
         return updateSucceeded;
     }
@@ -847,14 +834,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         Message msg = Message.obtain();
         msg.what = MSG_PROGRESS_DIALOG_REFRESH;
         msg.obj = "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.";
-        mVocabularyDataLoadHandler.sendMessage(msg);
+        mLoadVocabularyDataHandler.sendMessage(msg);
 
         // DB에서 단어 데이터를 읽어들인다.
         if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
             msg = Message.obtain();
             msg.what = MSG_TOAST_SHOW;
             msg.obj = "단어 DB에서 데이터의 로딩이 실패하였습니다.";
-            mVocabularyDataLoadHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.sendMessage(msg);
         }
 
         // 암기할 단어 데이터를 로드합니다.
@@ -863,7 +850,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (nowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
             msg = Message.obtain();
             msg.what = MSG_NETWORK_DISCONNECTED_DIALOG_SHOW;
-            mVocabularyDataLoadHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.sendMessage(msg);
         } else if (updateSucceeded == true) {
             SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             long prevMaxIdx = mPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
@@ -883,15 +870,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     msg.what = MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG;
                     msg.setData(bundle);
 
-                    mVocabularyDataLoadHandler.sendMessage(msg);
+                    mLoadVocabularyDataHandler.sendMessage(msg);
                 }
             }
         }
-
-        // 단어 암기를 시작합니다.
-        msg = Message.obtain();
-        msg.what = MSG_VOCABULARY_MEMORIZE_START;
-        mVocabularyDataLoadHandler.sendMessage(msg);
     }
 
     // @@@@@
@@ -899,19 +881,23 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         Message msg = Message.obtain();
         msg.what = MSG_PROGRESS_DIALOG_REFRESH;
         msg.obj = "암기 할 단어를 불러오고 있습니다.\n잠시만 기다려주세요.";
-        mVocabularyDataLoadHandler.sendMessage(msg);
+        mLoadVocabularyDataHandler.sendMessage(msg);
 
-        SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-        mMemorizeTargetVocabularyList.loadVocabularyData(preferences, firstLoadVocabularyData);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        mMemorizeTargetVocabularyList.loadVocabularyData(sharedPreferences, firstLoadVocabularyData);
 
-        adjustVocabularySeekBar(preferences);
+        adjustVocabularySeekBar(sharedPreferences);
+
+        // 단어 암기를 시작합니다.
+        msg = Message.obtain();
+        msg.what = MSG_VOCABULARY_MEMORIZE_START;
+        mLoadVocabularyDataHandler.sendMessage(msg);
     }
 
-    private Handler mVocabularyDataLoadHandler = new Handler() {
+    private Handler mLoadVocabularyDataHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
-                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.setMessage((String)msg.obj);
             } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
@@ -928,21 +914,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     mProgressDialog.dismiss();
 
                 mProgressDialog = null;
-
-                // 단어 정보 헤더가 화면에 보이도록 메시지를 보낸다.
-                Message msg2 = Message.obtain();
-                msg2.what = MSG_VOCABULARY_MAINBAR_VISIBILITY;
-                mVocabularyDataLoadHandler.sendMessage(msg2);
-            } else if (msg.what == MSG_VOCABULARY_MAINBAR_VISIBILITY) {
-                // @@@@@
-                // 단어 정보 헤더를 화면에 보이도록 한다.
-                RelativeLayout layout = (RelativeLayout)findViewById(R.id.av_memorize_info_header);
-                // @@@@@ 애니메이션 효과 없애기??
-                if (layout.getVisibility() != View.VISIBLE) {
-                    layout.setVisibility(View.VISIBLE);
-                }
-            } else if (msg.what == MSG_TOAST_SHOW) {
-                Toast.makeText(VocabularyActivity.this, (String)msg.obj, Toast.LENGTH_LONG).show();
             } else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
                 // @@@@@
                 new AlertDialog.Builder(VocabularyActivity.this)
@@ -1036,6 +1007,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         vocabularySeekBar.setVisibility(View.GONE);
                     }
                 }
+            } else if (msg.what == MSG_TOAST_SHOW) {
+                Toast.makeText(VocabularyActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
             }
         }
     };

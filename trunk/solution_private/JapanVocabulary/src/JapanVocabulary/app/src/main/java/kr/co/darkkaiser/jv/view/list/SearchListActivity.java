@@ -243,6 +243,7 @@ public class SearchListActivity extends ActionBarListActivity {
 
                 assert mProgressDialog == null;
 
+                // TODO 프로그레스바가 잘 뜨지 않는 현상 있음
                 // 프로그레스 대화상자를 보인다.
                 mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
 
