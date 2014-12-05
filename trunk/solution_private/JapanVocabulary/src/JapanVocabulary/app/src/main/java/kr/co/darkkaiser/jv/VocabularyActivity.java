@@ -206,8 +206,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-
                 // 프로그램 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
                 SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                 mIsVocabularyUpdateOnStarted = sharedPreferences.getBoolean(getString(R.string.as_vocabulary_update_on_started_key), getResources().getBoolean(R.bool.vocabulary_update_on_started_default_value));
@@ -274,7 +272,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+                if (mProgressDialog != null)
+                    mProgressDialog.dismiss();
+
+                mProgressDialog = null;
             }
         }.execute();
     }
@@ -296,12 +297,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             case R.id.av_rememorize_all:
                 assert mProgressDialog == null;
 
-                // @@@@@ async
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        super.onPreExecute();
-
                         // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
                         mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_memorize_settings_vocabulary_pd_message), true, false);
                     }
@@ -312,15 +310,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         VocabularyManager.getInstance().memorizeTargetVocabularyRememorizeAll();
 
                         // 암기할 단어 데이터를 로드합니다.
-                        loadMemorizeTargetVocabularyData(false);
+                        reloadMemorizeTargetVocabularyData(false);
 
                         return null;
                     }
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        super.onPostExecute(aVoid);
-
                         if (mProgressDialog != null)
                             mProgressDialog.dismiss();
 
@@ -339,58 +335,86 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	}
 
 	@Override
-    // @@@@@
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == REQ_CODE_SEARCH_MEMORIZE_VOCABULARY) {
-			assert mProgressDialog == null;
-
 			// 환경설정 값이 바뀌었는지 확인한다.
 			if (resultCode == 0)
 				return;
 
-			boolean mustReloadJvData = false;
+			boolean mustReloadVocabularyData = false;
 
 			// 환경설정의 값이 변경된 경우는 해당 값을 다시 읽어들인다.
 			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
                  resetSettings();
+
                 if (mMemorizeTargetVocabularyList.getCount() == 0)
-                    mustReloadJvData = true;
+                    mustReloadVocabularyData = true;
             }
+
 			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_DATA_CHANGED) == SearchListActivity.ACTIVITY_RESULT_DATA_CHANGED)
-				mustReloadJvData = true;
+				mustReloadVocabularyData = true;
 
-			if (mustReloadJvData == true) {
-				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
-				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
+			if (mustReloadVocabularyData == true) {
+                assert mProgressDialog == null;
 
-		   		new Thread() {
-					@Override
-		   			public void run() {
-				        // 암기할 단어 데이터를 로드합니다.
-				        loadMemorizeTargetVocabularyData(false);
-		   			}
-		   		}
-		   		.start();
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        // 암기할 단어 데이터를 로드합니다.
+                        reloadMemorizeTargetVocabularyData(false);
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (mProgressDialog != null)
+                            mProgressDialog.dismiss();
+
+                        mProgressDialog = null;
+                    }
+                }.execute();
 			} else {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
                 showCurrentMemorizeVocabulary();
 			}
 		} else if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
             resetSettings();
-			if (mMemorizeTargetVocabularyList.getCount() == 0) {
-				// 데이터를 로드하는 중임을 나타내는 프로그레스 대화상자를 보인다.
-				mProgressDialog = ProgressDialog.show(this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
 
-		   		new Thread() {
-					@Override
-		   			public void run() {
-				        // 암기할 단어 데이터를 로드합니다.
-				        loadMemorizeTargetVocabularyData(false);
-		   			}
-		   		}
-		   		.start();
+			if (mMemorizeTargetVocabularyList.getCount() == 0) {
+                assert mProgressDialog == null;
+
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        // 암기할 단어 데이터를 로드합니다.
+                        reloadMemorizeTargetVocabularyData(false);
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (mProgressDialog != null)
+                            mProgressDialog.dismiss();
+
+                        mProgressDialog = null;
+                    }
+                }.execute();
 		   	} else {
 				// '암기 대상 항목'등의 값이 변경되었을 수도 있으므로 현재 보여지고 있는 단어를 리프레쉬한다.
                 showCurrentMemorizeVocabulary();
@@ -656,9 +680,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-
-                // 프로그레스 대화상자를 보인다.
                 if (isUpdateVocabularyDb == true)
                     mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_update_vocabulary_db_pd_message), true, false);
                 else
@@ -682,7 +703,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+                if (mProgressDialog != null)
+                    mProgressDialog.dismiss();
+
+                mProgressDialog = null;
             }
         }.execute();
     }
@@ -816,24 +840,23 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
         // DB에서 단어 데이터를 읽어들인다.
-        if (VocabularyManager.getInstance().initDataFromDB(this) == false) {
-            mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, "단어 DB에서 데이터의 로딩이 실패하였습니다.").sendToTarget();
-        }
+        if (VocabularyManager.getInstance().initDataFromDB(this) == false)
+            mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_load_failed_vocabulary_db_pd_message)).sendToTarget();
 
         // 암기할 단어 데이터를 로드합니다.
-        loadMemorizeTargetVocabularyData(true);
+        reloadMemorizeTargetVocabularyData(true);
 
         if (isNowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
             mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_DIALOG_SHOW).sendToTarget();
         } else if (isUpdateSucceeded == true) {
-            SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-            long prevMaxIdx = mPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+            long prevMaxIdx = sharedPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
             long newMaxIdx = VocabularyManager.getInstance().getVocabularyUpdateInfo(prevMaxIdx, sb);
 
             if (newMaxIdx != -1) {
-                mPreferences.edit().putLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, newMaxIdx).commit();
+                sharedPreferences.edit().putLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, newMaxIdx).commit();
 
                 // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
                 if (prevMaxIdx != -1) {
@@ -850,8 +873,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         }
     }
 
-    // @@@@@
-    private void loadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
+    private void reloadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
         assert mProgressDialog != null;
         assert mProgressDialog.isShowing() == true;
 
@@ -881,11 +903,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     showNextMemorizeVocabulary();
                 else
                     showCurrentMemorizeVocabulary();
-
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
-
-                mProgressDialog = null;
             } else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
                 // @@@@@
                 new AlertDialog.Builder(VocabularyActivity.this)
