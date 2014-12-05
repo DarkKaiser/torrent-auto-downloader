@@ -1,6 +1,8 @@
 package kr.co.darkkaiser.jv.vocabulary.db;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -82,7 +84,7 @@ public class VocabularyDbHelper {
         return "";
     }
 
-    public ArrayList<String> getLatestVocabularyDbInfoList() throws Exception {
+    public ArrayList<String> getLatestVocabularyDbInfoList() {
         String vocabularyDbVersion = "";
         String vocabularyDbFileHash = "";
 
@@ -99,6 +101,32 @@ public class VocabularyDbHelper {
         result.add(vocabularyDbFileHash);
 
         return result;
+    }
+
+    // @@@@@
+    public ArrayList<String> checkNewVocabularyDb(SharedPreferences preferences) {
+        String vocabularyDbVersion = "";
+        String vocabularyDbFileHash = "";
+
+        try {
+            JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
+            vocabularyDbVersion = jsonObject.getString("version");
+            vocabularyDbFileHash = jsonObject.getString("sha1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String localDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, "");
+
+        // 단어 DB의 갱신 여부를 확인한다.
+        if (TextUtils.isEmpty(vocabularyDbVersion) == false && vocabularyDbVersion.equals(localDbVersion) == false) {
+            ArrayList<String> result = new ArrayList<String>();
+            result.add(vocabularyDbVersion);
+            result.add(vocabularyDbFileHash);
+            return result;
+        }
+
+        return null;
     }
 
     private String getStringFromUrl(String url) throws UnsupportedEncodingException {
