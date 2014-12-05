@@ -8,10 +8,13 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
@@ -53,13 +56,8 @@ public class VocabularyManager {
         UserSQLiteOpenHelper userSQLiteOpenHelper = new UserSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
 
         // 이전에 등록된 모든 단어를 제거한다.
-        if (mVocabularyTable.isEmpty() == false) {
+        if (mVocabularyTable.isEmpty() == false)
             mVocabularyTable.clear();
-        }
-
-        // @@@@@
-		// 단어 DB 파일이 존재하는지 체크하여 존재하지 않는 경우는 assets에서 복사하도록 한다.
-		checkJpVocabularyDatabaseFile(context);
 
 		Cursor cursor = null;
 
@@ -108,6 +106,10 @@ public class VocabularyManager {
 
             mUserDatabase = userSQLiteOpenHelper.getWritableDatabase();
 
+            // 이전 버전의 사용자의 암기정보를 저장한 DB파일이 존재하는지 확인하여, 존재하는경우 새로운 버전으로 업그레이드한다.
+            upgradeUserDbFile(context);
+
+            // 사용자의 암기정보를 읽어들인다.
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT V_IDX, MEMORIZE_TARGET, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT ")
                  .append("    FROM TBL_USER_VOCABULARY ");
@@ -138,19 +140,65 @@ public class VocabularyManager {
         return true;
 	}
 
-    // @@@@@
-	private void checkJpVocabularyDatabaseFile(Context context) {
+    /**
+     * 이전 버전의 사용자의 암기정보를 저장한 DB파일이 존재하는지 확인하여, 존재하는경우 최신버전으로 업그레이드한다.
+     */
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+    private void upgradeUserDbFile(Context context) {
 		assert context != null;
+        assert mUserDatabase != null;
 
-        String v3UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V3).getAbsolutePath();
-        // @@@@@ v2 파일이 db가 아니므로 수정이 필요함, VocabularyManager로 함수를 이동할지 고민
-        // 사용자의 암기정보를 저장한 DB 파일을 마이그레이션 한다.(버전 2 -> 3)
+        //
+        // V2 => V3로 마이그레이션한다.
+        //
         String v2UserDbFilePath = context.getDatabasePath(Constants.USER_DB_FILENAME_V2).getAbsolutePath();
-        File file1 = new File(v2UserDbFilePath);
-        if (file1.exists() == true) {
-            File file2 = new File(v3UserDbFilePath);
-            if (file2.exists() == false) file1.renameTo(new File(v3UserDbFilePath));
-            else file1.delete();
+        File file = new File(v2UserDbFilePath);
+        if (file.exists() == true) {
+            Cursor cursor = null;
+            long userVocabularyCount = 0;
+
+            try {
+                cursor = mUserDatabase.rawQuery("SELECT COUNT(*) FROM TBL_USER_VOCABULARY", null);
+                if (cursor.moveToFirst() == true)
+                    userVocabularyCount = cursor.getLong(0);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+            }
+
+            // TBL_USER_VOCABULARY 테이블에 데이터가 없는(최초 1회) 경우에만 마이그레이션 하도록 한다.
+            if (userVocabularyCount == 0) {
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        StringTokenizer token = new StringTokenizer(line, "|");
+
+                        if (token.countTokens() == 4) {
+                            ContentValues values = new ContentValues();
+                            values.put("V_IDX", Long.parseLong(token.nextToken()));
+                            values.put("MEMORIZE_COMPLETED_COUNT", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
+                            values.put("MEMORIZE_TARGET", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
+                            values.put("MEMORIZE_COMPLETED", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
+                            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
+                        }
+                    }
+
+                    br.close();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+
+            // 이전버전의 파일을 삭제한다.
+            try {
+                file.delete();
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
     }
 
