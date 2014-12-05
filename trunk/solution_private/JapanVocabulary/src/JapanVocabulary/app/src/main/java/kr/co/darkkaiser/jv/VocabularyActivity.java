@@ -55,8 +55,8 @@ import kr.co.darkkaiser.jv.view.list.SearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
 import kr.co.darkkaiser.jv.vocabulary.MemorizeOrder;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
+import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
