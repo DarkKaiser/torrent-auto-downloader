@@ -487,7 +487,7 @@ public class VocabularyManager {
     /**
      * 모든 암기대상 단어를 미암기 상태로 설정한다.
      */
-    public synchronized void rememorizeAllMemorizeTarget() {
+    public synchronized void memorizeTargetVocabularyRememorizeAll() {
         for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
             Vocabulary vocabulary = e.nextElement();
             if (vocabulary.isMemorizeTarget() == true)

@@ -296,21 +296,37 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             case R.id.av_rememorize_all:
                 assert mProgressDialog == null;
 
-                // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(this, null, "요청하신 작업을 처리 중입니다.", true, false);
-
-                new Thread() {
+                // @@@@@ async
+                new AsyncTask<Void, Void, Void>() {
                     @Override
-                    public void run() {
-                        // @@@@@
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+
+                        // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_memorize_settings_vocabulary_pd_message), true, false);
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
                         // 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-                        VocabularyManager.getInstance().rememorizeAllMemorizeTarget();
+                        VocabularyManager.getInstance().memorizeTargetVocabularyRememorizeAll();
 
                         // 암기할 단어 데이터를 로드합니다.
                         loadMemorizeTargetVocabularyData(false);
+
+                        return null;
                     }
-                }
-                .start();
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+
+                        if (mProgressDialog != null)
+                            mProgressDialog.dismiss();
+
+                        mProgressDialog = null;
+                    }
+                }.execute();
 
                 return true;
 
