@@ -895,7 +895,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 if (mProgressDialog != null)
                     mProgressDialog.setMessage((String)msg.obj);
             } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
-                // @@@@@
                 updateMemorizeVocabularyInfo();
 
                 Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
