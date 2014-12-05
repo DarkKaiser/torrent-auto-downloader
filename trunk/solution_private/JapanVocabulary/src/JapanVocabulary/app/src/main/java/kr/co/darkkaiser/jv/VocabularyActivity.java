@@ -46,7 +46,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.ByteUtils;
@@ -68,7 +67,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
 	private static final int MSG_VOCABULARY_MEMORIZE_START = 3;
 	private static final int MSG_NETWORK_DISCONNECTED_DIALOG_SHOW = 4;
-	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION = 5;
+	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK = 5;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
 	private static final int MSG_VOCABULARY_DATA_DOWNLOADING = 8;
@@ -231,41 +230,43 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             protected Void doInBackground(Void... voids) {
                 // @@@@@
+                boolean canMemorizeStart = true;
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
-                    ArrayList<String> newVocaInfo = VocabularyDbHelper.getInstance().checkNewVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE));
-                    String newVocabularyDbVersion = "", newVocabularyDbFileHash = "";
+                    String[] newVocabularyDbInfo = { "", "" };
 
-                    if (newVocaInfo != null) {
-                        if (newVocaInfo.size() >= 1)
-                            newVocabularyDbVersion = newVocaInfo.get(0);
-
-                        if (newVocaInfo.size() >= 2)
-                            newVocabularyDbFileHash = newVocaInfo.get(1);
-                    }
-
-                    if (true ||
-                            newVocabularyDbVersion != null && TextUtils.isEmpty(newVocabularyDbVersion) == false) {
+                    if (true/* @@@@@ */ ||
+                            VocabularyDbHelper.getInstance().canUpgradeVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
                         // 현재 연결된 네트워크가 3G 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                         if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
-                            // 3G 연결인 경우 사용자에게 단어를 다운받을지의 여부를 확인한 후 다운로드 받도록 한다.
+                            // 3G 연결인 경우 사용자에게 단어DB를 다운받을지의 여부를 확인한 후 다운로드 받도록 한다.
                             Bundle bundle = new Bundle();
-                            bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbVersion);
-                            bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbFileHash);
+                            bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbInfo[0]);
+                            bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbInfo[1]);
 
                             Message msg = Message.obtain();
-                            msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION;
+                            msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK;
                             msg.setData(bundle);
 
                             mLoadVocabularyDataHandler.sendMessage(msg);
 
-                            // @@@@@ postExecute에서 initVocabularyDataAndMemorizeStart 함수 호출 안하도록 하기
+                            if (mProgressDialog != null)
+                                mProgressDialog.dismiss();
+
+                            // @@@@@
+                            canMemorizeStart = false;
                         } else {
                             // 새로운 단어 DB로 갱신합니다.
-                            mIsUpdateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
+                            mIsUpdateSucceeded = updateVocabularyDb(newVocabularyDbInfo[0], newVocabularyDbInfo[1]);
                         }
                     }
+                }
+
+                // @@@@@
+                if (canMemorizeStart == true) {
+                    // 단어 데이터를 초기화한 후, 암기를 시작합니다.
+                    initVocabularyDataAndMemorizeStart(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, mIsUpdateSucceeded);
                 }
 
                 return null;
@@ -274,10 +275,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-
-                // @@@@@
-                // 단어 데이터를 초기화한 후, 암기를 시작합니다.
-                initVocabularyDataAndMemorizeStart(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, mIsUpdateSucceeded);
             }
         }.execute();
     }
@@ -850,6 +847,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         msg.what = MSG_PROGRESS_DIALOG_REFRESH;
         msg.obj = getString(R.string.av_load_memorize_target_vocabulary_pd_message);
         mLoadVocabularyDataHandler.sendMessage(msg);
+        // 확인
+//        mLoadVocabularyDataHandler.sendMessage(mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)));
+//        mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         mMemorizeTargetVocabularyList.loadVocabularyData(sharedPreferences, firstLoadVocabularyData);
@@ -937,27 +937,23 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     mProgressDialog.dismiss();
 
                 mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, "암기 할 단어를 불러들이고 있습니다.\n잠시만 기다려주세요.", true, false);
-            } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION) {
-                // @@@@@
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
-
-                final String newVocabularyDbVersion = msg.getData().getString("NEW_VOCABULARY_DB_VERSION");
-                final String newVocabularyDbFileHash = msg.getData().getString("NEW_VOCABULARY_DB_FILE_HASH");
+            } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK) {
+                final String vocabularyDbVersion = msg.getData().getString("NEW_VOCABULARY_DB_VERSION");
+                final String vocabularyDbFileHash = msg.getData().getString("NEW_VOCABULARY_DB_FILE_HASH");
 
                 new AlertDialog.Builder(VocabularyActivity.this)
-                        .setTitle("알림")
-                        .setMessage("3G 네트워크로 접속되었습니다. 데이터 통화료가 부과될 수 있습니다. 단어 DB를 업데이트하시겠습니까?")
-                        .setPositiveButton("사용함", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.av_vocabulary_db_download_on_mobile_network_ad_title))
+                        .setMessage(getString(R.string.av_vocabulary_db_download_on_mobile_network_ad_message))
+                        .setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, true);
+                                updateAndInitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, true);
                             }
                         })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                updateAndInitVocabularyDataOnMobileNetwork(newVocabularyDbVersion, newVocabularyDbFileHash, false);
+                                updateAndInitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, false);
                             }
                         })
                         .show();

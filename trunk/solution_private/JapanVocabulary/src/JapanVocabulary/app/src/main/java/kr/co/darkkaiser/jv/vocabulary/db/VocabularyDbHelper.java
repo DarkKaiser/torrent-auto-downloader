@@ -103,30 +103,29 @@ public class VocabularyDbHelper {
         return result;
     }
 
-    // @@@@@
-    public ArrayList<String> checkNewVocabularyDb(SharedPreferences preferences) {
-        String vocabularyDbVersion = "";
-        String vocabularyDbFileHash = "";
+    public boolean canUpgradeVocabularyDb(SharedPreferences sharedPreferences, String[] result) {
+        assert sharedPreferences != null;
+
+        if (result.length != 2)
+            return false;
+
+        String localVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_DB_VERSION, "");
 
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
-            vocabularyDbVersion = jsonObject.getString("version");
-            vocabularyDbFileHash = jsonObject.getString("sha1");
+            String newVocabularyDbVersion = jsonObject.getString("version");
+            String newVocabularyDbFileHash = jsonObject.getString("sha1");
+
+            if (TextUtils.isEmpty(newVocabularyDbVersion) == false && newVocabularyDbVersion.equals(localVocabularyDbVersion) == false) {
+                result[0] = newVocabularyDbVersion;
+                result[1] = newVocabularyDbFileHash;
+                return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        String localDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, "");
-
-        // 단어 DB의 갱신 여부를 확인한다.
-        if (TextUtils.isEmpty(vocabularyDbVersion) == false && vocabularyDbVersion.equals(localDbVersion) == false) {
-            ArrayList<String> result = new ArrayList<String>();
-            result.add(vocabularyDbVersion);
-            result.add(vocabularyDbFileHash);
-            return result;
-        }
-
-        return null;
+        return false;
     }
 
     private String getStringFromUrl(String url) throws UnsupportedEncodingException {
