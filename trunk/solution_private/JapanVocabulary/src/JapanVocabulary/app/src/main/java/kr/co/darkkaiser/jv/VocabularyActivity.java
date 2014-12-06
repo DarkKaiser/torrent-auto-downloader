@@ -674,6 +674,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     // @@@@@
     private void updateAndInitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
+        assert mProgressDialog == null;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
         assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
 
@@ -689,14 +690,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             protected Void doInBackground(Void... voids) {
                 // @@@@@
-                boolean updateSucceeded = false;
                 if (isUpdateVocabularyDb == true) {
-                    // 새로운 단어 DB로 갱신합니다.
-                    updateSucceeded = updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash);
+                    // 최신 단어DB로 업데이트 한 후에, 단어 데이터를 초기화하여 암기를 시작합니다.
+                    initVocabularyDataAndMemorizeStart(true, true, updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash));
+                } else {
+                    // 단어 데이터를 초기화하여 암기를 시작합니다.
+                    initVocabularyDataAndMemorizeStart(true, true, false);
                 }
-
-                // 단어 데이터를 초기화한 후, 암기를 시작합니다.
-                initVocabularyDataAndMemorizeStart(true, true, updateSucceeded);
 
                 return null;
             }
@@ -714,6 +714,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     // @@@@@
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
+        assert mProgressDialog != null;
+        assert mProgressDialog.isShowing() == true;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
         Message msg = null;
