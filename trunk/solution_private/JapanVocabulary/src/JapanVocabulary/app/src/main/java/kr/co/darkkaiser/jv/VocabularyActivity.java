@@ -82,8 +82,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     private static final int REQ_CODE_SEARCH_MEMORIZE_VOCABULARY = 2;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 3;
 
-    private static final String EXTRA_VOCABULARY_UPDATE_INFO = "VOCABULARY_UPDATE_INFO";
-
     // 롱 터치를 판단하는 시간 값
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
@@ -220,7 +218,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 // 프로그레스 대화상자를 보인다.
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true)
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_latest_vocabulary_db_check_pd_message), true, false);
+                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_latest_check_vocabulary_db_pd_message), true, false);
                 else
                     mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
@@ -682,7 +680,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             protected void onPreExecute() {
                 if (isUpdateVocabularyDb == true)
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_update_vocabulary_db_pd_message), true, false);
+                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_updating_vocabulary_db_pd_message), true, false);
                 else
                     mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
@@ -834,7 +832,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         return updateSucceeded;
     }
 
-    // @@@@@
+    // @@@@@ 함수명
     private void initVocabularyDataAndMemorizeStart(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
         assert mProgressDialog != null;
         assert mProgressDialog.isShowing() == true;
@@ -845,32 +843,24 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (VocabularyManager.getInstance().initDataFromDB(this) == false)
             mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_load_failed_vocabulary_db_pd_message)).sendToTarget();
 
-        // 암기할 단어 데이터를 로드합니다.
+        // 암기대상 단어를 로드합니다.
         reloadMemorizeTargetVocabularyData(true);
 
         if (isNowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
             mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW).sendToTarget();
         } else if (isUpdateSucceeded == true) {
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-            long prevMaxIdx = sharedPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
+            long prevMaxVocabularyIdx = sharedPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
-            long newMaxIdx = VocabularyManager.getInstance().getVocabularyUpdateInfo(prevMaxIdx, sb);
+            long newMaxVocabularyIdx = VocabularyManager.getInstance().getVocabularyUpdateInfo(prevMaxVocabularyIdx, sb);
 
-            if (newMaxIdx != -1) {
-                sharedPreferences.edit().putLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, newMaxIdx).commit();
+            if (newMaxVocabularyIdx != -1) {
+                sharedPreferences.edit().putLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, newMaxVocabularyIdx).commit();
 
                 // 이전에 한번이상 업데이트 된 경우에 한에서 단어 업데이트 정보를 보인다.
-                if (prevMaxIdx != -1) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(EXTRA_VOCABULARY_UPDATE_INFO, sb.toString());
-
-                    Message msg = Message.obtain();
-                    msg.what = MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG;
-                    msg.setData(bundle);
-
-                    mLoadVocabularyDataHandler.sendMessage(msg);
-                }
+                if (prevMaxVocabularyIdx != -1)
+                    mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_SHOW_VOCABULARY_UPDATE_INFO_DIALOG, sb.toString()).sendToTarget();
             }
         }
     }
@@ -907,11 +897,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 else
                     showCurrentMemorizeVocabulary();
             } else if (msg.what == MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW) {
-                // @@@@@
                 new AlertDialog.Builder(VocabularyActivity.this)
-                        .setTitle("알림")
-                        .setMessage("Wi-Fi/3G등의 데이터 네트워크 상태가 불안정하여 단어 DB의 업데이트 여부를 확인할 수 없습니다.")
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.av_network_disconnected_info_ad_title))
+                        .setMessage(getString(R.string.av_network_disconnected_info_ad_message))
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -923,7 +912,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 if (v != null) {
                     TextView tvVocabularyUpdateInfo = (TextView)v.findViewById(R.id.vvui_vocabulary_update_info);
-                    tvVocabularyUpdateInfo.setText(msg.getData().getString(EXTRA_VOCABULARY_UPDATE_INFO));
+                    tvVocabularyUpdateInfo.setText((String)msg.obj);
 
                     new AlertDialog.Builder(VocabularyActivity.this)
                             .setTitle(getString(R.string.vvui_dialog_title))
