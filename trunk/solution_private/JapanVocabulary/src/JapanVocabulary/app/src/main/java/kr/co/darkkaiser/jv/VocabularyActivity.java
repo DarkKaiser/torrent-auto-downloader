@@ -261,8 +261,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 // @@@@@
                 if (canMemorizeStart == true) {
-                    // 단어 데이터를 초기화한 후, 암기를 시작합니다.
-                    initVocabularyDataAndMemorizeStart(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, mIsUpdateSucceeded);
+                    // 단어 데이터를 초기화하여 암기를 시작합니다.
+                    initVocabularyData(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, mIsUpdateSucceeded);
                 }
 
                 return null;
@@ -670,8 +670,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		mLoadVocabularyDataHandler.sendMessage(msg);
 	}
 
-    // @@@@@
-    private void updateAndInitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
+    private void update2InitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
         assert mProgressDialog == null;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
         assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
@@ -687,13 +686,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected Void doInBackground(Void... voids) {
-                // @@@@@
                 if (isUpdateVocabularyDb == true) {
                     // 최신 단어DB로 업데이트 한 후에, 단어 데이터를 초기화하여 암기를 시작합니다.
-                    initVocabularyDataAndMemorizeStart(true, true, updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash));
+                    initVocabularyData(true, true, updateVocabularyDb(newVocabularyDbVersion, newVocabularyDbFileHash));
                 } else {
                     // 단어 데이터를 초기화하여 암기를 시작합니다.
-                    initVocabularyDataAndMemorizeStart(true, true, false);
+                    initVocabularyData(true, true, false);
                 }
 
                 return null;
@@ -832,8 +830,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         return updateSucceeded;
     }
 
-    // @@@@@ 함수명
-    private void initVocabularyDataAndMemorizeStart(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
+    private void initVocabularyData(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
         assert mProgressDialog != null;
         assert mProgressDialog.isShowing() == true;
 
@@ -960,13 +957,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         .setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                updateAndInitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, true);
+                                update2InitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, true);
                             }
                         })
                         .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                updateAndInitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, false);
+                                update2InitVocabularyDataOnMobileNetwork(vocabularyDbVersion, vocabularyDbFileHash, false);
                             }
                         })
                         .show();
