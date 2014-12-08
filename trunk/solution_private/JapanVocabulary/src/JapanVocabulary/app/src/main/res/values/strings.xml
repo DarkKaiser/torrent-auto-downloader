@@ -39,7 +39,7 @@
     <string name="av_memorize_settings_vocabulary_pd_message">요청하신 작업을 처리 중입니다.</string>
 
     <string name="av_update_failed_vocabulary_db_message">새로운 단어 DB의 업데이트가 실패하였습니다.</string>
-    <string name="av_update_failed_vocabulary_db_reason_crc_error_message">새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).</string>
+    <string name="av_update_failed_vocabulary_db_reason_crccheckerror_message">새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).</string>
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 

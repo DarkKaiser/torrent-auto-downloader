@@ -47,7 +47,7 @@ public class Constants {
     /*
      * 단어 DB 다운로드 URL
      */
-    public static final String[] VOCABULARY_DB_DOWNLOAD_URL = {
+    public static final String[] VOCABULARY_DB_DOWNLOAD_URL_LIST = {
             "http://darkkaiser.gonetis.com:55580/download/vocabulary_v3.db",
             "http://darkkaiser.cafe24.com/data/vocabulary_v3.db"
     };

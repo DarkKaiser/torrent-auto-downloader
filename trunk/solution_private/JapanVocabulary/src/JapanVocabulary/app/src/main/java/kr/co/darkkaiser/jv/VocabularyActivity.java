@@ -45,6 +45,7 @@ import org.apache.http.util.ByteArrayBuffer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -237,12 +238,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
                     String[] newVocabularyDbInfo = { "", "" };
 
-                    if (true/* @@@@@ */ ||
-                            VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
+                    if (VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
                         // 현재 연결된 네트워크가 3G/LTE 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                        if (true/* @@@@@ */ || mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
+                        if (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
                             canStartVocabularyMemorize = false;
 
                             // 3G/LTE 연결인 경우 사용자에게 새로운 단어DB를 다운받을지의 여부를 확인한 후 진행하도록 한다.
@@ -720,7 +720,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         }.execute();
     }
 
-    // @@@@@
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
         assert mProgressDialog != null;
@@ -731,93 +730,94 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         boolean updateSucceeded = false;
 
         try {
-            int contentLength = 0;
-            ByteArrayBuffer baf = null;
+            int downloadVocabularyDbFileLength = -1;
+            ByteArrayBuffer downloadVocabularyDbFileBuffer = null;
 
             // 단어 DB 파일을 내려받는다.
-            for (String s : Constants.VOCABULARY_DB_DOWNLOAD_URL) {
+            for (String downloadUrl : Constants.VOCABULARY_DB_DOWNLOAD_URL_LIST) {
+                Log.d(TAG, String.format("Vocabulary DB download : %s", downloadUrl));
+
+                downloadVocabularyDbFileLength = -1;
+                downloadVocabularyDbFileBuffer = new ByteArrayBuffer(4096);
+
+                BufferedInputStream bis = null;
+                HttpURLConnection connection = null;
+
                 try {
-                    URL url = new URL(s);
-                    HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                    contentLength = con.getContentLength();
-                    BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+                    URL url = new URL(downloadUrl);
+                    connection = (HttpURLConnection)url.openConnection();
+                    bis = new BufferedInputStream(connection.getInputStream());
 
-                    // 다운로드 받을 단어 DB의 크기에 대한 정보를 프로그레스바에 출력한다.
-                    mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOAD_START, contentLength, 0).sendToTarget();
+                    // 다운로드 받을 단어 DB의 전체 크기를 구한다.
+                    downloadVocabularyDbFileLength = connection.getContentLength();
 
-                    // 해당 메시지의 처리가 완료될 때까지 대기한다.
+                    // 다운로드 받을 단어 DB의 전체 크기에 대한 정보를 진행바에 설정한다.
+                    mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOAD_START, downloadVocabularyDbFileLength, 0).sendToTarget();
                     while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOAD_START) == true)
                         Thread.sleep(10);
 
                     int readBytes;
-                    byte[] data = new byte[1024];
-                    baf = new ByteArrayBuffer(1024);
-
+                    byte[] data = new byte[4096];
                     while ((readBytes = bis.read(data)) >= 0) {
-                        baf.append(data, 0, readBytes);
+                        downloadVocabularyDbFileBuffer.append(data, 0, readBytes);
 
-                        // 현재까지 다운로드 받은 단어 DB의 크기 정보를 프로그레스바에 출력한다.
-                        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOADING, baf.length(), 0).sendToTarget();
+                        // 현재까지 다운로드 받은 단어 DB의 크기 정보를 진행바에 표시한다.
+                        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOADING, downloadVocabularyDbFileBuffer.length(), 0).sendToTarget();
                     }
 
                     // 해당 메시지의 처리가 완료될 때까지 대기한다.
                     while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true)
                         Thread.sleep(10);
 
-                    bis.close();
-
-                    break;
+                    // 파일 다운로드가 정상적으로 완료되었는지 확인한다.
+                    if (downloadVocabularyDbFileLength > 0 && downloadVocabularyDbFileLength == downloadVocabularyDbFileBuffer.length())
+                        break;
                 } catch (Exception e) {
+                    Log.d(TAG, e.getMessage());
+                } finally {
+                    try {
+                        if (bis != null)
+                            bis.close();
+                    } catch (IOException ignored) {
+                    }
 
+                    if (connection != null)
+                        connection.disconnect();
                 }
             }
 
-            if (contentLength > 0 && contentLength != baf.length()) {
+            if (downloadVocabularyDbFileLength <= 0 || downloadVocabularyDbFileBuffer == null || downloadVocabularyDbFileLength != downloadVocabularyDbFileBuffer.length()) {
                 mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_message)).sendToTarget();
             } else {
                 String vocabularyDbFilePath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
 
-                if (TextUtils.isEmpty(newVocabularyDbFileHash) == true) {
-                    // 해쉬값이 비어없는 경우에는, 다운로드 받은 파일을 검증없이 바로 사용하도록 한다.
+                // 다운로드 받은 파일을 임시파일로 저장한다.
+                File tempVocabularyDbFile = new File(String.format("%s.tmp", vocabularyDbFilePath));
+                tempVocabularyDbFile.delete();
+
+                FileOutputStream fos = new FileOutputStream(tempVocabularyDbFile);
+                fos.write(downloadVocabularyDbFileBuffer.toByteArray());
+                try {
+                    fos.close();
+                } catch (IOException ignored) {
+                }
+
+                // 다운로드 받은 파일의 해쉬값을 구하여 올바른 파일인지 비교한다.
+                byte[] fileHashBytes = FileHash.getHash(tempVocabularyDbFile);
+                if (TextUtils.isEmpty(newVocabularyDbFileHash) == true ||
+                        (fileHashBytes != null && newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes)) == true)) {
                     File vocabularyDbFile = new File(vocabularyDbFilePath);
                     vocabularyDbFile.delete();
 
-                    FileOutputStream fos = new FileOutputStream(vocabularyDbFile);
-                    fos.write(baf.toByteArray());
-                    fos.close();
+                    tempVocabularyDbFile.renameTo(vocabularyDbFile);
 
                     getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
 
                     updateSucceeded = true;
                 } else {
-                    // 해쉬 검증을 위해 다운로드 받은 파일을 임시 파일로 저장한다.
-                    File tempVocabularyDbFile = new File(String.format("%s.tmp", vocabularyDbFilePath));
                     tempVocabularyDbFile.delete();
 
-                    FileOutputStream fos = new FileOutputStream(tempVocabularyDbFile);
-                    fos.write(baf.toByteArray());
-                    fos.close();
-
-                    // 다운로드 받은 파일의 해쉬값을 구하여 올바른 파일인지 비교한다.
-                    boolean validFile = false;
-                    byte[] fileHashBytes = FileHash.getHash(tempVocabularyDbFile);
-                    if (fileHashBytes != null)
-                        validFile = newVocabularyDbFileHash.equalsIgnoreCase(ByteUtils.toHexString(fileHashBytes));
-
-                    if (validFile == true) {
-                        File vocabularyDbFile = new File(vocabularyDbFilePath);
-                        vocabularyDbFile.delete();
-
-                        tempVocabularyDbFile.renameTo(vocabularyDbFile);
-
-                        getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
-
-                        updateSucceeded = true;
-                    } else {
-                        tempVocabularyDbFile.delete();
-
-                        mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_reason_crc_error_message)).sendToTarget();
-                    }
+                    mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_reason_crccheckerror_message)).sendToTarget();
                 }
             }
         } catch (Exception e) {
@@ -923,22 +923,20 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             .show();
                 }
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_START) {
-                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
                 mProgressDialog = new ProgressDialog(VocabularyActivity.this);
                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mProgressDialog.setMessage(getString(R.string.av_updating_vocabulary_db_pd_message));
-                mProgressDialog.setMax(msg.arg1);
                 mProgressDialog.setCancelable(false);
+                mProgressDialog.setMax(msg.arg1);
                 mProgressDialog.setProgress(0);
                 mProgressDialog.show();
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOADING) {
                 if (mProgressDialog != null)
                     mProgressDialog.setProgress(msg.arg1);
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_END) {
-                // @@@@@
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
