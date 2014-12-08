@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
@@ -44,6 +45,7 @@ import org.apache.http.util.ByteArrayBuffer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -198,12 +200,18 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         // 단어DB에서 단어를 읽어들입니다.
         new AsyncTask<Void, Void, Void>() {
 
+            private PowerManager.WakeLock mWakeLock;
+
             private boolean mIsUpdateSucceeded = false;
             private boolean mIsNowNetworkConnected = false;
             private boolean mIsVocabularyUpdateOnStarted = false;
 
             @Override
             protected void onPreExecute() {
+                PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+                mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+                mWakeLock.acquire();
+
                 // 프로그램 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
                 SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                 mIsVocabularyUpdateOnStarted = sharedPreferences.getBoolean(getString(R.string.as_vocabulary_update_on_started_key), getResources().getBoolean(R.bool.vocabulary_update_on_started_default_value));
@@ -265,6 +273,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                mWakeLock.release();
+
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
@@ -671,8 +681,15 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
 
         new AsyncTask<Void, Void, Void>() {
+
+            private PowerManager.WakeLock mWakeLock;
+
             @Override
             protected void onPreExecute() {
+                PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+                mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+                mWakeLock.acquire();
+
                 if (isUpdateVocabularyDb == true)
                     mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_updating_vocabulary_db_pd_message), true, false);
                 else
@@ -694,6 +711,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                mWakeLock.release();
+
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();
 
@@ -715,9 +734,16 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 단어 DB 파일을 내려받는다.
         try {
-            URL url = new URL(Constants.VOCABULARY_DB_DOWNLOAD_URL_2);
+            URL url = new URL(Constants.VOCABULARY_DB_DOWNLOAD_URL_3);
 
-            URLConnection con = url.openConnection();
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+
+            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                // fail
+                int i;
+                i = 10;
+            }
+
             int contentLength = con.getContentLength();
             BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
 
@@ -753,9 +779,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             }
 
             // 해당 메시지의 처리가 완료될 때까지 대기한다.
-            while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true) {
+            while (mLoadVocabularyDataHandler.hasMessages(MSG_VOCABULARY_DATA_DOWNLOADING) == true)
                 Thread.sleep(10);
-            }
 
             bis.close();
 
@@ -770,8 +795,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     fos.write(baf.toByteArray());
                     fos.close();
 
-                    SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-                    mPreferences.edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
+                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                    sharedPreferences.edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
                 } else {
                     File f = new File(String.format("%s.tmp", vocabularyDbFilePath));
                     f.delete();

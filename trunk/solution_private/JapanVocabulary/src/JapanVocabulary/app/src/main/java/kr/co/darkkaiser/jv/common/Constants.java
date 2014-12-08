@@ -49,6 +49,7 @@ public class Constants {
      */
     public static final String VOCABULARY_DB_DOWNLOAD_URL_1 = "http://darkkaiser.gonetis.com:55580/download/vocabulary_v3.db";
     public static final String VOCABULARY_DB_DOWNLOAD_URL_2 = "http://darkkaiser.cafe24.com/data/vocabulary_v3.db";
+    public static final String VOCABULARY_DB_DOWNLOAD_URL_3 = "http://darkkaiser.gonetis.com:55580/download/vocabulary_v4.db";
 
     /*
      * 단어DB 버전정보 체크 URL
