@@ -714,9 +714,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         assert mProgressDialog.isShowing() == true;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
 
-        Message msg = null;
+        Message msg;
         boolean updateSucceeded = false;
-        String jvDbPath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
+        String vocabularyDbFilePath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
 
         // 단어 DB 파일을 내려받는다.
         try {
@@ -765,13 +765,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             bis.close();
 
             if (contentLength > 0 && contentLength != baf.length()) {
-                msg = Message.obtain();
-                msg.what = MSG_TOAST_SHOW;
-                msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
-                mLoadVocabularyDataHandler.sendMessage(msg);
+                mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, "새로운 단어 DB의 업데이트가 실패하였습니다.").sendToTarget();
             } else {
                 if (TextUtils.isEmpty(newVocabularyDbFileHash) == true) {
-                    File f = new File(jvDbPath);
+                    File f = new File(vocabularyDbFilePath);
                     f.delete();
 
                     FileOutputStream fos = new FileOutputStream(f);
@@ -781,7 +778,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     SharedPreferences mPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
                     mPreferences.edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
                 } else {
-                    File f = new File(String.format("%s.tmp", jvDbPath));
+                    File f = new File(String.format("%s.tmp", vocabularyDbFilePath));
                     f.delete();
 
                     FileOutputStream fos = new FileOutputStream(f);
@@ -797,7 +794,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     }
 
                     if (isValidationFile == true) {
-                        File dstFile = new File(jvDbPath);
+                        File dstFile = new File(vocabularyDbFilePath);
                         dstFile.delete();
                         f.renameTo(dstFile);
 
@@ -807,25 +804,17 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     } else {
                         f.delete();
 
-                        msg = Message.obtain();
-                        msg.what = MSG_TOAST_SHOW;
-                        msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).";
-                        mLoadVocabularyDataHandler.sendMessage(msg);
+                        mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, "새로운 단어 DB의 업데이트가 실패하였습니다(에러 : 유효하지 않은 단어 DB 파일).").sendToTarget();
                     }
                 }
             }
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
 
-            msg = Message.obtain();
-            msg.what = MSG_TOAST_SHOW;
-            msg.obj = "새로운 단어 DB의 업데이트가 실패하였습니다.";
-            mLoadVocabularyDataHandler.sendMessage(msg);
+            mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, "새로운 단어 DB의 업데이트가 실패하였습니다.").sendToTarget();
         }
 
-        msg = Message.obtain();
-        msg.what = MSG_VOCABULARY_DATA_DOWNLOAD_END;
-        mLoadVocabularyDataHandler.sendMessage(msg);
+        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOAD_END).sendToTarget();
 
         return updateSucceeded;
     }
