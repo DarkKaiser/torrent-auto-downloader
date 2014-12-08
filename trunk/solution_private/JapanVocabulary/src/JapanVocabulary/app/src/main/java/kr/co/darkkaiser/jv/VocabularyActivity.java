@@ -225,18 +225,20 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             protected Void doInBackground(Void... voids) {
-                // @@@@@
-                boolean canMemorizeStart = true;
+                boolean canStartVocabularyMemorize = true;
+
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
                     String[] newVocabularyDbInfo = { "", "" };
 
                     if (true/* @@@@@ */ ||
                             VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
-                        // 현재 연결된 네트워크가 3G 연결인지 확인한다.
+                        // 현재 연결된 네트워크가 3G/LTE 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                         if (true/* @@@@@ */ || mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting() == true) {
-                            // 3G 연결인 경우 사용자에게 단어DB를 다운받을지의 여부를 확인한 후 다운로드 받도록 한다.
+                            canStartVocabularyMemorize = false;
+
+                            // 3G/LTE 연결인 경우 사용자에게 새로운 단어DB를 다운받을지의 여부를 확인한 후 진행하도록 한다.
                             Bundle bundle = new Bundle();
                             bundle.putString("NEW_VOCABULARY_DB_VERSION", newVocabularyDbInfo[0]);
                             bundle.putString("NEW_VOCABULARY_DB_FILE_HASH", newVocabularyDbInfo[1]);
@@ -246,12 +248,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             msg.setData(bundle);
 
                             mLoadVocabularyDataHandler.sendMessage(msg);
-
-                            if (mProgressDialog != null)
-                                mProgressDialog.dismiss();
-
-                            // @@@@@
-                            canMemorizeStart = false;
                         } else {
                             // 새로운 단어 DB로 갱신합니다.
                             mIsUpdateSucceeded = updateVocabularyDb(newVocabularyDbInfo[0], newVocabularyDbInfo[1]);
@@ -259,8 +255,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     }
                 }
 
-                // @@@@@
-                if (canMemorizeStart == true) {
+                if (canStartVocabularyMemorize == true) {
                     // 단어 데이터를 초기화하여 암기를 시작합니다.
                     initVocabularyData(mIsNowNetworkConnected, mIsVocabularyUpdateOnStarted, mIsUpdateSucceeded);
                 }
