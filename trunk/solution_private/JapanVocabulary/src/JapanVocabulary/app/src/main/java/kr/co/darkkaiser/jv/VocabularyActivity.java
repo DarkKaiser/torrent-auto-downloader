@@ -65,8 +65,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 	private static final int MSG_TOAST_SHOW = 1;
 	private static final int MSG_PROGRESS_DIALOG_REFRESH = 2;
-	private static final int MSG_VOCABULARY_MEMORIZE_START = 3;
-    private static final int MSG_NETWORK_DISCONNECTED_DIALOG_SHOW = 4;
+	private static final int MSG_MEMORIZE_VOCABULARY_START = 3;
+    private static final int MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW = 4;
     private static final int MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK = 5;
     private static final int MSG_VOCABULARY_DATA_DOWNLOAD_START = 6;
     private static final int MSG_VOCABULARY_DATA_DOWNLOAD_END = 7;
@@ -849,7 +849,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         reloadMemorizeTargetVocabularyData(true);
 
         if (isNowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
-            mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_DIALOG_SHOW).sendToTarget();
+            mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW).sendToTarget();
         } else if (isUpdateSucceeded == true) {
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             long prevMaxIdx = sharedPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
@@ -887,16 +887,18 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         adjustVocabularySeekBar(sharedPreferences);
 
         // 단어 암기를 시작합니다.
-        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_MEMORIZE_START).sendToTarget();
+        mLoadVocabularyDataHandler.obtainMessage(MSG_MEMORIZE_VOCABULARY_START).sendToTarget();
     }
 
     private Handler mLoadVocabularyDataHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
+                assert msg.obj != null;
+
                 if (mProgressDialog != null)
                     mProgressDialog.setMessage((String)msg.obj);
-            } else if (msg.what == MSG_VOCABULARY_MEMORIZE_START) {
+            } else if (msg.what == MSG_MEMORIZE_VOCABULARY_START) {
                 updateMemorizeVocabularyInfo();
 
                 Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
@@ -904,7 +906,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     showNextMemorizeVocabulary();
                 else
                     showCurrentMemorizeVocabulary();
-            } else if (msg.what == MSG_NETWORK_DISCONNECTED_DIALOG_SHOW) {
+            } else if (msg.what == MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW) {
                 // @@@@@
                 new AlertDialog.Builder(VocabularyActivity.this)
                         .setTitle("알림")
