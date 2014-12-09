@@ -2,11 +2,13 @@ package kr.co.darkkaiser.jv.util;
 
 public class CircularBuffer<T> {
 
-	private int mHead = 0;
+    public static final int BUFFER_LENGTH = 50;
+
+    private int mHead = 0;
 	private int mTail = 0;
 
     @SuppressWarnings (value="unchecked")
-	private T[] mBufferData = (T[])new Object[50];
+	private T[] mBufferData = (T[])new Object[BUFFER_LENGTH];
 
 	public CircularBuffer() {
 
@@ -54,8 +56,8 @@ public class CircularBuffer<T> {
 	}
 
 	public boolean empty() {
-		return true;
-	}
+        return mHead == mTail;
+    }
 
 	public String dump() {
 		StringBuilder sb = new StringBuilder();

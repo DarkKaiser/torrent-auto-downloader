@@ -27,12 +27,11 @@ public class FileHash {
 
 	        return md.digest();
 	    } finally {
-	        if (bis != null) {
-	        	try {
-	        		bis.close();
-	        	} catch (IOException ignored) {
-	        	}
-	        }
+            try {
+                if (bis != null)
+                    bis.close();
+            } catch (IOException ignored) {
+            }
 	    }
 	}
 
