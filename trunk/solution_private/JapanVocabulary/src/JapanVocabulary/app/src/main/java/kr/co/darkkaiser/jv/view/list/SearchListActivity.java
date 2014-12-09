@@ -22,7 +22,6 @@ import android.widget.ListView;
 import com.androidquery.AQuery;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
@@ -68,7 +67,7 @@ public class SearchListActivity extends ActionBarListActivity {
 		registerForContextMenu(getListView());
 
 		// 리스트뷰를 초기화한다.
-        mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE));
+        mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE));
 		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
 		setListAdapter(mSearchResultVocabularyListAdapter);
 

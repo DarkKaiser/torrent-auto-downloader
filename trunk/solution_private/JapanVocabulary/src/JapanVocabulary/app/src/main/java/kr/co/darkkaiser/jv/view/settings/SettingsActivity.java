@@ -28,7 +28,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferenceManager().setSharedPreferencesName(Constants.SHARED_PREFERENCE_NAME);
+		getPreferenceManager().setSharedPreferencesName(Constants.SHARED_PREFERENCES_NAME);
 		addPreferencesFromResource(R.xml.pref_settings_activity);
 
 		try {
@@ -37,8 +37,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			e.printStackTrace();
 		}
 
-		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
-		installedDbVersion = preferences.getString(Constants.SPKEY_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+		installedDbVersion = preferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
 
         prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
 		prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));

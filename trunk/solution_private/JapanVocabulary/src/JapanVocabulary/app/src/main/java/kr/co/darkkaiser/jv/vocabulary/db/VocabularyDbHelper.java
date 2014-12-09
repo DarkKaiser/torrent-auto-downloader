@@ -109,7 +109,7 @@ public class VocabularyDbHelper {
         if (result.length != 2)
             return false;
 
-        String localVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_DB_VERSION, "");
+        String localVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, "");
 
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));

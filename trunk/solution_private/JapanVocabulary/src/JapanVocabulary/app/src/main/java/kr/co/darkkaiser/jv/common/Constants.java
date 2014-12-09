@@ -1,16 +1,16 @@
 package kr.co.darkkaiser.jv.common;
 
-public class Constants {
+public interface Constants {
 
     /*
      * 공용 환경설정 이름
      */
-    public static final String SHARED_PREFERENCE_NAME = "jv_setup";
+    public static final String SHARED_PREFERENCES_NAME = "jv_setup";
 
     /*
      * 로컬에 설치된 단어DB 버전(공용 환경설정 키이름)
      */
-    public static final String SPKEY_DB_VERSION = "jv_db_ver";
+    public static final String SPKEY_INSTALLED_DB_VERSION = "jv_db_ver";
 
     /*
      * 가장 마지막에 업데이트 한 단어DB의 IDX 최대값(공용 환경설정 키이름)

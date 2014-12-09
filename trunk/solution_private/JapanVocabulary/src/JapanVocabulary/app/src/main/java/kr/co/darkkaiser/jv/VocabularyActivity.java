@@ -153,7 +153,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         aq.id(R.id.av_prev_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
                 if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -167,7 +167,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         aq.id(R.id.av_next_vocabulary).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
                 if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -213,7 +213,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 mWakeLock.acquire();
 
                 // 프로그램 시작시 단어DB를 업데이트할지의 여부를 확인한 후, 단어DB를 업데이트한다.
-                SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
                 mIsVocabularyUpdateOnStarted = sharedPreferences.getBoolean(getString(R.string.as_vocabulary_update_on_started_key), getResources().getBoolean(R.bool.vocabulary_update_on_started_default_value));
 
                 // 현재 인터넷에 연결되어 있는지의 여부를 확인한 후, 단어DB를 업데이트한다.
@@ -238,7 +238,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
                     String[] newVocabularyDbInfo = { "", "" };
 
-                    if (VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
+                    if (VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
                         // 현재 연결된 네트워크가 3G/LTE 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -429,7 +429,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	}
 
     private void resetSettings() {
-		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
 		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
@@ -549,7 +549,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		}
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
-		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 		mMemorizeTargetVocabularyList.savePosition(preferences);
 
 		super.onBackPressed();
@@ -811,7 +811,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                     tempVocabularyDbFile.renameTo(vocabularyDbFile);
 
-                    getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit().putString(Constants.SPKEY_DB_VERSION, newVocabularyDbVersion).commit();
+                    getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putString(Constants.SPKEY_INSTALLED_DB_VERSION, newVocabularyDbVersion).commit();
 
                     updateSucceeded = true;
                 } else {
@@ -847,7 +847,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (isNowNetworkConnected == false && isVocabularyUpdateOnStarted == true) {
             mLoadVocabularyDataHandler.obtainMessage(MSG_NETWORK_DISCONNECTED_INFO_DIALOG_SHOW).sendToTarget();
         } else if (isUpdateSucceeded == true) {
-            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
             long prevMaxVocabularyIdx = sharedPreferences.getLong(Constants.SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX, -1);
 
             StringBuilder sb = new StringBuilder();
@@ -869,7 +869,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mMemorizeTargetVocabularyList.loadVocabularyData(sharedPreferences, firstLoadVocabularyData);
 
         adjustVocabularySeekBar(sharedPreferences);
