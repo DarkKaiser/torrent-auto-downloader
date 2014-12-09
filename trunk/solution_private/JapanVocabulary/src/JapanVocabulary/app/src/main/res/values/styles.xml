@@ -10,7 +10,7 @@
     <style name="VocabularyDetailTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize" tools:ignore="SpUsage">15dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
         <item name="android:background">@color/avd_item_title_background</item>
     </style>
 
