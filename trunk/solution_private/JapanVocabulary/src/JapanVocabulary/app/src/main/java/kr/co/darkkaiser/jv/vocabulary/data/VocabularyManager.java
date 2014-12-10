@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
-import kr.co.darkkaiser.jv.vocabulary.db.UserSQLiteOpenHelper;
+import kr.co.darkkaiser.jv.vocabulary.db.UserDbSQLiteOpenHelper;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
 public class VocabularyManager {
@@ -53,7 +53,7 @@ public class VocabularyManager {
     public synchronized boolean initDataFromDB(Context context) {
 		assert context != null;
 
-        UserSQLiteOpenHelper userSQLiteOpenHelper = new UserSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
+        UserDbSQLiteOpenHelper userDbSQLiteOpenHelper = new UserDbSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
 
         // 이전에 등록된 모든 단어를 제거한다.
         if (mVocabularyTable.isEmpty() == false)
@@ -104,7 +104,7 @@ public class VocabularyManager {
                 mUserDatabase = null;
             }
 
-            mUserDatabase = userSQLiteOpenHelper.getWritableDatabase();
+            mUserDatabase = userDbSQLiteOpenHelper.getWritableDatabase();
 
             // 이전 버전의 사용자의 암기정보를 저장한 DB파일이 존재하는지 확인하여, 존재하는경우 새로운 버전으로 업그레이드한다.
             upgradeUserDbFile(context);
