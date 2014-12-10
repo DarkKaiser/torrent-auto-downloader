@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    >
+    <!-- TODO seekbar 모양 및 위치 변경하기, 시크바는 카카오스토리 같은 형태대로 -->
+    <size android:height="20dp" android:width="3dp"/>
+    <gradient android:startColor="#ffffff" android:endColor="#ffffff" />
+</shape>
