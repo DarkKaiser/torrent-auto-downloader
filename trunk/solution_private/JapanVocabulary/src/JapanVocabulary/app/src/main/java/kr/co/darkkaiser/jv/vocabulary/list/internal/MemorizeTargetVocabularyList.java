@@ -17,8 +17,8 @@ import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
-import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabularyListSeek {
 
@@ -133,7 +133,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
 	@Override
     public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		Integer value = mVocabularyListMemorizeOrder.pop();
+        assert sbErrorMessage != null;
+
+        Integer value = mVocabularyListMemorizeOrder.pop();
 		if (value != null) {
 			int prevPosition = mPosition;
 
@@ -152,8 +154,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 	}
 
 	@Override
-	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
-		assert sbErrMessage != null;
+	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
+		assert sbErrorMessage != null;
 
         // '이전' 버튼을 눌렀을 때 이전 단어로 돌아가기 위해 현재 보여지고 있는 암기단어의 위치를 저장한다.
         if (isValidPosition() == true) {
@@ -169,7 +171,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
         if (mVocabularyListData.isEmpty() == true || mMemorizeCompletedCount >= mVocabularyListData.size()) {
             mPosition = -1;
-			sbErrMessage.append("암기 할 단어가 없습니다.");
+			sbErrorMessage.append("암기 할 단어가 없습니다.");
 		} else {
 			if (mMemorizeOrder == MemorizeOrder.RANDOM) {
 				int prevPosition = mPosition;

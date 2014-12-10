@@ -19,13 +19,15 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 
 	@Override
 	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
-		int olcPosition = mPosition;
+        assert sbErrorMessage != null;
+
+		int oldPosition = mPosition;
 
 		--mPosition;
 		if (isValid() == true) {
             return mSearchResultVocabularyList.getVocabulary(mPosition);
 		} else {
-			mPosition = olcPosition;
+			mPosition = oldPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
 		}
 
@@ -33,7 +35,9 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 	}
 
 	@Override
-	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrMessage) {
+	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
+        assert sbErrorMessage != null;
+
 		int oldPosition = mPosition;
 
 		++mPosition;
@@ -41,7 +45,7 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
             return mSearchResultVocabularyList.getVocabulary(mPosition);
 		} else {
 			mPosition = oldPosition;
-			sbErrMessage.append("다음 단어가 없습니다.");
+			sbErrorMessage.append("다음 단어가 없습니다.");
 		}
 
 		return null;
