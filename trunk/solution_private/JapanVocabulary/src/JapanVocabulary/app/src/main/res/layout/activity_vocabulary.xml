@@ -67,7 +67,7 @@
             android:layout_above="@id/xmladview"
             android:layout_alignParentLeft="true"
             android:text="@string/av_prev_vocabulary"
-            android:textSize="15dp"
+            android:textSize="17dp"
             tools:ignore="SpUsage"
             />
         <Button

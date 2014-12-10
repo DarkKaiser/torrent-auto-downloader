@@ -25,7 +25,7 @@
 	    		>
 		    	<TextView 
                     android:text="@string/avd_vocabulary"
-                    style="@style/VocabularyDetailTitle"
+                    style="@style/DetailActivityItemTitle"
                     />
                 <TextView
                     android:id="@+id/avd_memorize_completed_count_text"
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:textColor="@color/avd_memorize_completed_count"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     tools:ignore="SpUsage"
                     />
 	    	</RelativeLayout>
@@ -44,7 +44,7 @@
 	    		>
 				<TextView
 					android:id="@+id/avd_vocabulary"
-                    style="@style/VocabularyDetailContent"
+                    style="@style/DetailActivityItemContent"
                     />
                 <TextView
                     android:id="@+id/avd_memorize_uncompleted"
@@ -53,42 +53,42 @@
                     android:layout_alignParentRight="true"
                     android:text="@string/avd_vocabulary_memorize_uncompleted"
                     android:textColor="@color/avd_memorize_uncompleted"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     tools:ignore="SpUsage"
                     />
 	    	</RelativeLayout>
 			<TextView
                 android:text="@string/avd_vocabulary_gana"
-                style="@style/VocabularyDetailTitle"
+                style="@style/DetailActivityItemTitle"
                 />
 			<TextView
 				android:id="@+id/avd_vocabulary_gana"
-                style="@style/VocabularyDetailContent"
+                style="@style/DetailActivityItemContent"
                 />
 			<TextView 
 		    	android:text="@string/avd_vocabulary_translation"
-                style="@style/VocabularyDetailTitle"
+                style="@style/DetailActivityItemTitle"
                 />
 			<TextView
 				android:id="@+id/avd_vocabulary_translation"
-                style="@style/VocabularyDetailContent"
+                style="@style/DetailActivityItemContent"
                 />
 			<TextView 
 		    	android:text="@string/avd_vocabulary_detail_description"
-                style="@style/VocabularyDetailTitle"
+                style="@style/DetailActivityItemTitle"
 		    	/>
 			<TextView
 				android:id="@+id/avd_vocabulary_detail_info"
-                style="@style/VocabularyDetailContent"
+                style="@style/DetailActivityItemContent"
                 />
 			<TextView 
 		    	android:text="@string/avd_vocabulary_example"
-                style="@style/VocabularyDetailTitle"
+                style="@style/DetailActivityItemTitle"
 		    	/>
 			<TextView
 				android:id="@+id/avd_vocabulary_example"
-                style="@style/VocabularyDetailContent"
-                android:textSize="15dp"
+                style="@style/DetailActivityItemContent"
+                android:textSize="16dp"
                 tools:ignore="SpUsage"
                 />
 		</LinearLayout>

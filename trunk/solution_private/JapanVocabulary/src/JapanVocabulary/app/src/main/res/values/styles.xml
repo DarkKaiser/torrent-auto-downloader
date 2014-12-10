@@ -7,7 +7,7 @@
     </style>
 
     <!-- 상세정보 액티비티 항목 타이틀 -->
-    <style name="VocabularyDetailTitle">
+    <style name="DetailActivityItemTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
@@ -15,7 +15,7 @@
     </style>
 
     <!-- 상세정보 액티비티 항목 내용 -->
-    <style name="VocabularyDetailContent">
+    <style name="DetailActivityItemContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">26dp</item>

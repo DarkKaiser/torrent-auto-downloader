@@ -73,9 +73,9 @@ public class SearchListActivity extends ActionBarListActivity {
 
         // 검색조건내의 암기대상, 암기완료 스피너 어댑터를 초기화한다.
         mMemorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
-        mMemorizeTargetAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+        mMemorizeTargetAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
         mMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
-        mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_custom_spinner_dropdown_item);
+        mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
 
         // 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
 		searchVocabulary();

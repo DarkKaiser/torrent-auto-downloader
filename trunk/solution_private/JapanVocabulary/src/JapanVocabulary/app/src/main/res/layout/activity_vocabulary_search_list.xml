@@ -74,7 +74,7 @@
             android:paddingTop="10dp"
             android:text="@string/avsl_empty_search_result_list_vocabulary"
             android:textColor="#cccccc"
-            android:textSize="13dp"
+            android:textSize="14dp"
             tools:ignore="SpUsage"
             />
     </LinearLayout>
