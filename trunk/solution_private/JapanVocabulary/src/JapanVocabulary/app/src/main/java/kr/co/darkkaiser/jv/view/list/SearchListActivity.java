@@ -77,6 +77,7 @@ public class SearchListActivity extends ActionBarListActivity {
         mMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
         mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
 
+        // TODO 검색될때 프로그레스바가 잘 나타나지 않음
         // 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
 		searchVocabulary();
 	}
@@ -161,7 +162,7 @@ public class SearchListActivity extends ActionBarListActivity {
                 return true;
             case R.id.avsl_search_result_vocabulary_rememorize_all: 				// 검색된 전체 단어 재암기
             case R.id.avsl_search_result_vocabulary_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
-            case R.id.avsl_search_result_vocabulary_memorize_target_all: 		// 검색된 전체 단어 암기 대상 만들기
+            case R.id.avsl_search_result_vocabulary_memorize_target_all: 		    // 검색된 전체 단어 암기 대상 만들기
             case R.id.avsl_search_result_vocabulary_memorize_target_cancel_all: 	// 검색된 전체 단어 암기 대상 해제
                 // 호출자 액티비티에 데이터가 변경되었음을 알리도록 값을 설정한다.
                 mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
@@ -238,8 +239,6 @@ public class SearchListActivity extends ActionBarListActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-
                 assert mProgressDialog == null;
 
                 // TODO 프로그레스바가 잘 뜨지 않는 현상 있음
@@ -255,14 +254,11 @@ public class SearchListActivity extends ActionBarListActivity {
             @Override
             protected Void doInBackground(Void... voids) {
                 mSearchResultVocabularyList.search(SearchListActivity.this);
-
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
@@ -291,8 +287,6 @@ public class SearchListActivity extends ActionBarListActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-
                 assert mProgressDialog == null;
 
                 // 프로그레스 대화상자를 보인다.
@@ -309,8 +303,6 @@ public class SearchListActivity extends ActionBarListActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
@@ -326,8 +318,6 @@ public class SearchListActivity extends ActionBarListActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-
                 assert mProgressDialog == null;
 
                 // 프로그레스 대화상자를 보인다.
@@ -342,8 +332,6 @@ public class SearchListActivity extends ActionBarListActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
