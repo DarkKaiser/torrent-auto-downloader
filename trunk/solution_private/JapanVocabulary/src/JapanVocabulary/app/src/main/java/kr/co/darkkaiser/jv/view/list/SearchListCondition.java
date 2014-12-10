@@ -149,7 +149,7 @@ public class SearchListCondition {
 
     public void setJLPTRanking(List<Integer> selectedIndicies) {
         for (int index = 0; index < mJLPTRankingArray.length; ++index)
-                mJLPTRankingArray[index] = false;
+            mJLPTRankingArray[index] = false;
 
         for (Integer index : selectedIndicies) {
             if (index >= 0 && index < mJLPTRankingArray.length)
@@ -160,6 +160,8 @@ public class SearchListCondition {
     }
 
     public void commit() {
+        assert mSharedPreferences != null;
+
         Editor editor = mSharedPreferences.edit();
         assert editor != null;
 
