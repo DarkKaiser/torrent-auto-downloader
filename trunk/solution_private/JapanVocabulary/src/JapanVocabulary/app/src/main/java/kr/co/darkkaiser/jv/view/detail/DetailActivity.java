@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -46,6 +47,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
+
+    // 단어 상세정보 및 예문 데이터 로딩의 비동기 태스크
+    private LoadVocabularyDataAsyncTask mLoadVocabularyDataAsyncTask = null;
 
     public static void setVocabularyListSeek(IVocabularyListSeek vocabularyList) {
         mVocabularyList = vocabularyList;
@@ -94,7 +98,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 			return;
 		}
 
-        // @@@@@ 예문 읽을시 시간 오래걸리면 화면이 늦게 뜸, 각 항목별로 프로그레스 보이고 예문 읽어오면 비동기로 출력
 		updateVocabularyDetailInfo(vocabulary);
 
 		// 제스쳐 감지 객체를 생성한다.
@@ -111,6 +114,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
 	@Override
 	protected void onDestroy() {
+        if (mLoadVocabularyDataAsyncTask != null)
+            mLoadVocabularyDataAsyncTask.cancel(true);
+
         mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
         setVocabularyListSeek(null);
 		super.onDestroy();
@@ -124,8 +130,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
         aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
-        aq.id(R.id.avd_vocabulary_detail_info).text(VocabularyManager.getInstance().getVocabularyDetailDescription(vocabulary));
-        aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(vocabulary)));
 
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {
@@ -135,15 +139,23 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             aq.id(R.id.avd_memorize_uncompleted).visible();
 		}
         aq.id(R.id.avd_memorize_completed_count_text).text(String.format(getString(R.string.avd_vocabulary_memorize_completed_count), memorizeCompletedCount));
-	}
+
+        // 단어 상세정보 및 예문은 불러들이는 데 오래 걸리므로 비동기로 처리한다.
+        if (mLoadVocabularyDataAsyncTask != null)
+            mLoadVocabularyDataAsyncTask.cancel(true);
+
+        mLoadVocabularyDataAsyncTask = new LoadVocabularyDataAsyncTask();
+        mLoadVocabularyDataAsyncTask.setVocabulary(vocabulary);
+        mLoadVocabularyDataAsyncTask.execute();
+    }
 
     @Override
     public void onClick(View v) {
         if (mVocabularyList != null && mVocabularyList.isValid() == true) {
             resetInVisiblePrevNextVocabularyButtonAnimate();
 
-            SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-            if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+            if (sharedPreferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                 // 진동을 발생시킨다.
                 Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(30);
@@ -307,6 +319,53 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
         mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
         mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
+    }
+
+    private class LoadVocabularyDataAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private Vocabulary mVocabulary = null;
+
+        private String mVocabularyExample = "";
+        private String mVocabularyDetailDescription = "";
+
+        public void setVocabulary(Vocabulary vocabulary) {
+            mVocabulary = vocabulary;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            AQuery aq = new AQuery(DetailActivity.this);
+
+            aq.id(R.id.avd_vocabulary_detail_info).text("");
+            aq.id(R.id.avd_vocabulary_example).text("");
+
+            aq.id(R.id.avd_vocabulary_detail_info_progress).visibility(View.VISIBLE);
+            aq.id(R.id.avd_vocabulary_example_progress).visibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (mVocabulary != null) {
+                if (isCancelled() == false)
+                    mVocabularyDetailDescription = VocabularyManager.getInstance().getVocabularyDetailDescription(mVocabulary);
+
+                if (isCancelled() == false)
+                    mVocabularyExample = Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(mVocabulary)).toString();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            AQuery aq = new AQuery(DetailActivity.this);
+
+            aq.id(R.id.avd_vocabulary_detail_info).text(mVocabularyDetailDescription);
+            aq.id(R.id.avd_vocabulary_example).text(mVocabularyExample);
+
+            aq.id(R.id.avd_vocabulary_detail_info_progress).visibility(View.GONE);
+            aq.id(R.id.avd_vocabulary_example_progress).visibility(View.GONE);
+        }
     }
 
 }
