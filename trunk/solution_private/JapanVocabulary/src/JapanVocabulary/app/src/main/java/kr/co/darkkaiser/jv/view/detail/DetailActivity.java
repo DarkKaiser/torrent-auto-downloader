@@ -94,6 +94,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 			return;
 		}
 
+        // @@@@@ 예문 읽을시 시간 오래걸리면 화면이 늦게 뜸, 각 항목별로 프로그레스 보이고 예문 읽어오면 비동기로 출력
 		updateVocabularyDetailInfo(vocabulary);
 
 		// 제스쳐 감지 객체를 생성한다.

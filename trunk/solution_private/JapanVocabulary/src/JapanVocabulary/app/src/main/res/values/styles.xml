@@ -18,7 +18,7 @@
     <style name="DetailActivityItemContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize" tools:ignore="SpUsage">26dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">22dp</item>
         <item name="android:background">@color/avd_item_content_background</item>
         <item name="android:typeface">serif</item>
         <item name="android:gravity">left</item>
