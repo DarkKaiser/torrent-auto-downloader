@@ -136,7 +136,8 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<String>();
         for (int i = 0; i < mItems.length; ++i) {
-            if (mSelection[i]) selection.add(mItems[i]);
+            if (mSelection[i])
+                selection.add(mItems[i]);
         }
 
         return selection;
@@ -158,7 +159,9 @@ public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickLis
 
         for (int i = 0; i < mItems.length; ++i) {
             if (mSelection[i]) {
-                if (foundOne) sb.append(", ");
+                if (foundOne)
+                    sb.append(", ");
+
                 foundOne = true;
                 
                 sb.append(mItems[i]);

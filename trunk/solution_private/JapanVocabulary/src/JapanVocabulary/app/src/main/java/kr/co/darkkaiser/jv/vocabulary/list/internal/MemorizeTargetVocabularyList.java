@@ -46,12 +46,12 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 		clearVocabularyData();
 	}
 
-	public void resetMemorizeSettings(Context context, SharedPreferences preferences) {
+	public void resetMemorizeSettings(Context context, SharedPreferences sharedPreferences) {
         assert context != null;
-        assert preferences != null;
+        assert sharedPreferences != null;
 
         // 화면에 출력 할 암기대상 단어의 항목을 읽는다.
-        String memorizeTarget = preferences.getString(context.getString(R.string.as_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
+        String memorizeTarget = sharedPreferences.getString(context.getString(R.string.as_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
         if (TextUtils.equals(memorizeTarget, Integer.toString(MemorizeTarget.VOCABULARY_GANA.ordinal())) == true)
             mMemorizeTarget = MemorizeTarget.VOCABULARY_GANA;
         else
@@ -59,7 +59,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
 		// 단어 암기순서를 읽는다.
 		MemorizeOrder prevMemorizeOrder = mMemorizeOrder;
-		int memorizeOrder = Integer.parseInt(preferences.getString(context.getString(R.string.as_memorize_order_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_order_default_value))));
+		int memorizeOrder = Integer.parseInt(sharedPreferences.getString(context.getString(R.string.as_memorize_order_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_order_default_value))));
         if (memorizeOrder == MemorizeOrder.VOCABULARY.ordinal())
             mMemorizeOrder = MemorizeOrder.VOCABULARY;
         else if (memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION.ordinal())
@@ -74,8 +74,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
             clearVocabularyData();
 	}
 
-    public synchronized void loadVocabularyData(SharedPreferences preferences, boolean firstLoadVocabularyData) {
-        assert preferences != null;
+    public synchronized void loadVocabularyData(SharedPreferences sharedPreferences, boolean firstLoadVocabularyData) {
+        assert sharedPreferences != null;
 
         clearVocabularyData();
 
@@ -97,9 +97,9 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
         if (firstLoadVocabularyData == true) {
             // 암기순서가 랜덤순이 아닐경우 마지막에 암기한 단어의 위치를 읽어들인다.
-            int latestMemorizeOrder = preferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER, MemorizeOrder.RANDOM.ordinal());
+            int latestMemorizeOrder = sharedPreferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER, MemorizeOrder.RANDOM.ordinal());
             if (latestMemorizeOrder == mMemorizeOrder.ordinal() && mMemorizeOrder != MemorizeOrder.RANDOM) {
-                mPosition = preferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
+                mPosition = sharedPreferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
 
                 if (isValidPosition() == false)
                     mPosition = -1;
@@ -269,10 +269,10 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
         return null;
     }
 
-    public void savePosition(SharedPreferences preferences) {
-        assert preferences != null;
+    public void savePosition(SharedPreferences sharedPreferences) {
+        assert sharedPreferences != null;
 
-        Editor edit = preferences.edit();
+        Editor edit = sharedPreferences.edit();
         edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER, mMemorizeOrder.ordinal());
         if (mMemorizeOrder == MemorizeOrder.RANDOM)
             edit.putInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);

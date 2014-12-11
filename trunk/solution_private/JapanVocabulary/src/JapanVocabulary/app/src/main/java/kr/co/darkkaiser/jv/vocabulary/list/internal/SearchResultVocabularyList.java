@@ -99,9 +99,8 @@ public class SearchResultVocabularyList implements IVocabularyList {
             }
         } else if (menuId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 단어 암기대상 설정
             if (excludeSearchVocabularyTargetCancel == true) {
-                for (Vocabulary vocabulary : mVocabularyListData) {
+                for (Vocabulary vocabulary : mVocabularyListData)
                     idxList.add(vocabulary.getIdx());
-                }
             } else {
                 for (Vocabulary vocabulary : mVocabularyListData) {
                     if (vocabulary.isMemorizeTarget() == false)
@@ -146,12 +145,12 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
                 // 사용자 암기정보를 갱신합니다.
                 VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+
+                return true;
             }
-        } else {
-            assert false;
         }
 
-        return true;
+        return false;
     }
 
     public synchronized boolean setMemorizeCompleted(int position, boolean flag) {
@@ -162,12 +161,12 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
                 // 사용자 암기정보를 갱신합니다.
                 VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+
+                return true;
             }
-        } else {
-            assert false;
         }
 
-        return true;
+        return false;
     }
 
     public synchronized boolean isValidPosition(int position) {

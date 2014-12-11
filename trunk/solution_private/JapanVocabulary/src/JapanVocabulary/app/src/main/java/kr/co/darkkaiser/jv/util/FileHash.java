@@ -21,9 +21,8 @@ public class FileHash {
 	        
 	        int readBytes;
 	        byte[] buffer = new byte[1024];
-	        while ((readBytes = bis.read(buffer)) != -1) {
+	        while ((readBytes = bis.read(buffer)) != -1)
 	            md.update(buffer, 0, readBytes);
-	        }
 
 	        return md.digest();
 	    } finally {

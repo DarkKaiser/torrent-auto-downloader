@@ -8,7 +8,7 @@ public interface Constants {
     public static final String SHARED_PREFERENCES_NAME = "jv_setup";
 
     /*
-     * 로컬에 설치된 단어DB 버전(공용 환경설정 키이름)
+     * 로컬에 저장된 단어DB 버전(공용 환경설정 키이름)
      */
     public static final String SPKEY_INSTALLED_DB_VERSION = "jv_db_ver";
 
@@ -18,12 +18,12 @@ public interface Constants {
     public static final String SPKEY_LAST_UPDATED_MAX_VOCABULARY_IDX = "jv_last_updated_max_idx";
 
     /*
-     * 가장 최근에 사용자가 암기했던 저장된 단어암기 순서(공용 환경설정 키이름)
+     * 가장 최근에 사용자가 암기했던 단어암기 순서(공용 환경설정 키이름)
      */
     public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_ORDER = "latest_vocabulary_memorize_order";
 
     /*
-     * 가장 최근에 사용자가 암기했던 저장된 단어암기 순서의 인덱스(공용 환경설정 키이름)
+     * 가장 최근에 사용자가 암기했던 단어 위치(공용 환경설정 키이름)
      */
     public static final String SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION = "latest_vocabulary_memorize_position";
 
