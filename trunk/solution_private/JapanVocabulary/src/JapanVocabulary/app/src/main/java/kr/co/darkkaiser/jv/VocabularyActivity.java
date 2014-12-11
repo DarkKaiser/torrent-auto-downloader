@@ -61,6 +61,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
+// todo 시크바 중간 위치시킨후 이전 버튼 누르면 단어가 없다고 나옴, 암기버퍼에 저장이 안됨
 public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
 
     private static final String TAG = "VocabularyActivity";
@@ -112,6 +113,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                AQuery aq = new AQuery(VocabularyActivity.this);
+                aq.id(R.id.av_vocabulary_seekbar_current_position).text(String.format("%d", progress + 1));
+
                 if (fromUser == true)
                     showMemorizeVocabulary(mMemorizeTargetVocabularyList.movePosition(progress));
             }
@@ -628,7 +632,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 case MSG_CUSTOM_EVT_TAP:
                     long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
                     if (idx != -1) {
-                        if (findViewById(R.id.av_vocabulary_seekbar).getVisibility() == View.VISIBLE)
+                        if (findViewById(R.id.av_vocabulary_seekbar_panel).getVisibility() == View.VISIBLE)
                             DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
                         else
                             DetailActivity.setVocabularyListSeek(null);
@@ -669,7 +673,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			vocabularySeekBar.setProgress(0);
 			vocabularySeekBar.setMax(memorizeVocabularyCount - 1);
 			vocabularySeekBar.incrementProgressBy(1);
-		}
+
+            // @@@@@
+            AQuery aq = new AQuery(this);
+            aq.id(R.id.av_vocabulary_seekbar_max_position).text(String.format("%d", memorizeVocabularyCount + 1));
+        }
 
 		mLoadVocabularyDataHandler.sendMessage(msg);
 	}
@@ -962,17 +970,17 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                         })
                         .show();
             } else if (msg.what == MSG_VOCABULARY_SEEKBAR_VISIBILITY) {
-                SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+                RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
 
                 if (msg.arg1 == View.VISIBLE) {
-                    if (vocabularySeekBar.getVisibility() != View.VISIBLE) {
-                        vocabularySeekBar.setVisibility(View.VISIBLE);
-                        vocabularySeekBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));
+                    if (vocabularySeekbarPanel.getVisibility() != View.VISIBLE) {
+                        vocabularySeekbarPanel.setVisibility(View.VISIBLE);
+                        vocabularySeekbarPanel.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));
                     }
                 } else {
-                    if (vocabularySeekBar.getVisibility() != View.GONE) {
-                        vocabularySeekBar.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
-                        vocabularySeekBar.setVisibility(View.GONE);
+                    if (vocabularySeekbarPanel.getVisibility() != View.GONE) {
+                        vocabularySeekbarPanel.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
+                        vocabularySeekbarPanel.setVisibility(View.GONE);
                     }
                 }
             } else if (msg.what == MSG_TOAST_SHOW) {

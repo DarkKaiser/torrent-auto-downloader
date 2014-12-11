@@ -34,22 +34,49 @@
         android:layout_height="match_parent"
         >
         <!-- TODO seekbar 모양 및 위치 변경하기, 시크바는 카카오스토리 같은 형태대로 -->
-        <SeekBar
-            android:id="@+id/av_vocabulary_seekbar"
+        <RelativeLayout
+            android:id="@+id/av_vocabulary_seekbar_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:maxHeight="6dp"
-            android:minHeight="6dp"
+            android:background="#772c2c2c"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
-            android:progressDrawable="@drawable/av_vocabulary_seekbar_progress"
-            android:thumb="@drawable/av_vocabulary_seekbar_thumb"
-            android:thumbOffset="0dp"
             android:visibility="gone"
-            />
+            >
+            <TextView
+                android:id="@+id/av_vocabulary_seekbar_max_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:layout_alignParentRight="true"
+                />
+            <TextView
+                android:id="@+id/av_vocabulary_seekbar_vs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / "
+                android:layout_toLeftOf="@id/av_vocabulary_seekbar_max_position"
+                />
+            <TextView
+                android:id="@+id/av_vocabulary_seekbar_current_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:layout_toLeftOf="@id/av_vocabulary_seekbar_vs"
+                />
+            <SeekBar
+                android:id="@+id/av_vocabulary_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/av_vocabulary_seekbar_current_position"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:progressDrawable="@drawable/av_vocabulary_seekbar_progress"
+                android:thumb="@drawable/av_vocabulary_seekbar_thumb"
+                android:thumbOffset="0dp"
+                />
+        </RelativeLayout>
         <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
             android:id="@+id/xmladview"
             android:layout_width="match_parent"
@@ -99,7 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/av_memorize_method_comment"
-            android:layout_below="@id/av_vocabulary_seekbar"
+            android:layout_below="@id/av_vocabulary_seekbar_panel"
             >
             <TextSwitcher
                 android:id="@+id/av_vocabulary"
