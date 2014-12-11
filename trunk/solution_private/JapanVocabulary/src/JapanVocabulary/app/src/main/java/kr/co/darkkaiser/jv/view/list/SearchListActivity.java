@@ -92,14 +92,14 @@ public class SearchListActivity extends ActionBarListActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        SubMenu sm = menu.getItem(0/* 정렬 */).getSubMenu();
+        SubMenu subMenu = menu.getItem(0/* 정렬 */).getSubMenu();
         SearchListSort searchListSort = mSearchResultVocabularyList.getSortMethod();
         if (searchListSort == SearchListSort.VOCABULARY_GANA)
-            sm.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
+            subMenu.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
         else if (searchListSort == SearchListSort.VOCABULARY_TRANSLATION)
-            sm.findItem(R.id.avsl_sort_vocabulary_translation).setChecked(true);
+            subMenu.findItem(R.id.avsl_sort_vocabulary_translation).setChecked(true);
         else
-            sm.findItem(R.id.avsl_sort_vocabulary).setChecked(true);
+            subMenu.findItem(R.id.avsl_sort_vocabulary).setChecked(true);
 
         return true;
     }

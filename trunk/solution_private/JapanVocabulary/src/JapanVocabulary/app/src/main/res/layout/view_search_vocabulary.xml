@@ -55,9 +55,11 @@
             >
             <TextView
                 android:text="@null"
+                android:textSize="16dp"
                 android:paddingLeft="0dp"
                 android:paddingRight="5dp"
                 android:gravity="right"
+                tools:ignore="SpUsage"
                 />
             <Spinner
                 android:id="@+id/avsl_search_condition_memorize_completed"
