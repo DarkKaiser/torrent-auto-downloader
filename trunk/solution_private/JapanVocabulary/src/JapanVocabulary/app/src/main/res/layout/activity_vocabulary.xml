@@ -33,19 +33,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <!-- TODO seekbar 모양 및 위치 변경하기, 시크바는 카카오스토리 같은 형태대로 -->
         <SeekBar
             android:id="@+id/av_vocabulary_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:maxHeight="3dp"
-            android:minHeight="3dp"
+            android:maxHeight="6dp"
+            android:minHeight="6dp"
             android:paddingBottom="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"
             android:progressDrawable="@drawable/av_vocabulary_seekbar_progress"
             android:thumb="@drawable/av_vocabulary_seekbar_thumb"
+            android:thumbOffset="0dp"
             android:visibility="gone"
             />
         <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
