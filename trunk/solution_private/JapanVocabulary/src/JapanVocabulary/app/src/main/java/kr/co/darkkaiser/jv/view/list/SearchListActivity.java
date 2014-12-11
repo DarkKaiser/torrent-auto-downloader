@@ -77,9 +77,13 @@ public class SearchListActivity extends ActionBarListActivity {
         mMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
         mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
 
-        // TODO 검색될때 프로그레스바가 잘 나타나지 않음
         // 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
-		searchVocabulary();
+        new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                searchVocabulary();
+            }
+        }.sendEmptyMessageDelayed(0, 100);
 	}
 
     @Override
@@ -232,23 +236,22 @@ public class SearchListActivity extends ActionBarListActivity {
     }
 
     private void searchVocabulary() {
-        // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
-        mSearchResultVocabularyList.clear();
-        mSearchResultVocabularyListAdapter.notifyDataSetChanged();
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
                 assert mProgressDialog == null;
 
-                // TODO 프로그레스바가 잘 뜨지 않는 현상 있음
                 // 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
+                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_search_progress_message), true, false);
 
-                // 검색을 시작하기 전에 리스트뷰를 보이고, empty는 보이지 않도록 설정한다.
+                // 검색을 시작하기 전에 리스트뷰와 empty를 보이지 않도록 설정한다.
                 AQuery aq = new AQuery(SearchListActivity.this);
-                aq.id(android.R.id.list).visible();
+                aq.id(android.R.id.list).gone();
                 aq.id(android.R.id.empty).gone();
+
+                // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
+                mSearchResultVocabularyList.clear();
+                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -259,15 +262,14 @@ public class SearchListActivity extends ActionBarListActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                AQuery aq = new AQuery(SearchListActivity.this);
+                if (mSearchResultVocabularyList.getCount() == 0)
+                    aq.id(android.R.id.empty).visible();
+                else
+                    aq.id(android.R.id.list).visible();
+
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
-
-                if (mSearchResultVocabularyList.getCount() == 0) {
-                    // 검색 결과가 없다면, 리스트뷰를 숨기고 empty는 보이도록 설정한다.
-                    AQuery aq = new AQuery(SearchListActivity.this);
-                    aq.id(android.R.id.empty).visible();
-                    aq.id(android.R.id.list).gone();
-                }
 
                 if (mProgressDialog != null)
                     mProgressDialog.dismiss();

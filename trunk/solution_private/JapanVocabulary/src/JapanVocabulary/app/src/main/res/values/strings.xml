@@ -48,6 +48,7 @@
     <string name="avsl_sort_vocabulary">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
     <string name="avsl_sort_vocabulary_translation">뜻</string>
+    <string name="avsl_search_progress_message">단어를 검색 중입니다.</string>
     <string name="avsl_sort_progress_message">전체 리스트를 정렬중입니다.</string>
     <string name="avsl_memorize_settings_vocabulary_progress_message">요청하신 작업을 처리 중입니다.</string>
     <string name="avsl_search_result_settings">암기상태 변경</string>
