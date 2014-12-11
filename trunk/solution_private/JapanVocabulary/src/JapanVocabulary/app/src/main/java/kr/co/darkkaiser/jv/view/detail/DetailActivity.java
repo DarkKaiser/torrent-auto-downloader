@@ -130,6 +130,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
         aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
+        aq.id(R.id.avd_vocabulary_detail_info).text("");
+        aq.id(R.id.avd_vocabulary_example).text("");
 
 		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
 		if (vocabulary.isMemorizeCompleted() == true) {
@@ -360,11 +362,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         protected void onPostExecute(Void aVoid) {
             AQuery aq = new AQuery(DetailActivity.this);
 
-            aq.id(R.id.avd_vocabulary_detail_info).text(mVocabularyDetailDescription);
-            aq.id(R.id.avd_vocabulary_example).text(mVocabularyExample);
-
             aq.id(R.id.avd_vocabulary_detail_info_progress).visibility(View.GONE);
             aq.id(R.id.avd_vocabulary_example_progress).visibility(View.GONE);
+
+            aq.id(R.id.avd_vocabulary_detail_info).text(mVocabularyDetailDescription);
+            aq.id(R.id.avd_vocabulary_example).text(mVocabularyExample);
         }
     }
 
