@@ -463,9 +463,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
 
-		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
+            // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
+            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        }
 	}
 
     private void showPrevMemorizeVocabulary() {
@@ -479,9 +482,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			showMemorizeVocabulary(vocabulary);
 		}
 
-		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
+            // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
+            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        }
 	}
 
 	private void showNextMemorizeVocabulary() {
@@ -493,9 +499,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		showMemorizeVocabulary(vocabulary);
 
-		// 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-		SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-		vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
+            // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
+            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+        }
 	}
 
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
@@ -654,32 +663,16 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     	}
     };
 
-	private void adjustVocabularySeekBar(SharedPreferences preferences) {
-		assert preferences != null;
-
-        Message msg = Message.obtain();
-        msg.what = MSG_VOCABULARY_SEEKBAR_VISIBILITY;
+	private void adjustVocabularySeekBar(SharedPreferences sharedPreferences) {
+		assert sharedPreferences != null;
 
         int memorizeVocabularyCount = mMemorizeTargetVocabularyList.getCount();
 
         // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
-		if (memorizeVocabularyCount == 0 ||
-                Integer.parseInt(preferences.getString(getString(R.string.as_memorize_order_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_default_value)))) == MemorizeOrder.RANDOM.ordinal()) {
-			msg.arg1 = View.INVISIBLE;
-		} else {
-			msg.arg1 = View.VISIBLE;
-
-			SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-			vocabularySeekBar.setProgress(0);
-			vocabularySeekBar.setMax(memorizeVocabularyCount - 1);
-			vocabularySeekBar.incrementProgressBy(1);
-
-            // @@@@@
-            AQuery aq = new AQuery(this);
-            aq.id(R.id.av_vocabulary_seekbar_max_position).text(String.format("%d", memorizeVocabularyCount + 1));
-        }
-
-		mLoadVocabularyDataHandler.sendMessage(msg);
+		if (memorizeVocabularyCount == 0 || Integer.parseInt(sharedPreferences.getString(getString(R.string.as_memorize_order_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_default_value)))) == MemorizeOrder.RANDOM.ordinal())
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.INVISIBLE, memorizeVocabularyCount).sendToTarget();
+		else
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.VISIBLE, memorizeVocabularyCount).sendToTarget();
 	}
 
     private void update2InitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
@@ -973,6 +966,16 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
 
                 if (msg.arg1 == View.VISIBLE) {
+                    int memorizeVocabularyCount = msg.arg2;
+
+                    SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+                    TextView vocabularySeekBarMaxPosition = (TextView)findViewById(R.id.av_vocabulary_seekbar_max_position);
+
+                    vocabularySeekBar.setProgress(0);
+                    vocabularySeekBar.setMax(memorizeVocabularyCount - 1);
+                    vocabularySeekBar.incrementProgressBy(1);
+                    vocabularySeekBarMaxPosition.setText(String.format("%d", memorizeVocabularyCount));
+
                     if (vocabularySeekbarPanel.getVisibility() != View.VISIBLE) {
                         vocabularySeekbarPanel.setVisibility(View.VISIBLE);
                         vocabularySeekbarPanel.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_in));

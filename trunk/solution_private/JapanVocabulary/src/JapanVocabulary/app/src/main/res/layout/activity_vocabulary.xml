@@ -39,31 +39,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="#772c2c2c"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
             android:visibility="gone"
             >
             <TextView
                 android:id="@+id/av_vocabulary_seekbar_max_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
                 android:layout_alignParentRight="true"
+                android:paddingLeft="0dp"
+                android:paddingRight="15dp"
+                android:text="@null"
+                android:textSize="11dp"
+                android:textColor="#ffa8a8a8"
+                tools:ignore="SpUsage"
                 />
             <TextView
                 android:id="@+id/av_vocabulary_seekbar_vs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" / "
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_max_position"
+                android:text=" / "
+                android:textSize="11dp"
+                android:textColor="#ffa8a8a8"
+                tools:ignore="SpUsage"
                 />
             <TextView
                 android:id="@+id/av_vocabulary_seekbar_current_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_vs"
+                android:text="@null"
+                android:textSize="11dp"
+                android:textColor="#ffffff"
+                tools:ignore="SpUsage"
                 />
             <SeekBar
                 android:id="@+id/av_vocabulary_seekbar"
