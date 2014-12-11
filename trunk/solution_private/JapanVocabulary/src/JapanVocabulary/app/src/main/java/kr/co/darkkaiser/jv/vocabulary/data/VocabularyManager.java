@@ -121,8 +121,8 @@ public class VocabularyManager {
                 {
                     Vocabulary vocabulary = mVocabularyTable.get(cursor.getLong(0/* V_IDX */));
                     if (vocabulary != null) {
-                        vocabulary.setMemorizeTarget(cursor.getLong(1/* MEMORIZE_COMPLETED_COUNT */) == 1);
-                        vocabulary.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED_COUNT */) == 1, false);
+                        vocabulary.setMemorizeTarget(cursor.getLong(1/* MEMORIZE_TARGET */) == 1);
+                        vocabulary.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED */) == 1, false);
                         vocabulary.setMemorizeCompletedCount(cursor.getLong(3/* MEMORIZE_COMPLETED_COUNT */));
                     } else {
                         assert false;
@@ -180,7 +180,7 @@ public class VocabularyManager {
                         if (token.countTokens() == 4) {
                             ContentValues values = new ContentValues();
                             values.put("V_IDX", Long.parseLong(token.nextToken()));
-                            values.put("MEMORIZE_COMPLETED_COUNT", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
+                            values.put("MEMORIZE_COMPLETED_COUNT", Long.parseLong(token.nextToken()));
                             values.put("MEMORIZE_TARGET", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
                             values.put("MEMORIZE_COMPLETED", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
                             mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
@@ -432,8 +432,7 @@ public class VocabularyManager {
                      .append("  WHERE IDX IN ( SELECT E_IDX ")
                      .append("                   FROM TBL_VOCABULARY_EXAMPLE_MAPP ")
                      .append("                  WHERE V_IDX = ").append(vocabulary.getIdx())
-                     .append("        ) ")
-                     .append("    AND USE_YN = 'Y' ");
+                     .append("        ) ");
 
 				cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
