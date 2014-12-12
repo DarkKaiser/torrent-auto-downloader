@@ -114,8 +114,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
+                TextView tvVocabulary = (TextView)tswVocabulary.getCurrentView();
+
                 AQuery aq = new AQuery(VocabularyActivity.this);
-                aq.id(R.id.av_vocabulary_seekbar_current_position).text(String.format("%d", progress + 1));
+                if (progress == 0 && TextUtils.isEmpty(tvVocabulary.getText().toString()) == true)
+                    aq.id(R.id.av_vocabulary_seekbar_current_position).text("-");
+                else
+                    aq.id(R.id.av_vocabulary_seekbar_current_position).text(String.format("%d", progress + 1));
 
                 if (fromUser == true)
                     showMemorizeVocabulary(mMemorizeTargetVocabularyList.movePosition(progress));
