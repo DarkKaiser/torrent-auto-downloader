@@ -117,6 +117,10 @@ public class SearchListActivity extends ActionBarListActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
             case R.id.avsl_search_vocabulary:
                 final View v = getLayoutInflater().inflate(R.layout.view_search_vocabulary, new LinearLayout(SearchListActivity.this), false);
 

@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
+import android.view.MenuItem;
 
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
-// TODO 액션바의 홈버튼 누를때 리프레쉬 됨
 // TODO 프로요에서 액션바가 표시디지 않음
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -23,7 +23,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	private PreferenceScreen prefDbVersion = null;
 	private DoConfirmVocabularyDbAsyncTask doConfirmVocabularyDbAsyncTask = null;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -71,8 +71,18 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
 	}
-	
-	private class DoConfirmVocabularyDbAsyncTask extends AsyncTask<String, Integer, String> {
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class DoConfirmVocabularyDbAsyncTask extends AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
