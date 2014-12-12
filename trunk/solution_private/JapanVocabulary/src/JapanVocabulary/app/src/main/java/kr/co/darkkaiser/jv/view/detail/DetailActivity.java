@@ -230,9 +230,10 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 // TODO 기능 미구현
                 mVocabulary.setMemorizeCompleted(false, false);
 
-                updateVocabularyDetailMemorizeInfo(mVocabulary);
                 // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
                 VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
+                updateVocabularyDetailMemorizeInfo(mVocabulary);
 
                 return true;
 
@@ -241,9 +242,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
                 // TODO 기능 미구현
                 mVocabulary.setMemorizeCompleted(true, true);
-                updateVocabularyDetailMemorizeInfo(mVocabulary);
                 // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
                 VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
+                updateVocabularyDetailMemorizeInfo(mVocabulary);
+
                 return true;
 
             case R.id.avd_add_vocabulary_memorize_target:
@@ -253,6 +256,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 mVocabulary.setMemorizeTarget(true);
                 // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
                 VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
                 return true;
 
             case R.id.avd_remove_vocabulary_memorize_target:
@@ -262,6 +266,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 mVocabulary.setMemorizeTarget(false);
                 // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
                 VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
                 return true;
         }
 
