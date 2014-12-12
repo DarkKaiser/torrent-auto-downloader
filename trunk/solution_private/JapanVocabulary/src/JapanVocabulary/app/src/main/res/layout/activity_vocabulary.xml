@@ -33,13 +33,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <!-- TODO seekbar 모양 및 위치 변경하기, 시크바는 카카오스토리 같은 형태대로 -->
         <RelativeLayout
             android:id="@+id/av_vocabulary_seekbar_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingTop="10dp"
+            android:paddingTop="12dp"
             android:paddingBottom="20dp"
             android:visibility="gone"
             >
@@ -49,10 +48,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:paddingLeft="0dp"
-                android:paddingRight="15dp"
+                android:paddingRight="20dp"
+                android:paddingTop="2dp"
                 android:text="@null"
+                android:textColor="#99999999"
                 android:textSize="11dp"
-                android:textColor="#ffa8a8a8"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -60,9 +60,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_max_position"
-                android:text=" / "
+                android:paddingTop="2dp"
+                android:text="@string/av_vocabulary_seekbar_vs"
+                android:textColor="#99999999"
                 android:textSize="11dp"
-                android:textColor="#ffa8a8a8"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -70,9 +71,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_vs"
+                android:paddingTop="2dp"
                 android:text="@null"
+                android:textColor="#ffffffff"
                 android:textSize="11dp"
-                android:textColor="#ffffff"
                 tools:ignore="SpUsage"
                 />
             <SeekBar
@@ -80,6 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_current_position"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:maxHeight="4dp"
                 android:minHeight="4dp"
                 android:progressDrawable="@drawable/av_vocabulary_seekbar_progress"
