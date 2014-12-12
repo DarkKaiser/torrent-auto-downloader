@@ -10,6 +10,10 @@ public interface IVocabularyListSeek {
 
     public Vocabulary nextVocabulary(StringBuilder sbErrorMessage);
 
+    public void setMemorizeTarget(boolean flag);
+
+    public void setMemorizeCompleted(boolean flag);
+
     public boolean canSeek();
 
     public boolean isValid();

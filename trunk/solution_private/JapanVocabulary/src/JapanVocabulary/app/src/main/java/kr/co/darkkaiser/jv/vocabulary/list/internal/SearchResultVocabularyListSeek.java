@@ -52,6 +52,16 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 	}
 
     @Override
+    public synchronized void setMemorizeTarget(boolean flag) {
+        // @@@@@
+    }
+
+    @Override
+    public synchronized void setMemorizeCompleted(boolean flag) {
+        // @@@@@
+    }
+
+    @Override
     public synchronized Vocabulary getVocabulary() {
         if (isValid() == true)
             return mSearchResultVocabularyList.getVocabulary(mPosition);

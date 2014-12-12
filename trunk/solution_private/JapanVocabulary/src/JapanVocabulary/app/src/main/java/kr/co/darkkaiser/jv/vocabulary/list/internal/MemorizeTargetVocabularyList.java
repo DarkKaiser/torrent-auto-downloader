@@ -212,7 +212,26 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 		return null;
 	}
 
-    public synchronized void setMemorizeCompleted() {
+    @Override
+    public synchronized void setMemorizeTarget(boolean flag) {
+        // @@@@@
+//        if (isValidPosition() == true) {
+//            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
+//            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
+//                ++mMemorizeCompletedCount;
+//                vocabulary.setMemorizeCompleted(true, true);
+//
+//                // 사용자 암기정보를 갱신합니다.
+//                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+//            }
+//        } else {
+//            assert false;
+//        }
+    }
+
+    @Override
+    public synchronized void setMemorizeCompleted(boolean flag) {
+        // @@@@@
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
