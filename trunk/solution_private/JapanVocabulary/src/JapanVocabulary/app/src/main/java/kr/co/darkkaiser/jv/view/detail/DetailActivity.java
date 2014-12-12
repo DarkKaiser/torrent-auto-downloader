@@ -211,11 +211,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     }
 
     @Override
+    // todo 변경된 값을 호출 액티비티에 적용
     public boolean onOptionsItemSelected(MenuItem item) {
         assert mVocabularyListSeek != null;
-
-        Vocabulary vocabulary;
-        // todo 변경된 값을 호출 액티비티에 적용
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -225,18 +223,18 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             case R.id.avd_vocabulary_rememorize:
                 mVocabularyListSeek.setMemorizeCompleted(false);
 
-                vocabulary = mVocabularyListSeek.getVocabulary();
-                if (vocabulary != null)
-                    updateVocabularyDetailMemorizeInfo(vocabulary);
+                Vocabulary vocabulary1 = mVocabularyListSeek.getVocabulary();
+                if (vocabulary1 != null)
+                    updateVocabularyDetailMemorizeInfo(vocabulary1);
 
                 return true;
 
             case R.id.avd_vocabulary_memorize_completed:
                 mVocabularyListSeek.setMemorizeCompleted(true);
 
-                vocabulary = mVocabularyListSeek.getVocabulary();
-                if (vocabulary != null)
-                    updateVocabularyDetailMemorizeInfo(vocabulary);
+                Vocabulary vocabulary2 = mVocabularyListSeek.getVocabulary();
+                if (vocabulary2 != null)
+                    updateVocabularyDetailMemorizeInfo(vocabulary2);
 
                 return true;
 
