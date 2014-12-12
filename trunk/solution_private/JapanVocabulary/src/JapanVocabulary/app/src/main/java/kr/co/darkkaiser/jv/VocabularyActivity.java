@@ -61,7 +61,6 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
-// todo 시크바 중간 위치시킨후 이전 버튼 누르면 단어가 없다고 나옴, 암기버퍼에 저장이 안됨
 public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
 
     private static final String TAG = "VocabularyActivity";
@@ -105,6 +104,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         vocabularySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                // 사용자에 의해 Seek 되기전에 화면에 보여지고 있는 현재단어를 이전 암기단어 순서에 저장한다.
+                mMemorizeTargetVocabularyList.savePositionInMemorizeOrder();
             }
 
             @Override
@@ -563,7 +564,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-		mMemorizeTargetVocabularyList.savePosition(preferences);
+		mMemorizeTargetVocabularyList.savePositionInSharedPreferences(preferences);
 
 		super.onBackPressed();
 	}

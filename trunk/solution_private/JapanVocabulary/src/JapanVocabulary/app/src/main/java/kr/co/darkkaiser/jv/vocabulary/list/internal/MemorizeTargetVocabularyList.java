@@ -147,7 +147,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 				mPosition = prevPosition;
 			}
 		} else {
-			sbErrorMessage.append("이전 단어가 없습니다.");
+			sbErrorMessage.append("이전 암기 단어가 없습니다.");
 		}
 
 		return null;
@@ -157,17 +157,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
 		assert sbErrorMessage != null;
 
-        // '이전' 버튼을 눌렀을 때 이전 단어로 돌아가기 위해 현재 보여지고 있는 암기단어의 위치를 저장한다.
-        if (isValidPosition() == true) {
-            Integer value = mVocabularyListMemorizeOrder.popNoRemove();
-            if (value != null) {
-                // 이전 단어와 현재 단어가 동일한 위치(동일한 단어)라면 중복 추가되지 않도록 한다.
-                if (mPosition != value)
-                    mVocabularyListMemorizeOrder.push(mPosition);
-            } else {
-                mVocabularyListMemorizeOrder.push(mPosition);
-            }
-        }
+        savePositionInMemorizeOrder();
 
         if (mVocabularyListData.isEmpty() == true || mMemorizeCompletedCount >= mVocabularyListData.size()) {
             mPosition = -1;
@@ -269,7 +259,21 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
         return null;
     }
 
-    public void savePosition(SharedPreferences sharedPreferences) {
+    public synchronized void savePositionInMemorizeOrder() {
+        // '다음' 버튼을 눌렀을 때 이전 단어로 돌아가기 위해 현재 보여지고 있는 암기단어의 위치를 저장한다.
+        if (isValidPosition() == true) {
+            Integer value = mVocabularyListMemorizeOrder.popNoRemove();
+            if (value != null) {
+                // 이전 단어와 현재 단어가 동일한 위치(동일한 단어)라면 중복 추가되지 않도록 한다.
+                if (mPosition != value)
+                    mVocabularyListMemorizeOrder.push(mPosition);
+            } else {
+                mVocabularyListMemorizeOrder.push(mPosition);
+            }
+        }
+    }
+
+    public void savePositionInSharedPreferences(SharedPreferences sharedPreferences) {
         assert sharedPreferences != null;
 
         Editor edit = sharedPreferences.edit();
