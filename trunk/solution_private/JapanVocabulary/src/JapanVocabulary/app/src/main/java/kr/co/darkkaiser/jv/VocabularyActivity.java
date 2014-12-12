@@ -648,15 +648,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 case MSG_CUSTOM_EVT_TAP:
                     long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
                     if (idx != -1) {
-                        if (findViewById(R.id.av_vocabulary_seekbar_panel).getVisibility() == View.VISIBLE)
-                            DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
-                        else
-                            DetailActivity.setVocabularyListSeek(null);
+                        DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
 
                         // 상세정보 페이지를 연다.
-                        Intent intent = new Intent(VocabularyActivity.this, DetailActivity.class);
-                        intent.putExtra("idx", idx);
-                        startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+                        startActivityForResult(new Intent(VocabularyActivity.this, DetailActivity.class), REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
                     }
                     break;
 

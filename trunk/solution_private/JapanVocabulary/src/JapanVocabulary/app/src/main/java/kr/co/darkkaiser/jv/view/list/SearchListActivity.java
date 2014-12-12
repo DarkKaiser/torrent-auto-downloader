@@ -405,9 +405,7 @@ public class SearchListActivity extends ActionBarListActivity {
             DetailActivity.setVocabularyListSeek(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
 
             // 단어 상세페이지 호출
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("idx", vocabulary.getIdx());
-            startActivityForResult(intent, REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
+            startActivityForResult(new Intent(SearchListActivity.this, DetailActivity.class), REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
         }
 	}
 
