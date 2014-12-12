@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
@@ -59,6 +60,10 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
         // @@@@@
+//        mVocabulary.setMemorizeCompleted(false, false);
+//
+//        // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//        VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
     }
 
     @Override

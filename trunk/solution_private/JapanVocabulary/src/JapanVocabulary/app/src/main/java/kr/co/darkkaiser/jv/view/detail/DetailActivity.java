@@ -38,9 +38,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     private GestureDetector mGestureDetector = null;
 
-    // 현재 화면에 보여지고 있는 단어
-    private Vocabulary mVocabulary = null;
-
     // 이전/다음 단어로 이동하기 위한 단어리스트 래퍼객체
 	private static IVocabularyListSeek mVocabularyListSeek = null;
 
@@ -118,8 +115,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 	private void updateVocabularyDetailInfo(Vocabulary vocabulary) {
 		assert vocabulary != null;
 
-        mVocabulary = vocabulary;
-
         AQuery aq = new AQuery(this);
         aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
@@ -180,6 +175,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             if (vocabulary != null) {
                 setResult(ACTIVITY_RESULT_POSITION_CHANGED);
                 updateVocabularyDetailInfo(vocabulary);
+
+                // 옵션메뉴의 항목을 다시 그린다.
+                supportInvalidateOptionsMenu();
             } else if (sbErrMessage.length() > 0) {
                 Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -196,18 +194,27 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        assert mVocabulary != null;
-        menu.findItem(R.id.avd_vocabulary_rememorize).setVisible(mVocabulary.isMemorizeCompleted() == true);
-        menu.findItem(R.id.avd_vocabulary_memorize_completed).setVisible(mVocabulary.isMemorizeCompleted() == false);
-        menu.findItem(R.id.avd_add_vocabulary_memorize_target).setVisible(mVocabulary.isMemorizeTarget() == false);
-        menu.findItem(R.id.avd_remove_vocabulary_memorize_target).setVisible(mVocabulary.isMemorizeTarget() == true);
+        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+        if (vocabulary != null) {
+            menu.findItem(R.id.avd_vocabulary_rememorize).setVisible(vocabulary.isMemorizeCompleted() == true);
+            menu.findItem(R.id.avd_vocabulary_memorize_completed).setVisible(vocabulary.isMemorizeCompleted() == false);
+            menu.findItem(R.id.avd_add_vocabulary_memorize_target).setVisible(vocabulary.isMemorizeTarget() == false);
+            menu.findItem(R.id.avd_remove_vocabulary_memorize_target).setVisible(vocabulary.isMemorizeTarget() == true);
+        } else {
+            menu.findItem(R.id.avd_vocabulary_rememorize).setVisible(false);
+            menu.findItem(R.id.avd_vocabulary_memorize_completed).setVisible(false);
+            menu.findItem(R.id.avd_add_vocabulary_memorize_target).setVisible(false);
+            menu.findItem(R.id.avd_remove_vocabulary_memorize_target).setVisible(false);
+        }
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        assert mVocabulary != null;
+        assert mVocabularyListSeek != null;
+
+        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -215,47 +222,44 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 return true;
 
             case R.id.avd_vocabulary_rememorize:
-                assert mVocabulary.isMemorizeCompleted() == true;
+                assert vocabulary.isMemorizeCompleted() == true;
 
                 // TODO 기능 미구현
-                mVocabulary.setMemorizeCompleted(false, false);
+                mVocabularyListSeek.setMemorizeCompleted(false);
 
-                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
-                updateVocabularyDetailMemorizeInfo(mVocabulary);
+//                updateVocabularyDetailMemorizeInfo(mVocabulary);
 
                 return true;
 
             case R.id.avd_vocabulary_memorize_completed:
-                assert mVocabulary.isMemorizeCompleted() == false;
+                assert vocabulary.isMemorizeCompleted() == false;
 
-                // TODO 기능 미구현
-                mVocabulary.setMemorizeCompleted(true, true);
-                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
-                updateVocabularyDetailMemorizeInfo(mVocabulary);
+//                // TODO 기능 미구현
+//                mVocabulary.setMemorizeCompleted(true, true);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+//
+//                updateVocabularyDetailMemorizeInfo(mVocabulary);
 
                 return true;
 
             case R.id.avd_add_vocabulary_memorize_target:
-                assert mVocabulary.isMemorizeTarget() == false;
+                assert vocabulary.isMemorizeTarget() == false;
 
-                // TODO 기능 미구현
-                mVocabulary.setMemorizeTarget(true);
-                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+//                // TODO 기능 미구현
+//                mVocabulary.setMemorizeTarget(true);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
 
                 return true;
 
             case R.id.avd_remove_vocabulary_memorize_target:
-                assert mVocabulary.isMemorizeTarget() == true;
+                assert vocabulary.isMemorizeTarget() == true;
 
-                // TODO 기능 미구현
-                mVocabulary.setMemorizeTarget(false);
-                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+//                // TODO 기능 미구현
+//                mVocabulary.setMemorizeTarget(false);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
 
                 return true;
         }
@@ -382,13 +386,16 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         @Override
         protected Void doInBackground(Void... voids) {
-            assert mVocabulary != null;
+            assert mVocabularyListSeek != null;
 
-            if (isCancelled() == false)
-                mVocabularyDetailDescription = VocabularyManager.getInstance().getVocabularyDetailDescription(mVocabulary);
+            Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+            if (vocabulary != null) {
+                if (isCancelled() == false)
+                    mVocabularyDetailDescription = VocabularyManager.getInstance().getVocabularyDetailDescription(vocabulary);
 
-            if (isCancelled() == false)
-                mVocabularyExample = Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(mVocabulary)).toString();
+                if (isCancelled() == false)
+                    mVocabularyExample = Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(vocabulary)).toString();
+            }
 
             return null;
         }
