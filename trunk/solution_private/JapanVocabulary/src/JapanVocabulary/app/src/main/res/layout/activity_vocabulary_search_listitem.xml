@@ -7,7 +7,7 @@
     >
     <ImageView
         android:id="@+id/avsli_memorize_bar"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:background="@color/avsli_memorize_bar_completed"

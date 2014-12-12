@@ -128,7 +128,7 @@ public class SearchListActivity extends ActionBarListActivity {
 
                     new AlertDialog.Builder(SearchListActivity.this)
                             .setTitle(getString(R.string.avsl_search))
-                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.search), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     int memorizeTarget = aq.id(R.id.avsl_search_condition_memorize_target).getSelectedItemPosition();
