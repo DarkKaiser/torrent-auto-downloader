@@ -64,4 +64,9 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
         return mSearchResultVocabularyList.isValidPosition(mPosition);
     }
 
+    @Override
+    public boolean canSeek() {
+        return true;
+    }
+
 }

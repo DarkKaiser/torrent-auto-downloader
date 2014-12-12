@@ -233,6 +233,11 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
     }
 
     @Override
+    public boolean canSeek() {
+        return !(getCount() == 0 || mMemorizeOrder == MemorizeOrder.RANDOM);
+    }
+
+    @Override
     public boolean isValid() {
         return true;
     }
@@ -273,7 +278,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
         }
     }
 
-    public void savePositionInSharedPreferences(SharedPreferences sharedPreferences) {
+    public synchronized void savePositionInSharedPreferences(SharedPreferences sharedPreferences) {
         assert sharedPreferences != null;
 
         Editor edit = sharedPreferences.edit();

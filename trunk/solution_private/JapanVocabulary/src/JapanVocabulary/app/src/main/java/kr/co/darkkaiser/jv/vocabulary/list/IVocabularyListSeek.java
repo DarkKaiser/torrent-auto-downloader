@@ -6,9 +6,11 @@ public interface IVocabularyListSeek {
 
     public Vocabulary getVocabulary();
 
-    public Vocabulary previousVocabulary(StringBuilder sbErrMessage);
+    public Vocabulary previousVocabulary(StringBuilder sbErrorMessage);
 
-    public Vocabulary nextVocabulary(StringBuilder sbErrMessage);
+    public Vocabulary nextVocabulary(StringBuilder sbErrorMessage);
+
+    public boolean canSeek();
 
     public boolean isValid();
 

@@ -670,18 +670,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     	}
     };
 
-	private void adjustVocabularySeekBar(SharedPreferences sharedPreferences) {
-		assert sharedPreferences != null;
-
-        int memorizeVocabularyCount = mMemorizeTargetVocabularyList.getCount();
-
-        // '랜덤' 모드이거나 암기 단어가 하나도 없는 경우에는 암기 단어의 위치를 가리키는 SeekBar를 화면에 보이지 않도록 한다.
-		if (memorizeVocabularyCount == 0 || Integer.parseInt(sharedPreferences.getString(getString(R.string.as_memorize_order_key), String.format("%d", getResources().getInteger(R.integer.memorize_order_default_value)))) == MemorizeOrder.RANDOM.ordinal())
-            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.INVISIBLE, memorizeVocabularyCount).sendToTarget();
-		else
-            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.VISIBLE, memorizeVocabularyCount).sendToTarget();
-	}
-
     private void update2InitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
         assert mProgressDialog == null;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
@@ -877,10 +865,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        mMemorizeTargetVocabularyList.loadVocabularyData(sharedPreferences, firstLoadVocabularyData);
+        // 암기대상 단어를 읽어들인다.
+        mMemorizeTargetVocabularyList.loadVocabularyData(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE), firstLoadVocabularyData);
 
-        adjustVocabularySeekBar(sharedPreferences);
+        // 단어 암기순서에 따라 SeekBar를 보이거나 숨긴다.
+        if (mMemorizeTargetVocabularyList.canSeek() == true)
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.VISIBLE, mMemorizeTargetVocabularyList.getCount()).sendToTarget();
+        else
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.INVISIBLE, mMemorizeTargetVocabularyList.getCount()).sendToTarget();
 
         // 단어 암기를 시작합니다.
         mLoadVocabularyDataHandler.obtainMessage(MSG_MEMORIZE_VOCABULARY_START).sendToTarget();

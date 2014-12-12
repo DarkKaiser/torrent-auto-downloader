@@ -75,7 +75,6 @@ public class SearchResultVocabularyList implements IVocabularyList {
 
     public synchronized Vocabulary getVocabulary(int position) {
         assert isValidPosition(position);
-
         return mVocabularyListData.get(position);
     }
 
@@ -117,26 +116,6 @@ public class SearchResultVocabularyList implements IVocabularyList {
         VocabularyManager.getInstance().memorizeSettingsVocabulary(menuId, excludeSearchVocabularyTargetCancel, idxList);
     }
 
-    @Override
-    public synchronized int getCount() {
-        return mVocabularyListData.size();
-    }
-
-    public synchronized SearchListSort getSortMethod() {
-        return mSearchListSort;
-    }
-
-    public synchronized void setSortMethod(SearchListSort searchListSort) {
-        mSearchListSort = searchListSort;
-
-        // 변경된 정렬 방법을 저장한다.
-        mSharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, mSearchListSort.name()).commit();
-    }
-
-    public synchronized SearchListCondition getSearchListCondition() {
-        return mSearchListCondition;
-    }
-
     public synchronized boolean setMemorizeTarget(int position, boolean flag) {
         if (isValidPosition(position) == true) {
             Vocabulary vocabulary = mVocabularyListData.get(position);
@@ -169,8 +148,28 @@ public class SearchResultVocabularyList implements IVocabularyList {
         return false;
     }
 
+    public synchronized SearchListSort getSortMethod() {
+        return mSearchListSort;
+    }
+
+    public synchronized void setSortMethod(SearchListSort searchListSort) {
+        mSearchListSort = searchListSort;
+
+        // 변경된 정렬 방법을 저장한다.
+        mSharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, mSearchListSort.name()).commit();
+    }
+
+    public synchronized SearchListCondition getSearchListCondition() {
+        return mSearchListCondition;
+    }
+
     public synchronized boolean isValidPosition(int position) {
         return (position >= 0 && position < mVocabularyListData.size());
+    }
+
+    @Override
+    public synchronized int getCount() {
+        return mVocabularyListData.size();
     }
 
 }
