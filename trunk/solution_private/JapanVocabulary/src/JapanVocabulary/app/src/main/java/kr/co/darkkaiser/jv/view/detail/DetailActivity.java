@@ -219,28 +219,28 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             case R.id.avd_vocabulary_rememorize:
                 assert mVocabulary.isMemorizeCompleted() == true;
 
-                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                // TODO 기능 미구현
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.avd_vocabulary_memorize_completed:
                 assert mVocabulary.isMemorizeCompleted() == false;
 
-                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                // TODO 기능 미구현
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.avd_add_vocabulary_memorize_target:
                 assert mVocabulary.isMemorizeTarget() == false;
 
-                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                // TODO 기능 미구현
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.avd_remove_vocabulary_memorize_target:
                 assert mVocabulary.isMemorizeTarget() == true;
 
-                // TODO 기능 미구현, 상태에 따라 메뉴 숨기기
+                // TODO 기능 미구현
                 Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
                 return true;
         }

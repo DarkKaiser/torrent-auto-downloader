@@ -492,7 +492,7 @@ public class VocabularyManager {
             if (vocabulary.isMemorizeTarget() == true) {
                 vocabulary.setMemorizeCompleted(false, false);
 
-                // @@@@@ updateUserVocabulary 성능문제
+                // TODO updateUserVocabulary 성능문제
                 updateUserVocabulary(vocabulary);
             }
         }
@@ -506,7 +506,7 @@ public class VocabularyManager {
      * @param idxList 단어 idx 리스트
      */
     public synchronized void memorizeSettingsVocabulary(int menuItemId, boolean excludeSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
-        // @@@@@ updateUserVocabulary 성능문제
+        // TODO updateUserVocabulary 성능문제
         if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
             for (Long idx : idxList) {
                 Vocabulary vocabulary = mVocabularyTable.get(idx);
