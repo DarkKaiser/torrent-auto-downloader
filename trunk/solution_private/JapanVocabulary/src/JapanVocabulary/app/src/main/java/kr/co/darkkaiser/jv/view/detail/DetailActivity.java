@@ -215,6 +215,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         assert mVocabularyListSeek != null;
 
         Vocabulary vocabulary;
+        // todo 변경된 값을 호출 액티비티에 적용
 
         switch (item.getItemId()) {
             case android.R.id.home:
