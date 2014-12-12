@@ -489,21 +489,13 @@ public class VocabularyManager {
     public synchronized void memorizeTargetVocabularyRememorizeAll() {
         for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
             Vocabulary vocabulary = e.nextElement();
-            if (vocabulary.isMemorizeTarget() == true)
+            if (vocabulary.isMemorizeTarget() == true) {
                 vocabulary.setMemorizeCompleted(false, false);
+
+                // @@@@@ updateUserVocabulary 성능문제
+                updateUserVocabulary(vocabulary);
+            }
         }
-
-        // @@@@@ writeUserVocabularyInfo();
-//        ContentValues values = new ContentValues();
-//        values.put("MEMORIZE_TARGET", vocabulary.isMemorizeTarget() ? "1" : "0");
-//        values.put("MEMORIZE_COMPLETED", vocabulary.isMemorizeCompleted() ? "1" : "0");
-//        values.put("MEMORIZE_COMPLETED_COUNT", vocabulary.getMemorizeCompletedCount());
-//        int updateCount = mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[] { Long.toString(vocabulary.getIdx()) });
-//        if (updateCount == 0) {
-//            values.put("V_IDX", vocabulary.getIdx());
-//            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
-//        }
-
     }
 
     /**
@@ -514,34 +506,58 @@ public class VocabularyManager {
      * @param idxList 단어 idx 리스트
      */
     public synchronized void memorizeSettingsVocabulary(int menuItemId, boolean excludeSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
+        // @@@@@ updateUserVocabulary 성능문제
         if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
             for (Long idx : idxList) {
                 Vocabulary vocabulary = mVocabularyTable.get(idx);
+                assert vocabulary != null;
 
                 vocabulary.setMemorizeTarget(true);
                 vocabulary.setMemorizeCompleted(false, false);
+
+                updateUserVocabulary(vocabulary);
             }
         } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
-            for (Long idx : idxList)
-                mVocabularyTable.get(idx).setMemorizeCompleted(true, true);
+            for (Long idx : idxList) {
+                Vocabulary vocabulary = mVocabularyTable.get(idx);
+                assert vocabulary != null;
+
+                vocabulary.setMemorizeCompleted(true, true);
+
+                updateUserVocabulary(vocabulary);
+            }
         } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
             if (excludeSearchVocabularyTargetCancel == true) {
                 for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
                     Vocabulary vocabulary = e.nextElement();
+                    assert vocabulary != null;
+
                     vocabulary.setMemorizeTarget(false);
+
+                    updateUserVocabulary(vocabulary);
                 }
             }
 
-            for (Long idx : idxList)
-                mVocabularyTable.get(idx).setMemorizeTarget(true);
+            for (Long idx : idxList) {
+                Vocabulary vocabulary = mVocabularyTable.get(idx);
+                assert vocabulary != null;
+
+                vocabulary.setMemorizeTarget(true);
+
+                updateUserVocabulary(vocabulary);
+            }
         } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
-            for (Long idx : idxList)
-                mVocabularyTable.get(idx).setMemorizeTarget(false);
+            for (Long idx : idxList) {
+                Vocabulary vocabulary = mVocabularyTable.get(idx);
+                assert vocabulary != null;
+
+                vocabulary.setMemorizeTarget(false);
+
+                updateUserVocabulary(vocabulary);
+            }
         } else {
             assert false;
         }
-
-//@@@@@        writeUserVocabularyInfo();
     }
 
     /**
