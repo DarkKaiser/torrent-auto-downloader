@@ -137,14 +137,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         aq.id(R.id.avd_vocabulary_detail_info).text("");
         aq.id(R.id.avd_vocabulary_example).text("");
 
-		long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
-		if (vocabulary.isMemorizeCompleted() == true) {
-			assert memorizeCompletedCount > 0;
-            aq.id(R.id.avd_memorize_uncompleted).gone();
-		} else {
-            aq.id(R.id.avd_memorize_uncompleted).visible();
-		}
-        aq.id(R.id.avd_memorize_completed_count_text).text(String.format(getString(R.string.avd_vocabulary_memorize_completed_count), memorizeCompletedCount));
+        updateVocabularyDetailMemorizeInfo(vocabulary);
 
         // 단어 상세정보 및 예문은 불러들이는 데 오래 걸리므로 비동기로 처리한다.
         if (mLoadVocabularyDataAsyncTask != null)
@@ -152,6 +145,21 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         mLoadVocabularyDataAsyncTask = new LoadVocabularyDataAsyncTask();
         mLoadVocabularyDataAsyncTask.execute();
+    }
+
+    private void updateVocabularyDetailMemorizeInfo(Vocabulary vocabulary) {
+        assert vocabulary != null;
+
+        AQuery aq = new AQuery(this);
+        long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
+        if (vocabulary.isMemorizeCompleted() == true) {
+            assert memorizeCompletedCount > 0;
+            aq.id(R.id.avd_memorize_uncompleted).gone();
+        } else {
+            aq.id(R.id.avd_memorize_uncompleted).visible();
+        }
+
+        aq.id(R.id.avd_memorize_completed_count_text).text(String.format(getString(R.string.avd_vocabulary_memorize_completed_count), memorizeCompletedCount));
     }
 
     @Override
@@ -220,28 +228,40 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 assert mVocabulary.isMemorizeCompleted() == true;
 
                 // TODO 기능 미구현
-                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                mVocabulary.setMemorizeCompleted(false, false);
+
+                updateVocabularyDetailMemorizeInfo(mVocabulary);
+                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
                 return true;
 
             case R.id.avd_vocabulary_memorize_completed:
                 assert mVocabulary.isMemorizeCompleted() == false;
 
                 // TODO 기능 미구현
-                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                mVocabulary.setMemorizeCompleted(true, true);
+                updateVocabularyDetailMemorizeInfo(mVocabulary);
+                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
                 return true;
 
             case R.id.avd_add_vocabulary_memorize_target:
                 assert mVocabulary.isMemorizeTarget() == false;
 
                 // TODO 기능 미구현
-                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                mVocabulary.setMemorizeTarget(true);
+                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
                 return true;
 
             case R.id.avd_remove_vocabulary_memorize_target:
                 assert mVocabulary.isMemorizeTarget() == true;
 
                 // TODO 기능 미구현
-                Toast.makeText(this, "기능 미구현", Toast.LENGTH_LONG).show();
+                mVocabulary.setMemorizeTarget(false);
+                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
                 return true;
         }
 
