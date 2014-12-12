@@ -494,6 +494,16 @@ public class VocabularyManager {
         }
 
         // @@@@@ writeUserVocabularyInfo();
+//        ContentValues values = new ContentValues();
+//        values.put("MEMORIZE_TARGET", vocabulary.isMemorizeTarget() ? "1" : "0");
+//        values.put("MEMORIZE_COMPLETED", vocabulary.isMemorizeCompleted() ? "1" : "0");
+//        values.put("MEMORIZE_COMPLETED_COUNT", vocabulary.getMemorizeCompletedCount());
+//        int updateCount = mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[] { Long.toString(vocabulary.getIdx()) });
+//        if (updateCount == 0) {
+//            values.put("V_IDX", vocabulary.getIdx());
+//            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
+//        }
+
     }
 
     /**
