@@ -171,6 +171,8 @@ public class VocabularyManager {
             // TBL_USER_VOCABULARY 테이블에 데이터가 없는(최초 1회) 경우에만 마이그레이션 하도록 한다.
             if (userVocabularyCount == 0) {
                 try {
+                    mUserDatabase.beginTransaction();
+
                     BufferedReader br = new BufferedReader(new FileReader(file));
 
                     String line;
@@ -188,8 +190,12 @@ public class VocabularyManager {
                     }
 
                     br.close();
+
+                    mUserDatabase.setTransactionSuccessful();
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
+                } finally {
+                    mUserDatabase.endTransaction();
                 }
             }
 
@@ -487,14 +493,20 @@ public class VocabularyManager {
      * 모든 암기대상 단어를 미암기 상태로 설정한다.
      */
     public synchronized void memorizeTargetVocabularyRememorizeAll() {
-        for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-            Vocabulary vocabulary = e.nextElement();
-            if (vocabulary.isMemorizeTarget() == true) {
-                vocabulary.setMemorizeCompleted(false, false);
+        try {
+            mUserDatabase.beginTransaction();
 
-                // TODO updateUserVocabulary 성능문제
-                updateUserVocabulary(vocabulary);
+            for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                Vocabulary vocabulary = e.nextElement();
+                if (vocabulary.isMemorizeTarget() == true) {
+                    vocabulary.setMemorizeCompleted(false, false);
+                    updateUserVocabulary(vocabulary);
+                }
             }
+
+            mUserDatabase.setTransactionSuccessful();
+        } finally {
+            mUserDatabase.endTransaction();
         }
     }
 
@@ -506,57 +518,64 @@ public class VocabularyManager {
      * @param idxList 단어 idx 리스트
      */
     public synchronized void memorizeSettingsVocabulary(int menuItemId, boolean excludeSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
-        // TODO updateUserVocabulary 성능문제
-        if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
-            for (Long idx : idxList) {
-                Vocabulary vocabulary = mVocabularyTable.get(idx);
-                assert vocabulary != null;
+        try {
+            mUserDatabase.beginTransaction();
 
-                vocabulary.setMemorizeTarget(true);
-                vocabulary.setMemorizeCompleted(false, false);
+            if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
+                for (Long idx : idxList) {
+                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    assert vocabulary != null;
 
-                updateUserVocabulary(vocabulary);
-            }
-        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
-            for (Long idx : idxList) {
-                Vocabulary vocabulary = mVocabularyTable.get(idx);
-                assert vocabulary != null;
+                    vocabulary.setMemorizeTarget(true);
+                    vocabulary.setMemorizeCompleted(false, false);
 
-                vocabulary.setMemorizeCompleted(true, true);
+                    updateUserVocabulary(vocabulary);
+                }
+            } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
+                for (Long idx : idxList) {
+                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    assert vocabulary != null;
 
-                updateUserVocabulary(vocabulary);
-            }
-        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
-            if (excludeSearchVocabularyTargetCancel == true) {
-                for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
-                    Vocabulary vocabulary = e.nextElement();
+                    vocabulary.setMemorizeCompleted(true, true);
+
+                    updateUserVocabulary(vocabulary);
+                }
+            } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
+                if (excludeSearchVocabularyTargetCancel == true) {
+                    for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                        Vocabulary vocabulary = e.nextElement();
+                        assert vocabulary != null;
+
+                        vocabulary.setMemorizeTarget(false);
+
+                        updateUserVocabulary(vocabulary);
+                    }
+                }
+
+                for (Long idx : idxList) {
+                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    assert vocabulary != null;
+
+                    vocabulary.setMemorizeTarget(true);
+
+                    updateUserVocabulary(vocabulary);
+                }
+            } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
+                for (Long idx : idxList) {
+                    Vocabulary vocabulary = mVocabularyTable.get(idx);
                     assert vocabulary != null;
 
                     vocabulary.setMemorizeTarget(false);
 
                     updateUserVocabulary(vocabulary);
                 }
+            } else {
+                assert false;
             }
 
-            for (Long idx : idxList) {
-                Vocabulary vocabulary = mVocabularyTable.get(idx);
-                assert vocabulary != null;
-
-                vocabulary.setMemorizeTarget(true);
-
-                updateUserVocabulary(vocabulary);
-            }
-        } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
-            for (Long idx : idxList) {
-                Vocabulary vocabulary = mVocabularyTable.get(idx);
-                assert vocabulary != null;
-
-                vocabulary.setMemorizeTarget(false);
-
-                updateUserVocabulary(vocabulary);
-            }
-        } else {
-            assert false;
+            mUserDatabase.setTransactionSuccessful();
+        } finally {
+            mUserDatabase.endTransaction();
         }
     }
 
