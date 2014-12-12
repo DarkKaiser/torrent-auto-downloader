@@ -215,31 +215,44 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         // @@@@@
-//        if (isValidPosition() == true) {
-//            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-//            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-//                ++mMemorizeCompletedCount;
-//                vocabulary.setMemorizeCompleted(true, true);
-//
-//                // 사용자 암기정보를 갱신합니다.
-//                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
-//            }
-//        } else {
-//            assert false;
-//        }
+        if (isValidPosition() == true) {
+            Vocabulary vocabulary = mVocabularyListData.get(mPosition);
+            if (vocabulary != null) {
+                if (flag == true && vocabulary.isMemorizeTarget() == false) {
+                    vocabulary.setMemorizeTarget(true);
+
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                } else if (flag == false && vocabulary.isMemorizeTarget() == true) {
+                    vocabulary.setMemorizeTarget(false);
+
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                }
+            }
+        } else {
+            assert false;
+        }
     }
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@ flag = true
+        // @@@@@
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
-            if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
-                ++mMemorizeCompletedCount;
-                vocabulary.setMemorizeCompleted(true, true);
+            if (vocabulary != null) {
+                if (flag == true && vocabulary.isMemorizeCompleted() == false) {
+                    ++mMemorizeCompletedCount;
+                    vocabulary.setMemorizeCompleted(true, true);
 
-                // 사용자 암기정보를 갱신합니다.
-                VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                } else if (flag == false && vocabulary.isMemorizeCompleted() == true) {
+                    vocabulary.setMemorizeCompleted(false, false);
+
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                }
             }
         } else {
             assert false;

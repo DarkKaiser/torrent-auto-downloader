@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
+import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
@@ -62,31 +63,47 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         // @@@@@
-        //                mVocabulary.setMemorizeTarget(true);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+        if (isValid() == true) {
+            Vocabulary vocabulary = getVocabulary();
+            if (vocabulary != null) {
+                if (flag == true && vocabulary.isMemorizeTarget() == false) {
+                    vocabulary.setMemorizeTarget(true);
 
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                } else if (flag == false && vocabulary.isMemorizeTarget() == true) {
+                    vocabulary.setMemorizeTarget(false);
 
-        //                mVocabulary.setMemorizeTarget(false);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                }
+            }
+        } else {
+            assert false;
+        }
     }
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
         // @@@@@
-//        mVocabulary.setMemorizeCompleted(false, false);
-//
-//        // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//        VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+        if (isValid() == true) {
+            Vocabulary vocabulary = getVocabulary();
+            if (vocabulary != null) {
+                if (flag == true && vocabulary.isMemorizeCompleted() == false) {
+                    vocabulary.setMemorizeCompleted(true, true);
 
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                } else if (flag == false && vocabulary.isMemorizeCompleted() == true) {
+                    vocabulary.setMemorizeCompleted(false, false);
 
-
-
-        //                mVocabulary.setMemorizeCompleted(true, true);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
+                    // 사용자 암기정보를 갱신합니다.
+                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
+                }
+            }
+        } else {
+            assert false;
+        }
     }
 
     @Override
