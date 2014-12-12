@@ -2,6 +2,7 @@ package kr.co.darkkaiser.jv.view.list;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,14 +11,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -112,10 +118,11 @@ public class SearchListActivity extends ActionBarListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
             case R.id.avsl_search_vocabulary:
-                View v = getLayoutInflater().inflate(R.layout.view_search_vocabulary, new LinearLayout(SearchListActivity.this), false);
+                final View v = getLayoutInflater().inflate(R.layout.view_search_vocabulary, new LinearLayout(SearchListActivity.this), false);
 
                 if (v != null) {
-                    final AQuery aq = new AQuery(v);
+                    AQuery aq = new AQuery(v);
+
                     final SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
                     final MultiChoiceSpinner jlptRankingSpinner = (MultiChoiceSpinner)v.findViewById(R.id.avsl_search_condition_jlpt_ranking);
 
@@ -126,11 +133,17 @@ public class SearchListActivity extends ActionBarListActivity {
                     aq.id(R.id.avsl_search_condition_memorize_target).adapter(mMemorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
                     aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
-                    new AlertDialog.Builder(SearchListActivity.this)
+                    final AlertDialog adSearch = new AlertDialog.Builder(SearchListActivity.this)
                             .setTitle(getString(R.string.avsl_search))
                             .setPositiveButton(getString(R.string.search), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    // 소프트 키보드가 나타나 있다면 숨긴다.
+                                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    EditText searchWord = (EditText)v.findViewById(R.id.avsl_search_condition_search_word);
+                                    imm.hideSoftInputFromWindow(searchWord.getWindowToken(), 0);
+
+                                    AQuery aq = new AQuery(v);
                                     int memorizeTarget = aq.id(R.id.avsl_search_condition_memorize_target).getSelectedItemPosition();
                                     int memorizeCompleted = aq.id(R.id.avsl_search_condition_memorize_completed).getSelectedItemPosition();
 
@@ -150,6 +163,28 @@ public class SearchListActivity extends ActionBarListActivity {
                             })
                             .setView(v)
                             .show();
+
+                    // 키보드의 검색 버튼이 클릭되면 검색이 시작되도록 한다.
+                    final EditText etSearchWord = (EditText)v.findViewById(R.id.avsl_search_condition_search_word);
+                    etSearchWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                            switch (actionId) {
+                                case EditorInfo.IME_ACTION_SEARCH:
+                                    adSearch.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+                                    return true;
+                            }
+
+                            return false;
+                        }
+                    });
+                    etSearchWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            if (hasFocus == true)
+                                etSearchWord.setSelection(etSearchWord.getText().length());
+                        }
+                    });
                 }
                 return true;
             case R.id.avsl_sort_vocabulary:
