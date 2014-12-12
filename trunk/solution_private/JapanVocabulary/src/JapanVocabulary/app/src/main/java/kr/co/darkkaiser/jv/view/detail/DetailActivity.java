@@ -214,7 +214,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     public boolean onOptionsItemSelected(MenuItem item) {
         assert mVocabularyListSeek != null;
 
-        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+        Vocabulary vocabulary;
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -222,45 +222,29 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 return true;
 
             case R.id.avd_vocabulary_rememorize:
-                assert vocabulary.isMemorizeCompleted() == true;
-
-                // TODO 기능 미구현
                 mVocabularyListSeek.setMemorizeCompleted(false);
 
-//                updateVocabularyDetailMemorizeInfo(mVocabulary);
+                vocabulary = mVocabularyListSeek.getVocabulary();
+                if (vocabulary != null)
+                    updateVocabularyDetailMemorizeInfo(vocabulary);
 
                 return true;
 
             case R.id.avd_vocabulary_memorize_completed:
-                assert vocabulary.isMemorizeCompleted() == false;
+                mVocabularyListSeek.setMemorizeCompleted(true);
 
-//                // TODO 기능 미구현
-//                mVocabulary.setMemorizeCompleted(true, true);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-//
-//                updateVocabularyDetailMemorizeInfo(mVocabulary);
+                vocabulary = mVocabularyListSeek.getVocabulary();
+                if (vocabulary != null)
+                    updateVocabularyDetailMemorizeInfo(vocabulary);
 
                 return true;
 
             case R.id.avd_add_vocabulary_memorize_target:
-                assert vocabulary.isMemorizeTarget() == false;
-
-//                // TODO 기능 미구현
-//                mVocabulary.setMemorizeTarget(true);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
+                mVocabularyListSeek.setMemorizeTarget(true);
                 return true;
 
             case R.id.avd_remove_vocabulary_memorize_target:
-                assert vocabulary.isMemorizeTarget() == true;
-
-//                // TODO 기능 미구현
-//                mVocabulary.setMemorizeTarget(false);
-//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
-//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
+                mVocabularyListSeek.setMemorizeTarget(false);
                 return true;
         }
 

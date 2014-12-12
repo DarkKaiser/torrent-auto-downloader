@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
@@ -18,7 +17,15 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
         mSearchResultVocabularyList = searchResultVocabularyList;
 	}
 
-	@Override
+    @Override
+    public synchronized Vocabulary getVocabulary() {
+        if (isValid() == true)
+            return mSearchResultVocabularyList.getVocabulary(mPosition);
+
+        return null;
+    }
+
+    @Override
 	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
         assert sbErrorMessage != null;
 
@@ -55,6 +62,15 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         // @@@@@
+        //                mVocabulary.setMemorizeTarget(true);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
+
+        //                mVocabulary.setMemorizeTarget(false);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
     }
 
     @Override
@@ -64,14 +80,14 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 //
 //        // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
 //        VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-    }
 
-    @Override
-    public synchronized Vocabulary getVocabulary() {
-        if (isValid() == true)
-            return mSearchResultVocabularyList.getVocabulary(mPosition);
 
-        return null;
+
+
+        //                mVocabulary.setMemorizeCompleted(true, true);
+//                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
+//                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
+
     }
 
     @Override
