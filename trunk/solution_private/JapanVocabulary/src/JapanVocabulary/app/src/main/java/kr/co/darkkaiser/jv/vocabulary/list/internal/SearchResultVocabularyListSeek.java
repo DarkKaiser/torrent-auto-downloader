@@ -70,7 +70,6 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
         //                mVocabulary.setMemorizeTarget(false);
 //                // 사용자 암기정보를 갱신합니다. 아래 함수는 바깥으로
 //                VocabularyManager.getInstance().updateUserVocabulary(mVocabulary);
-
     }
 
     @Override

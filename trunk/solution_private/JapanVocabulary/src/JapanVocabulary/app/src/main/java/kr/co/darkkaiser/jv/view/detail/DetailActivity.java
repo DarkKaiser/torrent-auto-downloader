@@ -378,7 +378,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                     mVocabularyDetailDescription = VocabularyManager.getInstance().getVocabularyDetailDescription(vocabulary);
 
                 if (isCancelled() == false)
-                    mVocabularyExample = Html.fromHtml(VocabularyManager.getInstance().getVocabularyExample(vocabulary)).toString();
+                    mVocabularyExample = VocabularyManager.getInstance().getVocabularyExample(vocabulary);
             }
 
             return null;
@@ -392,7 +392,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             aq.id(R.id.avd_vocabulary_example_progress).visibility(View.GONE);
 
             aq.id(R.id.avd_vocabulary_detail_info).text(mVocabularyDetailDescription);
-            aq.id(R.id.avd_vocabulary_example).text(mVocabularyExample);
+            aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(mVocabularyExample));
         }
     }
 

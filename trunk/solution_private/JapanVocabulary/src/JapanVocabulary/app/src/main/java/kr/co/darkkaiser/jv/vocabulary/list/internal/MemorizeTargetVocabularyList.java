@@ -231,7 +231,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@
+        // @@@@@ flag = true
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null && vocabulary.isMemorizeCompleted() == false) {
