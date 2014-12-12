@@ -982,8 +982,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     }
                 } else {
                     if (vocabularySeekbarPanel.getVisibility() != View.GONE) {
-                        vocabularySeekbarPanel.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
                         vocabularySeekbarPanel.setVisibility(View.GONE);
+                        vocabularySeekbarPanel.startAnimation(AnimationUtils.loadAnimation(VocabularyActivity.this, android.R.anim.fade_out));
                     }
                 }
             } else if (msg.what == MSG_TOAST_SHOW) {
