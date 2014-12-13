@@ -85,7 +85,7 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@
+        // @@@@@ mSearchResultVocabularyList 변수에 있는 함수를 이용하는 걸로 변경
         if (isValid() == true) {
             Vocabulary vocabulary = getVocabulary();
             if (vocabulary != null) {

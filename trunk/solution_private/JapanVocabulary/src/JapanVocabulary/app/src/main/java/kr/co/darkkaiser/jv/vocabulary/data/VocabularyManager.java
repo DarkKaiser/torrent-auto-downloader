@@ -90,7 +90,7 @@ public class VocabularyManager {
 				} while (cursor.moveToNext());
 			}
 		} catch (SQLiteException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             return false;
         } finally {
             if (cursor != null)
@@ -130,7 +130,7 @@ public class VocabularyManager {
                 } while (cursor.moveToNext());
             }
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 			return false;
         } finally {
             if (cursor != null)
@@ -162,7 +162,7 @@ public class VocabularyManager {
                 if (cursor.moveToFirst() == true)
                     userVocabularyCount = cursor.getLong(0);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage(), e);
             } finally {
                 if (cursor != null)
                     cursor.close();
@@ -193,7 +193,7 @@ public class VocabularyManager {
 
                     mUserDatabase.setTransactionSuccessful();
                 } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, e.getMessage(), e);
                 } finally {
                     mUserDatabase.endTransaction();
                 }
@@ -203,7 +203,7 @@ public class VocabularyManager {
             try {
                 file.delete();
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage(), e);
             }
         }
     }
@@ -336,7 +336,7 @@ public class VocabularyManager {
                 }
             }
         } catch (SQLiteException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         } finally {
             if (cursor != null)
                 cursor.close();
@@ -405,7 +405,7 @@ public class VocabularyManager {
                         sbResult.append(cursor.getString(0/* CHARACTER */)).append("\n").append(cursor.getString(3/* TRANSLATION */)).append("\n음독: ").append(cursor.getString(1/* SOUND_READ */)).append("\n훈독: ").append(cursor.getString(2/* MEAN_READ */));
 					}
 				} catch (SQLiteException e) {
-					Log.e(TAG, e.getMessage());
+					Log.e(TAG, e.getMessage(), e);
 				} finally {
 					if (cursor != null)
 						cursor.close();
@@ -452,7 +452,7 @@ public class VocabularyManager {
 					} while (cursor.moveToNext());
 				}
 			} catch (SQLiteException e) {
-				Log.e(TAG, e.getMessage());
+				Log.e(TAG, e.getMessage(), e);
 			} finally {
 				if (cursor != null)
 					cursor.close();

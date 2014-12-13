@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:visibility="invisible"
-            android:textSize="11dp"
+            android:textSize="@dimen/text_size_micro"
             tools:ignore="SpUsage"
             />
         <TextView
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="11dp"
+            android:textSize="@dimen/text_size_micro"
             tools:ignore="SpUsage"
             />
     </RelativeLayout>
@@ -52,7 +52,7 @@
                 android:paddingTop="2dp"
                 android:text="@null"
                 android:textColor="#99999999"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -63,7 +63,7 @@
                 android:paddingTop="2dp"
                 android:text="@string/av_vocabulary_seekbar_vs"
                 android:textColor="#99999999"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -74,7 +74,7 @@
                 android:paddingTop="2dp"
                 android:text="@null"
                 android:textColor="#ffffffff"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="SpUsage"
                 />
             <SeekBar
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/av_vocabulary_seekbar_current_position"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingRight="10dp"
                 android:maxHeight="3dp"
                 android:minHeight="3dp"
                 android:progressDrawable="@drawable/av_vocabulary_seekbar_progress"
@@ -111,7 +111,7 @@
             android:layout_above="@id/xmladview"
             android:layout_alignParentLeft="true"
             android:text="@string/av_prev_vocabulary"
-            android:textSize="17dp"
+            android:textSize="@dimen/text_size_large"
             tools:ignore="SpUsage"
             />
         <Button
@@ -121,7 +121,7 @@
             android:layout_above="@id/xmladview"
             android:layout_toRightOf="@id/av_prev_vocabulary"
             android:text="@string/av_next_vocabulary"
-            android:textSize="17dp"
+            android:textSize="@dimen/text_size_large"
             tools:ignore="SpUsage"
             />
         <TextView
@@ -132,7 +132,7 @@
             android:gravity="center"
             android:text="@string/av_memorize_method_comment"
             android:textColor="#99999999"
-            android:textSize="11dp"
+            android:textSize="@dimen/text_size_micro"
             tools:ignore="SpUsage"
             />
         <RelativeLayout

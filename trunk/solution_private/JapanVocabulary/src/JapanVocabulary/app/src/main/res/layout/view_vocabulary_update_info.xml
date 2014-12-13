@@ -11,7 +11,7 @@
     	android:layout_height="wrap_content"
     	android:padding="7dp"
     	android:typeface="serif"
-    	android:textSize="14dp"
+    	android:textSize="@dimen/text_size_medium"
         tools:ignore="SpUsage"
         />
 </ScrollView>

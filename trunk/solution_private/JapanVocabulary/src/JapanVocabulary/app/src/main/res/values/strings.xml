@@ -61,10 +61,11 @@
     <string name="avsl_memorize_settings_vocabulary_ad_title">검색된 단어 암기대상 설정</string>
     <string name="avsl_memorize_settings_vocabulary_ad_message">검색결과에 포함되지 않은 단어들은 암기대상을 해제하시겠습니까?\n\n(예)를 누르시면 검색된 단어는 암기대상으로, 검색결과에 포함되지 않은 단어들은 암기대상을 해제합니다.\n\n(아니오)를 누르시면 검색된 단어만 암기대상으로 만듭니다.</string>
     <string name="avsl_empty_search_result_list_vocabulary">검색된 단어가 없습니다.</string>
-    <string name="avsl_vocabulary_count_info_description">검색/전체 :&#160;</string>
-    <string name="avsl_vocabulary_count_info">0개/0개</string>
-    <string name="avsl_vocabulary_memorize_count_info_description">암기완료/암기대상 :&#160;</string>
-    <string name="avsl_vocabulary_memorize_count_info">0개/0개</string>
+
+    <!-- @@@@@ -->
+    <string name="avsl_vocabulary_count_info_description">전체 단어 %1$d개중 암기완료/암기대상 : %2$d개/%3$d개</string>
+    <string name="avsl_vocabulary_count_info_description2">검색된 단어 %1$d개중 암기완료/암기대상 : %2$d개/%3$d개</string>
+
     <string name="avsl_search_condition_select_text">선택</string>
     <string name="avsl_search_condition_search_word">검색어</string>
     <string name="avsl_search_condition_search_word_hint">검색어를 입력하세요.</string>
