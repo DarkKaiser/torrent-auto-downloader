@@ -247,7 +247,6 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true) {
                     String[] newVocabularyDbInfo = { "", "" };
-
                     if (VocabularyDbHelper.getInstance().canUpdateVocabularyDb(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE), newVocabularyDbInfo) == true) {
                         // 현재 연결된 네트워크가 3G/LTE 연결인지 확인한다.
                         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -472,7 +471,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
+            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
             vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
         }
 	}
@@ -491,7 +490,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
+            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
             vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
         }
 	}

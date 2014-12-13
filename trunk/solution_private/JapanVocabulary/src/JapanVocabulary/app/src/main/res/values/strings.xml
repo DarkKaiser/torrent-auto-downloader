@@ -23,7 +23,7 @@
     <string name="av_memorize_method_comment">암기 완료 단어는 화면을 꾸~욱 눌러주세요.</string>
     <string name="av_app_terminate_when_back_press">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
     <string name="av_search_memorize_vocabulary">암기단어 검색</string>
-    <string name="av_rememorize_all">암기완료 단어 재암기</string>
+    <string name="av_rememorize_all">모든 암기대상 단어 재암기</string>
     <string name="av_vocabulary_seekbar_vs">&#160;/&#160;</string>
 
     <string name="av_memorize_completed_ad_title">암기완료</string>
