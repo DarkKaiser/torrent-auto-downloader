@@ -32,8 +32,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
                     android:textColor="@color/avd_memorize_completed_count"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_small"
                     tools:ignore="SpUsage"
                     />
 	    	</RelativeLayout>
@@ -51,9 +52,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
                     android:text="@string/avd_vocabulary_memorize_uncompleted"
                     android:textColor="@color/avd_memorize_uncompleted"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_small"
                     tools:ignore="SpUsage"
                     />
 	    	</RelativeLayout>
@@ -83,7 +85,7 @@
                 android:background="@color/avd_item_content_background"
                 >
                 <TextView
-                    android:id="@+id/avd_vocabulary_detail_info"
+                    android:id="@+id/avd_vocabulary_detail_description"
                     style="@style/DetailActivityItemContent"
                     />
                 <ProgressBar
@@ -108,7 +110,7 @@
                 <TextView
                     android:id="@+id/avd_vocabulary_example"
                     style="@style/DetailActivityItemContent"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_size_large"
                     tools:ignore="SpUsage"
                     />
                 <ProgressBar

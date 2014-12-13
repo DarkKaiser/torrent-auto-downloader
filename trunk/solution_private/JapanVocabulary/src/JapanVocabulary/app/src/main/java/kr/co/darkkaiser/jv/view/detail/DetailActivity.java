@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
+
+    private static final String TAG = "DetailActivity";
 
 	// 상세정보 페이지에서 이전/다음 버튼으로 암기단어를 변경하면 호출한 페이지에서도
 	// 변경된 단어로 바로 보여주도록 하기 위해 호출자 인텐트로 넘겨 줄 액티비티 결과 값
@@ -51,6 +54,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private LoadVocabularyDataAsyncTask mLoadVocabularyDataAsyncTask = null;
 
     public static void setVocabularyListSeek(IVocabularyListSeek vocabularyListSeek) {
+        Log.d(TAG, "set VocabularyListSeek : " + vocabularyListSeek);
+
         mVocabularyListSeek = vocabularyListSeek;
 	}
 
@@ -115,11 +120,13 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 	private void updateVocabularyDetailInfo(Vocabulary vocabulary) {
 		assert vocabulary != null;
 
+        Log.d(TAG, "updateVocabularyDetailInfo : " + vocabulary.getVocabulary());
+
         AQuery aq = new AQuery(this);
         aq.id(R.id.avd_vocabulary).text(vocabulary.getVocabulary());
         aq.id(R.id.avd_vocabulary_gana).text(vocabulary.getVocabularyGana());
         aq.id(R.id.avd_vocabulary_translation).text(vocabulary.getVocabularyTranslation());
-        aq.id(R.id.avd_vocabulary_detail_info).text("");
+        aq.id(R.id.avd_vocabulary_detail_description).text("");
         aq.id(R.id.avd_vocabulary_example).text("");
 
         updateVocabularyDetailMemorizeInfo(vocabulary);
@@ -150,7 +157,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     @Override
     public void onClick(View v) {
         if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() == true && mVocabularyListSeek.canSeek() == true) {
-            resetInVisiblePrevNextVocabularyButtonAnimate();
+            resetInvisiblePrevNextVocabularyButtonAnimate();
 
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
             if (sharedPreferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
@@ -174,6 +181,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
             if (vocabulary != null) {
                 setResult(ACTIVITY_RESULT_POSITION_CHANGED);
+
                 updateVocabularyDetailInfo(vocabulary);
 
                 // 옵션메뉴의 항목을 다시 그린다.
@@ -211,7 +219,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     }
 
     @Override
-    // todo 변경된 값을 호출 액티비티에 적용
     public boolean onOptionsItemSelected(MenuItem item) {
         assert mVocabularyListSeek != null;
 
@@ -222,32 +229,31 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
             case R.id.avd_vocabulary_rememorize:
                 mVocabularyListSeek.setMemorizeCompleted(false);
-
-                Vocabulary vocabulary1 = mVocabularyListSeek.getVocabulary();
-                if (vocabulary1 != null)
-                    updateVocabularyDetailMemorizeInfo(vocabulary1);
-
-                return true;
+                break;
 
             case R.id.avd_vocabulary_memorize_completed:
                 mVocabularyListSeek.setMemorizeCompleted(true);
-
-                Vocabulary vocabulary2 = mVocabularyListSeek.getVocabulary();
-                if (vocabulary2 != null)
-                    updateVocabularyDetailMemorizeInfo(vocabulary2);
-
-                return true;
+                break;
 
             case R.id.avd_add_vocabulary_memorize_target:
                 mVocabularyListSeek.setMemorizeTarget(true);
-                return true;
+                break;
 
             case R.id.avd_remove_vocabulary_memorize_target:
                 mVocabularyListSeek.setMemorizeTarget(false);
-                return true;
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        setResult(ACTIVITY_RESULT_POSITION_CHANGED);
+
+        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+        if (vocabulary != null)
+            updateVocabularyDetailMemorizeInfo(vocabulary);
+
+        return true;
     }
 
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -290,14 +296,14 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         @Override
         public boolean onDown(MotionEvent e) {
-            resetInVisiblePrevNextVocabularyButtonAnimate();
+            resetInvisiblePrevNextVocabularyButtonAnimate();
 
             return super.onDown(e);
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            resetInVisiblePrevNextVocabularyButtonAnimate();
+            resetInvisiblePrevNextVocabularyButtonAnimate();
 
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
@@ -336,7 +342,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         }
     };
 
-    private void resetInVisiblePrevNextVocabularyButtonAnimate() {
+    private void resetInvisiblePrevNextVocabularyButtonAnimate() {
         if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() && mVocabularyListSeek.canSeek() == true) {
             AQuery aq = new AQuery(DetailActivity.this);
             if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
@@ -360,7 +366,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         protected void onPreExecute() {
             AQuery aq = new AQuery(DetailActivity.this);
 
-            aq.id(R.id.avd_vocabulary_detail_info).text("");
+            aq.id(R.id.avd_vocabulary_detail_description).text("");
             aq.id(R.id.avd_vocabulary_example).text("");
 
             aq.id(R.id.avd_vocabulary_detail_info_progress).visibility(View.VISIBLE);
@@ -390,7 +396,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             aq.id(R.id.avd_vocabulary_detail_info_progress).visibility(View.GONE);
             aq.id(R.id.avd_vocabulary_example_progress).visibility(View.GONE);
 
-            aq.id(R.id.avd_vocabulary_detail_info).text(mVocabularyDetailDescription);
+            aq.id(R.id.avd_vocabulary_detail_description).text(mVocabularyDetailDescription);
             aq.id(R.id.avd_vocabulary_example).text(Html.fromHtml(mVocabularyExample));
         }
     }

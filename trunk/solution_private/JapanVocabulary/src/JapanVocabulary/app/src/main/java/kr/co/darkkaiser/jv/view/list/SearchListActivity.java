@@ -69,6 +69,8 @@ public class SearchListActivity extends ActionBarListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vocabulary_search_list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		// 리스트뷰에 컨텍스트 메뉴를 등록한다.
 		registerForContextMenu(getListView());
 
