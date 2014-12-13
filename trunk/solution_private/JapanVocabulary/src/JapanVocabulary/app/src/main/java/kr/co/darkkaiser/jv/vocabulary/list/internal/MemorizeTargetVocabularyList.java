@@ -214,7 +214,6 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
-        // @@@@@ 조정되고 나면 암기완료개수가 일치하지 않음
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null) {
@@ -229,6 +228,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
                     // 사용자 암기정보를 갱신합니다.
                     VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
                 }
+
+                // todo @@@@@ 암기대상단어가 비대상으로, 비대상 단어가 대상단어로 바뀌고 나서 정규화를 거쳐야 하는게 아닌지, 정규화했을때 메인에서 이상없는지 확인할 것
             }
         } else {
             assert false;
@@ -237,7 +238,6 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@ 암기완료 개수가 불일치되는경우는 없나??
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null) {
