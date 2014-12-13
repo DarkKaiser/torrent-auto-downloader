@@ -298,9 +298,8 @@ public class SearchListActivity extends ActionBarListActivity {
                 aq.id(android.R.id.list).gone();
                 aq.id(android.R.id.empty).gone();
 
-                //@@@@@aq.id(R.id.avsl_vocabulary_count_info).text(getString(R.string.avsl_vocabulary_count_info));
-                aq.id(R.id.avsl_vocabulary_count_info_description).text(String.format(getString(R.string.avsl_vocabulary_count_info_description), 0, 0, 0));
-                aq.id(R.id.avsl_vocabulary_count_info_description2).text(String.format(getString(R.string.avsl_vocabulary_count_info_description2), 0, 0, 0));
+                aq.id(R.id.avsl_vocabulary_search_result_count).text(String.format(getString(R.string.avsl_vocabulary_search_result_count), 0));
+                aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(getString(R.string.avsl_vocabulary_memorize_count_info), 0, 0, 0));
 
                 // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
                 mSearchResultVocabularyList.clear();
@@ -445,10 +444,9 @@ public class SearchListActivity extends ActionBarListActivity {
 		ArrayList<Integer> vocabularyCountInfo = VocabularyManager.getInstance().getVocabularyCountInfo();
 		assert vocabularyCountInfo.size() == 3;
 
-        // @@@@@
         AQuery aq = new AQuery(this);
-        aq.id(R.id.avsl_vocabulary_count_info_description).text(String.format(getString(R.string.avsl_vocabulary_count_info_description), vocabularyCountInfo.get(0/* 전체 단어 개수 */), vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
-        aq.id(R.id.avsl_vocabulary_count_info_description2).text(String.format(getString(R.string.avsl_vocabulary_count_info_description2), vocabularyCountInfo.get(0/* 전체 단어 개수 */), vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
+        aq.id(R.id.avsl_vocabulary_search_result_count).text(String.format(getString(R.string.avsl_vocabulary_search_result_count), mSearchResultVocabularyList.getCount()));
+        aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(getString(R.string.avsl_vocabulary_memorize_count_info), vocabularyCountInfo.get(0/* 전체 단어 개수 */), vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
 	}
 
 }
