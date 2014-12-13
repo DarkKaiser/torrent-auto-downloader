@@ -27,7 +27,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="@string/avsl_vocabulary_count_info_description"
                 android:textColor="#cccccc"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_toRightOf="@+id/avsl_vocabulary_count_info_description"
                 android:text="@string/avsl_vocabulary_count_info"
                 android:textColor="#cccccc"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="RelativeOverlap,SpUsage"
                 />
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_alignParentRight="true"
                 android:text="@string/avsl_vocabulary_memorize_count_info"
                 android:textColor="#cccccc"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="SpUsage"
                 />
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_toLeftOf="@+id/avsl_vocabulary_memorize_count_info"
                 android:text="@string/avsl_vocabulary_memorize_count_info_description"
                 android:textColor="#cccccc"
-                android:textSize="11dp"
+                android:textSize="@dimen/text_size_micro"
                 tools:ignore="RelativeOverlap,SpUsage"
                 />
         </RelativeLayout>
@@ -74,7 +74,7 @@
             android:paddingTop="5dp"
             android:text="@string/avsl_empty_search_result_list_vocabulary"
             android:textColor="#cccccc"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_medium"
             tools:ignore="SpUsage"
             />
     </LinearLayout>

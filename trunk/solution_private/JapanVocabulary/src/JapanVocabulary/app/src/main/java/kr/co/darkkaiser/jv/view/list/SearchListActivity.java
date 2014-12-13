@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -41,6 +42,8 @@ import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSeek;
 
 public class SearchListActivity extends ActionBarListActivity {
+
+    private static final String TAG = "SearchListActivity";
 
 	public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
 	public static final int ACTIVITY_RESULT_PREFERENCE_CHANGED = 2;
@@ -193,18 +196,22 @@ public class SearchListActivity extends ActionBarListActivity {
                     });
                 }
                 return true;
+
             case R.id.avsl_sort_vocabulary:
                 item.setChecked(true);
                 sortVocabulary(SearchListSort.VOCABULARY);
                 return true;
+
             case R.id.avsl_sort_vocabulary_gana:
                 item.setChecked(true);
                 sortVocabulary(SearchListSort.VOCABULARY_GANA);
                 return true;
+
             case R.id.avsl_sort_vocabulary_translation:
                 item.setChecked(true);
                 sortVocabulary(SearchListSort.VOCABULARY_TRANSLATION);
                 return true;
+
             case R.id.avsl_search_result_vocabulary_rememorize_all: 				// 검색된 전체 단어 재암기
             case R.id.avsl_search_result_vocabulary_memorize_completed_all: 		// 검색된 전체 단어 암기 완료
             case R.id.avsl_search_result_vocabulary_memorize_target_all: 		    // 검색된 전체 단어 암기 대상 만들기
@@ -236,6 +243,7 @@ public class SearchListActivity extends ActionBarListActivity {
                 }
 
                 return true;
+
             case R.id.avsl_open_settings_activity:
                 // 설정 페이지를 띄운다.
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
@@ -395,6 +403,7 @@ public class SearchListActivity extends ActionBarListActivity {
             case REQ_CODE_OPEN_SETTINGS_ACTIVITY:
                 // 수행 작업 없음
                 break;
+
             case REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY:
                 DetailActivity.setVocabularyListSeek(null);
                 break;
@@ -419,6 +428,8 @@ public class SearchListActivity extends ActionBarListActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == MSG_SEARCH_RESULT_LIST_DATA_CHANGED) {
+                Log.d(TAG, "검색결과 리스트의 데이터가 변경되었습니다.");
+
                 updateSearchResultVocabularyInfo();
                 mSearchResultVocabularyListAdapter.notifyDataSetChanged();
 
