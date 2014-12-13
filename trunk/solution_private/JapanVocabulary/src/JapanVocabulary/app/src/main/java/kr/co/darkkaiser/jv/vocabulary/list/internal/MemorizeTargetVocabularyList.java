@@ -214,7 +214,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
-        // @@@@@
+        // @@@@@ 조정되고 나면 암기완료개수가 일치하지 않음
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null) {
@@ -237,7 +237,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@
+        // @@@@@ 암기완료 개수가 불일치되는경우는 없나??
         if (isValidPosition() == true) {
             Vocabulary vocabulary = mVocabularyListData.get(mPosition);
             if (vocabulary != null) {
@@ -248,6 +248,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
                     // 사용자 암기정보를 갱신합니다.
                     VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
                 } else if (flag == false && vocabulary.isMemorizeCompleted() == true) {
+                    --mMemorizeCompletedCount;
                     vocabulary.setMemorizeCompleted(false, false);
 
                     // 사용자 암기정보를 갱신합니다.

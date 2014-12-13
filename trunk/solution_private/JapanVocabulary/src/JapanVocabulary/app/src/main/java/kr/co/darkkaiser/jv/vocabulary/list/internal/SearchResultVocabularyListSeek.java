@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
-import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
 
 public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
@@ -62,48 +61,18 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
 
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
-        // @@@@@
-        if (isValid() == true) {
-            Vocabulary vocabulary = getVocabulary();
-            if (vocabulary != null) {
-                if (flag == true && vocabulary.isMemorizeTarget() == false) {
-                    vocabulary.setMemorizeTarget(true);
-
-                    // 사용자 암기정보를 갱신합니다.
-                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
-                } else if (flag == false && vocabulary.isMemorizeTarget() == true) {
-                    vocabulary.setMemorizeTarget(false);
-
-                    // 사용자 암기정보를 갱신합니다.
-                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
-                }
-            }
-        } else {
+        if (isValid() == true)
+            mSearchResultVocabularyList.setMemorizeTarget(mPosition, flag);
+        else
             assert false;
-        }
     }
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        // @@@@@ mSearchResultVocabularyList 변수에 있는 함수를 이용하는 걸로 변경
-        if (isValid() == true) {
-            Vocabulary vocabulary = getVocabulary();
-            if (vocabulary != null) {
-                if (flag == true && vocabulary.isMemorizeCompleted() == false) {
-                    vocabulary.setMemorizeCompleted(true, true);
-
-                    // 사용자 암기정보를 갱신합니다.
-                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
-                } else if (flag == false && vocabulary.isMemorizeCompleted() == true) {
-                    vocabulary.setMemorizeCompleted(false, false);
-
-                    // 사용자 암기정보를 갱신합니다.
-                    VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
-                }
-            }
-        } else {
+        if (isValid() == true)
+            mSearchResultVocabularyList.setMemorizeCompleted(mPosition, flag);
+        else
             assert false;
-        }
     }
 
     @Override
