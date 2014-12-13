@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import kr.co.darkkaiser.jv.R;
@@ -17,11 +18,13 @@ import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 // TODO 프로요에서 액션바가 표시디지 않음
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
-	
-	private String appVersion = null;
-	private String installedDbVersion = null;
-	private PreferenceScreen prefDbVersion = null;
-	private DoConfirmVocabularyDbAsyncTask doConfirmVocabularyDbAsyncTask = null;
+
+    private static final String TAG = "SettingsActivity";
+
+    private String mAppVersion = null;
+	private String mInstalledVocabularyDbVersion = null;
+	private VocabularyDbVersionCheckAsyncTask mVocabularyDbVersionCheckAsyncTask = null;
+    private PreferenceScreen mPrefDbVersion = null;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +34,28 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		addPreferencesFromResource(R.xml.pref_settings_activity);
 
 		try {
-			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			mAppVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            Log.d(TAG, String.format("App Version : %s", mAppVersion));
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
 		}
 
-		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-		installedDbVersion = preferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+		SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+		mInstalledVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+        Log.d(TAG, String.format("Installed Vocabulary Db Version : %s", mInstalledVocabularyDbVersion));
 
-        prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
-		prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
+        mPrefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
+		mPrefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (mAppVersion == null ? getString(R.string.unknown_app_version) : mAppVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (mInstalledVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : mInstalledVocabularyDbVersion));
 
 		// 최신 단어DB의 버전 정보를 확인합니다.
-		doConfirmVocabularyDbAsyncTask = new DoConfirmVocabularyDbAsyncTask();
-		doConfirmVocabularyDbAsyncTask.execute();
+		mVocabularyDbVersionCheckAsyncTask = new VocabularyDbVersionCheckAsyncTask();
+		mVocabularyDbVersionCheckAsyncTask.execute();
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (doConfirmVocabularyDbAsyncTask != null)
-			doConfirmVocabularyDbAsyncTask.cancel(true);
+		if (mVocabularyDbVersionCheckAsyncTask != null)
+			mVocabularyDbVersionCheckAsyncTask.cancel(true);
 
 		super.onDestroy();
 	}
@@ -82,27 +87,27 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         return super.onOptionsItemSelected(item);
     }
 
-    private class DoConfirmVocabularyDbAsyncTask extends AsyncTask<String, Integer, String> {
+    private class VocabularyDbVersionCheckAsyncTask extends AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
 				String latestVocabularyDbVersion = VocabularyDbHelper.getInstance().getLatestVocabularyDbVersion();
 
-				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false)
+				if (TextUtils.isEmpty(latestVocabularyDbVersion) == false) {
+                    Log.d(TAG, String.format("Latest Vocabulary Db Version : %s", latestVocabularyDbVersion));
                     return latestVocabularyDbVersion;
+                }
 			} catch (Exception e) {
-				e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
 			}
-			
+
 			return getString(R.string.unknown_vocabulary_db_version);
 		}
 
 		@Override
         protected void onPostExecute(String result) {
-			if (prefDbVersion != null) {
-                prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_program_info_key));
-				prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedDbVersion));
-			}
+			if (mPrefDbVersion != null)
+				mPrefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (mAppVersion == null ? getString(R.string.unknown_app_version) : mAppVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (mInstalledVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : mInstalledVocabularyDbVersion));
         }
 	}
 
