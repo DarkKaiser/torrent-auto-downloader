@@ -228,6 +228,8 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
                     // 사용자 암기정보를 갱신합니다.
                     VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
                 }
+
+                // todo @@@@@ 암기대상단어가 비대상으로, 비대상 단어가 대상단어로 바뀌고 나서 정규화를 거쳐야 하는게 아닌지, 정규화했을때 메인에서 이상없는지 확인할 것
             }
         } else {
             assert false;
