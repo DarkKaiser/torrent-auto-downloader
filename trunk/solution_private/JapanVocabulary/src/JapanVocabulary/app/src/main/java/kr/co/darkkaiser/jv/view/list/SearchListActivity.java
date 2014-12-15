@@ -405,7 +405,17 @@ public class SearchListActivity extends ActionBarListActivity {
                 break;
 
             case REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY:
-                DetailActivity.setVocabularyListSeek(null);
+                int position = DetailActivity.setVocabularyListSeek(null);
+
+                if (position != -1 &&
+                        (resultCode & DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED) == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED) {
+                    AQuery aq = new AQuery(this);
+                    aq.id(android.R.id.list).setSelection(position);
+                }
+
+                if ((resultCode & DetailActivity.ACTIVITY_RESULT_DATA_CHANGED) == DetailActivity.ACTIVITY_RESULT_DATA_CHANGED)
+                    mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+
                 break;
         }
 

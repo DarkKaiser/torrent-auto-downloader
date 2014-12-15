@@ -14,6 +14,8 @@ public interface IVocabularyListSeek {
 
     public void setMemorizeCompleted(boolean flag);
 
+    public int getPosition();
+
     public boolean canSeek();
 
     public boolean isValid();

@@ -76,6 +76,11 @@ public class SearchResultVocabularyListSeek implements IVocabularyListSeek {
     }
 
     @Override
+    public synchronized int getPosition() {
+        return mPosition;
+    }
+
+    @Override
 	public synchronized boolean isValid() {
         return mSearchResultVocabularyList.isValidPosition(mPosition);
     }

@@ -31,9 +31,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     private static final String TAG = "DetailActivity";
 
-	// 상세정보 페이지에서 이전/다음 버튼으로 암기단어를 변경하면 호출한 페이지에서도
-	// 변경된 단어로 바로 보여주도록 하기 위해 호출자 인텐트로 넘겨 줄 액티비티 결과 값
-	public static final int ACTIVITY_RESULT_POSITION_CHANGED = 1;
+    public static final int ACTIVITY_RESULT_DATA_CHANGED = 1;
+	public static final int ACTIVITY_RESULT_POSITION_CHANGED = 2;
 
 	private static final int SWIPE_MIN_DISTANCE = 100;
     private static final int SWIPE_MAX_OFF_PATH = 170;
@@ -53,10 +52,18 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     // 단어 상세정보 및 예문 데이터 로딩의 비동기 태스크
     private LoadVocabularyDataAsyncTask mLoadVocabularyDataAsyncTask = null;
 
-    public static void setVocabularyListSeek(IVocabularyListSeek vocabularyListSeek) {
+    private int mActivityResultCode = 0;
+
+    public static int setVocabularyListSeek(IVocabularyListSeek vocabularyListSeek) {
         Log.d(TAG, "set VocabularyListSeek : " + vocabularyListSeek);
 
+        int position = -1;
+        if (mVocabularyListSeek != null)
+            position = mVocabularyListSeek.getPosition();
+
         mVocabularyListSeek = vocabularyListSeek;
+
+        return position;
 	}
 
     @Override
@@ -170,17 +177,18 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             StringBuilder sbErrMessage = new StringBuilder();
 
             switch (v.getId()) {
-            case R.id.avd_prev_vocabulary:
-                vocabulary = mVocabularyListSeek.previousVocabulary(sbErrMessage);
-                break;
+                case R.id.avd_prev_vocabulary:
+                    vocabulary = mVocabularyListSeek.previousVocabulary(sbErrMessage);
+                    break;
 
-            case R.id.avd_next_vocabulary:
-                vocabulary = mVocabularyListSeek.nextVocabulary(sbErrMessage);
-                break;
+                case R.id.avd_next_vocabulary:
+                    vocabulary = mVocabularyListSeek.nextVocabulary(sbErrMessage);
+                    break;
             }
 
             if (vocabulary != null) {
-                setResult(ACTIVITY_RESULT_POSITION_CHANGED);
+                mActivityResultCode |= ACTIVITY_RESULT_POSITION_CHANGED;
+                setResult(mActivityResultCode);
 
                 updateVocabularyDetailInfo(vocabulary);
 
@@ -247,7 +255,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 return super.onOptionsItemSelected(item);
         }
 
-        setResult(ACTIVITY_RESULT_POSITION_CHANGED);
+        mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+        setResult(mActivityResultCode);
 
         Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
         if (vocabulary != null)
