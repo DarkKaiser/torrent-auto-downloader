@@ -530,13 +530,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		tswVocabularyTranslation.setText("");
 
 		if (vocabulary != null) {
-            // @@@@@
             if (vocabulary.isMemorizeCompleted() == true)
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_completed)).textColor(getResources().getColor(R.color.av_memorize_completed)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_memorize_completed)).textColor(getResources().getColor(R.color.av_memorize_completed)).visible();
             else
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_memorize_uncompleted)).visible();
-
-            aq.id(R.id.av_memorize_completed_count_info).text(String.format("(암기완료횟수 %d회)", vocabulary.getMemorizeCompletedCount())).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_memorize_uncompleted)).visible();
 
 			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
                 case VOCABULARY:
@@ -555,18 +552,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			tswVocabularyTranslation.setText(vocabulary.getVocabularyTranslation());
 		} else {
             aq.id(R.id.av_memorize_completed_info).invisible();
-            aq.id(R.id.av_memorize_completed_count_info).invisible();
 		}
 	}
 
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
-
-		String memorizeVocabularyInfo = mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo();
-		if (TextUtils.isEmpty(memorizeVocabularyInfo) == false)
-            aq.id(R.id.av_memorize_vocabulary_info).text(memorizeVocabularyInfo);
-		else
-            aq.id(R.id.av_memorize_vocabulary_info).text("");
+        aq.id(R.id.av_memorize_vocabulary_info).text(mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo());
 	}
 
 	@Override

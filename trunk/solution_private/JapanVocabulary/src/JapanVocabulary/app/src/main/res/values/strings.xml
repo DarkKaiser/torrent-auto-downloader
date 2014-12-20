@@ -25,8 +25,8 @@
     <string name="av_search_memorize_vocabulary">암기단어 검색</string>
     <string name="av_rememorize_all">모든 암기대상 단어 재암기</string>
     <string name="av_vocabulary_seekbar_vs">&#160;/&#160;</string>
-    <string name="av_vocabulary_memorize_completed">암기완료</string>
-    <string name="av_vocabulary_memorize_uncompleted">미암기</string>
+    <string name="av_memorize_completed">암기완료단어</string>
+    <string name="av_memorize_uncompleted">미암기단어</string>
 
     <string name="av_memorize_completed_ad_title">암기완료</string>
     <string name="av_memorize_completed_ad_message">단어를 암기하셨습니까?</string>

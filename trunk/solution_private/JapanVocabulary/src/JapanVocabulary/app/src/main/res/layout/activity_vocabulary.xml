@@ -21,16 +21,6 @@
             tools:ignore="SpUsage"
             />
         <TextView
-            android:id="@+id/av_memorize_completed_count_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/av_memorize_completed_info"
-            android:visibility="invisible"
-            android:textColor="@color/av_memorize_completed_count_info"
-            android:textSize="@dimen/text_size_micro"
-            tools:ignore="SpUsage"
-            />
-        <TextView
             android:id="@+id/av_memorize_vocabulary_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

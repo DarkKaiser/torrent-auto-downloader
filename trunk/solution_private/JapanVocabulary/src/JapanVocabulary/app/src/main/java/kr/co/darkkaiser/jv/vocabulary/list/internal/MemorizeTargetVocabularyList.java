@@ -333,7 +333,7 @@ public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabular
 
     public synchronized String getMemorizeVocabularyInfo() {
         assert isValidPosition() == true;
-        return "암기완료 " + mMemorizeCompletedCount + "개 / 전체 " + mVocabularyListData.size() + "개";
+        return "암기완료 " + mMemorizeCompletedCount + "개 / 암기대상 " + mVocabularyListData.size() + "개";
     }
 
 }
