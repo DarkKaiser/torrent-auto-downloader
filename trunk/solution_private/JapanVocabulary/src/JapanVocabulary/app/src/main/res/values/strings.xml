@@ -2,9 +2,6 @@
 <resources>
 
     <string name="app_name">일본어 단어 암기</string>
-    <string name="activity_detail_label">상세정보</string>
-    <string name="activity_search_list_label">검색</string>
-    <string name="activity_environment_setting_label">설정</string>
 
     <string name="yes">예</string>
     <string name="no">아니오</string>
@@ -17,6 +14,10 @@
     <string name="unknown_app_version">알 수 없음</string>
     <string name="unknown_vocabulary_db_version">알 수 없음</string>
     <string name="cannot_access_db_storage">사용 가능한 저장장치에 접근할 수 없습니다. 단어 데이터를 읽어들일 수 없습니다.</string>
+
+    <string name="activity_detail_label">상세정보</string>
+    <string name="activity_search_list_label">검색</string>
+    <string name="activity_environment_setting_label">설정</string>
 
     <string name="av_prev_vocabulary">《</string>
     <string name="av_next_vocabulary">다음 단어 》</string>
@@ -83,6 +84,10 @@
     <string name="avd_vocabulary_translation">뜻</string>
     <string name="avd_vocabulary_detail_description">상세설명</string>
     <string name="avd_vocabulary_example">예문</string>
+    <string name="avd_vocabulary_memorize_target">암기대상</string>
+    <string name="avd_vocabulary_memorize_untarget">암기비대상</string>
+    <string name="avd_memorize_completed">암기완료단어</string>
+    <string name="avd_memorize_uncompleted">미암기단어</string>
     <string name="avd_vocabulary_memorize_completed_count">총 %d회 암기완료</string>
     <string name="avd_nofind_vocabulary_detail_info">단어의 상세정보를 얻을 수 없습니다.</string>
     <string name="avd_vocabulary_memorize_uncompleted">미암기</string>

@@ -28,12 +28,11 @@
                     style="@style/DetailActivityItemTitle"
                     />
                 <TextView
-                    android:id="@+id/avd_memorize_completed_count_text"
+                    android:id="@+id/avd_memorize_target"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/avd_memorize_completed_count"
                     android:textSize="@dimen/text_size_small"
                     tools:ignore="SpUsage"
                     />
@@ -48,13 +47,11 @@
                     style="@style/DetailActivityItemContent"
                     />
                 <TextView
-                    android:id="@+id/avd_memorize_uncompleted"
+                    android:id="@+id/avd_memorize_completed_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/avd_vocabulary_memorize_uncompleted"
-                    android:textColor="@color/avd_memorize_uncompleted"
                     android:textSize="@dimen/text_size_small"
                     tools:ignore="SpUsage"
                     />
