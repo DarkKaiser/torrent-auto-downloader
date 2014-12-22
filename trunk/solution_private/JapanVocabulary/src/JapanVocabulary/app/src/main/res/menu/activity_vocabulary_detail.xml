@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/avd_vocabulary_rememorize"
-        android:title="@string/avd_vocabulary_rememorize"
+        android:title="@string/avd_rememorize_vocabulary"
         />
     <item
 		android:id="@+id/avd_vocabulary_memorize_completed"
-		android:title="@string/avd_vocabulary_memorize_completed"
+		android:title="@string/avd_memorize_completed_vocabulary"
         />
     <item
         android:id="@+id/avd_add_vocabulary_memorize_target"

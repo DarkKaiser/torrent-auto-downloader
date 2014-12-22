@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/as_vocabulary_memorize_config_category"
+        android:title="@string/as_vocabulary_memorize_setting_category"
         >
         <ListPreference
-            android:key="@string/as_memorize_target_key"
-            android:title="@string/as_memorize_target_title"
-            android:summary="@string/as_memorize_target_summary"
+            android:key="@string/as_vocabulary_memorize_target_key"
+            android:title="@string/as_vocabulary_memorize_target_title"
+            android:summary="@string/as_vocabulary_memorize_target_summary"
             android:defaultValue="@integer/memorize_target_default_value"
             android:entries="@array/memorize_target_entries"
             android:entryValues="@array/memorize_target_entry_values"
-            android:dialogTitle="@string/as_memorize_target_dialog_title"
+            android:dialogTitle="@string/as_vocabulary_memorize_target_dialog_title"
             />
         <CheckBoxPreference
             android:key="@string/as_show_vocabulary_translation_key"
@@ -20,31 +20,31 @@
             android:defaultValue="@bool/show_vocabulary_translation_default_value"
             />
         <CheckBoxPreference
-            android:key="@string/as_fade_effect_next_vocabulary_key"
-            android:title="@string/as_fade_effect_next_vocabulary_title"
-            android:summaryOn="@string/as_fade_effect_next_vocabulary_summary_on"
-            android:summaryOff="@string/as_fade_effect_next_vocabulary_summary_off"
+            android:key="@string/as_fade_effect_on_next_vocabulary_key"
+            android:title="@string/as_fade_effect_on_next_vocabulary_title"
+            android:summaryOn="@string/as_fade_effect_on_next_vocabulary_summary_on"
+            android:summaryOff="@string/as_fade_effect_on_next_vocabulary_summary_off"
             android:defaultValue="@bool/fade_effect_next_vocabulary_default_value"
             />
         <CheckBoxPreference
-            android:key="@string/as_vibrate_next_vocabulary_key"
-            android:title="@string/as_vibrate_next_vocabulary_title"
-            android:summaryOn="@string/as_vibrate_next_vocabulary_summary_on"
-            android:summaryOff="@string/as_vibrate_next_vocabulary_summary_off"
+            android:key="@string/as_vibrate_on_next_vocabulary_key"
+            android:title="@string/as_vibrate_on_next_vocabulary_title"
+            android:summaryOn="@string/as_vibrate_on_next_vocabulary_summary_on"
+            android:summaryOff="@string/as_vibrate_on_next_vocabulary_summary_off"
             android:defaultValue="@bool/vibrate_next_vocabulary_default_value"
             />
         <ListPreference
-            android:key="@string/as_memorize_order_key"
-            android:title="@string/as_memorize_order_title"
-            android:summary="@string/as_memorize_order_summary"
+            android:key="@string/as_vocabulary_memorize_order_key"
+            android:title="@string/as_vocabulary_memorize_order_title"
+            android:summary="@string/as_vocabulary_memorize_order_summary"
             android:defaultValue="@integer/memorize_order_default_value"
             android:entries="@array/memorize_order_item_entry"
             android:entryValues="@array/memorize_order_item_entry_values"
-            android:dialogTitle="@string/as_memorize_order_dialog_title"
+            android:dialogTitle="@string/as_vocabulary_memorize_order_dialog_title"
             />
     </PreferenceCategory>
     <PreferenceCategory 
-        android:title="@string/as_vocabulary_update_config_category"
+        android:title="@string/as_vocabulary_update_setting_category"
         >
         <CheckBoxPreference
             android:key="@string/as_vocabulary_update_on_started_key"
@@ -55,11 +55,11 @@
             />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/as_program_info_category"
+        android:title="@string/as_app_info_category"
         >
         <PreferenceScreen
-            android:key="@string/as_program_info_key"
-            android:title="@string/as_program_info_title"
+            android:key="@string/as_app_info_key"
+            android:title="@string/as_app_info_title"
             android:summary="@null"
             />
         <PreferenceScreen

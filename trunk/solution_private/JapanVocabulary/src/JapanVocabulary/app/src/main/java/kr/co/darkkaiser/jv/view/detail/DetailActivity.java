@@ -159,9 +159,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (vocabulary.isMemorizeCompleted() == true) {
             assert memorizeCompletedCount > 0;
-            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_memorize_completed), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_completed_count));
+            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_completed), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_completed_count));
         } else {
-            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_memorize_uncompleted), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_uncompleted_count));
+            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_uncompleted), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_uncompleted_count));
         }
     }
 
@@ -171,7 +171,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
             resetInvisiblePrevNextVocabularyButtonAnimate();
 
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-            if (sharedPreferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
+            if (sharedPreferences.getBoolean(getString(R.string.as_vibrate_on_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                 // 진동을 발생시킨다.
                 Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(30);

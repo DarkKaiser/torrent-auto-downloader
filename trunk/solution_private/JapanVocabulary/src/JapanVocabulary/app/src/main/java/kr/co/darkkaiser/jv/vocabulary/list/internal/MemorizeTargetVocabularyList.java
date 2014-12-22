@@ -51,7 +51,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         assert sharedPreferences != null;
 
         // 화면에 출력 할 암기대상 단어의 항목을 읽는다.
-        String memorizeTarget = sharedPreferences.getString(context.getString(R.string.as_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
+        String memorizeTarget = sharedPreferences.getString(context.getString(R.string.as_vocabulary_memorize_target_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_target_default_value)));
         if (TextUtils.equals(memorizeTarget, Integer.toString(MemorizeTarget.VOCABULARY_GANA.ordinal())) == true)
             mMemorizeTarget = MemorizeTarget.VOCABULARY_GANA;
         else
@@ -59,7 +59,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 
 		// 단어 암기순서를 읽는다.
 		MemorizeOrder prevMemorizeOrder = mMemorizeOrder;
-		int memorizeOrder = Integer.parseInt(sharedPreferences.getString(context.getString(R.string.as_memorize_order_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_order_default_value))));
+		int memorizeOrder = Integer.parseInt(sharedPreferences.getString(context.getString(R.string.as_vocabulary_memorize_order_key), Integer.toString(context.getResources().getInteger(R.integer.memorize_order_default_value))));
         if (memorizeOrder == MemorizeOrder.VOCABULARY.ordinal())
             mMemorizeOrder = MemorizeOrder.VOCABULARY;
         else if (memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION.ordinal())

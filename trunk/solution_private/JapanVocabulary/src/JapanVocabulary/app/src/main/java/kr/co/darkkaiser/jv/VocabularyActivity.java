@@ -164,7 +164,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
+                if (preferences.getBoolean(getString(R.string.as_vibrate_on_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -178,7 +178,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                if (preferences.getBoolean(getString(R.string.as_vibrate_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
+                if (preferences.getBoolean(getString(R.string.as_vibrate_on_next_vocabulary_key), getResources().getBoolean(R.bool.vibrate_next_vocabulary_default_value)) == true) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(30);
@@ -449,7 +449,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
 		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
-		if (preferences.getBoolean(getString(R.string.as_fade_effect_next_vocabulary_key), getResources().getBoolean(R.bool.fade_effect_next_vocabulary_default_value)) == true) {
+		if (preferences.getBoolean(getString(R.string.as_fade_effect_on_next_vocabulary_key), getResources().getBoolean(R.bool.fade_effect_next_vocabulary_default_value)) == true) {
 			tswVocabulary.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 			tswVocabulary.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 			tswVocabularyTranslation.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -531,9 +531,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		if (vocabulary != null) {
             if (vocabulary.isMemorizeCompleted() == true)
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_memorize_completed)).textColor(getResources().getColor(R.color.av_memorize_completed)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_completed)).textColor(getResources().getColor(R.color.av_memorize_completed)).visible();
             else
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_memorize_uncompleted)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_memorize_uncompleted)).visible();
 
 			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
                 case VOCABULARY:
@@ -808,7 +808,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 } else {
                     tempVocabularyDbFile.delete();
 
-                    mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_reason_crccheckerror_message)).sendToTarget();
+                    mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_reason_crc_checkerror_message)).sendToTarget();
                 }
             }
         } catch (Exception e) {

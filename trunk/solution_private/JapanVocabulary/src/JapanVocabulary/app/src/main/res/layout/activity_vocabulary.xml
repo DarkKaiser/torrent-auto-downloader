@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/av_next_vocabulary"
             android:gravity="center"
-            android:text="@string/av_memorize_method_comment"
+            android:text="@string/av_vocabulary_memorize_method_comment"
             android:textColor="#99999999"
             android:textSize="@dimen/text_size_micro"
             tools:ignore="SpUsage"
