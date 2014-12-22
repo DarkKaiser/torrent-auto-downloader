@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:typeface="serif"
             android:singleLine="true"
-            android:textColor="@color/avsli_memorize_completed_count"
+            android:textColor="@color/avsli_vocabulary_memorize_completed_count"
             android:textSize="@dimen/text_size_micro"
             tools:ignore="SpUsage"
             />

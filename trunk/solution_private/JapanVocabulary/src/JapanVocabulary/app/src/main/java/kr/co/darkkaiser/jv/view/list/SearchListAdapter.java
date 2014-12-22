@@ -84,10 +84,10 @@ public class SearchListAdapter extends BaseAdapter {
 
 		if (vocabulary.isMemorizeCompleted() == true) {
             aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_completed));
-            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_completed));
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_bg_completed));
         } else {
             aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_uncompleted));
-            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_uncompleted));
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_bg_uncompleted));
         }
 
         aq.id(R.id.avsli_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {

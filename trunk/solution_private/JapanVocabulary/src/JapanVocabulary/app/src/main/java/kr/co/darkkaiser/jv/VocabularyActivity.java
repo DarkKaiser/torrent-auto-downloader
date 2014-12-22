@@ -531,9 +531,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
 		if (vocabulary != null) {
             if (vocabulary.isMemorizeCompleted() == true)
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_completed)).textColor(getResources().getColor(R.color.av_memorize_completed)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_completed)).textColor(getResources().getColor(R.color.av_vocabulary_memorize_completed)).visible();
             else
-                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_memorize_uncompleted)).visible();
+                aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_vocabulary_memorize_uncompleted)).visible();
 
 			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
                 case VOCABULARY:

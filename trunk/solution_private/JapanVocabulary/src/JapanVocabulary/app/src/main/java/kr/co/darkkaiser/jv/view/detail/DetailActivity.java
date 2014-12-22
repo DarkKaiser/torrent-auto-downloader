@@ -152,16 +152,16 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         AQuery aq = new AQuery(this);
 
         if (vocabulary.isMemorizeTarget() == true)
-            aq.id(R.id.avd_memorize_target).text(getString(R.string.avd_vocabulary_memorize_target)).textColor(getResources().getColor(R.color.avd_memorize_target));
+            aq.id(R.id.avd_memorize_target).text(getString(R.string.avd_vocabulary_memorize_target)).textColor(getResources().getColor(R.color.avd_vocabulary_memorize_target));
         else
-            aq.id(R.id.avd_memorize_target).text(getString(R.string.avd_vocabulary_memorize_untarget)).textColor(getResources().getColor(R.color.avd_memorize_untarget));
+            aq.id(R.id.avd_memorize_target).text(getString(R.string.avd_vocabulary_memorize_untarget)).textColor(getResources().getColor(R.color.avd_vocabulary_memorize_untarget));
 
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (vocabulary.isMemorizeCompleted() == true) {
             assert memorizeCompletedCount > 0;
-            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_completed), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_completed_count));
+            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_completed), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_vocabulary_memorize_completed_count));
         } else {
-            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_uncompleted), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_memorize_uncompleted_count));
+            aq.id(R.id.avd_memorize_completed_info).text(String.format("%s(암기완료 %d회)", getString(R.string.avd_vocabulary_memorize_uncompleted), memorizeCompletedCount)).textColor(getResources().getColor(R.color.avd_vocabulary_memorize_uncompleted_count));
         }
     }
 
