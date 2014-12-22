@@ -192,7 +192,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (VocabularyDbHelper.getInstance().init(this) == false) {
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.error))
-                    .setMessage(getString(R.string.cannot_access_db_storage))
+                    .setMessage(getString(R.string.cannot_access_vocabulary_db_storage))
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
