@@ -24,12 +24,12 @@ public class VocabularyDbHelper {
 
 	private static final String TAG = "VocabularyDbManager";
 
-    private static VocabularyDbHelper mInstance;
+    private static VocabularyDbHelper instance;
 
-    private String mVocabularyDbFilePath = null;
+    private String vocabularyDbFilePath = null;
 
     static {
-        mInstance = new VocabularyDbHelper();
+        instance = new VocabularyDbHelper();
     }
 
 	private VocabularyDbHelper() {
@@ -37,7 +37,7 @@ public class VocabularyDbHelper {
 	}
 
 	public static VocabularyDbHelper getInstance() {
-		return mInstance;
+		return instance;
 	}
 
     public boolean init(Context context) {
@@ -55,12 +55,12 @@ public class VocabularyDbHelper {
 			}
 		}
 
-        mVocabularyDbFilePath = v3VocabularyDbFilePath;
+        this.vocabularyDbFilePath = v3VocabularyDbFilePath;
 
 		return true;
 	}
 
-	public String getVocabularyDbFilePath() { return mVocabularyDbFilePath; }
+	public String getVocabularyDbFilePath() { return this.vocabularyDbFilePath; }
 
     public String getLatestVocabularyDbVersion() throws Exception {
         try {

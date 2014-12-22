@@ -6,28 +6,28 @@ import java.util.Calendar;
 
 public class Vocabulary {
 
-	private long mIdx = -1;
+	private long idx = -1;
 
 	// 일본식 한자 단어
-	private String mVocabulary = null;
+	private String vocabulary = null;
 
 	// 일본식 한자 단어에 대한 히라가나/가타카나
-	private String mVocabularyGana = null;
+	private String vocabularyGana = null;
 
 	// 일본식 한자 단어에 대한 뜻
-	private String mVocabularyTranslation = null;
+	private String vocabularyTranslation = null;
 
 	// 단어 암기대상 여부
-	private boolean mMemorizeTarget = true;
+	private boolean memorizeTarget = true;
 
 	// 단어 암기완료 여부
-	private boolean mMemorizeCompleted = false;
+	private boolean memorizeCompleted = false;
 
 	// 단어 암기완료 횟수
-	private long mMemorizeCompletedCount = 0;
+	private long memorizeCompletedCount = 0;
 
     // 단어가 등록된 날짜(UTC)
-    private long mInputDateUTC;
+    private long inputDateUTC;
 
 	public Vocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
 		assert idx != -1;
@@ -36,64 +36,64 @@ public class Vocabulary {
 		assert TextUtils.isEmpty(vocabularyGana) == false;
 		assert TextUtils.isEmpty(vocabularyTranslation) == false;
 
-		mIdx = idx;
-        mVocabulary = vocabulary;
-        mVocabularyGana = vocabularyGana;
-        mVocabularyTranslation = vocabularyTranslation;
-        mInputDateUTC = utcDateTime;
+		this.idx = idx;
+        this.vocabulary = vocabulary;
+        this.vocabularyGana = vocabularyGana;
+        this.vocabularyTranslation = vocabularyTranslation;
+        this.inputDateUTC = utcDateTime;
 	}
 
 	public long getIdx() {
-		return mIdx;
+		return this.idx;
 	}
 
 	public String getVocabulary() {
-		return mVocabulary;
+		return this.vocabulary;
 	}
 
 	public String getVocabularyGana() {
-		return mVocabularyGana;
+		return this.vocabularyGana;
 	}
 
 	public String getVocabularyTranslation() {
-		return mVocabularyTranslation;
+		return this.vocabularyTranslation;
 	}
 
     public long getInputDate() {
-        return mInputDateUTC;
+        return this.inputDateUTC;
     }
 
     public String getInputDateString() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(mInputDateUTC);
+        calendar.setTimeInMillis(this.inputDateUTC);
         return String.format("%04d년 %02d월 %02d일", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
     }
 
     public boolean isMemorizeTarget() {
-		return mMemorizeTarget;
+		return this.memorizeTarget;
 	}
 	
 	public void setMemorizeTarget(boolean flag) {
-		mMemorizeTarget = flag;
+        this.memorizeTarget = flag;
 	}
 
 	public boolean isMemorizeCompleted() {
-		return mMemorizeCompleted;
+		return this.memorizeCompleted;
 	}
 
 	public void setMemorizeCompleted(boolean flag, boolean isWhileAddMemorizeCompletedCount) {
-		if (flag == true && mMemorizeCompleted == false && isWhileAddMemorizeCompletedCount == true)
-			++mMemorizeCompletedCount;
+		if (flag == true && this.memorizeCompleted == false && isWhileAddMemorizeCompletedCount == true)
+			++this.memorizeCompletedCount;
 
-		mMemorizeCompleted = flag;
+        this.memorizeCompleted = flag;
 	}
 
 	public void setMemorizeCompletedCount(long count) {
-        mMemorizeCompletedCount = count;
+        this.memorizeCompletedCount = count;
 	}
 
     public long getMemorizeCompletedCount() {
-        return mMemorizeCompletedCount;
+        return this.memorizeCompletedCount;
     }
 
 }

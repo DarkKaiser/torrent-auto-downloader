@@ -38,30 +38,30 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     private static final int SWIPE_MAX_OFF_PATH = 170;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-    private GestureDetector mGestureDetector = null;
+    private GestureDetector gestureDetector = null;
 
     // 이전/다음 단어로 이동하기 위한 단어리스트 래퍼객체
-	private static VocabularyListSeek mVocabularyListSeek = null;
+	private static VocabularyListSeek vocabularyListSeek = null;
 
     // 이전/다음 버튼이 화면에 나타나고 나서 일정시간 이후에 버튼을 자동으로 숨기기 위한 핸들러
-    private Handler mPrevNextVocabularyButtonInVisibleHandler = new Handler();
+    private Handler prevNextVocabularyButtonInVisibleHandler = new Handler();
 
     // 이전/다음 버튼이 화면에 나타나고 나서 자동으로 숨겨지기까지의 시간
     private static final int PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND = 1500;
 
     // 단어 상세정보 및 예문 데이터 로딩의 비동기 태스크
-    private LoadVocabularyDataAsyncTask mLoadVocabularyDataAsyncTask = null;
+    private LoadVocabularyDataAsyncTask loadVocabularyDataAsyncTask = null;
 
-    private int mActivityResultCode = 0;
+    private int activityResultCode = 0;
 
     public static int setVocabularyListSeek(VocabularyListSeek vocabularyListSeek) {
         Log.d(TAG, "set VocabularyListSeek : " + vocabularyListSeek);
 
         int position = -1;
-        if (mVocabularyListSeek != null)
-            position = mVocabularyListSeek.getPosition();
+        if (DetailActivity.vocabularyListSeek != null)
+            position = DetailActivity.vocabularyListSeek.getPosition();
 
-        mVocabularyListSeek = vocabularyListSeek;
+        DetailActivity.vocabularyListSeek = vocabularyListSeek;
 
         return position;
 	}
@@ -77,19 +77,19 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         // 상세 정보를 출력할 단어에 대한 정보를 구한다.
 		Vocabulary vocabulary = null;
-		if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() == true)
-			vocabulary = mVocabularyListSeek.getVocabulary();
+		if (vocabularyListSeek != null && vocabularyListSeek.isValid() == true)
+			vocabulary = vocabularyListSeek.getVocabulary();
 
 		if (vocabulary == null) {
 			// 이전/다음 단어로 이동하기 위한 관리자 객체가 유효하지 않으므로 null로 설정한다.
 			setVocabularyListSeek(null);
-		} else if (mVocabularyListSeek.canSeek() == true) {
+		} else if (vocabularyListSeek.canSeek() == true) {
             aq.id(R.id.avd_move_vocabulary_button_panel).visible();
             aq.id(R.id.avd_prev_vocabulary).clicked(this, "onClick");
             aq.id(R.id.avd_next_vocabulary).clicked(this, "onClick");
 
             // 상세정보 페이지가 열릴 때, 이전/다음 버튼이 바로 화면에 보이는 상태이므로, 일정시간 이후에 버튼을 자동으로 숨겨지도록 설정한다.
-            mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
+            this.prevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
 		}
 
 		if (vocabulary == null) {
@@ -103,23 +103,23 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 		updateVocabularyDetailInfo(vocabulary);
 
 		// 제스쳐 감지 객체를 생성한다.
-        mGestureDetector = new GestureDetector(DetailActivity.this, simpleOnGestureListener);
+        this.gestureDetector = new GestureDetector(DetailActivity.this, simpleOnGestureListener);
 
         // 스크롤뷰에 제스처를 등록한다.
         aq.id(R.id.avd_vocabulary_detail_info_panel).getView().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                return mGestureDetector.onTouchEvent(motionEvent);
+                return gestureDetector.onTouchEvent(motionEvent);
             }
         });
     }
 
 	@Override
 	protected void onDestroy() {
-        if (mLoadVocabularyDataAsyncTask != null)
-            mLoadVocabularyDataAsyncTask.cancel(true);
+        if (this.loadVocabularyDataAsyncTask != null)
+            this.loadVocabularyDataAsyncTask.cancel(true);
 
-        mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
+        this.prevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
         setVocabularyListSeek(null);
 		super.onDestroy();
 	}
@@ -139,11 +139,11 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         updateVocabularyDetailMemorizeInfo(vocabulary);
 
         // 단어 상세정보 및 예문은 불러들이는 데 오래 걸리므로 비동기로 처리한다.
-        if (mLoadVocabularyDataAsyncTask != null)
-            mLoadVocabularyDataAsyncTask.cancel(true);
+        if (this.loadVocabularyDataAsyncTask != null)
+            this.loadVocabularyDataAsyncTask.cancel(true);
 
-        mLoadVocabularyDataAsyncTask = new LoadVocabularyDataAsyncTask();
-        mLoadVocabularyDataAsyncTask.execute();
+        this.loadVocabularyDataAsyncTask = new LoadVocabularyDataAsyncTask();
+        this.loadVocabularyDataAsyncTask.execute();
     }
 
     private void updateVocabularyDetailMemorizeInfo(Vocabulary vocabulary) {
@@ -167,7 +167,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() == true && mVocabularyListSeek.canSeek() == true) {
+        if (vocabularyListSeek != null && vocabularyListSeek.isValid() == true && vocabularyListSeek.canSeek() == true) {
             resetInvisiblePrevNextVocabularyButtonAnimate();
 
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
@@ -182,17 +182,17 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
             switch (v.getId()) {
                 case R.id.avd_prev_vocabulary:
-                    vocabulary = mVocabularyListSeek.previousVocabulary(sbErrMessage);
+                    vocabulary = vocabularyListSeek.previousVocabulary(sbErrMessage);
                     break;
 
                 case R.id.avd_next_vocabulary:
-                    vocabulary = mVocabularyListSeek.nextVocabulary(sbErrMessage);
+                    vocabulary = vocabularyListSeek.nextVocabulary(sbErrMessage);
                     break;
             }
 
             if (vocabulary != null) {
-                mActivityResultCode |= ACTIVITY_RESULT_POSITION_CHANGED;
-                setResult(mActivityResultCode);
+                this.activityResultCode |= ACTIVITY_RESULT_POSITION_CHANGED;
+                setResult(this.activityResultCode);
 
                 updateVocabularyDetailInfo(vocabulary);
 
@@ -214,7 +214,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+        Vocabulary vocabulary = vocabularyListSeek.getVocabulary();
         if (vocabulary != null) {
             menu.findItem(R.id.avd_vocabulary_rememorize).setVisible(vocabulary.isMemorizeCompleted() == true);
             menu.findItem(R.id.avd_vocabulary_memorize_completed).setVisible(vocabulary.isMemorizeCompleted() == false);
@@ -232,7 +232,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        assert mVocabularyListSeek != null;
+        assert vocabularyListSeek != null;
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -240,29 +240,29 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
                 return true;
 
             case R.id.avd_vocabulary_rememorize:
-                mVocabularyListSeek.setMemorizeCompleted(false);
+                vocabularyListSeek.setMemorizeCompleted(false);
                 break;
 
             case R.id.avd_vocabulary_memorize_completed:
-                mVocabularyListSeek.setMemorizeCompleted(true);
+                vocabularyListSeek.setMemorizeCompleted(true);
                 break;
 
             case R.id.avd_add_vocabulary_memorize_target:
-                mVocabularyListSeek.setMemorizeTarget(true);
+                vocabularyListSeek.setMemorizeTarget(true);
                 break;
 
             case R.id.avd_remove_vocabulary_memorize_target:
-                mVocabularyListSeek.setMemorizeTarget(false);
+                vocabularyListSeek.setMemorizeTarget(false);
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
-        setResult(mActivityResultCode);
+        this.activityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+        setResult(this.activityResultCode);
 
-        Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+        Vocabulary vocabulary = vocabularyListSeek.getVocabulary();
         if (vocabulary != null)
             updateVocabularyDetailMemorizeInfo(vocabulary);
 
@@ -323,7 +323,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() == true && mVocabularyListSeek.canSeek() == true) {
+            if (vocabularyListSeek != null && vocabularyListSeek.isValid() == true && vocabularyListSeek.canSeek() == true) {
                 AQuery aq = new AQuery(DetailActivity.this);
 
                 if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.VISIBLE) {
@@ -356,7 +356,7 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
     };
 
     private void resetInvisiblePrevNextVocabularyButtonAnimate() {
-        if (mVocabularyListSeek != null && mVocabularyListSeek.isValid() && mVocabularyListSeek.canSeek() == true) {
+        if (vocabularyListSeek != null && vocabularyListSeek.isValid() && vocabularyListSeek.canSeek() == true) {
             AQuery aq = new AQuery(DetailActivity.this);
             if (aq.id(R.id.avd_move_vocabulary_button_panel).getView().getVisibility() == View.INVISIBLE) {
                 // 이전/다음 버튼이 숨겨지고 있는 도중에 클릭 된 거라면, 애니메이션 효과를 중지하고 화면에 나타나도록 한다.
@@ -366,8 +366,8 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         }
 
         // 일정시간이후에 이전/다음 버튼이 자동으로 숨겨지도록 한다.
-        mPrevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
-        mPrevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
+        this.prevNextVocabularyButtonInVisibleHandler.removeCallbacks(mPrevNextVocabularyButtonVisibleRunnable);
+        this.prevNextVocabularyButtonInVisibleHandler.postDelayed(mPrevNextVocabularyButtonVisibleRunnable, PREV_NEXT_VOCABULARY_BUTTON_INVISIBLE_MILLISECOND);
     }
 
     private class LoadVocabularyDataAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -388,9 +388,9 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
 
         @Override
         protected Void doInBackground(Void... voids) {
-            assert mVocabularyListSeek != null;
+            assert vocabularyListSeek != null;
 
-            Vocabulary vocabulary = mVocabularyListSeek.getVocabulary();
+            Vocabulary vocabulary = vocabularyListSeek.getVocabulary();
             if (vocabulary != null) {
                 if (isCancelled() == false)
                     mVocabularyDetailDescription = VocabularyManager.getInstance().getVocabularyDetailDescription(vocabulary);

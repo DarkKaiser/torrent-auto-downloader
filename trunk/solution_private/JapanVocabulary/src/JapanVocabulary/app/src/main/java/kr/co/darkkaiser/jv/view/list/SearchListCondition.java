@@ -49,14 +49,14 @@ public class SearchListCondition {
         N5("05"),
         UNCLASSIFIED("99");
 
-        private String mCode;
+        private String code;
 
         JLPTRanking(String code) {
-            mCode = code;
+            this.code = code;
         }
 
         public String getCode() {
-            return mCode;
+            return this.code;
         }
 
         public static JLPTRanking parseJLPTRanking(int ordinal) {
@@ -80,67 +80,67 @@ public class SearchListCondition {
     private static final String SPKEY_AVSL_MEMORIZE_COMPLETED = "avsl_memorize_completed";
     private static final String SPKEY_AVSL_JLPT_RANKING = "avsl_jlpt_ranking";
 
-    private Context mContext = null;
-    private SharedPreferences mSharedPreferences = null;
+    private Context context = null;
+    private SharedPreferences sharedPreferences = null;
 
-    private String mSearchWord = null;
-    private MemorizeTarget mMemorizeTarget = null;
-    private MemorizeCompleted mMemorizeCompleted = null;
-	private boolean[] mJLPTRankingArray = null;
+    private String searchWord = null;
+    private MemorizeTarget memorizeTarget = null;
+    private MemorizeCompleted memorizeCompleted = null;
+	private boolean[] jlptRankingArray = null;
 
     public SearchListCondition(Context context, SharedPreferences sharedPreferences) {
         assert context != null;
         assert sharedPreferences != null;
 
-		mContext = context;
-		mSharedPreferences = sharedPreferences;
+		this.context = context;
+		this.sharedPreferences = sharedPreferences;
 
-		mSearchWord = mSharedPreferences.getString(SPKEY_AVSL_SEARCH_WORD, "");
-        mMemorizeTarget = MemorizeTarget.valueOf(mSharedPreferences.getString(SPKEY_AVSL_MEMORIZE_TARGET, MemorizeTarget.ALL.name()));
-		mMemorizeCompleted = MemorizeCompleted.valueOf(mSharedPreferences.getString(SPKEY_AVSL_MEMORIZE_COMPLETED, MemorizeCompleted.ALL.name()));
+		this.searchWord = this.sharedPreferences.getString(SPKEY_AVSL_SEARCH_WORD, "");
+        this.memorizeTarget = MemorizeTarget.valueOf(this.sharedPreferences.getString(SPKEY_AVSL_MEMORIZE_TARGET, MemorizeTarget.ALL.name()));
+		this.memorizeCompleted = MemorizeCompleted.valueOf(this.sharedPreferences.getString(SPKEY_AVSL_MEMORIZE_COMPLETED, MemorizeCompleted.ALL.name()));
 
 		// JLPT 급수별 검색여부를 읽어들인다.
-		CharSequence[] aJLPTRanking = mContext.getResources().getTextArray(R.array.search_condition_jlpt_ranking);
+		CharSequence[] aJLPTRanking = this.context.getResources().getTextArray(R.array.search_condition_jlpt_ranking);
 
-        mJLPTRankingArray = new boolean[aJLPTRanking.length];
+        this.jlptRankingArray = new boolean[aJLPTRanking.length];
 		for (int index = 0; index < aJLPTRanking.length; ++index)
-            mJLPTRankingArray[index] = mSharedPreferences.getBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), true);
+            this.jlptRankingArray[index] = this.sharedPreferences.getBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), true);
 	}
 
     public String getSearchWord() {
-		return mSearchWord;
+		return this.searchWord;
 	}
 
     public void setSearchWord(String searchWord) {
-		assert mSharedPreferences != null;
-		mSearchWord = searchWord;
+		assert this.sharedPreferences != null;
+        this.searchWord = searchWord;
 	}
 
     public MemorizeTarget getMemorizeTarget() {
-		return mMemorizeTarget;
+		return this.memorizeTarget;
 	}
 
     public void setMemorizeTarget(MemorizeTarget memorizeTarget) {
-		mMemorizeTarget = memorizeTarget;
+        this.memorizeTarget = memorizeTarget;
 	}
 
     public MemorizeCompleted getMemorizeCompleted() {
-		return mMemorizeCompleted;
+		return this.memorizeCompleted;
 	}
 
     public void setMemorizeCompleted(MemorizeCompleted memorizeCompleted) {
-		mMemorizeCompleted = memorizeCompleted;
+        this.memorizeCompleted = memorizeCompleted;
 	}
 
     public String[] getJLPTRankingNames() {
-        assert mContext != null;
-        return mContext.getResources().getStringArray(R.array.search_condition_jlpt_ranking);
+        assert this.context != null;
+        return this.context.getResources().getStringArray(R.array.search_condition_jlpt_ranking);
     }
 
     public ArrayList<Integer> getJLPTRankingSelectedIndicies() {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        for (int index = 0; index < mJLPTRankingArray.length; ++index) {
-            if (mJLPTRankingArray[index] == true)
+        for (int index = 0; index < this.jlptRankingArray.length; ++index) {
+            if (this.jlptRankingArray[index] == true)
                 result.add(index);
         }
 
@@ -148,30 +148,30 @@ public class SearchListCondition {
 	}
 
     public void setJLPTRanking(List<Integer> selectedIndicies) {
-        for (int index = 0; index < mJLPTRankingArray.length; ++index)
-            mJLPTRankingArray[index] = false;
+        for (int index = 0; index < this.jlptRankingArray.length; ++index)
+            this.jlptRankingArray[index] = false;
 
         for (Integer index : selectedIndicies) {
-            if (index >= 0 && index < mJLPTRankingArray.length)
-                mJLPTRankingArray[index] = true;
+            if (index >= 0 && index < this.jlptRankingArray.length)
+                this.jlptRankingArray[index] = true;
             else
                 assert false;
         }
     }
 
     public void commit() {
-        assert mSharedPreferences != null;
+        assert this.sharedPreferences != null;
 
-        Editor editor = mSharedPreferences.edit();
+        Editor editor = this.sharedPreferences.edit();
         assert editor != null;
 
-        editor.putString(SPKEY_AVSL_SEARCH_WORD, mSearchWord);
-        editor.putString(SPKEY_AVSL_MEMORIZE_TARGET, mMemorizeTarget.name());
-        editor.putString(SPKEY_AVSL_MEMORIZE_COMPLETED, mMemorizeCompleted.name());
+        editor.putString(SPKEY_AVSL_SEARCH_WORD, this.searchWord);
+        editor.putString(SPKEY_AVSL_MEMORIZE_TARGET, this.memorizeTarget.name());
+        editor.putString(SPKEY_AVSL_MEMORIZE_COMPLETED, this.memorizeCompleted.name());
 
         // JLPT 각 급수별 검색 여부 플래그를 저장한다.
-        for (int index = 0; index < mJLPTRankingArray.length; ++index)
-            editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), mJLPTRankingArray[index]);
+        for (int index = 0; index < this.jlptRankingArray.length; ++index)
+            editor.putBoolean(String.format("%s_%s", SPKEY_AVSL_JLPT_RANKING, JLPTRanking.parseJLPTRanking(index)), this.jlptRankingArray[index]);
 
         editor.commit();
     }

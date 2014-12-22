@@ -53,15 +53,15 @@ public class SearchListActivity extends ActionBarListActivity {
     private static final int REQ_CODE_OPEN_SETTINGS_ACTIVITY = 1;
     private static final int REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY = 2;
 
-    private SearchListAdapter mSearchResultVocabularyListAdapter = null;
-    private SearchResultVocabularyList mSearchResultVocabularyList = null;
+    private SearchListAdapter searchResultVocabularyListAdapter = null;
+    private SearchResultVocabularyList searchResultVocabularyList = null;
 
-    private ArrayAdapter<String> mMemorizeTargetAdapter = null;
-    private ArrayAdapter<String> mMemorizeCompletedAdapter = null;
+    private ArrayAdapter<String> memorizeTargetAdapter = null;
+    private ArrayAdapter<String> memorizeCompletedAdapter = null;
 
-    private ProgressDialog mProgressDialog = null;
+    private ProgressDialog progressDialog = null;
 
-    private int mActivityResultCode = 0;
+    private int activityResultCode = 0;
 
     public SearchListActivity() {
 
@@ -78,15 +78,15 @@ public class SearchListActivity extends ActionBarListActivity {
 		registerForContextMenu(getListView());
 
 		// 리스트뷰를 초기화한다.
-        mSearchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE));
-		mSearchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, mSearchResultVocabularyList);
-		setListAdapter(mSearchResultVocabularyListAdapter);
+        this.searchResultVocabularyList = new SearchResultVocabularyList(this, getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE));
+		this.searchResultVocabularyListAdapter = new SearchListAdapter(this, R.layout.activity_vocabulary_search_listitem, mVocabularyDataChangedHandler, this.searchResultVocabularyList);
+		setListAdapter(this.searchResultVocabularyListAdapter);
 
         // 검색조건내의 암기대상, 암기완료 스피너 어댑터를 초기화한다.
-        mMemorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
-        mMemorizeTargetAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
-        mMemorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
-        mMemorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
+        this.memorizeTargetAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_target));
+        this.memorizeTargetAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
+        this.memorizeCompletedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_condition_memorize_completed));
+        this.memorizeCompletedAdapter.setDropDownViewResource(R.layout.widget_single_choice_spinner_dropdown_item);
 
         // 가장 마지막에 검색한 조건을 이용하여 단어를 검색한다.
         new Handler() {
@@ -108,7 +108,7 @@ public class SearchListActivity extends ActionBarListActivity {
         super.onPrepareOptionsMenu(menu);
 
         SubMenu subMenu = menu.getItem(0/* 정렬 */).getSubMenu();
-        SearchListSort searchListSort = mSearchResultVocabularyList.getSortMethod();
+        SearchListSort searchListSort = this.searchResultVocabularyList.getSortMethod();
         if (searchListSort == SearchListSort.VOCABULARY_GANA)
             subMenu.findItem(R.id.avsl_sort_vocabulary_gana).setChecked(true);
         else if (searchListSort == SearchListSort.VOCABULARY_TRANSLATION)
@@ -132,15 +132,15 @@ public class SearchListActivity extends ActionBarListActivity {
                 if (v != null) {
                     AQuery aq = new AQuery(v);
 
-                    final SearchListCondition searchListCondition = mSearchResultVocabularyList.getSearchListCondition();
+                    final SearchListCondition searchListCondition = this.searchResultVocabularyList.getSearchListCondition();
                     final MultiChoiceSpinner jlptRankingSpinner = (MultiChoiceSpinner)v.findViewById(R.id.avsl_search_condition_jlpt_ranking);
 
                     // 검색조건 컨트롤을 초기화한다.
                     jlptRankingSpinner.setItems(searchListCondition.getJLPTRankingNames());
                     jlptRankingSpinner.setSelection(searchListCondition.getJLPTRankingSelectedIndicies());
                     aq.id(R.id.avsl_search_condition_search_word).text(searchListCondition.getSearchWord());
-                    aq.id(R.id.avsl_search_condition_memorize_target).adapter(mMemorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
-                    aq.id(R.id.avsl_search_condition_memorize_completed).adapter(mMemorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
+                    aq.id(R.id.avsl_search_condition_memorize_target).adapter(this.memorizeTargetAdapter).setSelection(searchListCondition.getMemorizeTarget().ordinal());
+                    aq.id(R.id.avsl_search_condition_memorize_completed).adapter(this.memorizeCompletedAdapter).setSelection(searchListCondition.getMemorizeCompleted().ordinal());
 
                     final AlertDialog adSearch = new AlertDialog.Builder(SearchListActivity.this)
                             .setTitle(getString(R.string.avsl_search))
@@ -217,8 +217,8 @@ public class SearchListActivity extends ActionBarListActivity {
             case R.id.avsl_search_result_vocabulary_memorize_target_all: 		    // 검색된 전체 단어 암기 대상 만들기
             case R.id.avsl_search_result_vocabulary_memorize_target_cancel_all: 	// 검색된 전체 단어 암기 대상 해제
                 // 호출자 액티비티에 데이터가 변경되었음을 알리도록 값을 설정한다.
-                mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
-                setResult(mActivityResultCode);
+                this.activityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+                setResult(this.activityResultCode);
 
                 final int itemId = item.getItemId();
                 if (item.getItemId() == R.id.avsl_search_result_vocabulary_memorize_target_all) {
@@ -249,8 +249,8 @@ public class SearchListActivity extends ActionBarListActivity {
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQ_CODE_OPEN_SETTINGS_ACTIVITY);
 
                 // 호출자 액티비티에 설정값이 변경되었음을 알리도록 값을 설정한다.
-                mActivityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
-                setResult(mActivityResultCode);
+                this.activityResultCode |= ACTIVITY_RESULT_PREFERENCE_CHANGED;
+                setResult(this.activityResultCode);
 
                 return true;
 		}
@@ -264,7 +264,7 @@ public class SearchListActivity extends ActionBarListActivity {
 
         // 컨텍스트 메뉴의 헤더타이틀을 현재 선택된 단어로 설정한다.
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-        menu.setHeaderTitle(mSearchResultVocabularyListAdapter.getItem(info.position));
+        menu.setHeaderTitle(this.searchResultVocabularyListAdapter.getItem(info.position));
 
         getMenuInflater().inflate(R.menu.activity_vocabulary_search_list_context, menu);
     }
@@ -274,10 +274,10 @@ public class SearchListActivity extends ActionBarListActivity {
 		switch (item.getItemId()) {
             case R.id.avsl_exclude_vocabulary:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-                mSearchResultVocabularyList.excludeVocabulary(info.position);
+                this.searchResultVocabularyList.excludeVocabulary(info.position);
 
                 updateSearchResultVocabularyInfo();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                this.searchResultVocabularyListAdapter.notifyDataSetChanged();
                 break;
 		}
 
@@ -288,10 +288,10 @@ public class SearchListActivity extends ActionBarListActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                assert mProgressDialog == null;
+                assert progressDialog == null;
 
                 // 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_search_progress_message), true, false);
+                progressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_search_progress_message), true, false);
 
                 // 검색을 시작하기 전에 리스트뷰와 empty를 보이지 않도록 설정한다.
                 AQuery aq = new AQuery(SearchListActivity.this);
@@ -302,55 +302,55 @@ public class SearchListActivity extends ActionBarListActivity {
                 aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(getString(R.string.avsl_vocabulary_memorize_count_info), 0, 0, 0));
 
                 // 검색을 시작하기 전에 이전 검색단어를 모두 지운다.
-                mSearchResultVocabularyList.clear();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                searchResultVocabularyList.clear();
+                searchResultVocabularyListAdapter.notifyDataSetChanged();
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
-                mSearchResultVocabularyList.search(SearchListActivity.this);
+                searchResultVocabularyList.search(SearchListActivity.this);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 AQuery aq = new AQuery(SearchListActivity.this);
-                if (mSearchResultVocabularyList.getCount() == 0)
+                if (searchResultVocabularyList.getCount() == 0)
                     aq.id(android.R.id.empty).visible();
                 else
                     aq.id(android.R.id.list).visible();
 
                 updateSearchResultVocabularyInfo();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                searchResultVocabularyListAdapter.notifyDataSetChanged();
 
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = null;
+                progressDialog = null;
             }
         }.execute();
     }
 
     private void sortVocabulary(SearchListSort searchListSort) {
         // 정렬 방법이 변경되지 않았다면 재정렬하지 않도록 한다.
-        if (mSearchResultVocabularyList.getSortMethod() == searchListSort)
+        if (this.searchResultVocabularyList.getSortMethod() == searchListSort)
             return;
 
-        mSearchResultVocabularyList.setSortMethod(searchListSort);
+        this.searchResultVocabularyList.setSortMethod(searchListSort);
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                assert mProgressDialog == null;
+                assert progressDialog == null;
 
                 // 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
+                progressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_sort_progress_message), true, false);
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
                 // 검색결과 단어 리스트를 정렬합니다.
-                mSearchResultVocabularyList.sort();
+                searchResultVocabularyList.sort();
 
                 return null;
             }
@@ -358,12 +358,12 @@ public class SearchListActivity extends ActionBarListActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 updateSearchResultVocabularyInfo();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                searchResultVocabularyListAdapter.notifyDataSetChanged();
 
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = null;
+                progressDialog = null;
             }
         }.execute();
     }
@@ -372,27 +372,27 @@ public class SearchListActivity extends ActionBarListActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                assert mProgressDialog == null;
+                assert progressDialog == null;
 
                 // 프로그레스 대화상자를 보인다.
-                mProgressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_memorize_settings_vocabulary_progress_message), true, false);
+                progressDialog = ProgressDialog.show(SearchListActivity.this, null, getString(R.string.avsl_memorize_settings_vocabulary_progress_message), true, false);
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
-                mSearchResultVocabularyList.memorizeSettingsVocabulary(menuId, excludeSearchVocabularyTargetCancel);
+                searchResultVocabularyList.memorizeSettingsVocabulary(menuId, excludeSearchVocabularyTargetCancel);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 updateSearchResultVocabularyInfo();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                searchResultVocabularyListAdapter.notifyDataSetChanged();
 
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = null;
+                progressDialog = null;
             }
         }.execute();
 	}
@@ -414,7 +414,7 @@ public class SearchListActivity extends ActionBarListActivity {
                 }
 
                 if ((resultCode & DetailActivity.ACTIVITY_RESULT_DATA_CHANGED) == DetailActivity.ACTIVITY_RESULT_DATA_CHANGED)
-                    mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                    this.searchResultVocabularyListAdapter.notifyDataSetChanged();
 
                 break;
         }
@@ -425,9 +425,9 @@ public class SearchListActivity extends ActionBarListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 	    super.onListItemClick(l, v, position, id);
 
-        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
+        Vocabulary vocabulary = this.searchResultVocabularyList.getVocabulary(position);
         if (vocabulary != null) {
-            DetailActivity.setVocabularyListSeek(new SearchResultVocabularyListSeek(mSearchResultVocabularyList, position));
+            DetailActivity.setVocabularyListSeek(new SearchResultVocabularyListSeek(this.searchResultVocabularyList, position));
 
             // 단어 상세페이지 호출
             startActivityForResult(new Intent(SearchListActivity.this, DetailActivity.class), REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
@@ -441,11 +441,11 @@ public class SearchListActivity extends ActionBarListActivity {
                 Log.d(TAG, "검색결과 리스트의 데이터가 변경되었습니다.");
 
                 updateSearchResultVocabularyInfo();
-                mSearchResultVocabularyListAdapter.notifyDataSetChanged();
+                searchResultVocabularyListAdapter.notifyDataSetChanged();
 
 				// 호출자 액티비티에게 데이터가 변경되었음을 알리도록 한다.
-				mActivityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
-				setResult(mActivityResultCode);
+                activityResultCode |= ACTIVITY_RESULT_DATA_CHANGED;
+				setResult(activityResultCode);
 			}
 		}
 	};
@@ -455,7 +455,7 @@ public class SearchListActivity extends ActionBarListActivity {
 		assert vocabularyCountInfo.size() == 3;
 
         AQuery aq = new AQuery(this);
-        aq.id(R.id.avsl_vocabulary_search_result_count).text(String.format(getString(R.string.avsl_vocabulary_search_result_count), mSearchResultVocabularyList.getCount()));
+        aq.id(R.id.avsl_vocabulary_search_result_count).text(String.format(getString(R.string.avsl_vocabulary_search_result_count), this.searchResultVocabularyList.getCount()));
         aq.id(R.id.avsl_vocabulary_memorize_count_info).text(String.format(getString(R.string.avsl_vocabulary_memorize_count_info), vocabularyCountInfo.get(0/* 전체 단어 개수 */), vocabularyCountInfo.get(2/* 전체 단어중 암기완료 개수 */), vocabularyCountInfo.get(1/* 전체 단어중 암기대상 개수 */)));
 	}
 

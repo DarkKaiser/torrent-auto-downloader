@@ -21,10 +21,11 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
     private static final String TAG = "SettingsActivity";
 
-    private String mAppVersion = null;
-	private String mInstalledVocabularyDbVersion = null;
-	private VocabularyDbVersionCheckAsyncTask mVocabularyDbVersionCheckAsyncTask = null;
-    private PreferenceScreen mPrefDbVersion = null;
+    private String appVersion = null;
+	private String installedVocabularyDbVersion = null;
+    private PreferenceScreen prefDbVersion = null;
+
+    private VocabularyDbVersionCheckAsyncTask vocabularyDbVersionCheckAsyncTask = null;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +35,28 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		addPreferencesFromResource(R.xml.pref_settings_activity);
 
 		try {
-			mAppVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            Log.d(TAG, String.format("App Version : %s", mAppVersion));
+			this.appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            Log.d(TAG, String.format("App Version : %s", this.appVersion));
 		} catch (NameNotFoundException e) {
             Log.e(TAG, e.getMessage(), e);
 		}
 
 		SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-		mInstalledVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
-        Log.d(TAG, String.format("Installed Vocabulary Db Version : %s", mInstalledVocabularyDbVersion));
+		this.installedVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
+        Log.d(TAG, String.format("Installed Vocabulary Db Version : %s", this.installedVocabularyDbVersion));
 
-        mPrefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_app_info_key));
-		mPrefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (mAppVersion == null ? getString(R.string.unknown_app_version) : mAppVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (mInstalledVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : mInstalledVocabularyDbVersion));
+        this.prefDbVersion = (PreferenceScreen)findPreference(getString(R.string.as_app_info_key));
+        this.prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (this.appVersion == null ? getString(R.string.unknown_app_version) : this.appVersion) + "\n최신 단어DB 버전 : 버전 확인중..." + "\n설치된 단어DB 버전 : " + (this.installedVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : this.installedVocabularyDbVersion));
 
 		// 최신 단어DB의 버전 정보를 확인합니다.
-		mVocabularyDbVersionCheckAsyncTask = new VocabularyDbVersionCheckAsyncTask();
-		mVocabularyDbVersionCheckAsyncTask.execute();
+		this.vocabularyDbVersionCheckAsyncTask = new VocabularyDbVersionCheckAsyncTask();
+        this.vocabularyDbVersionCheckAsyncTask.execute();
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (mVocabularyDbVersionCheckAsyncTask != null)
-			mVocabularyDbVersionCheckAsyncTask.cancel(true);
+		if (this.vocabularyDbVersionCheckAsyncTask != null)
+            this.vocabularyDbVersionCheckAsyncTask.cancel(true);
 
 		super.onDestroy();
 	}
@@ -106,8 +107,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 		@Override
         protected void onPostExecute(String result) {
-			if (mPrefDbVersion != null)
-				mPrefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (mAppVersion == null ? getString(R.string.unknown_app_version) : mAppVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (mInstalledVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : mInstalledVocabularyDbVersion));
+			if (prefDbVersion != null)
+                prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedVocabularyDbVersion));
         }
 	}
 

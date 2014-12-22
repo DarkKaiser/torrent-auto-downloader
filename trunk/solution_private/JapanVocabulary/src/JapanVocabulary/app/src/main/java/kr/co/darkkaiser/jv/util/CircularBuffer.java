@@ -4,8 +4,8 @@ public class CircularBuffer<T> {
 
     public static final int BUFFER_LENGTH = 50;
 
-    private int mHead = 0;
-	private int mTail = 0;
+    private int head = 0;
+	private int tail = 0;
 
     @SuppressWarnings (value="unchecked")
 	private T[] mBufferData = (T[])new Object[BUFFER_LENGTH];
@@ -15,36 +15,36 @@ public class CircularBuffer<T> {
     }
 
 	public synchronized void push(T value) {
-		mBufferData[mTail++] = value;
+		mBufferData[this.tail++] = value;
 
 		// TAIL 값이 배열의 인덱스를 넘었다면 처음으로 되돌린다.
-		if (mTail == mBufferData.length) {
-			mTail = 0;
+		if (this.tail == mBufferData.length) {
+            this.tail = 0;
 		}
 
 		// HEAD 값과 TAIL 값이 같다면 HEAD 값을 다음으로 이동한다.
-		if (mTail == mHead) {
-			++mHead;
-			if (mHead == mBufferData.length)
-				mHead = 0;
+		if (this.tail == this.head) {
+			++this.head;
+			if (this.head == mBufferData.length)
+                this.head = 0;
 		}
 	}
 
 	public synchronized T pop() {
-		if (mHead != mTail) {
-			--mTail;
-			if (mTail < 0)
-				mTail = mBufferData.length - 1;
+		if (this.head != this.tail) {
+			--this.tail;
+			if (this.tail < 0)
+                this.tail = mBufferData.length - 1;
 
-			return mBufferData[mTail];
+			return mBufferData[this.tail];
 		}
 
 		return null;
 	}
 	
 	public T popNoRemove() {
-		if (mHead != mTail) {
-			int pos = mTail - 1;
+		if (this.head != this.tail) {
+			int pos = this.tail - 1;
 			if (pos < 0) {
 				pos = mBufferData.length - 1;
 			}
@@ -56,16 +56,16 @@ public class CircularBuffer<T> {
 	}
 
 	public boolean empty() {
-        return mHead == mTail;
+        return this.head == this.tail;
     }
 
 	public String dump() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("HEAD:").append(mHead).append(", TAIL:").append(mTail).append(", DATA: ");
+		sb.append("HEAD:").append(this.head).append(", TAIL:").append(this.tail).append(", DATA: ");
 		
 		boolean bFind = false;
-		for (int index = mHead; index < mBufferData.length; ++index) {
-			if (index == mTail) {
+		for (int index = this.head; index < mBufferData.length; ++index) {
+			if (index == this.tail) {
 				bFind = true;
 				break;
 			}
@@ -75,7 +75,7 @@ public class CircularBuffer<T> {
 		
 		if (bFind == false) {
 			for (int index = 0; index < mBufferData.length; ++index) {
-				if (index == mTail) {
+				if (index == this.tail) {
 					break;
 				}
 
@@ -87,7 +87,7 @@ public class CircularBuffer<T> {
 	}
 
 	public void clear() {
-		mHead = mTail = 0;
+        this.head = this.tail = 0;
 	}
 
 }

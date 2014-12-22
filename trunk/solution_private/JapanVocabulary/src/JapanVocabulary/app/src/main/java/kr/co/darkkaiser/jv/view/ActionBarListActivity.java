@@ -9,15 +9,15 @@ import android.widget.ListView;
 
 public class ActionBarListActivity extends ActionBarActivity {
 
-    private ListView mListView = null;
+    private ListView listView = null;
 
     protected ListView getListView() {
-        if (mListView == null) {
-            mListView = (ListView)findViewById(android.R.id.list);
-            mListView.setOnItemClickListener(mOnItemClickListener);
+        if (this.listView == null) {
+            this.listView = (ListView)findViewById(android.R.id.list);
+            this.listView.setOnItemClickListener(mOnItemClickListener);
         }
 
-        return mListView;
+        return this.listView;
     }
 
     protected void setListAdapter(ListAdapter adapter) {

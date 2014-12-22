@@ -16,34 +16,34 @@ import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
 public class SearchListAdapter extends BaseAdapter {
 
-	private int mLayout;
-	private Context mContext = null;
-    private LayoutInflater mLayoutInflater = null;
-    private Handler mVocabularyDataChangedHandler = null;
-    private SearchResultVocabularyList mSearchResultVocabularyList = null;
+	private int layout;
+	private Context context = null;
+    private LayoutInflater layoutInflater = null;
+    private Handler vocabularyDataChangedHandler = null;
+    private SearchResultVocabularyList searchResultVocabularyList = null;
 
 	public SearchListAdapter(Context context, int layout, Handler vocabularyDataChangedHandler, SearchResultVocabularyList searchResultVocabularyList) {
         assert context != null;
         assert searchResultVocabularyList != null;
         assert vocabularyDataChangedHandler != null;
 
-		mLayout = layout;
-        mContext = context;
-        mSearchResultVocabularyList = searchResultVocabularyList;
-		mVocabularyDataChangedHandler = vocabularyDataChangedHandler;
-		mLayoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.layout = layout;
+        this.context = context;
+        this.searchResultVocabularyList = searchResultVocabularyList;
+		this.vocabularyDataChangedHandler = vocabularyDataChangedHandler;
+		this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public int getCount() {
-		return mSearchResultVocabularyList.getCount();
+		return this.searchResultVocabularyList.getCount();
 	}
 
 	@Override
 	public String getItem(int position) {
-		assert mSearchResultVocabularyList != null;
+		assert this.searchResultVocabularyList != null;
 
-        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
+        Vocabulary vocabulary = this.searchResultVocabularyList.getVocabulary(position);
         if (vocabulary == null)
             return "";
 
@@ -58,11 +58,11 @@ public class SearchListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = mLayoutInflater.inflate(mLayout, parent, false);
+            convertView = this.layoutInflater.inflate(this.layout, parent, false);
 
         AQuery aq = new AQuery(convertView);
 
-        Vocabulary vocabulary = mSearchResultVocabularyList.getVocabulary(position);
+        Vocabulary vocabulary = this.searchResultVocabularyList.getVocabulary(position);
         if (vocabulary == null) {
             aq.id(R.id.avsli_memorize_bar).invisible();
             aq.id(R.id.avsli_vocabulary_panel).invisible();
@@ -78,16 +78,16 @@ public class SearchListAdapter extends BaseAdapter {
 
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (memorizeCompletedCount > 0)
-            aq.id(R.id.avsli_memorize_completed_count).text(String.format(mContext.getString(R.string.avsli_memorize_completed_count), memorizeCompletedCount)).visible();
+            aq.id(R.id.avsli_memorize_completed_count).text(String.format(this.context.getString(R.string.avsli_memorize_completed_count), memorizeCompletedCount)).visible();
         else
             aq.id(R.id.avsli_memorize_completed_count).invisible();
 
 		if (vocabulary.isMemorizeCompleted() == true) {
-            aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_completed));
-            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_bg_completed));
+            aq.id(R.id.avsli_memorize_bar).backgroundColor(this.context.getResources().getColor(R.color.avsli_memorize_bar_completed));
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(this.context.getResources().getColor(R.color.avsli_vocabulary_panel_bg_completed));
         } else {
-            aq.id(R.id.avsli_memorize_bar).backgroundColor(mContext.getResources().getColor(R.color.avsli_memorize_bar_uncompleted));
-            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(mContext.getResources().getColor(R.color.avsli_vocabulary_panel_bg_uncompleted));
+            aq.id(R.id.avsli_memorize_bar).backgroundColor(this.context.getResources().getColor(R.color.avsli_memorize_bar_uncompleted));
+            aq.id(R.id.avsli_vocabulary_panel).backgroundColor(this.context.getResources().getColor(R.color.avsli_vocabulary_panel_bg_uncompleted));
         }
 
         aq.id(R.id.avsli_memorize_target).tag(position).checked(vocabulary.isMemorizeTarget()).clicked(new View.OnClickListener() {
@@ -95,10 +95,10 @@ public class SearchListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 CheckBox cbMemorizeTarget = (CheckBox)view;
                 int position = (Integer)cbMemorizeTarget.getTag();
-                if (position >= 0 && position < mSearchResultVocabularyList.getCount()) {
+                if (position >= 0 && position < searchResultVocabularyList.getCount()) {
                     // 암기대상 설정한 후, 화면을 업데이트합니다.
-                    if (mSearchResultVocabularyList.setMemorizeTarget(position, cbMemorizeTarget.isChecked()) == true)
-                        mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
+                    if (searchResultVocabularyList.setMemorizeTarget(position, cbMemorizeTarget.isChecked()) == true)
+                        vocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }
         });
@@ -108,10 +108,10 @@ public class SearchListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 CheckBox cbMemorizeCompleted = (CheckBox)view;
                 int position = (Integer)cbMemorizeCompleted.getTag();
-                if (position >= 0 && position < mSearchResultVocabularyList.getCount()) {
+                if (position >= 0 && position < searchResultVocabularyList.getCount()) {
                     // 암기완료 설정한 후, 화면을 업데이트합니다.
-                    if (mSearchResultVocabularyList.setMemorizeCompleted(position, cbMemorizeCompleted.isChecked()) == true)
-                        mVocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
+                    if (searchResultVocabularyList.setMemorizeCompleted(position, cbMemorizeCompleted.isChecked()) == true)
+                        vocabularyDataChangedHandler.sendEmptyMessage(SearchListActivity.MSG_SEARCH_RESULT_LIST_DATA_CHANGED);
                 }
             }
         });

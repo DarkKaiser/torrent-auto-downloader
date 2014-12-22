@@ -26,16 +26,16 @@ public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
 
-	private static VocabularyManager mInstance = null;
+	private static VocabularyManager instance = null;
 
-    private SQLiteDatabase mUserDatabase = null;
-    private SQLiteDatabase mVocabularyDatabase = null;
+    private SQLiteDatabase userDatabase = null;
+    private SQLiteDatabase vocabularyDatabase = null;
 
     // 전체 단어리스트 테이블
-	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> mVocabularyTable = new Hashtable<Long, Vocabulary>();
+	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> vocabularyTable = new Hashtable<Long, Vocabulary>();
 
 	static {
-		mInstance = new VocabularyManager();
+		instance = new VocabularyManager();
 	}
 
 	private VocabularyManager() {
@@ -43,7 +43,7 @@ public class VocabularyManager {
 	}
 
 	public static VocabularyManager getInstance() {
-		return mInstance;
+		return instance;
 	}
 
     /**
@@ -56,33 +56,33 @@ public class VocabularyManager {
         UserDbSQLiteOpenHelper userDbSQLiteOpenHelper = new UserDbSQLiteOpenHelper(context, Constants.USER_DB_FILENAME_V3, null, 1);
 
         // 이전에 등록된 모든 단어를 제거한다.
-        if (mVocabularyTable.isEmpty() == false)
-            mVocabularyTable.clear();
+        if (this.vocabularyTable.isEmpty() == false)
+            this.vocabularyTable.clear();
 
 		Cursor cursor = null;
 
         // 단어 데이터를 읽어들인다.
 		try {
-			if (mVocabularyDatabase != null) {
-				mVocabularyDatabase.close();
-				mVocabularyDatabase = null;
+			if (this.vocabularyDatabase != null) {
+                this.vocabularyDatabase.close();
+                this.vocabularyDatabase = null;
 			}
 
-			mVocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbHelper.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            this.vocabularyDatabase = SQLiteDatabase.openDatabase(VocabularyDbHelper.getInstance().getVocabularyDbFilePath(), null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.append("  SELECT IDX, VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE ")
 			     .append("    FROM TBL_VOCABULARY ")
 			     .append("   WHERE USE_YN = 'Y' ");
 
-			cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
+			cursor = this.vocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 			if (cursor.moveToFirst() == true) {
 				do
 				{
 					long idx = cursor.getLong(0/* IDX */);
-					
-		    		mVocabularyTable.put(idx, new Vocabulary(idx,
+
+                    this.vocabularyTable.put(idx, new Vocabulary(idx,
                             cursor.getLong(4/* INPUT_DATE */),
                             cursor.getString(1/* VOCABULARY */),
                             cursor.getString(2/* VOCABULARY_GANA */),
@@ -99,12 +99,12 @@ public class VocabularyManager {
 
         // 사용자 암기정보 데이터를 읽어들인다.
         try {
-            if (mUserDatabase != null) {
-                mUserDatabase.close();
-                mUserDatabase = null;
+            if (this.userDatabase != null) {
+                this.userDatabase.close();
+                this.userDatabase = null;
             }
 
-            mUserDatabase = userDbSQLiteOpenHelper.getWritableDatabase();
+            this.userDatabase = userDbSQLiteOpenHelper.getWritableDatabase();
 
             // 이전 버전의 사용자의 암기정보를 저장한 DB파일이 존재하는지 확인하여, 존재하는경우 새로운 버전으로 업그레이드한다.
             upgradeUserDbFile(context);
@@ -114,12 +114,12 @@ public class VocabularyManager {
             sbSQL.append("  SELECT V_IDX, MEMORIZE_TARGET, MEMORIZE_COMPLETED, MEMORIZE_COMPLETED_COUNT ")
                  .append("    FROM TBL_USER_VOCABULARY ");
 
-            cursor = mUserDatabase.rawQuery(sbSQL.toString(), null);
+            cursor = this.userDatabase.rawQuery(sbSQL.toString(), null);
 
             if (cursor.moveToFirst() == true) {
                 do
                 {
-                    Vocabulary vocabulary = mVocabularyTable.get(cursor.getLong(0/* V_IDX */));
+                    Vocabulary vocabulary = this.vocabularyTable.get(cursor.getLong(0/* V_IDX */));
                     if (vocabulary != null) {
                         vocabulary.setMemorizeTarget(cursor.getLong(1/* MEMORIZE_TARGET */) == 1);
                         vocabulary.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED */) == 1, false);
@@ -146,7 +146,7 @@ public class VocabularyManager {
 	@SuppressWarnings("ResultOfMethodCallIgnored")
     private void upgradeUserDbFile(Context context) {
 		assert context != null;
-        assert mUserDatabase != null;
+        assert this.userDatabase != null;
 
         //
         // V2 => V3로 마이그레이션한다.
@@ -158,7 +158,7 @@ public class VocabularyManager {
             long userVocabularyCount = 0;
 
             try {
-                cursor = mUserDatabase.rawQuery("SELECT COUNT(*) FROM TBL_USER_VOCABULARY", null);
+                cursor = this.userDatabase.rawQuery("SELECT COUNT(*) FROM TBL_USER_VOCABULARY", null);
                 if (cursor.moveToFirst() == true)
                     userVocabularyCount = cursor.getLong(0);
             } catch (Exception e) {
@@ -171,7 +171,7 @@ public class VocabularyManager {
             // TBL_USER_VOCABULARY 테이블에 데이터가 없는(최초 1회) 경우에만 마이그레이션 하도록 한다.
             if (userVocabularyCount == 0) {
                 try {
-                    mUserDatabase.beginTransaction();
+                    this.userDatabase.beginTransaction();
 
                     BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -185,17 +185,17 @@ public class VocabularyManager {
                             values.put("MEMORIZE_COMPLETED_COUNT", Long.parseLong(token.nextToken()));
                             values.put("MEMORIZE_TARGET", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
                             values.put("MEMORIZE_COMPLETED", Long.parseLong(token.nextToken()) == 1 ? 1 : 0);
-                            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
+                            this.userDatabase.insert("TBL_USER_VOCABULARY", null, values);
                         }
                     }
 
                     br.close();
 
-                    mUserDatabase.setTransactionSuccessful();
+                    this.userDatabase.setTransactionSuccessful();
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                 } finally {
-                    mUserDatabase.endTransaction();
+                    this.userDatabase.endTransaction();
                 }
             }
 
@@ -216,7 +216,7 @@ public class VocabularyManager {
         assert vocabularyList != null;
         assert searchListCondition != null;
 
-        if (mVocabularyDatabase == null) {
+        if (this.vocabularyDatabase == null) {
             assert false;
             return;
         }
@@ -272,7 +272,7 @@ public class VocabularyManager {
             ArrayList<Long> idxList = new ArrayList<Long>();
 
             if (mustDbSelection == true) {
-                cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
+                cursor = this.vocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
                 if (cursor.moveToFirst() == true) {
                     do
@@ -288,7 +288,7 @@ public class VocabularyManager {
                 // '암기완료', '암기대상'의 검색조건이 모든 단어를 대상으로 하면 현재까지의 검색결과를 반환한다.
                 if (memorizeTarget == SearchListCondition.MemorizeTarget.ALL && memorizeCompleted == SearchListCondition.MemorizeCompleted.ALL) {
                     for (Long idx : idxList)
-                        vocabularyList.add(mVocabularyTable.get(idx));
+                        vocabularyList.add(this.vocabularyTable.get(idx));
 
                     return;
                 }
@@ -301,7 +301,7 @@ public class VocabularyManager {
                     isMemorizeCompleted = true;
 
                 for (Long idx : idxList) {
-                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    Vocabulary vocabulary = this.vocabularyTable.get(idx);
                     if (memorizeTarget != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != isMemorizeTarget)
                         continue;
                     if (memorizeCompleted != SearchListCondition.MemorizeCompleted.ALL && vocabulary.isMemorizeCompleted() != isMemorizeCompleted)
@@ -312,7 +312,7 @@ public class VocabularyManager {
             } else {
                 // '암기완료', '암기대상'의 검색조건이 모든 단어를 대상으로 하면 전체단어를 반환한다.
                 if (memorizeTarget == SearchListCondition.MemorizeTarget.ALL && memorizeCompleted == SearchListCondition.MemorizeCompleted.ALL) {
-                    for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); )
+                    for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); )
                         vocabularyList.add(e.nextElement());
 
                     return;
@@ -325,7 +325,7 @@ public class VocabularyManager {
                 if (memorizeCompleted == SearchListCondition.MemorizeCompleted.MEMORIZE_COMPLETED)
                     isMemorizeCompleted = true;
 
-                for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
                     Vocabulary vocabulary = e.nextElement();
                     if (memorizeTarget != SearchListCondition.MemorizeTarget.ALL && vocabulary.isMemorizeTarget() != isMemorizeTarget)
                         continue;
@@ -347,7 +347,7 @@ public class VocabularyManager {
      * 단어를 반화합니다.
      */
     public synchronized Vocabulary getVocabulary(long idx) {
-		return mVocabularyTable.get(idx);
+		return this.vocabularyTable.get(idx);
 	}
 
     /**
@@ -360,7 +360,7 @@ public class VocabularyManager {
         assert vocabularyList != null;
 
 		int memorizeCompletedCount = 0;
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+		for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
 			Vocabulary vocabulary = e.nextElement();
 			if (vocabulary.isMemorizeTarget() == true) {
 				vocabularyList.add(vocabulary);
@@ -384,7 +384,7 @@ public class VocabularyManager {
         assert vocabulary != null;
 
 		StringBuilder sbResult = new StringBuilder();
-		if (mVocabularyDatabase != null) {
+		if (this.vocabularyDatabase != null) {
             String vocabularyHanja = vocabulary.getVocabulary();
 			for (int index = 0; index < vocabularyHanja.length(); ++index) {
 				Cursor cursor = null;
@@ -396,7 +396,7 @@ public class VocabularyManager {
 					     .append(" WHERE CHARACTER = '").append(vocabularyHanja.charAt(index)).append("' ")
 					     .append(" LIMIT 1");
 
-					cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
+					cursor = this.vocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 					if (cursor.moveToFirst() == true) {
 						if (sbResult.length() > 0)
@@ -428,7 +428,7 @@ public class VocabularyManager {
 
         StringBuilder sbResult = new StringBuilder();
 
-        if (mVocabularyDatabase != null) {
+        if (this.vocabularyDatabase != null) {
             Cursor cursor = null;
 
             try {
@@ -440,7 +440,7 @@ public class VocabularyManager {
                      .append("                  WHERE V_IDX = ").append(vocabulary.getIdx())
                      .append("        ) ");
 
-				cursor = mVocabularyDatabase.rawQuery(sbSQL.toString(), null);
+				cursor = this.vocabularyDatabase.rawQuery(sbSQL.toString(), null);
 
 				if (cursor.moveToFirst() == true) {
 					do
@@ -473,7 +473,7 @@ public class VocabularyManager {
     public synchronized ArrayList<Integer> getVocabularyCountInfo() {
 		int memorizeTargetCount = 0;
 		int memorizeCompletedCount = 0;
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+		for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
 			Vocabulary vocabulary = e.nextElement();
 			if (vocabulary.isMemorizeTarget() == true)
 				++memorizeTargetCount;
@@ -482,7 +482,7 @@ public class VocabularyManager {
 		}
 
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		result.add(mVocabularyTable.size());
+		result.add(this.vocabularyTable.size());
 		result.add(memorizeTargetCount);
 		result.add(memorizeCompletedCount);
 
@@ -494,9 +494,9 @@ public class VocabularyManager {
      */
     public synchronized void memorizeTargetVocabularyRememorizeAll() {
         try {
-            mUserDatabase.beginTransaction();
+            this.userDatabase.beginTransaction();
 
-            for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+            for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
                 Vocabulary vocabulary = e.nextElement();
                 if (vocabulary.isMemorizeTarget() == true) {
                     vocabulary.setMemorizeCompleted(false, false);
@@ -504,9 +504,9 @@ public class VocabularyManager {
                 }
             }
 
-            mUserDatabase.setTransactionSuccessful();
+            this.userDatabase.setTransactionSuccessful();
         } finally {
-            mUserDatabase.endTransaction();
+            this.userDatabase.endTransaction();
         }
     }
 
@@ -519,11 +519,11 @@ public class VocabularyManager {
      */
     public synchronized void memorizeSettingsVocabulary(int menuItemId, boolean excludeSearchVocabularyTargetCancel, ArrayList<Long> idxList) {
         try {
-            mUserDatabase.beginTransaction();
+            this.userDatabase.beginTransaction();
 
             if (menuItemId == R.id.avsl_search_result_vocabulary_rememorize_all) {							// 검색된 전체 단어 재암기
                 for (Long idx : idxList) {
-                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    Vocabulary vocabulary = this.vocabularyTable.get(idx);
                     assert vocabulary != null;
 
                     vocabulary.setMemorizeTarget(true);
@@ -533,7 +533,7 @@ public class VocabularyManager {
                 }
             } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_completed_all) {			// 검색된 전체 단어 암기 완료
                 for (Long idx : idxList) {
-                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    Vocabulary vocabulary = this.vocabularyTable.get(idx);
                     assert vocabulary != null;
 
                     vocabulary.setMemorizeCompleted(true, true);
@@ -542,7 +542,7 @@ public class VocabularyManager {
                 }
             } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_all) {				// 검색된 전체 단어 암기 대상 만들기
                 if (excludeSearchVocabularyTargetCancel == true) {
-                    for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+                    for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
                         Vocabulary vocabulary = e.nextElement();
                         assert vocabulary != null;
 
@@ -553,7 +553,7 @@ public class VocabularyManager {
                 }
 
                 for (Long idx : idxList) {
-                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    Vocabulary vocabulary = this.vocabularyTable.get(idx);
                     assert vocabulary != null;
 
                     vocabulary.setMemorizeTarget(true);
@@ -562,7 +562,7 @@ public class VocabularyManager {
                 }
             } else if (menuItemId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {		// 검색된 전체 단어 암기 대상 해제
                 for (Long idx : idxList) {
-                    Vocabulary vocabulary = mVocabularyTable.get(idx);
+                    Vocabulary vocabulary = this.vocabularyTable.get(idx);
                     assert vocabulary != null;
 
                     vocabulary.setMemorizeTarget(false);
@@ -573,9 +573,9 @@ public class VocabularyManager {
                 assert false;
             }
 
-            mUserDatabase.setTransactionSuccessful();
+            this.userDatabase.setTransactionSuccessful();
         } finally {
-            mUserDatabase.endTransaction();
+            this.userDatabase.endTransaction();
         }
     }
 
@@ -583,7 +583,7 @@ public class VocabularyManager {
      * 해당 단어의 사용자 암기정보를 갱신합니다.
      */
     public synchronized void updateUserVocabulary(Vocabulary vocabulary) {
-        assert mUserDatabase != null;
+        assert this.userDatabase != null;
 
         if (vocabulary == null)
             return;
@@ -592,10 +592,10 @@ public class VocabularyManager {
         values.put("MEMORIZE_TARGET", vocabulary.isMemorizeTarget() ? "1" : "0");
         values.put("MEMORIZE_COMPLETED", vocabulary.isMemorizeCompleted() ? "1" : "0");
         values.put("MEMORIZE_COMPLETED_COUNT", vocabulary.getMemorizeCompletedCount());
-        int updateCount = mUserDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[] { Long.toString(vocabulary.getIdx()) });
+        int updateCount = this.userDatabase.update("TBL_USER_VOCABULARY", values, "V_IDX=?", new String[] { Long.toString(vocabulary.getIdx()) });
         if (updateCount == 0) {
             values.put("V_IDX", vocabulary.getIdx());
-            mUserDatabase.insert("TBL_USER_VOCABULARY", null, values);
+            this.userDatabase.insert("TBL_USER_VOCABULARY", null, values);
         }
     }
 
@@ -607,7 +607,7 @@ public class VocabularyManager {
 
 		long newMaxIdx = -1;
 		long updateVocabularyCount = 0;
-		for (Enumeration<Vocabulary> e = mVocabularyTable.elements(); e.hasMoreElements(); ) {
+		for (Enumeration<Vocabulary> e = this.vocabularyTable.elements(); e.hasMoreElements(); ) {
 			Vocabulary vocabulary = e.nextElement();
 			if (vocabulary.getIdx() > prevMaxIdx) {
 				++updateVocabularyCount;

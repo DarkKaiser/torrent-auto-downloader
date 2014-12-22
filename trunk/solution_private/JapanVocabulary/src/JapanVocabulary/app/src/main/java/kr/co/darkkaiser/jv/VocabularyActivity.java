@@ -87,10 +87,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 	private static final int LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout();
 
     // 긴 작업동안 화면에 작업중임을 보여 줄 대화상자
-	private ProgressDialog mProgressDialog = null;
+	private ProgressDialog progressDialog = null;
 
 	// 암기 단어 관련 정보 객체
-	private MemorizeTargetVocabularyList mMemorizeTargetVocabularyList = new MemorizeTargetVocabularyList();
+	private MemorizeTargetVocabularyList memorizeTargetVocabularyList = new MemorizeTargetVocabularyList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // 사용자에 의해 Seek 되기전에 화면에 보여지고 있는 현재단어를 이전 암기단어 순서에 저장한다.
-                mMemorizeTargetVocabularyList.savePositionInMemorizeOrder();
+                memorizeTargetVocabularyList.savePositionInMemorizeOrder();
             }
 
             @Override
@@ -123,7 +123,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     aq.id(R.id.av_vocabulary_seekbar_current_position).text(String.format("%d", progress + 1));
 
                 if (fromUser == true)
-                    showMemorizeVocabulary(mMemorizeTargetVocabularyList.movePosition(progress));
+                    showMemorizeVocabulary(memorizeTargetVocabularyList.movePosition(progress));
             }
         });
 
@@ -236,9 +236,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                 // 프로그레스 대화상자를 보인다.
                 if (mIsNowNetworkConnected == true && mIsVocabularyUpdateOnStarted == true)
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_latest_checking_vocabulary_db_pd_message), true, false);
+                    progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_latest_checking_vocabulary_db_pd_message), true, false);
                 else
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                    progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
 
             @Override
@@ -283,10 +283,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             protected void onPostExecute(Void aVoid) {
                 mWakeLock.release();
 
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = null;
+                progressDialog = null;
             }
         }.execute();
     }
@@ -306,13 +306,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 return true;
 
             case R.id.av_rememorize_all:
-                assert mProgressDialog == null;
+                assert progressDialog == null;
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
                         // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_memorize_settings_vocabulary_pd_message), true, false);
+                        progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_memorize_settings_vocabulary_pd_message), true, false);
                     }
 
                     @Override
@@ -328,10 +328,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        if (mProgressDialog != null)
-                            mProgressDialog.dismiss();
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
 
-                        mProgressDialog = null;
+                        progressDialog = null;
                     }
                 }.execute();
 
@@ -360,7 +360,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 			if ((resultCode & SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) == SearchListActivity.ACTIVITY_RESULT_PREFERENCE_CHANGED) {
                  resetSettings();
 
-                if (mMemorizeTargetVocabularyList.getCount() == 0)
+                if (this.memorizeTargetVocabularyList.getCount() == 0)
                     mustReloadVocabularyData = true;
             }
 
@@ -368,13 +368,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 				mustReloadVocabularyData = true;
 
 			if (mustReloadVocabularyData == true) {
-                assert mProgressDialog == null;
+                assert progressDialog == null;
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
                         // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                        progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
                     }
 
                     @Override
@@ -387,10 +387,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        if (mProgressDialog != null)
-                            mProgressDialog.dismiss();
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
 
-                        mProgressDialog = null;
+                        progressDialog = null;
                     }
                 }.execute();
 			} else {
@@ -400,14 +400,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 		} else if (requestCode == REQ_CODE_OPEN_SETTINGS_ACTIVITY) {
             resetSettings();
 
-			if (mMemorizeTargetVocabularyList.getCount() == 0) {
-                assert mProgressDialog == null;
+			if (this.memorizeTargetVocabularyList.getCount() == 0) {
+                assert progressDialog == null;
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
                         // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
-                        mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                        progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
                     }
 
                     @Override
@@ -420,10 +420,10 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        if (mProgressDialog != null)
-                            mProgressDialog.dismiss();
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
 
-                        mProgressDialog = null;
+                        progressDialog = null;
                     }
                 }.execute();
 		   	} else {
@@ -466,11 +466,11 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         else
             tswVocabularyTranslation.setVisibility(View.VISIBLE);
 
-        mMemorizeTargetVocabularyList.resetMemorizeSettings(this, preferences);
+        this.memorizeTargetVocabularyList.resetMemorizeSettings(this, preferences);
 	}
 
     private void showCurrentMemorizeVocabulary() {
-		Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
+		Vocabulary vocabulary = this.memorizeTargetVocabularyList.getVocabulary();
 
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
@@ -479,13 +479,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
             SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+            vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
     private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		Vocabulary vocabulary = mMemorizeTargetVocabularyList.previousVocabulary(sbErrMessage);
+		Vocabulary vocabulary = this.memorizeTargetVocabularyList.previousVocabulary(sbErrMessage);
 
 		if (vocabulary == null) {
 			if (sbErrMessage.length() > 0)
@@ -498,13 +498,13 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
             SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+            vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
-		Vocabulary vocabulary = mMemorizeTargetVocabularyList.nextVocabulary(sbErrMessage);
+		Vocabulary vocabulary = this.memorizeTargetVocabularyList.nextVocabulary(sbErrMessage);
 
 		if (vocabulary == null && sbErrMessage.length() > 0)
 			Toast.makeText(this, sbErrMessage.toString(), Toast.LENGTH_SHORT).show();
@@ -515,7 +515,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
             SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
-            vocabularySeekBar.setProgress(mMemorizeTargetVocabularyList.getPosition());
+            vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
@@ -535,7 +535,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             else
                 aq.id(R.id.av_memorize_completed_info).text(getString(R.string.av_vocabulary_memorize_uncompleted)).textColor(getResources().getColor(R.color.av_vocabulary_memorize_uncompleted)).visible();
 
-			switch (mMemorizeTargetVocabularyList.getMemorizeTarget()) {
+			switch (this.memorizeTargetVocabularyList.getMemorizeTarget()) {
                 case VOCABULARY:
                     tswVocabulary.setText(vocabulary.getVocabulary());
                     break;
@@ -557,7 +557,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
-        aq.id(R.id.av_memorize_vocabulary_info).text(mMemorizeTargetVocabularyList.getMemorizeVocabularyInfo());
+        aq.id(R.id.av_memorize_vocabulary_info).text(this.memorizeTargetVocabularyList.getMemorizeVocabularyInfo());
 	}
 
 	@Override
@@ -570,14 +570,14 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-		mMemorizeTargetVocabularyList.savePositionInSharedPreferences(preferences);
+        this.memorizeTargetVocabularyList.savePositionInSharedPreferences(preferences);
 
 		super.onBackPressed();
 	}
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMemorizeTargetVocabularyList.isValidPosition() == true &&
+        if (this.memorizeTargetVocabularyList.isValidPosition() == true &&
                 (v.getId() == R.id.av_vocabulary_container || v.getId() == R.id.av_vocabulary || v.getId() == R.id.av_vocabulary_translation)) {
 
             switch (event.getAction()) {
@@ -615,7 +615,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     	public void handleMessage(Message msg){
     		switch (msg.what) {
                 case MSG_CUSTOM_EVT_LONG_PRESS:
-                    if (mMemorizeTargetVocabularyList.isValidPosition() == true) {
+                    if (memorizeTargetVocabularyList.isValidPosition() == true) {
                         // 진동을 발생시킨다.
                         Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                         vibrator.vibrate(30);
@@ -630,7 +630,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                                         Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                                         vibrator.vibrate(30);
 
-                                        mMemorizeTargetVocabularyList.setMemorizeCompleted(true);
+                                        memorizeTargetVocabularyList.setMemorizeCompleted(true);
 
                                         updateMemorizeVocabularyInfo();
                                         showNextMemorizeVocabulary();
@@ -646,9 +646,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                     break;
 
                 case MSG_CUSTOM_EVT_TAP:
-                    long idx = mMemorizeTargetVocabularyList.getVocabularyIdx();
+                    long idx = memorizeTargetVocabularyList.getVocabularyIdx();
                     if (idx != -1) {
-                        DetailActivity.setVocabularyListSeek(mMemorizeTargetVocabularyList);
+                        DetailActivity.setVocabularyListSeek(memorizeTargetVocabularyList);
 
                         // 상세정보 페이지를 연다.
                         startActivityForResult(new Intent(VocabularyActivity.this, DetailActivity.class), REQ_CODE_OPEN_VOCABULARY_DETAIL_ACTIVITY);
@@ -666,7 +666,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     };
 
     private void update2InitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
-        assert mProgressDialog == null;
+        assert progressDialog == null;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
         assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
 
@@ -681,9 +681,9 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                 mWakeLock.acquire();
 
                 if (isUpdateVocabularyDb == true)
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_updating_vocabulary_db_pd_message), true, false);
+                    progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_updating_vocabulary_db_pd_message), true, false);
                 else
-                    mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                    progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             }
 
             @Override
@@ -703,18 +703,18 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             protected void onPostExecute(Void aVoid) {
                 mWakeLock.release();
 
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = null;
+                progressDialog = null;
             }
         }.execute();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
-        assert mProgressDialog != null;
-        assert mProgressDialog.isShowing() == true;
+        assert progressDialog != null;
+        assert progressDialog.isShowing() == true;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
         assert TextUtils.isEmpty(newVocabularyDbFileHash) == false;
 
@@ -823,8 +823,8 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     }
 
     private void initVocabularyData(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
-        assert mProgressDialog != null;
-        assert mProgressDialog.isShowing() == true;
+        assert progressDialog != null;
+        assert progressDialog.isShowing() == true;
 
         mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
@@ -855,19 +855,19 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
     }
 
     private void reloadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
-        assert mProgressDialog != null;
-        assert mProgressDialog.isShowing() == true;
+        assert progressDialog != null;
+        assert progressDialog.isShowing() == true;
 
         mLoadVocabularyDataHandler.obtainMessage(MSG_PROGRESS_DIALOG_REFRESH, getString(R.string.av_load_memorize_target_vocabulary_pd_message)).sendToTarget();
 
         // 암기대상 단어를 읽어들인다.
-        mMemorizeTargetVocabularyList.loadVocabularyData(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE), firstLoadVocabularyData);
+        this.memorizeTargetVocabularyList.loadVocabularyData(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE), firstLoadVocabularyData);
 
         // 단어 암기순서에 따라 SeekBar를 보이거나 숨긴다.
-        if (mMemorizeTargetVocabularyList.canSeek() == true)
-            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.VISIBLE, mMemorizeTargetVocabularyList.getCount()).sendToTarget();
+        if (this.memorizeTargetVocabularyList.canSeek() == true)
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.VISIBLE, this.memorizeTargetVocabularyList.getCount()).sendToTarget();
         else
-            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.INVISIBLE, mMemorizeTargetVocabularyList.getCount()).sendToTarget();
+            mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_SEEKBAR_VISIBILITY, View.INVISIBLE, this.memorizeTargetVocabularyList.getCount()).sendToTarget();
 
         // 단어 암기를 시작합니다.
         mLoadVocabularyDataHandler.obtainMessage(MSG_MEMORIZE_VOCABULARY_START).sendToTarget();
@@ -879,12 +879,12 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             if (msg.what == MSG_PROGRESS_DIALOG_REFRESH) {
                 assert msg.obj != null;
 
-                if (mProgressDialog != null)
-                    mProgressDialog.setMessage((String)msg.obj);
+                if (progressDialog != null)
+                    progressDialog.setMessage((String)msg.obj);
             } else if (msg.what == MSG_MEMORIZE_VOCABULARY_START) {
                 updateMemorizeVocabularyInfo();
 
-                Vocabulary vocabulary = mMemorizeTargetVocabularyList.getVocabulary();
+                Vocabulary vocabulary = memorizeTargetVocabularyList.getVocabulary();
                 if (vocabulary == null)
                     showNextMemorizeVocabulary();
                 else
@@ -918,24 +918,24 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
                             .show();
                 }
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_START) {
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = new ProgressDialog(VocabularyActivity.this);
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setMessage(getString(R.string.av_updating_vocabulary_db_pd_message));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.setMax(msg.arg1);
-                mProgressDialog.setProgress(0);
-                mProgressDialog.show();
+                progressDialog = new ProgressDialog(VocabularyActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMessage(getString(R.string.av_updating_vocabulary_db_pd_message));
+                progressDialog.setCancelable(false);
+                progressDialog.setMax(msg.arg1);
+                progressDialog.setProgress(0);
+                progressDialog.show();
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOADING) {
-                if (mProgressDialog != null)
-                    mProgressDialog.setProgress(msg.arg1);
+                if (progressDialog != null)
+                    progressDialog.setProgress(msg.arg1);
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_END) {
-                if (mProgressDialog != null)
-                    mProgressDialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
 
-                mProgressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
+                progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_load_memorize_target_vocabulary_pd_message), true, false);
             } else if (msg.what == MSG_VOCABULARY_DATA_DOWNLOAD_QUESTION_ON_MOBILE_NETWORK) {
                 final String vocabularyDbVersion = msg.getData().getString("NEW_VOCABULARY_DB_VERSION");
                 final String vocabularyDbFileHash = msg.getData().getString("NEW_VOCABULARY_DB_FILE_HASH");

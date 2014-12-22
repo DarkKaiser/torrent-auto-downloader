@@ -5,22 +5,22 @@ import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
 public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
-	private int mPosition = -1;
+	private int position = -1;
 
-    private SearchResultVocabularyList mSearchResultVocabularyList = null;
+    private SearchResultVocabularyList searchResultVocabularyList = null;
 
 	public SearchResultVocabularyListSeek(SearchResultVocabularyList searchResultVocabularyList, int position) {
 		assert searchResultVocabularyList != null;
-        assert position >= 0 && position < mSearchResultVocabularyList.getCount();
+        assert position >= 0 && position < this.searchResultVocabularyList.getCount();
 
-        mPosition = position;
-        mSearchResultVocabularyList = searchResultVocabularyList;
+        this.position = position;
+        this.searchResultVocabularyList = searchResultVocabularyList;
 	}
 
     @Override
     public synchronized Vocabulary getVocabulary() {
         if (isValid() == true)
-            return mSearchResultVocabularyList.getVocabulary(mPosition);
+            return this.searchResultVocabularyList.getVocabulary(this.position);
 
         return null;
     }
@@ -29,13 +29,13 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 	public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
         assert sbErrorMessage != null;
 
-		int oldPosition = mPosition;
+		int oldPosition = this.position;
 
-		--mPosition;
+		--this.position;
 		if (isValid() == true) {
-            return mSearchResultVocabularyList.getVocabulary(mPosition);
+            return this.searchResultVocabularyList.getVocabulary(this.position);
 		} else {
-			mPosition = oldPosition;
+            this.position = oldPosition;
 			sbErrorMessage.append("이전 단어가 없습니다.");
 		}
 
@@ -46,13 +46,13 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
         assert sbErrorMessage != null;
 
-		int oldPosition = mPosition;
+		int oldPosition = this.position;
 
-		++mPosition;
+		++this.position;
 		if (isValid() == true) {
-            return mSearchResultVocabularyList.getVocabulary(mPosition);
+            return this.searchResultVocabularyList.getVocabulary(this.position);
 		} else {
-			mPosition = oldPosition;
+            this.position = oldPosition;
 			sbErrorMessage.append("다음 단어가 없습니다.");
 		}
 
@@ -62,7 +62,7 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         if (isValid() == true)
-            mSearchResultVocabularyList.setMemorizeTarget(mPosition, flag);
+            this.searchResultVocabularyList.setMemorizeTarget(this.position, flag);
         else
             assert false;
     }
@@ -70,19 +70,19 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
         if (isValid() == true)
-            mSearchResultVocabularyList.setMemorizeCompleted(mPosition, flag);
+            this.searchResultVocabularyList.setMemorizeCompleted(this.position, flag);
         else
             assert false;
     }
 
     @Override
     public synchronized int getPosition() {
-        return mPosition;
+        return this.position;
     }
 
     @Override
 	public synchronized boolean isValid() {
-        return mSearchResultVocabularyList.isValidPosition(mPosition);
+        return this.searchResultVocabularyList.isValidPosition(this.position);
     }
 
     @Override

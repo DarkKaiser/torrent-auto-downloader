@@ -18,29 +18,29 @@ import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
 public class SearchResultVocabularyList implements VocabularyList {
 
     // 검색결과 단어리스트
-	private ArrayList<Vocabulary> mVocabularyListData = new ArrayList<Vocabulary>();
+	private ArrayList<Vocabulary> vocabularyListData = new ArrayList<Vocabulary>();
 
     // 검색결과 단어리스트 정렬방법
-    private SearchListSort mSearchListSort = SearchListSort.VOCABULARY;
+    private SearchListSort searchListSort = SearchListSort.VOCABULARY;
 
     // 검색단어 검색조건
-    private SearchListCondition mSearchListCondition = null;
+    private SearchListCondition searchListCondition = null;
 
-    private SharedPreferences mSharedPreferences = null;
+    private SharedPreferences sharedPreferences = null;
 
     public SearchResultVocabularyList(Context context, SharedPreferences sharedPreferences) {
         assert context != null;
         assert sharedPreferences != null;
 
-        mSharedPreferences = sharedPreferences;
-        mSearchListCondition = new SearchListCondition(context, mSharedPreferences);
-        mSearchListSort = SearchListSort.valueOf(mSharedPreferences.getString(Constants.SPKEY_SEARCH_LIST_SORT, SearchListSort.VOCABULARY.name()));
+        this.sharedPreferences = sharedPreferences;
+        this.searchListCondition = new SearchListCondition(context, this.sharedPreferences);
+        this.searchListSort = SearchListSort.valueOf(this.sharedPreferences.getString(Constants.SPKEY_SEARCH_LIST_SORT, SearchListSort.VOCABULARY.name()));
 
         clear();
     }
 
     public synchronized void clear() {
-        mVocabularyListData.clear();
+        this.vocabularyListData.clear();
     }
 
     public synchronized void search(Context context) {
@@ -50,64 +50,64 @@ public class SearchResultVocabularyList implements VocabularyList {
         clear();
 
         // 현재 검색조건을 저장한다.
-        mSearchListCondition.commit();
+        this.searchListCondition.commit();
 
         // 검색 조건에 맞는 단어를 검색한다.
-        VocabularyManager.getInstance().searchVocabulary(context, mSearchListCondition, mVocabularyListData);
+        VocabularyManager.getInstance().searchVocabulary(context, this.searchListCondition, this.vocabularyListData);
 
         // 검색된 단어를 정렬한다.
         sort();
     }
 
     public synchronized void sort() {
-        switch (mSearchListSort) {
+        switch (this.searchListSort) {
             case VOCABULARY:
-                Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyComparator);
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyComparator);
                 break;
             case VOCABULARY_GANA:
-                Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
                 break;
             case VOCABULARY_TRANSLATION:
-                Collections.sort(mVocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
                 break;
         }
     }
 
     public synchronized Vocabulary getVocabulary(int position) {
         assert isValidPosition(position);
-        return mVocabularyListData.get(position);
+        return this.vocabularyListData.get(position);
     }
 
     public synchronized void excludeVocabulary(int position) {
         assert isValidPosition(position);
-        mVocabularyListData.remove(position);
+        this.vocabularyListData.remove(position);
     }
 
     public synchronized void memorizeSettingsVocabulary(int menuId, boolean excludeSearchVocabularyTargetCancel) {
         ArrayList<Long> idxList = new ArrayList<Long>();
 
         if (menuId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 단어 재암기
-            for (Vocabulary vocabulary : mVocabularyListData) {
+            for (Vocabulary vocabulary : this.vocabularyListData) {
                 if (vocabulary.isMemorizeTarget() == false || vocabulary.isMemorizeCompleted() == true)
                     idxList.add(vocabulary.getIdx());
             }
         } else if (menuId == R.id.avsl_search_result_vocabulary_memorize_completed_all) { 		// 검색된 단어 암기완료
-            for (Vocabulary vocabulary : mVocabularyListData) {
+            for (Vocabulary vocabulary : this.vocabularyListData) {
                 if (vocabulary.isMemorizeCompleted() == false)
                     idxList.add(vocabulary.getIdx());
             }
         } else if (menuId == R.id.avsl_search_result_vocabulary_memorize_target_all) { 			// 검색된 단어 암기대상 설정
             if (excludeSearchVocabularyTargetCancel == true) {
-                for (Vocabulary vocabulary : mVocabularyListData)
+                for (Vocabulary vocabulary : this.vocabularyListData)
                     idxList.add(vocabulary.getIdx());
             } else {
-                for (Vocabulary vocabulary : mVocabularyListData) {
+                for (Vocabulary vocabulary : this.vocabularyListData) {
                     if (vocabulary.isMemorizeTarget() == false)
                         idxList.add(vocabulary.getIdx());
                 }
             }
         } else if (menuId == R.id.avsl_search_result_vocabulary_memorize_target_cancel_all) {   // 검색된 단어 암기대상 해제
-            for (Vocabulary vocabulary : mVocabularyListData) {
+            for (Vocabulary vocabulary : this.vocabularyListData) {
                 if (vocabulary.isMemorizeTarget() == true)
                     idxList.add(vocabulary.getIdx());
             }
@@ -118,7 +118,7 @@ public class SearchResultVocabularyList implements VocabularyList {
 
     public synchronized boolean setMemorizeTarget(int position, boolean flag) {
         if (isValidPosition(position) == true) {
-            Vocabulary vocabulary = mVocabularyListData.get(position);
+            Vocabulary vocabulary = this.vocabularyListData.get(position);
             if (vocabulary != null) {
                 vocabulary.setMemorizeTarget(flag);
 
@@ -134,7 +134,7 @@ public class SearchResultVocabularyList implements VocabularyList {
 
     public synchronized boolean setMemorizeCompleted(int position, boolean flag) {
         if (isValidPosition(position) == true) {
-            Vocabulary vocabulary = mVocabularyListData.get(position);
+            Vocabulary vocabulary = this.vocabularyListData.get(position);
             if (vocabulary != null) {
                 vocabulary.setMemorizeCompleted(flag, true);
 
@@ -149,27 +149,27 @@ public class SearchResultVocabularyList implements VocabularyList {
     }
 
     public synchronized SearchListSort getSortMethod() {
-        return mSearchListSort;
+        return this.searchListSort;
     }
 
     public synchronized void setSortMethod(SearchListSort searchListSort) {
-        mSearchListSort = searchListSort;
+        this.searchListSort = searchListSort;
 
         // 변경된 정렬 방법을 저장한다.
-        mSharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, mSearchListSort.name()).commit();
+        this.sharedPreferences.edit().putString(Constants.SPKEY_SEARCH_LIST_SORT, this.searchListSort.name()).commit();
     }
 
     public synchronized SearchListCondition getSearchListCondition() {
-        return mSearchListCondition;
+        return this.searchListCondition;
     }
 
     public synchronized boolean isValidPosition(int position) {
-        return (position >= 0 && position < mVocabularyListData.size());
+        return (position >= 0 && position < this.vocabularyListData.size());
     }
 
     @Override
     public synchronized int getCount() {
-        return mVocabularyListData.size();
+        return this.vocabularyListData.size();
     }
 
 }
