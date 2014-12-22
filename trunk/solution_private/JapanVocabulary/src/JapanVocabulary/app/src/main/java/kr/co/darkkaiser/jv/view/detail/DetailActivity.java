@@ -156,7 +156,6 @@ public class DetailActivity extends ActionBarActivity implements OnClickListener
         else
             aq.id(R.id.avd_memorize_target).text(getString(R.string.avd_vocabulary_memorize_untarget)).textColor(getResources().getColor(R.color.avd_memorize_untarget));
 
-        // @@@@@
         long memorizeCompletedCount = vocabulary.getMemorizeCompletedCount();
         if (vocabulary.isMemorizeCompleted() == true) {
             assert memorizeCompletedCount > 0;
