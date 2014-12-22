@@ -17,10 +17,10 @@ import kr.co.darkkaiser.jv.vocabulary.MemorizeTarget;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
-import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
-import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyListSeek;
+import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
-public class MemorizeTargetVocabularyList implements IVocabularyList, IVocabularyListSeek {
+public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyListSeek {
 
 	private Random mRandom = new Random();
 

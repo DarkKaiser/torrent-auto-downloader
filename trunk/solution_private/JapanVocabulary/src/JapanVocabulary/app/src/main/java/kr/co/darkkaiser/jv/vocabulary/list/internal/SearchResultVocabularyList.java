@@ -13,9 +13,9 @@ import kr.co.darkkaiser.jv.view.list.SearchListSort;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
-import kr.co.darkkaiser.jv.vocabulary.list.IVocabularyList;
+import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
 
-public class SearchResultVocabularyList implements IVocabularyList {
+public class SearchResultVocabularyList implements VocabularyList {
 
     // 검색결과 단어리스트
 	private ArrayList<Vocabulary> mVocabularyListData = new ArrayList<Vocabulary>();
