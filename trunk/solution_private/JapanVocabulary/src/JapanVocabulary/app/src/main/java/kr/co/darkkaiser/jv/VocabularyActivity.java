@@ -436,6 +436,7 @@ public class VocabularyActivity extends ActionBarActivity implements OnTouchList
             if ((resultCode & DetailActivity.ACTIVITY_RESULT_DATA_CHANGED) == DetailActivity.ACTIVITY_RESULT_DATA_CHANGED) {
                 // @@@@@ 정규화, 암기대상 단어가 비대상으로 된게 있으면 목록에서 제거되어야 함
                 // todo @@@@@ 암기대상단어가 비대상으로, 비대상 단어가 대상단어로 바뀌고 나서 정규화를 거쳐야 하는게 아닌지, 정규화했을때 메인에서 이상없는지 확인할 것
+                this.memorizeTargetVocabularyList.normalize();
 
                 showCurrentMemorizeVocabulary();
             } else if ((resultCode & DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED) == DetailActivity.ACTIVITY_RESULT_POSITION_CHANGED) {

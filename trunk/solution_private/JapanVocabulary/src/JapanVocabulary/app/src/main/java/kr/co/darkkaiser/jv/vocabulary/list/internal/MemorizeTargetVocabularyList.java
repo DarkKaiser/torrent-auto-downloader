@@ -336,4 +336,14 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         return "암기완료 " + this.memorizeCompletedCount + "개 / 암기대상 " + this.vocabularyListData.size() + "개";
     }
 
+    public synchronized void normalize() {
+        // @@@@@
+        // vocabularyListData.remove()
+        for (int index = this.vocabularyListData.size() - 1; index >= 0; --index) {
+            Vocabulary vocabulary = this.vocabularyListData.get(index);
+            if (vocabulary.isMemorizeTarget() == false)
+                this.vocabularyListData.remove(index);
+        }
+    }
+
 }
