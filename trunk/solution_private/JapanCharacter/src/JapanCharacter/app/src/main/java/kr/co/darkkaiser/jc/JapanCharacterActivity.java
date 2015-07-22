@@ -88,7 +88,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
             public void onClick(View v) {
                 showNextCharactor();
 
-                if (mVibrateNextCharacter == true) {
+                if (mVibrateNextCharacter) {
                     // 진동을 발생시킨다.
                     Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(10);
@@ -116,7 +116,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
         mVibrateNextCharacter = mPreferences.getBoolean("vibrate_next_character", getResources().getBoolean(R.bool.vibrate_next_character_default_value));
 
         TextView characterMean = (TextView)findViewById(R.id.character_mean);
-        if (mPreferences.getBoolean("show_character_mean", getResources().getBoolean(R.bool.show_character_mean_default_value)) == true) {
+        if (mPreferences.getBoolean("show_character_mean", getResources().getBoolean(R.bool.show_character_mean_default_value))) {
             characterMean.setVisibility(View.VISIBLE);
         } else {
             characterMean.setVisibility(View.GONE);

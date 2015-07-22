@@ -21,11 +21,11 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             debuggable false            // 디버깅 허용안함
-            zipAlign true               // APK 최적화
+            zipAlignEnabled true        // APK 최적화
         }
     }
 }
