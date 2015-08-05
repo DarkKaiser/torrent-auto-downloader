@@ -1,21 +1,17 @@
 package kr.co.darkkaiser.jc;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +19,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JapanCharacterActivity extends ActionBarActivity {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+public class JapanCharacterActivity extends AppCompatActivity {
 
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 1;
 
@@ -86,7 +86,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-                showNextCharactor();
+                showNextCharacter();
 
                 if (mVibrateNextCharacter) {
                     // 진동을 발생시킨다.
@@ -103,7 +103,7 @@ public class JapanCharacterActivity extends ActionBarActivity {
 
         // 프로그램이 처음 시작될 때 한자를 보이도록 한다.
         init();
-        showNextCharactor();
+        showNextCharacter();
     }
 
     private void init() {
@@ -123,13 +123,13 @@ public class JapanCharacterActivity extends ActionBarActivity {
         }
     }
 
-    private void showNextCharactor() {
-        if (mShowHiragana == false && mShowGatakana == false) {
+    private void showNextCharacter() {
+        if (!mShowHiragana && !mShowGatakana) {
             Toast.makeText(this, "암기 대상 문자가 선택되지 않았습니다. 환경설정 페이지에서 선택하여 주세요!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if (mShowYoum == true) {
+        if (mShowYoum) {
             mCurrentShowIndex = mRandom.nextInt(104/* 요음을 포함한 일본어 글자 개수 */);
         } else {
             mCurrentShowIndex = mRandom.nextInt(71/* 요음을 제외한 일본어 글자 개수 */);
@@ -138,15 +138,15 @@ public class JapanCharacterActivity extends ActionBarActivity {
         TextView character = (TextView)findViewById(R.id.character);
         TextView characterMean = (TextView)findViewById(R.id.character_mean);
 
-        if (mShowHiragana == true && mShowGatakana == true) {
+        if (mShowHiragana && mShowGatakana) {
             if (mRandom.nextInt(2) == 0) {
                 character.setText(mJapanHiragana.get(mCurrentShowIndex));
             } else {
                 character.setText(mJapanGatagana.get(mCurrentShowIndex));
             }
-        } else if (mShowHiragana == true) {
+        } else if (mShowHiragana) {
             character.setText(mJapanHiragana.get(mCurrentShowIndex));
-        } else if (mShowGatakana == true) {
+        } else if (mShowGatakana) {
             character.setText(mJapanGatagana.get(mCurrentShowIndex));
         }
 
@@ -178,13 +178,13 @@ public class JapanCharacterActivity extends ActionBarActivity {
 
         if (resultCode == 0) {
             init();
-            showNextCharactor();
+            showNextCharacter();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
+        if (!mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY)) {
             mCustomEventHandler.sendEmptyMessageAtTime(MSG_CUSTOM_EVT_APP_FINISH_STANDBY, SystemClock.uptimeMillis() + 2000);
             Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
             return;
