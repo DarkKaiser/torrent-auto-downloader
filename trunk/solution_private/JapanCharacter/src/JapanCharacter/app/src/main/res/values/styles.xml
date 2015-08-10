@@ -2,8 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="Theme.AppCompat.Jc" parent="Theme.AppCompat">
+        <item name="colorPrimary">#295795</item>
+
         <!-- Customize your theme here. -->
-        <item name="android:buttonStyle">@android:style/Widget.Button</item>
     </style>
 
     <style name="NoTitleDialog" parent="android:style/Theme.Dialog">
