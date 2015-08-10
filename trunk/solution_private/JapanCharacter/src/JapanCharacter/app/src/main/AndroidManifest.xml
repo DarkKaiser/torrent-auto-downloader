@@ -32,7 +32,6 @@
             android:name=".SettingsActivity"
             android:label="@string/environment_setting"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:parentActivityName=".JapanCharacterActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
