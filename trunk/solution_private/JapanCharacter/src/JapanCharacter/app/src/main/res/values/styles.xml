@@ -5,10 +5,4 @@
         <item name="colorPrimary">@color/jc_appcompat_theme_primary</item>
     </style>
 
-    <!-- 기본 앱 환경설정 테마 -->
-    <style name="Theme.AppCompat.Jc.Settings" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/jc_appcompat_theme_primary</item>
-        <item name="android:listSeparatorTextViewStyle">@style/MPL_PreferenceListHeader</item>
-    </style>
-
 </resources>

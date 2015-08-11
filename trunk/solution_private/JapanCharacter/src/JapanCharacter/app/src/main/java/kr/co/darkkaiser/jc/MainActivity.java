@@ -28,7 +28,7 @@ import java.util.Random;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class JapanCharacterActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int MSG_CUSTOM_EVT_APP_FINISH_STANDBY = 1;
 
@@ -65,7 +65,7 @@ public class JapanCharacterActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         if (v.getId() == R.id.character_container) {
                             if (mCurrentShowIndex != -1) {
-                                TextView contentView = new TextView(JapanCharacterActivity.this);
+                                TextView contentView = new TextView(MainActivity.this);
                                 contentView.setPadding(10, 10, 10, 10);
                                 contentView.setGravity(Gravity.CENTER);
                                 contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -74,7 +74,7 @@ public class JapanCharacterActivity extends AppCompatActivity {
                                 contentView.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
                                 contentView.setTextColor(getResources().getColor(R.color.jc_description_text));
 
-                                MaterialDialog dialog = new MaterialDialog(JapanCharacterActivity.this)
+                                MaterialDialog dialog = new MaterialDialog(MainActivity.this)
                                         .setCanceledOnTouchOutside(true)
                                         .setContentView(contentView);
 
