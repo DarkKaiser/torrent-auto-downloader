@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "kr.co.darkkaiser.jc"
-        minSdkVersion 7
+        minSdkVersion 8
         targetSdkVersion 22
         versionCode 14
         versionName "2.0.1"
@@ -35,4 +35,5 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.github.AndroidDeveloperLB:MaterialPreferenceLibrary:4'
+    compile 'me.drakeet.materialdialog:library:1.2.2'
 }

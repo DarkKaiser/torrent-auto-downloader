@@ -1,19 +1,22 @@
 package kr.co.darkkaiser.jc;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +25,8 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class JapanCharacterActivity extends AppCompatActivity {
 
@@ -60,14 +65,20 @@ public class JapanCharacterActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         if (v.getId() == R.id.character_container) {
                             if (mCurrentShowIndex != -1) {
-                                Dialog dlg = new Dialog(JapanCharacterActivity.this, R.style.NoTitleDialog);
-                                dlg.setContentView(R.layout.activity_japan_character_description);
-                                dlg.setCanceledOnTouchOutside(true);
+                                TextView contentView = new TextView(JapanCharacterActivity.this);
+                                contentView.setPadding(10, 10, 10, 10);
+                                contentView.setGravity(Gravity.CENTER);
+                                contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                                contentView.setTypeface(Typeface.SERIF);
+                                contentView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                                contentView.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
+                                contentView.setTextColor(getResources().getColor(R.color.jc_description_text));
 
-                                TextView descriptionTv = (TextView)dlg.findViewById(R.id.character_description);
-                                descriptionTv.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
+                                MaterialDialog dialog = new MaterialDialog(JapanCharacterActivity.this)
+                                        .setCanceledOnTouchOutside(true)
+                                        .setContentView(contentView);
 
-                                dlg.show();
+                                dialog.show();
                             }
                         }
 
