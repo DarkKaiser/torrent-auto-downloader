@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         if (v.getId() == R.id.character_container) {
                             if (mCurrentShowIndex != -1) {
                                 TextView contentView = new TextView(MainActivity.this);
-                                contentView.setPadding(10, 10, 10, 10);
+                                contentView.setPadding(0, 0, 0, 0);
                                 contentView.setGravity(Gravity.CENTER);
                                 contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                                 contentView.setTypeface(Typeface.SERIF);

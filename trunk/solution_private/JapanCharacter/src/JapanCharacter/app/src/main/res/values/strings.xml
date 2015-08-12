@@ -7,7 +7,7 @@
     <string name="program_version">버전</string>
     <string name="unknown_program_version">알수없음</string>
 
-    <string name="next_character">다음 >></string>
+    <string name="next_character">다음</string>
     <string name="screen_tab_info">화면을 탭하시면 상세정보를 보실 수 있습니다.</string>
 
     <string name="memorize_config_category">암기 설정</string>
