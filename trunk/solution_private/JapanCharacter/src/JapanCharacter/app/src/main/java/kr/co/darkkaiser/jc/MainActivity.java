@@ -3,6 +3,7 @@ package kr.co.darkkaiser.jc;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -101,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mVibrateNextCharacter) {
                     // 진동을 발생시킨다.
-                    Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(10);
                 }
             }
         });
+        nextButton.getBackground().setColorFilter(getResources().getColor(R.color.jc_main_next_button_background), PorterDuff.Mode.MULTIPLY);
 
         // 데이터를 초기화한다.
         mKorea = Arrays.asList(getResources().getStringArray(R.array.character_korea));
