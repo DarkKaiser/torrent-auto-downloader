@@ -5,6 +5,7 @@
     <style name="Theme.AppCompat.Jc" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/jc_color_primary</item>
         <item name="colorPrimaryDark">@color/jc_color_primary_dark</item>
+        <item name="android:navigationBarColor">@color/jc_navigation_bar_color</item>
     </style>
 
 </resources>

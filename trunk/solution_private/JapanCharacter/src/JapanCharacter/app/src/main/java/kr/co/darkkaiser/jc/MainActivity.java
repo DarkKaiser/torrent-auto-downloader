@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                 contentView.setTypeface(Typeface.SERIF);
                                 contentView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
                                 contentView.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
-                                contentView.setTextColor(getResources().getColor(R.color.jc_description_text));
+                                contentView.setTextColor(getResources().getColor(R.color.jc_main_description_text));
 
                                 MaterialDialog dialog = new MaterialDialog(MainActivity.this)
                                         .setCanceledOnTouchOutside(true)
