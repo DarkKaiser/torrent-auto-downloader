@@ -3,7 +3,6 @@ package kr.co.darkkaiser.jv.vocabulary.data;
 import java.text.Collator;
 import java.util.Comparator;
 
-// @@@@@
 public class VocabularyComparator {
 	
 	public final static Comparator<Vocabulary> mVocabularyComparator = new Comparator<Vocabulary>() {
