@@ -11,7 +11,7 @@ public class FileHash {
 
 	public static byte[] getHash(File file) throws IOException, NoSuchAlgorithmException {
 		assert file != null;
-		assert file.exists() == true;
+		assert file.exists();
 
 	    BufferedInputStream bis = null;
 
