@@ -17,6 +17,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -61,7 +62,7 @@ import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
 // @@@@@
-public class VocabularyActivity extends ActionBarActivity implements OnTouchListener {
+public class VocabularyActivity extends AppCompatActivity implements OnTouchListener {
 
     private static final String TAG = "VocabularyActivity";
 

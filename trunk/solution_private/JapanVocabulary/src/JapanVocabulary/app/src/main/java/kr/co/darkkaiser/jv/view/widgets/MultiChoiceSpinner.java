@@ -16,6 +16,7 @@ import java.util.List;
 
 import kr.co.darkkaiser.jv.R;
 
+// @@@@@
 public class MultiChoiceSpinner extends Spinner implements OnMultiChoiceClickListener {
 
     private String[] items = null;

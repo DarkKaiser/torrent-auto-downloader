@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 
 import kr.co.darkkaiser.jv.R;
 
+// @@@@@
 public class PaddingFixCheckBox extends CheckBox {
 
     public PaddingFixCheckBox(Context context) {

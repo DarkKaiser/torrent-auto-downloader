@@ -73,7 +73,7 @@ public class Vocabulary {
     public boolean isMemorizeTarget() {
 		return this.memorizeTarget;
 	}
-	
+
 	public void setMemorizeTarget(boolean flag) {
         this.memorizeTarget = flag;
 	}
