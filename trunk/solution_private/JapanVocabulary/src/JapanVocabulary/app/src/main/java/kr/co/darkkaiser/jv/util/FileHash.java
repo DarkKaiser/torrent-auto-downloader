@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-// @@@@@
+import kr.co.darkkaiser.jv.BuildConfig;
+
 public class FileHash {
 
 	public static byte[] getHash(File file) throws IOException, NoSuchAlgorithmException {
 		assert file != null;
-		assert file.exists();
+
+		if (BuildConfig.DEBUG && file.exists() == false)
+			throw new RuntimeException();
 
 	    BufferedInputStream bis = null;
 

@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.jv.util;
 
-// @@@@@
 public class CircularBuffer<T> {
 
     public static final int BUFFER_LENGTH = 50;
@@ -56,10 +55,12 @@ public class CircularBuffer<T> {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean empty() {
         return this.head == this.tail;
     }
 
+	@SuppressWarnings("unused")
 	public String dump() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("HEAD:").append(this.head).append(", TAIL:").append(this.tail).append(", DATA: ");
@@ -73,7 +74,7 @@ public class CircularBuffer<T> {
 
 			sb.append(mBufferData[index]).append(", ");
 		}
-		
+
 		if (bFind == false) {
 			for (int index = 0; index < mBufferData.length; ++index) {
 				if (index == this.tail) {

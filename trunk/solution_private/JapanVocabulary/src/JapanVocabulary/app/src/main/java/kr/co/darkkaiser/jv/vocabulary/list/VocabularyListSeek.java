@@ -2,23 +2,22 @@ package kr.co.darkkaiser.jv.vocabulary.list;
 
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 
-// @@@@@
 public interface VocabularyListSeek {
 
-    public Vocabulary getVocabulary();
+    Vocabulary getVocabulary();
 
-    public Vocabulary previousVocabulary(StringBuilder sbErrorMessage);
+    Vocabulary previousVocabulary(StringBuilder sbErrorMessage);
 
-    public Vocabulary nextVocabulary(StringBuilder sbErrorMessage);
+    Vocabulary nextVocabulary(StringBuilder sbErrorMessage);
 
-    public void setMemorizeTarget(boolean flag);
+    void setMemorizeTarget(boolean flag);
 
-    public void setMemorizeCompleted(boolean flag);
+    void setMemorizeCompleted(boolean flag);
 
-    public int getPosition();
+    int getPosition();
 
-    public boolean canSeek();
+    boolean canSeek();
 
-    public boolean isValid();
+    boolean isValid();
 
 }

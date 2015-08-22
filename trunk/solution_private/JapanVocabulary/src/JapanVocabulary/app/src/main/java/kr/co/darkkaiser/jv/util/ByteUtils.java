@@ -1,8 +1,8 @@
 package kr.co.darkkaiser.jv.util;
 
-// @@@@@
 public class ByteUtils {
-	
+
+	@SuppressWarnings("unused")
 	public static Byte DEFAULT_BYTE = (byte) 0;
 	
 	/**
@@ -14,6 +14,7 @@ public class ByteUtils {
 	 * ByteUtils.toByte( "a" , 0x00) = 0x00
 	 * </pre>
 	 */
+	@SuppressWarnings("unused")
 	public static byte toByte(String value, byte defaultValue) {
 		try {
 			return Byte.parseByte(value);	
@@ -31,6 +32,7 @@ public class ByteUtils {
 	 * ByteUtils.toByteObject( "a", 0x00) = 0x00
 	 * </pre>
 	 */
+	@SuppressWarnings("unused")
 	public static Byte toByteObject(String value, Byte defaultValue) {
 		try {
 			return Byte.valueOf(value);
@@ -46,6 +48,7 @@ public class ByteUtils {
      * @param b singed byte
      * @return unsinged byte 
      */
+	@SuppressWarnings("unused")
 	public static int unsignedByte(byte b) {
 		return  b & 0xFF;
 	}
@@ -65,6 +68,7 @@ public class ByteUtils {
 	/**
 	 * <p>입력한 바이트 배열(4바이트)을 int 형으로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static int toInt(byte[] src) {
 		return toInt(src, 0);
 	}
@@ -84,6 +88,7 @@ public class ByteUtils {
 	/**
 	 * <p>입력한 바이트 배열(8바이트)을 long 형으로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static long toLong(byte[] src) {
 		return toLong(src, 0);
 	}
@@ -100,6 +105,7 @@ public class ByteUtils {
 	/**
 	 * <p>int 형의 값을 바이트 배열(4바이트)로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static byte[] toBytes(int value) {
 		byte[] dest = new byte[4];
 		toBytes(value, dest, 0);
@@ -118,6 +124,7 @@ public class ByteUtils {
 	/**
 	 * <p>long 형의 값을 바이트 배열(8바이트)로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static byte[] toBytes(long value) {
 		byte[] dest = new byte[8];
 		toBytes(value, dest, 0);
@@ -138,6 +145,7 @@ public class ByteUtils {
 	 * @param radix 진수(8, 10, 16만 가능)
 	 * @throws IllegalArgumentException
 	 */
+	@SuppressWarnings("unused")
 	public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException {
 		if (digits == null) {
 			return null;
@@ -172,6 +180,7 @@ public class ByteUtils {
 	 * @param digits 16진수 문자열
 	 * @throws IllegalArgumentException
 	 */
+	@SuppressWarnings("unused")
 	public static byte[] toBytesFromHexString(String digits) throws IllegalArgumentException {
 		if (digits == null) {
 			return null;
@@ -197,6 +206,7 @@ public class ByteUtils {
 	 * 
 	 * @param b unsigned byte
 	 */
+	@SuppressWarnings("unused")
 	public static String toHexString(byte b) {
         return Integer.toString((b & 0xF0) >> 4, 16) + Integer.toString(b & 0x0F, 16);
 	}
@@ -236,6 +246,7 @@ public class ByteUtils {
 	 * 
 	 * @param bytes unsigned byte's array
 	 */
+	@SuppressWarnings("unused")
 	public static String toHexString(byte[] bytes, int offset, int length) {
 		if (bytes == null) {
 			return null;
@@ -260,6 +271,7 @@ public class ByteUtils {
 	 * 
 	 * @return 동일하면 <code>true</code>, 아니면 <code>false</code>
 	 */
+	@SuppressWarnings("unused")
 	public static boolean equals(byte[] array1, byte[] array2) {
 		if (array1 == array2) {
 			return true;
