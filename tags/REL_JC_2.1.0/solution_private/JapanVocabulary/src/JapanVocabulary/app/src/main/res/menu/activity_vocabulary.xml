@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/av_search_memorize_vocabulary"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/av_search_memorize_vocabulary"
+        android:orderInCategory="0"
+        myapp:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/av_rememorize_all"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/av_rememorize_all"
+        android:orderInCategory="1"
+        myapp:showAsAction="never"
+        />
+    <item
+        android:id="@+id/av_open_settings_activity"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/activity_environment_setting_label"
+        android:orderInCategory="2"
+        myapp:showAsAction="never"
+        />
+
+</menu>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <color name="jc_color_primary">#295795</color>
+    <color name="jc_color_primary_dark">#214677</color>
+    <color name="jc_navigation_bar_color">#000000</color>
+
+    <color name="jc_main_information_text">#99999999</color>
+    <color name="jc_main_description_text">#000000</color>
+    <color name="jc_main_next_button_background">#ff295795</color>
+
+</resources>
