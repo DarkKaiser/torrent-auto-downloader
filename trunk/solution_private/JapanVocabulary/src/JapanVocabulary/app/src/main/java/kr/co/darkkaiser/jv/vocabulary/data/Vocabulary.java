@@ -4,7 +4,8 @@ import android.text.TextUtils;
 
 import java.util.Calendar;
 
-// @@@@@
+import kr.co.darkkaiser.jv.BuildConfig;
+
 public class Vocabulary {
 
 	private long idx = -1;
@@ -31,11 +32,13 @@ public class Vocabulary {
     private long inputDateUTC;
 
 	public Vocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
-		assert idx != -1;
-		assert utcDateTime > 0;
-		assert TextUtils.isEmpty(vocabulary) == false;
-		assert TextUtils.isEmpty(vocabularyGana) == false;
-		assert TextUtils.isEmpty(vocabularyTranslation) == false;
+		if (BuildConfig.DEBUG) {
+			if (idx == -1) throw new AssertionError();
+			if (utcDateTime <= 0) throw new AssertionError();
+			if (TextUtils.isEmpty(vocabulary)) throw new AssertionError();
+			if (TextUtils.isEmpty(vocabularyGana)) throw new AssertionError();
+			if (TextUtils.isEmpty(vocabularyTranslation)) throw new AssertionError();
+		}
 
 		this.idx = idx;
         this.vocabulary = vocabulary;
@@ -60,12 +63,14 @@ public class Vocabulary {
 		return this.vocabularyTranslation;
 	}
 
-    public long getInputDate() {
+    @SuppressWarnings("unused")
+	public long getInputDate() {
         return this.inputDateUTC;
     }
 
-    public String getInputDateString() {
-        Calendar calendar = Calendar.getInstance();
+    @SuppressWarnings("unused")
+	public String getInputDateString() {
+		Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(this.inputDateUTC);
         return String.format("%04d년 %02d월 %02d일", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
     }

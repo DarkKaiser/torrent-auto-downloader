@@ -20,10 +20,9 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
-// @@@@@
 public class VocabularyDbHelper {
 
-	private static final String TAG = "VocabularyDbManager";
+	private static final String TAG = "VocabularyDbHelper";
 
     private static VocabularyDbHelper instance;
 
@@ -34,7 +33,6 @@ public class VocabularyDbHelper {
     }
 
 	private VocabularyDbHelper() {
-
 	}
 
 	public static VocabularyDbHelper getInstance() {
@@ -74,6 +72,7 @@ public class VocabularyDbHelper {
         return "";
     }
 
+    @SuppressWarnings("unused")
     public String getLatestVocabularyDbFileHash() throws Exception {
         try {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
@@ -85,6 +84,7 @@ public class VocabularyDbHelper {
         return "";
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<String> getLatestVocabularyDbInfoList() {
         String vocabularyDbVersion = "";
         String vocabularyDbFileHash = "";
@@ -97,7 +97,7 @@ public class VocabularyDbHelper {
             e.printStackTrace();
         }
 
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         result.add(vocabularyDbVersion);
         result.add(vocabularyDbFileHash);
 
@@ -144,6 +144,7 @@ public class VocabularyDbHelper {
         return sb.toString();
     }
 
+    // @@@@@ deprecated
     private InputStream getInputStreamFromUrl(String url) {
         InputStream contentStream = null;
 
