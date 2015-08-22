@@ -3,6 +3,7 @@ package kr.co.darkkaiser.jv.vocabulary.list.internal;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
+// @@@@@
 public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
 	private int position = -1;

@@ -27,6 +27,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
+// @@@@@
 public class DetailActivity extends ActionBarActivity implements OnClickListener {
 
     private static final String TAG = "DetailActivity";

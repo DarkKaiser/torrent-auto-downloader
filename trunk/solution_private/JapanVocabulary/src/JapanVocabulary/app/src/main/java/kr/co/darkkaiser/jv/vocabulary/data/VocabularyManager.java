@@ -22,6 +22,7 @@ import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 import kr.co.darkkaiser.jv.vocabulary.db.UserDbSQLiteOpenHelper;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
+// @@@@@
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";

@@ -3,6 +3,7 @@ package kr.co.darkkaiser.jv.vocabulary;
 /**
  * 암기순서
  */
+// @@@@@
 public enum MemorizeOrder {
 
 	// 무작위순

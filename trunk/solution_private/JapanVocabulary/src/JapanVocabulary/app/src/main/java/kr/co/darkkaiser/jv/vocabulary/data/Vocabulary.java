@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.util.Calendar;
 
+// @@@@@
 public class Vocabulary {
 
 	private long idx = -1;

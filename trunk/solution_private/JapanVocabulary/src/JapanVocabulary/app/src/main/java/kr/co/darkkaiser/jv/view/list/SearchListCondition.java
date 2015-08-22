@@ -9,6 +9,7 @@ import java.util.List;
 
 import kr.co.darkkaiser.jv.R;
 
+// @@@@@
 public class SearchListCondition {
 
     public enum MemorizeTarget {

@@ -14,6 +14,7 @@ import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 
+// @@@@@
 public class SearchListAdapter extends BaseAdapter {
 
 	private int layout;

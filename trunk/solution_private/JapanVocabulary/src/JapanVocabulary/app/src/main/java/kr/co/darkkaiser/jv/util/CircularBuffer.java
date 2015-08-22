@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.util;
 
+// @@@@@
 public class CircularBuffer<T> {
 
     public static final int BUFFER_LENGTH = 50;

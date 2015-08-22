@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.common;
 
+// @@@@@
 public interface Constants {
 
     /*

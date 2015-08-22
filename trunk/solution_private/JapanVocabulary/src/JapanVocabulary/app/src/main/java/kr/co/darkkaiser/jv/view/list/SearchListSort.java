@@ -3,6 +3,7 @@ package kr.co.darkkaiser.jv.view.list;
 /**
  * 검색결과 정렬
  */
+// @@@@@
 public enum SearchListSort {
 
 	// 한자

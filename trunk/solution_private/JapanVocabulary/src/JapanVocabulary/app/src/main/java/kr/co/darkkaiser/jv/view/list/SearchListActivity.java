@@ -41,6 +41,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.SearchResultVocabularyListSeek;
 
+// @@@@@
 public class SearchListActivity extends ActionBarListActivity {
 
     private static final String TAG = "SearchListActivity";

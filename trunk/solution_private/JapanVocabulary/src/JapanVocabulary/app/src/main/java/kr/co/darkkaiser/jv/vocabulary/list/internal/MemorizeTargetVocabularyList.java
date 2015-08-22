@@ -20,6 +20,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
+// @@@@@
 public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyListSeek {
 
 	private Random random = new Random();

@@ -15,7 +15,7 @@ import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
-// TODO 프로요에서 액션바가 표시디지 않음
+// @@@@@
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 

@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.util;
 
+// @@@@@
 public class ByteUtils {
 	
 	public static Byte DEFAULT_BYTE = (byte) 0;
