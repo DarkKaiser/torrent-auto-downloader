@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-
+    <!-- @@@@@ -->
 	<string-array name="memorize_target_entries">
 		<item>한자</item>
 		<item>히라가나/가타카나</item>

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#000000"
     android:clickable="true"
-    >
+    ><!-- @@@@@ -->
 	<ScrollView
         android:id="@+id/avd_vocabulary_detail_info_panel"
 	   	android:layout_width="match_parent"

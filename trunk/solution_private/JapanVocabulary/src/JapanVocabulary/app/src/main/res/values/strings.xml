@@ -17,7 +17,7 @@
 
     <string name="activity_detail_label">상세정보</string>
     <string name="activity_search_list_label">검색</string>
-    <string name="activity_environment_setting_label">설정</string>
+    <string name="activity_environment_setting_label">환경설정</string>
 
     <string name="av_prev_vocabulary">《</string>
     <string name="av_next_vocabulary">다음 단어 》</string>
