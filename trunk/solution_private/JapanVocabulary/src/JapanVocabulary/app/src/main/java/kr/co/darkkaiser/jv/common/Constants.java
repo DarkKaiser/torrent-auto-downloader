@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.jv.common;
 
-// @@@@@
 public interface Constants {
 
     /*
@@ -36,6 +35,7 @@ public interface Constants {
     /*
 	 * 단어DB 파일명
 	 */
+    @SuppressWarnings("unused")
     String VOCABULARY_DB_FILENAME_V2 = "jv2.db";
     String VOCABULARY_DB_FILENAME_V3 = "vocabulary_v3.db";
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- @@@@@ -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.darkkaiser.jv"
     >
@@ -34,7 +33,6 @@
             android:name=".view.detail.DetailActivity"
             android:label="@string/activity_detail_label"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:parentActivityName=".VocabularyActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -45,7 +43,6 @@
             android:name=".view.list.SearchListActivity"
             android:label="@string/activity_search_list_label"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:parentActivityName=".VocabularyActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -56,7 +53,6 @@
             android:name=".view.settings.SettingsActivity"
             android:label="@string/activity_environment_setting_label"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:parentActivityName=".VocabularyActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
