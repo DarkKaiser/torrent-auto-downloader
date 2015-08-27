@@ -42,11 +42,10 @@ public class ByteUtils {
 	}
 
     /**
-     * <p>singed byte를 unsinged byte로 변환한다.</p>
-     * <p>Java에는 unsinged 타입이 없기때문에, int로 반환한다.(b & 0xff)</p>
-     * 
+     * <p>singed byte 를 int 로 변환한다.</p>
+     *
      * @param b singed byte
-     * @return unsinged byte 
+     * @return int
      */
 	@SuppressWarnings("unused")
 	public static int unsignedByte(byte b) {
@@ -133,7 +132,7 @@ public class ByteUtils {
 	
 	/**
 	 * <p>8, 10, 16진수 문자열을 바이트 배열로 변환한다.</p>
-	 * <p>8, 10진수인 경우는 문자열의 3자리가, 16진수인 경우는 2자리가, 하나의 byte로 바뀐다.</p>
+	 * <p>8, 10진수인 경우는 문자열의 3자리가, 16진수인 경우는 2자리가, 하나의 byte 로 바뀐다.</p>
 	 * 
 	 * <pre>
 	 * ByteUtils.toBytes(null)     = null
@@ -169,7 +168,7 @@ public class ByteUtils {
 	
 	/**
 	 * <p>16진수 문자열을 바이트 배열로 변환한다.</p>
-	 * <p>문자열의 2자리가 하나의 byte로 바뀐다.</p>
+	 * <p>문자열의 2자리가 하나의 Byte 로 바뀐다.</p>
 	 *
 	 * <pre>
 	 * ByteUtils.toBytesFromHexString(null)     = null
