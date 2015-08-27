@@ -60,7 +60,9 @@ public class VocabularyDbHelper {
 		return true;
 	}
 
-	public String getVocabularyDbFilePath() { return this.vocabularyDbFilePath; }
+	public String getVocabularyDbFilePath() {
+        return this.vocabularyDbFilePath;
+    }
 
     public String getLatestVocabularyDbVersion() throws Exception {
         try {
