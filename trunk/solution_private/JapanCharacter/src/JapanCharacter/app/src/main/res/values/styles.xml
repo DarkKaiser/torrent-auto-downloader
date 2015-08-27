@@ -2,7 +2,7 @@
 <resources>
 
     <!-- 기본 앱 메인 테마 -->
-    <style name="Theme.AppCompat.Jc" parent="@style/Theme.AppCompat">
+    <style name="AppTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/jc_color_primary</item>
         <item name="colorPrimaryDark">@color/jc_color_primary_dark</item>
     </style>
