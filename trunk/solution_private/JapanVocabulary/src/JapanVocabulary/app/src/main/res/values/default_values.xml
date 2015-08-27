@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- @@@@@ -->
+
     <integer name="memorize_order_default_value">0</integer>
     <integer name="memorize_target_default_value">0</integer>
     <bool name="vibrate_next_vocabulary_default_value">true</bool>

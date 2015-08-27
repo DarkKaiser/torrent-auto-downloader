@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- 기본 애플리케이션 테마 -->
     <style name="AppTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/jv_color_primary</item>

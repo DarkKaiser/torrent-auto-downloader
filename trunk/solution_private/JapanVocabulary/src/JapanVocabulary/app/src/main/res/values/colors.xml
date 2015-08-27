@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+
     <!-- @@@@@ -->
     <color name="jv_color_primary">#d04525</color>
     <color name="jv_color_primary_dark">#214677</color>
     <color name="jv_navigation_bar_color">#000000</color>
 
+    <!-- @@@@@ -->
     <color name="av_vocabulary_memorize_completed">#ff4870ff</color>
     <color name="av_vocabulary_memorize_uncompleted">#ffff4d00</color>
     <color name="av_vocabulary_memorize_completed_count">#cccccc</color>
 
+    <!-- @@@@@ -->
     <color name="avd_item_title_background">#99333333</color>
     <color name="avd_item_content_background">#000000</color>
     <color name="avd_vocabulary_memorize_target">#ff4870ff</color>
@@ -16,6 +19,7 @@
     <color name="avd_vocabulary_memorize_completed_count">#ff4870ff</color>
     <color name="avd_vocabulary_memorize_uncompleted_count">#ffff4d00</color>
 
+    <!-- @@@@@ -->
     <color name="avsli_memorize_bar_completed">#cc00ff00</color>
     <color name="avsli_memorize_bar_uncompleted">#ccff0000</color>
     <color name="avsli_vocabulary_panel_bg_completed">#10cccccc</color>
