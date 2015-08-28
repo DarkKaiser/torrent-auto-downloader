@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 
@@ -15,10 +14,9 @@ import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
-// @@@@@
 public class SettingsFragment extends PreferenceFragment {
 
-    private static final String TAG = "SettingsActivity";
+    private static final String TAG = "SettingsFragment";
 
     private String appVersion = null;
 	private String installedVocabularyDbVersion = null;
@@ -40,7 +38,6 @@ public class SettingsFragment extends PreferenceFragment {
             Log.e(TAG, e.getMessage(), e);
 		}
 
-		//@@@@@SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 		this.installedVocabularyDbVersion = sharedPreferences.getString(Constants.SPKEY_INSTALLED_DB_VERSION, getString(R.string.unknown_vocabulary_db_version));
         Log.d(TAG, String.format("Installed Vocabulary Db Version : %s", this.installedVocabularyDbVersion));
@@ -61,17 +58,8 @@ public class SettingsFragment extends PreferenceFragment {
 		super.onDestroy();
 	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-//@@@@@            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private class VocabularyDbVersionCheckAsyncTask extends AsyncTask<String, Integer, String> {
+
 		@Override
 		protected String doInBackground(String... params) {
 			try {
@@ -90,9 +78,11 @@ public class SettingsFragment extends PreferenceFragment {
 
 		@Override
         protected void onPostExecute(String result) {
-			if (prefDbVersion != null)
-                prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedVocabularyDbVersion));
+			if (prefDbVersion != null) {
+				prefDbVersion.setSummary(getString(R.string.app_name) + " 버전 " + (appVersion == null ? getString(R.string.unknown_app_version) : appVersion) + "\n최신 단어DB 버전 : " + result + "\n설치된 단어DB 버전 : " + (installedVocabularyDbVersion == null ? getString(R.string.unknown_vocabulary_db_version) : installedVocabularyDbVersion));
+			}
         }
+
 	}
 
 }
