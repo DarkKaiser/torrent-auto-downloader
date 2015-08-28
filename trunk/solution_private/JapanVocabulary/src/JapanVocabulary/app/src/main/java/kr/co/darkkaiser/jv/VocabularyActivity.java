@@ -60,7 +60,6 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
-// @@@@@
 public class VocabularyActivity extends AppCompatActivity implements OnTouchListener {
 
     private static final String TAG = "VocabularyActivity";
@@ -93,6 +92,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 	// 암기 단어 관련 정보 객체
 	private MemorizeTargetVocabularyList memorizeTargetVocabularyList = new MemorizeTargetVocabularyList();
 
+    // @@@@@
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -292,12 +292,14 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }.execute();
     }
 
+    // @@@@@
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_vocabulary, menu);
 		return true;
     }
 
+    // @@@@@
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -346,6 +348,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         return false;
 	}
 
+    // @@@@@
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -446,6 +449,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		}
 	}
 
+    // @@@@@
     private void resetSettings() {
 		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
@@ -471,6 +475,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         this.memorizeTargetVocabularyList.resetMemorizeSettings(this, preferences);
 	}
 
+    // @@@@@
     private void showCurrentMemorizeVocabulary() {
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.getVocabulary();
 
@@ -485,6 +490,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }
 	}
 
+    // @@@@@
     private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.previousVocabulary(sbErrMessage);
@@ -504,6 +510,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }
 	}
 
+    // @@@@@
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.nextVocabulary(sbErrMessage);
@@ -521,6 +528,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }
 	}
 
+    // @@@@@
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
         AQuery aq = new AQuery(this);
 
@@ -557,11 +565,13 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		}
 	}
 
+    // @@@@@
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
         aq.id(R.id.av_memorize_vocabulary_info).text(this.memorizeTargetVocabularyList.getMemorizeVocabularyInfo());
 	}
 
+    // @@@@@
 	@Override
     public void onBackPressed() {
 		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
@@ -577,6 +587,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		super.onBackPressed();
 	}
 
+    // @@@@@
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (this.memorizeTargetVocabularyList.isValidPosition() == true &&
@@ -612,6 +623,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         return true;
     }
 
+    // @@@@@
     private Handler mCustomEventHandler = new Handler() {
 		@Override
     	public void handleMessage(Message msg){
@@ -667,6 +679,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
     	}
     };
 
+    // @@@@@
     private void update2InitVocabularyDataOnMobileNetwork(final String newVocabularyDbVersion, final String newVocabularyDbFileHash, final boolean isUpdateVocabularyDb) {
         assert progressDialog == null;
         assert TextUtils.isEmpty(newVocabularyDbVersion) == false;
@@ -713,6 +726,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }.execute();
     }
 
+    // @@@@@
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean updateVocabularyDb(String newVocabularyDbVersion, String newVocabularyDbFileHash) {
         assert progressDialog != null;
@@ -824,6 +838,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         return updateSucceeded;
     }
 
+    // @@@@@
     private void initVocabularyData(boolean isNowNetworkConnected, boolean isVocabularyUpdateOnStarted, boolean isUpdateSucceeded) {
         assert progressDialog != null;
         assert progressDialog.isShowing() == true;
@@ -856,6 +871,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }
     }
 
+    // @@@@@
     private void reloadMemorizeTargetVocabularyData(boolean firstLoadVocabularyData) {
         assert progressDialog != null;
         assert progressDialog.isShowing() == true;
@@ -875,6 +891,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         mLoadVocabularyDataHandler.obtainMessage(MSG_MEMORIZE_VOCABULARY_START).sendToTarget();
     }
 
+    // @@@@@
     private Handler mLoadVocabularyDataHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
