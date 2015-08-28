@@ -3,7 +3,6 @@ package kr.co.darkkaiser.jv.vocabulary.list.internal;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
-// @@@@@
 public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
 	private int position = -1;
@@ -12,7 +11,10 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
 	public SearchResultVocabularyListSeek(SearchResultVocabularyList searchResultVocabularyList, int position) {
 		assert searchResultVocabularyList != null;
-        assert position >= 0 && position < this.searchResultVocabularyList.getCount();
+
+        if (!(position >= 0 && position < this.searchResultVocabularyList.getCount())) {
+            throw new AssertionError();
+        }
 
         this.position = position;
         this.searchResultVocabularyList = searchResultVocabularyList;
@@ -20,8 +22,9 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
     @Override
     public synchronized Vocabulary getVocabulary() {
-        if (isValid() == true)
+        if (isValid() == true) {
             return this.searchResultVocabularyList.getVocabulary(this.position);
+        }
 
         return null;
     }
@@ -62,18 +65,20 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
-        if (isValid() == true)
+        if (isValid() == true) {
             this.searchResultVocabularyList.setMemorizeTarget(this.position, flag);
-        else
-            assert false;
+        } else {
+            throw new AssertionError();
+        }
     }
 
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
-        if (isValid() == true)
+        if (isValid() == true) {
             this.searchResultVocabularyList.setMemorizeCompleted(this.position, flag);
-        else
-            assert false;
+        } else {
+            throw new AssertionError();
+        }
     }
 
     @Override

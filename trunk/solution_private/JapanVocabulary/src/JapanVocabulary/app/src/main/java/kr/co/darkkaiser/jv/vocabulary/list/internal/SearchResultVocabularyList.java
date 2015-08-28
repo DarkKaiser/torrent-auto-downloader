@@ -15,11 +15,10 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyComparator;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
 
-// @@@@@
 public class SearchResultVocabularyList implements VocabularyList {
 
     // 검색결과 단어리스트
-	private ArrayList<Vocabulary> vocabularyListData = new ArrayList<Vocabulary>();
+	private ArrayList<Vocabulary> vocabularyListData = new ArrayList<>();
 
     // 검색결과 단어리스트 정렬방법
     private SearchListSort searchListSort = SearchListSort.VOCABULARY;
@@ -75,17 +74,17 @@ public class SearchResultVocabularyList implements VocabularyList {
     }
 
     public synchronized Vocabulary getVocabulary(int position) {
-        assert isValidPosition(position);
+        if (!isValidPosition(position)) throw new AssertionError();
         return this.vocabularyListData.get(position);
     }
 
     public synchronized void excludeVocabulary(int position) {
-        assert isValidPosition(position);
+        if (!isValidPosition(position)) throw new AssertionError();
         this.vocabularyListData.remove(position);
     }
 
     public synchronized void memorizeSettingsVocabulary(int menuId, boolean excludeSearchVocabularyTargetCancel) {
-        ArrayList<Long> idxList = new ArrayList<Long>();
+        ArrayList<Long> idxList = new ArrayList<>();
 
         if (menuId == R.id.avsl_search_result_vocabulary_rememorize_all) { 						// 검색된 단어 재암기
             for (Vocabulary vocabulary : this.vocabularyListData) {

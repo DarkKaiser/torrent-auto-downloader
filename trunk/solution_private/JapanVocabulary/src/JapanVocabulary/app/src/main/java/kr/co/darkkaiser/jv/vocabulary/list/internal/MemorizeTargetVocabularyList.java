@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -20,16 +21,15 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyList;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
-// @@@@@
 public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyListSeek {
 
 	private Random random = new Random();
 
 	// 암기대상 단어 리스트
-	private ArrayList<Vocabulary> vocabularyListData = new ArrayList<Vocabulary>();
+	private ArrayList<Vocabulary> vocabularyListData = new ArrayList<>();
 
 	// 이전부터 현재까지의 암기단어 순서
-	private CircularBuffer<Integer> vocabularyListMemorizeOrder = new CircularBuffer<Integer>();
+	private CircularBuffer<Integer> vocabularyListMemorizeOrder = new CircularBuffer<>();
 
 	// 현재 화면에 보여지고 있는 암기단어의 위치
 	private int position = -1;
@@ -70,7 +70,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         else
             this.memorizeOrder = MemorizeOrder.RANDOM;
 
-        // 단어 암기순서가 변경되어 암기대상 단어를 재로드해야 하는 경우라면 이전에 읽어들인 암기대상 단어를 모두 제거한다.
+        // 단어 암기순서가 변경되어 암기대상 단어를 다시 로드해야 하는 경우라면 이전에 읽어들인 암기대상 단어를 모두 제거한다.
         if (this.memorizeOrder != prevMemorizeOrder)
             clearVocabularyData();
 	}
@@ -83,8 +83,9 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         // 암기대상 단어를 읽어들인다.
         this.memorizeCompletedCount = VocabularyManager.getInstance().getMemorizeTargetVocabularyList(this.vocabularyListData);
 
-        assert this.memorizeCompletedCount >= 0;
-        assert this.memorizeCompletedCount <= this.vocabularyListData.size();
+        if (this.memorizeCompletedCount < 0) throw new AssertionError();
+        if (this.memorizeCompletedCount > this.vocabularyListData.size())
+            throw new AssertionError();
 
         // 읽어들인 암기대상 단어를 암기순서대로 정렬한다.
         if (this.memorizeOrder == MemorizeOrder.VOCABULARY)
@@ -94,7 +95,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_GANA)
             Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
         else
-            assert false;
+            throw new AssertionError();
 
         if (firstLoadVocabularyData == true) {
             // 암기순서가 랜덤순이 아닐경우 마지막에 암기한 단어의 위치를 읽어들인다.
@@ -102,8 +103,9 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
             if (latestMemorizeOrder == this.memorizeOrder.ordinal() && this.memorizeOrder != MemorizeOrder.RANDOM) {
                 this.position = sharedPreferences.getInt(Constants.SPKEY_LATEST_VOCABULARY_MEMORIZE_POSITION, -1);
 
-                if (isValidPosition() == false)
+                if (isValidPosition() == false) {
                     this.position = -1;
+                }
             }
         }
     }
@@ -118,21 +120,24 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 
     @Override
     public synchronized Vocabulary getVocabulary() {
-        if (isValidPosition() == true)
+        if (isValidPosition() == true) {
             return this.vocabularyListData.get(this.position);
+        }
 
         return null;
     }
 
     public synchronized long getVocabularyIdx() {
         Vocabulary vocabulary = getVocabulary();
-        if (vocabulary != null)
+        if (vocabulary != null) {
             return vocabulary.getIdx();
+        }
 
         return -1;
     }
 
-	@Override
+    @Override
+    @SuppressLint("Assert")
     public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
         assert sbErrorMessage != null;
 
@@ -154,7 +159,9 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 		return null;
 	}
 
-	@Override
+    // @@@@@
+    @Override
+    @SuppressLint("Assert")
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
 		assert sbErrorMessage != null;
 
@@ -175,7 +182,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 					for (int index = 0; index < this.vocabularyListData.size(); ++index) {
 						if (this.vocabularyListData.get(index).isMemorizeCompleted() == false) {
 							++memorizeUncompletedCount;
-							
+
 							if (memorizeUncompletedCount == targetMemorizeUncompletedCount) {
                                 this.position = index;
 								break;
@@ -192,7 +199,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 						break;
 					}
 				}
-				
+
 				if (isFindSucceeded == false) {
 					for (int index = 0; index < this.position; ++index) {
 						if (this.vocabularyListData.get(index).isMemorizeCompleted() == false) {
@@ -213,6 +220,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 		return null;
 	}
 
+    // @@@@@
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         if (isValidPosition() == true) {
@@ -237,6 +245,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         }
     }
 
+    // @@@@@
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
         if (isValidPosition() == true) {
@@ -285,6 +294,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         return this.position;
     }
 
+    // @@@@@
     public synchronized Vocabulary movePosition(int position) {
         int prevPosition = this.position;
 
@@ -299,6 +309,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         return null;
     }
 
+    // @@@@@
     public synchronized void savePositionInMemorizeOrder() {
         // '다음' 버튼을 눌렀을 때 이전 단어로 돌아가기 위해 현재 보여지고 있는 암기단어의 위치를 저장한다.
         if (isValidPosition() == true) {
@@ -313,6 +324,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         }
     }
 
+    // @@@@@
     public synchronized void savePositionInSharedPreferences(SharedPreferences sharedPreferences) {
         assert sharedPreferences != null;
 
@@ -326,17 +338,23 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         edit.commit();
     }
 
-    public synchronized MemorizeOrder getMemorizeOrder() { return this.memorizeOrder; }
+    // @@@@@
+    public synchronized MemorizeOrder getMemorizeOrder() {
+        return this.memorizeOrder;
+    }
 
+    // @@@@@
     public synchronized MemorizeTarget getMemorizeTarget() {
         return this.memorizeTarget;
     }
 
+    // @@@@@
     public synchronized String getMemorizeVocabularyInfo() {
         assert isValidPosition() == true;
         return "암기완료 " + this.memorizeCompletedCount + "개 / 암기대상 " + this.vocabularyListData.size() + "개";
     }
 
+    // @@@@@
     public synchronized void normalize() {
         // @@@@@
         // vocabularyListData.remove()
