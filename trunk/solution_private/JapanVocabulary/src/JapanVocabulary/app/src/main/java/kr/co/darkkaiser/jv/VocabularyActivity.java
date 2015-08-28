@@ -55,7 +55,6 @@ import kr.co.darkkaiser.jv.util.FileHash;
 import kr.co.darkkaiser.jv.view.detail.DetailActivity;
 import kr.co.darkkaiser.jv.view.list.SearchListActivity;
 import kr.co.darkkaiser.jv.view.settings.SettingsActivity;
-import kr.co.darkkaiser.jv.view.settings.SettingsFragment;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;

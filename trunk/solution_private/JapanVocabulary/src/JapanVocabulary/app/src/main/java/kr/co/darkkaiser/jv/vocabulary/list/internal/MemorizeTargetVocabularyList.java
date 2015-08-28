@@ -253,7 +253,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         }
     }
 
-    // @@@@@
     @Override
     public synchronized void setMemorizeCompleted(boolean flag) {
         if (isValidPosition() == true) {
@@ -274,7 +273,9 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
                 }
             }
         } else {
-            assert false;
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
         }
     }
 
@@ -302,7 +303,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         return this.position;
     }
 
-    // @@@@@
     public synchronized Vocabulary movePosition(int position) {
         int prevPosition = this.position;
 
@@ -310,14 +310,16 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         if (isValidPosition() == true) {
             return this.vocabularyListData.get(this.position);
         } else {
-            assert false;
             this.position = prevPosition;
+
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
         }
 
         return null;
     }
 
-    // @@@@@
     public synchronized void savePositionInMemorizeOrder() {
         // '다음' 버튼을 눌렀을 때 이전 단어로 돌아가기 위해 현재 보여지고 있는 암기단어의 위치를 저장한다.
         if (isValidPosition() == true) {
@@ -332,7 +334,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         }
     }
 
-    // @@@@@
     public synchronized void savePositionInSharedPreferences(SharedPreferences sharedPreferences) {
         assert sharedPreferences != null;
 
@@ -346,23 +347,18 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         edit.commit();
     }
 
-    // @@@@@
-    public synchronized MemorizeOrder getMemorizeOrder() {
-        return this.memorizeOrder;
-    }
-
-    // @@@@@
     public synchronized MemorizeTarget getMemorizeTarget() {
         return this.memorizeTarget;
     }
 
-    // @@@@@
     public synchronized String getMemorizeVocabularyInfo() {
-        assert isValidPosition() == true;
+        if (BuildConfig.DEBUG && isValidPosition() == false) {
+            throw new RuntimeException();
+        }
+
         return "암기완료 " + this.memorizeCompletedCount + "개 / 암기대상 " + this.vocabularyListData.size() + "개";
     }
 
-    // @@@@@
     public synchronized void normalize() {
         // @@@@@
         // vocabularyListData.remove()
