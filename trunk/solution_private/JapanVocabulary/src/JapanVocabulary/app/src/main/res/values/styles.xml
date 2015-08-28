@@ -3,8 +3,8 @@
 
     <!-- 기본 애플리케이션 테마 -->
     <style name="AppTheme" parent="@style/Theme.AppCompat">
-        <item name="colorPrimary">@color/av_color_primary</item>
-        <item name="colorPrimaryDark">@color/av_color_primary_dark</item>
+        <item name="colorPrimary">@color/app_color_primary</item>
+        <item name="colorPrimaryDark">@color/app_color_primary_dark</item>
 
         <!-- @@@@@ -->
         <item name="android:buttonStyle">@android:style/Widget.Button</item>

@@ -66,7 +66,7 @@ public class VocabularyDbHelper {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
             return jsonObject.getString("version");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return "";
@@ -78,7 +78,7 @@ public class VocabularyDbHelper {
             JSONObject jsonObject = new JSONObject(getStringFromUrl(Constants.VOCABULARY_DB_CHECKSUM_URL));
             return jsonObject.getString("sha1");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return "";
@@ -94,7 +94,7 @@ public class VocabularyDbHelper {
             vocabularyDbVersion = jsonObject.getString("version");
             vocabularyDbFileHash = jsonObject.getString("sha1");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         ArrayList<String> result = new ArrayList<>();
@@ -124,7 +124,7 @@ public class VocabularyDbHelper {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return false;
@@ -145,13 +145,13 @@ public class VocabularyDbHelper {
 
             return sb.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
 

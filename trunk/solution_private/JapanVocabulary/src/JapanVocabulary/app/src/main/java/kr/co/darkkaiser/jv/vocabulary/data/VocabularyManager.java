@@ -16,13 +16,13 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import kr.co.darkkaiser.jv.BuildConfig;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
 import kr.co.darkkaiser.jv.vocabulary.db.UserDbSQLiteOpenHelper;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 
-// @@@@@
 public class VocabularyManager {
 
 	private static final String TAG = "VocabularyManager";
@@ -33,7 +33,7 @@ public class VocabularyManager {
     private SQLiteDatabase vocabularyDatabase = null;
 
     // 전체 단어리스트 테이블
-	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> vocabularyTable = new Hashtable<Long, Vocabulary>();
+	private Hashtable<Long/* DB인덱스 */, Vocabulary/* 단어 */> vocabularyTable = new Hashtable<>();
 
 	static {
 		instance = new VocabularyManager();
@@ -125,7 +125,9 @@ public class VocabularyManager {
                         vocabulary.setMemorizeCompleted(cursor.getLong(2/* MEMORIZE_COMPLETED */) == 1, false);
                         vocabulary.setMemorizeCompletedCount(cursor.getLong(3/* MEMORIZE_COMPLETED_COUNT */));
                     } else {
-                        assert false;
+                        if (BuildConfig.DEBUG) {
+                            throw new RuntimeException();
+                        }
                     }
                 } while (cursor.moveToNext());
             }
@@ -217,7 +219,10 @@ public class VocabularyManager {
         assert searchListCondition != null;
 
         if (this.vocabularyDatabase == null) {
-            assert false;
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
+
             return;
         }
 
@@ -269,7 +274,7 @@ public class VocabularyManager {
                 sbSQL.append(" AND V.VOCABULARY_TRANSLATION LIKE '%").append(searchWord).append("%' ");
             }
 
-            ArrayList<Long> idxList = new ArrayList<Long>();
+            ArrayList<Long> idxList = new ArrayList<>();
 
             if (mustDbSelection == true) {
                 cursor = this.vocabularyDatabase.rawQuery(sbSQL.toString(), null);
@@ -481,7 +486,7 @@ public class VocabularyManager {
 				++memorizeCompletedCount;
 		}
 
-		ArrayList<Integer> result = new ArrayList<Integer>();
+		ArrayList<Integer> result = new ArrayList<>();
 		result.add(this.vocabularyTable.size());
 		result.add(memorizeTargetCount);
 		result.add(memorizeCompletedCount);
@@ -570,7 +575,9 @@ public class VocabularyManager {
                     updateUserVocabulary(vocabulary);
                 }
             } else {
-                assert false;
+                if (BuildConfig.DEBUG) {
+                    throw new RuntimeException();
+                }
             }
 
             this.userDatabase.setTransactionSuccessful();
