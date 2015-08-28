@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/environment_setting"
+            android:label="@string/activity_environment_setting_label"
             android:configChanges="keyboard|keyboardHidden|orientation"
             >
             <meta-data

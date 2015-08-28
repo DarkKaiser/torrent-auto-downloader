@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 contentView.setTypeface(Typeface.SERIF);
                                 contentView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
                                 contentView.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
-                                contentView.setTextColor(getResources().getColor(R.color.jc_main_description_text));
+                                contentView.setTextColor(getResources().getColor(R.color.am_description_text));
 
                                 MaterialDialog dialog = new MaterialDialog(MainActivity.this)
                                         .setCanceledOnTouchOutside(true)
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        nextButton.getBackground().setColorFilter(getResources().getColor(R.color.jc_main_next_button_background), PorterDuff.Mode.MULTIPLY);
+        nextButton.getBackground().setColorFilter(getResources().getColor(R.color.am_next_button_background), PorterDuff.Mode.MULTIPLY);
 
         // 데이터를 초기화한다.
         mKorea = Arrays.asList(getResources().getStringArray(R.array.character_korea));
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item = menu.add(0, 1, 0, getString(R.string.environment_setting));
+        MenuItem item = menu.add(0, 1, 0, getString(R.string.activity_environment_setting_label));
         item.setIcon(android.R.drawable.ic_menu_preferences);
         return true;
     }

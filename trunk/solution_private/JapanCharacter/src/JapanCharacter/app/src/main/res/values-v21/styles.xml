@@ -3,9 +3,9 @@
 
     <!-- 기본 앱 메인 테마 -->
     <style name="AppTheme" parent="@style/Theme.AppCompat">
-        <item name="colorPrimary">@color/jc_color_primary</item>
-        <item name="colorPrimaryDark">@color/jc_color_primary_dark</item>
-        <item name="android:navigationBarColor">@color/jc_navigation_bar_color</item>
+        <item name="colorPrimary">@color/app_color_primary</item>
+        <item name="colorPrimaryDark">@color/app_color_primary_dark</item>
+        <item name="android:navigationBarColor">@color/app_navigation_bar_color</item>
     </style>
 
 </resources>

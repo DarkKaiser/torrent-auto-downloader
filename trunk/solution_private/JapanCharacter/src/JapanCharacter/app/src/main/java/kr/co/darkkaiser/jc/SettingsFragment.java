@@ -55,7 +55,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
 
         // 어플리케이션의 버전 정보를 구하여 화면에 출력한다.
-        String versionName = getString(R.string.unknown_program_version);
+        String versionName = getString(R.string.unknown_app_version);
         try {
             versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -63,7 +63,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
 
         PreferenceScreen prefProgramInfo = (PreferenceScreen) findPreference("jc_program_info");
-        prefProgramInfo.setSummary(getString(R.string.app_name) + " " + getString(R.string.program_version) + " " + versionName);
+        prefProgramInfo.setSummary(getString(R.string.app_name) + " " + getString(R.string.version) + " " + versionName);
     }
 
 }
