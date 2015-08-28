@@ -33,11 +33,11 @@ public class Vocabulary {
 
 	public Vocabulary(long idx, long utcDateTime, String vocabulary, String vocabularyGana, String vocabularyTranslation) {
 		if (BuildConfig.DEBUG) {
-			if (idx == -1) throw new AssertionError();
-			if (utcDateTime <= 0) throw new AssertionError();
-			if (TextUtils.isEmpty(vocabulary)) throw new AssertionError();
-			if (TextUtils.isEmpty(vocabularyGana)) throw new AssertionError();
-			if (TextUtils.isEmpty(vocabularyTranslation)) throw new AssertionError();
+			if (idx == -1) throw new RuntimeException();
+			if (utcDateTime <= 0) throw new RuntimeException();
+			if (TextUtils.isEmpty(vocabulary)) throw new RuntimeException();
+			if (TextUtils.isEmpty(vocabularyGana)) throw new RuntimeException();
+			if (TextUtils.isEmpty(vocabularyTranslation)) throw new RuntimeException();
 		}
 
 		this.idx = idx;

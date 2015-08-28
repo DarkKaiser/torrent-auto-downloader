@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
+import kr.co.darkkaiser.jv.BuildConfig;
 import kr.co.darkkaiser.jv.vocabulary.data.Vocabulary;
 import kr.co.darkkaiser.jv.vocabulary.list.VocabularyListSeek;
 
@@ -12,8 +13,10 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
 	public SearchResultVocabularyListSeek(SearchResultVocabularyList searchResultVocabularyList, int position) {
 		assert searchResultVocabularyList != null;
 
-        if (!(position >= 0 && position < this.searchResultVocabularyList.getCount())) {
-            throw new AssertionError();
+        if (BuildConfig.DEBUG) {
+            if (!(position >= 0 && position < this.searchResultVocabularyList.getCount())) {
+                throw new RuntimeException();
+            }
         }
 
         this.position = position;
@@ -68,7 +71,9 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
         if (isValid() == true) {
             this.searchResultVocabularyList.setMemorizeTarget(this.position, flag);
         } else {
-            throw new AssertionError();
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
         }
     }
 
@@ -77,7 +82,9 @@ public class SearchResultVocabularyListSeek implements VocabularyListSeek {
         if (isValid() == true) {
             this.searchResultVocabularyList.setMemorizeCompleted(this.position, flag);
         } else {
-            throw new AssertionError();
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
         }
     }
 

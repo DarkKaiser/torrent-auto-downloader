@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.jv.vocabulary.list.internal;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import kr.co.darkkaiser.jv.BuildConfig;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.util.CircularBuffer;
@@ -83,19 +83,24 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         // 암기대상 단어를 읽어들인다.
         this.memorizeCompletedCount = VocabularyManager.getInstance().getMemorizeTargetVocabularyList(this.vocabularyListData);
 
-        if (this.memorizeCompletedCount < 0) throw new AssertionError();
-        if (this.memorizeCompletedCount > this.vocabularyListData.size())
-            throw new AssertionError();
+        if (BuildConfig.DEBUG) {
+            if (this.memorizeCompletedCount < 0) throw new RuntimeException();
+            if (this.memorizeCompletedCount > this.vocabularyListData.size())
+                throw new RuntimeException();
+        }
 
         // 읽어들인 암기대상 단어를 암기순서대로 정렬한다.
-        if (this.memorizeOrder == MemorizeOrder.VOCABULARY)
+        if (this.memorizeOrder == MemorizeOrder.VOCABULARY) {
             Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyComparator);
-        else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION)
+        } else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION) {
             Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
-        else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_GANA)
+        } else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_GANA) {
             Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
-        else
-            throw new AssertionError();
+        } else {
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
+        }
 
         if (firstLoadVocabularyData == true) {
             // 암기순서가 랜덤순이 아닐경우 마지막에 암기한 단어의 위치를 읽어들인다.
@@ -137,7 +142,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
     }
 
     @Override
-    @SuppressLint("Assert")
     public synchronized Vocabulary previousVocabulary(StringBuilder sbErrorMessage) {
         assert sbErrorMessage != null;
 
@@ -149,8 +153,11 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 			if (isValidPosition() == true) {
 				return this.vocabularyListData.get(this.position);
 			} else {
-				assert false;
                 this.position = prevPosition;
+
+                if (BuildConfig.DEBUG) {
+                    throw new RuntimeException();
+                }
 			}
 		} else {
 			sbErrorMessage.append("이전 암기 단어가 없습니다.");
@@ -159,9 +166,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 		return null;
 	}
 
-    // @@@@@
     @Override
-    @SuppressLint("Assert")
 	public synchronized Vocabulary nextVocabulary(StringBuilder sbErrorMessage) {
 		assert sbErrorMessage != null;
 
@@ -210,7 +215,9 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 					}
 				}
 
-				assert isFindSucceeded == true;
+                if (BuildConfig.DEBUG) {
+                    if (isFindSucceeded != true) throw new RuntimeException();
+                }
 			}
 
 			if (isValidPosition() == true)
@@ -220,7 +227,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 		return null;
 	}
 
-    // @@@@@
     @Override
     public synchronized void setMemorizeTarget(boolean flag) {
         if (isValidPosition() == true) {
@@ -238,10 +244,12 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
                     VocabularyManager.getInstance().updateUserVocabulary(vocabulary);
                 }
 
-                // todo @@@@@ 암기대상단어가 비대상으로, 비대상 단어가 대상단어로 바뀌고 나서 정규화를 거쳐야 하는게 아닌지, 정규화했을때 메인에서 이상없는지 확인할 것
+                // TODO @@@@@ 암기대상단어가 비대상으로, 비대상 단어가 대상단어로 바뀌고 나서 정규화를 거쳐야 하는게 아닌지, 정규화했을때 메인에서 이상없는지 확인할 것
             }
         } else {
-            assert false;
+            if (BuildConfig.DEBUG) {
+                throw new RuntimeException();
+            }
         }
     }
 

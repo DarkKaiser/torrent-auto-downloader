@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import kr.co.darkkaiser.jv.BuildConfig;
 import kr.co.darkkaiser.jv.R;
 import kr.co.darkkaiser.jv.common.Constants;
 import kr.co.darkkaiser.jv.view.list.SearchListCondition;
@@ -74,12 +75,18 @@ public class SearchResultVocabularyList implements VocabularyList {
     }
 
     public synchronized Vocabulary getVocabulary(int position) {
-        if (!isValidPosition(position)) throw new AssertionError();
+        if (BuildConfig.DEBUG && isValidPosition(position) == false) {
+            throw new RuntimeException();
+        }
+
         return this.vocabularyListData.get(position);
     }
 
     public synchronized void excludeVocabulary(int position) {
-        if (!isValidPosition(position)) throw new AssertionError();
+        if (BuildConfig.DEBUG && isValidPosition(position) == false) {
+            throw new RuntimeException();
+        }
+
         this.vocabularyListData.remove(position);
     }
 
