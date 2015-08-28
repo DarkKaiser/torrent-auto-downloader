@@ -40,7 +40,6 @@ public class VocabularyManager {
 	}
 
 	private VocabularyManager() {
-
 	}
 
 	public static VocabularyManager getInstance() {
