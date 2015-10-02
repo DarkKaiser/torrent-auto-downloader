@@ -292,7 +292,6 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         }.execute();
     }
 
-    // @@@@@
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_vocabulary, menu);

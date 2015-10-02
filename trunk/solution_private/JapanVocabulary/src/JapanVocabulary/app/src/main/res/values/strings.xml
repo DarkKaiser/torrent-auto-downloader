@@ -23,8 +23,8 @@
     <string name="av_next_vocabulary">다음 단어 》</string>
     <string name="av_vocabulary_memorize_method_comment">암기 완료 단어는 화면을 꾸~욱 눌러주세요.</string>
     <string name="av_app_terminate_when_back_press">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
-    <string name="av_search_memorize_vocabulary">암기단어 검색</string>
-    <string name="av_rememorize_all">모든 암기대상 단어 재암기</string>
+    <string name="av_search_memorize_vocabulary">단어 검색</string>
+    <string name="av_rememorize_all">암기대상단어 모두 재암기</string>
     <string name="av_vocabulary_seekbar_vs">&#160;/&#160;</string>
     <string name="av_vocabulary_memorize_completed">암기완료단어</string>
     <string name="av_vocabulary_memorize_uncompleted">미암기단어</string>
@@ -47,7 +47,7 @@
 
     <string name="vvui_dialog_title">업데이트 정보</string>
 
-    <string name="avsl_search">단어검색</string>
+    <string name="avsl_search">단어 검색</string>
     <string name="avsl_sort">정렬</string>
     <string name="avsl_sort_vocabulary">한자</string>
     <string name="avsl_sort_vocabulary_gana">히라가나/가타카나</string>
