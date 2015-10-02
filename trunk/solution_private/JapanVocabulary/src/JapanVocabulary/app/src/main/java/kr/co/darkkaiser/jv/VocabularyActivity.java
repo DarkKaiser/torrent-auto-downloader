@@ -476,22 +476,20 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         this.memorizeTargetVocabularyList.resetMemorizeSettings(this, preferences);
 	}
 
-    // @@@@@
     private void showCurrentMemorizeVocabulary() {
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.getVocabulary();
 
 		if (vocabulary != null)
 			showMemorizeVocabulary(vocabulary);
 
-        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout) findViewById(R.id.av_vocabulary_seekbar_panel);
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
             vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
-    // @@@@@
     private void showPrevMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.previousVocabulary(sbErrMessage);
@@ -503,15 +501,14 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 			showMemorizeVocabulary(vocabulary);
 		}
 
-        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout) findViewById(R.id.av_vocabulary_seekbar_panel);
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
             vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
-    // @@@@@
 	private void showNextMemorizeVocabulary() {
 		StringBuilder sbErrMessage = new StringBuilder();
 		Vocabulary vocabulary = this.memorizeTargetVocabularyList.nextVocabulary(sbErrMessage);
@@ -521,20 +518,19 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 
 		showMemorizeVocabulary(vocabulary);
 
-        RelativeLayout vocabularySeekbarPanel = (RelativeLayout)findViewById(R.id.av_vocabulary_seekbar_panel);
+        RelativeLayout vocabularySeekbarPanel = (RelativeLayout) findViewById(R.id.av_vocabulary_seekbar_panel);
         if (vocabularySeekbarPanel.getVisibility() == View.VISIBLE) {
             // 암기 단어의 위치를 가리키는 SeekBar의 위치를 조정한다.
-            SeekBar vocabularySeekBar = (SeekBar)findViewById(R.id.av_vocabulary_seekbar);
+            SeekBar vocabularySeekBar = (SeekBar) findViewById(R.id.av_vocabulary_seekbar);
             vocabularySeekBar.setProgress(this.memorizeTargetVocabularyList.getPosition());
         }
 	}
 
-    // @@@@@
     private void showMemorizeVocabulary(Vocabulary vocabulary) {
         AQuery aq = new AQuery(this);
 
-		TextSwitcher tswVocabulary = (TextSwitcher)findViewById(R.id.av_vocabulary);
-		TextSwitcher tswVocabularyTranslation = (TextSwitcher)findViewById(R.id.av_vocabulary_translation);
+		TextSwitcher tswVocabulary = (TextSwitcher) findViewById(R.id.av_vocabulary);
+		TextSwitcher tswVocabularyTranslation = (TextSwitcher) findViewById(R.id.av_vocabulary_translation);
 
 		// 글자가 길어서 컨트롤의 크기가 커질 경우 한 템포씩 늦게 컨트롤의 크기가 줄어들므로 먼저 컨트롤의 크기를 줄이고 나서 값을 넣는다.
 		tswVocabulary.setText("");
@@ -556,7 +552,9 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
                     break;
 
                 default:
-                    assert false;
+                    if (BuildConfig.DEBUG)
+                        throw new AssertionError();
+
                     break;
 			}
 
@@ -566,7 +564,6 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		}
 	}
 
-    // @@@@@
     private void updateMemorizeVocabularyInfo() {
         AQuery aq = new AQuery(this);
         aq.id(R.id.av_memorize_vocabulary_info).text(this.memorizeTargetVocabularyList.getMemorizeVocabularyInfo());
