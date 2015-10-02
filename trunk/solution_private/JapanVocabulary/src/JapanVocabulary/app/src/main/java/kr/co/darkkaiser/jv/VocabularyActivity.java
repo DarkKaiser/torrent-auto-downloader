@@ -569,7 +569,6 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
         aq.id(R.id.av_memorize_vocabulary_info).text(this.memorizeTargetVocabularyList.getMemorizeVocabularyInfo());
 	}
 
-    // @@@@@
 	@Override
     public void onBackPressed() {
 		if (mCustomEventHandler.hasMessages(MSG_CUSTOM_EVT_APP_FINISH_STANDBY) == false) {
@@ -579,13 +578,12 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		}
 
         // 화면에 현재 출력중인 암기단어의 위치를 저장하여 다음 실행시에 바로 보여지도록 한다.
-		SharedPreferences preferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        this.memorizeTargetVocabularyList.savePositionInSharedPreferences(preferences);
+		SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        this.memorizeTargetVocabularyList.savePositionInSharedPreferences(sharedPreferences);
 
 		super.onBackPressed();
 	}
 
-    // @@@@@
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (this.memorizeTargetVocabularyList.isValidPosition() == true &&
