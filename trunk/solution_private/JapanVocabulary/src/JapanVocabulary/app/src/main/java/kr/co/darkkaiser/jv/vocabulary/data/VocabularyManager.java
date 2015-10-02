@@ -497,7 +497,7 @@ public class VocabularyManager {
     /**
      * 모든 암기대상 단어를 미암기 상태로 설정한다.
      */
-    public synchronized void memorizeTargetVocabularyRememorizeAll() {
+    public synchronized void rememorizeAllMemorizeTargetVocabulary() {
         try {
             this.userDatabase.beginTransaction();
 

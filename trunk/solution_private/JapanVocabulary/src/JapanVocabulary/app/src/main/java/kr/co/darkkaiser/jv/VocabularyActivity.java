@@ -298,7 +298,6 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 		return true;
     }
 
-    // @@@@@
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -316,14 +315,14 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        // 데이터를 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
+                        // 데이터 처리가 끝날 때가지 프로그레스 대화상자를 보인다.
                         progressDialog = ProgressDialog.show(VocabularyActivity.this, null, getString(R.string.av_memorize_settings_vocabulary_pd_message), true, false);
                     }
 
                     @Override
                     protected Void doInBackground(Void... voids) {
                         // 암기 대상 단어들을 모두 암기미완료로 리셋한다.
-                        VocabularyManager.getInstance().memorizeTargetVocabularyRememorizeAll();
+                        VocabularyManager.getInstance().rememorizeAllMemorizeTargetVocabulary();
 
                         // 암기할 단어 데이터를 로드합니다.
                         reloadMemorizeTargetVocabularyData(false);
