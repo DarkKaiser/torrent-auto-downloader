@@ -84,22 +84,29 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
         this.memorizeCompletedCount = VocabularyManager.getInstance().getMemorizeTargetVocabularyList(this.vocabularyListData);
 
         if (BuildConfig.DEBUG) {
-            if (this.memorizeCompletedCount < 0) throw new RuntimeException();
-            if (this.memorizeCompletedCount > this.vocabularyListData.size())
+            if (this.memorizeCompletedCount < 0 || this.memorizeCompletedCount > this.vocabularyListData.size())
                 throw new RuntimeException();
         }
 
         // 읽어들인 암기대상 단어를 암기순서대로 정렬한다.
-        if (this.memorizeOrder == MemorizeOrder.VOCABULARY) {
-            Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyComparator);
-        } else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_TRANSLATION) {
-            Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
-        } else if (this.memorizeOrder == MemorizeOrder.VOCABULARY_GANA) {
-            Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
-        } else {
-            if (BuildConfig.DEBUG) {
-                throw new RuntimeException();
-            }
+        switch (this.memorizeOrder) {
+            case RANDOM:
+                // 아무 작업도 하지 않음
+                break;
+            case VOCABULARY:
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyComparator);
+                break;
+            case VOCABULARY_TRANSLATION:
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyTranslationComparator);
+                break;
+            case VOCABULARY_GANA:
+                Collections.sort(this.vocabularyListData, VocabularyComparator.mVocabularyGanaComparator);
+                break;
+            default:
+                if (BuildConfig.DEBUG) {
+                    throw new RuntimeException();
+                }
+                break;
         }
 
         if (firstLoadVocabularyData == true) {
@@ -352,10 +359,6 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
     }
 
     public synchronized String getMemorizeVocabularyInfo() {
-        if (BuildConfig.DEBUG && isValidPosition() == false) {
-            throw new RuntimeException();
-        }
-
         return "암기완료 " + this.memorizeCompletedCount + "개 / 암기대상 " + this.vocabularyListData.size() + "개";
     }
 
