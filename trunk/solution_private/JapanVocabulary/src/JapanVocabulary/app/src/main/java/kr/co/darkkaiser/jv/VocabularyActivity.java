@@ -302,13 +302,16 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-            case R.id.av_search_memorize_vocabulary:
+            case R.id.av_search_vocabulary:
                 Intent intent = new Intent(this, SearchListActivity.class);
                 startActivityForResult(intent, REQ_CODE_SEARCH_MEMORIZE_VOCABULARY);
                 return true;
 
-            case R.id.av_rememorize_all:
-                assert progressDialog == null;
+            case R.id.av_rememorize_memorize_target_vocabulary:
+                if (BuildConfig.DEBUG) {
+                    if (progressDialog != null)
+                        throw new AssertionError();
+                }
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override

@@ -3,14 +3,14 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/av_search_memorize_vocabulary"
+        android:id="@+id/av_search_vocabulary"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/av_search_memorize_vocabulary"
         android:orderInCategory="0"
         myapp:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/av_rememorize_all"
+        android:id="@+id/av_rememorize_memorize_target_vocabulary"
         android:icon="@android:drawable/ic_menu_revert"
         android:title="@string/av_rememorize_all"
         android:orderInCategory="1"
