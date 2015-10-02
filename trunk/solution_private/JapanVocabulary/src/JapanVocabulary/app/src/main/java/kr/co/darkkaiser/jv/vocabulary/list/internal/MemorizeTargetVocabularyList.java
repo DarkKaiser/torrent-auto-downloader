@@ -223,7 +223,8 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
 				}
 
                 if (BuildConfig.DEBUG) {
-                    if (isFindSucceeded != true) throw new RuntimeException();
+                    if (isFindSucceeded != true)
+                        throw new RuntimeException();
                 }
 			}
 
@@ -363,8 +364,7 @@ public class MemorizeTargetVocabularyList implements VocabularyList, VocabularyL
     }
 
     public synchronized void normalize() {
-        // @@@@@
-        // vocabularyListData.remove()
+        // @@@@@ 제대로 삭제되서 이상없는지 테스트
         for (int index = this.vocabularyListData.size() - 1; index >= 0; --index) {
             Vocabulary vocabulary = this.vocabularyListData.get(index);
             if (vocabulary.isMemorizeTarget() == false)
