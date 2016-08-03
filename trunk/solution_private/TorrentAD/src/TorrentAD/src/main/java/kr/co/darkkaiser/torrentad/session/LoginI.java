@@ -1,5 +1,5 @@
 package kr.co.darkkaiser.torrentad.session;
 
-public class Login implements LoginI {
+public interface LoginI {
 
 }
