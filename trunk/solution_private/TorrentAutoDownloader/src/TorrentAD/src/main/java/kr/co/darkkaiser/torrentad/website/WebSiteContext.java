@@ -1,13 +1,21 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import kr.co.darkkaiser.torrentad.website.account.Account;
+
 public interface WebSiteContext<B extends WebSiteContext<B>> {
-
-	String getDomain();
 	
-	B setDomain(String domain);
+	String protocol();
+	
+	B protocol(String protocol);
 
-	Account getAccount();
+	String domain();
+	
+	B domain(String domain);
 
-	B setAccount(Account account);
+	Account account();
 
+	B account(String id, String password);
+
+	boolean valid();
+	
 }

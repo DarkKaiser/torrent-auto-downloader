@@ -1,13 +1,13 @@
-package kr.co.darkkaiser.torrentad.website;
+package kr.co.darkkaiser.torrentad.website.account;
 
 import org.jsoup.helper.StringUtil;
 
-public final class Account {
+public final class DefaultAccount implements Account {
 
 	private String id;
 	private String password;
 
-	public Account(String id, String password) {
+	public DefaultAccount(String id, String password) {
 		if (id == null) {
 			throw new NullPointerException("id");
 		}
@@ -28,16 +28,19 @@ public final class Account {
 		this.password = password;
 	}
 
+	@Override
 	public String id() {
 		return this.id;
 	}
 
+	@Override
 	public String password() {
 		return this.password;
 	}
 	
+	@Override
 	public boolean valid() {
-		if (StringUtil.isBlank(this.id()) == true || StringUtil.isBlank(this.password()) == true) {
+		if (StringUtil.isBlank(this.id) == true || StringUtil.isBlank(this.password) == true) {
 			return false;
 		}
 
@@ -47,10 +50,10 @@ public final class Account {
 	@Override
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
-		buf.append(Account.class.getSimpleName())
+		buf.append(DefaultAccount.class.getSimpleName())
 		   .append("(")
-		   .append("id: ").append(this.id())
-		   .append(", password: ").append(this.password())
+		   .append("id: ").append(this.id)
+		   .append(", password: ").append(this.password)
 		   .append(")");
 		
 		return buf.toString();

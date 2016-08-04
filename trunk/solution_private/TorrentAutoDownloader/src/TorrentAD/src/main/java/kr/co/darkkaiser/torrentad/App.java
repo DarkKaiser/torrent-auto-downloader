@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.google.gson.Gson;
 
-import kr.co.darkkaiser.torrentad.website.Account;
 import kr.co.darkkaiser.torrentad.website.BogoNetWebSite;
 
 public class App {
@@ -15,8 +14,8 @@ public class App {
 		
 		BogoNetWebSite l = new BogoNetWebSite();
 		
-		l.setAccount(new Account("darkkaiser", "DreamWakuWaku78@"));
-		l.setDomain("zipbogo.net");
+		l.account("darkkaiser", "DreamWakuWaku78@");
+		l.domain("zipbogo.net");
 		
 		System.out.println(l);
 		

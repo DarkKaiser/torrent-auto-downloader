@@ -24,8 +24,8 @@ public class BogoNetWebSite extends AbstractWebSite<BogoNetWebSite> {
 				.userAgent("Mozilla")
 				.data("mode", "login")
 				.data("kinds", "outlogin")
-				.data("user_id", this.getAccount().id())
-				.data("passwd", this.getAccount().password())
+				.data("user_id", this.account().id())
+				.data("passwd", this.account().password())
                 .method(Connection.Method.POST)
                 .execute();
 		Document loginFormDoc = loginForm.parse();
