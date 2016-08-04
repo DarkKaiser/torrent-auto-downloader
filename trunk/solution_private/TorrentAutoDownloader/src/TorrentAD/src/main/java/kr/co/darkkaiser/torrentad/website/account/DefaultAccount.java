@@ -49,14 +49,13 @@ public final class DefaultAccount implements Account {
 
 	@Override
 	public String toString() {
-		StringBuilder buf = new StringBuilder();
-		buf.append(DefaultAccount.class.getSimpleName())
-		   .append("(")
-		   .append("id: ").append(this.id)
-		   .append(", password: ").append(this.password)
-		   .append(")");
-		
-		return buf.toString();
+		return new StringBuilder()
+			.append(DefaultAccount.class.getSimpleName())
+			.append("{")
+			.append("id:").append(this.id)
+			.append(", password:").append(this.password)
+			.append("}")
+			.toString();
 	}
 
 }

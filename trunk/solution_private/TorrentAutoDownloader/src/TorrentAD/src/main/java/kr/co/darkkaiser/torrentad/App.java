@@ -4,25 +4,24 @@ import java.io.IOException;
 
 import com.google.gson.Gson;
 
+import kr.co.darkkaiser.torrentad.config.Setting;
 import kr.co.darkkaiser.torrentad.website.BogoNetWebSite;
+import kr.co.darkkaiser.torrentad.website.account.AccountFactory;
 
 public class App {
 	public static void main(String[] args) {
 		Gson gson = new Gson();
-//		String json = "{'name':'김태희', 'phone_number':'010-1234-5678'}";
+		String json = "{'domain':'zipbogo.net', 'phone_number':'010-1234-5678'}";
+
+		Setting obj = gson.fromJson(json, Setting.class);
+
 //		Person java = gson.fromJson(json, Person.class);
 		
 		BogoNetWebSite l = new BogoNetWebSite();
 
-		l.account("darkkaiser", "DreamWakuWaku78@");
-		l.domain("zipbogo.net");
-		
-		System.out.println(l);
-		
 		try {
-			l.login();
+			l.login(AccountFactory.newAccount("darkkaiser", "DreamWakuWaku78@"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
