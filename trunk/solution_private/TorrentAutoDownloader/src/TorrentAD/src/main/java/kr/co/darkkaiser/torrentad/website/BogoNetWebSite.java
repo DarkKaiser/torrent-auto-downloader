@@ -8,8 +8,6 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.website.account.Account;
-
 public class BogoNetWebSite extends AbstractWebSite<BogoNetWebSite> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BogoNetWebSite.class);
@@ -26,7 +24,7 @@ public class BogoNetWebSite extends AbstractWebSite<BogoNetWebSite> {
 	}
 
 	@Override
-	public void login(Account account) throws IOException {
+	public void login(WebSiteAccount account) throws IOException {
 		if (this.valid() == false) {
 			throw new NullPointerException();
 		}

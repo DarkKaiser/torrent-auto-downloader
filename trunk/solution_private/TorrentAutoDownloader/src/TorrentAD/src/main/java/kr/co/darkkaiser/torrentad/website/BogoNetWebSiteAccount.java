@@ -1,8 +1,8 @@
-package kr.co.darkkaiser.torrentad.website.account;
+package kr.co.darkkaiser.torrentad.website;
 
-public final class BogoNetAccount extends AbstractAccount {
+public final class BogoNetWebSiteAccount extends AbstractWebSiteAccount {
 
-	public BogoNetAccount(String id, String password) {
+	public BogoNetWebSiteAccount(String id, String password) {
 		super(id, password);
 	}
 	

@@ -1,13 +1,13 @@
-package kr.co.darkkaiser.torrentad.website.account;
+package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
-public abstract class AbstractAccount implements Account {
+public abstract class AbstractWebSiteAccount implements WebSiteAccount {
 
 	private String id;
 	private String password;
 
-	protected AbstractAccount(String id, String password) {
+	protected AbstractWebSiteAccount(String id, String password) {
 		if (id == null) {
 			throw new NullPointerException("id");
 		}
@@ -50,7 +50,7 @@ public abstract class AbstractAccount implements Account {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-			.append(AbstractAccount.class.getSimpleName())
+			.append(AbstractWebSiteAccount.class.getSimpleName())
 			.append("{")
 			.append("id:").append(this.id)
 			.append(", password:").append(this.password)
