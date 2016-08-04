@@ -13,7 +13,7 @@ public class App {
 //		Person java = gson.fromJson(json, Person.class);
 		
 		BogoNetWebSite l = new BogoNetWebSite();
-		
+
 		l.account("darkkaiser", "DreamWakuWaku78@");
 		l.domain("zipbogo.net");
 		
@@ -25,7 +25,6 @@ public class App {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		
 		/* 반환 */ l.search(/* 검색정보 */);
 		/* 반환받은 정보를 이용해서 다운로드 */
