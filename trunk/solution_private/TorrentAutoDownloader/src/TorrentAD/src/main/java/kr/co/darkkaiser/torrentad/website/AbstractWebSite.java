@@ -1,21 +1,20 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import kr.co.darkkaiser.torrentad.website.account.Account;
-import kr.co.darkkaiser.torrentad.website.account.DefaultAccount;
 
 public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements WebSiteHandler, WebSiteContext<B> {
 
 	protected Account account;
 	
 	@Override
-	public Account account() {
+	public Account getAccount() {
 		return this.account;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public B account(String id, String password) {
-		this.account = new DefaultAccount(id, password);
+	public B setAccount(Account account) {
+		this.account = account;
 
 		return (B) this;
 	}

@@ -30,7 +30,7 @@ public class BogoNetWebSite extends AbstractWebSite<BogoNetWebSite> {
 		if (this.valid() == false) {
 			throw new NullPointerException();
 		}
-
+		
 		// @@@@@
 		Connection.Response loginForm = Jsoup.connect(LOGIN_URL2)
 				.userAgent("Mozilla")
@@ -67,6 +67,7 @@ public class BogoNetWebSite extends AbstractWebSite<BogoNetWebSite> {
 	                .post();
 
 		this.conn = null;
+		this.setAccount(account);
 
 		// throw
 //		LOGGER.error("異쒕젰�뙆�씪 �깮�꽦�떎�뙣(VM�뙆�씪={}, �깮�꽦�뙆�씪={})", vmFileClassPath, outputFileAbsolutePath);

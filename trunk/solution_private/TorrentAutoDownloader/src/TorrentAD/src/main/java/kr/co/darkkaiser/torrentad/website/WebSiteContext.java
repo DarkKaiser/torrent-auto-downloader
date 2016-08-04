@@ -4,9 +4,9 @@ import kr.co.darkkaiser.torrentad.website.account.Account;
 
 public interface WebSiteContext<B extends WebSiteContext<B>> {
 
-	Account account();
+	Account getAccount();
 
-	B account(String id, String password);
+	B setAccount(Account account);
 
 	boolean valid();
 	
