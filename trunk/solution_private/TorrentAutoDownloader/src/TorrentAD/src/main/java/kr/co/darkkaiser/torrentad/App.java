@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.google.gson.Gson;
 
 import kr.co.darkkaiser.torrentad.config.Setting;
-import kr.co.darkkaiser.torrentad.website.BogoNetWebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.BogoNetWebSite;
+import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 
 public class App {
 	public static void main(String[] args) {
@@ -17,10 +17,10 @@ public class App {
 
 //		Person java = gson.fromJson(json, Person.class);
 		
-		BogoNetWebSite l = new BogoNetWebSite();
+		BogoBogoWebSite l = new BogoBogoWebSite();
 
 		try {
-			l.login(new BogoNetWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
+			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,8 +1,8 @@
 package kr.co.darkkaiser.torrentad.website;
 
-public final class BogoNetWebSiteAccount extends AbstractWebSiteAccount {
+public final class BogoBogoWebSiteAccount extends AbstractWebSiteAccount {
 
-	public BogoNetWebSiteAccount(String id, String password) {
+	public BogoBogoWebSiteAccount(String id, String password) {
 		super(id, password);
 	}
 	
