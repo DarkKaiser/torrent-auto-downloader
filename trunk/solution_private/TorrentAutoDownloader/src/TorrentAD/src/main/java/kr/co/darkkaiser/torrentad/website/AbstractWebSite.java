@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,17 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 	protected WebSiteAccount account;
 
 	protected AbstractWebSite(String name) {
+		if (name == null) {
+			throw new NullPointerException("name");
+		}
+
+		if (StringUtil.isBlank(name) == true) {
+			throw new IllegalArgumentException("name must not be empty.");
+		}
+
 		this.name = name;
 	}
-	
+
 	@Override
 	public void login(WebSiteAccount account) throws Exception {
 		logger.info("웹사이트('{}')를 로그인합니다.", getName());
@@ -58,6 +67,14 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 	
 	@Override
 	public void validate() {
+		if (name == null) {
+			throw new NullPointerException("name");
+		}
+
+		if (StringUtil.isBlank(name) == true) {
+			throw new IllegalArgumentException("name must not be empty.");
+		}
+		
 		if (this.account == null) {
 			throw new NullPointerException("account");
 		}

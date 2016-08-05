@@ -74,6 +74,11 @@ public final class DefaultConfigurationManager implements ConfigurationManager {
 	}
 
 	@Override
+	public String getFilePath() {
+		return this.filePath;
+	}
+
+	@Override
 	public String getValue(String key) {
 		return getValue(key, "");
 	}
@@ -98,11 +103,6 @@ public final class DefaultConfigurationManager implements ConfigurationManager {
 		return defaultValue;
 	}
 	
-	@Override
-	public String getPath() {
-		return this.filePath;
-	}
-
 	@Override
 	public void dispose() {
 		synchronized (this.configValues) {

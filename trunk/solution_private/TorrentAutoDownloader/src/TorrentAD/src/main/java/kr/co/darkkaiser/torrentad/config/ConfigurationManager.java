@@ -1,13 +1,13 @@
 package kr.co.darkkaiser.torrentad.config;
 
-public interface ConfigurationManager {
+import kr.co.darkkaiser.torrentad.util.Disposable;
+
+public interface ConfigurationManager extends Disposable {
+
+	String getFilePath();
 
 	String getValue(String key);
 
 	String getValue(String key, String defaultValue);
-
-	String getPath();
-
-	void dispose();
 
 }
