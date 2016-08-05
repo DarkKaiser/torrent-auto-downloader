@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.overwatch;
 
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,23 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public final class OverWatchManager extends TimerTask {
+public final class OverWatchManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(OverWatchManager.class);
 
-	private WebSiteHandler handler;
-	
+	private Timer timer;
+
 	private ExecutorService executorService;
 
 	private ConfigurationManager configurationManager;
-
+	
 	public OverWatchManager(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
+		}
+		if (this.configurationManager != null) {
+			throw new IllegalStateException("configurationManager set already");
 		}
 
 		this.configurationManager = configurationManager;
@@ -32,46 +33,45 @@ public final class OverWatchManager extends TimerTask {
 
 	public boolean start() {
 		// @@@@@
+		if (this.timer != null) {// @@@@@ 변수명
+			throw new IllegalStateException("timer set already");
+		}
+		if (this.executorService != null) {
+			throw new IllegalStateException("executorService set already");
+		}
+		if (this.configurationManager == null) {
+			throw new NullPointerException("configurationManager");
+		}
+		
+		// 작업 정보를 읽어온다.
+		// @@@@@
+		
 		this.executorService = Executors.newFixedThreadPool(1);
 		
-		this.executorService.shutdown();
-		
-		BogoBogoWebSite l = new BogoBogoWebSite();
+		this.timer = new Timer();
+		this.timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				// @@@@@ 시간 및 처리자
+				Job j = new Job();
+				OverWatchManager.this.executorService.submit(j);
+			}
+		}, 10, 10000);
 
-		try {
-			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		/* 반환 */ l.search(/* 검색정보 */);
-		/* 반환받은 정보를 이용해서 다운로드 */
-		/* 결과정보*/l.download(/*다운로드정보*/);
-		l.upload(/*결과정보*/);
-		
-		try {
-			l.logout();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		return true;
 	}
 
 	public void stop() {
 		// @@@@@
+		if (this.timer != null) {
+			this.timer.cancel();
+		}
+		if (this.executorService != null) {
+			this.executorService.shutdown();// @@@@@ shutdown() or shutdownNow() 선택
+		}
+		
+		this.timer = null;
+		this.executorService = null;
 	}
 	
-	public void add() {
-		// @@@@@
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		// @@@@@
-//		this.executorService.submit(task);
-	}
-
 }

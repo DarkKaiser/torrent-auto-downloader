@@ -37,6 +37,9 @@ public class App {
 		if (this.configurationManager != null) {
 			this.configurationManager.dispose();
 		}
+		
+		this.overWatchManager = null;
+		this.configurationManager = null;
 	}
 
     private void addShutdownHook(final App app) {
