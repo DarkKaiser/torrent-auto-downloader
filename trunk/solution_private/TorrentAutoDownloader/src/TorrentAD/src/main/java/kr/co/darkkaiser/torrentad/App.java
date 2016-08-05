@@ -3,60 +3,24 @@ package kr.co.darkkaiser.torrentad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
+import kr.co.darkkaiser.torrentad.overwatch.OverWatcher;
 
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
-
-	private boolean start(String configFilePath) {
-		ConfigurationManager cm = null;
-		try {
-			cm = new ConfigurationManager(configFilePath);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} finally {
-			cm.dispose();
-		}
-		
-		// @@@@@
-		Gson gson = new Gson();
-		String json = "{'domain':'zipbogo.net', 'phone_number':'010-1234-5678'}";
-
-
-//		Person java = gson.fromJson(json, Person.class);
-		
-		BogoBogoWebSite l = new BogoBogoWebSite();
-
-		try {
-			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		/* 반환 */ l.search(/* 검색정보 */);
-		/* 반환받은 정보를 이용해서 다운로드 */
-		/* 결과정보*/l.download(/*다운로드정보*/);
-		l.upload(/*결과정보*/);
-		
-		try {
-			l.logout();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return true;
-	}
 	
+	private OverWatcher overWatcher;
+
+	private boolean start(String configFileName) {
+		this.overWatcher = new OverWatcher(configFileName);
+		return this.overWatcher.start();
+	}
+
 	private void stop() {
-		// @@@@@
+		if (this.overWatcher != null) {
+			this.overWatcher.stop();
+		}
 	}
 
     private void addShutdownHook(final App app) {
