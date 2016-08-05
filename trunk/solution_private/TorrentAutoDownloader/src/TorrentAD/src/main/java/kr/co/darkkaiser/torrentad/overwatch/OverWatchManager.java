@@ -16,7 +16,7 @@ public final class OverWatchManager {
 
 	private Timer timer;
 
-	private ExecutorService executorService;
+	private ExecutorService taskService;
 
 	private ConfigurationManager configurationManager;
 
@@ -39,8 +39,8 @@ public final class OverWatchManager {
 		if (this.timer != null) {// @@@@@ 변수명
 			throw new IllegalStateException("timer set already");
 		}
-		if (this.executorService != null) {
-			throw new IllegalStateException("executorService set already");
+		if (this.taskService != null) {
+			throw new IllegalStateException("torrentADService set already");
 		}
 		if (this.configurationManager == null) {
 			throw new NullPointerException("configurationManager");
@@ -49,7 +49,7 @@ public final class OverWatchManager {
 		// 작업 정보를 읽어온다.
 		// @@@@@
 		
-		this.executorService = Executors.newFixedThreadPool(1);
+		this.taskService = Executors.newFixedThreadPool(1);
 		
 		this.timer = new Timer();
 		this.timer.scheduleAtFixedRate(new TimerTask() {
@@ -57,7 +57,7 @@ public final class OverWatchManager {
 			public void run() {
 				// @@@@@ 시간 및 처리자
 				Task j = new Task();
-				OverWatchManager.this.executorService.submit(OverWatchManager.this.jobList);
+				OverWatchManager.this.taskService.submit(OverWatchManager.this.jobList);
 			}
 		}, 10, 10000);
 
@@ -69,12 +69,12 @@ public final class OverWatchManager {
 		if (this.timer != null) {
 			this.timer.cancel();
 		}
-		if (this.executorService != null) {
-			this.executorService.shutdown();// @@@@@ shutdown() or shutdownNow() 선택
+		if (this.taskService != null) {
+			this.taskService.shutdown();// @@@@@ shutdown() or shutdownNow() 선택
 		}
 		
 		this.timer = null;
-		this.executorService = null;
+		this.taskService = null;
 	}
 	
 }
