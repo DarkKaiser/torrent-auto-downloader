@@ -21,7 +21,7 @@ public final class OverWatchManager {
 	private ConfigurationManager configurationManager;
 
 	// @@@@@
-	private TaskList jobList = new TaskList();
+	private Tasks jobList = new Tasks();
 
 	public OverWatchManager(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {

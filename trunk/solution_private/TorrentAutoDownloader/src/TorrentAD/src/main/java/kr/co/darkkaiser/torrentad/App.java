@@ -65,7 +65,7 @@ public class App {
 				  .append("###                                                  ###\n")
 				  .append("###             ").append(Constants.APP_NAME).append(" Version ").append(Constants.APP_VERSION).append("              ###\n")
 				  .append("###                                                  ###\n")
-				  .append("###             Developed by DarkKaiser              ###\n")
+				  .append("###                         developed by DarkKaiser  ###\n")
 				  .append("###                                                  ###\n")
 				  .append("########################################################\n");
 				logger.info(sb.toString());
