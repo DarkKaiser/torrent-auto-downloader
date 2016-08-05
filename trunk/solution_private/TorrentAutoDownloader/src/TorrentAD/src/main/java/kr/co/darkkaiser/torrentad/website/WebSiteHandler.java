@@ -1,11 +1,9 @@
 package kr.co.darkkaiser.torrentad.website;
 
-import java.io.IOException;
-
 public interface WebSiteHandler {
 
-	void login(WebSiteAccount account) throws IOException;
+	void login(WebSiteAccount account) throws Exception;
 
-	void logout();
+	void logout() throws Exception;
 
 }

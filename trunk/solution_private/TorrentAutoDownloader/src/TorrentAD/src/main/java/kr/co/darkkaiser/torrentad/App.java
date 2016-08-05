@@ -1,13 +1,12 @@
 package kr.co.darkkaiser.torrentad;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
+import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.Setting;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
@@ -17,6 +16,16 @@ public class App {
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
 	private boolean start(String configFilePath) {
+		ConfigurationManager cm = null;
+		try {
+			cm = new ConfigurationManager(configFilePath);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
+			cm.dispose();
+		}
+		
 		// @@@@@
 		Gson gson = new Gson();
 		String json = "{'domain':'zipbogo.net', 'phone_number':'010-1234-5678'}";
@@ -29,7 +38,7 @@ public class App {
 
 		try {
 			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -38,7 +47,12 @@ public class App {
 		/* 결과정보*/l.download(/*다운로드정보*/);
 		l.upload(/*결과정보*/);
 		
-		l.logout();
+		try {
+			l.logout();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return true;
 	}
@@ -76,7 +90,7 @@ public class App {
 				logger.info(sb.toString());
 
 				// start the server
-				if (app.start(Constants.DISPATCHER_SERVER_CONFIG_FILEPATH) == true) {
+				if (app.start(Constants.APP_CONFIG_FILENAME) == true) {
 					logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
 
 		            // add shutdown hook if possible

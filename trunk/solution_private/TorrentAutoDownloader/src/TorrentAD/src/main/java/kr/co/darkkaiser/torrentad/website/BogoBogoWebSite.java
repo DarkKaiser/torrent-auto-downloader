@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,27 +15,27 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 	
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
+	private static final String MAIN_PAGE_URL = "https://zipbogo.net/";
 	private static final String LOGIN_PROCESS_URL_1 = "https://zipbogo.net/cdsb/login_process.php";
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
 
-	protected Connection.Response conn;
+	protected Connection.Response loginConnResponse;
 
 	public BogoBogoWebSite() {
+		super("보고보고");
 	}
-
+	
 	@Override
-	public void login(WebSiteAccount account) throws IOException {
-		logout();
-
+	protected void login0(WebSiteAccount account) throws Exception {
 		if (account == null) {
 			throw new NullPointerException("account");
 		}
 
 		account.validate();
 
-		/////////////////////////////////////////////////////////////////////////
-		// 로그인 1단계 수행
-		/////////////////////////////////////////////////////////////////////////
+		/**
+		 * 로그인 1단계 수행
+		 */
 		Connection.Response response = Jsoup.connect(LOGIN_PROCESS_URL_1)
 			.userAgent(USER_AGENT)
 			.data("mode", "login")
@@ -60,49 +61,70 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 			throw new UnknownLoginException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
 		}
 
-		/////////////////////////////////////////////////////////////////////////
-		// 로그인 2단계 수행
-		/////////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////////////
-		// @@@@@
+		/**
+		 * 로그인 2단계 수행
+		 */
 		try {
 			Jsoup.connect(doc.select("img").attr("src"))
 				.userAgent(USER_AGENT)
 				.cookies(response.cookies())
 				.get();
-		} catch (IOException e) {
+		} catch (UnsupportedMimeTypeException e) {
+			// 무시한다.
+		} catch (IllegalArgumentException e) {
+			logger.error("POST {} return message:\n{}", LOGIN_PROCESS_URL_1, outerHtml);
+			throw e;
 		}
 
-		/////////////////////////////////////////////////////////////////////////
-		// 로그인 3단계 수행
-		/////////////////////////////////////////////////////////////////////////
-		 Document document = Jsoup.connect(LOGIN_PROCESS_URL_2)
-				 	.userAgent(USER_AGENT)
-	                .data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
-	                .data("MEMBER_POINT", doc.select("input[name=MEMBER_POINT]").val())
-	                .data("STR", doc.select("input[name=STR]").val())
-	                .data("todo", doc.select("input[name=todo]").val())
-	                .cookies(response.cookies())
-	                .post();
+		/**
+		 * 로그인 3단계 수행
+		 */
+		Jsoup.connect(LOGIN_PROCESS_URL_2)
+			.userAgent(USER_AGENT)
+			.data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
+			.data("MEMBER_POINT", doc.select("input[name=MEMBER_POINT]").val())
+			.data("STR", doc.select("input[name=STR]").val())
+			.data("todo", doc.select("input[name=todo]").val())
+			.cookies(response.cookies())
+			.post();
 
-		this.conn = null;
-		this.setAccount(account);
+		/**
+		 * 로그인이 정상적으로 완료되었는지 확인한다.
+		 */
+		Connection.Response completedCheckResponse = Jsoup.connect(MAIN_PAGE_URL)
+			.userAgent(USER_AGENT)
+			.method(Connection.Method.GET)
+			.cookies(response.cookies())
+			.execute();
 
-		// throw
-//		LOGGER.error("異쒕젰�뙆�씪 �깮�꽦�떎�뙣(VM�뙆�씪={}, �깮�꽦�뙆�씪={})", vmFileClassPath, outputFileAbsolutePath);
+		if (completedCheckResponse.statusCode() != 200) {
+			throw new IOException("GET " + MAIN_PAGE_URL + " returned " + completedCheckResponse.statusCode() + ": " + completedCheckResponse.statusMessage());
+		}
 
-		System.out.println(doc);
+		Document completedCheckDoc = completedCheckResponse.parse();
+		String completedCheckOuterHtml = completedCheckDoc.outerHtml();
+		if (completedCheckOuterHtml.contains("<input type=\"button\" value=\"로그아웃\" id=\"lox\" onclick=\"window.location.href='/cdsb/login_process.php?mode=logout'\">") == false) {
+			throw new UnknownLoginException("GET " + MAIN_PAGE_URL + " return message:\n" + completedCheckOuterHtml);
+		}
+
+		/**
+		 * 로그인 완료 처리 수행
+		 */
+		setAccount(account);
+
+		this.loginConnResponse = response;
 	}
-
+	
 	@Override
-	public void logout() {
-		// @@@@@
-		this.conn = null;
+	protected void logout0() throws Exception {
+		setAccount(null);
+
+		this.loginConnResponse = null;
 	}
 
 	public void search() {
 		// @@@@@
-		if (this.conn == null) {
+		if (this.loginConnResponse == null) {
 			
 		}
 		
