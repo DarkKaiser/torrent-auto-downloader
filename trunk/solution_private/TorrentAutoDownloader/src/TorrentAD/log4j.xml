@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-	
+
 	<!-- Console Appender -->
     <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
@@ -16,7 +16,7 @@
 		<param name="DatePattern" value="'.'yyyyMMdd"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%t> [%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
-		</layout>
+ 		</layout>
 	</appender>
 
 	<logger name="org.apache">
@@ -27,6 +27,6 @@
 		<!-- ## Log Level : DEBUG > INFO > WARN > ERROR > FATAL ## -->
         <priority value="debug"/>
         <appender-ref ref="stdout"/>
-		<!-- <appender-ref ref="dailyout"/> -->
+		<appender-ref ref="dailyout"/>
     </root>
 </log4j:configuration>

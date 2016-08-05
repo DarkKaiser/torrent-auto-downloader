@@ -29,6 +29,8 @@ public class App {
     }
     
 	public static void main(String[] args) {
+		logger.info("FBISDispatcher 서버가 종료되었습니다.");
+		
 		App main = new App();
 //		// 환경설정 파일명을 읽어들인다.
 //		String configFilePath = Constants.DISPATCHER_SERVER_CONFIG_FILEPATH;
