@@ -5,7 +5,9 @@ public interface WebSiteContext<B extends WebSiteContext<B>> {
 	WebSiteAccount getAccount();
 
 	B setAccount(WebSiteAccount account);
-
-	boolean valid();
 	
+	void validate();
+
+	boolean isValid();
+
 }

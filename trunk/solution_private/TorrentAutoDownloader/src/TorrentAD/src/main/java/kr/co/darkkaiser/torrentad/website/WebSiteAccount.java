@@ -6,6 +6,8 @@ public interface WebSiteAccount {
 
 	String password();
 
-	boolean valid();
+	void validate();
+
+	boolean isValid();
 
 }

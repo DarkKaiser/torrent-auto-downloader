@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements WebSiteHandler, WebSiteContext<B> {
 
 	protected WebSiteAccount account;
-	
+
 	@Override
 	public WebSiteAccount getAccount() {
 		return this.account;
@@ -18,8 +18,19 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 	}
 	
 	@Override
-	public boolean valid() {
-		if (this.account.valid() == false) {
+	public void validate() {
+		if (this.account == null) {
+			throw new NullPointerException("account");
+		}
+
+		this.account.validate();
+	}
+
+	@Override
+	public boolean isValid() {
+		try {
+			validate();
+		} catch (Exception e) {
 			return false;
 		}
 

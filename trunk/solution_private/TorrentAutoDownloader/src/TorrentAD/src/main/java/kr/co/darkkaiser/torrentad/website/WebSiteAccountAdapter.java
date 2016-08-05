@@ -2,27 +2,13 @@ package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
-public abstract class AbstractWebSiteAccount implements WebSiteAccount {
+public class WebSiteAccountAdapter implements WebSiteAccount {
 
 	private String id;
 	private String password;
 
-	protected AbstractWebSiteAccount(String id, String password) {
-		if (id == null) {
-			throw new NullPointerException("id");
-		}
-
-		if (StringUtil.isBlank(id) == true) {
-			throw new IllegalArgumentException("id must not be empty.");
-		}
-		
-		if (password == null) {
-			throw new NullPointerException("password");
-		}
-
-		if (StringUtil.isBlank(password) == true) {
-			throw new IllegalArgumentException("password must not be empty.");
-		}
+	protected WebSiteAccountAdapter(String id, String password) {
+		validate(id, password);
 
 		this.id = id;
 		this.password = password;
@@ -39,18 +25,43 @@ public abstract class AbstractWebSiteAccount implements WebSiteAccount {
 	}
 	
 	@Override
-	public boolean valid() {
-		if (StringUtil.isBlank(this.id) == true || StringUtil.isBlank(this.password) == true) {
+	public void validate() {
+		validate(this.id, this.password);
+	}
+
+	private void validate(String id, String password) {
+		if (id == null) {
+			throw new NullPointerException("id");
+		}
+
+		if (StringUtil.isBlank(id) == true) {
+			throw new IllegalArgumentException("id must not be empty.");
+		}
+		
+		if (password == null) {
+			throw new NullPointerException("password");
+		}
+
+		if (StringUtil.isBlank(password) == true) {
+			throw new IllegalArgumentException("password must not be empty.");
+		}
+	}
+
+	@Override
+	public boolean isValid() {
+		try {
+			validate();
+		} catch (Exception e) {
 			return false;
 		}
 
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
 		return new StringBuilder()
-			.append(AbstractWebSiteAccount.class.getSimpleName())
+			.append(WebSiteAccountAdapter.class.getSimpleName())
 			.append("{")
 			.append("id:").append(this.id)
 			.append(", password:").append(this.password)

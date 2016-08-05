@@ -30,11 +30,11 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 			throw new NullPointerException("account");
 		}
 
-		if (account.valid() == false) {
-			throw new InvalidWebSiteAccountException(account.toString());
-		}
+		account.validate();
 
-		// 보고보고넷 로그인
+		/////////////////////////////////////////////////////////////////////////
+		// 로그인 1단계 수행
+		/////////////////////////////////////////////////////////////////////////
 		Connection.Response response = Jsoup.connect(LOGIN_PROCESS_URL_1)
 			.userAgent(USER_AGENT)
 			.data("mode", "login")
@@ -48,27 +48,34 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 			throw new IOException("POST " + LOGIN_PROCESS_URL_1 + " returned " + response.statusCode() + ": " + response.statusMessage());
 		}
 
+		// 로그인이 정상적으로 완료되었는지 확인한다.
+		Document doc = response.parse();
+		String outerHtml = doc.outerHtml();
+		if (outerHtml.contains("님 로그인하셨습니다.\");") == false) {		// 'alert("xxx님 로그인하셨습니다.");' 문자열이 포함되어있는지 확인
+			// 'alert("로그인 정보가 x회 틀렸습니다.\n(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)");' 문자열이 포함되어있는지 확인
+			if (outerHtml.contains("회 틀렸습니다.") == true && outerHtml.contains("(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)") == true) {
+				throw new IncorrectLoginAccountException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
+			}
+
+			throw new UnknownLoginException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
+		}
+
+		/////////////////////////////////////////////////////////////////////////
+		// 로그인 2단계 수행
+		/////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////
 		// @@@@@
-		// 로그인이 정상적으로 수행되었는지 확인한다.
-		Document doc = response.parse();
-		System.out.println(doc.outerHtml());
-		if (doc.outerHtml().contains("로그인하셨습니다.\");") == false) {
-			return;
-//			alert("편진휴님 로그인하셨습니다.");
-		}
-		// 비밀번호 틀리면 익셉션 발생
-
 		try {
-		 Document document2 = Jsoup.connect(doc.select("img").attr("src"))
-				 	.userAgent(USER_AGENT)
-	                .cookies(response.cookies())
-	                .get();
-		 	System.out.println(document2);
-		} catch (Exception e) {
-			
+			Jsoup.connect(doc.select("img").attr("src"))
+				.userAgent(USER_AGENT)
+				.cookies(response.cookies())
+				.get();
+		} catch (IOException e) {
 		}
 
+		/////////////////////////////////////////////////////////////////////////
+		// 로그인 3단계 수행
+		/////////////////////////////////////////////////////////////////////////
 		 Document document = Jsoup.connect(LOGIN_PROCESS_URL_2)
 				 	.userAgent(USER_AGENT)
 	                .data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
