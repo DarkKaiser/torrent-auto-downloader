@@ -20,6 +20,9 @@ public final class OverWatchManager {
 
 	private ConfigurationManager configurationManager;
 	
+	// @@@@@
+	private JobList jobList = new JobList();
+	
 	public OverWatchManager(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
@@ -54,7 +57,7 @@ public final class OverWatchManager {
 			public void run() {
 				// @@@@@ 시간 및 처리자
 				Job j = new Job();
-				OverWatchManager.this.executorService.submit(j);
+				OverWatchManager.this.executorService.submit(OverWatchManager.this.jobList);
 			}
 		}, 10, 10000);
 
