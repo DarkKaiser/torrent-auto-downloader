@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.config.Setting;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 
@@ -30,7 +29,6 @@ public class App {
 		Gson gson = new Gson();
 		String json = "{'domain':'zipbogo.net', 'phone_number':'010-1234-5678'}";
 
-		Setting obj = gson.fromJson(json, Setting.class);
 
 //		Person java = gson.fromJson(json, Person.class);
 		
