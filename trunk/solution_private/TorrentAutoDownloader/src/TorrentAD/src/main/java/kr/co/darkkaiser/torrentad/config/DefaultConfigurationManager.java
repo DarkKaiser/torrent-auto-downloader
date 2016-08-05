@@ -14,13 +14,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ConfigurationManager {
+public final class DefaultConfigurationManager implements ConfigurationManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultConfigurationManager.class);
 
+	private String filePath;
+	
 	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<String, String>();
-
-	public ConfigurationManager(String filePath) throws Exception {
+	
+	public DefaultConfigurationManager(String filePath) throws Exception {
 		load(filePath);
 	}
 
@@ -33,6 +35,7 @@ public class ConfigurationManager {
 		}
 		
 		synchronized (this.configValues) {
+			this.filePath = null;
 			this.configValues.clear();
 
 			try {
@@ -57,6 +60,8 @@ public class ConfigurationManager {
 						}
 					}
 				}
+				
+				this.filePath = filePath;
 			} catch (FileNotFoundException e) {
 				logger.error("환경설정정보 파일을 찾을 수 없습니다.(파일경로 :'{}')", filePath, e);
 				throw e;
@@ -68,10 +73,12 @@ public class ConfigurationManager {
 		}
 	}
 
+	@Override
 	public String getValue(String key) {
 		return getValue(key, "");
 	}
 
+	@Override
 	public String getValue(String key, String defaultValue) {
 		assert key != null;
 		assert key.length() > 0;
@@ -90,9 +97,16 @@ public class ConfigurationManager {
 
 		return defaultValue;
 	}
+	
+	@Override
+	public String getPath() {
+		return this.filePath;
+	}
 
+	@Override
 	public void dispose() {
 		synchronized (this.configValues) {
+			this.filePath = null;
 			this.configValues.clear();
 		}
 	}

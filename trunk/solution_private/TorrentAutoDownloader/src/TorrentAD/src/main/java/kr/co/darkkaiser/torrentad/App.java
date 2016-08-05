@@ -4,22 +4,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.overwatch.OverWatcher;
+import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
+import kr.co.darkkaiser.torrentad.overwatch.OverWatchManager;
 
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 	
-	private OverWatcher overWatcher;
+	private OverWatchManager overWatchManager;
+
+	private ConfigurationManager configurationManager;
 
 	private boolean start(String configFileName) {
-		this.overWatcher = new OverWatcher(configFileName);
-		return this.overWatcher.start();
+		// 기본 환경설정 정보를 읽어들인다.
+		ConfigurationManager configurationManager = null;
+		try {
+			configurationManager = new DefaultConfigurationManager(configFileName);
+		} catch (Exception e) {
+			return false;
+		}
+
+		this.configurationManager = configurationManager;
+		this.overWatchManager = new OverWatchManager(configurationManager);
+		return this.overWatchManager.start();
 	}
 
 	private void stop() {
-		if (this.overWatcher != null) {
-			this.overWatcher.stop();
+		if (this.overWatchManager != null) {
+			this.overWatchManager.stop();
+		}
+		if (this.configurationManager != null) {
+			this.configurationManager.dispose();
 		}
 	}
 

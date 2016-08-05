@@ -1,6 +1,9 @@
 package kr.co.darkkaiser.torrentad.overwatch;
 
-import org.jsoup.helper.StringUtil;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,40 +12,30 @@ import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class OverWatcher {
+public final class OverWatchManager extends TimerTask {
 
-	private static final Logger logger = LoggerFactory.getLogger(OverWatcher.class);
-
-	private String configFilePath;
+	private static final Logger logger = LoggerFactory.getLogger(OverWatchManager.class);
 
 	private WebSiteHandler handler;
+	
+	private ExecutorService executorService;
 
-	public OverWatcher(String configFilePath) {
-		if (configFilePath == null) {
-			throw new NullPointerException("configFilePath");
+	private ConfigurationManager configurationManager;
+
+	public OverWatchManager(ConfigurationManager configurationManager) {
+		if (configurationManager == null) {
+			throw new NullPointerException("configurationManager");
 		}
 
-		if (StringUtil.isBlank(configFilePath) == true) {
-			throw new IllegalArgumentException("configFilePath must not be empty.");
-		}
-
-		this.configFilePath = configFilePath;
+		this.configurationManager = configurationManager;
 	}
 
 	public boolean start() {
 		// @@@@@
-		ConfigurationManager cm = null;
-		try {
-			cm = new ConfigurationManager(this.configFilePath);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return false;
-		} finally {
-			cm.dispose();
-		}
-
-		// @@@@@
+		this.executorService = Executors.newFixedThreadPool(1);
+		
+		this.executorService.shutdown();
+		
 		BogoBogoWebSite l = new BogoBogoWebSite();
 
 		try {
@@ -67,9 +60,18 @@ public class OverWatcher {
 	}
 
 	public void stop() {
-		// TODO Auto-generated method stub
-		
 		// @@@@@
+	}
+	
+	public void add() {
+		// @@@@@
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		// @@@@@
+//		this.executorService.submit(task);
 	}
 
 }
