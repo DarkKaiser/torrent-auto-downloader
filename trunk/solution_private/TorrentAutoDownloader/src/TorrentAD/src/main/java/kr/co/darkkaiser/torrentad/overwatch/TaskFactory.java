@@ -1,5 +1,5 @@
 package kr.co.darkkaiser.torrentad.overwatch;
 
-public class JobFactory {
+public class TaskFactory {
 
 }

@@ -128,7 +128,6 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 			
 		}
 
-
 //		 // 게시판이동
 //			Connection.Response loginForm2 = Jsoup.connect("https://zipbogo.net/cdsb/board.php?board=newmovie")
 //					.userAgent("Mozilla")

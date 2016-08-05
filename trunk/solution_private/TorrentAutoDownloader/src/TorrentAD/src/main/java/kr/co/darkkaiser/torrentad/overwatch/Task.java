@@ -5,9 +5,9 @@ import java.util.concurrent.Callable;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 
-public class Job implements Callable<Integer> {
+public class Task implements Callable<Integer> {
 
-	public Job() {
+	public Task() {
 		// @@@@@
 	}
 
