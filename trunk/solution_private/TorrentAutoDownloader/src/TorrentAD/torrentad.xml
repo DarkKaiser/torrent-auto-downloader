@@ -1,8 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <torrentad>
-	<torrentad-tasks>
-		<torrentad-task>
+	비정기적 다운로드
+	한번 다운로드 하고나면 더이상 다운로드를 하지 않는다.
+	<torrentad-once-tasks>
+		<torrentad-once-task>
+		</torrentad-once-task>
+	</torrentad-once-tasks>
+
+	<torrentad-regular-tasks>
+		정기적인 다운로드 작업(드라마,예능등)
+		<torrentad-regular-task>
 			<board>newmovie</board> key:web url 형식으로 java에서 관리
+			한 게시물안에 여러개의 토렌트, 자막은 모두 다운로드
+			다운로드 안 받을려면 exclude에 등록하면 됨
 			<search-keyword>
 				<key>아래키와 and 연산
 					<item>찬란한+유산</item>아래 item과 OR연산, 우선순위1
@@ -15,12 +25,36 @@
 				<key type="exclude">1080P</key>제외케워드
 				<key>NEXT</key>
 			</search-keyword>
-			<start-dt></start-dt>검색시작일
-			<last-dn-key></last-dn-key>마지막 다운로드키
-		</torrentad-task>
-	</torrentad-tasks>
+			
+			날짜를 추출하기 위한 포맷, 파일명에 포함된 내용
+			<date-fmt>yyMMDD</date-fmt>
+
+			latest-dn-key 값이 비어있으면 데몬이 올라가고 난 이후의 데이터로 한정?
+			다운로드 받고나서 다운로드 받은 날짜 및 id 갱신
+			이후 해당 이후 날짜의 새로운 데이터를 검색한다.
+			게시판 목록에서 읽어들일 수 있는 최대 페이지 개수가 정해져있다.
+			<latest-dn-key>
+				<id></id>
+				<date></date>
+			</latest-dn-key>마지막 다운로드키
+		</torrentad-regular-task>
+	</torrentad-regular-tasks>
 
 	<torrentad-config-values>
+		게시물 목록 날짜 포맷
+		처음 프로그램이 실행될때 latest-dn-key > date 이후에 모든 목록을 불러들여서 다운로드 받기 위해 사용한다.
+		<date-fmt>yy-MM-DD</date-fmt>
+		
+		게시판 목록에서 읽어들일 수 있는 최대 페이지 개수가 정해져있다.
+		<max-page-count>10</max-page-count>
+		
+		
+		
+		
+		
+		
+		
+		
 		<!-- 문자열 인코딩/디코딩 -->
 		<charset>UTF-8</charset>
 
