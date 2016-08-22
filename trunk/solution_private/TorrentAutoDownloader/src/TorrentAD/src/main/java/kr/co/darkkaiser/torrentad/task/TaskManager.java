@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.overwatch;
+package kr.co.darkkaiser.torrentad.task;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 
-public final class OverWatchManager {
+public final class TaskManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(OverWatchManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskManager.class);
 
 	private Timer timer;
 
@@ -21,9 +21,9 @@ public final class OverWatchManager {
 	private ConfigurationManager configurationManager;
 
 	// @@@@@
-	private Tasks jobList = new Tasks();
+	private Tasks taskList = new Tasks();
 
-	public OverWatchManager(ConfigurationManager configurationManager) {
+	public TaskManager(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
@@ -48,16 +48,16 @@ public final class OverWatchManager {
 		
 		// 작업 정보를 읽어온다.
 		// @@@@@
+		this.taskList.load(this.configurationManager);
 		
 		this.taskService = Executors.newFixedThreadPool(1);
-		
+
 		this.timer = new Timer();
 		this.timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				// @@@@@ 시간 및 처리자
-				Task j = new Task();
-				OverWatchManager.this.taskService.submit(OverWatchManager.this.jobList);
+				TaskManager.this.taskService.submit(TaskManager.this.taskList);
 			}
 		}, 10, 10000);
 

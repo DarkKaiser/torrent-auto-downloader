@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
-import kr.co.darkkaiser.torrentad.overwatch.OverWatchManager;
+import kr.co.darkkaiser.torrentad.task.TaskManager;
 
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 	
-	private OverWatchManager overWatchManager;
+	private TaskManager overWatchManager;
 
 	private ConfigurationManager configurationManager;
 
@@ -26,7 +26,7 @@ public class App {
 		}
 
 		this.configurationManager = configurationManager;
-		this.overWatchManager = new OverWatchManager(configurationManager);
+		this.overWatchManager = new TaskManager(configurationManager);
 		return this.overWatchManager.start();
 	}
 
