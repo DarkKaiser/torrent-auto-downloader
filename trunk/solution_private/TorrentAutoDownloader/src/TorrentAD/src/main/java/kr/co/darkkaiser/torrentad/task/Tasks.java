@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public final class Tasks implements Callable<Integer> {
 
@@ -28,7 +28,7 @@ public final class Tasks implements Callable<Integer> {
 	@Override
 	public Integer call() throws Exception {
 		// 사이트 로그인
-		WebSite<BogoBogoWebSite> l = new BogoBogoWebSite();
+		WebSiteHandler l = new BogoBogoWebSite();
 
 		try {
 			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));

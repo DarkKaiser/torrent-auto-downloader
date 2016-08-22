@@ -4,7 +4,7 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements WebSite<B> {
+public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements WebSiteHandler, WebSiteContext<B> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
