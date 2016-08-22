@@ -7,8 +7,8 @@
 		</torrentad-once-task>
 	</torrentad-once-tasks>
 
+	<!-- 정기적 토렌트 다운로드 -->
 	<torrentad-regular-tasks>
-		정기적인 다운로드 작업(드라마,예능등)
 		<torrentad-regular-task>
 			<board>newmovie</board> key:web url 형식으로 java에서 관리
 			한 게시물안에 여러개의 토렌트, 자막은 모두 다운로드
