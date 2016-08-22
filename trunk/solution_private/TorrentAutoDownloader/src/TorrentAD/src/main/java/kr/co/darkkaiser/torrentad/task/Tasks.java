@@ -30,6 +30,8 @@ public final class Tasks implements Callable<Integer> {
 		// 사이트 로그인
 		WebSiteHandler l = new BogoBogoWebSite();
 
+		// 사이트 로그인을 다음과 같이 변경
+//		WebSiteHandler l2 = WebSiteSupport.BOGOBOGO("darkkaiser", "DreamWakuWaku78@");
 		try {
 			l.login(new BogoBogoWebSiteAccount("darkkaiser", "DreamWakuWaku78@"));
 		} catch (Exception e) {

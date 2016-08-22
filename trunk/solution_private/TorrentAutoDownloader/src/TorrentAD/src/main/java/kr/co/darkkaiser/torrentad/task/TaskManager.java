@@ -21,7 +21,7 @@ public final class TaskManager {
 	private ConfigurationManager configurationManager;
 
 	// @@@@@
-	private Tasks taskList = new Tasks();
+	private Tasks tasks = new Tasks();
 
 	public TaskManager(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
@@ -48,7 +48,7 @@ public final class TaskManager {
 		
 		// 작업 정보를 읽어온다.
 		// @@@@@
-		this.taskList.load(this.configurationManager);
+		this.tasks.load(this.configurationManager);
 		
 		this.taskService = Executors.newFixedThreadPool(1);
 
@@ -57,7 +57,7 @@ public final class TaskManager {
 			@Override
 			public void run() {
 				// @@@@@ 시간 및 처리자
-				TaskManager.this.taskService.submit(TaskManager.this.taskList);
+				TaskManager.this.taskService.submit(TaskManager.this.tasks);
 			}
 		}, 10, 10000);
 
