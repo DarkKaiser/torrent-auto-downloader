@@ -72,6 +72,7 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 			return TaskResult.FAILED_DECODE_PASSWORD;
 		}
 		
+		// @@@@@ bogobogo를 뺄수있는방법
 		WebSiteAccount account = null;
 		try {
 			account = new BogoBogoWebSiteAccount(id, password);

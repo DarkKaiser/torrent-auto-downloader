@@ -1,12 +1,12 @@
 package kr.co.darkkaiser.torrentad.website;
 
-public interface WebSiteContext<B extends WebSiteContext<B>> {
+public interface WebSiteContext {
 
 	String getName();
 	
 	WebSiteAccount getAccount();
 
-	B setAccount(WebSiteAccount account);
+	void setAccount(WebSiteAccount account);
 	
 	void validate();
 

@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
+public class BogoBogoWebSite extends AbstractWebSite {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BogoBogoWebSite.class);
 	

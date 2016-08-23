@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements WebSiteHandler, WebSiteContext<B> {
+public abstract class AbstractWebSite implements WebSiteHandler, WebSiteContext {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
@@ -53,11 +53,8 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public B setAccount(WebSiteAccount account) {
+	public void setAccount(WebSiteAccount account) {
 		this.account = account;
-
-		return (B) this;
 	}
 	
 	@Override

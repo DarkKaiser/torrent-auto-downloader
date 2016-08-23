@@ -2,7 +2,19 @@ package kr.co.darkkaiser.torrentad.website;
 
 public enum WebSite {
 
-	BOGOBOGO("보고보고");
+	BOGOBOGO("보고보고") {
+		@Override
+		public WebSiteHandler createWebSite() {
+			// @@@@@
+			return new BogoBogoWebSite();
+		}
+
+		@Override
+		public WebSiteAccount createWebSiteAccount(String id, String password) {
+			// @@@@@
+			return new BogoBogoWebSiteAccount(id, password);
+		}
+	};
 
 	private String name;
 	
@@ -19,4 +31,7 @@ public enum WebSite {
 		return this.name;
 	}
 
+	abstract WebSiteHandler createWebSite();
+	abstract WebSiteAccount createWebSiteAccount(String id, String password);
+	
 }
