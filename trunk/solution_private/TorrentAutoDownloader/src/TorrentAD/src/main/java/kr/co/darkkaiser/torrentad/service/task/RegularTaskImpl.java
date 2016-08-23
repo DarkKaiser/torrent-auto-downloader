@@ -8,7 +8,7 @@ public class RegularTaskImpl extends AbstractTask implements RegularTask {
 	}
 
 	@Override
-	public TaskResult execute(WebSiteHandler handler) throws Exception {
+	public TaskResult run(WebSiteHandler handler) throws Exception {
 		// @@@@@
 //		/* 반환 */ l.search(/* 검색정보 */);
 //		/* 반환받은 정보를 이용해서 다운로드 */

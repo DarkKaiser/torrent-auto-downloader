@@ -12,21 +12,22 @@ import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public final class TasksExecutableAdapter implements Callable<TaskResult> {
+public final class TasksRunnableAdapter implements Callable<TaskResult> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TasksExecutableAdapter.class);
+	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 	
 	private final List<Task> tasks = new ArrayList<>();
 
-	public TasksExecutableAdapter() {
+	public TasksRunnableAdapter(ConfigurationManager configurationManager) {
+		init(configurationManager);
 	}
 	
-	public void init(ConfigurationManager configurationManager) {
+	private void init(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
 
-		//@@@@@
+		//@@@@@ 환경설정정보 로드해서 task 초기화, taskfactory 이용
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public final class TasksExecutableAdapter implements Callable<TaskResult> {
 		TaskResult resultValue = null;
 		for (Task task : this.tasks) {
 			try {
-				resultValue = task.execute(l);
+				resultValue = task.run(l);
 			} catch (Exception e) {
 				// @@@@@ 메시지 추가
 				logger.error(null, e);
