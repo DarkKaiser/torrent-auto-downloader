@@ -86,7 +86,7 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 			handler.login(account);
 		} catch (Exception e) {
 			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", site, e);
-			return TaskResult.FAILED_LOGIN;
+			return TaskResult.FAILED_WEBSITE_LOGIN;
 		}
 
 		TaskResult taskResult = TaskResult.OK;
