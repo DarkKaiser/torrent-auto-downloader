@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 
-public final class TaskManager {
+public final class TorrentADService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TaskManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(TorrentADService.class);
 
 	private Timer timer;
 
@@ -21,9 +21,9 @@ public final class TaskManager {
 	private ConfigurationManager configurationManager;
 
 	// @@@@@
-	private Tasks tasks = new Tasks();
+	private TaskCallable taskCallable = new TaskCallable();
 
-	public TaskManager(ConfigurationManager configurationManager) {
+	public TorrentADService(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
@@ -48,7 +48,7 @@ public final class TaskManager {
 		
 		// 작업 정보를 읽어온다.
 		// @@@@@
-		this.tasks.load(this.configurationManager);
+		this.taskCallable.init(this.configurationManager);
 		
 		this.taskService = Executors.newFixedThreadPool(1);
 
@@ -57,7 +57,7 @@ public final class TaskManager {
 			@Override
 			public void run() {
 				// @@@@@ 시간 및 처리자
-				TaskManager.this.taskService.submit(TaskManager.this.tasks);
+				TorrentADService.this.taskService.submit(TorrentADService.this.taskCallable);
 			}
 		}, 10, 10000);
 

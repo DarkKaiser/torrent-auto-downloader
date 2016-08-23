@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
-import kr.co.darkkaiser.torrentad.task.TaskManager;
+import kr.co.darkkaiser.torrentad.task.TorrentADService;
 
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 	
-	private TaskManager overWatchManager;
+	private TorrentADService torrentADService;
 
 	private ConfigurationManager configurationManager;
 
@@ -26,19 +26,19 @@ public class App {
 		}
 
 		this.configurationManager = configurationManager;
-		this.overWatchManager = new TaskManager(configurationManager);
-		return this.overWatchManager.start();
+		this.torrentADService = new TorrentADService(configurationManager);
+		return this.torrentADService.start();
 	}
 
 	private void stop() {
-		if (this.overWatchManager != null) {
-			this.overWatchManager.stop();
+		if (this.torrentADService != null) {
+			this.torrentADService.stop();
 		}
 		if (this.configurationManager != null) {
 			this.configurationManager.dispose();
 		}
 		
-		this.overWatchManager = null;
+		this.torrentADService = null;
 		this.configurationManager = null;
 	}
 

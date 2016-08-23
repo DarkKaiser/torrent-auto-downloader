@@ -12,17 +12,20 @@ import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-// invoke @@@@@
-public final class Tasks implements Callable<TaskResult> {
+public final class TaskCallable implements Callable<TaskResult> {
 
-	private static final Logger logger = LoggerFactory.getLogger(Tasks.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskCallable.class);
 	
 	private final List<Task> tasks = new ArrayList<>();
 
-	public Tasks() {
+	public TaskCallable() {
 	}
 	
-	public void load(ConfigurationManager configurationManager) {
+	public void init(ConfigurationManager configurationManager) {
+		if (configurationManager == null) {
+			throw new NullPointerException("configurationManager");
+		}
+
 		//@@@@@
 	}
 
