@@ -7,8 +7,11 @@ public enum TaskResult {
 
 	/** 비밀번호 복호화 실패 */
 	FAILED_DECODE_PASSWORD,
-	
-	/** 유효하지 않은 계정정보 */
+
+	/** 유효하지 않은 웹사이트 이름 */
+	INVALID_WEBSITE_NAME,
+
+	/** 유효하지 않은 로그인 계정정보 */
 	INVALID_ACCOUNT,
 
 	/** 웹사이트 로그인 실패 */

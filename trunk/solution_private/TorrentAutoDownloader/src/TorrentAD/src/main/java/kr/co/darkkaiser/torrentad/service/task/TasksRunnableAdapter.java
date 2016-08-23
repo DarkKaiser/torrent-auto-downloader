@@ -57,26 +57,30 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 	}
 
 	private TaskResult call0() throws Exception {
+		// @@@@@ 결과 taskResult를 없애거나 TasksResult로 만드는건??
+		
 		String id = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID);
 		String password = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
 		try {
 			password = this.aes256.aesDecode(password);
 		} catch (Exception e) {
-			logger.error("등록된 비밀번호의 복호화 작업이 실패하였습니다.", e);
+			logger.error("등록된 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD, e);
 			return TaskResult.FAILED_DECODE_PASSWORD;
 		}
-		
-		// @@@@@ 설정파일에서 읽어와서 할당
-//		System.out.println(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
-		WebSite site = WebSite.get(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
-//		System.out.println(site);
-//		return null;
+
+		WebSite site = null;
+		try {
+			site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
+		} catch (Exception e) {
+			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_KEY_WEBSITE_NAME, e);
+			return TaskResult.INVALID_WEBSITE_NAME;
+		}
 
 		WebSiteAccount account = null;
 		try {
 			account = site.createAccount(id, password);
 		} catch (Exception e) {
-			logger.error("등록된 계정 정보가 유효하지 않습니다.", e);
+			logger.error("등록된 로그인 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD), e);
 			return TaskResult.INVALID_ACCOUNT;
 		}
 
@@ -91,16 +95,19 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 
 		TaskResult taskResult = TaskResult.OK;
 		for (Task task : this.tasks) {
+			logger.debug("Task 실행:{}", task);
+
 			try {
 				taskResult = task.run(handler);
 				// @@@@@ ok가 아니면???
 				if (taskResult != TaskResult.OK) {
-//					logger.warn("Task 실행 중 예외가 발생하였습니다.", e);
+					logger.error("Task 실행이 실패('{}') 하였습니다.", taskResult);
+				} else {
+					logger.debug("Task 실행이 완료되었습니다.");
 				}
 			} catch (Exception e) {
 				taskResult = TaskResult.UNEXPECTED_TASK_RUNNING_EXCEPTION;
 				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
-				break;
 			}
 		}
 

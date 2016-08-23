@@ -22,7 +22,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		l.upload(/*결과정보*/);
 		System.out.println("#############");
 		
-		return TaskResult.OK;
+		return TaskResult.FAILED_DECODE_PASSWORD;
 	}
 	
 }

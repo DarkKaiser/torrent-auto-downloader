@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import org.jsoup.helper.StringUtil;
+
 public enum WebSite {
 
 	BOGOBOGO("보고보고") {
@@ -23,16 +25,22 @@ public enum WebSite {
 	public String getName() {
 		return this.name;
 	}
-	
-	public static WebSite get(String name) {
-		if (BOGOBOGO.equals(name) == true) {
+
+	public static WebSite fromString(String name) {
+		if (name == null) {
+			throw new NullPointerException("name");
+		}
+		if (StringUtil.isBlank(name) == true) {
+			throw new IllegalArgumentException("name must not be empty.");
+		}
+
+		if (name.equals(BOGOBOGO.toString()) == true) {
 			return BOGOBOGO;
 		}
-		
-		// @@@@@
-		return BOGOBOGO;
+
+		throw new IllegalArgumentException(String.format("There is no value with name '%s' in Enum %s", name, WebSite.class.getSimpleName()));
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.name;
