@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <torrentad>
-	비정기적 다운로드
-	한번 다운로드 하고나면 더이상 다운로드를 하지 않는다.
-	<torrentad-once-tasks>
-		<torrentad-once-task>
-		</torrentad-once-task>
-	</torrentad-once-tasks>
-
-	<!-- 정기적 토렌트 다운로드 -->
-	<torrentad-regular-tasks>
-		<torrentad-regular-task>
+	<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
+	<torrentad-periodic-tasks>
+		<torrentad-periodic-task>
 			<board>newmovie</board> key:web url 형식으로 java에서 관리
+			
 			한 게시물안에 여러개의 토렌트, 자막은 모두 다운로드
 			다운로드 안 받을려면 exclude에 등록하면 됨
 			<search-keyword>
@@ -37,8 +31,13 @@
 				<id></id>
 				<date></date>
 			</latest-dn-key>마지막 다운로드키
-		</torrentad-regular-task>
-	</torrentad-regular-tasks>
+		</torrentad-periodic-task>
+	</torrentad-periodic-tasks>
+
+	<!-- 오직 한번만 토렌트 파일을 다운로드 받는 태스크 -->
+	<torrentad-once-tasks>
+		<torrentad-once-task/>
+	</torrentad-once-tasks>
 
 	<torrentad-config-values>
 		<!-- 토렌트 사이트 로그인 정보 -->

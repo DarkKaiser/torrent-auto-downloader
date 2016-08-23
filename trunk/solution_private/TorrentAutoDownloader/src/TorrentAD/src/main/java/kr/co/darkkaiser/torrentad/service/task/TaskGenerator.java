@@ -9,7 +9,7 @@ public class TaskGenerator {
 	public static void generate(List<Task> tasks, ConfigurationManager configurationManager) {
 		// TODO Auto-generated method stub
 		// @@@@@
-		tasks.add(new RegularTaskImpl());
+		tasks.add(new PeriodicTaskImpl());
 	}
 
 }

@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class RegularTaskImpl extends AbstractTask implements RegularTask {
+public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
-	private static final Logger logger = LoggerFactory.getLogger(RegularTaskImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 	
-	public RegularTaskImpl() {
+	public PeriodicTaskImpl() {
 	}
 
 	@Override
