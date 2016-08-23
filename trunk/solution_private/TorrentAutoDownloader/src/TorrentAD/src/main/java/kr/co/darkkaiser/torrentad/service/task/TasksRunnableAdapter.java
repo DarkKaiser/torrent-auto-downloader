@@ -45,7 +45,10 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 	}
 
 	private void init(ConfigurationManager configurationManager) {
+		assert configurationManager != null;
+		
 		//@@@@@ 환경설정정보 로드해서 task 초기화, taskfactory 이용
+		TaskGenerator.generate(this.tasks, this.configurationManager);
 	}
 
 	@Override
@@ -90,6 +93,10 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 		for (Task task : this.tasks) {
 			try {
 				taskResult = task.run(site);
+				// @@@@@ ok가 아니면???
+				if (taskResult != TaskResult.OK) {
+//					logger.warn("Task 실행 중 예외가 발생하였습니다.", e);
+				}
 			} catch (Exception e) {
 				taskResult = TaskResult.UNEXPECTED_TASK_RUNNING_EXCEPTION;
 				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
