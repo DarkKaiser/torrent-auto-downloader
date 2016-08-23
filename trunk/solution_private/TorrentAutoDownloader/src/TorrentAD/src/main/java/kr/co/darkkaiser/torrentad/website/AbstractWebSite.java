@@ -86,7 +86,7 @@ public abstract class AbstractWebSite implements WebSiteHandler, WebSiteContext 
 		return new StringBuilder()
 			.append(AbstractWebSite.class.getSimpleName())
 			.append("{")
-			.append("name:").append(this.site)
+			.append("site:").append(this.site)
 			.append(", account:").append(this.account)
 			.append("}")
 			.toString();

@@ -12,7 +12,9 @@ import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.util.AES256Util;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public final class TasksRunnableAdapter implements Callable<TaskResult> {
 
@@ -72,28 +74,33 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 			return TaskResult.FAILED_DECODE_PASSWORD;
 		}
 		
-		// @@@@@ bogobogo를 뺄수있는방법
+		// @@@@@ 설정파일에서 읽어와서 할당
+//		System.out.println(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
+		WebSite site = WebSite.get(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
+//		System.out.println(site);
+//		return null;
+
 		WebSiteAccount account = null;
 		try {
-			account = new BogoBogoWebSiteAccount(id, password);
+			account = site.createAccount(id, password);
 		} catch (Exception e) {
 			logger.error("등록된 계정 정보가 유효하지 않습니다.", e);
 			return TaskResult.INVALID_ACCOUNT;
 		}
 
-		BogoBogoWebSite site = new BogoBogoWebSite();
+		WebSiteHandler handler = site.createHandler();
 
 		try {
-			site.login(account);
+			handler.login(account);
 		} catch (Exception e) {
-			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", site.getName(), e);
+			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", site, e);
 			return TaskResult.FAILED_LOGIN;
 		}
-		
+
 		TaskResult taskResult = TaskResult.OK;
 		for (Task task : this.tasks) {
 			try {
-				taskResult = task.run(site);
+				taskResult = task.run(handler);
 				// @@@@@ ok가 아니면???
 				if (taskResult != TaskResult.OK) {
 //					logger.warn("Task 실행 중 예외가 발생하였습니다.", e);
@@ -105,7 +112,7 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 			}
 		}
 
-		site.logout();
+		handler.logout();
 
 		return taskResult;
 	}

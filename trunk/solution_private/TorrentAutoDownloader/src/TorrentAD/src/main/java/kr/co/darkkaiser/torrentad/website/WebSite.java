@@ -4,14 +4,12 @@ public enum WebSite {
 
 	BOGOBOGO("보고보고") {
 		@Override
-		public WebSiteHandler createWebSite() {
-			// @@@@@
+		public WebSiteHandler createHandler() {
 			return new BogoBogoWebSite();
 		}
 
 		@Override
-		public WebSiteAccount createWebSiteAccount(String id, String password) {
-			// @@@@@
+		public WebSiteAccount createAccount(String id, String password) {
 			return new BogoBogoWebSiteAccount(id, password);
 		}
 	};
@@ -26,12 +24,21 @@ public enum WebSite {
 		return this.name;
 	}
 	
+	public static WebSite get(String name) {
+		if (BOGOBOGO.equals(name) == true) {
+			return BOGOBOGO;
+		}
+		
+		// @@@@@
+		return BOGOBOGO;
+	}
+	
 	@Override
 	public String toString() {
 		return this.name;
 	}
 
-	abstract WebSiteHandler createWebSite();
-	abstract WebSiteAccount createWebSiteAccount(String id, String password);
-	
+	public abstract WebSiteHandler createHandler();
+	public abstract WebSiteAccount createAccount(String id, String password);
+
 }

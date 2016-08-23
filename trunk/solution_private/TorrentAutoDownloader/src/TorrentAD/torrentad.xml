@@ -40,6 +40,9 @@
 	</torrentad-once-tasks>
 
 	<torrentad-config-values>
+		<!-- 토렌트 사이트 이름 -->
+		<website-name>보고보고</website-name>
+		
 		<!-- 토렌트 사이트 로그인 정보 -->
 		<website-account-id>darkkaiser</website-account-id>
 		<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
