@@ -22,7 +22,7 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 	protected Connection.Response loginConnResponse;
 
 	public BogoBogoWebSite() {
-		super("보고보고");
+		super(WebSite.BOGOBOGO);
 	}
 	
 	@Override

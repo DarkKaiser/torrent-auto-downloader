@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.torrentad.website;
 
-import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,20 +7,16 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
-	protected final String name;
+	protected final WebSite site;
 
 	protected WebSiteAccount account;
 
-	protected AbstractWebSite(String name) {
-		if (name == null) {
-			throw new NullPointerException("name");
+	protected AbstractWebSite(WebSite site) {
+		if (site == null) {
+			throw new NullPointerException("site");
 		}
 
-		if (StringUtil.isBlank(name) == true) {
-			throw new IllegalArgumentException("name must not be empty.");
-		}
-
-		this.name = name;
+		this.site = site;
 	}
 
 	@Override
@@ -49,7 +44,7 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 
 	@Override
 	public String getName() {
-		return this.name;
+		return this.site.getName();
 	}
 
 	@Override
@@ -67,14 +62,10 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 	
 	@Override
 	public void validate() {
-		if (name == null) {
-			throw new NullPointerException("name");
+		if (this.site == null) {
+			throw new NullPointerException("site");
 		}
 
-		if (StringUtil.isBlank(name) == true) {
-			throw new IllegalArgumentException("name must not be empty.");
-		}
-		
 		if (this.account == null) {
 			throw new NullPointerException("account");
 		}
@@ -98,7 +89,7 @@ public abstract class AbstractWebSite<B extends AbstractWebSite<B>> implements W
 		return new StringBuilder()
 			.append(AbstractWebSite.class.getSimpleName())
 			.append("{")
-			.append("name:").append(this.name)
+			.append("name:").append(this.site)
 			.append(", account:").append(this.account)
 			.append("}")
 			.toString();
