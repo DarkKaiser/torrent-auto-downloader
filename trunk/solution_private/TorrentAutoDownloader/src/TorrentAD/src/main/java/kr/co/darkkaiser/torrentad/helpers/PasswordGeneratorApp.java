@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.torrentad.helpers;
 
-import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.util.AES256Util;
 
 public class PasswordGeneratorApp {
@@ -13,7 +12,7 @@ public class PasswordGeneratorApp {
 
         String plainText = args[0];
 
-        AES256Util aes256 = new AES256Util(Constants.CRYPTOGRAPH_KEY);
+        AES256Util aes256 = new AES256Util();
 
         String encText = aes256.aesEncode(plainText);
         String decText = aes256.aesDecode(encText);

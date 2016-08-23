@@ -7,12 +7,12 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.util.AES256Util;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public final class TasksRunnableAdapter implements Callable<TaskResult> {
 
@@ -50,37 +50,55 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 
 	@Override
 	public TaskResult call() throws Exception {
-		WebSiteHandler handler = new BogoBogoWebSite();
-		// @@@@@ 비밀번호 틀릴때 처리
-		WebSiteAccount account = new BogoBogoWebSiteAccount(this.configurationManager.getValue("website-account-id"), this.aes256.aesDecode(this.configurationManager.getValue("website-account-password")));
+		logger.info("새 토렌트 파일 확인 작업을 시작합니다.");
+
+		TaskResult taskResult = call0();
+
+		logger.info("새 토렌트 파일 확인 작업이 종료되었습니다.");
 		
-		// 사이트 로그인을 다음과 같이 변경
+		return taskResult;
+	}
+
+	private TaskResult call0() throws Exception {
+		String id = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID);
+		String password = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
 		try {
-			handler.login(account);
+			password = this.aes256.aesDecode(password);
 		} catch (Exception e) {
-			logger.error(null, e);
-			return TaskResult.OK;
+			logger.error("등록된 비밀번호의 복호화 작업이 실패하였습니다.", e);
+			return TaskResult.FAILED_DECODE_PASSWORD;
+		}
+		
+		WebSiteAccount account = null;
+		try {
+			account = new BogoBogoWebSiteAccount(id, password);
+		} catch (Exception e) {
+			logger.error("등록된 계정 정보가 유효하지 않습니다.", e);
+			return TaskResult.INVALID_ACCOUNT;
 		}
 
+		BogoBogoWebSite site = new BogoBogoWebSite();
+
+		try {
+			site.login(account);
+		} catch (Exception e) {
+			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", site.getName(), e);
+			return TaskResult.FAILED_LOGIN;
+		}
+		
 		TaskResult taskResult = TaskResult.OK;
 		for (Task task : this.tasks) {
 			try {
-				taskResult = task.run(handler);
+				taskResult = task.run(site);
 			} catch (Exception e) {
-				// @@@@@ 메시지 추가
-				logger.error(null, e);
+				taskResult = TaskResult.UNEXPECTED_TASK_RUNNING_EXCEPTION;
+				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
 				break;
 			}
 		}
 
-		// 사이트 로그아웃
-		try {
-			handler.logout();
-		} catch (Exception e) {
-			logger.error(null, e);
-			return TaskResult.OK;
-		}
-		
+		site.logout();
+
 		return taskResult;
 	}
 

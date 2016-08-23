@@ -16,9 +16,16 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class AES256Util {
-	
+
+	/** 암복호화 키(최소 16자 이상) */
+	private static final String DEFAULT_CRYPTOGRAPH_KEY = "chlrhrkehlwk9876@*!";
+
 	private String iv;
 	private Key keySpec;
+
+	public AES256Util() throws UnsupportedEncodingException {
+		this(DEFAULT_CRYPTOGRAPH_KEY);
+	}
 
 	public AES256Util(String key) throws UnsupportedEncodingException {
 		this.iv = key.substring(0, 16);

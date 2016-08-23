@@ -31,7 +31,7 @@ public class App {
 		this.configurationManager = configurationManager;
 		
 		try {
-			AES256Util aes256 = new AES256Util(Constants.CRYPTOGRAPH_KEY);
+			AES256Util aes256 = new AES256Util();
 			this.torrentAdService = new TorrentAdService(aes256, configurationManager);
 			return this.torrentAdService.start();
 		} catch (UnsupportedEncodingException e) {
