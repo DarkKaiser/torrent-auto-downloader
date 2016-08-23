@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -8,6 +9,7 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.service.task.TasksRunnableAdapter;
+import kr.co.darkkaiser.torrentad.util.AES256Util;
 
 public final class TorrentAdService {
 
@@ -17,9 +19,17 @@ public final class TorrentAdService {
 
 	private TasksRunnableAdapter tasksRunnableAdapter;
 
-	private ConfigurationManager configurationManager;
+	private final ConfigurationManager configurationManager;
 
-	public TorrentAdService(ConfigurationManager configurationManager) {
+	private final AES256Util aes256;
+
+	public TorrentAdService(AES256Util aes256, ConfigurationManager configurationManager) throws UnsupportedEncodingException {
+		if (aes256 == null) {
+			throw new NullPointerException("aes256");
+		}
+		if (this.aes256 != null) {
+			throw new IllegalStateException("aes256 set already");
+		}
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
@@ -27,6 +37,7 @@ public final class TorrentAdService {
 			throw new IllegalStateException("configurationManager set already");
 		}
 
+		this.aes256 = aes256;
 		this.configurationManager = configurationManager;
 	}
 
@@ -46,7 +57,7 @@ public final class TorrentAdService {
 		
 		this.tasksExecutorTimer = new Timer();
 		this.tasksExecutorService = Executors.newFixedThreadPool(1);
-		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.configurationManager);
+		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.aes256, this.configurationManager);
 		
 		this.tasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override

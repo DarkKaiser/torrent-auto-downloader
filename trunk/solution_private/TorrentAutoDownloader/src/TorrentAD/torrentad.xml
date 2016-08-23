@@ -41,8 +41,13 @@
 	</torrentad-regular-tasks>
 
 	<torrentad-config-values>
-		<!-- Task 실행시간 간격(단위:초) -->
+		<!-- 토렌트 사이트 로그인 정보 -->
+		<website-account-id>darkkaiser</website-account-id>
+		<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=1</website-account-password>
+
+		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>10</task-execute-interval-time-second>
+		
 		
 		
 		
