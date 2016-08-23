@@ -4,11 +4,15 @@ import org.jsoup.helper.StringUtil;
 
 public class WebSiteAccountAdapter implements WebSiteAccount {
 
-	private String id;
-	private String password;
+	private final WebSite site;
 
-	protected WebSiteAccountAdapter(String id, String password) {
-		validate(id, password);
+	private final String id;
+	private final String password;
+
+	protected WebSiteAccountAdapter(WebSite site, String id, String password) {
+		validate(site, id, password);
+
+		this.site = site;
 
 		this.id = id;
 		this.password = password;
@@ -26,22 +30,22 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	
 	@Override
 	public void validate() {
-		validate(this.id, this.password);
+		validate(this.site, this.id, this.password);
 	}
 
-	private void validate(String id, String password) {
+	private void validate(WebSite site, String id, String password) {
+		if (site == null) {
+			throw new NullPointerException("site");
+		}
 		if (id == null) {
 			throw new NullPointerException("id");
 		}
-
 		if (StringUtil.isBlank(id) == true) {
 			throw new IllegalArgumentException("id must not be empty.");
 		}
-		
 		if (password == null) {
 			throw new NullPointerException("password");
 		}
-
 		if (StringUtil.isBlank(password) == true) {
 			throw new IllegalArgumentException("password must not be empty.");
 		}
@@ -63,7 +67,8 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 		return new StringBuilder()
 			.append(WebSiteAccountAdapter.class.getSimpleName())
 			.append("{")
-			.append("id:").append(this.id)
+			.append("site:").append(this.site)
+			.append(", id:").append(this.id)
 			.append(", password:").append(this.password)
 			.append("}")
 			.toString();

@@ -9,7 +9,7 @@ import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
 import kr.co.darkkaiser.torrentad.service.TorrentAdService;
-import kr.co.darkkaiser.torrentad.util.AES256Util;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class App {
 	

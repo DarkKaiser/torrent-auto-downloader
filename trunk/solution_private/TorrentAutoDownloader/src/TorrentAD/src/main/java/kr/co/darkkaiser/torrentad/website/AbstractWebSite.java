@@ -62,7 +62,7 @@ public abstract class AbstractWebSite implements WebSiteHandler, WebSiteContext 
 		if (this.site == null) {
 			throw new NullPointerException("site");
 		}
-
+		
 		if (this.account == null) {
 			throw new NullPointerException("account");
 		}

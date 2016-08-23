@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.util.AES256Util;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
-import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -30,14 +28,8 @@ public final class TasksRunnableAdapter implements Callable<TaskResult> {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
-		if (this.aes256 != null) {
-			throw new IllegalStateException("aes256 set already");
-		}
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
-		}
-		if (this.configurationManager != null) {
-			throw new IllegalStateException("configurationManager set already");
 		}
 
 		this.aes256 = aes256;

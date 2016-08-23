@@ -146,12 +146,4 @@ public class BogoBogoWebSite extends AbstractWebSite {
 
 	}
 
-	public void download() {
-		// @@@@@
-	}
-
-	public void upload() {
-		// @@@@@
-	}
-
 }

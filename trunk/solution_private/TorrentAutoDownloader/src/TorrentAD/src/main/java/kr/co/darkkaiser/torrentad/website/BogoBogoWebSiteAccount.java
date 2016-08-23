@@ -1,11 +1,11 @@
 package kr.co.darkkaiser.torrentad.website;
 
 public final class BogoBogoWebSiteAccount extends WebSiteAccountAdapter {
-
-	public BogoBogoWebSiteAccount(String id, String password) {
-		super(id, password);
-	}
 	
+	public BogoBogoWebSiteAccount(String id, String password) {
+		super(WebSite.BOGOBOGO, id, password);
+	}
+
 	@Override
 	public void validate() {
 		super.validate();
@@ -15,10 +15,15 @@ public final class BogoBogoWebSiteAccount extends WebSiteAccountAdapter {
 	public boolean isValid() {
 		return super.isValid();
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString();
+		return new StringBuilder()
+				.append(BogoBogoWebSiteAccount.class.getSimpleName())
+				.append("{")
+				.append("}, ")
+				.append(super.toString())
+				.toString();
 	}
 
 }

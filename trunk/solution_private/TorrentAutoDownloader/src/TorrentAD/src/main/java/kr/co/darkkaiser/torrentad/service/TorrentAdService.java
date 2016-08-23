@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.service.task.TasksRunnableAdapter;
-import kr.co.darkkaiser.torrentad.util.AES256Util;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public final class TorrentAdService {
 
@@ -27,14 +27,8 @@ public final class TorrentAdService {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
-		if (this.aes256 != null) {
-			throw new IllegalStateException("aes256 set already");
-		}
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
-		}
-		if (this.configurationManager != null) {
-			throw new IllegalStateException("configurationManager set already");
 		}
 
 		this.aes256 = aes256;

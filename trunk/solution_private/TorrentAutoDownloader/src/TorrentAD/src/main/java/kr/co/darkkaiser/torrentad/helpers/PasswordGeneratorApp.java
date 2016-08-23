@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.torrentad.helpers;
 
-import kr.co.darkkaiser.torrentad.util.AES256Util;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class PasswordGeneratorApp {
 
