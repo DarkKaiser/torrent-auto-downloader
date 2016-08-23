@@ -42,7 +42,7 @@
 
 	<torrentad-config-values>
 		<!-- Task 실행시간 간격(단위:초) -->
-		<task-execute-interval>10</task-execute-interval>
+		<task-execute-interval-time-second>10</task-execute-interval-time-second>
 		
 		
 		

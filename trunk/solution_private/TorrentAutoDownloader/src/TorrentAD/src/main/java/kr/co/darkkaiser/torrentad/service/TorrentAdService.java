@@ -53,7 +53,7 @@ public final class TorrentAdService {
 			public void run() {
 				TorrentAdService.this.tasksExecutorService.submit(TorrentAdService.this.tasksRunnableAdapter);
 			}
-		}, 1000, Integer.parseInt(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_TASK_EXECUTE_INTERVAL)) * 1000);
+		}, 1000, Integer.parseInt(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
 
 		return true;
 	}

@@ -8,7 +8,7 @@ public final class Constants {
 
 	public static final String APP_CONFIG_FILE_NAME = "torrentad.xml";
 
-	public static final String APP_CONFIG_KEY_TASK_EXECUTE_INTERVAL = "task-execute-interval";
+	public static final String APP_CONFIG_KEY_TASK_EXECUTE_INTERVAL_TIME_SECOND = "task-execute-interval-time-second";
 	
 	private Constants() {
 	}
