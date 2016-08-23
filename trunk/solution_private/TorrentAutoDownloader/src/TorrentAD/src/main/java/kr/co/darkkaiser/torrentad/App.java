@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
-import kr.co.darkkaiser.torrentad.task.TorrentADService;
+import kr.co.darkkaiser.torrentad.service.TorrentADService;
 
 public class App {
 	

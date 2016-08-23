@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.task;
+package kr.co.darkkaiser.torrentad.service.task;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 

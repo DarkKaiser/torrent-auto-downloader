@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.task;
+package kr.co.darkkaiser.torrentad.service;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.service.task.TasksExecutableAdapter;
 
 public final class TorrentADService {
 
@@ -21,7 +22,7 @@ public final class TorrentADService {
 	private ConfigurationManager configurationManager;
 
 	// @@@@@
-	private TaskCallable taskCallable = new TaskCallable();
+	private TasksExecutableAdapter taskManager = new TasksExecutableAdapter();
 
 	public TorrentADService(ConfigurationManager configurationManager) {
 		if (configurationManager == null) {
@@ -48,7 +49,7 @@ public final class TorrentADService {
 		
 		// 작업 정보를 읽어온다.
 		// @@@@@
-		this.taskCallable.init(this.configurationManager);
+		this.taskManager.init(this.configurationManager);
 		
 		this.taskService = Executors.newFixedThreadPool(1);
 
@@ -57,7 +58,7 @@ public final class TorrentADService {
 			@Override
 			public void run() {
 				// @@@@@ 시간 및 처리자
-				TorrentADService.this.taskService.submit(TorrentADService.this.taskCallable);
+				TorrentADService.this.taskService.submit(TorrentADService.this.taskManager);
 			}
 		}, 10, 10000);
 

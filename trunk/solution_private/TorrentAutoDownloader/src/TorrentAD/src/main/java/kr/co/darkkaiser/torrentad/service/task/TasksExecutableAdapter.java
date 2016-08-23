@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.task;
+package kr.co.darkkaiser.torrentad.service.task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public final class TaskCallable implements Callable<TaskResult> {
+public final class TasksExecutableAdapter implements Callable<TaskResult> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TaskCallable.class);
+	private static final Logger logger = LoggerFactory.getLogger(TasksExecutableAdapter.class);
 	
 	private final List<Task> tasks = new ArrayList<>();
 
-	public TaskCallable() {
+	public TasksExecutableAdapter() {
 	}
 	
 	public void init(ConfigurationManager configurationManager) {

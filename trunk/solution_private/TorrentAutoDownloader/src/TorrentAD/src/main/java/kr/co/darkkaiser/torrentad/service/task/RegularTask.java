@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.task;
+package kr.co.darkkaiser.torrentad.service.task;
 
 public interface RegularTask extends Task {
 
