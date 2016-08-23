@@ -122,6 +122,15 @@ public class BogoBogoWebSite extends AbstractWebSite<BogoBogoWebSite> {
 		this.loginConnResponse = null;
 	}
 
+	@Override
+	public boolean isLogin() {
+		if (getAccount() == null || this.loginConnResponse == null) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public void search() {
 		// @@@@@
 		if (this.loginConnResponse == null) {

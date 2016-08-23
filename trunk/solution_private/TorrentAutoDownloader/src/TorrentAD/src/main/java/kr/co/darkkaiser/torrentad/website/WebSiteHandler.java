@@ -6,4 +6,6 @@ public interface WebSiteHandler {
 
 	void logout() throws Exception;
 
+	boolean isLogin();
+
 }
