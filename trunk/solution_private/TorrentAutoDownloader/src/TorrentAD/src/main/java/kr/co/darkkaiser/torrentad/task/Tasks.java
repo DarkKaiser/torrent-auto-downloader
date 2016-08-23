@@ -12,7 +12,8 @@ import kr.co.darkkaiser.torrentad.website.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public final class Tasks implements Callable<Integer> {
+// invoke @@@@@
+public final class Tasks implements Callable<TaskResult> {
 
 	private static final Logger logger = LoggerFactory.getLogger(Tasks.class);
 	
@@ -26,7 +27,7 @@ public final class Tasks implements Callable<Integer> {
 	}
 
 	@Override
-	public Integer call() throws Exception {
+	public TaskResult call() throws Exception {
 		// 사이트 로그인
 		WebSiteHandler l = new BogoBogoWebSite();
 
@@ -38,7 +39,7 @@ public final class Tasks implements Callable<Integer> {
 			e.printStackTrace();
 		}
 		
-		Integer resultValue = null;
+		TaskResult resultValue = null;
 		for (Task task : this.tasks) {
 			try {
 				resultValue = task.execute(l);
@@ -56,7 +57,7 @@ public final class Tasks implements Callable<Integer> {
 			e.printStackTrace();
 		}
 		
-		return resultValue;
+		return TaskResult.OK;
 	}
 
 }

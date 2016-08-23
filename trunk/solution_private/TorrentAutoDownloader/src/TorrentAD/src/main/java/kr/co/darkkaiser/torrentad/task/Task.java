@@ -4,8 +4,6 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public interface Task {
 
-	// @@@@@
-	public Integer execute(WebSiteHandler l) throws Exception;
-
+	TaskResult execute(WebSiteHandler handler) throws Exception;
 
 }
