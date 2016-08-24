@@ -2,6 +2,9 @@ package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
+import kr.co.darkkaiser.torrentad.website.bogobogo.BogoBogoWebSite;
+import kr.co.darkkaiser.torrentad.website.bogobogo.BogoBogoWebSiteAccount;
+
 public enum WebSite {
 
 	BOGOBOGO("보고보고") {

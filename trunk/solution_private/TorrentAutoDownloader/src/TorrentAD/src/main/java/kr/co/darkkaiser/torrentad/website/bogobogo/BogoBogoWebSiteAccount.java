@@ -1,4 +1,7 @@
-package kr.co.darkkaiser.torrentad.website;
+package kr.co.darkkaiser.torrentad.website.bogobogo;
+
+import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteAccountAdapter;
 
 public final class BogoBogoWebSiteAccount extends WebSiteAccountAdapter {
 	

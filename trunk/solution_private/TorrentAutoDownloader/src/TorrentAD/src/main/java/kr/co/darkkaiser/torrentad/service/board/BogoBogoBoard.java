@@ -1,7 +1,9 @@
 package kr.co.darkkaiser.torrentad.service.board;
 
-public enum Board {
+public enum BogoBogoBoard {
 
 	// @@@@@
+	NEW_MOVIE,
+	OLD_MOVIE
 
 }

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.website;
+package kr.co.darkkaiser.torrentad.website.bogobogo;
 
 import java.io.IOException;
 
@@ -8,6 +8,12 @@ import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
+import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
+import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
+import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 
 public class BogoBogoWebSite extends AbstractWebSite {
 	
