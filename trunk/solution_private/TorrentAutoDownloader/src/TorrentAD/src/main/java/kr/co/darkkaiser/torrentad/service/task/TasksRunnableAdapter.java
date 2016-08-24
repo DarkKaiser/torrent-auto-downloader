@@ -35,14 +35,13 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 		this.aes256 = aes256;
 		this.configurationManager = configurationManager;
 
-		init(configurationManager);
+		init();
 	}
 
-	private void init(ConfigurationManager configurationManager) {
-		assert configurationManager != null;
-		
-		//@@@@@ 환경설정정보 로드해서 task 초기화, taskfactory 이용
-		TaskGenerator.generate(this.tasks, this.configurationManager);
+	private void init() {
+		assert this.aes256 != null;
+		assert this.configurationManager != null;		
+		TaskGenerator.load(this.configurationManager, this.tasks);
 	}
 
 	@Override
