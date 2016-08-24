@@ -13,7 +13,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	}
 
 	@Override
-	public TasksResult run(WebSiteHandler handler) throws Exception {
+	public TaskResult run(WebSiteHandler handler) throws Exception {
 		
 		// @@@@@
 //		/* 반환 */ l.search(/* 검색정보 */);
@@ -22,7 +22,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		l.upload(/*결과정보*/);
 		System.out.println("#############");
 		
-		return TasksResult.PASSWORD_DECRYPTION_FAILED;
+		return TaskResult.OK;
 	}
 	
 }
