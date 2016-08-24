@@ -14,8 +14,8 @@ public class PasswordGeneratorApp {
 
         AES256Util aes256 = new AES256Util();
 
-        String encText = aes256.aesEncode(plainText);
-        String decText = aes256.aesDecode(encText);
+        String encText = aes256.encode(plainText);
+        String decText = aes256.decode(encText);
 
         System.out.println("암호화할 문자 : " + plainText);
         System.out.println("암호화된 문자 : " + encText);

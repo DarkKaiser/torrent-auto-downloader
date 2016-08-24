@@ -41,7 +41,7 @@ public class AES256Util {
 		this.keySpec = keySpec;
 	}
 
-	public String aesEncode(String str)
+	public String encode(String str)
 			throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -53,7 +53,7 @@ public class AES256Util {
 		return enStr;
 	}
 
-	public String aesDecode(String str)
+	public String decode(String str)
 			throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
