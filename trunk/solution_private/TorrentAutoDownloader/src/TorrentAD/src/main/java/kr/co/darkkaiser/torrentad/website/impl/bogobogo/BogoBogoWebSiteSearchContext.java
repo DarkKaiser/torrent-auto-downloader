@@ -5,6 +5,8 @@ import org.jsoup.helper.StringUtil;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 
 public class BogoBogoWebSiteSearchContext implements WebSiteSearchContext {
+	
+	private BogoBogoBoard b;
 
 	@Override
 	public void setBoardName(String boardName) {
@@ -15,6 +17,7 @@ public class BogoBogoWebSiteSearchContext implements WebSiteSearchContext {
 			throw new IllegalArgumentException("boardName은 빈 문자열을 허용하지 않습니다.");
 		}
 
+		// @@@@@
 	}
 
 	// @@@@@
