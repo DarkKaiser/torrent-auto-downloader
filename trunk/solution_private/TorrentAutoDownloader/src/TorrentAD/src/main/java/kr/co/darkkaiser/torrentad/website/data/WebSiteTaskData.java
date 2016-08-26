@@ -1,7 +1,9 @@
 package kr.co.darkkaiser.torrentad.website.data;
 
-public interface WebSiteData {
+public interface WebSiteTaskData {
 
+	// TaskData에서 상속??
+	
 	// @@@@@
 	
 }

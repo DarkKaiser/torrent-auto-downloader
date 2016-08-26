@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.website.torrent.bogobogo;
+package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
 import kr.co.darkkaiser.torrentad.website.board.AbstractBoardData;
 

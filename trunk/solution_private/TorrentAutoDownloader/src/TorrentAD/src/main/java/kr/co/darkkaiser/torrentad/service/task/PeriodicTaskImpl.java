@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.data.WebSiteData;
+import kr.co.darkkaiser.torrentad.website.data.WebSiteTaskData;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 	
 	// @@@@@
-	private WebSiteData taskData;
+	private WebSiteTaskData taskData;
 	
 	public PeriodicTaskImpl() {
 	}
