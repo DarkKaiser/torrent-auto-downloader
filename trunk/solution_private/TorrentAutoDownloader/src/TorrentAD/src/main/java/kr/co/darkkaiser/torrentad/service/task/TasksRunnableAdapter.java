@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.task;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -22,7 +21,7 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 	private final String siteLoginId;
 	private final String siteLoginPassword;
 
-	private final List<Task> tasks = new ArrayList<>();
+	private final List<Task> tasks;
 
 	private final ConfigurationManager configurationManager;
 
@@ -58,7 +57,8 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 			throw e;
 		}
 
-		TaskGenerator.load(this.configurationManager, this.site, this.tasks);
+		// Task 목록을 생성한다.
+		this.tasks = TaskGenerator.generate(this.configurationManager, this.site);
 	}
 
 	@Override

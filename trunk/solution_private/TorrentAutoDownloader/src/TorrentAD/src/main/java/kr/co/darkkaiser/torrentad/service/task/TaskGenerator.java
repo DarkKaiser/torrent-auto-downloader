@@ -2,6 +2,7 @@ package kr.co.darkkaiser.torrentad.service.task;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -23,12 +24,12 @@ public class TaskGenerator {
 	private TaskGenerator() {
 	}
 
-	public static void load(ConfigurationManager configurationManager, WebSite site, List<Task> tasks) {
+	public static List<Task> generate(ConfigurationManager configurationManager, WebSite site) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
-		if (tasks == null) {
-			throw new NullPointerException("tasks");
+		if (site == null) {
+			throw new NullPointerException("site");
 		}
 		
 		/////////////////////////////////////////////////////////////////
@@ -36,6 +37,7 @@ public class TaskGenerator {
 		// @@@@@
 		//@@@@@ 환경설정정보 로드해서 task 초기화
 
+		List<Task> tasks = new ArrayList<>();
 		tasks.add(new PeriodicTaskImpl());
 		
 		try {
@@ -150,6 +152,7 @@ public class TaskGenerator {
 		} finally {
 		}
 
+		return tasks;
 	}
 
 }
