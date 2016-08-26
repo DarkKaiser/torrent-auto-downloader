@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractWebSite implements WebSiteHandler, WebSiteContext {
+public abstract class AbstractWebSite implements WebSiteContext, WebSiteHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
@@ -62,7 +62,6 @@ public abstract class AbstractWebSite implements WebSiteHandler, WebSiteContext 
 		if (this.site == null) {
 			throw new NullPointerException("site");
 		}
-		
 		if (this.account == null) {
 			throw new NullPointerException("account");
 		}

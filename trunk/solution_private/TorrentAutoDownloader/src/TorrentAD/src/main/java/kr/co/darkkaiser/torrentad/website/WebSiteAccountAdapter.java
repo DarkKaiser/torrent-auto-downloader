@@ -4,15 +4,11 @@ import org.jsoup.helper.StringUtil;
 
 public class WebSiteAccountAdapter implements WebSiteAccount {
 
-	private final WebSite site;
-
 	private final String id;
 	private final String password;
 
-	protected WebSiteAccountAdapter(WebSite site, String id, String password) {
-		validate(site, id, password);
-
-		this.site = site;
+	protected WebSiteAccountAdapter(String id, String password) {
+		validate(id, password);
 
 		this.id = id;
 		this.password = password;
@@ -30,13 +26,10 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	
 	@Override
 	public void validate() {
-		validate(this.site, this.id, this.password);
+		validate(this.id, this.password);
 	}
 
-	private void validate(WebSite site, String id, String password) {
-		if (site == null) {
-			throw new NullPointerException("site");
-		}
+	private void validate(String id, String password) {
 		if (id == null) {
 			throw new NullPointerException("id");
 		}
@@ -67,7 +60,6 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 		return new StringBuilder()
 			.append(WebSiteAccountAdapter.class.getSimpleName())
 			.append("{")
-			.append("site:").append(this.site)
 			.append(", id:").append(this.id)
 			.append(", password:").append(this.password)
 			.append("}")

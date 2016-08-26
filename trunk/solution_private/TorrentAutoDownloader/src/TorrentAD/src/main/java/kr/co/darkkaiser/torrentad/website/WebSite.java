@@ -3,7 +3,6 @@ package kr.co.darkkaiser.torrentad.website;
 import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSite;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSiteSearchContext;
 
 public enum WebSite {
@@ -16,7 +15,7 @@ public enum WebSite {
 
 		@Override
 		public WebSiteAccount createAccount(String id, String password) {
-			return new BogoBogoWebSiteAccount(id, password);
+			return new WebSiteAccountAdapter(id, password);
 		}
 
 		@Override
@@ -47,12 +46,12 @@ public enum WebSite {
 			return BOGOBOGO;
 		}
 
-		throw new IllegalArgumentException(String.format("There is no value with name '%s' in Enum %s", name, WebSite.class.getSimpleName()));
+		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 
 	@Override
 	public String toString() {
-		return this.name;
+		return getName();
 	}
 
 	public abstract WebSiteHandler createHandler();
