@@ -18,13 +18,17 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
+	private final WebSite site;
+	private final String siteLoginId;
+	private final String siteLoginPassword;
+
 	private final List<Task> tasks = new ArrayList<>();
 
 	private final ConfigurationManager configurationManager;
 
 	private final AES256Util aes256;
 
-	public TasksRunnableAdapter(AES256Util aes256, ConfigurationManager configurationManager) {
+	public TasksRunnableAdapter(AES256Util aes256, ConfigurationManager configurationManager) throws Exception {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
@@ -35,13 +39,26 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 		this.aes256 = aes256;
 		this.configurationManager = configurationManager;
 
-		init();
-	}
+		// 토렌트 사이트 이름을 구한다.
+		try {
+			this.site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
+		} catch (Exception e) {
+			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_KEY_WEBSITE_NAME);
+			throw e;
+		}
 
-	private void init() {
-		assert this.aes256 != null;
-		assert this.configurationManager != null;		
-		TaskGenerator.load(this.configurationManager, this.tasks);
+		// 토렌트 사이트 계정 정보를 구한다.
+		this.siteLoginId = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID);
+		String encryptionPassword = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
+
+		try {
+			this.siteLoginPassword = this.aes256.decode(encryptionPassword);
+		} catch (Exception e) {
+			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
+			throw e;
+		}
+
+		TaskGenerator.load(this.configurationManager, this.site, this.tasks);
 	}
 
 	@Override
@@ -56,37 +73,20 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 	}
 
 	private TasksExecutorServiceResultAdapter call0() throws Exception {
-		String id = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID);
-		String password = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
-		try {
-			password = this.aes256.decode(password);
-		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD, e);
-			return TasksExecutorServiceResultAdapter.PASSWORD_DECRYPTION_FAILED();
-		}
-
-		WebSite site = null;
-		try {
-			site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
-		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_KEY_WEBSITE_NAME, e);
-			return TasksExecutorServiceResultAdapter.INVALID_WEBSITE_NAME();
-		}
-
 		WebSiteAccount account = null;
 		try {
-			account = site.createAccount(id, password);
+			account = this.site.createAccount(this.siteLoginId, this.siteLoginPassword);
 		} catch (Exception e) {
 			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD), e);
 			return TasksExecutorServiceResultAdapter.INVALID_ACCOUNT();
 		}
 
-		WebSiteHandler handler = site.createHandler();
+		WebSiteHandler handler = this.site.createHandler();
 
 		try {
 			handler.login(account);
 		} catch (Exception e) {
-			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", site, e);
+			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", this.site, e);
 			return TasksExecutorServiceResultAdapter.WEBSITE_LOGIN_FAILED();
 		}
 

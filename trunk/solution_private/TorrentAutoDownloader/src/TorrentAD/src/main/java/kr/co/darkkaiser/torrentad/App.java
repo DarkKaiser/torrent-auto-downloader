@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.torrentad;
 
-import java.io.UnsupportedEncodingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +32,7 @@ public class App {
 			AES256Util aes256 = new AES256Util();
 			this.torrentAdService = new TorrentAdService(aes256, configurationManager);
 			return this.torrentAdService.start();
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			logger.error(null, e);
 			return false;
 		}

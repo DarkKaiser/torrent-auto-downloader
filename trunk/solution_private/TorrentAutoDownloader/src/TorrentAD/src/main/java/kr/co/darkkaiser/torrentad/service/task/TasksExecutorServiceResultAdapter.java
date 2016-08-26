@@ -6,12 +6,6 @@ public final class TasksExecutorServiceResultAdapter {
 		/** 성공 */
 		OK,
 
-		/** 웹사이트 비밀번호 복호화 실패 */
-		PASSWORD_DECRYPTION_FAILED,
-
-		/** 유효하지 않은 웹사이트 이름 */
-		INVALID_WEBSITE_NAME,
-
 		/** 유효하지 않은 웹사이트 계정정보 */
 		INVALID_ACCOUNT,
 
@@ -20,7 +14,7 @@ public final class TasksExecutorServiceResultAdapter {
 
 		/** Task 실행 중 예외 발생 */
 		UNEXPECTED_TASK_RUNNING_EXCEPTION,
-		
+
 		/** Task 실행 실패 */
 		TASK_EXECUTION_FAILED
 	}
@@ -48,14 +42,6 @@ public final class TasksExecutorServiceResultAdapter {
 	
 	public static TasksExecutorServiceResultAdapter OK() {
 		return new TasksExecutorServiceResultAdapter(TasksExecutorServiceResult.OK);
-	}
-	
-	public static TasksExecutorServiceResultAdapter PASSWORD_DECRYPTION_FAILED() {
-		return new TasksExecutorServiceResultAdapter(TasksExecutorServiceResult.PASSWORD_DECRYPTION_FAILED);
-	}
-
-	public static TasksExecutorServiceResultAdapter INVALID_WEBSITE_NAME() {
-		return new TasksExecutorServiceResultAdapter(TasksExecutorServiceResult.INVALID_WEBSITE_NAME);
 	}
 	
 	public static TasksExecutorServiceResultAdapter INVALID_ACCOUNT() {

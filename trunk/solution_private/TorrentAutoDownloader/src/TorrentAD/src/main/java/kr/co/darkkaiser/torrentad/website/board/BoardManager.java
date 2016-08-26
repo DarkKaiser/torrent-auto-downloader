@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.board;
+package kr.co.darkkaiser.torrentad.website.board;
 
 public class BoardManager {
 

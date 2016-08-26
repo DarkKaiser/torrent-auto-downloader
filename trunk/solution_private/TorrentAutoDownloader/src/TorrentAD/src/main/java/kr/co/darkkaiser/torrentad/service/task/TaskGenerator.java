@@ -14,6 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.website.WebSite;
 
 public class TaskGenerator {
 	
@@ -22,7 +23,7 @@ public class TaskGenerator {
 	private TaskGenerator() {
 	}
 
-	public static void load(ConfigurationManager configurationManager, List<Task> tasks) {
+	public static void load(ConfigurationManager configurationManager, WebSite site, List<Task> tasks) {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}

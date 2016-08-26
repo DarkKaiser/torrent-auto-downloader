@@ -35,7 +35,7 @@ public final class TorrentAdService {
 		this.configurationManager = configurationManager;
 	}
 
-	public boolean start() {
+	public boolean start() throws Exception {
 		if (this.tasksExecutorTimer != null) {
 			throw new IllegalStateException("tasksExecutorTimer set already");
 		}
