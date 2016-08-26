@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.service.task.periodic.PeriodicTaskImpl;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 
 public class TaskGenerator {

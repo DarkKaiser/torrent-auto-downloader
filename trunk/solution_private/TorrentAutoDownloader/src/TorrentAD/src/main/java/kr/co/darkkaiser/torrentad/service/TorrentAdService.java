@@ -58,7 +58,7 @@ public final class TorrentAdService {
 			public void run() {
 				TorrentAdService.this.tasksExecutorService.submit(TorrentAdService.this.tasksRunnableAdapter);
 			}
-		}, 1000, Integer.parseInt(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
+		}, 500, Integer.parseInt(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
 
 		return true;
 	}
@@ -67,6 +67,7 @@ public final class TorrentAdService {
 		if (this.tasksExecutorTimer != null) {
 			this.tasksExecutorTimer.cancel();
 		}
+		
 		if (this.tasksExecutorService != null) {
 			this.tasksExecutorService.shutdown();
 		}

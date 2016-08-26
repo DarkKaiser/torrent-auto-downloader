@@ -1,8 +1,11 @@
-package kr.co.darkkaiser.torrentad.service.task;
+package kr.co.darkkaiser.torrentad.service.task.periodic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.service.task.AbstractTask;
+import kr.co.darkkaiser.torrentad.service.task.TaskResult;
+import kr.co.darkkaiser.torrentad.service.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
