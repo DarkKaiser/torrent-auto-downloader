@@ -17,10 +17,9 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
-	// @@@@@
 	private final WebSite site;
-	private final String siteLoginId;
-	private final String siteLoginPassword;
+	private final String siteAccountId;
+	private final String siteAccountPassword;
 
 	private final List<Task> tasks;
 
@@ -39,7 +38,6 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 		this.aes256 = aes256;
 		this.configurationManager = configurationManager;
 
-		// 토렌트 사이트 이름을 구한다.
 		try {
 			this.site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
 		} catch (Exception e) {
@@ -47,12 +45,11 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 			throw e;
 		}
 
-		// 토렌트 사이트 계정 정보를 구한다.
-		this.siteLoginId = this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
+		this.siteAccountId = this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
 		String encryptionPassword = this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
-
+		
 		try {
-			this.siteLoginPassword = this.aes256.decode(encryptionPassword);
+			this.siteAccountPassword = this.aes256.decode(encryptionPassword);
 		} catch (Exception e) {
 			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
 			throw e;
@@ -76,14 +73,13 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 	private TasksExecutorServiceResultAdapter call0() throws Exception {
 		WebSiteAccount account = null;
 		try {
-			account = this.site.createAccount(this.siteLoginId, this.siteLoginPassword);
+			account = this.site.createAccount(this.siteAccountId, this.siteAccountPassword);
 		} catch (Exception e) {
 			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD), e);
 			return TasksExecutorServiceResultAdapter.INVALID_ACCOUNT();
 		}
 
 		WebSiteHandler handler = this.site.createHandler();
-
 		try {
 			handler.login(account);
 		} catch (Exception e) {
