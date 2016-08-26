@@ -3,17 +3,15 @@ package kr.co.darkkaiser.torrentad.service.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.data.WebSiteTaskData;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
-	
-	// @@@@@
-	private WebSiteTaskData taskData;
-	
-	public PeriodicTaskImpl() {
+		
+	public PeriodicTaskImpl(WebSite site) {
+		super(site);
 	}
 
 	@Override
@@ -26,8 +24,9 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		l.upload(/*결과정보*/);
 		System.out.println("############# run");
 		
-//		handler.search(taskData);
-		
+		// WebSiteTaskAdapter을 둬서 handler에서 task를 핸들링 가능하도록?
+		/* 반환값 */ handler.search(this.searchContext);
+
 		return TaskResult.OK;
 	}
 

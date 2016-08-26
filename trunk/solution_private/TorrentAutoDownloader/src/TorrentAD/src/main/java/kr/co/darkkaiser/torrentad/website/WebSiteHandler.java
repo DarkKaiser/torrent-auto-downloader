@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import kr.co.darkkaiser.torrentad.website.data.WebSiteSearchContext;
+
 public interface WebSiteHandler {
 
 	void login(WebSiteAccount account) throws Exception;
@@ -7,5 +9,8 @@ public interface WebSiteHandler {
 	void logout() throws Exception;
 
 	boolean isLogin();
+
+	//@@@@@
+	void search(WebSiteSearchContext taskContext);
 
 }

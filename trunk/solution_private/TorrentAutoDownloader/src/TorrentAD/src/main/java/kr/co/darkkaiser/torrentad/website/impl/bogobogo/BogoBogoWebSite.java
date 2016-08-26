@@ -14,6 +14,7 @@ import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.data.WebSiteSearchContext;
 
 public class BogoBogoWebSite extends AbstractWebSite {
 	
@@ -137,19 +138,19 @@ public class BogoBogoWebSite extends AbstractWebSite {
 		return true;
 	}
 
-	public void search() {
+	@Override
+	public void search(WebSiteSearchContext taskContext) {
 		// @@@@@
-		if (this.loginConnResponse == null) {
-			
-		}
+				if (this.loginConnResponse == null) {
+					
+				}
 
-//		 // 게시판이동
-//			Connection.Response loginForm2 = Jsoup.connect("https://zipbogo.net/cdsb/board.php?board=newmovie")
-//					.userAgent("Mozilla")
-//	                .method(Connection.Method.GET)
-//	                .cookies(loginForm.cookies())
-//	                .execute();
-
+//				 // 게시판이동
+//					Connection.Response loginForm2 = Jsoup.connect("https://zipbogo.net/cdsb/board.php?board=newmovie")
+//							.userAgent("Mozilla")
+//			                .method(Connection.Method.GET)
+//			                .cookies(loginForm.cookies())
+//			                .execute();
 	}
 
 }

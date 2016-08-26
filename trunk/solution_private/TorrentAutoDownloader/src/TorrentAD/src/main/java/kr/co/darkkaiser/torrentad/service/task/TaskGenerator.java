@@ -43,17 +43,14 @@ public class TaskGenerator {
 			Document doc = docBuilder.parse(new File(configurationManager.getFilePath()));
 			doc.getDocumentElement().normalize();
 
-			// @@@@@
-//			String port = null;
 			String nodeName = null;
-//			String serverType = null;
 			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_PERIODIC_TASK);
 
 			for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-					Task task = new PeriodicTaskImpl();//@@@@@ 생성을 외부에서??
+					Task task = new PeriodicTaskImpl(site);//@@@@@ 생성을 외부에서??
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {

@@ -17,6 +17,7 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
+	// @@@@@
 	private final WebSite site;
 	private final String siteLoginId;
 	private final String siteLoginPassword;
