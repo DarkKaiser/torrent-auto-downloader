@@ -14,7 +14,7 @@ import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.data.WebSiteSearchContext;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 
 public class BogoBogoWebSite extends AbstractWebSite {
 	
@@ -139,11 +139,11 @@ public class BogoBogoWebSite extends AbstractWebSite {
 	}
 
 	@Override
-	public void search(WebSiteSearchContext taskContext) {
+	public void search(WebSiteSearchContext searchContext) {
 		// @@@@@
-				if (this.loginConnResponse == null) {
-					
-				}
+		if (isLogin() == false) {
+		}
+		
 
 //				 // 게시판이동
 //					Connection.Response loginForm2 = Jsoup.connect("https://zipbogo.net/cdsb/board.php?board=newmovie")

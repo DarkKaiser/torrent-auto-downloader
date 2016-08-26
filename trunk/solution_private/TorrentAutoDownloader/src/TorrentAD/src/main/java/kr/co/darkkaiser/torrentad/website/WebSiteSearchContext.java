@@ -1,11 +1,9 @@
-package kr.co.darkkaiser.torrentad.website.data;
+package kr.co.darkkaiser.torrentad.website;
 
 public interface WebSiteSearchContext {
 
 	void setBoardName(String boardName);
 
-	// TaskData에서 상속??
-	
 	// @@@@@
 	
 }

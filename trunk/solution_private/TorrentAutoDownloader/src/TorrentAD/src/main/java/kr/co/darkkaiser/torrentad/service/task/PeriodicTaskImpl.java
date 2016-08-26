@@ -11,12 +11,11 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 		
 	public PeriodicTaskImpl(WebSite site) {
-		super(site);
+		super(TaskType.PERIODIC, site);
 	}
 
 	@Override
 	public TaskResult run(WebSiteHandler handler) throws Exception {
-		
 		// @@@@@
 //		/* 반환 */ l.search(/* 검색정보 */);
 //		/* 반환받은 정보를 이용해서 다운로드 */

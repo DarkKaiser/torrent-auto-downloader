@@ -4,6 +4,7 @@ import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSite;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSiteSearchContext;
 
 public enum WebSite {
 
@@ -16,6 +17,11 @@ public enum WebSite {
 		@Override
 		public WebSiteAccount createAccount(String id, String password) {
 			return new BogoBogoWebSiteAccount(id, password);
+		}
+
+		@Override
+		public WebSiteSearchContext createSearchContext() {
+			return new BogoBogoWebSiteSearchContext();
 		}
 	};
 
@@ -51,5 +57,6 @@ public enum WebSite {
 
 	public abstract WebSiteHandler createHandler();
 	public abstract WebSiteAccount createAccount(String id, String password);
+	public abstract WebSiteSearchContext createSearchContext();
 
 }
