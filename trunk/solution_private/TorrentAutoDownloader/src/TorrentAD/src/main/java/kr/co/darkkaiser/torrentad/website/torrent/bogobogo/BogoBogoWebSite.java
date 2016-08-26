@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.website.bogobogo;
+package kr.co.darkkaiser.torrentad.website.torrent.bogobogo;
 
 import java.io.IOException;
 
