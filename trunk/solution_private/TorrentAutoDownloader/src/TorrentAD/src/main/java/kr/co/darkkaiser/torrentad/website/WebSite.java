@@ -40,7 +40,7 @@ public enum WebSite {
 			throw new NullPointerException("name");
 		}
 		if (StringUtil.isBlank(name) == true) {
-			throw new IllegalArgumentException("name must not be empty.");
+			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 		}
 
 		if (name.equals(BOGOBOGO.toString()) == true) {

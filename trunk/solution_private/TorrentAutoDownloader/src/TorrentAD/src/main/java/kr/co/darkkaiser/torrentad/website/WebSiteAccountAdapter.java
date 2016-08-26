@@ -41,13 +41,13 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 			throw new NullPointerException("id");
 		}
 		if (StringUtil.isBlank(id) == true) {
-			throw new IllegalArgumentException("id must not be empty.");
+			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
 		}
 		if (password == null) {
 			throw new NullPointerException("password");
 		}
 		if (StringUtil.isBlank(password) == true) {
-			throw new IllegalArgumentException("password must not be empty.");
+			throw new IllegalArgumentException("password는 빈 문자열을 허용하지 않습니다.");
 		}
 	}
 

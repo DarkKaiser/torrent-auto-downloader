@@ -140,8 +140,12 @@ public class BogoBogoWebSite extends AbstractWebSite {
 
 	@Override
 	public void search(WebSiteSearchContext searchContext) {
+		if (searchContext == null) {
+			throw new NullPointerException("searchContext");
+		}
 		// @@@@@
 		if (isLogin() == false) {
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
 		}
 		
 

@@ -9,7 +9,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
-		
+
 	public PeriodicTaskImpl(WebSite site) {
 		super(TaskType.PERIODIC, site);
 	}

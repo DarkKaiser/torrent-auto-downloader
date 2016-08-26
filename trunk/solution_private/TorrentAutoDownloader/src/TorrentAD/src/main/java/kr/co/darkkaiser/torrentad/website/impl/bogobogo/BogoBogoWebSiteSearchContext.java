@@ -12,7 +12,7 @@ public class BogoBogoWebSiteSearchContext implements WebSiteSearchContext {
 			throw new NullPointerException("boardName");
 		}
 		if (StringUtil.isBlank(boardName) == true) {
-			throw new IllegalArgumentException("boardName must not be empty.");
+			throw new IllegalArgumentException("boardName은 빈 문자열을 허용하지 않습니다.");
 		}
 
 	}

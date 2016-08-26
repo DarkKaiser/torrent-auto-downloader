@@ -37,13 +37,13 @@ public final class TorrentAdService {
 
 	public boolean start() throws Exception {
 		if (this.tasksExecutorTimer != null) {
-			throw new IllegalStateException("tasksExecutorTimer set already");
+			throw new IllegalStateException("tasksExecutorTimer 객체는 이미 초기화되었습니다.");
 		}
 		if (this.tasksExecutorService != null) {
-			throw new IllegalStateException("tasksExecutorService set already");
+			throw new IllegalStateException("tasksExecutorService 객체는 이미 초기화되었습니다");
 		}
 		if (this.tasksRunnableAdapter != null) {
-			throw new IllegalStateException("tasksRunnableAdapter set already");
+			throw new IllegalStateException("tasksRunnableAdapter 객체는 이미 초기화되었습니다");
 		}
 		if (this.configurationManager == null) {
 			throw new NullPointerException("configurationManager");
