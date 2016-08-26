@@ -40,20 +40,20 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 
 		// 토렌트 사이트 이름을 구한다.
 		try {
-			this.site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_NAME));
+			this.site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_TAGNAME_WEBSITE_NAME));
 		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_KEY_WEBSITE_NAME);
+			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_TAGNAME_WEBSITE_NAME);
 			throw e;
 		}
 
 		// 토렌트 사이트 계정 정보를 구한다.
-		this.siteLoginId = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID);
-		String encryptionPassword = this.configurationManager.getValue(Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
+		this.siteLoginId = this.configurationManager.getValue(Constants.APP_CONFIG_TAGNAME_WEBSITE_ACCOUNT_ID);
+		String encryptionPassword = this.configurationManager.getValue(Constants.APP_CONFIG_TAGNAME_WEBSITE_ACCOUNT_PASSWORD);
 
 		try {
 			this.siteLoginPassword = this.aes256.decode(encryptionPassword);
 		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD);
+			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_TAGNAME_WEBSITE_ACCOUNT_PASSWORD);
 			throw e;
 		}
 
@@ -77,7 +77,7 @@ public final class TasksRunnableAdapter implements Callable<TasksExecutorService
 		try {
 			account = this.site.createAccount(this.siteLoginId, this.siteLoginPassword);
 		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_KEY_WEBSITE_ACCOUNT_PASSWORD), e);
+			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAGNAME_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAGNAME_WEBSITE_ACCOUNT_PASSWORD), e);
 			return TasksExecutorServiceResultAdapter.INVALID_ACCOUNT();
 		}
 

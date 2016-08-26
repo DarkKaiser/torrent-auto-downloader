@@ -30,5 +30,11 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 		
 		return TaskResult.OK;
 	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 	
 }

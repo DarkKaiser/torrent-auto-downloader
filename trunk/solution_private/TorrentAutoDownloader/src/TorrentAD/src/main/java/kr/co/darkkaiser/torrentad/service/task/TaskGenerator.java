@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -14,6 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 
@@ -24,7 +26,7 @@ public class TaskGenerator {
 	private TaskGenerator() {
 	}
 
-	public static List<Task> generate(ConfigurationManager configurationManager, WebSite site) {
+	public static List<Task> generate(ConfigurationManager configurationManager, WebSite site) throws Exception {
 		if (configurationManager == null) {
 			throw new NullPointerException("configurationManager");
 		}
@@ -32,13 +34,11 @@ public class TaskGenerator {
 			throw new NullPointerException("site");
 		}
 		
+		List<Task> tasks = new ArrayList<>();
+		
 		/////////////////////////////////////////////////////////////////
 		
-		// @@@@@
 		//@@@@@ 환경설정정보 로드해서 task 초기화
-
-		List<Task> tasks = new ArrayList<>();
-		tasks.add(new PeriodicTaskImpl());
 		
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -47,16 +47,17 @@ public class TaskGenerator {
 			Document doc = docBuilder.parse(new File(configurationManager.getFilePath()));
 			doc.getDocumentElement().normalize();
 
+			// @@@@@
 //			String port = null;
 			String nodeName = null;
 //			String serverType = null;
-			NodeList cvNodeList = doc.getElementsByTagName("torrentad-periodic-task");
+			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAGNAME_PERIODIC_TASK);
 
 			for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-//					Server server = new Server();
+					Task task = new PeriodicTaskImpl();//@@@@@ 생성을 외부에서??
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
@@ -65,7 +66,8 @@ public class TaskGenerator {
 						if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 							nodeName = cvChildNode.getNodeName();
 
-//							if (nodeName.equals("id") == true) {
+							if (nodeName.equals("id") == true) {
+								// @@@@@
 //								server.setServerId(cvChildNode.getTextContent());
 //							} else if (nodeName.equals("description") == true) {
 //								server.setServerDescription(cvChildNode.getTextContent());
@@ -124,31 +126,27 @@ public class TaskGenerator {
 //										}
 //									}
 //								}
-//							} else {
-//								logger.warn("유효하지 않은 XML 항목: {} = {}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
-//								assert false;
-//							}
+							} else {
+								logger.warn("유효하지 않은 XML 항목:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
+								assert false;
+							}
 						}
 					}
 
-//					if (server.isValid() == true) {
-//						if (serverList.containsKey(server.getServerId()) == true) {
-//							throw new AlreadyRegistrationException("ServerID:" + server.getServerId());
-//						}
-//
-//						logger.debug(server.toString());
-//						serverList.put(server.getServerId(), server);
-//					} else {
-//						throw new XMLParseException(server.toString());
-//					}
+					if (task.isValid() == true) {
+						logger.debug("Task 생성완료:{}", task.toString());
+						tasks.add(task);
+					} else {
+						throw new XMLParseException(task.toString());
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error("환경설정정보 파일을 찾을 수 없습니다.(파일경로 : '{}')", configurationManager.getFilePath(), e);
-//			return false;
+			logger.error("환경설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configurationManager.getFilePath());
+			throw e;
 		} catch (Exception e) {
-			logger.error("환경설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
-//			return false;
+			logger.error("환경설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
+			throw e;
 		} finally {
 		}
 
