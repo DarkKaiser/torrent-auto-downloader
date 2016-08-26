@@ -14,6 +14,7 @@ public abstract class AbstractTask implements Task {
 	// @@@@@
 	@Override
 	public void setBoardName(String boardName) {
+		System.out.println(boardName);
 		this.boardName = boardName;
 	}
 	

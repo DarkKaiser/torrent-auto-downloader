@@ -35,11 +35,7 @@ public class TaskGenerator {
 		}
 		
 		List<Task> tasks = new ArrayList<>();
-		
-		/////////////////////////////////////////////////////////////////
-		
-		//@@@@@ 환경설정정보 로드해서 task 초기화
-		
+
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -51,7 +47,7 @@ public class TaskGenerator {
 //			String port = null;
 			String nodeName = null;
 //			String serverType = null;
-			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAGNAME_PERIODIC_TASK);
+			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_PERIODIC_TASK);
 
 			for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
@@ -66,9 +62,9 @@ public class TaskGenerator {
 						if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 							nodeName = cvChildNode.getNodeName();
 
-							if (nodeName.equals("id") == true) {
-								// @@@@@
-//								server.setServerId(cvChildNode.getTextContent());
+							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
+								task.setBoardName(cvChildNode.getTextContent());
+							// @@@@@
 //							} else if (nodeName.equals("description") == true) {
 //								server.setServerDescription(cvChildNode.getTextContent());
 //							} else if (nodeName.equals("host") == true) {
