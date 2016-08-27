@@ -13,7 +13,7 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public final class TasksRunnableAdapter implements Callable<TasksRunnableResultAdapter> {
+public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapterResult> {
 
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
@@ -60,23 +60,23 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableResultA
 	}
 
 	@Override
-	public TasksRunnableResultAdapter call() throws Exception {
+	public TasksRunnableAdapterResult call() throws Exception {
 		logger.info("새 토렌트 파일 확인 작업을 시작합니다.");
 
-		TasksRunnableResultAdapter result = call0();
+		TasksRunnableAdapterResult result = call0();
 
 		logger.info("새 토렌트 파일 확인 작업이 종료되었습니다.");
 		
 		return result;
 	}
 
-	private TasksRunnableResultAdapter call0() throws Exception {
+	private TasksRunnableAdapterResult call0() throws Exception {
 		WebSiteAccount account = null;
 		try {
 			account = this.site.createAccount(this.accountId, this.accountPassword);
 		} catch (Exception e) {
 			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD), e);
-			return TasksRunnableResultAdapter.INVALID_ACCOUNT();
+			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
 		}
 
 		WebSiteHandler handler = this.site.createHandler();
@@ -84,12 +84,12 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableResultA
 			handler.login(account);
 		} catch (Exception e) {
 			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", this.site, e);
-			return TasksRunnableResultAdapter.WEBSITE_LOGIN_FAILED();
+			return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
 		}
 
 		// 모든 Task의 실행 결과가 성공이면 반환값은 OK를 반환한다.
 		// 하지만 하나 이상의 Task 실행이 실패하면, 마지막 실패한 Task의 실패코드를 반환한다.
-		TasksRunnableResultAdapter result = TasksRunnableResultAdapter.OK();
+		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
 
 		for (Task task : this.tasks) {
 			logger.debug("Task 실행:{}", task);
@@ -98,13 +98,13 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableResultA
 				TaskResult taskResult = task.run(handler);
 				if (taskResult != TaskResult.OK) {
 					logger.error("Task 실행이 실패('{}') 하였습니다.", taskResult);
-					result = TasksRunnableResultAdapter.TASK_EXECUTION_FAILED(taskResult);
+					result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 				} else {
 					logger.debug("Task 실행이 완료되었습니다.");
 				}
 			} catch (Exception e) {
 				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
-				result = TasksRunnableResultAdapter.UNEXPECTED_TASK_RUNNING_EXCEPTION();
+				result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
 		}
 
