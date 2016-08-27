@@ -1,12 +1,8 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
-import kr.co.darkkaiser.torrentad.website.board.AbstractBoard;
+// @@@@@
+public enum BogoBogoBoard {
 
-public class BogoBogoBoard extends AbstractBoard {
+	NEW_MOVIE
 	
-	// @@@@@
-	static {
-		
-	}
-
 }
