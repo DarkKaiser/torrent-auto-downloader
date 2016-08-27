@@ -16,9 +16,9 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 
-public class BogoBogoWebSite extends AbstractWebSite {
+public class BogoBogo extends AbstractWebSite {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BogoBogoWebSite.class);
+	private static final Logger logger = LoggerFactory.getLogger(BogoBogo.class);
 	
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
@@ -28,7 +28,7 @@ public class BogoBogoWebSite extends AbstractWebSite {
 
 	protected Connection.Response loginConnResponse;
 
-	public BogoBogoWebSite() {
+	public BogoBogo() {
 		super(WebSite.BOGOBOGO);
 	}
 	

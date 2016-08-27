@@ -31,8 +31,8 @@ public abstract class AbstractTask implements Task {
 
 	// @@@@@
 	@Override
-	public void setBoardName(String boardName) {
-		this.searchContext.setBoardName(boardName);
+	public void setBoardName(String name) {
+		this.searchContext.setBoardName(name);
 	}
 
 	@Override

@@ -1,12 +1,13 @@
 package kr.co.darkkaiser.torrentad.website;
 
-// @@@@@
 public interface WebSiteSearchContext {
 
-	void setBoardName(String boardName);
+	WebSite getWebSite();
+
+	void setBoardName(String name);
 
 	void validate();
 
 	boolean isValid();
-		
+
 }

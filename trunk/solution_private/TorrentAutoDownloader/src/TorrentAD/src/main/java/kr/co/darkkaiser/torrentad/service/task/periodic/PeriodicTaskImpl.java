@@ -38,11 +38,6 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	}
 
 	@Override
-	public boolean isValid() {
-		return super.isValid();
-	}
-	
-	@Override
 	public String toString() {
 		return new StringBuilder()
 				.append(PeriodicTaskImpl.class.getSimpleName())

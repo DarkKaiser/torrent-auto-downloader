@@ -2,15 +2,15 @@ package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSite;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoWebSiteSearchContext;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
 
 public enum WebSite {
 
 	BOGOBOGO("보고보고") {
 		@Override
 		public WebSiteHandler createHandler() {
-			return new BogoBogoWebSite();
+			return new BogoBogo();
 		}
 
 		@Override
@@ -20,7 +20,7 @@ public enum WebSite {
 
 		@Override
 		public WebSiteSearchContext createSearchContext() {
-			return new BogoBogoWebSiteSearchContext();
+			return new BogoBogoSearchContext();
 		}
 	};
 

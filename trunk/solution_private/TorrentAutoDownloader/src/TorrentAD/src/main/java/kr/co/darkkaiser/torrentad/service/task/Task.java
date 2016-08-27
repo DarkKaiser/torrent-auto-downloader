@@ -9,7 +9,7 @@ public interface Task {
 	TaskResult run(WebSiteHandler handler) throws Exception;
 
 	// @@@@@
-	void setBoardName(String boardName);
+	void setBoardName(String name);
 
 	void validate();
 	
