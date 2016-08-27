@@ -33,9 +33,23 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	}
 
 	@Override
+	public void validate() {
+		super.validate();
+	}
+
+	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return true;
+		return super.isValid();
 	}
 	
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append(PeriodicTaskImpl.class.getSimpleName())
+				.append("{")
+				.append("}, ")
+				.append(super.toString())
+				.toString();
+	}
+
 }

@@ -11,6 +11,8 @@ public interface Task {
 	// @@@@@
 	void setBoardName(String boardName);
 
+	void validate();
+	
 	boolean isValid();
 
 }

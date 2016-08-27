@@ -20,6 +20,12 @@ public class BogoBogoWebSiteSearchContext implements WebSiteSearchContext {
 		// @@@@@
 	}
 
+	@Override
+	public void validate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// @@@@@
 	
 }

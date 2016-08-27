@@ -4,6 +4,8 @@ public interface WebSiteSearchContext {
 
 	void setBoardName(String boardName);
 
+	void validate();
+
 	// @@@@@
 	
 }
