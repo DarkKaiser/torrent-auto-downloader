@@ -20,7 +20,6 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 		}
 	}
 
-	// @@@@@
 	public BogoBogoBoard getBoard() {
 		return this.board;
 	}
