@@ -143,6 +143,9 @@ public class BogoBogo extends AbstractWebSite {
 		if (searchContext == null) {
 			throw new NullPointerException("searchContext");
 		}
+		if (searchContext instanceof BogoBogoSearchContext) {
+			// @@@@@ 타입이 아닐때 예외처리
+		}
 		// @@@@@
 		if (isLogin() == false) {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");

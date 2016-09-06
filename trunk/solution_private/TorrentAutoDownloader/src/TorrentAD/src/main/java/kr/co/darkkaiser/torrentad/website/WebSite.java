@@ -55,7 +55,13 @@ public enum WebSite {
 	}
 
 	public abstract WebSiteHandler createHandler();
+	
 	public abstract WebSiteAccount createAccount(String id, String password);
+	
 	public abstract WebSiteSearchContext createSearchContext();
+
+	public WebSiteSearchKeyword createSearchKeyword(String type) {
+		return new WebSiteSearchKeywordAdapter(WebSiteSearchKeywordType.fromString(type));
+	}
 
 }

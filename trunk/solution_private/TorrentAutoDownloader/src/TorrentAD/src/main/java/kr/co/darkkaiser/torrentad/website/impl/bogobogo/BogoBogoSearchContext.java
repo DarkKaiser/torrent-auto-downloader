@@ -20,6 +20,10 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 		}
 	}
 
+	public BogoBogoBoard getBoard() {
+		return this.board;
+	}
+
 	@Override
 	public void validate() {
 		super.validate();

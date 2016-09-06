@@ -17,8 +17,9 @@ import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.service.task.periodic.PeriodicTaskImpl;
 import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeyword;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordType;
 
 public class TaskGenerator {
 	
@@ -51,7 +52,7 @@ public class TaskGenerator {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-					Task task = new PeriodicTaskImpl(site);//@@@@@ 생성을 외부에서??
+					Task task = TaskFactory.newInstance(TaskType.PERIODIC, site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
@@ -61,65 +62,39 @@ public class TaskGenerator {
 							nodeName = cvChildNode.getNodeName();
 
 							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
-								task.setBoardName(cvChildNode.getTextContent());
-							// @@@@@
-//							} else if (nodeName.equals("description") == true) {
-//								server.setServerDescription(cvChildNode.getTextContent());
-//							} else if (nodeName.equals("host") == true) {
-//								server.setServerAddress(cvChildNode.getTextContent());
-//							} else if (nodeName.equals("loadbalance_port") == true) {
-//								port = cvChildNode.getTextContent().trim();
-//
-//								try {
-//									server.setLoadBalancePort(Integer.parseInt(port));
-//								} catch (NumberFormatException e) {
-//									throw new NumberFormatException("유효하지 않은 LoadBalance 포트번호('" + port + "')입니다.");
-//								}
-//							} else if (cvChildNode.getNodeName().equals("matchers") == true) {
-//								NodeList cvMatcherChildNodeList = cvChildNode.getChildNodes();
-//
-//								for (int cvMatcherChildNodeListIndex = 0; cvMatcherChildNodeListIndex < cvMatcherChildNodeList.getLength(); ++cvMatcherChildNodeListIndex) {
-//									Node cvMatcherChildNode = cvMatcherChildNodeList.item(cvMatcherChildNodeListIndex);
-//									
-//									if (cvMatcherChildNode.getNodeType() == Node.ELEMENT_NODE) {
-//										// 서비스되는 matcher에 대한 정보를 읽어들인다.
-//										ServerType matcherServerType = null;
-//										int matcherServerPort = Constants.INVALID_PORT_NUMBER;
-//										Node cvMatcherChildChildNode = cvMatcherChildNode.getFirstChild();
-//
-//										while (cvMatcherChildChildNode != null) {
-//											if (cvMatcherChildChildNode.getNodeType() == Node.ELEMENT_NODE) {
-//												if (cvMatcherChildChildNode.getNodeName().equals("type") == true) {
-//													serverType = cvMatcherChildChildNode.getTextContent().trim();
-//													
-//													try {
-//														matcherServerType = ServerType.valueOf(serverType);
-//														if (matcherServerType == ServerType.UNKNOWN)
-//															matcherServerType = null;														
-//													} catch (IllegalArgumentException e) {
-//														throw new IllegalArgumentException("유효하지 않은 Matcher 서버 타입('" + serverType + "')입니다.");
-//													}
-//												} else if (cvMatcherChildChildNode.getNodeName().equals("port") == true) {
-//													port = cvMatcherChildChildNode.getTextContent().trim();
-//													
-//													try {
-//														matcherServerPort = Integer.parseInt(port);
-//													} catch (NumberFormatException e) {
-//														throw new NumberFormatException("유효하지 않은 Matcher 서버 포트번호('" + port + "')입니다.");
-//													}
-//												}
-//											}
-//
-//											cvMatcherChildChildNode = cvMatcherChildChildNode.getNextSibling();											
-//										}
-//
-//										if (matcherServerType != null && matcherServerPort != Constants.INVALID_PORT_NUMBER) {
-//											server.addMatcher(matcherServerType, matcherServerPort);
-//										} else {
-//											throw new XMLParseException(server.getServerId() + " 서버의 matcher 정보가 올바르지 않습니다.");
-//										}
-//									}
-//								}
+								task.setBoardName(cvChildNode.getTextContent().trim());
+							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
+								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
+
+								for (int cvSearchKeywordNodeListIndex = 0; cvSearchKeywordNodeListIndex < cvSearchKeywordNodeList.getLength(); ++cvSearchKeywordNodeListIndex) {
+									Node cvSearchKeywordNode = cvSearchKeywordNodeList.item(cvSearchKeywordNodeListIndex);
+
+									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
+										String searchKeywordType = WebSiteSearchKeywordType.INCLUDE.getValue();
+										if (cvSearchKeywordNode.getAttributes().getNamedItem("type") != null) {
+											searchKeywordType = cvSearchKeywordNode.getAttributes().getNamedItem("type").getNodeValue();
+										}
+
+										WebSiteSearchKeyword searchKeyword = site.createSearchKeyword(searchKeywordType);
+
+										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
+										while (cvSearchKeywordChildNode != null) {
+											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
+												if (cvSearchKeywordChildNode.getNodeName().equals("item") == true) {
+													searchKeyword.add(cvSearchKeywordChildNode.getTextContent().trim());
+												}
+											}
+
+											cvSearchKeywordChildNode = cvSearchKeywordChildNode.getNextSibling();											
+										}
+
+										if (searchKeyword.isValid() == true) {
+											task.add(searchKeyword);
+										} else {
+											throw new XMLParseException("SearchKeyword 정보가 유효하지 않습니다.");
+										}
+									}
+								}
 							} else {
 								logger.warn("유효하지 않은 XML 항목:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
 								assert false;

@@ -7,21 +7,24 @@
 			
 			
 			
-			
 			한 게시물안에 여러개의 토렌트, 자막은 모두 다운로드
 			다운로드 안 받을려면 exclude에 등록하면 됨
-			<search-keyword>
-				<key>아래키와 and 연산
+			<search-keywords>
+				<search-keyword>아래키와 and 연산
 					<item>찬란한+유산</item>아래 item과 OR연산, 우선순위1
 					<item>chan+yousan</item>우선순위2
-				</key>
-				<key>
+				</search-keyword>
+				<search-keyword>
 					<item>720P</item>우선순위1
 					<item>1080P</item>우선순위2
-				</key>
-				<key type="exclude">1080P</key>제외케워드
-				<key>NEXT</key>
-			</search-keyword>
+				</search-keyword>
+				<search-keyword type="exclude">
+					<item>1080P</item>
+				</search-keyword>제외케워드
+				<search-keyword>
+					<item>NEXT</item>
+				</search-keyword>
+			</search-keywords>
 			
 			날짜를 추출하기 위한 포맷, 파일명에 포함된 내용
 			<date-fmt>yyMMDD</date-fmt>

@@ -2,6 +2,7 @@ package kr.co.darkkaiser.torrentad.service.task;
 
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeyword;
 
 public abstract class AbstractTask implements Task {
 
@@ -34,6 +35,11 @@ public abstract class AbstractTask implements Task {
 		this.searchContext.setBoardName(name);
 	}
 
+	@Override
+	public void add(WebSiteSearchKeyword searchKeyword) {
+		// @@@@@
+	}
+	
 	@Override
 	public void validate() {
 		if (this.taskType == null) {
