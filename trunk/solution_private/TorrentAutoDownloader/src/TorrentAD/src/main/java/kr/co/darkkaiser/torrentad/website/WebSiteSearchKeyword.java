@@ -2,11 +2,13 @@ package kr.co.darkkaiser.torrentad.website;
 
 public interface WebSiteSearchKeyword {
 
+	void add(String keyword);
+	
 	// @@@@@
-	void add(String item);
-	
 	boolean isInclusion(String text);
-	
+
+	void validate();
+
 	boolean isValid();
 	
 }

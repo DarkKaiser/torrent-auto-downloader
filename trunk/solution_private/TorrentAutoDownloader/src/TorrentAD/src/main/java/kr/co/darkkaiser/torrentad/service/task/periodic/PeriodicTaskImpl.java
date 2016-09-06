@@ -11,6 +11,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 
 	public PeriodicTaskImpl(WebSite site) {
