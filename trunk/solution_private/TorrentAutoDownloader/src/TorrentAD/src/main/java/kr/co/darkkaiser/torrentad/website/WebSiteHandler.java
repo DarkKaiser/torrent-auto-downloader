@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItemIterator;
+
 public interface WebSiteHandler {
 
 	void login(WebSiteAccount account) throws Exception;
@@ -9,6 +11,6 @@ public interface WebSiteHandler {
 	boolean isLogin();
 
 	//@@@@@
-	void search(WebSiteSearchContext taskContext);
+	WebSiteBoardItemIterator search(WebSiteSearchContext taskContext);
 
 }

@@ -8,6 +8,7 @@ import kr.co.darkkaiser.torrentad.service.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
+import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItemIterator;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
@@ -20,15 +21,20 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	@Override
 	public TaskResult run(WebSiteHandler handler) throws Exception {
+		if (handler == null) {
+			throw new NullPointerException("handler");
+		}
+
+		validate();
+		
 		// @@@@@
-//		/* 반환 */ l.search(/* 검색정보 */);
+		////////////////////////////////////////////////////////////////////////////////////
+
+		WebSiteBoardItemIterator iterator = handler.search(this.searchContext);
 //		/* 반환받은 정보를 이용해서 다운로드 */
 //		/* 결과정보*/l.download(/*다운로드정보*/);
 //		l.upload(/*결과정보*/);
 		System.out.println("############# run");
-		
-		// WebSiteTaskAdapter을 둬서 handler에서 task를 핸들링 가능하도록?
-		/* 반환값 */ handler.search(this.searchContext);
 
 		return TaskResult.OK;
 	}
