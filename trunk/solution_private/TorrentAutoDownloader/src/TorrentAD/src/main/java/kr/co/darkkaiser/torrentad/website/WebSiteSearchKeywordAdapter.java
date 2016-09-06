@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jsoup.helper.StringUtil;
 
@@ -19,7 +20,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 	}
 
 	@Override
-	public void add(String keyword) {
+	public void addKeyword(String keyword) {
 		if (keyword == null) {
 			throw new NullPointerException("keyword");
 		}
@@ -31,8 +32,13 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 	}
 
 	@Override
-	public boolean isInclusion(String text) {
+	public boolean isSatisfyCondition(String text) {
 		// @@@@@
+		if (type == WebSiteSearchKeywordType.INCLUDE) {
+			
+		} else {
+			
+		}
 		// 영어는 대소문자 구분 안함
 		return true;
 	}
@@ -43,8 +49,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 			throw new NullPointerException("keywords");
 		}
 		if (this.keywords.size() == 0) {
-			// @@@@@
-//			throw new SearchKeywordException();
+			throw new EmptySearchKeywordException("검색 키워드가 등록되저 있지 않습니다.");
 		}
 	}
 
@@ -61,13 +66,27 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 	
 	@Override
 	public String toString() {
-		// @@@@@ 목록 출력
-		return new StringBuilder()
+		StringBuilder sb = new StringBuilder()
 				.append(WebSiteSearchKeywordAdapter.class.getSimpleName())
 				.append("{")
 				.append("type:").append(this.type)
-				.append("}")
-				.toString();
+				.append(", keywords:");
+
+		boolean firstKeyword = true;
+		Iterator<String> iterator = this.keywords.iterator();
+		while (iterator.hasNext()) {
+			if (firstKeyword == false) {
+				sb.append(" || ")
+				  .append(iterator.next());
+			} else {
+				firstKeyword = false;
+				sb.append(iterator.next());
+			}
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 
 }

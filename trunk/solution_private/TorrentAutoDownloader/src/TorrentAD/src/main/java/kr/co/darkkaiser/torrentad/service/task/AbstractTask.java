@@ -38,6 +38,7 @@ public abstract class AbstractTask implements Task {
 	@Override
 	public void add(WebSiteSearchKeyword searchKeyword) {
 		// @@@@@
+		System.out.println(searchKeyword);
 	}
 	
 	@Override

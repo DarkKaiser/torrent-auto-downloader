@@ -52,7 +52,7 @@ public class TaskGenerator {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-					Task task = TaskFactory.newInstance(TaskType.PERIODIC, site);
+					Task task = TaskFactory.createTask(TaskType.PERIODIC, site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
@@ -70,7 +70,7 @@ public class TaskGenerator {
 									Node cvSearchKeywordNode = cvSearchKeywordNodeList.item(cvSearchKeywordNodeListIndex);
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
-										String searchKeywordType = WebSiteSearchKeywordType.INCLUDE.getValue();
+										String searchKeywordType = WebSiteSearchKeywordType.getDefault().getValue();
 										if (cvSearchKeywordNode.getAttributes().getNamedItem("type") != null) {
 											searchKeywordType = cvSearchKeywordNode.getAttributes().getNamedItem("type").getNodeValue();
 										}
@@ -81,7 +81,7 @@ public class TaskGenerator {
 										while (cvSearchKeywordChildNode != null) {
 											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
 												if (cvSearchKeywordChildNode.getNodeName().equals("item") == true) {
-													searchKeyword.add(cvSearchKeywordChildNode.getTextContent().trim());
+													searchKeyword.addKeyword(cvSearchKeywordChildNode.getTextContent().trim());
 												}
 											}
 

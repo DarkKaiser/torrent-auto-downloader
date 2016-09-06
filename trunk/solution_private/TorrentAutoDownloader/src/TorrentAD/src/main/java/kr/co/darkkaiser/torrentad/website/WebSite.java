@@ -49,11 +49,6 @@ public enum WebSite {
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 
-	@Override
-	public String toString() {
-		return getName();
-	}
-
 	public abstract WebSiteHandler createHandler();
 	
 	public abstract WebSiteAccount createAccount(String id, String password);
@@ -62,6 +57,11 @@ public enum WebSite {
 
 	public WebSiteSearchKeyword createSearchKeyword(String type) {
 		return new WebSiteSearchKeywordAdapter(WebSiteSearchKeywordType.fromString(type));
+	}
+
+	@Override
+	public String toString() {
+		return getName();
 	}
 
 }

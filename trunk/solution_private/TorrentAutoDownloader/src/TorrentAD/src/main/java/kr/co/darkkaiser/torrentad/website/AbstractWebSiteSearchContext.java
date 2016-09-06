@@ -23,7 +23,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	public WebSite getWebSite() {
 		return this.site;
 	}
-	
+
 	// @@@@@
 	private void add(WebSiteSearchKeywordAdapter searchCondition) {
 		this.searchKeyword.add(searchCondition);
@@ -39,7 +39,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		Iterator<WebSiteSearchKeywordAdapter> iterator = this.searchKeyword.iterator();
 		while (iterator.hasNext()) {
 			WebSiteSearchKeywordAdapter next = iterator.next();
-			if (next.isInclusion(text) == false) {
+			if (next.isSatisfyCondition(text) == false) {
 				return false;
 			}
 		}
@@ -47,7 +47,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		Iterator<WebSiteSearchKeywordAdapter> iterator2 = this.excludeSearchKeyword.iterator();
 		while (iterator2.hasNext()) {
 			WebSiteSearchKeywordAdapter next2 = iterator2.next();
-			if (next2.isInclusion(text) == true) {
+			if (next2.isSatisfyCondition(text) == true) {
 				return false;
 			}
 		}

@@ -8,13 +8,17 @@ public enum WebSiteSearchKeywordType {
 	EXCLUDE("exclude");
 	
 	private final String value;
-	
+
 	private WebSiteSearchKeywordType(String value) {
 		this.value = value;
 	}
 
 	public String getValue() {
 		return this.value;
+	}
+
+	public static WebSiteSearchKeywordType getDefault() {
+		return INCLUDE;
 	}
 	
 	public static WebSiteSearchKeywordType fromString(String type) {
