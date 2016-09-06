@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.service.task;
 
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeyword;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 
 public abstract class AbstractTask implements Task {
 
@@ -36,9 +36,8 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public void add(WebSiteSearchKeyword searchKeyword) {
-		// @@@@@
-		System.out.println(searchKeyword);
+	public void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception {
+		this.searchContext.addSearchKeywords(searchKeywords);
 	}
 	
 	@Override

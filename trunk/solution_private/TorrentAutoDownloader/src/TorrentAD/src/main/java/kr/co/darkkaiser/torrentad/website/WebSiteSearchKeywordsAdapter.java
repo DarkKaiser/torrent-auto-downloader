@@ -5,13 +5,13 @@ import java.util.Iterator;
 
 import org.jsoup.helper.StringUtil;
 
-public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
+public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
 
-	private final WebSiteSearchKeywordType type;
+	private final WebSiteSearchKeywordsType type;
 
 	private ArrayList<String> keywords = new ArrayList<>();
 
-	public WebSiteSearchKeywordAdapter(WebSiteSearchKeywordType type) {
+	public WebSiteSearchKeywordsAdapter(WebSiteSearchKeywordsType type) {
 		if (type == null) {
 			throw new NullPointerException("type");
 		}
@@ -34,7 +34,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 	@Override
 	public boolean isSatisfyCondition(String text) {
 		// @@@@@
-		if (type == WebSiteSearchKeywordType.INCLUDE) {
+		if (type == WebSiteSearchKeywordsType.INCLUDE) {
 			
 		} else {
 			
@@ -49,7 +49,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 			throw new NullPointerException("keywords");
 		}
 		if (this.keywords.size() == 0) {
-			throw new EmptySearchKeywordException("검색 키워드가 등록되저 있지 않습니다.");
+			throw new EmptySearchKeywordException("검색 키워드가 등록되어 있지 않습니다.");
 		}
 	}
 
@@ -67,7 +67,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()
-				.append(WebSiteSearchKeywordAdapter.class.getSimpleName())
+				.append(WebSiteSearchKeywordsAdapter.class.getSimpleName())
 				.append("{")
 				.append("type:").append(this.type)
 				.append(", keywords:");
@@ -76,7 +76,7 @@ public class WebSiteSearchKeywordAdapter implements WebSiteSearchKeyword {
 		Iterator<String> iterator = this.keywords.iterator();
 		while (iterator.hasNext()) {
 			if (firstKeyword == false) {
-				sb.append(" || ")
+				sb.append("||")
 				  .append(iterator.next());
 			} else {
 				firstKeyword = false;

@@ -18,8 +18,8 @@ import org.w3c.dom.NodeList;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.website.WebSite;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeyword;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordType;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public class TaskGenerator {
 	
@@ -70,28 +70,28 @@ public class TaskGenerator {
 									Node cvSearchKeywordNode = cvSearchKeywordNodeList.item(cvSearchKeywordNodeListIndex);
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
-										String searchKeywordType = WebSiteSearchKeywordType.getDefault().getValue();
+										String searchKeywordsType = WebSiteSearchKeywordsType.getDefault().getValue();
 										if (cvSearchKeywordNode.getAttributes().getNamedItem("type") != null) {
-											searchKeywordType = cvSearchKeywordNode.getAttributes().getNamedItem("type").getNodeValue();
+											searchKeywordsType = cvSearchKeywordNode.getAttributes().getNamedItem("type").getNodeValue();
 										}
 
-										WebSiteSearchKeyword searchKeyword = site.createSearchKeyword(searchKeywordType);
+										WebSiteSearchKeywords searchKeywords = site.createSearchKeyword(searchKeywordsType);
 
 										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
 										while (cvSearchKeywordChildNode != null) {
 											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
 												if (cvSearchKeywordChildNode.getNodeName().equals("item") == true) {
-													searchKeyword.addKeyword(cvSearchKeywordChildNode.getTextContent().trim());
+													searchKeywords.addKeyword(cvSearchKeywordChildNode.getTextContent().trim());
 												}
 											}
 
 											cvSearchKeywordChildNode = cvSearchKeywordChildNode.getNextSibling();											
 										}
 
-										if (searchKeyword.isValid() == true) {
-											task.add(searchKeyword);
+										if (searchKeywords.isValid() == true) {
+											task.addSearchKeywords(searchKeywords);
 										} else {
-											throw new XMLParseException("SearchKeyword 정보가 유효하지 않습니다.");
+											throw new XMLParseException("SearchKeywords 정보가 유효하지 않습니다.");
 										}
 									}
 								}

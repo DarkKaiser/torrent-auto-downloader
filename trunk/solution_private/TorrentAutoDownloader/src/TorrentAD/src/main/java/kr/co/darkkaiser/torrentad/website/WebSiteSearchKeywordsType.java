@@ -2,14 +2,14 @@ package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
-public enum WebSiteSearchKeywordType {
+public enum WebSiteSearchKeywordsType {
 
 	INCLUDE("include"),
 	EXCLUDE("exclude");
 	
 	private final String value;
 
-	private WebSiteSearchKeywordType(String value) {
+	private WebSiteSearchKeywordsType(String value) {
 		this.value = value;
 	}
 
@@ -17,11 +17,11 @@ public enum WebSiteSearchKeywordType {
 		return this.value;
 	}
 
-	public static WebSiteSearchKeywordType getDefault() {
+	public static WebSiteSearchKeywordsType getDefault() {
 		return INCLUDE;
 	}
 	
-	public static WebSiteSearchKeywordType fromString(String type) {
+	public static WebSiteSearchKeywordsType fromString(String type) {
 		if (type == null) {
 			throw new NullPointerException("type");
 		}
@@ -35,7 +35,7 @@ public enum WebSiteSearchKeywordType {
 			return EXCLUDE;
 		}
 
-		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSiteSearchKeywordType.class.getSimpleName(), type));
+		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSiteSearchKeywordsType.class.getSimpleName(), type));
 	}
 
 }

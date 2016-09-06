@@ -1,7 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.task;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeyword;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 
 public interface Task {
 	
@@ -9,12 +9,12 @@ public interface Task {
 
 	void setBoardName(String name) throws Exception;
 
-	void add(WebSiteSearchKeyword searchKeyword);
+	void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception;
 
 	TaskResult run(WebSiteHandler handler) throws Exception;
 
 	void validate();
-	
+
 	boolean isValid();
 
 }

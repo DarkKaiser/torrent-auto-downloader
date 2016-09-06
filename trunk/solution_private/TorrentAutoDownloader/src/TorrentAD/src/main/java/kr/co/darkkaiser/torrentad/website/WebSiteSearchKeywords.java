@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
-public interface WebSiteSearchKeyword {
+public interface WebSiteSearchKeywords {
 
 	void addKeyword(String keyword);
 

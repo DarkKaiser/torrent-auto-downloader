@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.website;
 
 public class EmptySearchKeywordException extends RuntimeException {
 
-	private static final long serialVersionUID = -4502267990254247102L;
+	private static final long serialVersionUID = -4657183351987411925L;
 
 	public EmptySearchKeywordException() {
 		super();
