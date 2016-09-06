@@ -6,10 +6,9 @@ public interface Task {
 	
 	TaskType getTaskType();
 
-	TaskResult run(WebSiteHandler handler) throws Exception;
+	void setBoardName(String name) throws Exception;
 
-	// @@@@@
-	void setBoardName(String name);
+	TaskResult run(WebSiteHandler handler) throws Exception;
 
 	void validate();
 	

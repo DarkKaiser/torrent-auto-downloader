@@ -5,6 +5,9 @@
 		<torrentad-periodic-task>
 			<board-name>newmovie</board-name> key:web url 형식으로 java에서 관리
 			
+			
+			
+			
 			한 게시물안에 여러개의 토렌트, 자막은 모두 다운로드
 			다운로드 안 받을려면 exclude에 등록하면 됨
 			<search-keyword>

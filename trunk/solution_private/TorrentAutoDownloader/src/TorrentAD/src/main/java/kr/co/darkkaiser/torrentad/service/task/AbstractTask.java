@@ -29,9 +29,8 @@ public abstract class AbstractTask implements Task {
 		return this.taskType;
 	}
 
-	// @@@@@
 	@Override
-	public void setBoardName(String name) {
+	public void setBoardName(String name) throws Exception {
 		this.searchContext.setBoardName(name);
 	}
 

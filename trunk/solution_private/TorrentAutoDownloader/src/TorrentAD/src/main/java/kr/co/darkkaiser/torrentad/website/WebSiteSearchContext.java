@@ -4,7 +4,7 @@ public interface WebSiteSearchContext {
 
 	WebSite getWebSite();
 
-	void setBoardName(String name);
+	void setBoardName(String name) throws Exception;
 
 	void validate();
 
