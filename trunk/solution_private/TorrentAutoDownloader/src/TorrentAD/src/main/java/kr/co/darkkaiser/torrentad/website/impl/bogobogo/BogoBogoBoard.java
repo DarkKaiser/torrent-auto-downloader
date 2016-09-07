@@ -14,7 +14,7 @@ public enum BogoBogoBoard {
 	private String name;
 	private String description;
 	private String url;
-
+	
 	private BogoBogoBoard(String name, String description, String url) {
 		this.name = name;
 		this.description = description;
@@ -31,6 +31,10 @@ public enum BogoBogoBoard {
 	
 	public String getUrl() {
 		return this.url;
+	}
+
+	public String getRegistDateFormatString() {
+		return "yy-MM-dd";
 	}
 
 	public static BogoBogoBoard fromString(String name) {
