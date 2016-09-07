@@ -24,6 +24,10 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception {
+		if (searchKeywords == null) {
+			throw new NullPointerException("searchKeywords");
+		}
+
 		this.searchKeywords.add(searchKeywords);
 	}
 

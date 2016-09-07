@@ -20,7 +20,7 @@ public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
 	}
 
 	@Override
-	public void addKeyword(String keyword) {
+	public void add(String keyword) {
 		if (keyword == null) {
 			throw new NullPointerException("keyword");
 		}
@@ -28,7 +28,9 @@ public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 		}
 
-		this.keywords.add(keyword);
+		if (this.keywords.contains(keyword) == false) {
+			this.keywords.add(keyword);
+		}
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
 		Iterator<String> iterator = this.keywords.iterator();
 		while (iterator.hasNext()) {
 			if (firstKeyword == false) {
-				sb.append("||")
+				sb.append("|")
 				  .append(iterator.next());
 			} else {
 				firstKeyword = false;

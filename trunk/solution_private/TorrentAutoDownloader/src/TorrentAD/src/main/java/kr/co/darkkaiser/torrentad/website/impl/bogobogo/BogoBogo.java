@@ -23,8 +23,10 @@ public class BogoBogo extends AbstractWebSite {
 	
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
-	private static final String MAIN_PAGE_URL = "https://zipbogo.net/";
-	private static final String LOGIN_PROCESS_URL_1 = "https://zipbogo.net/cdsb/login_process.php";
+	public static final String BASE_URL = "https://zipbogo.net";
+
+	private static final String MAIN_PAGE_URL = BASE_URL;
+	private static final String LOGIN_PROCESS_URL_1 = BASE_URL + "/cdsb/login_process.php";
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
 
 	protected Connection.Response loginConnResponse;

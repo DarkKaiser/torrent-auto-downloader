@@ -4,12 +4,12 @@ import org.jsoup.helper.StringUtil;
 
 public enum BogoBogoBoard {
 
-	MOVIE_NEW("newmovie", "영화 > 최신외국영화", "http://zipbogo.net/cdsb/board.php?board=newmovie"),
-	MOVIE_KOR("kormovie", "영화 > 한국영화", "http://zipbogo.net/cdsb/board.php?board=kormovie"),
-	MOVIE_HD("hdmovie", "영화 > DVD고화질영화", "http://zipbogo.net/cdsb/board.php?board=hdmovie"),
-	KOR_DRAMA_ON("kordramaon", "한국TV프로그램 > 드라마(방영중)", "http://zipbogo.net/cdsb/board.php?board=kdramaon"),
-	KOR_ENTERTAINMENT("korentertainment", "한국TV프로그램 > 쇼/오락/스포츠", "http://zipbogo.net/cdsb/board.php?board=kentertain"),
-	ANI_ON("anion", "애니메이션 > 방영중", "http://zipbogo.net/cdsb/board.php?board=kentertain");
+	MOVIE_NEW("newmovie", "영화 > 최신외국영화", BogoBogo.BASE_URL + "/cdsb/board.php?board=newmovie"),
+	MOVIE_KOR("kormovie", "영화 > 한국영화", BogoBogo.BASE_URL + "/cdsb/board.php?board=kormovie"),
+	MOVIE_HD("hdmovie", "영화 > DVD고화질영화", BogoBogo.BASE_URL + "/cdsb/board.php?board=hdmovie"),
+	KOR_DRAMA_ON("kordramaon", "한국TV프로그램 > 드라마(방영중)", BogoBogo.BASE_URL + "/cdsb/board.php?board=kdramaon"),
+	KOR_ENTERTAINMENT("korentertainment", "한국TV프로그램 > 쇼/오락/스포츠", BogoBogo.BASE_URL + "/cdsb/board.php?board=kentertain"),
+	ANI_ON("anion", "애니메이션 > 방영중", BogoBogo.BASE_URL + "/cdsb/board.php?board=kentertain");
 
 	private String name;
 	private String description;

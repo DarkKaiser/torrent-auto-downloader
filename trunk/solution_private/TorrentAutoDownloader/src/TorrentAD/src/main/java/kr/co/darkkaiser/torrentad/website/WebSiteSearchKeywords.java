@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.website;
 
 public interface WebSiteSearchKeywords {
 
-	void addKeyword(String keyword);
+	void add(String keyword);
 
 	boolean isSatisfyCondition(String text);
 

@@ -81,7 +81,7 @@ public class TaskGenerator {
 										while (cvSearchKeywordChildNode != null) {
 											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
 												if (cvSearchKeywordChildNode.getNodeName().equals("item") == true) {
-													searchKeywords.addKeyword(cvSearchKeywordChildNode.getTextContent().trim());
+													searchKeywords.add(cvSearchKeywordChildNode.getTextContent().trim());
 												}
 											}
 
