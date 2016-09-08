@@ -17,11 +17,11 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	private final long identifier;
 
 	// 제목
-	private String title;
+	private final String title;
 
 	// 등록일자
-	private Date registDate;
-	private DateFormat registDateFormat;
+	private final Date registDate;
+	private final DateFormat registDateFormat;
 
 	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
 		if (board == null) {

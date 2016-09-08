@@ -23,11 +23,6 @@ public class OnceTaskImpl extends AbstractTask implements OnceTask {
 	}
 
 	@Override
-	public boolean isValid() {
-		return super.isValid();
-	}
-	
-	@Override
 	public String toString() {
 		return new StringBuilder()
 				.append(OnceTaskImpl.class.getSimpleName())

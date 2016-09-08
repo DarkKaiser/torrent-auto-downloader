@@ -9,7 +9,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	private final WebSiteSearchKeywordsType type;
 
-	private ArrayList<String> keywords = new ArrayList<>();
+	private final ArrayList<String> keywords = new ArrayList<>();
 
 	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType type) {
 		if (type == null) {

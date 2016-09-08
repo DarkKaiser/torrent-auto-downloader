@@ -1,14 +1,12 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
-public class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoardItemDownloadLink {
+public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoardItemDownloadLink {
 
 	private final String id;
-
 	private final String value1;
 	private final String value2;
 	private final String value3;
 	private final String value4;
-
 	private final String fileName;
 
 	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileName) {
@@ -17,12 +15,10 @@ public class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoardItemDo
 
 	private DefaultBogoBogoBoardItemDownloadLink(String id, String value1, String value2, String value3, String value4, String fileName) {
 		this.id = id;
-		
 		this.value1 = value1;
 		this.value2 = value2;
 		this.value3 = value3;
 		this.value4 = value4;
-		
 		this.fileName = fileName;
 	}
 	

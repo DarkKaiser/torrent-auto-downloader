@@ -21,7 +21,7 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
-public class TaskGenerator {
+public final class TaskGenerator {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TaskGenerator.class);
 	
@@ -71,8 +71,8 @@ public class TaskGenerator {
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
 										String searchKeywordsType = WebSiteSearchKeywordsType.getDefault().getValue();
-										if (cvSearchKeywordNode.getAttributes().getNamedItem("type") != null) {
-											searchKeywordsType = cvSearchKeywordNode.getAttributes().getNamedItem("type").getNodeValue();
+										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR) != null) {
+											searchKeywordsType = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR).getNodeValue();
 										}
 
 										WebSiteSearchKeywords searchKeywords = site.createSearchKeyword(searchKeywordsType);
@@ -80,7 +80,7 @@ public class TaskGenerator {
 										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
 										while (cvSearchKeywordChildNode != null) {
 											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
-												if (cvSearchKeywordChildNode.getNodeName().equals("item") == true) {
+												if (cvSearchKeywordChildNode.getNodeName().equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM) == true) {
 													searchKeywords.add(cvSearchKeywordChildNode.getTextContent().trim());
 												}
 											}
@@ -91,7 +91,7 @@ public class TaskGenerator {
 										if (searchKeywords.isValid() == true) {
 											task.addSearchKeywords(searchKeywords);
 										} else {
-											throw new XMLParseException("SearchKeywords 정보가 유효하지 않습니다.");
+											throw new XMLParseException("생성된 SearchKeywords가 유효하지 않습니다.");
 										}
 									}
 								}

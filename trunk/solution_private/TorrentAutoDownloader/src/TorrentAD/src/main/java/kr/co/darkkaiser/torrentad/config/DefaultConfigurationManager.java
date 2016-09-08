@@ -20,7 +20,7 @@ public final class DefaultConfigurationManager implements ConfigurationManager {
 
 	private String filePath;
 	
-	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<String, String>();
+	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
 	
 	public DefaultConfigurationManager(String filePath) throws Exception {
 		load(filePath);

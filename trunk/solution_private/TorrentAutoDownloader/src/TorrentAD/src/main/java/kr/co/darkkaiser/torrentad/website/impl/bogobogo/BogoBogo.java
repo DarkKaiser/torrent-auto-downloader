@@ -215,5 +215,20 @@ public class BogoBogo extends AbstractWebSite {
 	          }
 		}
 	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append(BogoBogo.class.getSimpleName())
+				.append("{")
+				.append("}, ")
+				.append(super.toString())
+				.toString();
+	}
 
 }

@@ -39,7 +39,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 
 	/**
-	 * 게시판 목록 등록일자 포맷을 반환한다.
+	 * 게시판 목록의 등록일자 포맷을 반환합니다.
 	 */
 	@Override
 	public String getRegistDateFormatString() {
