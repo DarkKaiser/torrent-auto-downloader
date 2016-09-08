@@ -12,13 +12,6 @@
 
 		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>60</task-execute-interval-time-second>
-		
-		
-		
-		
-		게시물 목록 날짜 포맷
-		처음 프로그램이 실행될때 latest-dn-key > date 이후에 모든 목록을 불러들여서 다운로드 받기 위해 사용한다.
-		<date-fmt>yy-MM-DD</date-fmt>
 	</torrentad-config-values>
 	
 	<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
@@ -56,11 +49,7 @@
 			latest-dn-key 값이 비어있으면 데몬이 올라가고 난 이후의 데이터로 한정?
 			다운로드 받고나서 다운로드 받은 날짜 및 id 갱신
 			이후 해당 이후 날짜의 새로운 데이터를 검색한다.
-			게시판 목록에서 읽어들일 수 있는 최대 페이지 개수가 정해져있다.
-			<latest-download>
-				<id></id>
-				<regist-date></regist-date>
-			</latest-download>마지막 다운로드키
+			<latest-download>100</latest-download>마지막 다운로드키
 		</torrentad-periodic-task>
 	</torrentad-periodic-tasks>
 

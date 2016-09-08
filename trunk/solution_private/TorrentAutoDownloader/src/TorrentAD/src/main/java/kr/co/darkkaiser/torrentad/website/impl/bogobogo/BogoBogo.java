@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 public class BogoBogo extends AbstractWebSite {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BogoBogo.class);
-	
+
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
 	public static final String BASE_URL = "https://zipbogo.net";
@@ -188,11 +189,13 @@ public class BogoBogo extends AbstractWebSite {
 	}
 	
 	// @@@@@
-	private void loadBoard(BogoBogoBoard board) throws IOException {
+	private void loadBoard(BogoBogoBoard board) throws IOException, ParseException {
 		assert board != null;
 		assert isLogin() == true;
 
 		if (this.boardItemList.get(board) == null) {
+			ArrayList<BogoBogoBoardItem> boardItems = new ArrayList<>();
+			
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
 				Connection.Response boardItemsResponse = Jsoup.connect(String.format("%s&page=%s", board.getURL(), pageNo))
 						.userAgent(USER_AGENT)
@@ -211,15 +214,17 @@ public class BogoBogo extends AbstractWebSite {
 				for (Element element : elements) {
 					Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 					
-//					BogoBogoBoardItem i = new BogoBogoBoardItem(board, 0, "title", "date");
-
 					StringBuilder builder = new StringBuilder();
 					for (String item : items) {
 						builder.append(item + ": " + iterator.next().text() + "   \t");
 					}
 					System.out.println(builder.toString());
+					
+					boardItems.add(new BogoBogoBoardItem(board, 0, "title", "date"));
 				}
 			}
+			
+			this.boardItemList.put(board, boardItems);
 		}
 	}
 

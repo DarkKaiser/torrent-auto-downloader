@@ -26,7 +26,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 		if (handler == null) {
 			throw new NullPointerException("handler");
 		}
-		
+
 		validate();
 
 		// @@@@@
@@ -37,9 +37,11 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		System.out.println(bi);
 
 		Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
+		
 //		/* 반환받은 정보를 이용해서 다운로드 */
-//		/* 결과정보*/l.download(/*다운로드정보*/);
-//		l.upload(/*결과정보*/);
+//		/* 결과정보*/l.download(WebSiteBoardItem/*다운로드정보*/);
+		// 다운로드 받은 파일을 업로드하는것은 다른 객체가 관리
+			// 지정된 폴더내의 파일을 nas로 계속 업로드 하는 역할
 		System.out.println("############# run");
 
 		return TaskResult.OK;
