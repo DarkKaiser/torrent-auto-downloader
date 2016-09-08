@@ -4,7 +4,7 @@ import java.util.Date;
 
 public interface WebSiteBoardItem {
 
-	int getIdentifier();
+	long getIdentifier();
 
 	String getTitle();
 

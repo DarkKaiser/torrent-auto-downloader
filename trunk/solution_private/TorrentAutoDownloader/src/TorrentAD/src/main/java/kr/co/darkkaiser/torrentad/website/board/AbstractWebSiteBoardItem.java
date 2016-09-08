@@ -9,7 +9,7 @@ import org.jsoup.helper.StringUtil;
 public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 
 	// 식별자
-	private int identifier;
+	private long identifier;
 
 	// 제목
 	private String title;
@@ -37,7 +37,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	}
 
 	@Override
-	public int getIdentifier() {
+	public long getIdentifier() {
 		return this.identifier;
 	}
 

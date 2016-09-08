@@ -5,13 +5,13 @@ import java.util.Iterator;
 
 import org.jsoup.helper.StringUtil;
 
-public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
+public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	private final WebSiteSearchKeywordsType type;
 
 	private ArrayList<String> keywords = new ArrayList<>();
 
-	public WebSiteSearchKeywordsAdapter(WebSiteSearchKeywordsType type) {
+	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType type) {
 		if (type == null) {
 			throw new NullPointerException("type");
 		}
@@ -69,7 +69,7 @@ public class WebSiteSearchKeywordsAdapter implements WebSiteSearchKeywords {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()
-				.append(WebSiteSearchKeywordsAdapter.class.getSimpleName())
+				.append(DefaultWebSiteSearchKeywords.class.getSimpleName())
 				.append("{")
 				.append("type:").append(this.type)
 				.append(", keywords:");
