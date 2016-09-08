@@ -21,21 +21,21 @@ public enum WebSiteSearchKeywordsType {
 		return INCLUDE;
 	}
 	
-	public static WebSiteSearchKeywordsType fromString(String type) {
-		if (type == null) {
-			throw new NullPointerException("type");
+	public static WebSiteSearchKeywordsType fromString(String value) {
+		if (value == null) {
+			throw new NullPointerException("value");
 		}
-		if (StringUtil.isBlank(type) == true) {
-			throw new IllegalArgumentException("type은 빈 문자열을 허용하지 않습니다.");
-		}
-
-		if (type.equals(INCLUDE.getValue()) == true) {
-			return INCLUDE;
-		} else if (type.equals(EXCLUDE.getValue()) == true) {
-			return EXCLUDE;
+		if (StringUtil.isBlank(value) == true) {
+			throw new IllegalArgumentException("value은 빈 문자열을 허용하지 않습니다.");
 		}
 
-		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSiteSearchKeywordsType.class.getSimpleName(), type));
+		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+			if (value.equals(type.getValue()) == true) {
+				return type;
+			}
+	    }
+
+		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSiteSearchKeywordsType.class.getSimpleName(), value));
 	}
 
 }

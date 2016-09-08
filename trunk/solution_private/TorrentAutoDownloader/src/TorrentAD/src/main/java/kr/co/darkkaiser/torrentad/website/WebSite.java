@@ -42,10 +42,12 @@ public enum WebSite {
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 		}
 
-		if (name.equals(BOGOBOGO.toString()) == true) {
-			return BOGOBOGO;
-		}
-
+		for (WebSite site : WebSite.values()) {
+			if (name.equals(site.getName()) == true) {
+				return site;
+			}
+	    }
+		
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 

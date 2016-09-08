@@ -45,20 +45,12 @@ public enum BogoBogoBoard {
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 		}
 
-		if (name.equals(MOVIE_NEW.getName()) == true) {
-			return MOVIE_NEW;
-		} else if (name.equals(MOVIE_KOR.getName()) == true) {
-			return MOVIE_KOR;
-		} else if (name.equals(MOVIE_HD.getName()) == true) {
-			return MOVIE_HD;
-		} else if (name.equals(KOR_DRAMA_ON.getName()) == true) {
-			return KOR_DRAMA_ON;
-		} else if (name.equals(KOR_ENTERTAINMENT.getName()) == true) {
-			return KOR_ENTERTAINMENT;
-		} else if (name.equals(ANI_ON.getName()) == true) {
-			return ANI_ON;
-		}
-
+		for (BogoBogoBoard board : BogoBogoBoard.values()) {
+			if (name.equals(board.getName()) == true) {
+				return board;
+			}
+	    }
+		
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", BogoBogoBoard.class.getSimpleName(), name));
 	}
 
