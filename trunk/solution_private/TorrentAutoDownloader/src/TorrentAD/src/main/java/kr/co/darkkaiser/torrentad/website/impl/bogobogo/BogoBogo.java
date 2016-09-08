@@ -1,11 +1,16 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +36,9 @@ public class BogoBogo extends AbstractWebSite {
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
 
 	protected Connection.Response loginConnResponse;
+	
+	// @@@@@
+	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItemList;
 
 	public BogoBogo() {
 		super(WebSite.BOGOBOGO);
@@ -143,19 +151,26 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public WebSiteBoardItemIterator search(WebSiteSearchContext searchContext) {
+	public WebSiteBoardItemIterator search(WebSiteSearchContext searchContext) throws Exception {
 		if (searchContext == null) {
 			throw new NullPointerException("searchContext");
 		}
-		
-		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
 		if (isLogin() == false) {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 		}
 
+		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
+
 		// @@@@@
 		//////////////////////////////////////////////////////////////////////
+		loadBoardData(siteSearchContext.getBoard());
+		
+		// 보드명, 페이지, boarditem
+		// HashMap<boardName, HashMap<Page, boardItem list>>
+		
+		
+		
 		// 상세페이지 url
 //		if (url.startsWith("board.php") == true) {
 //			this.detailPageURL = String.format("%s/%s", BogoBogo.BASE_URL_WITH_PATH, url);
@@ -170,6 +185,35 @@ public class BogoBogo extends AbstractWebSite {
 //			                .cookies(loginForm.cookies())
 //			                .execute();
 		return null;
+	}
+	
+	// @@@@@
+	private void loadBoardData(BogoBogoBoard board) throws IOException {
+
+		for (int page = 1; page < 10; ++page) {
+			String u = String.format("%s&page=%s", board.getURL(), page);
+			Connection.Response loginForm2 = Jsoup.connect(u)
+					.userAgent(USER_AGENT)
+	                .method(Connection.Method.GET)
+	                .cookies(this.loginConnResponse.cookies())
+	                .execute();
+
+			// System.out.println(loginForm2.body());
+
+			Document loginForm2Doc = loginForm2.parse();
+			System.out.println("####################");
+	//		System.out.println(loginForm2Doc.select("table.board01 tbody.num tr"));
+			Elements select = loginForm2Doc.select("table.board01 tbody.num tr");
+			String[] items = new String[] { "순위", "팀", "경기수", "승", "패", "무" };
+			for (Element row : select) {
+	            Iterator<Element> iterElem = row.getElementsByTag("td").iterator();
+	            StringBuilder builder = new StringBuilder();
+	            for (String item : items) {
+	              builder.append(item + ": " + iterElem.next().text() + "   \t");
+	            }
+	            System.out.println(builder.toString());
+	          }
+		}
 	}
 
 }

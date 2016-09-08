@@ -11,6 +11,6 @@ public interface WebSiteHandler {
 	boolean isLogin();
 
 	//@@@@@
-	WebSiteBoardItemIterator search(WebSiteSearchContext taskContext);
+	WebSiteBoardItemIterator search(WebSiteSearchContext taskContext) throws Exception;
 
 }
