@@ -156,6 +156,12 @@ public class BogoBogo extends AbstractWebSite {
 
 		// @@@@@
 		//////////////////////////////////////////////////////////////////////
+		// 상세페이지 url
+//		if (url.startsWith("board.php") == true) {
+//			this.detailPageURL = String.format("%s/%s", BogoBogo.BASE_URL_WITH_PATH, url);
+//		} else {
+//			// @@@@@ exception
+//		}
 
 //				 // 게시판이동
 //					Connection.Response loginForm2 = Jsoup.connect("https://zipbogo.net/cdsb/board.php?board=newmovie")

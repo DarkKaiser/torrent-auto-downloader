@@ -5,26 +5,23 @@ import java.text.ParseException;
 import kr.co.darkkaiser.torrentad.website.board.AbstractWebSiteBoardItem;
 
 public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
-	
-	// 상세페이지 URL
-	// @@@@@ 전체URL형태로변환되야됨, 형태: board.php?board=newmovie&amp;bm=view&amp;no=28585&amp;category=&amp;auth=&amp;page=1&amp;search=&amp;keyword=&amp;recom=
-	private String detailPageUrl;
+
+	// 게시물 상세페이지 URL
+	private String detailPageURL;
 
 	// @@@@@
-	// 다운로드 : id, val, val2, val3, val4, filename, filetype
+	// 다운로드 항목 리스트 : id, val, val2, val3, val4, filename, filetype
 
-	public BogoBogoBoardItem(BogoBogoBoard board, int identifier, String title, String registDateString) throws ParseException {
+	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString) throws ParseException {
 		super(board, identifier, title, registDateString);
 	}
 
-	public String getDetailPageUrl() {
-		// @@@@@
-		return this.detailPageUrl;
+	public String getDetailPageURL() {
+		return this.detailPageURL;
 	}
 
-	public void setDetailViewUrl(String url) {
-//		 @@@@@ 
-		this.detailPageUrl = url;
+	public void setDetailPageURL(String url) {
+		this.detailPageURL = url;
 	}
 
 	@Override
@@ -32,7 +29,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		return new StringBuilder()
 				.append(BogoBogoBoardItem.class.getSimpleName())
 				.append("{")
-				.append("detailPageUrl:").append(getDetailPageUrl())
+				.append("detailPageURL:").append(getDetailPageURL())
 				.append("}, ")
 				.append(super.toString())
 				.toString();
