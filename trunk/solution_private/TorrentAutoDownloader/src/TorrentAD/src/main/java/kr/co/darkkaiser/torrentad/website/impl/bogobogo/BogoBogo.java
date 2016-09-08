@@ -39,7 +39,7 @@ public class BogoBogo extends AbstractWebSite {
 	protected Connection.Response loginConnResponse;
 	
 	// @@@@@
-	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItemList;
+	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItemList = new HashMap<>();
 
 	public BogoBogo() {
 		super(WebSite.BOGOBOGO);
@@ -193,8 +193,9 @@ public class BogoBogo extends AbstractWebSite {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (this.boardItemList.get(board) == null) {
+		if (this.boardItemList.containsKey(board) == false) {
 			ArrayList<BogoBogoBoardItem> boardItems = new ArrayList<>();
+			
 			
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
 				Connection.Response boardItemsResponse = Jsoup.connect(String.format("%s&page=%s", board.getURL(), pageNo))
@@ -206,26 +207,41 @@ public class BogoBogo extends AbstractWebSite {
 //				if (boardItemsResponse.statusCode() != 200) {
 //					throw new IOException("GET " + MAIN_PAGE_URL + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 //				}
-//
+
 				Document boardItemsDoc = boardItemsResponse.parse();
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
 				
-				String[] items = new String[] { "순위", "팀", "경기수", "승", "패", "무" };
 				for (Element element : elements) {
 					Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 					
-					StringBuilder builder = new StringBuilder();
-					for (String item : items) {
-						builder.append(item + ": " + iterator.next().text() + "   \t");
+					String s = iterator.next().text();// 번호
+					if (s.contains("공지") == true) {
+						continue;
 					}
-					System.out.println(builder.toString());
+
+					String s1 = iterator.next().text();//카테고리
+					Element next = iterator.next();
+					Elements elementsByTag = next.getElementsByTag("a");
+					String href = elementsByTag.attr("href");
 					
-					boardItems.add(new BogoBogoBoardItem(board, 0, "title", "date"));
+					String no = href.substring(href.indexOf("no=") + 3, href.indexOf("&", href.indexOf("no=") + 3));
+
+					String s2 = next.text();//제목 및 url
+					String s3 = iterator.next().text();//작성자
+					String s4 = iterator.next().text();//날짜
+
+					boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(no), s2, s4)
+							.setDetailPageURL(href));
 				}
 			}
 			
 			this.boardItemList.put(board, boardItems);
 		}
+	}
+	
+	// @@@@@
+	private void loadBoardDownloadLink(BogoBogoBoardItem boardItem) {
+		// $("table.board01 tbody.num tr a[id^='downLink_num']")
 	}
 
 	@Override

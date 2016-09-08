@@ -36,8 +36,9 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		bi.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance("a", "b", "c", "d", "e", "f"));
 //		System.out.println(bi);
 
+		// search => download 로 변경???
 		Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
-		
+
 //		/* 반환받은 정보를 이용해서 다운로드 */
 //		/* 결과정보*/l.download(WebSiteBoardItem/*다운로드정보*/);
 		// 다운로드 받은 파일을 업로드하는것은 다른 객체가 관리

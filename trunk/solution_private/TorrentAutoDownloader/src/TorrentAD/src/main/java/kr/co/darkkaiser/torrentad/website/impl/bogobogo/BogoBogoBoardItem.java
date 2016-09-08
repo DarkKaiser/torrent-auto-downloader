@@ -22,8 +22,9 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		return this.detailPageURL;
 	}
 
-	public void setDetailPageURL(String url) {
+	public BogoBogoBoardItem setDetailPageURL(String url) {
 		this.detailPageURL = url;
+		return this;
 	}
 
 	public void addDownloadLink(BogoBogoBoardItemDownloadLink downloadLink) {
