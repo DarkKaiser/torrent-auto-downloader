@@ -8,6 +8,8 @@ public interface WebSiteBoard {
 	
 	String getURL();
 	
-	String getRegistDateFormatString();
+	String getDefaultRegistDateFormatString();
+	
+	int getDefaultLoadPageCount();
 
 }

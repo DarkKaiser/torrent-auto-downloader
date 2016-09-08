@@ -19,10 +19,6 @@
 		게시물 목록 날짜 포맷
 		처음 프로그램이 실행될때 latest-dn-key > date 이후에 모든 목록을 불러들여서 다운로드 받기 위해 사용한다.
 		<date-fmt>yy-MM-DD</date-fmt>
-		
-		게시판 목록에서 읽어들일 수 있는 최대 페이지 개수가 정해져있다.
-		<max-page-count>10</max-page-count>
-		
 	</torrentad-config-values>
 	
 	<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->

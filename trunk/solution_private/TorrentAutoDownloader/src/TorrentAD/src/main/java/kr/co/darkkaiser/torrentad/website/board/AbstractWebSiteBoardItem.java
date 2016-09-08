@@ -37,7 +37,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		this.board = board;
 		this.title = title;
 		this.identifier = identifier;
-		this.registDateFormat = new SimpleDateFormat(this.board.getRegistDateFormatString());
+		this.registDateFormat = new SimpleDateFormat(this.board.getDefaultRegistDateFormatString());
 		this.registDate = this.registDateFormat.parse(registDateString);
 	}
 
