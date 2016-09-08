@@ -37,9 +37,8 @@ public class BogoBogo extends AbstractWebSite {
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
 
 	protected Connection.Response loginConnResponse;
-	
-	// @@@@@
-	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItemList = new HashMap<>();
+
+	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardData = new HashMap<>();
 
 	public BogoBogo() {
 		super(WebSite.BOGOBOGO);
@@ -193,9 +192,8 @@ public class BogoBogo extends AbstractWebSite {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (this.boardItemList.containsKey(board) == false) {
+		if (this.boardData.containsKey(board) == false) {
 			ArrayList<BogoBogoBoardItem> boardItems = new ArrayList<>();
-			
 			
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
 				Connection.Response boardItemsResponse = Jsoup.connect(String.format("%s&page=%s", board.getURL(), pageNo))
@@ -235,7 +233,7 @@ public class BogoBogo extends AbstractWebSite {
 				}
 			}
 			
-			this.boardItemList.put(board, boardItems);
+			this.boardData.put(board, boardItems);
 		}
 	}
 	
