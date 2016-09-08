@@ -20,7 +20,7 @@ import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
-import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItemIterator;
+import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 
 public class BogoBogo extends AbstractWebSite {
 	
@@ -151,7 +151,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public WebSiteBoardItemIterator search(WebSiteSearchContext searchContext) throws Exception {
+	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws Exception {
 		if (searchContext == null) {
 			throw new NullPointerException("searchContext");
 		}
@@ -164,7 +164,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		// @@@@@
 		//////////////////////////////////////////////////////////////////////
-		loadBoardData(siteSearchContext.getBoard());
+		loadBoard(siteSearchContext.getBoard());
 		
 		// 보드명, 페이지, boarditem
 		// HashMap<boardName, HashMap<Page, boardItem list>>
@@ -188,34 +188,41 @@ public class BogoBogo extends AbstractWebSite {
 	}
 	
 	// @@@@@
-	private void loadBoardData(BogoBogoBoard board) throws IOException {
+	private void loadBoard(BogoBogoBoard board) throws IOException {
+		assert board != null;
+		assert isLogin() == true;
 
-		for (int page = 1; page < 10; ++page) {
-			String u = String.format("%s&page=%s", board.getURL(), page);
-			Connection.Response loginForm2 = Jsoup.connect(u)
-					.userAgent(USER_AGENT)
-	                .method(Connection.Method.GET)
-	                .cookies(this.loginConnResponse.cookies())
-	                .execute();
+		if (this.boardItemList.get(board) == null) {
+			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
+				Connection.Response boardItemsResponse = Jsoup.connect(String.format("%s&page=%s", board.getURL(), pageNo))
+						.userAgent(USER_AGENT)
+		                .method(Connection.Method.GET)
+		                .cookies(this.loginConnResponse.cookies())
+		                .execute();
 
-			// System.out.println(loginForm2.body());
+//				if (boardItemsResponse.statusCode() != 200) {
+//					throw new IOException("GET " + MAIN_PAGE_URL + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
+//				}
+//
+				Document boardItemsDoc = boardItemsResponse.parse();
+				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
+				
+				String[] items = new String[] { "순위", "팀", "경기수", "승", "패", "무" };
+				for (Element element : elements) {
+					Iterator<Element> iterator = element.getElementsByTag("td").iterator();
+					
+//					BogoBogoBoardItem i = new BogoBogoBoardItem(board, 0, "title", "date");
 
-			Document loginForm2Doc = loginForm2.parse();
-			System.out.println("####################");
-	//		System.out.println(loginForm2Doc.select("table.board01 tbody.num tr"));
-			Elements select = loginForm2Doc.select("table.board01 tbody.num tr");
-			String[] items = new String[] { "순위", "팀", "경기수", "승", "패", "무" };
-			for (Element row : select) {
-	            Iterator<Element> iterElem = row.getElementsByTag("td").iterator();
-	            StringBuilder builder = new StringBuilder();
-	            for (String item : items) {
-	              builder.append(item + ": " + iterElem.next().text() + "   \t");
-	            }
-	            System.out.println(builder.toString());
-	          }
+					StringBuilder builder = new StringBuilder();
+					for (String item : items) {
+						builder.append(item + ": " + iterator.next().text() + "   \t");
+					}
+					System.out.println(builder.toString());
+				}
+			}
 		}
 	}
-	
+
 	@Override
 	public void validate() {
 		super.validate();

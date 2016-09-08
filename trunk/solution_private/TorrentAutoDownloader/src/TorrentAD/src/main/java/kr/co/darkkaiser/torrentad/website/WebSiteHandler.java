@@ -1,6 +1,8 @@
 package kr.co.darkkaiser.torrentad.website;
 
-import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItemIterator;
+import java.util.Iterator;
+
+import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 
 public interface WebSiteHandler {
 
@@ -8,9 +10,8 @@ public interface WebSiteHandler {
 
 	void logout() throws Exception;
 
-	boolean isLogin();
+	Iterator<WebSiteBoardItem> search(WebSiteSearchContext taskContext) throws Exception;
 
-	//@@@@@
-	WebSiteBoardItemIterator search(WebSiteSearchContext taskContext) throws Exception;
+	boolean isLogin();
 
 }

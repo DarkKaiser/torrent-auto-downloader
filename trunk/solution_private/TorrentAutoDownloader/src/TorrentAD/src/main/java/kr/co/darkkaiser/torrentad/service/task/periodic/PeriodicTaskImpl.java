@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.task.periodic;
 
+import java.util.Iterator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +10,7 @@ import kr.co.darkkaiser.torrentad.service.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItemIterator;
+import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
@@ -34,7 +36,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		bi.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance("a", "b", "c", "d", "e", "f"));
 //		System.out.println(bi);
 
-		WebSiteBoardItemIterator iterator = handler.search(this.searchContext);
+		Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
 //		/* 반환받은 정보를 이용해서 다운로드 */
 //		/* 결과정보*/l.download(/*다운로드정보*/);
 //		l.upload(/*결과정보*/);
