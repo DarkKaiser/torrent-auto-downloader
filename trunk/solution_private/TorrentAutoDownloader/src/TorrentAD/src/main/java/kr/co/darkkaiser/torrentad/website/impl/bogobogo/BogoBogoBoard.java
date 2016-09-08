@@ -2,7 +2,9 @@ package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
 import org.jsoup.helper.StringUtil;
 
-public enum BogoBogoBoard {
+import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+
+public enum BogoBogoBoard implements WebSiteBoard {
 
 	MOVIE_NEW			("newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_PATH + "/board.php?board=newmovie"),
 	MOVIE_KOR			("kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_PATH + "/board.php?board=kormovie"),
@@ -21,20 +23,26 @@ public enum BogoBogoBoard {
 		this.url = url;
 	}
 	
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public String getDescription() {
 		return this.description;
 	}
 	
+	@Override
 	public String getURL() {
 		return this.url;
 	}
 
+	/**
+	 * 게시판 목록 등록일자 포맷을 반환한다.
+	 */
+	@Override
 	public String getRegistDateFormatString() {
-		// @@@@@
 		return "yy-MM-dd";
 	}
 

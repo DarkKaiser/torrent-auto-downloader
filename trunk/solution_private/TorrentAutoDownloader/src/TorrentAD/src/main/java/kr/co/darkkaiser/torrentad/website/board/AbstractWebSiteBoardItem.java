@@ -2,22 +2,31 @@ package kr.co.darkkaiser.torrentad.website.board;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jsoup.helper.StringUtil;
 
+import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+
 public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 
+	private final WebSiteBoard board;
+
 	// 식별자
-	private long identifier;
+	private final long identifier;
 
 	// 제목
 	private String title;
 
 	// 등록일자
 	private Date registDate;
+	private DateFormat registDateFormat;
 
-	protected AbstractWebSiteBoardItem(int identifier, String title, String registDateString) throws ParseException {
+	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
+		if (board == null) {
+			throw new NullPointerException("board");
+		}
 		if (StringUtil.isBlank(title) == true) {
 			throw new IllegalArgumentException("title은 빈 문자열을 허용하지 않습니다.");
 		}
@@ -25,15 +34,15 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 			throw new IllegalArgumentException("registDateString은 빈 문자열을 허용하지 않습니다.");
 		}
 
+		this.board = board;
 		this.title = title;
 		this.identifier = identifier;
-		// @@@@@ 초기화되기 전에 사용됨 널에러바랭
-//		this.registDate = getRegistDateFormat().parse(registDateString);
+		this.registDateFormat = new SimpleDateFormat(this.board.getRegistDateFormatString());
+		this.registDate = this.registDateFormat.parse(registDateString);
 	}
-	
-	protected void init() {
-		// @@@@@
-//		this.registDate = getRegistDateFormat().parse(registDateString);
+
+	protected WebSiteBoard getBoard() {
+		return this.board;
 	}
 
 	@Override
@@ -53,17 +62,16 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 
 	@Override
 	public String getRegistDateString() {
-		return getRegistDateFormat().format(this.registDate);
+		return this.registDateFormat.format(this.registDate);
 	}
-
-	protected abstract DateFormat getRegistDateFormat();
 
 	@Override
 	public String toString() {
 		return new StringBuilder()
 				.append(AbstractWebSiteBoardItem.class.getSimpleName())
 				.append("{")
-				.append("identifier:").append(this.identifier)
+				.append("board:").append(this.board)
+				.append(", identifier:").append(this.identifier)
 				.append(", title:").append(this.title)
 				.append(", registDate:").append(getRegistDateString())
 				.append("}")
