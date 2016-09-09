@@ -410,6 +410,9 @@ public class BogoBogo extends AbstractWebSite {
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			if (downloadLink.isDownloadCompleted() == true) {
+				continue;
+			}
 
 			logger.info("첨부파일을 다운로드합니다.({})", downloadLink);
 
@@ -509,6 +512,8 @@ public class BogoBogo extends AbstractWebSite {
 				FileOutputStream fos = new FileOutputStream(new File(downloadFileFullPath));
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
+
+				downloadLink.setDownloadCompleted(true);
 				
 				logger.info("첨부파일 다운로드가 완료되었습니다.({})", downloadFileFullPath);
 			} catch (ParseException e) {
