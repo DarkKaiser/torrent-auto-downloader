@@ -4,7 +4,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 
 public interface Task {
-	
+
 	TaskType getTaskType();
 
 	void setBoardName(String name) throws Exception;

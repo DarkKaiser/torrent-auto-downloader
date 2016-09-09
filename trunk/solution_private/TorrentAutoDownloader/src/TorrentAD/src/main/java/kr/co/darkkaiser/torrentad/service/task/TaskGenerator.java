@@ -75,7 +75,7 @@ public final class TaskGenerator {
 											searchKeywordsType = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR).getNodeValue();
 										}
 
-										WebSiteSearchKeywords searchKeywords = site.createSearchKeyword(searchKeywordsType);
+										WebSiteSearchKeywords searchKeywords = site.createSearchKeywords(searchKeywordsType);
 
 										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
 										while (cvSearchKeywordChildNode != null) {
@@ -111,10 +111,10 @@ public final class TaskGenerator {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error("환경설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configurationManager.getFilePath());
+			logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configurationManager.getFilePath());
 			throw e;
 		} catch (Exception e) {
-			logger.error("환경설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
+			logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
 			throw e;
 		} finally {
 		}

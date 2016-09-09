@@ -25,6 +25,7 @@ public final class TasksRunnableAdapterResult {
 
 	public TasksRunnableAdapterResult(TasksRunnableAdapterResultCode tasksExecutorServiceResult) {
 		this.tasksRunnableAdapterResultCode = tasksExecutorServiceResult;
+		this.taskResult = TaskResult.NONE;
 	}
 
 	public TasksRunnableAdapterResult(TasksRunnableAdapterResultCode tasksExecutorServiceResult, TaskResult taskResult) {
@@ -43,7 +44,11 @@ public final class TasksRunnableAdapterResult {
 	public static TasksRunnableAdapterResult OK() {
 		return new TasksRunnableAdapterResult(TasksRunnableAdapterResultCode.OK);
 	}
-	
+
+	public static TasksRunnableAdapterResult OK(TaskResult taskResult) {
+		return new TasksRunnableAdapterResult(TasksRunnableAdapterResultCode.OK, taskResult);
+	}
+
 	public static TasksRunnableAdapterResult INVALID_ACCOUNT() {
 		return new TasksRunnableAdapterResult(TasksRunnableAdapterResultCode.INVALID_ACCOUNT);
 	}

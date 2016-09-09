@@ -18,6 +18,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
 	private final WebSite site;
+
 	private final String accountId;
 	private final String accountPassword;
 
@@ -61,12 +62,12 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 
 	@Override
 	public TasksRunnableAdapterResult call() throws Exception {
-		logger.info("새 토렌트 파일 확인 작업을 시작합니다.");
+		logger.info("새 토렌트 파일 확인을 시작합니다.");
 
 		TasksRunnableAdapterResult result = call0();
 
-		logger.info("새 토렌트 파일 확인 작업이 종료되었습니다.");
-		
+		logger.info("새 토렌트 파일 확인이 종료되었습니다.");
+
 		return result;
 	}
 
@@ -87,8 +88,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
 		}
 
-		// 모든 Task의 실행 결과가 성공이면 반환값은 OK를 반환한다.
-		// 하지만 하나 이상의 Task 실행이 실패하면, 마지막 실패한 Task의 실패코드를 반환한다.
+		// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
 		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
 
 		for (Task task : this.tasks) {
@@ -101,6 +101,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 					result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 				} else {
 					logger.debug("Task 실행이 완료되었습니다.");
+					result = TasksRunnableAdapterResult.OK(TaskResult.OK);
 				}
 			} catch (Exception e) {
 				logger.error("Task 실행 중 예외가 발생하였습니다.", e);

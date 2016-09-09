@@ -57,7 +57,7 @@ public enum WebSite {
 	
 	public abstract WebSiteSearchContext createSearchContext();
 
-	public WebSiteSearchKeywords createSearchKeyword(String typeValue) {
+	public WebSiteSearchKeywords createSearchKeywords(String typeValue) {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType.fromString(typeValue));
 	}
 

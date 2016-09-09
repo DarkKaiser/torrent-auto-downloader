@@ -9,9 +9,10 @@ public abstract class AbstractTask implements Task {
 	protected final TaskType taskType;
 
 	protected final WebSite site;
+
 	protected final WebSiteSearchContext searchContext;
 
-	public AbstractTask(TaskType taskType, WebSite site) {
+	protected AbstractTask(TaskType taskType, WebSite site) {
 		if (taskType == null) {
 			throw new NullPointerException("taskType");
 		}
@@ -19,9 +20,8 @@ public abstract class AbstractTask implements Task {
 			throw new NullPointerException("site");
 		}
 
-		this.taskType = taskType;
-
 		this.site = site;
+		this.taskType = taskType;
 		this.searchContext = this.site.createSearchContext();
 	}
 
@@ -39,7 +39,7 @@ public abstract class AbstractTask implements Task {
 	public void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception {
 		this.searchContext.addSearchKeywords(searchKeywords);
 	}
-	
+
 	@Override
 	public void validate() {
 		if (this.taskType == null) {

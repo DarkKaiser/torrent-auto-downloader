@@ -5,7 +5,7 @@
 	<torrentad-config-values>
 		<!-- 토렌트 사이트 이름 -->
 		<website-name>보고보고</website-name>
-		
+
 		<!-- 토렌트 사이트 로그인 정보 -->
 		<website-account-id>darkkaiser</website-account-id>
 		<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
@@ -13,19 +13,19 @@
 		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>60</task-execute-interval-time-second>
 	</torrentad-config-values>
-	
+
 	<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 	<torrentad-periodic-tasks>
 		<torrentad-periodic-task>
 			<!-- 게시판 이름 -->
 			<board-name>newmovie</board-name>
-			
+
 			<!-- 게시물 검색키워드 -->
 			<search-keywords>
 				<!--
-					검색키워드는 AND 연산으로 처리되며, 등록된 모든 검색키워드가 포함되어 있는 게시물만이 검색된다.
-					검색키워드내의 항목이 다수일 경우에는, 다수의 항목 중 하나의 항목만 포함되어 있어도 게시물이 검색된다.
-				 -->
+				  검색키워드는 AND 연산으로 처리되며, 등록된 모든 검색키워드가 포함되어 있는 게시물만이 검색된다.
+				  검색키워드 자식 태그의 항목이 다수일 경우에는, 다수의 항목 중 하나의 항목만 포함되어 있어도 게시물이 검색된다.
+				-->
 				<search-keyword>
 					<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
 					<item>찬란한+유산</item>
