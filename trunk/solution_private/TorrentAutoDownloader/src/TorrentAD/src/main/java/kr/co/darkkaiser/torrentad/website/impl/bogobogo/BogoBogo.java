@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -174,6 +175,8 @@ public class BogoBogo extends AbstractWebSite {
 		ArrayList<BogoBogoBoardItem> arrayList = this.boardItems.get(siteSearchContext.getBoard());
 		loadBoardItemDownloadLink(arrayList.get(0));
 
+		download(arrayList.get(0));
+
 		return null;
 	}
 	
@@ -310,6 +313,7 @@ public class BogoBogo extends AbstractWebSite {
 						String value2 = element.attr("val2");
 						String value3 = element.attr("val3");
 						String value4 = element.attr("val4");
+						String fileId = element.attr("file_id");
 						String fileName = element.text();
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
@@ -317,7 +321,7 @@ public class BogoBogo extends AbstractWebSite {
 							continue;
 						}
 
-						boardItem.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance(id, value1, value2, value3, value4, fileName));
+						boardItem.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance(id, value1, value2, value3, value4, fileId, fileName));
 					}
 				} catch (NoSuchElementException e) {
 					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
@@ -334,6 +338,79 @@ public class BogoBogo extends AbstractWebSite {
 			logger.error("게시물의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", e);
 			return false;
 		}
+		
+		return true;
+	}
+
+	private boolean download(BogoBogoBoardItem boardItem) throws IOException {
+		assert boardItem != null;
+		assert isLogin() == true;
+
+		String detailPageURL = boardItem.getDetailPageURL();
+		assert StringUtil.isBlank(detailPageURL) == false;
+
+		// @@@@@
+		BogoBogoBoardItemDownloadLink downloadLink = boardItem.getDownloadLink(0);
+		// @@@@@
+		Connection.Response loginForm4 = Jsoup.connect("https://zipbogo.net/cdsb/download.php")
+				.userAgent(USER_AGENT)
+				.ignoreContentType(true)
+				.header("Referer", detailPageURL)
+                .method(Connection.Method.POST)
+                .data("file_id", downloadLink.getFileId())
+                .data("article_id", downloadLink.getId())
+                .data("down", downloadLink.getValue1())
+                .data("filetype", downloadLink.getValue4())
+                .cookies(this.loginConnResponse.cookies())
+                .execute();
+
+		System.out.println(loginForm4.parse().body().html());
+		if (loginForm4.parse().body().html().toString().length() != 6) {
+			// 실패
+		}
+		
+		String s = loginForm4.parse().body().html();
+		String key = s.substring(s.indexOf("\"key\":\"")+7, s.indexOf("\"", s.indexOf("\"key\":\"")+7));
+		String msg = s.substring(s.indexOf("\"msg\":\"")+7, s.indexOf("\"", s.indexOf("\"msg\":\"")+7));
+		// {"stat":true,"key":"wwUsEG","msg":"cuid_darkkaiser_downLink_num_0_1473396898_0"}
+
+		
+		// 다운로드 링크 페이지 열기
+		Connection.Response loginForm5 = Jsoup.connect("http://linktender.net/" + key)
+				.userAgent("Mozilla")
+                .method(Connection.Method.POST)
+                .data("vvvv", downloadLink.getValue2())
+                .data("dddd", downloadLink.getValue1())
+                .data("ssss", downloadLink.getValue3())
+                .data("code", key)
+//                .data("code", loginForm4.parse().body().html())
+                .data("file_id", downloadLink.getFileId())
+                .data("valid_id", msg)
+                .cookies(this.loginConnResponse.cookies())
+                .execute();
+		Document loginForm5Doc = loginForm5.parse();
+		
+		System.out.println(loginForm5Doc.html());
+
+		// 토렌트 다운로드
+		Connection.Response loginForm6 = Jsoup.connect("http://linktender.net/execDownload.php")
+				.userAgent("Mozilla")
+				.ignoreContentType(true)
+				.header("Referer", "http://linktender.net/" + key)
+                .method(Connection.Method.POST)
+                .data("dddd", loginForm5Doc.select("input[id=dddd]").val())
+                .data("vvvv", loginForm5Doc.select("input[id=vvvv]").val())
+                .data("file_id", downloadLink.getFileId())
+                .data("valid_id", msg)
+                .cookies(this.loginConnResponse.cookies())
+                .execute();
+
+		// 파일저장
+		FileOutputStream out = (new FileOutputStream(new java.io.File("d:/1.torrent")));
+		out.write(loginForm6.bodyAsBytes());  // resultImageResponse.body() is where the image's contents are.
+		out.close();
+
+		System.out.println(loginForm6.parse());
 		
 		return true;
 	}

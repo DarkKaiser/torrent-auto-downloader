@@ -12,6 +12,8 @@ public interface BogoBogoBoardItemDownloadLink {
 	
 	String getValue4();
 	
+	String getFileId();
+	
 	String getFileName();
 
 }

@@ -32,6 +32,11 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		this.downloadLinks.add(downloadLink);
 	}
 
+	public BogoBogoBoardItemDownloadLink getDownloadLink(int i) {
+		// @@@@@
+		return this.downloadLinks.get(i);
+	}
+
 	public void clearDownloadLink() {
 		this.downloadLinks.clear();
 	}

@@ -9,13 +9,14 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	private final String value2;
 	private final String value3;
 	private final String value4;
+	private final String fileId;
 	private final String fileName;
 
-	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileName) {
-		return new DefaultBogoBogoBoardItemDownloadLink(id, value1, value2, value3, value4, fileName);
+	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
+		return new DefaultBogoBogoBoardItemDownloadLink(id, value1, value2, value3, value4, fileId, fileName);
 	}
 
-	private DefaultBogoBogoBoardItemDownloadLink(String id, String value1, String value2, String value3, String value4, String fileName) {
+	private DefaultBogoBogoBoardItemDownloadLink(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
 		if (StringUtil.isBlank(id) == true) {
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
 		}
@@ -31,6 +32,9 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 		if (StringUtil.isBlank(value4) == true) {
 			throw new IllegalArgumentException("value4는 빈 문자열을 허용하지 않습니다.");
 		}
+		if (StringUtil.isBlank(fileId) == true) {
+			throw new IllegalArgumentException("fileId는 빈 문자열을 허용하지 않습니다.");
+		}
 		if (StringUtil.isBlank(fileName) == true) {
 			throw new IllegalArgumentException("fileName는 빈 문자열을 허용하지 않습니다.");
 		}
@@ -40,6 +44,7 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 		this.value2 = value2;
 		this.value3 = value3;
 		this.value4 = value4;
+		this.fileId = fileId;
 		this.fileName = fileName;
 	}
 	
@@ -69,8 +74,13 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	}
 
 	@Override
+	public String getFileId() {
+		return this.fileId;
+	}
+
+	@Override
 	public String getFileName() {
-		return fileName;
+		return this.fileName;
 	}
 
 	@Override
