@@ -21,9 +21,6 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	@Override
 	public void add(String keyword) {
-		if (keyword == null) {
-			throw new NullPointerException("keyword");
-		}
 		if (StringUtil.isBlank(keyword) == true) {
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 		}
@@ -36,21 +33,18 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	@Override
 	public boolean isSatisfyCondition(String text) {
 		// @@@@@
+		// 영어는 대소문자 구분 안함
 		if (type == WebSiteSearchKeywordsType.INCLUDE) {
 			
 		} else {
 			
 		}
-		// 영어는 대소문자 구분 안함
 		return true;
 	}
 
 	@Override
 	public void validate() {
-		if (this.keywords == null) {
-			throw new NullPointerException("keywords");
-		}
-		if (this.keywords.size() == 0) {
+		if (this.keywords.isEmpty() == true) {
 			throw new EmptySearchKeywordException("검색 키워드가 등록되어 있지 않습니다.");
 		}
 	}

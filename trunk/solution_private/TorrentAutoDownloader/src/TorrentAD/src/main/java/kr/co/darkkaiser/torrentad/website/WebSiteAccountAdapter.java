@@ -8,7 +8,7 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	private final String password;
 
 	protected WebSiteAccountAdapter(String id, String password) {
-		validate(id, password);
+		validate0(id, password);
 
 		this.id = id;
 		this.password = password;
@@ -26,10 +26,10 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	
 	@Override
 	public void validate() {
-		validate(this.id, this.password);
+		validate0(this.id, this.password);
 	}
 
-	private void validate(String id, String password) {
+	private void validate0(String id, String password) {
 		if (id == null) {
 			throw new NullPointerException("id");
 		}

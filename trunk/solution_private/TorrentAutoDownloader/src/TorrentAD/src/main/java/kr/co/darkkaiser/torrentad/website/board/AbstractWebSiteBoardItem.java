@@ -41,7 +41,8 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		this.registDate = this.registDateFormat.parse(registDateString);
 	}
 
-	protected WebSiteBoard getBoard() {
+	@Override
+	public WebSiteBoard getBoard() {
 		return this.board;
 	}
 

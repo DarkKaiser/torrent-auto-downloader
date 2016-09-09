@@ -14,17 +14,14 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	// 게시물 첨부파일의 다운로드 링크 목록
 	private ArrayList<BogoBogoBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
-	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString) throws ParseException {
+	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);
+		
+		this.detailPageURL = detailPageURL;
 	}
 
 	public String getDetailPageURL() {
 		return this.detailPageURL;
-	}
-
-	public BogoBogoBoardItem setDetailPageURL(String url) {
-		this.detailPageURL = url;
-		return this;
 	}
 
 	public void addDownloadLink(BogoBogoBoardItemDownloadLink downloadLink) {

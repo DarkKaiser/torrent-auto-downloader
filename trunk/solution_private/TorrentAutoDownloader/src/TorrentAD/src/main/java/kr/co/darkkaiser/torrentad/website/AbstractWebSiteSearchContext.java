@@ -51,7 +51,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		if (this.searchKeywords == null) {
 			throw new NullPointerException("searchKeywords");
 		}
-		if (this.searchKeywords.size() == 0) {
+		if (this.searchKeywords.isEmpty() == true) {
 			throw new EmptySearchKeywordsException("검색 키워드가 등록되어 있지 않습니다.");
 		}
 	}

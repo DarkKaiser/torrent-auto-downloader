@@ -228,8 +228,7 @@ public class BogoBogo extends AbstractWebSite {
 					String s3 = iterator.next().text();//작성자
 					String s4 = iterator.next().text();//날짜
 
-					boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(no), s2, s4)
-							.setDetailPageURL(href));
+					boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(no), s2, s4, href));
 				}
 			}
 			
