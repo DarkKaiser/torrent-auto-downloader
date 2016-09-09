@@ -445,6 +445,22 @@ public class BogoBogo extends AbstractWebSite {
 				}
 
 				Document downloadProcess2Doc = downloadProcess2Response.parse();
+				
+				// @@@@@ 첨부파일 명 구하기
+				///////////////////////////////////////////////////////////
+				// @@@@@ $("#fileDetail")
+				Elements elements = downloadProcess2Doc.select("#fileDetail");
+				Element element = elements.get(0);
+				Elements elementsByTag = element.getElementsByTag("p");
+				
+//				elementsByTag.size() == 3;
+				Element element2 = elementsByTag.get(1);
+				String text = element2.text();
+				text = text.replace("Filename:", "").trim();
+
+				// @@@@@ 동일파일이 존재할경우에는??
+				String filePath = String.format("%s%s", this.fileDownloadPath, text);
+				///////////////////////////////////////////////////////////
 
 				/**
 				 * 첨부파일 다운로드 하기
@@ -464,12 +480,18 @@ public class BogoBogo extends AbstractWebSite {
 				if (downloadProcess3Response.statusCode() != 200) {
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
 				}
+				
+				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true) {
+//					Unauthorized Access 문자가 잇으면 예외발생 시키기 @@@@@
+					System.out.println("############################# unauthorized access");
+					throw new Exception();
+				}
 
 				/**
 				 * 첨부파일 저장
 				 */
-				// @@@@@ 경로, 동일파일이 존재할경우에는??
-				FileOutputStream fos = new FileOutputStream(new File(String.format("%s%s", this.fileDownloadPath, "2.torrent")));
+				// @@@@@ 검토
+				FileOutputStream fos = new FileOutputStream(new File(filePath));
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
 
