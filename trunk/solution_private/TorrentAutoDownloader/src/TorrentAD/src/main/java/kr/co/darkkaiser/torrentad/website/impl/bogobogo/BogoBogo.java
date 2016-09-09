@@ -19,6 +19,10 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
 import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
@@ -48,6 +52,26 @@ public class BogoBogo extends AbstractWebSite {
 	protected Connection.Response loginConnResponse;
 
 	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItems = new HashMap<>();
+
+	private final class DownloadProcess1Result {
+
+		private String stat;
+		private String key;
+		private String msg;
+		
+		public String getStat() {
+			return this.stat;
+		}
+		
+		public String getKey() {
+			return this.key;
+		}
+
+		public String getMsg() {
+			return this.msg;
+		}
+
+	}
 
 	public BogoBogo() {
 		super(WebSite.BOGOBOGO);
@@ -354,6 +378,8 @@ public class BogoBogo extends AbstractWebSite {
 		String detailPageURL = boardItem.getDetailPageURL();
 		assert StringUtil.isBlank(detailPageURL) == false;
 
+		Gson gson = new GsonBuilder().create();
+		
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.iteratorDownloadLink();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
@@ -375,37 +401,35 @@ public class BogoBogo extends AbstractWebSite {
 		                .execute();
 
 				if (downloadProcess1Response.statusCode() != 200) {
-					throw new IOException("GET " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
+					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
 				}
 
-				// @@@@@
-				//////////////////////////////////////////////////////////////////////////////
-				// @@@@@ json 파싱
-				// stat이 true가 아닌지 확인하기, 혹은 키가 비어있는지 확인
-//				System.out.println(loginForm4.parse().body().html());
-//				if (loginForm4.parse().body().html().toString().length() != 6) {
-//					// 실패
-//				}
-				String s = downloadProcess1Response.parse().body().html();
-				String key = s.substring(s.indexOf("\"key\":\"")+7, s.indexOf("\"", s.indexOf("\"key\":\"")+7));
-				String msg = s.substring(s.indexOf("\"msg\":\"")+7, s.indexOf("\"", s.indexOf("\"msg\":\"")+7));
-//				// {"stat":true,"key":"wwUsEG","msg":"cuid_darkkaiser_downLink_num_0_1473396898_0"}
-				//////////////////////////////////////////////////////////////////////////////
+				String result = downloadProcess1Response.parse().body().html();
+				DownloadProcess1Result downloadProcess1Result = gson.fromJson(result, DownloadProcess1Result.class);
+				if (StringUtil.isBlank(downloadProcess1Result.getStat()) == true ||
+						StringUtil.isBlank(downloadProcess1Result.getKey()) == true ||
+						downloadProcess1Result.getStat().equals("true") == false) {
+					throw new JsonParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다.(%s)", result));
+				}
 
 				/**
 				 * 다운로드 링크 페이지 열기
 				 */
-				Connection.Response downloadProcess2Response = Jsoup.connect(String.format("%s%s", DOWNLOAD_PROCESS_URL_2, key))
+				Connection.Response downloadProcess2Response = Jsoup.connect(String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()))
 						.userAgent(USER_AGENT)
 						.data("dddd", downloadLink.getValue1())
 		                .data("vvvv", downloadLink.getValue2())
 		                .data("ssss", downloadLink.getValue3())
-		                .data("code", key)
+		                .data("code", downloadProcess1Result.getKey())
 		                .data("file_id", downloadLink.getFileId())
-		                .data("valid_id", msg)
+		                .data("valid_id", downloadProcess1Result.getMsg())
 		                .method(Connection.Method.POST)
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
+				
+				if (downloadProcess2Response.statusCode() != 200) {
+					throw new IOException("POST " + String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()) + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
+				}
 
 				Document downloadProcess2Doc = downloadProcess2Response.parse();
 
@@ -414,7 +438,7 @@ public class BogoBogo extends AbstractWebSite {
 				 */
 				Connection.Response downloadProcess3Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_3)
 						.userAgent(USER_AGENT)
-						.header("Referer", String.format("%s%s", DOWNLOAD_PROCESS_URL_2, key))
+						.header("Referer", String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()))
 		                .data("dddd", downloadProcess2Doc.select("input[id=dddd]").val())
 		                .data("vvvv", downloadProcess2Doc.select("input[id=vvvv]").val())
 		                .data("file_id", downloadProcess2Doc.select("input[id=file_id]").val())
@@ -424,19 +448,26 @@ public class BogoBogo extends AbstractWebSite {
 		                .ignoreContentType(true)
 		                .execute();
 
-				// @@@@@
-				// 파일저장
-				FileOutputStream out = (new FileOutputStream(new java.io.File("d:/1.torrent")));
-				out.write(downloadProcess3Response.bodyAsBytes());
-				out.close();
+				if (downloadProcess3Response.statusCode() != 200) {
+					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
+				}
 
+				/**
+				 * 첨부파일 저장
+				 */
+				// @@@@@ 경로
+				FileOutputStream fos = (new FileOutputStream(new java.io.File("d:/1.torrent")));
+				fos.write(downloadProcess3Response.bodyAsBytes());
+				fos.close();
+
+				// @@@@@
 				System.out.println(downloadProcess3Response.parse());
 			} catch (Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s)", downloadLink), e);
-				return false;
 			}
 		}
 
+		// @@@@@ 반환값 false는 없음
 		return true;
 	}
 
