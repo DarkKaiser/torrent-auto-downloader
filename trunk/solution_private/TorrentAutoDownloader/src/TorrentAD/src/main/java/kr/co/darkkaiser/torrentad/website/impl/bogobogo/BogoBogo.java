@@ -37,8 +37,13 @@ public class BogoBogo extends AbstractWebSite {
 	public static final String BASE_URL_WITH_PATH = String.format("%s/cdsb", BASE_URL);
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
+
 	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_process.php", BASE_URL_WITH_PATH);
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
+
+	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_PATH);
+	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
+	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
 
 	protected Connection.Response loginConnResponse;
 
@@ -60,13 +65,13 @@ public class BogoBogo extends AbstractWebSite {
 		 * 로그인 1단계 수행
 		 */
 		Connection.Response response = Jsoup.connect(LOGIN_PROCESS_URL_1)
-			.userAgent(USER_AGENT)
-			.data("mode", "login")
-			.data("kinds", "outlogin")
-			.data("user_id", account.id())
-			.data("passwd", account.password())
-			.method(Connection.Method.POST)
-			.execute();
+				.userAgent(USER_AGENT)
+				.data("mode", "login")
+				.data("kinds", "outlogin")
+				.data("user_id", account.id())
+				.data("passwd", account.password())
+				.method(Connection.Method.POST)
+				.execute();
 
 		if (response.statusCode() != 200) {
 			throw new IOException("POST " + LOGIN_PROCESS_URL_1 + " returned " + response.statusCode() + ": " + response.statusMessage());
@@ -115,10 +120,10 @@ public class BogoBogo extends AbstractWebSite {
 		 * 로그인이 정상적으로 완료되었는지 확인한다.
 		 */
 		Connection.Response completedCheckResponse = Jsoup.connect(MAIN_PAGE_URL)
-			.userAgent(USER_AGENT)
-			.method(Connection.Method.GET)
-			.cookies(response.cookies())
-			.execute();
+				.userAgent(USER_AGENT)
+				.method(Connection.Method.GET)
+				.cookies(response.cookies())
+				.execute();
 
 		if (completedCheckResponse.statusCode() != 200) {
 			throw new IOException("GET " + MAIN_PAGE_URL + " returned " + completedCheckResponse.statusCode() + ": " + completedCheckResponse.statusMessage());
@@ -349,69 +354,89 @@ public class BogoBogo extends AbstractWebSite {
 		String detailPageURL = boardItem.getDetailPageURL();
 		assert StringUtil.isBlank(detailPageURL) == false;
 
-		// @@@@@
-		BogoBogoBoardItemDownloadLink downloadLink = boardItem.getDownloadLink(0);
-		// @@@@@
-		Connection.Response loginForm4 = Jsoup.connect("https://zipbogo.net/cdsb/download.php")
-				.userAgent(USER_AGENT)
-				.ignoreContentType(true)
-				.header("Referer", detailPageURL)
-                .method(Connection.Method.POST)
-                .data("file_id", downloadLink.getFileId())
-                .data("article_id", downloadLink.getId())
-                .data("down", downloadLink.getValue1())
-                .data("filetype", downloadLink.getValue4())
-                .cookies(this.loginConnResponse.cookies())
-                .execute();
+		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.iteratorDownloadLink();
+		while (iterator.hasNext() == true) {
+			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
 
-		System.out.println(loginForm4.parse().body().html());
-		if (loginForm4.parse().body().html().toString().length() != 6) {
-			// 실패
+			try {
+				/**
+				 * 다운로드 페이지로 이동
+				 */
+				Connection.Response downloadProcess1Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_1)
+						.userAgent(USER_AGENT)
+						.header("Referer", detailPageURL)
+		                .data("down", downloadLink.getValue1())
+		                .data("filetype", downloadLink.getValue4())
+		                .data("file_id", downloadLink.getFileId())
+		                .data("article_id", downloadLink.getId())
+		                .method(Connection.Method.POST)
+		                .cookies(this.loginConnResponse.cookies())
+		                .ignoreContentType(true)
+		                .execute();
+
+				if (downloadProcess1Response.statusCode() != 200) {
+					throw new IOException("GET " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
+				}
+
+				// @@@@@
+				//////////////////////////////////////////////////////////////////////////////
+				// @@@@@ json 파싱
+				// stat이 true가 아닌지 확인하기, 혹은 키가 비어있는지 확인
+//				System.out.println(loginForm4.parse().body().html());
+//				if (loginForm4.parse().body().html().toString().length() != 6) {
+//					// 실패
+//				}
+				String s = downloadProcess1Response.parse().body().html();
+				String key = s.substring(s.indexOf("\"key\":\"")+7, s.indexOf("\"", s.indexOf("\"key\":\"")+7));
+				String msg = s.substring(s.indexOf("\"msg\":\"")+7, s.indexOf("\"", s.indexOf("\"msg\":\"")+7));
+//				// {"stat":true,"key":"wwUsEG","msg":"cuid_darkkaiser_downLink_num_0_1473396898_0"}
+				//////////////////////////////////////////////////////////////////////////////
+
+				/**
+				 * 다운로드 링크 페이지 열기
+				 */
+				Connection.Response downloadProcess2Response = Jsoup.connect(String.format("%s%s", DOWNLOAD_PROCESS_URL_2, key))
+						.userAgent(USER_AGENT)
+						.data("dddd", downloadLink.getValue1())
+		                .data("vvvv", downloadLink.getValue2())
+		                .data("ssss", downloadLink.getValue3())
+		                .data("code", key)
+		                .data("file_id", downloadLink.getFileId())
+		                .data("valid_id", msg)
+		                .method(Connection.Method.POST)
+		                .cookies(this.loginConnResponse.cookies())
+		                .execute();
+
+				Document downloadProcess2Doc = downloadProcess2Response.parse();
+
+				/**
+				 * 첨부파일 다운로드 하기
+				 */
+				Connection.Response downloadProcess3Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_3)
+						.userAgent(USER_AGENT)
+						.header("Referer", String.format("%s%s", DOWNLOAD_PROCESS_URL_2, key))
+		                .data("dddd", downloadProcess2Doc.select("input[id=dddd]").val())
+		                .data("vvvv", downloadProcess2Doc.select("input[id=vvvv]").val())
+		                .data("file_id", downloadProcess2Doc.select("input[id=file_id]").val())
+		                .data("valid_id", downloadProcess2Doc.select("input[id=valid_id]").val())
+		                .method(Connection.Method.POST)
+		                .cookies(this.loginConnResponse.cookies())
+		                .ignoreContentType(true)
+		                .execute();
+
+				// @@@@@
+				// 파일저장
+				FileOutputStream out = (new FileOutputStream(new java.io.File("d:/1.torrent")));
+				out.write(downloadProcess3Response.bodyAsBytes());
+				out.close();
+
+				System.out.println(downloadProcess3Response.parse());
+			} catch (Exception e) {
+				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s)", downloadLink), e);
+				return false;
+			}
 		}
-		
-		String s = loginForm4.parse().body().html();
-		String key = s.substring(s.indexOf("\"key\":\"")+7, s.indexOf("\"", s.indexOf("\"key\":\"")+7));
-		String msg = s.substring(s.indexOf("\"msg\":\"")+7, s.indexOf("\"", s.indexOf("\"msg\":\"")+7));
-		// {"stat":true,"key":"wwUsEG","msg":"cuid_darkkaiser_downLink_num_0_1473396898_0"}
 
-		
-		// 다운로드 링크 페이지 열기
-		Connection.Response loginForm5 = Jsoup.connect("http://linktender.net/" + key)
-				.userAgent("Mozilla")
-                .method(Connection.Method.POST)
-                .data("vvvv", downloadLink.getValue2())
-                .data("dddd", downloadLink.getValue1())
-                .data("ssss", downloadLink.getValue3())
-                .data("code", key)
-//                .data("code", loginForm4.parse().body().html())
-                .data("file_id", downloadLink.getFileId())
-                .data("valid_id", msg)
-                .cookies(this.loginConnResponse.cookies())
-                .execute();
-		Document loginForm5Doc = loginForm5.parse();
-		
-		System.out.println(loginForm5Doc.html());
-
-		// 토렌트 다운로드
-		Connection.Response loginForm6 = Jsoup.connect("http://linktender.net/execDownload.php")
-				.userAgent("Mozilla")
-				.ignoreContentType(true)
-				.header("Referer", "http://linktender.net/" + key)
-                .method(Connection.Method.POST)
-                .data("dddd", loginForm5Doc.select("input[id=dddd]").val())
-                .data("vvvv", loginForm5Doc.select("input[id=vvvv]").val())
-                .data("file_id", downloadLink.getFileId())
-                .data("valid_id", msg)
-                .cookies(this.loginConnResponse.cookies())
-                .execute();
-
-		// 파일저장
-		FileOutputStream out = (new FileOutputStream(new java.io.File("d:/1.torrent")));
-		out.write(loginForm6.bodyAsBytes());  // resultImageResponse.body() is where the image's contents are.
-		out.close();
-
-		System.out.println(loginForm6.parse());
-		
 		return true;
 	}
 

@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jsoup.helper.StringUtil;
+
 import kr.co.darkkaiser.torrentad.website.board.AbstractWebSiteBoardItem;
 
 public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
@@ -17,6 +19,10 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);
 		
+		if (StringUtil.isBlank(detailPageURL) == true) {
+			throw new IllegalArgumentException("detailPageURL은 빈 문자열을 허용하지 않습니다.");
+		}
+
 		this.detailPageURL = detailPageURL;
 	}
 
@@ -32,15 +38,14 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		this.downloadLinks.add(downloadLink);
 	}
 
-	public BogoBogoBoardItemDownloadLink getDownloadLink(int i) {
-		// @@@@@
-		return this.downloadLinks.get(i);
-	}
-
 	public void clearDownloadLink() {
 		this.downloadLinks.clear();
 	}
-	
+
+	public Iterator<BogoBogoBoardItemDownloadLink> iteratorDownloadLink() {
+		return this.downloadLinks.iterator();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()
