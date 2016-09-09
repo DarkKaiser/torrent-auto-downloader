@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -10,6 +11,7 @@ import java.util.NoSuchElementException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.UnsupportedMimeTypeException;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -203,7 +205,7 @@ public class BogoBogo extends AbstractWebSite {
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
 				
 				if (elements.isEmpty() == true) {
-					throw new ParseException(String.format("추출된 게시판의 자료가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
+					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 				} else {
 					try {
 						for (Element element : elements) {
@@ -226,17 +228,17 @@ public class BogoBogo extends AbstractWebSite {
 							
 							Elements titleLinkElement = titleElement.getElementsByTag("a");
 							if (titleLinkElement.size() != 1) {
-								throw new ParseException(String.format("게시판 제목 항목의 <A> 태그가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+								throw new ParseException(String.format("게시물 제목의 <A> 태그가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							}
 
 							String detailPageURL = titleLinkElement.attr("href");
 							if (detailPageURL.startsWith("board.php") == false) {
-								throw new ParseException(String.format("게시판 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							}
 
 							int noPos = detailPageURL.indexOf("no=");
 							if (noPos < 0) {
-								throw new ParseException(String.format("게시판 항목의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+								throw new ParseException(String.format("게시물의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							}
 							String identifier = detailPageURL.substring(noPos + 3/* no= */, detailPageURL.indexOf("&", noPos));
 
@@ -249,7 +251,7 @@ public class BogoBogo extends AbstractWebSite {
 							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_PATH, detailPageURL)));
 						}
 					} catch (NoSuchElementException e) {
-						logger.error(String.format("게시판의 항목을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
+						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
 						throw e;
 					}
 				}
@@ -258,10 +260,10 @@ public class BogoBogo extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return false;
 		} catch (ParseException e) {
-			logger.error("게시판 자료를 읽어들이는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
 			return false;
 		} catch (Exception e) {
-			logger.error("게시판 자료를 읽어들이는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
 			return false;
 		}
 
@@ -270,10 +272,69 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	// @@@@@
 	private boolean loadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
-		// $("table.board01 tbody.num tr a[id^='downLink_num']")
-		System.out.println("#########$$$$$$$$$$$$$$$");
+		assert boardItem != null;
+		assert isLogin() == true;
+		
+		String detailPageURL = boardItem.getDetailPageURL();
+		if (StringUtil.isBlank(detailPageURL) == true) {
+			logger.error(String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem.toString()));
+			return false;
+		}
+
+		boardItem.clearDownloadLink();
+
+		try {
+			Connection.Response detailPageResponse = Jsoup.connect(detailPageURL)
+					.userAgent(USER_AGENT)
+	                .method(Connection.Method.GET)
+	                .cookies(this.loginConnResponse.cookies())
+	                .execute();
+
+			if (detailPageResponse.statusCode() != 200) {
+				throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
+			}
+
+			Document detailPageDoc = detailPageResponse.parse();
+			Elements elements = detailPageDoc.select("table.board01 tbody.num tr a[id^='downLink_num']");
+
+			if (elements.isEmpty() == true) {
+				throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
+			} else {
+				try {
+					String[] exceptFileExtension = { "JPG", "JPEG", "GIF", "PNG" };
+
+					for (Element element : elements) {
+						String id = element.attr("id");
+						String value1 = element.attr("val");
+						String value2 = element.attr("val2");
+						String value3 = element.attr("val3");
+						String value4 = element.attr("val4");
+						String fileName = element.text();
+
+						// 특정 파일은 다운로드 받지 않도록 한다.
+						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true) {
+							continue;
+						}
+
+						boardItem.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance(id, value1, value2, value3, value4, fileName));
+					}
+				} catch (NoSuchElementException e) {
+					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
+					throw e;
+				}
+			}
+		} catch (NoSuchElementException e) {
+			// 아무 처리도 하지 않는다.
+			return false;
+		} catch (ParseException e) {
+			logger.error("게시물의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", e);
+			return false;
+		} catch (Exception e) {
+			logger.error("게시물의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", e);
+			return false;
+		}
+		
 		return true;
 	}
 

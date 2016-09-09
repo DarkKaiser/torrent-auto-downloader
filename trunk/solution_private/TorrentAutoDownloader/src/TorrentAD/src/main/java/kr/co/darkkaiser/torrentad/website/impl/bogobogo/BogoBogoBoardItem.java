@@ -32,6 +32,10 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		this.downloadLinks.add(downloadLink);
 	}
 
+	public void clearDownloadLink() {
+		this.downloadLinks.clear();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()
