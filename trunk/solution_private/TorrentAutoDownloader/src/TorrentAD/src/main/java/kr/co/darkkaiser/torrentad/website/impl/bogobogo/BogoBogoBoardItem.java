@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import org.jsoup.helper.StringUtil;
 
-import kr.co.darkkaiser.torrentad.website.board.AbstractWebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.AbstractWebSiteBoardItem;
 
 public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 
@@ -42,7 +42,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		this.downloadLinks.clear();
 	}
 
-	public Iterator<BogoBogoBoardItemDownloadLink> iteratorDownloadLink() {
+	public Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator() {
 		return this.downloadLinks.iterator();
 	}
 

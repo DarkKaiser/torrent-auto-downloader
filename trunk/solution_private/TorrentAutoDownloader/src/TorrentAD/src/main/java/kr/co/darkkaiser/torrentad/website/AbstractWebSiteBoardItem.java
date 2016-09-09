@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.website.board;
+package kr.co.darkkaiser.torrentad.website;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jsoup.helper.StringUtil;
-
-import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 

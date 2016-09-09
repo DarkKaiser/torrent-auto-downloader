@@ -29,8 +29,8 @@ import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
-import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 
 public class BogoBogo extends AbstractWebSite {
 	
@@ -393,7 +393,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		Gson gson = new GsonBuilder().create();
 		
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.iteratorDownloadLink();
+		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
 

@@ -1,8 +1,6 @@
-package kr.co.darkkaiser.torrentad.website.board;
+package kr.co.darkkaiser.torrentad.website;
 
 import java.util.Date;
-
-import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public interface WebSiteBoardItem {
 

@@ -9,8 +9,8 @@ import kr.co.darkkaiser.torrentad.service.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.board.WebSiteBoardItem;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
