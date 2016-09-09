@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,6 +136,8 @@ public class BogoBogo extends AbstractWebSite {
 				.userAgent(USER_AGENT)
 				.cookies(response.cookies())
 				.get();
+		} catch (ConnectException e) {
+			// @@@@@
 		} catch (UnsupportedMimeTypeException e) {
 			// 무시한다.
 		} catch (IllegalArgumentException e) {
@@ -274,7 +277,7 @@ public class BogoBogo extends AbstractWebSite {
 							
 							Elements titleLinkElement = titleElement.getElementsByTag("a");
 							if (titleLinkElement.size() != 1) {
-								throw new ParseException(String.format("게시물 제목의 <A> 태그가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							}
 
 							String detailPageURL = titleLinkElement.attr("href");
@@ -306,10 +309,10 @@ public class BogoBogo extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return false;
 		} catch (ParseException e) {
-			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시판({}) 데이터를 로드하는 중에 예외가 발생하였습니다.", board, e);
 			return false;
 		} catch (Exception e) {
-			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시판({}) 데이터를 로드하는 중에 예외가 발생하였습니다.", board, e);
 			return false;
 		}
 
@@ -321,10 +324,10 @@ public class BogoBogo extends AbstractWebSite {
 	private boolean loadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
-		
+
 		String detailPageURL = boardItem.getDetailPageURL();
 		if (StringUtil.isBlank(detailPageURL) == true) {
-			logger.error(String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem.toString()));
+			logger.error(String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem));
 			return false;
 		}
 
@@ -375,10 +378,10 @@ public class BogoBogo extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return false;
 		} catch (ParseException e) {
-			logger.error("게시물의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
 		} catch (Exception e) {
-			logger.error("게시물의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", e);
+			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
 		}
 		
