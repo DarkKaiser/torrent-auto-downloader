@@ -16,6 +16,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_WEBSITE_NAME = "website-name";
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID = "website-account-id";
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD = "website-account-password";
+	public static final String APP_CONFIG_TAG_FILE_DOWNLOAD_PATH = "file-download-path";
 	public static final String APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND = "task-execute-interval-time-second";
 
 	private Constants() {

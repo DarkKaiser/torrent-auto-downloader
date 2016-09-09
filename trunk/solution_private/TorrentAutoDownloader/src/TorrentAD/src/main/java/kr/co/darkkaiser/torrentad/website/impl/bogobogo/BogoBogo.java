@@ -50,8 +50,10 @@ public class BogoBogo extends AbstractWebSite {
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
 
-	protected Connection.Response loginConnResponse;
+	protected final String fileDownloadPath;
 
+	protected Connection.Response loginConnResponse;
+	
 	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItems = new HashMap<>();
 
 	private final class DownloadProcess1Result {
@@ -74,8 +76,18 @@ public class BogoBogo extends AbstractWebSite {
 
 	}
 
-	public BogoBogo() {
+	public BogoBogo(String fileDownloadPath) {
 		super(WebSite.BOGOBOGO);
+		
+		if (StringUtil.isBlank(fileDownloadPath) == true) {
+			throw new IllegalArgumentException("fileDownloadPath는 빈 문자열을 허용하지 않습니다.");
+		}
+		
+		if (fileDownloadPath.endsWith(File.separator) == true) {
+			this.fileDownloadPath = fileDownloadPath;
+		} else {
+			this.fileDownloadPath = String.format("%s%s", fileDownloadPath, File.separator);
+		}
 	}
 	
 	@Override
@@ -205,7 +217,7 @@ public class BogoBogo extends AbstractWebSite {
 		ArrayList<BogoBogoBoardItem> arrayList = this.boardItems.get(siteSearchContext.getBoard());
 		loadBoardItemDownloadLink(arrayList.get(0));
 
-		download(arrayList.get(0));
+		downloadBoardItemDownloadLink(arrayList.get(0));
 
 		return null;
 	}
@@ -372,7 +384,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private boolean download(BogoBogoBoardItem boardItem) throws IOException {
+	private boolean downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -457,14 +469,14 @@ public class BogoBogo extends AbstractWebSite {
 				 * 첨부파일 저장
 				 */
 				// @@@@@ 경로, 동일파일이 존재할경우에는??
-				FileOutputStream fos = new FileOutputStream(new File("d:/1.torrent"));
+				FileOutputStream fos = new FileOutputStream(new File(String.format("%s%s", this.fileDownloadPath, "2.torrent")));
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
 
-				// @@@@@
+				// @@@@@ 인증실패라고 뜨는 경우가 있음
 				System.out.println(downloadProcess3Response.parse());
 			} catch (Exception e) {
-				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s)", downloadLink), e);
+				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}
 		}
 

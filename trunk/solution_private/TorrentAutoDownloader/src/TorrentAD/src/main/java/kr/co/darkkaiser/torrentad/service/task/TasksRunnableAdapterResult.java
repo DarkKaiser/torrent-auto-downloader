@@ -6,6 +6,9 @@ public final class TasksRunnableAdapterResult {
 		/** 성공 */
 		OK,
 
+		/** 예외 발생 */
+		UNEXPECTED_EXCEPTION,
+
 		/** 유효하지 않은 웹사이트 계정정보 */
 		INVALID_ACCOUNT,
 
@@ -47,6 +50,10 @@ public final class TasksRunnableAdapterResult {
 
 	public static TasksRunnableAdapterResult OK(TaskResult taskResult) {
 		return new TasksRunnableAdapterResult(TasksRunnableAdapterResultCode.OK, taskResult);
+	}
+
+	public static TasksRunnableAdapterResult UNEXPECTED_EXCEPTION() {
+		return new TasksRunnableAdapterResult(TasksRunnableAdapterResultCode.UNEXPECTED_EXCEPTION);
 	}
 
 	public static TasksRunnableAdapterResult INVALID_ACCOUNT() {

@@ -64,11 +64,15 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	public TasksRunnableAdapterResult call() throws Exception {
 		logger.info("새 토렌트 파일 확인을 시작합니다.");
 
-		TasksRunnableAdapterResult result = call0();
+		try {
+			return call0();
+		} catch (Exception e) {
+			logger.error("새 토렌트 파일 확인중에 예외가 발생하였습니다.", e);
+		} finally {
+			logger.info("새 토렌트 파일 확인이 종료되었습니다.");
+		}
 
-		logger.info("새 토렌트 파일 확인이 종료되었습니다.");
-
-		return result;
+		return TasksRunnableAdapterResult.UNEXPECTED_EXCEPTION();
 	}
 
 	private TasksRunnableAdapterResult call0() throws Exception {
@@ -80,7 +84,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
 		}
 
-		WebSiteHandler handler = this.site.createHandler();
+		WebSiteHandler handler = this.site.createHandler(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_FILE_DOWNLOAD_PATH));
 		try {
 			handler.login(account);
 		} catch (Exception e) {

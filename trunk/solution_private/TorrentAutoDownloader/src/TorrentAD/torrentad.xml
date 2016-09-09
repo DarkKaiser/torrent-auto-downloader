@@ -3,12 +3,15 @@
 
 	<!-- 프로그램 설정 정보 -->
 	<torrentad-config-values>
-		<!-- 토렌트 사이트 이름 -->
+		<!-- 사이트 이름 -->
 		<website-name>보고보고</website-name>
 
-		<!-- 토렌트 사이트 로그인 정보 -->
+		<!-- 사이트 로그인 정보 -->
 		<website-account-id>darkkaiser</website-account-id>
 		<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
+
+		<!-- 파일 다운로드 경로 -->
+		<file-download-path>d:\</file-download-path>
 
 		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>60</task-execute-interval-time-second>
