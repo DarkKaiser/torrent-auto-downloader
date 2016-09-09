@@ -63,7 +63,7 @@ public class BogoBogo extends AbstractWebSite {
 		private String stat;
 		private String key;
 		private String msg;
-		
+
 		public String getStat() {
 			return this.stat;
 		}
@@ -131,18 +131,28 @@ public class BogoBogo extends AbstractWebSite {
 		/**
 		 * 로그인 2단계 수행
 		 */
-		try {
-			Jsoup.connect(doc.select("img").attr("src"))
-				.userAgent(USER_AGENT)
-				.cookies(response.cookies())
-				.get();
-		} catch (ConnectException e) {
-			// @@@@@
-		} catch (UnsupportedMimeTypeException e) {
-			// 무시한다.
-		} catch (IllegalArgumentException e) {
-			logger.error("GET {}", doc.select("img").attr("src"));
-			throw e;
+		for (int loop = 0; loop < 3; ++loop) {
+			try {
+				Jsoup.connect(doc.select("img").attr("src"))
+					.userAgent(USER_AGENT)
+					.cookies(response.cookies())
+					.get();
+			} catch (ConnectException e) {
+				// @@@@@ 테스트
+				try {
+					Thread.sleep(100);
+				} catch (Exception e1) {
+				}
+
+				continue;
+			} catch (UnsupportedMimeTypeException e) {
+				// 무시한다.
+			} catch (IllegalArgumentException e) {
+				logger.error("GET {}", doc.select("img").attr("src"));
+				throw e;
+			}
+			
+			break;
 		}
 
 		/**
@@ -401,6 +411,8 @@ public class BogoBogo extends AbstractWebSite {
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
 
+			logger.info("첨부파일을 다운로드합니다.({})", downloadLink);
+
 			try {
 				/**
 				 * 다운로드 페이지로 이동
@@ -432,7 +444,8 @@ public class BogoBogo extends AbstractWebSite {
 				/**
 				 * 다운로드 링크 페이지 열기
 				 */
-				Connection.Response downloadProcess2Response = Jsoup.connect(String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()))
+				String downloadProcessURL2 = String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey());
+				Connection.Response downloadProcess2Response = Jsoup.connect(downloadProcessURL2)
 						.userAgent(USER_AGENT)
 						.data("dddd", downloadLink.getValue1())
 		                .data("vvvv", downloadLink.getValue2())
@@ -445,31 +458,32 @@ public class BogoBogo extends AbstractWebSite {
 		                .execute();
 				
 				if (downloadProcess2Response.statusCode() != 200) {
-					throw new IOException("POST " + String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()) + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
+					throw new IOException("POST " + downloadProcessURL2 + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
 				}
 
 				Document downloadProcess2Doc = downloadProcess2Response.parse();
-				
-				// @@@@@ 첨부파일 명 구하기
-				///////////////////////////////////////////////////////////
-				// @@@@@ $("#fileDetail")
-				Elements elements = downloadProcess2Doc.select("#fileDetail p");
-				
-//				elementsByTag.size() == 3;
-				Element element2 = elements.get(1);
-				String text = element2.text();
-				text = text.replace("Filename:", "").trim();
 
-				// @@@@@ 동일파일이 존재할경우에는??
-				String filePath = String.format("%s%s", this.downloadFileWriteLocation, text);
-				///////////////////////////////////////////////////////////
+				// 다운로드 받는 파일의 이름을 구한다.
+				Elements elements = downloadProcess2Doc.select("#fileDetail p");
+				if (elements.size() != 3) {
+					throw new ParseException(String.format("<P> 태그의 갯수 불일치로 파일명 추출이 실패하였습니다.(추출된갯수:%d) CSS셀렉터를 확인하세요.", elements.size()), 0);
+				}
+
+				String fileName = elements.get(1).text().trim();
+				if (fileName.startsWith("Filename:") == false) {
+					throw new ParseException(String.format("추출된 문자열이 특정 문자열로 시작되지 않아 파일명 추출이 실패하였습니다.(추출된문자열:%s) CSS셀렉터를 확인하세요.", fileName), 0);
+				}
+
+				String downloadFileFullPath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
+				
+				// @@@@@ 동일파일이 존재할경우에는 어떻게 처리할것인가?
 
 				/**
 				 * 첨부파일 다운로드 하기
 				 */
 				Connection.Response downloadProcess3Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_3)
 						.userAgent(USER_AGENT)
-						.header("Referer", String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey()))
+						.header("Referer", downloadProcessURL2)
 		                .data("dddd", downloadProcess2Doc.select("input[id=dddd]").val())
 		                .data("vvvv", downloadProcess2Doc.select("input[id=vvvv]").val())
 		                .data("file_id", downloadProcess2Doc.select("input[id=file_id]").val())
@@ -483,22 +497,22 @@ public class BogoBogo extends AbstractWebSite {
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
 				}
 				
+				// @@@@@ 인증실패라고 뜨는 경우가 있음
+//				System.out.println(downloadProcess3Response.parse());
 				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true) {
-//					Unauthorized Access 문자가 잇으면 예외발생 시키기 @@@@@
-					System.out.println("############################# unauthorized access");
-					throw new Exception();
+					throw new ParseException("첨부파일 다운로드 결과로 Unauthorized Access가 반환되었습니다.", 0);
 				}
 
 				/**
 				 * 첨부파일 저장
 				 */
-				// @@@@@ 검토
-				FileOutputStream fos = new FileOutputStream(new File(filePath));
+				FileOutputStream fos = new FileOutputStream(new File(downloadFileFullPath));
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
-
-				// @@@@@ 인증실패라고 뜨는 경우가 있음
-				System.out.println(downloadProcess3Response.parse());
+				
+				logger.info("첨부파일 다운로드가 완료되었습니다.({})", downloadFileFullPath);
+			} catch (ParseException e) {
+				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			} catch (Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}
