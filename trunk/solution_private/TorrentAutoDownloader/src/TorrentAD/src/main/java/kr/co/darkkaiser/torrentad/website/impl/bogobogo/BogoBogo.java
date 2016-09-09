@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -131,22 +130,21 @@ public class BogoBogo extends AbstractWebSite {
 		/**
 		 * 로그인 2단계 수행
 		 */
+		// 간혹 ConnectException 예외가 발생하므로 최대 3번 루프를 돌린다.
 		for (int loop = 0; loop < 3; ++loop) {
 			try {
 				Jsoup.connect(doc.select("img").attr("src"))
 					.userAgent(USER_AGENT)
 					.cookies(response.cookies())
+					.ignoreContentType(true)
 					.get();
 			} catch (ConnectException e) {
-				// @@@@@ 테스트
 				try {
 					Thread.sleep(100);
 				} catch (Exception e1) {
 				}
 
 				continue;
-			} catch (UnsupportedMimeTypeException e) {
-				// 무시한다.
 			} catch (IllegalArgumentException e) {
 				logger.error("GET {}", doc.select("img").attr("src"));
 				throw e;

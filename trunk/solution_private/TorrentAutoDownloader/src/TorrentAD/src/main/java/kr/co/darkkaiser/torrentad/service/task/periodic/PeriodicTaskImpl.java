@@ -44,7 +44,6 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		/* 결과정보*/l.download(WebSiteBoardItem/*다운로드정보*/);
 		// 다운로드 받은 파일을 업로드하는것은 다른 객체가 관리
 			// 지정된 폴더내의 파일을 nas로 계속 업로드 하는 역할
-		System.out.println("############# task run");
 		//////////////////////////////////////////////////////////////////////////////////////
 
 		return result;
