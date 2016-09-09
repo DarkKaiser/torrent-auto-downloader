@@ -449,12 +449,10 @@ public class BogoBogo extends AbstractWebSite {
 				// @@@@@ 첨부파일 명 구하기
 				///////////////////////////////////////////////////////////
 				// @@@@@ $("#fileDetail")
-				Elements elements = downloadProcess2Doc.select("#fileDetail");
-				Element element = elements.get(0);
-				Elements elementsByTag = element.getElementsByTag("p");
+				Elements elements = downloadProcess2Doc.select("#fileDetail p");
 				
 //				elementsByTag.size() == 3;
-				Element element2 = elementsByTag.get(1);
+				Element element2 = elements.get(1);
 				String text = element2.text();
 				text = text.replace("Filename:", "").trim();
 
