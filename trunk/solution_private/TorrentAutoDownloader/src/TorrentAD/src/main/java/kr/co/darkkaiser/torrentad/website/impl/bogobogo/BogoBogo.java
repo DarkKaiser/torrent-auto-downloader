@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -455,8 +456,8 @@ public class BogoBogo extends AbstractWebSite {
 				/**
 				 * 첨부파일 저장
 				 */
-				// @@@@@ 경로
-				FileOutputStream fos = (new FileOutputStream(new java.io.File("d:/1.torrent")));
+				// @@@@@ 경로, 동일파일이 존재할경우에는??
+				FileOutputStream fos = new FileOutputStream(new File("d:/1.torrent"));
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
 
