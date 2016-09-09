@@ -1,7 +1,7 @@
-package kr.co.darkkaiser.torrentad.service.task;
+package kr.co.darkkaiser.torrentad.service.ad.task;
 
-import kr.co.darkkaiser.torrentad.service.task.once.OnceTaskImpl;
-import kr.co.darkkaiser.torrentad.service.task.periodic.PeriodicTaskImpl;
+import kr.co.darkkaiser.torrentad.service.ad.task.once.OnceTaskImpl;
+import kr.co.darkkaiser.torrentad.service.ad.task.periodic.PeriodicTaskImpl;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 
 public final class TaskFactory {

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.task;
+package kr.co.darkkaiser.torrentad.service.ad.task;
 
 import java.io.File;
 import java.io.FileNotFoundException;

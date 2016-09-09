@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service;
+package kr.co.darkkaiser.torrentad.service.ad;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;
@@ -8,10 +8,11 @@ import java.util.concurrent.Executors;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.service.task.TasksRunnableAdapter;
+import kr.co.darkkaiser.torrentad.service.Service;
+import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
-public final class TorrentAdService {
+public final class TorrentAdService implements Service {
 
 	private Timer tasksExecutorTimer;
 
@@ -35,6 +36,7 @@ public final class TorrentAdService {
 		this.configurationManager = configurationManager;
 	}
 
+	@Override
 	public boolean start() throws Exception {
 		if (this.tasksExecutorTimer != null) {
 			throw new IllegalStateException("tasksExecutorTimer 객체는 이미 초기화되었습니다.");
@@ -63,6 +65,7 @@ public final class TorrentAdService {
 		return true;
 	}
 
+	@Override
 	public void stop() {
 		if (this.tasksExecutorTimer != null) {
 			this.tasksExecutorTimer.cancel();

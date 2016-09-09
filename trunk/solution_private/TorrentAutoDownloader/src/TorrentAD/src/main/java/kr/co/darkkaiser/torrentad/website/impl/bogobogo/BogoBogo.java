@@ -229,7 +229,7 @@ public class BogoBogo extends AbstractWebSite {
 		ArrayList<BogoBogoBoardItem> arrayList = this.boardItems.get(siteSearchContext.getBoard());
 		loadBoardItemDownloadLink(arrayList.get(0));
 
-		downloadBoardItemDownloadLink(arrayList.get(0));
+//		downloadBoardItemDownloadLink(arrayList.get(0));
 
 		return null;
 	}

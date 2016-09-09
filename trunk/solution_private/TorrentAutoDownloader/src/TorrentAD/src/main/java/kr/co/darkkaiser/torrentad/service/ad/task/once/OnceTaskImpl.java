@@ -1,8 +1,8 @@
-package kr.co.darkkaiser.torrentad.service.task.once;
+package kr.co.darkkaiser.torrentad.service.ad.task.once;
 
-import kr.co.darkkaiser.torrentad.service.task.AbstractTask;
-import kr.co.darkkaiser.torrentad.service.task.TaskResult;
-import kr.co.darkkaiser.torrentad.service.task.TaskType;
+import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 

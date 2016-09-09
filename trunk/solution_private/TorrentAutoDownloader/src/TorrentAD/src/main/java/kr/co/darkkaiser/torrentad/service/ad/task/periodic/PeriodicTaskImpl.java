@@ -1,13 +1,13 @@
-package kr.co.darkkaiser.torrentad.service.task.periodic;
+package kr.co.darkkaiser.torrentad.service.ad.task.periodic;
 
 import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.service.task.AbstractTask;
-import kr.co.darkkaiser.torrentad.service.task.TaskResult;
-import kr.co.darkkaiser.torrentad.service.task.TaskType;
+import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -32,11 +32,6 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 		// @@@@@
 		////////////////////////////////////////////////////////////////////////////////////
 		TaskResult result = TaskResult.OK;
-//		BogoBogoBoardItem bi = new BogoBogoBoardItem(BogoBogoBoard.ANI_ON, 0, "제목", "16-10-01");
-//		bi.setDetailPageURL("board.php?board=newmovie&amp;bm=view&amp;no=28585&amp;category=&amp;auth=&amp;page=1&amp;search=&amp;keyword=&amp;recom=");
-//		bi.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance("a", "b", "c", "d", "e", "f"));
-//		System.out.println(bi);
-
 		// search => download 로 변경???
 		Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
 

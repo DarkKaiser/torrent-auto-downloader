@@ -6,7 +6,8 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
-import kr.co.darkkaiser.torrentad.service.TorrentAdService;
+import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
+import kr.co.darkkaiser.torrentad.service.observation.TorrentObservationService;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class App {
@@ -14,6 +15,8 @@ public class App {
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 	
 	private TorrentAdService torrentAdService;
+
+	private TorrentObservationService torrentObservationService;
 
 	private ConfigurationManager configurationManager;
 
@@ -30,8 +33,9 @@ public class App {
 		
 		try {
 			AES256Util aes256 = new AES256Util();
+			this.torrentObservationService = new TorrentObservationService();
 			this.torrentAdService = new TorrentAdService(aes256, configurationManager);
-			return this.torrentAdService.start();
+			return this.torrentObservationService.start() && this.torrentAdService.start();
 		} catch (Exception e) {
 			logger.error(null, e);
 			return false;
@@ -39,6 +43,9 @@ public class App {
 	}
 
 	private void stop() {
+		if (this.torrentObservationService != null) {
+			this.torrentObservationService.stop();
+		}
 		if (this.torrentAdService != null) {
 			this.torrentAdService.stop();
 		}
