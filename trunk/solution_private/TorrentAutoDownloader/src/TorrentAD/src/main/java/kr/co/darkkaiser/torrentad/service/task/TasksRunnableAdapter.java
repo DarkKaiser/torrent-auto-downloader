@@ -84,7 +84,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
 		}
 
-		WebSiteHandler handler = this.site.createHandler(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_FILE_DOWNLOAD_PATH));
+		WebSiteHandler handler = this.site.createHandler(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 		try {
 			handler.login(account);
 		} catch (Exception e) {

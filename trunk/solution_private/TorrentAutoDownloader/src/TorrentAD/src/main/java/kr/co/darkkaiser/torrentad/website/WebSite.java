@@ -9,8 +9,8 @@ public enum WebSite {
 
 	BOGOBOGO("보고보고") {
 		@Override
-		public WebSiteHandler createHandler(String fileDownloadPath) {
-			return new BogoBogo(fileDownloadPath);
+		public WebSiteHandler createHandler(String downloadFileWriteLocation) {
+			return new BogoBogo(downloadFileWriteLocation);
 		}
 
 		@Override
@@ -51,7 +51,7 @@ public enum WebSite {
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 
-	public abstract WebSiteHandler createHandler(String fileDownloadPath);
+	public abstract WebSiteHandler createHandler(String downloadFileWriteLocation);
 	
 	public abstract WebSiteAccount createAccount(String id, String password);
 	

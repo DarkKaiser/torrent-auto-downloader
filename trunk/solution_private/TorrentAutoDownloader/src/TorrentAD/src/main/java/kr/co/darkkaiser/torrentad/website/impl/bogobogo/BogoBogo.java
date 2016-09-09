@@ -33,28 +33,29 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 
 public class BogoBogo extends AbstractWebSite {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(BogoBogo.class);
 
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
 	public static final String BASE_URL = "https://zipbogo.net";
-	public static final String BASE_URL_WITH_PATH = String.format("%s/cdsb", BASE_URL);
+	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/cdsb", BASE_URL);
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
 
-	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_process.php", BASE_URL_WITH_PATH);
+	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_process.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
 
-	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_PATH);
+	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
 
-	protected final String fileDownloadPath;
+	private Connection.Response loginConnResponse;
 
-	protected Connection.Response loginConnResponse;
-	
-	protected HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItems = new HashMap<>();
+	private HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItems = new HashMap<>();
+
+	// 다운로드 받은 파일이 저장되는 위치
+	private String downloadFileWriteLocation;
 
 	private final class DownloadProcess1Result {
 
@@ -76,17 +77,17 @@ public class BogoBogo extends AbstractWebSite {
 
 	}
 
-	public BogoBogo(String fileDownloadPath) {
+	public BogoBogo(String downloadFileWriteLocation) {
 		super(WebSite.BOGOBOGO);
 		
-		if (StringUtil.isBlank(fileDownloadPath) == true) {
-			throw new IllegalArgumentException("fileDownloadPath는 빈 문자열을 허용하지 않습니다.");
+		if (StringUtil.isBlank(downloadFileWriteLocation) == true) {
+			throw new IllegalArgumentException("downloadFileWriteLocation은 빈 문자열을 허용하지 않습니다.");
 		}
 		
-		if (fileDownloadPath.endsWith(File.separator) == true) {
-			this.fileDownloadPath = fileDownloadPath;
+		if (downloadFileWriteLocation.endsWith(File.separator) == true) {
+			this.downloadFileWriteLocation = downloadFileWriteLocation;
 		} else {
-			this.fileDownloadPath = String.format("%s%s", fileDownloadPath, File.separator);
+			this.downloadFileWriteLocation = String.format("%s%s", downloadFileWriteLocation, File.separator);
 		}
 	}
 	
@@ -137,7 +138,7 @@ public class BogoBogo extends AbstractWebSite {
 		} catch (UnsupportedMimeTypeException e) {
 			// 무시한다.
 		} catch (IllegalArgumentException e) {
-			logger.error("POST {} return message:\n{}", LOGIN_PROCESS_URL_1, outerHtml);
+			logger.error("GET {}", doc.select("img").attr("src"));
 			throw e;
 		}
 
@@ -293,7 +294,7 @@ public class BogoBogo extends AbstractWebSite {
 							// 날짜
 							String registDate = iterator.next().text().trim();
 
-							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_PATH, detailPageURL)));
+							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
 						}
 					} catch (NoSuchElementException e) {
 						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
@@ -457,7 +458,7 @@ public class BogoBogo extends AbstractWebSite {
 				text = text.replace("Filename:", "").trim();
 
 				// @@@@@ 동일파일이 존재할경우에는??
-				String filePath = String.format("%s%s", this.fileDownloadPath, text);
+				String filePath = String.format("%s%s", this.downloadFileWriteLocation, text);
 				///////////////////////////////////////////////////////////
 
 				/**
@@ -505,16 +506,12 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-	}
-
-	@Override
 	public String toString() {
 		return new StringBuilder()
 				.append(BogoBogo.class.getSimpleName())
 				.append("{")
 				.append("로그인 여부:").append(isLogin())
+				.append(", 다운로드파일 저장위치:").append(this.downloadFileWriteLocation)
 				.append("}, ")
 				.append(super.toString())
 				.toString();

@@ -7,9 +7,5 @@ public interface WebSiteContext {
 	WebSiteAccount getAccount();
 
 	void setAccount(WebSiteAccount account);
-	
-	void validate();
-
-	boolean isValid();
 
 }

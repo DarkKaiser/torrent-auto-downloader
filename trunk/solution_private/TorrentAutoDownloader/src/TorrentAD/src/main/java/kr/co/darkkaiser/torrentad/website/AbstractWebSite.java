@@ -58,29 +58,6 @@ public abstract class AbstractWebSite implements WebSiteContext, WebSiteHandler 
 	}
 	
 	@Override
-	public void validate() {
-		if (this.site == null) {
-			throw new NullPointerException("site");
-		}
-		if (this.account == null) {
-			throw new NullPointerException("account");
-		}
-
-		this.account.validate();
-	}
-
-	@Override
-	public boolean isValid() {
-		try {
-			validate();
-		} catch (Exception e) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		return new StringBuilder()
 			.append(AbstractWebSite.class.getSimpleName())
