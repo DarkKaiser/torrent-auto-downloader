@@ -396,14 +396,15 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private boolean downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
+	private int downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
-		String detailPageURL = boardItem.getDetailPageURL();
-		assert StringUtil.isBlank(detailPageURL) == false;
-
+		int downloadCompletedCount = 0;
 		Gson gson = new GsonBuilder().create();
+		String detailPageURL = boardItem.getDetailPageURL();
+
+		assert StringUtil.isBlank(detailPageURL) == false;
 		
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
@@ -476,8 +477,11 @@ public class BogoBogo extends AbstractWebSite {
 				}
 
 				String downloadFileFullPath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
-				
-				// @@@@@ 동일파일이 존재할경우에는 어떻게 처리할것인가?
+				File file = new File(downloadFileFullPath);
+				if (file.isFile() == true) {
+					logger.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFileFullPath);
+					continue;
+				}
 
 				/**
 				 * 첨부파일 다운로드 하기
@@ -507,10 +511,11 @@ public class BogoBogo extends AbstractWebSite {
 				/**
 				 * 첨부파일 저장
 				 */
-				FileOutputStream fos = new FileOutputStream(new File(downloadFileFullPath));
+				FileOutputStream fos = new FileOutputStream(file);
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
 
+				++downloadCompletedCount;
 				downloadLink.setDownloadCompleted(true);
 				
 				logger.info("첨부파일 다운로드가 완료되었습니다.({})", downloadFileFullPath);
@@ -521,8 +526,7 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		// @@@@@ 반환값 false는 없음
-		return true;
+		return downloadCompletedCount;
 	}
 
 	@Override
