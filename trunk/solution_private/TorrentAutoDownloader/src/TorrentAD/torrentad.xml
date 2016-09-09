@@ -43,6 +43,7 @@
 				</search-keyword>
 			</search-keywords>
 			
+			<!--
 			날짜를 추출하기 위한 포맷, 파일명에 포함된 내용
 			<date-fmt>yyMMDD</date-fmt>
 
@@ -50,6 +51,7 @@
 			다운로드 받고나서 다운로드 받은 날짜 및 id 갱신
 			이후 해당 이후 날짜의 새로운 데이터를 검색한다.
 			<latest-download>100</latest-download>마지막 다운로드키
+			-->
 		</torrentad-periodic-task>
 	</torrentad-periodic-tasks>
 

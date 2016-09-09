@@ -31,6 +31,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 		// @@@@@
 		////////////////////////////////////////////////////////////////////////////////////
+		TaskResult result = TaskResult.OK;
 //		BogoBogoBoardItem bi = new BogoBogoBoardItem(BogoBogoBoard.ANI_ON, 0, "제목", "16-10-01");
 //		bi.setDetailPageURL("board.php?board=newmovie&amp;bm=view&amp;no=28585&amp;category=&amp;auth=&amp;page=1&amp;search=&amp;keyword=&amp;recom=");
 //		bi.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance("a", "b", "c", "d", "e", "f"));
@@ -43,9 +44,10 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 //		/* 결과정보*/l.download(WebSiteBoardItem/*다운로드정보*/);
 		// 다운로드 받은 파일을 업로드하는것은 다른 객체가 관리
 			// 지정된 폴더내의 파일을 nas로 계속 업로드 하는 역할
-		System.out.println("############# run");
+		System.out.println("############# task run");
+		//////////////////////////////////////////////////////////////////////////////////////
 
-		return TaskResult.OK;
+		return result;
 	}
 
 	@Override

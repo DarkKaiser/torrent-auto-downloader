@@ -103,7 +103,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 					logger.debug("Task 실행이 완료되었습니다.");
 					result = TasksRunnableAdapterResult.OK(TaskResult.OK);
 				}
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
 				result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
