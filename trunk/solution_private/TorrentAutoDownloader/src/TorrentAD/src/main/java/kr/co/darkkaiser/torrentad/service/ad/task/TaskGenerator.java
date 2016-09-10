@@ -54,7 +54,7 @@ public final class TaskGenerator {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-					Task task = TaskFactory.createTask(TaskType.PERIODIC, site);
+					Task task = TaskFactory.createTask(TaskType.PERIODIC, cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_ATTR_ID).getNodeValue(), site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
@@ -73,7 +73,7 @@ public final class TaskGenerator {
 									task.setLatestDownloadIdentifier(Long.parseLong(identifier));
 								}
 							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
-								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_TYPE_ATTR).getNodeValue();
+								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_ATTR_TYPE).getNodeValue();
 								WebSiteSearchKeywordsType searchKeywordsType = WebSiteSearchKeywordsType.fromString(searchKeywordsTypeString);
 
 								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
@@ -82,8 +82,8 @@ public final class TaskGenerator {
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
 										String searchKeywordsMode = WebSiteSearchKeywordsMode.getDefault().getValue();
-										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR) != null) {
-											searchKeywordsMode = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR).getNodeValue();
+										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE) != null) {
+											searchKeywordsMode = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE).getNodeValue();
 										}
 
 										WebSiteSearchKeywords searchKeywords = site.createSearchKeywords(searchKeywordsMode);

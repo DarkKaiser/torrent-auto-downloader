@@ -19,8 +19,8 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 
-	public PeriodicTaskImpl(WebSite site) {
-		super(TaskType.PERIODIC, site);
+	public PeriodicTaskImpl(String taskId, WebSite site) {
+		super(TaskType.PERIODIC, taskId, site);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 						this.searchContext.setLatestDownloadIdentifier(identifier);
 
 						// @@@@@
-						// 정보 저장, 저장시에 해당 키워드의 아이디가 필요, task에 아이디를 주고 검색?
+						// 정보 저장
 					}
 				}
 			}

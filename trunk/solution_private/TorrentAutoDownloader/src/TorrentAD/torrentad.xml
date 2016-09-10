@@ -19,7 +19,7 @@
 
 	<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 	<torrentad-periodic-tasks>
-		<torrentad-periodic-task>
+		<torrentad-periodic-task id="abc123">
 			<!-- 게시판 이름 -->
 			<board-name>newmovie</board-name>
 
@@ -53,7 +53,7 @@
 				-->
 				<search-keyword>
 					<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-					<item></item>
+					<item>test</item>
 				</search-keyword>
 			</search-keywords>
 			
