@@ -1,14 +1,18 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.jsoup.helper.StringUtil;
 
 public abstract class AbstractWebSiteSearchContext implements WebSiteSearchContext {
 
 	private final WebSite site;
 
-	private List<WebSiteSearchKeywords> searchKeywords = new ArrayList<>();
+	private Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
 	public AbstractWebSiteSearchContext(WebSite site) {
 		if (site == null) {
@@ -16,6 +20,10 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		}
 
 		this.site = site;
+
+		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+			this.searchKeywords.put(type, new ArrayList<>());
+	    }
 	}
 
 	@Override
@@ -32,22 +40,25 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 			throw new NullPointerException("searchKeywords");
 		}
 
-		// @@@@@ type
-
-		this.searchKeywords.add(searchKeywords);
+		this.searchKeywords.get(type).add(searchKeywords);
 	}
 
 	@Override
 	public boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text) {
-		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.iterator();
+		if (type == null) {
+			throw new NullPointerException("type");
+		}
+		if (StringUtil.isBlank(text) == true) {
+			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
+		}
+
+		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next().isSatisfySearchCondition(text) == false) {
 				return false;
 			}
 		}
 		
-		// @@@@@ type에 따라 처리
-
 		return true;
 	}
 
@@ -56,12 +67,8 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		if (this.site == null) {
 			throw new NullPointerException("site");
 		}
-		if (this.searchKeywords == null) {
-			throw new NullPointerException("searchKeywords");
-		}
-		if (this.searchKeywords.isEmpty() == true) {
-			throw new EmptySearchKeywordsException("검색 키워드가 등록되어 있지 않습니다.");
-		}
+		
+		// @@@@@
 	}
 
 	@Override
@@ -83,16 +90,31 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 				.append("site:").append(this.site)
 				.append(", searchKeywords:");
 
-		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.iterator();
-		while (iterator.hasNext()) {
-			sb.append("[")
-			  .append(iterator.next())
-			  .append("]");
-		}
+		boolean firstKeywords = true;
+		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+			if (firstKeywords == false) {
+				sb.append(", ")
+				  .append(type.getValue())
+				  .append("[");
+			} else {
+				firstKeywords = false;
+				sb.append(type.getValue())
+				  .append("[");
+			}
+
+			Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
+			while (iterator.hasNext()) {
+				sb.append("<")
+				  .append(iterator.next())
+				  .append(">");
+			}
+			
+			sb.append("]");
+	    }
 
 		sb.append("}");
 
 		return sb.toString();
 	}
-	
+
 }

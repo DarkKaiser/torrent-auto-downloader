@@ -32,6 +32,10 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	@Override
 	public boolean isSatisfySearchCondition(String text) {
+		if (StringUtil.isBlank(text) == true) {
+			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
+		}
+		
 		int index = 0;
 		String upperCaseText = text.toUpperCase();
 		
