@@ -290,11 +290,9 @@ public class BogoBogo extends AbstractWebSite {
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
+			// @@@@@ 테스트
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
-			// @@@@@ 다운로드 대상여부 체크
-			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()) == true) {
-
-			}
+			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
 
 		return downloadBoardItemDownloadLink(siteBoardItem);
@@ -480,7 +478,7 @@ public class BogoBogo extends AbstractWebSite {
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
-			if (downloadLink.isDownloadCompleted() == true) {
+			if (downloadLink.isDownloadable() == false || downloadLink.isDownloadCompleted() == true) {
 				continue;
 			}
 

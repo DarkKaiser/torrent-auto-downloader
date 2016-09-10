@@ -15,6 +15,10 @@ public interface BogoBogoBoardItemDownloadLink {
 	String getFileId();
 	
 	String getFileName();
+	
+	boolean isDownloadable();
+	
+	void setDownloadable(boolean flag);
 
 	boolean isDownloadCompleted();
 	

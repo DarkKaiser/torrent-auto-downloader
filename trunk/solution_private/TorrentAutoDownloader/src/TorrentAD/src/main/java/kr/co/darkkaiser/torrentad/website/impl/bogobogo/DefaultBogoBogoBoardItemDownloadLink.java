@@ -12,6 +12,7 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	private final String fileId;
 	private final String fileName;
 	
+	private boolean downloadable = true;
 	private boolean downloadCompleted = false;
 
 	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
@@ -84,7 +85,17 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	public String getFileName() {
 		return this.fileName;
 	}
-
+	
+	@Override
+	public boolean isDownloadable() {
+		return this.downloadable;
+	}
+	
+	@Override
+	public void setDownloadable(boolean flag) {
+		this.downloadable = flag;
+	}
+	
 	@Override
 	public boolean isDownloadCompleted() {
 		return this.downloadCompleted;
