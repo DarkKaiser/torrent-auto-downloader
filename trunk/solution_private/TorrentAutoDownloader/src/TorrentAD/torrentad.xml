@@ -36,7 +36,7 @@
 				<search-keyword>
 					<item>1080P</item>
 				</search-keyword>
-				<search-keyword type="exclude">
+				<search-keyword mode="exclude">
 					<item>720P</item>
 					<item>IMAX</item>
 				</search-keyword>

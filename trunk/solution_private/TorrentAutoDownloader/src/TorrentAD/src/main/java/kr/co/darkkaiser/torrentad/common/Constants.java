@@ -10,7 +10,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME = "board-name";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS = "search-keywords";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD = "search-keyword";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR = "type";
+	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR = "mode";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM = "item";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_IDENTIFIER = "latest-download-identifier";
 	

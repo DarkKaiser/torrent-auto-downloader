@@ -9,16 +9,16 @@ import org.jsoup.helper.StringUtil;
 
 public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
-	private final WebSiteSearchKeywordsType type;
+	private final WebSiteSearchKeywordsMode mode;
 
 	private final List<List<String>> keywords = new ArrayList<>();
 
-	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType type) {
-		if (type == null) {
-			throw new NullPointerException("type");
+	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode mode) {
+		if (mode == null) {
+			throw new NullPointerException("mode");
 		}
 
-		this.type = type;
+		this.mode = mode;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		int index = 0;
 		String upperCaseText = text.toUpperCase();
 		
-		if (type == WebSiteSearchKeywordsType.INCLUDE) {
+		if (mode == WebSiteSearchKeywordsMode.INCLUDE) {
 			for (List<String> splitKeywords : this.keywords) {
 				for (index = 0; index < splitKeywords.size(); ++index) {
 					if (upperCaseText.contains(splitKeywords.get(index)) == false) {
@@ -89,7 +89,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		StringBuilder sb = new StringBuilder()
 				.append(DefaultWebSiteSearchKeywords.class.getSimpleName())
 				.append("{")
-				.append("type:").append(this.type)
+				.append("mode:").append(this.mode)
 				.append(", keywords:");
 
 		boolean firstKeyword = true;

@@ -20,7 +20,7 @@ import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 
 public final class TaskGenerator {
 	
@@ -78,12 +78,12 @@ public final class TaskGenerator {
 									Node cvSearchKeywordNode = cvSearchKeywordNodeList.item(cvSearchKeywordNodeListIndex);
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
-										String searchKeywordsType = WebSiteSearchKeywordsType.getDefault().getValue();
-										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR) != null) {
-											searchKeywordsType = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_TYPE_ATTR).getNodeValue();
+										String searchKeywordsMode = WebSiteSearchKeywordsMode.getDefault().getValue();
+										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR) != null) {
+											searchKeywordsMode = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR).getNodeValue();
 										}
 
-										WebSiteSearchKeywords searchKeywords = site.createSearchKeywords(searchKeywordsType);
+										WebSiteSearchKeywords searchKeywords = site.createSearchKeywords(searchKeywordsMode);
 
 										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
 										while (cvSearchKeywordChildNode != null) {
