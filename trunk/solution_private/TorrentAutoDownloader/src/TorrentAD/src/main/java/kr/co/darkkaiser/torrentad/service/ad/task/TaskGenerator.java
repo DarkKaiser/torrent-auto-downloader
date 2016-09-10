@@ -72,11 +72,11 @@ public final class TaskGenerator {
 								} else {
 									task.setLatestDownloadIdentifier(Long.parseLong(identifier));
 								}
-								
-								// @@@@@ 우아한 방법은 없나???
-							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_TITLE) == true || nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_FILE) == true) {
-								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
+							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
+								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_TYPE_ATTR).getNodeValue();
+								WebSiteSearchKeywordsType searchKeywordsType = WebSiteSearchKeywordsType.fromString(searchKeywordsTypeString);
 
+								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
 								for (int cvSearchKeywordNodeListIndex = 0; cvSearchKeywordNodeListIndex < cvSearchKeywordNodeList.getLength(); ++cvSearchKeywordNodeListIndex) {
 									Node cvSearchKeywordNode = cvSearchKeywordNodeList.item(cvSearchKeywordNodeListIndex);
 
@@ -100,11 +100,7 @@ public final class TaskGenerator {
 										}
 
 										if (searchKeywords.isValid() == true) {
-											if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_TITLE) == true) {
-												task.addSearchKeywords(WebSiteSearchKeywordsType.TITLE, searchKeywords);
-											} else {
-												task.addSearchKeywords(WebSiteSearchKeywordsType.FILE, searchKeywords);
-											}
+											task.addSearchKeywords(searchKeywordsType, searchKeywords);
 										} else {
 											throw new XMLParseException("생성된 SearchKeywords가 유효하지 않습니다.");
 										}
