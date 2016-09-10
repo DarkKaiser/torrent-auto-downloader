@@ -9,6 +9,7 @@ import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -63,6 +64,13 @@ public final class TaskGenerator {
 
 							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
 								task.setBoardName(cvChildNode.getTextContent().trim());
+							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_IDENTIFIER) == true) {
+								String identifier = cvChildNode.getTextContent().trim();
+								if (StringUtil.isBlank(identifier) == true) {
+									task.setLatestDownloadIdentifier(Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE);
+								} else {
+									task.setLatestDownloadIdentifier(Long.parseLong(identifier));
+								}
 							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
 								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
 

@@ -9,6 +9,8 @@ public interface Task {
 
 	void setBoardName(String name) throws Exception;
 
+	void setLatestDownloadIdentifier(long identifier) throws Exception;
+
 	void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception;
 
 	TaskResult run(WebSiteHandler handler) throws Exception;

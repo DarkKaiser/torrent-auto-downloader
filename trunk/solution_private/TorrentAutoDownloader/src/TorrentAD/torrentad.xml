@@ -45,15 +45,12 @@
 				</search-keyword>
 			</search-keywords>
 			
-			<!--
-			날짜를 추출하기 위한 포맷, 파일명에 포함된 내용
-			<date-fmt>yyMMDD</date-fmt>
-
-			latest-dn-key 값이 비어있으면 데몬이 올라가고 난 이후의 데이터로 한정?
-			다운로드 받고나서 다운로드 받은 날짜 및 id 갱신
-			이후 해당 이후 날짜의 새로운 데이터를 검색한다.
-			<latest-download>100</latest-download>마지막 다운로드키
+			<!-- 
+			  최근에 다운로드 받은 게시물 식별자
+			  게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.
+			  게시물 식별자가 비어있는 경우는 읽어들인 게시물의 모든 항목을 검색 대상으로 한다.
 			-->
+			<latest-download-identifier></latest-download-identifier>
 		</torrentad-periodic-task>
 	</torrentad-periodic-tasks>
 

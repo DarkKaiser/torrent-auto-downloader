@@ -24,7 +24,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
+import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -209,7 +211,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws Exception {
+	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException, Exception {
 		if (searchContext == null) {
 			throw new NullPointerException("searchContext");
 		}
@@ -221,17 +223,22 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
 		if (loadBoardItems(siteSearchContext.getBoard()) == false) {
-			// @@@@@
-			return null;
+			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 		}
 
 		ArrayList<WebSiteBoardItem> resultList = new ArrayList<>();
 		ArrayList<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
 
+		long latestDownloadIdentifier = siteSearchContext.getLatestDownloadIdentifier();
+		
 		for (BogoBogoBoardItem boardItem : boardItems) {
 			assert boardItem != null;
-			
-			// @@@@@ 키 이후의 데이터만 로드
+
+			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
+			if (latestDownloadIdentifier != Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE && latestDownloadIdentifier >= boardItem.getIdentifier()) {
+				continue;
+			}
+
 			if (siteSearchContext.isSatisfySearchCondition(boardItem.getTitle()) == true) {
 				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
 				loadBoardItemDownloadLink(boardItem);

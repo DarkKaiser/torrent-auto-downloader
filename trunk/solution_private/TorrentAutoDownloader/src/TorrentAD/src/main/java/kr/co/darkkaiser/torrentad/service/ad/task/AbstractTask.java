@@ -36,6 +36,11 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
+	public void setLatestDownloadIdentifier(long identifier) throws Exception {
+		this.searchContext.setLatestDownloadIdentifier(identifier);
+	}
+
+	@Override
 	public void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception {
 		this.searchContext.addSearchKeywords(searchKeywords);
 	}
