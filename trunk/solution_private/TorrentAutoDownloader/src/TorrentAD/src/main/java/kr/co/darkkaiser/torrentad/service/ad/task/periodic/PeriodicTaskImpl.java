@@ -9,6 +9,7 @@ import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
@@ -32,11 +33,18 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 		try {
 			Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
-			while (iterator.hasNext()) {
-				WebSiteBoardItem boardItem = iterator.next();
-				assert boardItem != null;
+			
+			if (iterator.hasNext() == false) {
+				logger.debug(String.format("검색 결과 게시물이 0건 입니다."));
+			} else {
+				while (iterator.hasNext()) {
+					WebSiteBoardItem boardItem = iterator.next();
+					assert boardItem != null;
 
-				if (handler.download(this.searchContext, boardItem) == true) {
+					Tuple<Integer, Integer> downloadCount = handler.download(this.searchContext, boardItem);
+					logger.info(String.format("검색된 게시물('%s')의 첨부파일 다운로드 작업이 종료되었습니다.(다운로드시도갯수:%d 다운로드성공갯수:%d)", boardItem.getTitle(), downloadCount.first(), downloadCount.last()));
+
+					// 환경설정파일에 게시물 식별자를 저장한다.
 					long identifier = boardItem.getIdentifier();
 					long latestDownloadIdentifier = this.searchContext.getLatestDownloadIdentifier();
 					
@@ -46,7 +54,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 						this.searchContext.setLatestDownloadIdentifier(identifier);
 
 						// @@@@@
-						// 정보 저장
+						// 정보 저장, 저장시에 해당 키워드의 아이디가 필요
 					}
 				}
 			}

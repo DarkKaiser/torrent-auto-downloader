@@ -28,6 +28,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
+import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
@@ -259,7 +260,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public boolean download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
+	public Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
 		if (searchContext == null) {
 			throw new NullPointerException("searchContext");
 		}
@@ -274,28 +275,25 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		// 이전에 다운로드 링크 로드가 실패한 경우 다시 로드한다. 
+		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
-				// @@@@@ 로그출력
-				
-				return false;
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return new Tuple<Integer, Integer>(-1, -1);
 			}
 		}
 
 		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
 
-//		iterator = siteBoardItem.downloadLinkIterator();
-//		while (iterator.hasNext() == true) {
-//			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
-//			// @@@@@ 다운로드 대상여부 체크
-//		}
-		
-		// @@@@@
-		int count = downloadBoardItemDownloadLink(siteBoardItem);
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		while (iterator.hasNext() == true) {
+			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			// @@@@@ 다운로드 대상여부 체크
+		}
 
-		return true;
+		return downloadBoardItemDownloadLink(siteBoardItem);
 	}
 
 	private boolean loadBoardItems(BogoBogoBoard board) {
@@ -464,10 +462,11 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private int downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
+	private Tuple<Integer, Integer> downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
+		int downloadTryCount = 0;
 		int downloadCompletedCount = 0;
 		Gson gson = new GsonBuilder().create();
 		String detailPageURL = boardItem.getDetailPageURL();
@@ -481,7 +480,9 @@ public class BogoBogo extends AbstractWebSite {
 				continue;
 			}
 
-			logger.info("첨부파일을 다운로드합니다.({})", downloadLink);
+			++downloadTryCount;
+
+			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
 			try {
 				/**
@@ -586,7 +587,7 @@ public class BogoBogo extends AbstractWebSite {
 				++downloadCompletedCount;
 				downloadLink.setDownloadCompleted(true);
 				
-				logger.info("첨부파일 다운로드가 완료되었습니다.({})", downloadFileFullPath);
+				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFileFullPath);
 			} catch (ParseException e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			} catch (Exception e) {
@@ -594,7 +595,7 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		return downloadCompletedCount;
+		return new Tuple<Integer, Integer>(downloadTryCount, downloadCompletedCount);
 	}
 
 	@Override
