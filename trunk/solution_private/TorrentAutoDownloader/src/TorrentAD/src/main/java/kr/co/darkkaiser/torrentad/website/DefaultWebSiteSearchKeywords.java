@@ -1,7 +1,9 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jsoup.helper.StringUtil;
 
@@ -9,7 +11,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	private final WebSiteSearchKeywordsType type;
 
-	private final ArrayList<String> keywords = new ArrayList<>();
+	private final ArrayList<List<String>> keywords = new ArrayList<>();
 
 	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType type) {
 		if (type == null) {
@@ -25,21 +27,43 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 		}
 
-		if (this.keywords.contains(keyword) == false) {
-			this.keywords.add(keyword);
-		}
+		this.keywords.add(Arrays.asList(keyword.toUpperCase().split("\\+")));
 	}
 
 	@Override
-	public boolean isSatisfyCondition(String text) {
-		// @@@@@
-		// 영어는 대소문자 구분 안함
+	public boolean isSatisfySearchCondition(String text) {
+		int index = 0;
+		String upperCaseText = text.toUpperCase();
+		
 		if (type == WebSiteSearchKeywordsType.INCLUDE) {
-			
+			for (List<String> splitKeywords : this.keywords) {
+				for (index = 0; index < splitKeywords.size(); ++index) {
+					if (upperCaseText.contains(splitKeywords.get(index)) == false) {
+						break;
+					}
+				}
+
+				if (index == splitKeywords.size()) {
+					return true;
+				}
+			}
+
+			return false;
 		} else {
-			
+			for (List<String> splitKeywords : this.keywords) {
+				for (index = 0; index < splitKeywords.size(); ++index) {
+					if (upperCaseText.contains(splitKeywords.get(index)) == false) {
+						break;
+					}
+				}
+
+				if (index == splitKeywords.size()) {
+					return false;
+				}
+			}
+
+			return true;
 		}
-		return true;
 	}
 
 	@Override
@@ -69,14 +93,14 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 				.append(", keywords:");
 
 		boolean firstKeyword = true;
-		Iterator<String> iterator = this.keywords.iterator();
+		Iterator<List<String>> iterator = this.keywords.iterator();
 		while (iterator.hasNext()) {
 			if (firstKeyword == false) {
 				sb.append("|")
-				  .append(iterator.next());
+				  .append(StringUtil.join(iterator.next(), "+"));
 			} else {
 				firstKeyword = false;
-				sb.append(iterator.next());
+				sb.append(StringUtil.join(iterator.next(), "+"));
 			}
 		}
 

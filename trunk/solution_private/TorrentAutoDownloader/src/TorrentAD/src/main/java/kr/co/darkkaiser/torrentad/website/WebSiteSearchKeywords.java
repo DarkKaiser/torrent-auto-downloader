@@ -4,7 +4,7 @@ public interface WebSiteSearchKeywords {
 
 	void add(String keyword);
 
-	boolean isSatisfyCondition(String text);
+	boolean isSatisfySearchCondition(String text);
 
 	void validate();
 

@@ -10,6 +10,8 @@ public interface WebSiteHandler {
 
 	Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws Exception;
 
+	boolean download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception;
+
 	boolean isLogin();
 
 }

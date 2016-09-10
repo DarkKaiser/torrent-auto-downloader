@@ -32,10 +32,10 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	}
 
 	@Override
-	public boolean isSatisfyCondition(String text) {
+	public boolean isSatisfySearchCondition(String text) {
 		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.iterator();
 		while (iterator.hasNext()) {
-			if (iterator.next().isSatisfyCondition(text) == false) {
+			if (iterator.next().isSatisfySearchCondition(text) == false) {
 				return false;
 			}
 		}

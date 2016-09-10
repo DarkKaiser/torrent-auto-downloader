@@ -32,14 +32,23 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 		// @@@@@
 		////////////////////////////////////////////////////////////////////////////////////
 		TaskResult result = TaskResult.OK;
-		// search => download 로 변경???
 		Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
+		if (iterator == null) {
+			
+		}
 
-//		/* 반환받은 정보를 이용해서 다운로드 */
-//		/* 결과정보*/l.download(WebSiteBoardItem/*다운로드정보*/);
-		// 다운로드 받은 파일을 업로드하는것은 다른 객체가 관리
-			// 지정된 폴더내의 파일을 nas로 계속 업로드 하는 역할
-		//////////////////////////////////////////////////////////////////////////////////////
+		while (iterator.hasNext()) {
+			WebSiteBoardItem boardItem = iterator.next();
+			assert boardItem != null;
+			
+			if (handler.download(this.searchContext, boardItem) == true) {
+				// 정보 저장
+				// 검색할때도 키 이후의 정보만 검색되어야 함
+			} else {
+				
+			}
+		}
+		////////////////////////////////////////////////////////////////////////////////////
 
 		return result;
 	}

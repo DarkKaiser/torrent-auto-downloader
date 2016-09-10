@@ -8,7 +8,7 @@ public interface WebSiteSearchContext {
 
 	void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception;
 
-	boolean isSatisfyCondition(String text);
+	boolean isSatisfySearchCondition(String text);
 
 	void validate();
 

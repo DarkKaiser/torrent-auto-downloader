@@ -52,7 +52,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	private Connection.Response loginConnResponse;
 
-	private HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boardItems = new HashMap<>();
+	private HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boards = new HashMap<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
@@ -220,25 +220,56 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		// @@@@@
-		//////////////////////////////////////////////////////////////////////
 		if (loadBoardItems(siteSearchContext.getBoard()) == false) {
+			// @@@@@
 			return null;
 		}
-		
-		ArrayList<BogoBogoBoardItem> arrayList = this.boardItems.get(siteSearchContext.getBoard());
-		loadBoardItemDownloadLink(arrayList.get(0));
 
-//		downloadBoardItemDownloadLink(arrayList.get(0));
+		ArrayList<WebSiteBoardItem> resultList = new ArrayList<>();
+		ArrayList<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
 
-		return null;
+		for (BogoBogoBoardItem boardItem : boardItems) {
+			assert boardItem != null;
+			
+			// @@@@@ 키 이후의 데이터만 로드
+			if (siteSearchContext.isSatisfySearchCondition(boardItem.getTitle()) == true) {
+				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
+				loadBoardItemDownloadLink(boardItem);
+
+				resultList.add(boardItem);
+
+				logger.debug("검색된게시물:" + boardItem);
+			}
+		}
+
+		return resultList.iterator();
 	}
-	
+
+	@Override
+	public boolean download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
+		if (searchContext == null) {
+			throw new NullPointerException("searchContext");
+		}
+		if (boardItem == null) {
+			throw new NullPointerException("boardItem");
+		}
+
+		if (isLogin() == false) {
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+		}
+
+		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
+
+		// @@@@@
+
+		return false;
+	}
+
 	private boolean loadBoardItems(BogoBogoBoard board) {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (this.boardItems.containsKey(board) == true) {
+		if (this.boards.containsKey(board) == true) {
 			return true;
 		}
 
@@ -324,7 +355,7 @@ public class BogoBogo extends AbstractWebSite {
 			return false;
 		}
 
-		this.boardItems.put(board, boardItems);
+		this.boards.put(board, boardItems);
 
 		return true;
 	}
@@ -540,5 +571,6 @@ public class BogoBogo extends AbstractWebSite {
 				.append(super.toString())
 				.toString();
 	}
+
 
 }

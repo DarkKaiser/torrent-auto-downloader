@@ -5,7 +5,7 @@
 	<!-- Console Appender -->
     <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%t> [%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
 		</layout>
     </appender>
 
@@ -15,7 +15,7 @@
 		<param name="Append" value="true"/>
 		<param name="DatePattern" value="'.'yyyyMMdd"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%t> [%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
  		</layout>
 	</appender>
 
