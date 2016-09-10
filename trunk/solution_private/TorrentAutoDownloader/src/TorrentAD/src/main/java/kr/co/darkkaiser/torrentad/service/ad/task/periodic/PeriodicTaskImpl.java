@@ -33,9 +33,9 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 		try {
 			Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
-			
+
 			if (iterator.hasNext() == false) {
-				logger.debug(String.format("검색 결과 게시물이 0건 입니다."));
+				logger.debug(String.format("검색된 게시물이 0건 입니다."));
 			} else {
 				while (iterator.hasNext()) {
 					WebSiteBoardItem boardItem = iterator.next();

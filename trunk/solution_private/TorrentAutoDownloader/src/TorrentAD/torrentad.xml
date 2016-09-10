@@ -45,6 +45,15 @@
 				</search-keyword>
 			</search-keywords>
 			
+			<!--
+			  첨부파일 키워드
+			  @@@@@
+			  비어있는 경우는 모든 파일을 다운로드 받는다.
+			<download-keywords>
+				<download-keyword></download-keyword>
+			</download-keywords>
+			-->
+			
 			<!-- 
 			  최근에 다운로드 받은 게시물 식별자
 			  게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.
