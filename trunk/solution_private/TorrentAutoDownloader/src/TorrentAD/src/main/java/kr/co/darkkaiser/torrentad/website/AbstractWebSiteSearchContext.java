@@ -52,15 +52,18 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
 		}
 
-		// @@@@@
 		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
-		while (iterator.hasNext()) {
-			if (iterator.next().isSatisfySearchCondition(text) == false) {
-				return false;
+		if (iterator.hasNext() == true) {
+			while (iterator.hasNext()) {
+				if (iterator.next().isSatisfySearchCondition(text) == false) {
+					return false;
+				}
 			}
+			
+			return true;
+		} else {
+			return type.allowEmpty();
 		}
-		
-		return true;
 	}
 
 	@Override
@@ -68,8 +71,14 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		if (this.site == null) {
 			throw new NullPointerException("site");
 		}
-		
-		// @@@@@
+
+		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+			if (type.allowEmpty() == false) {
+				if (this.searchKeywords.get(type).isEmpty() == true) {
+					throw new EmptySearchKeywordsException(String.format("검색 키워드가 등록되어 있지 않습니다.(%s)", type.getValue()));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -85,30 +94,34 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public String toString() {
-		// @@@@@
 		StringBuilder sb = new StringBuilder()
 				.append(AbstractWebSiteSearchContext.class.getSimpleName())
 				.append("{")
 				.append("site:").append(this.site)
 				.append(", searchKeywords:");
 
-		boolean firstKeywords = true;
+		boolean firstKeywordsType = true;
 		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
-			if (firstKeywords == false) {
+			if (firstKeywordsType == false) {
 				sb.append(", ")
 				  .append(type.getValue())
 				  .append("[");
 			} else {
-				firstKeywords = false;
+				firstKeywordsType = false;
 				sb.append(type.getValue())
 				  .append("[");
 			}
 
+			boolean firstKeywords = true;
 			Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
 			while (iterator.hasNext()) {
-				sb.append("<")
-				  .append(iterator.next())
-				  .append(">");
+				if (firstKeywords == false) {
+					sb.append(",")
+					  .append(iterator.next());
+				} else {
+					firstKeywords = false;
+					sb.append(iterator.next());
+				}
 			}
 			
 			sb.append("]");

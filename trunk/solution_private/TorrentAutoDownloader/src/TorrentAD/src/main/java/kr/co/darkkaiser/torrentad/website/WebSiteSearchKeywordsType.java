@@ -4,18 +4,25 @@ import org.jsoup.helper.StringUtil;
 
 public enum WebSiteSearchKeywordsType {
 
-	TITLE("title"),
+	TITLE("title", false),
 
-	FILE("file");
+	FILE("file", true);
 
 	private final String value;
+	
+	private final boolean allowEmpty;
 
-	private WebSiteSearchKeywordsType(String value) {
+	private WebSiteSearchKeywordsType(String value, boolean allowEmpty) {
 		this.value = value;
+		this.allowEmpty = allowEmpty;
 	}
 
 	public String getValue() {
 		return this.value;
+	}
+	
+	public boolean allowEmpty() {
+		return this.allowEmpty;
 	}
 
 	public static WebSiteSearchKeywordsType fromString(String typeValue) {
