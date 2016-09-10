@@ -8,7 +8,8 @@ public final class Constants {
 
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK = "torrentad-periodic-task";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME = "board-name";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS = "search-keywords";
+	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_TITLE = "search-keywords-title";
+	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_FILE = "search-keywords-file";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD = "search-keyword";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_MODE_ATTR = "mode";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM = "item";

@@ -2,6 +2,7 @@ package kr.co.darkkaiser.torrentad.service.ad.task;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public interface Task {
 
@@ -11,7 +12,7 @@ public interface Task {
 
 	void setLatestDownloadIdentifier(long identifier) throws Exception;
 
-	void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception;
+	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 
 	TaskResult run(WebSiteHandler handler) throws Exception;
 

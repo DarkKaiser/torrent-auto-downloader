@@ -24,22 +24,29 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	}
 
 	@Override
-	public void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception {
+	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception {
+		if (type == null) {
+			throw new NullPointerException("type");
+		}
 		if (searchKeywords == null) {
 			throw new NullPointerException("searchKeywords");
 		}
+
+		// @@@@@ type
 
 		this.searchKeywords.add(searchKeywords);
 	}
 
 	@Override
-	public boolean isSatisfySearchCondition(String text) {
+	public boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text) {
 		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next().isSatisfySearchCondition(text) == false) {
 				return false;
 			}
 		}
+		
+		// @@@@@ type에 따라 처리
 
 		return true;
 	}

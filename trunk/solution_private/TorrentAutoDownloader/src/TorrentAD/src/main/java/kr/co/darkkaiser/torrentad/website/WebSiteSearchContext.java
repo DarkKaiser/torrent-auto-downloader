@@ -10,9 +10,9 @@ public interface WebSiteSearchContext {
 
 	void setLatestDownloadIdentifier(long identifier) throws Exception;
 
-	void addSearchKeywords(WebSiteSearchKeywords searchKeywords) throws Exception;
+	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 
-	boolean isSatisfySearchCondition(String text);
+	boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text);
 
 	void validate();
 

@@ -38,6 +38,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public class BogoBogo extends AbstractWebSite {
 
@@ -244,7 +245,7 @@ public class BogoBogo extends AbstractWebSite {
 				continue;
 			}
 
-			if (siteSearchContext.isSatisfySearchCondition(boardItem.getTitle()) == true) {
+			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
 				loadBoardItemDownloadLink(boardItem);
 
@@ -291,6 +292,9 @@ public class BogoBogo extends AbstractWebSite {
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
 			// @@@@@ 다운로드 대상여부 체크
+			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()) == true) {
+
+			}
 		}
 
 		return downloadBoardItemDownloadLink(siteBoardItem);
