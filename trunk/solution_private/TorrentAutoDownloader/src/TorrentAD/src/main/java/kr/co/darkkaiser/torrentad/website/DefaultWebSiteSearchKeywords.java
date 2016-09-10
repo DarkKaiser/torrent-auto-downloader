@@ -11,7 +11,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	private final WebSiteSearchKeywordsType type;
 
-	private final ArrayList<List<String>> keywords = new ArrayList<>();
+	private final List<List<String>> keywords = new ArrayList<>();
 
 	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsType type) {
 		if (type == null) {

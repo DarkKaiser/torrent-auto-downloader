@@ -7,9 +7,9 @@ public enum TaskResult {
 	/** 성공 */
 	OK,
 	
-	/** 게시물 로드 실패 */
-	BOARD_ITEMS_LOAD_FAILED,
-	
+	/** 실패 */
+	FAILED,
+
 	/** 예외 발생 */
 	UNEXPECTED_EXCEPTION
 	

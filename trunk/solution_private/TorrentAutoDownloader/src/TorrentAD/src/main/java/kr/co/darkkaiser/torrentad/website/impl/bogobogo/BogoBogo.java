@@ -7,8 +7,11 @@ import java.net.ConnectException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.jsoup.Connection;
@@ -32,6 +35,7 @@ import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 
 public class BogoBogo extends AbstractWebSite {
@@ -54,7 +58,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	private Connection.Response loginConnResponse;
 
-	private HashMap<BogoBogoBoard, ArrayList<BogoBogoBoardItem>> boards = new HashMap<>();
+	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boards = new HashMap<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
@@ -226,8 +230,8 @@ public class BogoBogo extends AbstractWebSite {
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 		}
 
-		ArrayList<WebSiteBoardItem> resultList = new ArrayList<>();
-		ArrayList<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
+		List<WebSiteBoardItem> resultList = new ArrayList<>();
+		List<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
 
 		long latestDownloadIdentifier = siteSearchContext.getLatestDownloadIdentifier();
 		
@@ -248,7 +252,9 @@ public class BogoBogo extends AbstractWebSite {
 				logger.debug("검색된게시물:" + boardItem);
 			}
 		}
-
+		
+		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
+		
 		return resultList.iterator();
 	}
 
@@ -272,7 +278,7 @@ public class BogoBogo extends AbstractWebSite {
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
-				// @@@@@
+				// @@@@@ 로그출력
 				
 				return false;
 			}
@@ -287,7 +293,7 @@ public class BogoBogo extends AbstractWebSite {
 //		}
 		
 		// @@@@@
-//		int count = downloadBoardItemDownloadLink(siteBoardItem);
+		int count = downloadBoardItemDownloadLink(siteBoardItem);
 
 		return true;
 	}
@@ -300,7 +306,7 @@ public class BogoBogo extends AbstractWebSite {
 			return true;
 		}
 
-		ArrayList<BogoBogoBoardItem> boardItems = new ArrayList<>();
+		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
@@ -382,6 +388,8 @@ public class BogoBogo extends AbstractWebSite {
 			return false;
 		}
 
+		Collections.sort(boardItems, new WebSiteBoardItemAscCompare());
+		
 		this.boards.put(board, boardItems);
 
 		return true;

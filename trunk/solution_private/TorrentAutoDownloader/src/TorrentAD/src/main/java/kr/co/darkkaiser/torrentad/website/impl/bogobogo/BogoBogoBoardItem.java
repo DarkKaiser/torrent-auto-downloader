@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jsoup.helper.StringUtil;
 
@@ -14,7 +15,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	private String detailPageURL;
 
 	// 게시물 첨부파일의 다운로드 링크 목록
-	private ArrayList<BogoBogoBoardItemDownloadLink> downloadLinks = new ArrayList<>();
+	private List<BogoBogoBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
 	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);

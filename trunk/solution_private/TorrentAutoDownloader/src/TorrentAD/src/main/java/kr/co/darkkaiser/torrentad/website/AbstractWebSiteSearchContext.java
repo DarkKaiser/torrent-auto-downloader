@@ -2,12 +2,13 @@ package kr.co.darkkaiser.torrentad.website;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class AbstractWebSiteSearchContext implements WebSiteSearchContext {
 
 	private final WebSite site;
 
-	private ArrayList<WebSiteSearchKeywords> searchKeywords = new ArrayList<>();
+	private List<WebSiteSearchKeywords> searchKeywords = new ArrayList<>();
 
 	public AbstractWebSiteSearchContext(WebSite site) {
 		if (site == null) {

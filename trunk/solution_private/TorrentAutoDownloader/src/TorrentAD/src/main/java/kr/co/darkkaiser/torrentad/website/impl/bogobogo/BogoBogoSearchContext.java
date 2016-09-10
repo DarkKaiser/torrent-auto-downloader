@@ -14,6 +14,10 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 		super(WebSite.BOGOBOGO);
 	}
 
+	public BogoBogoBoard getBoard() {
+		return this.board;
+	}
+
 	@Override
 	public void setBoardName(String name) throws Exception {
 		try {
@@ -23,17 +27,14 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 		}
 	}
 
-	public BogoBogoBoard getBoard() {
-		return this.board;
+	@Override
+	public long getLatestDownloadIdentifier() {
+		return this.latestDownloadIdentifier;
 	}
 	
 	@Override
 	public void setLatestDownloadIdentifier(long identifier) throws Exception {
 		this.latestDownloadIdentifier = identifier;
-	}
-
-	public long getLatestDownloadIdentifier() {
-		return this.latestDownloadIdentifier;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
@@ -29,8 +30,6 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 		validate();
 
-		TaskResult result = TaskResult.OK;
-		
 		try {
 			Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
 			while (iterator.hasNext()) {
@@ -38,23 +37,28 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 				assert boardItem != null;
 
 				if (handler.download(this.searchContext, boardItem) == true) {
-					// @@@@@
-					// 정보 저장
-				} else {
-					// @@@@@
+					long identifier = boardItem.getIdentifier();
+					long latestDownloadIdentifier = this.searchContext.getLatestDownloadIdentifier();
+					
+					assert identifier != Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE;
+
+					if (latestDownloadIdentifier == Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE || latestDownloadIdentifier < identifier) {
+						this.searchContext.setLatestDownloadIdentifier(identifier);
+
+						// @@@@@
+						// 정보 저장
+					}
 				}
 			}
 		} catch (FailedLoadBoardItemsException e) {
-			// @@@@@
 			logger.error(null, e);
-			result = TaskResult.BOARD_ITEMS_LOAD_FAILED;
+			return TaskResult.FAILED;
 		} catch (Exception e) {
-			// @@@@@
-			logger.error("예외가 발생하였습니다.", e);
-			result = TaskResult.UNEXPECTED_EXCEPTION;
+			logger.error(null, e);
+			return TaskResult.UNEXPECTED_EXCEPTION;
 		}
 
-		return result;
+		return TaskResult.OK;
 	}
 
 	@Override
