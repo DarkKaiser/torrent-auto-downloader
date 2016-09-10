@@ -52,6 +52,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
 		}
 
+		// @@@@@
 		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next().isSatisfySearchCondition(text) == false) {
@@ -84,6 +85,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public String toString() {
+		// @@@@@
 		StringBuilder sb = new StringBuilder()
 				.append(AbstractWebSiteSearchContext.class.getSimpleName())
 				.append("{")
