@@ -53,7 +53,7 @@
 				-->
 				<search-keyword>
 					<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-					<item>캡틴+아메리카</item>
+					<item></item>
 				</search-keyword>
 			</search-keywords>
 			

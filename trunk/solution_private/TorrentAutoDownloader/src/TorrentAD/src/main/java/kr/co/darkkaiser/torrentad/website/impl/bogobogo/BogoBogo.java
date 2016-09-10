@@ -290,7 +290,6 @@ public class BogoBogo extends AbstractWebSite {
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
-			// @@@@@ 테스트
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
 			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
