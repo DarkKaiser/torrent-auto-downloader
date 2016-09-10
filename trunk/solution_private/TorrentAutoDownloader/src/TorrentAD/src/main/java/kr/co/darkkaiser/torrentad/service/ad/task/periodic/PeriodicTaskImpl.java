@@ -29,27 +29,30 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 		validate();
 
-		// @@@@@
-		////////////////////////////////////////////////////////////////////////////////////
 		TaskResult result = TaskResult.OK;
+		
 		try {
 			Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
 			while (iterator.hasNext()) {
 				WebSiteBoardItem boardItem = iterator.next();
 				assert boardItem != null;
-				
+
 				if (handler.download(this.searchContext, boardItem) == true) {
 					// @@@@@
 					// 정보 저장
-					// 검색할때도 키 이후의 정보만 검색되어야 함
 				} else {
 					// @@@@@
 				}
 			}
 		} catch (FailedLoadBoardItemsException e) {
+			// @@@@@
 			logger.error(null, e);
+			result = TaskResult.BOARD_ITEMS_LOAD_FAILED;
+		} catch (Exception e) {
+			// @@@@@
+			logger.error("예외가 발생하였습니다.", e);
+			result = TaskResult.UNEXPECTED_EXCEPTION;
 		}
-		////////////////////////////////////////////////////////////////////////////////////
 
 		return result;
 	}

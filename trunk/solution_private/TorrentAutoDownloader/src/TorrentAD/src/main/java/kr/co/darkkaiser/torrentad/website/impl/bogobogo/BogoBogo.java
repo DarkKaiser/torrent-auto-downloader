@@ -265,11 +265,31 @@ public class BogoBogo extends AbstractWebSite {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 		}
 
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		// @@@@@
+		// 이전에 다운로드 링크 로드가 실패한 경우 다시 로드한다. 
+		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
+				// @@@@@
+				
+				return false;
+			}
+		}
 
-		return false;
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+//		iterator = siteBoardItem.downloadLinkIterator();
+//		while (iterator.hasNext() == true) {
+//			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+//			// @@@@@ 다운로드 대상여부 체크
+//		}
+		
+		// @@@@@
+//		int count = downloadBoardItemDownloadLink(siteBoardItem);
+
+		return true;
 	}
 
 	private boolean loadBoardItems(BogoBogoBoard board) {
@@ -421,12 +441,14 @@ public class BogoBogo extends AbstractWebSite {
 				}
 			}
 		} catch (NoSuchElementException e) {
-			// 아무 처리도 하지 않는다.
+			boardItem.clearDownloadLink();
 			return false;
 		} catch (ParseException e) {
+			boardItem.clearDownloadLink();
 			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
 		} catch (Exception e) {
+			boardItem.clearDownloadLink();
 			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
 		}
