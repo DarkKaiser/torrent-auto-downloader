@@ -33,7 +33,7 @@ public class App {
 		
 		try {
 			AES256Util aes256 = new AES256Util();
-			this.torrentObservationService = new TorrentObservationService();
+			this.torrentObservationService = new TorrentObservationService(aes256, configurationManager);
 			this.torrentAdService = new TorrentAdService(aes256, configurationManager);
 			return this.torrentObservationService.start() && this.torrentAdService.start();
 		} catch (Exception e) {
