@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
-import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
@@ -37,6 +36,7 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemAscCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
@@ -235,13 +235,13 @@ public class BogoBogo extends AbstractWebSite {
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 		List<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
 
-		long latestDownloadIdentifier = siteSearchContext.getLatestDownloadIdentifier();
+		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
 		
 		for (BogoBogoBoardItem boardItem : boardItems) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
-			if (latestDownloadIdentifier != Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE && latestDownloadIdentifier >= boardItem.getIdentifier()) {
+			if (latestDownloadBoardItemIdentifier != WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE && latestDownloadBoardItemIdentifier >= boardItem.getIdentifier()) {
 				continue;
 			}
 
@@ -254,7 +254,7 @@ public class BogoBogo extends AbstractWebSite {
 				logger.debug("검색된게시물:" + boardItem);
 			}
 		}
-		
+
 		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
 		
 		return resultList.iterator();

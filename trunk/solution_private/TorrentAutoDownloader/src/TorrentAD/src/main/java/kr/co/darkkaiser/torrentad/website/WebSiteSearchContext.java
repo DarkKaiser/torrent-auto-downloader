@@ -6,9 +6,9 @@ public interface WebSiteSearchContext {
 
 	void setBoardName(String name) throws Exception;
 
-	long getLatestDownloadIdentifier();
+	long getLatestDownloadBoardItemIdentifier();
 
-	void setLatestDownloadIdentifier(long identifier) throws Exception;
+	void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception;
 
 	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 

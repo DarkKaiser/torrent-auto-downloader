@@ -1,14 +1,14 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
-import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 
 public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 
 	private BogoBogoBoard board;
 
-	private long latestDownloadIdentifier = Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE;
+	private long latestDownloadBoardItemIdentifier = WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE;
 
 	public BogoBogoSearchContext() {
 		super(WebSite.BOGOBOGO);
@@ -28,13 +28,13 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	}
 
 	@Override
-	public long getLatestDownloadIdentifier() {
-		return this.latestDownloadIdentifier;
+	public long getLatestDownloadBoardItemIdentifier() {
+		return this.latestDownloadBoardItemIdentifier;
 	}
 	
 	@Override
-	public void setLatestDownloadIdentifier(long identifier) throws Exception {
-		this.latestDownloadIdentifier = identifier;
+	public void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception {
+		this.latestDownloadBoardItemIdentifier = identifier;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 				.append(BogoBogoSearchContext.class.getSimpleName())
 				.append("{")
 				.append("board:").append(this.board)
-				.append(", latestDownloadIdentifier:").append(this.latestDownloadIdentifier)
+				.append(", latestDownloadBoardItemIdentifier:").append(this.latestDownloadBoardItemIdentifier)
 				.append("}, ")
 				.append(super.toString())
 				.toString();

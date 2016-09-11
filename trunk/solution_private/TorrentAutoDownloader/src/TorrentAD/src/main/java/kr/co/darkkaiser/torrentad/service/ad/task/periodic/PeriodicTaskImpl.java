@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
@@ -13,6 +12,7 @@ import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
@@ -46,12 +46,12 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 					// 환경설정파일에 게시물 식별자를 저장한다.
 					long identifier = boardItem.getIdentifier();
-					long latestDownloadIdentifier = this.searchContext.getLatestDownloadIdentifier();
+					long latestDownloadBoardItemIdentifier = this.searchContext.getLatestDownloadBoardItemIdentifier();
 					
-					assert identifier != Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE;
+					assert identifier != WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE;
 
-					if (latestDownloadIdentifier == Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE || latestDownloadIdentifier < identifier) {
-						this.searchContext.setLatestDownloadIdentifier(identifier);
+					if (latestDownloadBoardItemIdentifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE || latestDownloadBoardItemIdentifier < identifier) {
+						this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 
 						// @@@@@
 						// 정보 저장

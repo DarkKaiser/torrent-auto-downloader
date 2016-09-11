@@ -50,8 +50,8 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public void setLatestDownloadIdentifier(long identifier) throws Exception {
-		this.searchContext.setLatestDownloadIdentifier(identifier);
+	public void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception {
+		this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 	}
 
 	@Override

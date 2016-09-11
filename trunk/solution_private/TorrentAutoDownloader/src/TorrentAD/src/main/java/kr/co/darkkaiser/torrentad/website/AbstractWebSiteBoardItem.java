@@ -25,6 +25,9 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		if (board == null) {
 			throw new NullPointerException("board");
 		}
+		if (identifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE) {
+			throw new InvalidBoardItemIdentifierValueException();
+		}
 		if (StringUtil.isBlank(title) == true) {
 			throw new IllegalArgumentException("title은 빈 문자열을 허용하지 않습니다.");
 		}

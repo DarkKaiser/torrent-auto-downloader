@@ -62,7 +62,7 @@
 			  게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.
 			  게시물 식별자가 비어있는 경우는 읽어들인 게시물의 모든 항목을 검색 대상으로 한다.
 			-->
-			<latest-download-identifier>99999</latest-download-identifier>
+			<latest-download-board-item-identifier>99999</latest-download-board-item-identifier>
 		</torrentad-periodic-task>
 	</torrentad-periodic-tasks>
 

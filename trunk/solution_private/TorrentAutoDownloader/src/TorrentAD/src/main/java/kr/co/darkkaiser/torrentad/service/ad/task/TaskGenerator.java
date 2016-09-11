@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
 import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
@@ -65,12 +66,12 @@ public final class TaskGenerator {
 
 							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
 								task.setBoardName(cvChildNode.getTextContent().trim());
-							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_IDENTIFIER) == true) {
+							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER) == true) {
 								String identifier = cvChildNode.getTextContent().trim();
 								if (StringUtil.isBlank(identifier) == true) {
-									task.setLatestDownloadIdentifier(Constants.INVALID_DOWNLOAD_IDENTIFIER_VALUE);
+									task.setLatestDownloadBoardItemIdentifier(WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE);
 								} else {
-									task.setLatestDownloadIdentifier(Long.parseLong(identifier));
+									task.setLatestDownloadBoardItemIdentifier(Long.parseLong(identifier));
 								}
 							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
 								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_ATTR_TYPE).getNodeValue();
