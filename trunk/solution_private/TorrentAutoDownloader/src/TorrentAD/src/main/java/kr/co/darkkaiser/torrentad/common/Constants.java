@@ -4,8 +4,8 @@ public final class Constants {
 
 	public static final String APP_NAME = "TorrentAD";
 	public static final String APP_VERSION = "0.0.1";
-	public static final String APP_CONFIG_XML_FILE_NAME = "torrentad.xml";
-	public static final String APP_CONFIG_PROPERTIES_FILE_NAME = "torrentad.properties";
+	public static final String APP_CONFIG_XML_FILE_NAME = "torrentad.xml";//@@@@@
+	public static final String APP_CONFIG_PROPERTIES_FILE_NAME = "torrentad.properties";//@@@@@
 
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK = "torrentad-periodic-task";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_ATTR_ID = "id";
