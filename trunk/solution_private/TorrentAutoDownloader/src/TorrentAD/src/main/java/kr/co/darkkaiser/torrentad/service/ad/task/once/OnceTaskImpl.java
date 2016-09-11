@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.ad.task.once;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -8,8 +9,8 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class OnceTaskImpl extends AbstractTask implements OnceTask {
 
-	public OnceTaskImpl(String taskId, WebSite site) {
-		super(TaskType.ONCE, taskId, site);
+	public OnceTaskImpl(String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+		super(TaskType.ONCE, taskId, taskMetadataRegistry, site);
 	}
 
 	@Override

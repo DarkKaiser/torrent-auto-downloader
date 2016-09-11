@@ -14,6 +14,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
+
 public final class DefaultConfiguration implements Configuration {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultConfiguration.class);
@@ -22,8 +24,8 @@ public final class DefaultConfiguration implements Configuration {
 	
 	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
 	
-	public DefaultConfiguration(String filePath) throws Exception {
-		load(filePath);
+	public DefaultConfiguration() throws Exception {
+		load(Constants.APP_CONFIG_FILE_NAME);
 	}
 
 	private void load(String filePath) throws Exception {

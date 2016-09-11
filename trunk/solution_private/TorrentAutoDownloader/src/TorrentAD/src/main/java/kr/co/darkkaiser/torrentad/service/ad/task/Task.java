@@ -9,10 +9,12 @@ public interface Task {
 	TaskType getTaskType();
 	
 	String getTaskId();
+	
+	TaskMetadataRegistry getTaskMetadataRegistry();
 
 	void setBoardName(String name) throws Exception;
 
-	void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception;
+	void setLatestDownloadBoardItemIdentifier(long identifier);
 
 	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 

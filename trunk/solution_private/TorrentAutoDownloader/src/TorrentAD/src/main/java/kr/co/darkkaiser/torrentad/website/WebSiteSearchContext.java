@@ -8,7 +8,7 @@ public interface WebSiteSearchContext {
 
 	long getLatestDownloadBoardItemIdentifier();
 
-	void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception;
+	void setLatestDownloadBoardItemIdentifier(long identifier);
 
 	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 

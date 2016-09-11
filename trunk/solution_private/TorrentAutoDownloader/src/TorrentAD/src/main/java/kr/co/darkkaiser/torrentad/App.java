@@ -20,11 +20,11 @@ public class App {
 
 	private Configuration configuration;
 
-	private boolean start(String configFileName) {
+	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
 		Configuration configuration = null;
 		try {
-			configuration = new DefaultConfiguration(configFileName);
+			configuration = new DefaultConfiguration();
 		} catch (Exception e) {
 			return false;
 		}
@@ -85,7 +85,7 @@ public class App {
 				  .append("########################################################\n");
 				logger.info(sb.toString());
 
-				if (app.start(Constants.APP_CONFIG_XML_FILE_NAME) == true) {
+				if (app.start() == true) {
 					logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
 
 		            // add shutdown hook if possible

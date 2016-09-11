@@ -25,6 +25,8 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	private final List<Task> tasks;
 
 	private final Configuration configuration;
+	
+	private final TaskMetadataRegistry taskMetadataRegistry;
 
 	private final AES256Util aes256;
 
@@ -38,6 +40,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 
 		this.aes256 = aes256;
 		this.configuration = configuration;
+		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.APP_AD_SERVICE_TASK_METADATA_FILE_NAME);
 
 		try {
 			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
@@ -57,7 +60,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 		}
 
 		// Task 목록을 생성한다.
-		this.tasks = TaskGenerator.generate(this.configuration, this.site);
+		this.tasks = TaskGenerator.generate(this.configuration, this.taskMetadataRegistry, this.site);
 	}
 
 	@Override

@@ -2,7 +2,9 @@ package kr.co.darkkaiser.torrentad.service.ad.task;
 
 import org.jsoup.helper.StringUtil;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
@@ -12,17 +14,22 @@ public abstract class AbstractTask implements Task {
 	protected final TaskType taskType;
 	
 	protected final String taskId;
+	
+	protected final TaskMetadataRegistry taskMetadataRegistry;
 
 	protected final WebSite site;
 
 	protected final WebSiteSearchContext searchContext;
 
-	protected AbstractTask(TaskType taskType, String taskId, WebSite site) {
+	protected AbstractTask(TaskType taskType, String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
 		if (taskType == null) {
 			throw new NullPointerException("taskType");
 		}
 		if (StringUtil.isBlank(taskId) == true) {
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
+		}
+		if (taskMetadataRegistry == null) {
+			throw new NullPointerException("taskMetadataRegistry");
 		}
 		if (site == null) {
 			throw new NullPointerException("site");
@@ -31,7 +38,12 @@ public abstract class AbstractTask implements Task {
 		this.site = site;
 		this.taskId = taskId;
 		this.taskType = taskType;
+		this.taskMetadataRegistry = taskMetadataRegistry;
 		this.searchContext = this.site.createSearchContext();
+
+		// 최근에 다운로드 받은 게시불 식별자를 구한다.
+		String key = String.format("%s.%s", this.taskId, Constants.APP_AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+		setLatestDownloadBoardItemIdentifier(taskMetadataRegistry.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
 	}
 
 	@Override
@@ -43,6 +55,11 @@ public abstract class AbstractTask implements Task {
 	public String getTaskId() {
 		return this.taskId;
 	}
+	
+	@Override
+	public TaskMetadataRegistry getTaskMetadataRegistry() {
+		return this.taskMetadataRegistry;
+	}
 
 	@Override
 	public void setBoardName(String name) throws Exception {
@@ -50,7 +67,7 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception {
+	public void setLatestDownloadBoardItemIdentifier(long identifier) {
 		this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 	}
 
@@ -63,6 +80,12 @@ public abstract class AbstractTask implements Task {
 	public void validate() {
 		if (this.taskType == null) {
 			throw new NullPointerException("taskType");
+		}
+		if (StringUtil.isBlank(this.taskId) == true) {
+			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
+		}
+		if (this.taskMetadataRegistry == null) {
+			throw new NullPointerException("taskMetadataRegistry");
 		}
 		if (this.site == null) {
 			throw new NullPointerException("site");

@@ -33,7 +33,7 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	}
 	
 	@Override
-	public void setLatestDownloadBoardItemIdentifier(long identifier) throws Exception {
+	public void setLatestDownloadBoardItemIdentifier(long identifier) {
 		this.latestDownloadBoardItemIdentifier = identifier;
 	}
 

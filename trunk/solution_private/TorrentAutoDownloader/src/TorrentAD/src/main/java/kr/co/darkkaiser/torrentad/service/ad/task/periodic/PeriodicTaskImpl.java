@@ -5,7 +5,9 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.util.Tuple;
@@ -19,8 +21,8 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
 
-	public PeriodicTaskImpl(String taskId, WebSite site) {
-		super(TaskType.PERIODIC, taskId, site);
+	public PeriodicTaskImpl(String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+		super(TaskType.PERIODIC, taskId, taskMetadataRegistry, site);
 	}
 
 	@Override
@@ -53,8 +55,10 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 					if (latestDownloadBoardItemIdentifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE || latestDownloadBoardItemIdentifier < identifier) {
 						this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 
-						// @@@@@
-						// 정보 저장
+						// @@@@@ 테스트
+						// 다운로드 받은 게시물 식별자를 저장한다.
+						String key = String.format("%s.%s", getTaskId(), Constants.APP_AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+						getTaskMetadataRegistry().setLong(key, identifier);
 					}
 				}
 			}
