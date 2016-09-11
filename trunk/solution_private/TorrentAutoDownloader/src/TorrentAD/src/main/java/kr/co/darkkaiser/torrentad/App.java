@@ -85,7 +85,7 @@ public class App {
 				  .append("########################################################\n");
 				logger.info(sb.toString());
 
-				if (app.start(Constants.APP_CONFIG_FILE_NAME) == true) {
+				if (app.start(Constants.APP_CONFIG_XML_FILE_NAME) == true) {
 					logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
 
 		            // add shutdown hook if possible

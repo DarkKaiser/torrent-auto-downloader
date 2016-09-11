@@ -67,6 +67,7 @@ public final class TaskGenerator {
 							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
 								task.setBoardName(cvChildNode.getTextContent().trim());
 							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER) == true) {
+								// @@@@@ 프로퍼티 파일로 변경
 								String identifier = cvChildNode.getTextContent().trim();
 								if (StringUtil.isBlank(identifier) == true) {
 									task.setLatestDownloadBoardItemIdentifier(WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE);

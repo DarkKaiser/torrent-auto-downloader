@@ -4,7 +4,8 @@ public final class Constants {
 
 	public static final String APP_NAME = "TorrentAD";
 	public static final String APP_VERSION = "0.0.1";
-	public static final String APP_CONFIG_FILE_NAME = "torrentad.xml";
+	public static final String APP_CONFIG_XML_FILE_NAME = "torrentad.xml";
+	public static final String APP_CONFIG_PROPERTIES_FILE_NAME = "torrentad.properties";
 
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK = "torrentad-periodic-task";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_ATTR_ID = "id";
@@ -14,7 +15,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD = "search-keyword";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE = "mode";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM = "item";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
+	public static final String APP_CONFIG_TAG_PERIODIC_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";// @@@@@ 프로퍼티 파일로 변경
 
 	public static final String APP_CONFIG_TAG_WEBSITE_NAME = "website-name";
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID = "website-account-id";
