@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
-import kr.co.darkkaiser.torrentad.config.DefaultConfigurationManager;
+import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
 import kr.co.darkkaiser.torrentad.service.observation.TorrentObservationService;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
@@ -18,23 +18,23 @@ public class App {
 
 	private TorrentObservationService torrentObservationService;
 
-	private ConfigurationManager configurationManager;
+	private Configuration configuration;
 
 	private boolean start(String configFileName) {
 		// 기본 환경설정 정보를 읽어들인다.
-		ConfigurationManager configurationManager = null;
+		Configuration configuration = null;
 		try {
-			configurationManager = new DefaultConfigurationManager(configFileName);
+			configuration = new DefaultConfiguration(configFileName);
 		} catch (Exception e) {
 			return false;
 		}
 
-		this.configurationManager = configurationManager;
+		this.configuration = configuration;
 		
 		try {
 			AES256Util aes256 = new AES256Util();
-			this.torrentObservationService = new TorrentObservationService(aes256, configurationManager);
-			this.torrentAdService = new TorrentAdService(aes256, configurationManager);
+			this.torrentObservationService = new TorrentObservationService(aes256, configuration);
+			this.torrentAdService = new TorrentAdService(aes256, configuration);
 			return this.torrentObservationService.start() && this.torrentAdService.start();
 		} catch (Exception e) {
 			logger.error(null, e);
@@ -49,12 +49,12 @@ public class App {
 		if (this.torrentAdService != null) {
 			this.torrentAdService.stop();
 		}
-		if (this.configurationManager != null) {
-			this.configurationManager.dispose();
+		if (this.configuration != null) {
+			this.configuration.dispose();
 		}
 		
 		this.torrentAdService = null;
-		this.configurationManager = null;
+		this.configuration = null;
 	}
 
     private void addShutdownHook(final App app) {

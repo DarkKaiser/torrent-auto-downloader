@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
@@ -12,20 +12,20 @@ public class TorrentObservationService implements Service {
 
 	private ExecutorService tasksExecutorService;
 	
-	private final ConfigurationManager configurationManager;
+	private final Configuration configuration;
 
 	private final AES256Util aes256;
 
-	public TorrentObservationService(AES256Util aes256, ConfigurationManager configurationManager) throws UnsupportedEncodingException {
+	public TorrentObservationService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
-		if (configurationManager == null) {
-			throw new NullPointerException("configurationManager");
+		if (configuration == null) {
+			throw new NullPointerException("configuration");
 		}
 
 		this.aes256 = aes256;
-		this.configurationManager = configurationManager;
+		this.configuration = configuration;
 	}
 	
 	@Override
@@ -33,8 +33,8 @@ public class TorrentObservationService implements Service {
 		if (this.tasksExecutorService != null) {
 			throw new IllegalStateException("tasksExecutorService 객체는 이미 초기화되었습니다");
 		}
-		if (this.configurationManager == null) {
-			throw new NullPointerException("configurationManager");
+		if (this.configuration == null) {
+			throw new NullPointerException("configuration");
 		}
 		
 		this.tasksExecutorService = Executors.newFixedThreadPool(1);

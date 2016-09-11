@@ -14,15 +14,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public final class DefaultConfigurationManager implements ConfigurationManager {
+public final class DefaultConfiguration implements Configuration {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultConfigurationManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultConfiguration.class);
 
 	private String filePath;
 	
 	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
 	
-	public DefaultConfigurationManager(String filePath) throws Exception {
+	public DefaultConfiguration(String filePath) throws Exception {
 		load(filePath);
 	}
 

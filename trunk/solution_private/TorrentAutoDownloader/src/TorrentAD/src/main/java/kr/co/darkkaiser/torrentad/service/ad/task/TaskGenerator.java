@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
@@ -31,9 +31,9 @@ public final class TaskGenerator {
 	private TaskGenerator() {
 	}
 
-	public static List<Task> generate(ConfigurationManager configurationManager, WebSite site) throws Exception {
-		if (configurationManager == null) {
-			throw new NullPointerException("configurationManager");
+	public static List<Task> generate(Configuration configuration, WebSite site) throws Exception {
+		if (configuration == null) {
+			throw new NullPointerException("configuration");
 		}
 		if (site == null) {
 			throw new NullPointerException("site");
@@ -45,7 +45,7 @@ public final class TaskGenerator {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			Document doc = docBuilder.parse(new File(configurationManager.getFilePath()));
+			Document doc = docBuilder.parse(new File(configuration.getFilePath()));
 			doc.getDocumentElement().normalize();
 
 			String nodeName = null;
@@ -124,7 +124,7 @@ public final class TaskGenerator {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configurationManager.getFilePath());
+			logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configuration.getFilePath());
 			throw e;
 		} catch (Exception e) {
 			logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");

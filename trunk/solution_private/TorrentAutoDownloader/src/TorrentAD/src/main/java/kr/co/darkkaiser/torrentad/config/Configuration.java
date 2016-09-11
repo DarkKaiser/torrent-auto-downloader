@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.config;
 
 import kr.co.darkkaiser.torrentad.util.Disposable;
 
-public interface ConfigurationManager extends Disposable {
+public interface Configuration extends Disposable {
 
 	String getFilePath();
 

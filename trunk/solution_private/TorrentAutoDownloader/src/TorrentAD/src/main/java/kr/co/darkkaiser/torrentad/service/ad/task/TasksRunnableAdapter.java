@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.config.ConfigurationManager;
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
@@ -24,30 +24,30 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 
 	private final List<Task> tasks;
 
-	private final ConfigurationManager configurationManager;
+	private final Configuration configuration;
 
 	private final AES256Util aes256;
 
-	public TasksRunnableAdapter(AES256Util aes256, ConfigurationManager configurationManager) throws Exception {
+	public TasksRunnableAdapter(AES256Util aes256, Configuration configuration) throws Exception {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
-		if (configurationManager == null) {
-			throw new NullPointerException("configurationManager");
+		if (configuration == null) {
+			throw new NullPointerException("configuration");
 		}
 
 		this.aes256 = aes256;
-		this.configurationManager = configurationManager;
+		this.configuration = configuration;
 
 		try {
-			this.site = WebSite.fromString(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
+			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
 		} catch (Exception e) {
 			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_TAG_WEBSITE_NAME);
 			throw e;
 		}
 
-		this.accountId = this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
-		String encryptionPassword = this.configurationManager.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
+		this.accountId = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
+		String encryptionPassword = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
 		
 		try {
 			this.accountPassword = this.aes256.decode(encryptionPassword);
@@ -57,7 +57,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 		}
 
 		// Task 목록을 생성한다.
-		this.tasks = TaskGenerator.generate(this.configurationManager, this.site);
+		this.tasks = TaskGenerator.generate(this.configuration, this.site);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
 		}
 
-		WebSiteHandler handler = this.site.createHandler(this.configurationManager.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+		WebSiteHandler handler = this.site.createHandler(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 		try {
 			handler.login(account);
 		} catch (Exception e) {
