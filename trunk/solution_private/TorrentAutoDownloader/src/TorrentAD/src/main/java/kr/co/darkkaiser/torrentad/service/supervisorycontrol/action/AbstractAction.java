@@ -1,7 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
-// @@@@@
-public abstract class AbstractAction implements Action {
+import java.util.concurrent.Callable;
+
+public abstract class AbstractAction implements Action, Callable<Integer> {
 
 	protected final ActionType actionType;
 	
@@ -16,6 +17,12 @@ public abstract class AbstractAction implements Action {
 	@Override
 	public ActionType getActionType() {
 		return this.actionType;
+	}
+
+	@Override
+	public Integer call() throws Exception {
+		// @@@@@
+		return null;
 	}
 
 	@Override

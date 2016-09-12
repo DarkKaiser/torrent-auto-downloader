@@ -1,20 +1,24 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 // @@@@@
 public abstract class FileUploadAction extends AbstractAction {
 
-	protected List<File> files = new ArrayList<>();
+	protected Map<File, Boolean/* 액션 실행결과 */> files = new HashMap<>();
 
 	protected FileUploadAction(ActionType actionType) {
 		super(actionType);
 	}
 	
-	public void addFile(File file) {
-		// @@@@@
+	public boolean addFile(File file) {
+		if (file == null) {
+			throw new NullPointerException("file");
+		}
+
+		return this.files.put(file, false);
 	}
 
 	@Override
