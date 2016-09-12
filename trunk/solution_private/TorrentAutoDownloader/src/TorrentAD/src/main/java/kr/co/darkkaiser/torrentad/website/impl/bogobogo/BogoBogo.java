@@ -581,7 +581,7 @@ public class BogoBogo extends AbstractWebSite {
 				/**
 				 * 첨부파일 저장
 				 */
-				// @@@@@ 파일 저장시 확장자를 바꿔서 저장했다가 이름을 바꾸는 식으로 해야하나???
+				// @@@@@ 파일 저장시 확장자를 바꿔서 저장했다가 이름을 바꾸는 식으로 변경, .netyet
 				FileOutputStream fos = new FileOutputStream(file);
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();

@@ -30,6 +30,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_ID = "torrent-account-id";
 	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_PASSWORD = "torrent-account-password";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";
+	public static final String APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND = "torrent-supervisory-control-interval-time-second";
 
 	// AD Service Task
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";

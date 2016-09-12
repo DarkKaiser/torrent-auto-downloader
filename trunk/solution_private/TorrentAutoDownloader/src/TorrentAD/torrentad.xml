@@ -82,6 +82,9 @@
 			<!-- 토렌트 서버 로그인 정보 -->
 			<torrent-account-id>darkkaiser</torrent-account-id>
 			<torrent-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-account-password>
+
+			<!-- 토렌트의 상태를 감시 및 제어하기 위한 간격(단위:초) -->
+			<torrent-supervisory-control-interval-time-second>10</torrent-supervisory-control-interval-time-second>
 		</torrentad-service-config-values>
 	</torrentad-supervisory-conttrol-service>
 	
