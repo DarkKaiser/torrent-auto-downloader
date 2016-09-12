@@ -40,7 +40,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 
 		this.aes256 = aes256;
 		this.configuration = configuration;
-		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.APP_AD_SERVICE_TASK_METADATA_FILE_NAME);
+		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 
 		try {
 			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
