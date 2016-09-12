@@ -1,36 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <torrentad>
 
-	<!-- 프로그램 설정 정보 -->
-	<torrentad-config-values>
-		<!-- 사이트 이름 -->
-		<website-name>보고보고</website-name>
-
-		<!-- 사이트 로그인 정보 -->
-		<website-account-id>darkkaiser</website-account-id>
-		<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
-
-		<!-- 다운로드 받은 파일이 저장되는 위치 -->
-		<download-file-write-location>d:\temp</download-file-write-location>
-
-		<!-- Task 실행 간격(단위:초) -->
-		<task-execute-interval-time-second>60</task-execute-interval-time-second>
-		
-		<!-- @@@@@ 프로그램 설정정보를 ad-service 안에 두는건? 각 서비스안에 설정정보를 둔다??? 테스트 해보기 -->
-		<!-- FTP 서버 로그인 정보 -->
-		<ftp-account-id>darkkaiser</ftp-account-id>
-		<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>
-
-		<!-- 토렌트 서버 로그인 정보 -->
-		<torrent-account-id>darkkaiser</torrent-account-id>
-		<torrent-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-account-password>
-
-		<!-- 토렌트 서버로 올릴 파일들이 생성되는 경로, 해당 폴더에 생성되는 파일들은 모두 토렌트 서버로 업로드된다. -->
-		<torrent-watch-path>d:\temp</torrent-watch-path>
-	</torrentad-config-values>
-
 	<torrentad-ad-service>
-	
+		<torrentad-service-config-values>
+			<!-- 사이트 이름 -->
+			<website-name>보고보고</website-name>
+
+			<!-- 사이트 로그인 정보 -->
+			<website-account-id>darkkaiser</website-account-id>
+			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
+
+			<!-- 다운로드 받은 파일이 저장되는 위치 -->
+			<download-file-write-location>d:\temp</download-file-write-location>
+
+			<!-- Task 실행 간격(단위:초) -->
+			<task-execute-interval-time-second>60</task-execute-interval-time-second>
+		</torrentad-service-config-values>
+
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 		<torrentad-periodic-tasks>
 			<torrentad-periodic-task id="abc123">
@@ -79,7 +65,19 @@
 		<torrentad-once-tasks>
 			<torrentad-once-task/>
 		</torrentad-once-tasks>
-		
 	</torrentad-ad-service>
 
+	<torrentad-supervisory-conttrol-service>
+		<torrentad-service-config-values>
+			<!-- @@@@@ -->
+			<!-- FTP 서버 로그인 정보 -->
+			<ftp-account-id>darkkaiser</ftp-account-id>
+			<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>
+
+			<!-- 토렌트 서버 로그인 정보 -->
+			<torrent-account-id>darkkaiser</torrent-account-id>
+			<torrent-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-account-password>
+		</torrentad-service-config-values>
+	</torrentad-supervisory-conttrol-service>
+	
 </torrentad>

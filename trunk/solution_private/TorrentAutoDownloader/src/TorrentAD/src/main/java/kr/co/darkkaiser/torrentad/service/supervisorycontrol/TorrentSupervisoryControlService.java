@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
@@ -69,7 +70,7 @@ public class TorrentSupervisoryControlService implements Service {
 
 		// 파일에 대한 변경을 감시 할 경로를 등록한다.
 		try {
-			Path watchPath = Paths.get(this.configuration.getValue("watch-path"));
+			Path watchPath = Paths.get(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 			watchPath.register(this.watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);//@@@@@ 파일 확장자를 어떻게 하냐에 따라(partfiles) 옵션값 수정
 		} catch (NoSuchFileException e) {
 			logger.error("파일에 대한 변경을 감시 할 경로를 등록하는 도중에 예외가 발생하였습니다.", e);

@@ -47,7 +47,7 @@ public final class DefaultConfiguration implements Configuration {
 				Document doc = docBuilder.parse(new File(filePath));
 				doc.getDocumentElement().normalize();
 
-				NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_CONFIG_VALUES);
+				NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_SERVICE_CONFIG_VALUES);
 				for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
 					Node cvNode = cvNodeList.item(cvNodeListIndex);
 
