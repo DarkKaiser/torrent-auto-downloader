@@ -55,7 +55,6 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 					if (latestDownloadBoardItemIdentifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE || latestDownloadBoardItemIdentifier < identifier) {
 						this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 
-						// @@@@@ 테스트
 						// 다운로드 받은 게시물 식별자를 저장한다.
 						String key = String.format("%s.%s", getTaskId(), Constants.APP_AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
 						getTaskMetadataRegistry().setLong(key, identifier);

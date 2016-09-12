@@ -51,10 +51,12 @@
 				  검색키워드는 AND 연산으로 처리되며, 등록된 모든 검색키워드가 포함되어 있는 게시물만이 검색된다.
 				  검색키워드 자식 태그의 항목이 다수일 경우에는, 다수의 항목 중 하나의 항목만 포함되어 있어도 게시물이 검색된다.
 				-->
+				<!--
 				<search-keyword>
-					<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-					<item>test</item>
+					<!- - 항목의 '+' 문자는 AND 연산으로 처리된다. - - >
+					<item></item>
 				</search-keyword>
+				-->
 			</search-keywords>
 		</torrentad-periodic-task>
 	</torrentad-periodic-tasks>

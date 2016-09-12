@@ -175,13 +175,4 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 		store();
 	}
 
-	public boolean exists() {
-		try {
-			return new File(this.filePath).exists();
-		} catch (Exception e) {
-		}
-
-		return false;
-	}
-
 }
