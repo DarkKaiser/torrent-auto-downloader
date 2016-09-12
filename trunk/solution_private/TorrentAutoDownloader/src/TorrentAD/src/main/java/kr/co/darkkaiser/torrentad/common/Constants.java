@@ -20,8 +20,12 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD = "website-account-password";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION = "download-file-write-location";
 	public static final String APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND = "task-execute-interval-time-second";
-	
+
 	// SupervisoryControl Service 설정값 항목
+	public static final String APP_CONFIG_TAG_FTP_ACCOUNT_ID = "ftp-account-id";
+	public static final String APP_CONFIG_TAG_FTP_ACCOUNT_PASSWORD = "ftp-account-password";
+	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_ID = "torrent-account-id";
+	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_PASSWORD = "torrent-account-password";
 
 	// AD Service Task
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";

@@ -69,10 +69,12 @@
 
 	<torrentad-supervisory-conttrol-service>
 		<torrentad-service-config-values>
-			<!-- @@@@@ -->
 			<!-- FTP 서버 로그인 정보 -->
 			<ftp-account-id>darkkaiser</ftp-account-id>
 			<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>
+
+			<!-- FTP 서버 업로드 위치 @@@@@ -->
+			<ftp-upload-location>/Public/Torrent/</ftp-upload-location>
 
 			<!-- 토렌트 서버 로그인 정보 -->
 			<torrent-account-id>darkkaiser</torrent-account-id>
