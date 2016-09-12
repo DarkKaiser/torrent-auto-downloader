@@ -16,6 +16,7 @@
 		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>60</task-execute-interval-time-second>
 		
+		<!-- @@@@@ 프로그램 설정정보를 ad-service 안에 두는건? 각 서비스안에 설정정보를 둔다??? 테스트 해보기 -->
 		<!-- FTP 서버 로그인 정보 -->
 		<ftp-account-id>darkkaiser</ftp-account-id>
 		<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>
