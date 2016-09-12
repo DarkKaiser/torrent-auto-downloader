@@ -15,6 +15,9 @@
 
 		<!-- Task 실행 간격(단위:초) -->
 		<task-execute-interval-time-second>60</task-execute-interval-time-second>
+		
+		<!-- @@@@@ -->
+		<watch-path>d:\temp</watch-path>
 	</torrentad-config-values>
 
 	<torrentad-ad-service>
@@ -69,12 +72,5 @@
 		</torrentad-once-tasks>
 		
 	</torrentad-ad-service>
-	
-	<torrentad-observation-service>
-			
-		<!-- -->
-		<watch-path></watch-path>
-
-	</torrentad-observation-service>
 
 </torrentad>

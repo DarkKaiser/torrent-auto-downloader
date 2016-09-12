@@ -62,7 +62,7 @@ public final class DefaultConfiguration implements Configuration {
 						}
 					}
 				}
-				
+
 				this.filePath = filePath;
 			} catch (FileNotFoundException e) {
 				logger.error("환경설정정보 파일을 찾을 수 없습니다.(파일경로 :'{}')", filePath, e);

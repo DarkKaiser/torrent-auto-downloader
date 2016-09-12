@@ -70,6 +70,7 @@ public class TorrentObservationService implements Service {
 		// 파일에 대한 변경을 감시 할 경로를 등록한다.
 		try {
 			// @@@@@
+			String value = this.configuration.getValue("watch-path");
 			Path watchPath = Paths.get("test");
 			watchPath.register(this.watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);
 		} catch (NoSuchFileException e) {
