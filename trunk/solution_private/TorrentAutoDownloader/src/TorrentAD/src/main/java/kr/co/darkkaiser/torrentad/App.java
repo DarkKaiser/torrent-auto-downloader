@@ -7,7 +7,7 @@ import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
-import kr.co.darkkaiser.torrentad.service.observation.TorrentObservationService;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.TorrentSupervisoryControlService;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class App {
@@ -16,7 +16,7 @@ public class App {
 	
 	private TorrentAdService torrentAdService;
 
-	private TorrentObservationService torrentObservationService;
+	private TorrentSupervisoryControlService torrentSupervisoryControlService;
 
 	private Configuration configuration;
 
@@ -33,9 +33,9 @@ public class App {
 		
 		try {
 			AES256Util aes256 = new AES256Util();
-			this.torrentObservationService = new TorrentObservationService(aes256, configuration);
+			this.torrentSupervisoryControlService = new TorrentSupervisoryControlService(aes256, configuration);
 			this.torrentAdService = new TorrentAdService(aes256, configuration);
-			return this.torrentObservationService.start() && this.torrentAdService.start();
+			return this.torrentSupervisoryControlService.start() && this.torrentAdService.start();
 		} catch (Exception e) {
 			logger.error(null, e);
 			return false;
@@ -43,8 +43,8 @@ public class App {
 	}
 
 	private void stop() {
-		if (this.torrentObservationService != null) {
-			this.torrentObservationService.stop();
+		if (this.torrentSupervisoryControlService != null) {
+			this.torrentSupervisoryControlService.stop();
 		}
 		if (this.torrentAdService != null) {
 			this.torrentAdService.stop();

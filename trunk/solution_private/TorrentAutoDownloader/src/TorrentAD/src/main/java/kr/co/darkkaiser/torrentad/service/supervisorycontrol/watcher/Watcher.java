@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.observation.watcher;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.watcher;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;

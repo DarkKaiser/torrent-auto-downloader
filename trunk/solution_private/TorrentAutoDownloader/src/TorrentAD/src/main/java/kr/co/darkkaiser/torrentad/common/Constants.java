@@ -6,7 +6,6 @@ public final class Constants {
 	public static final String APP_VERSION = "0.0.1";
 
 	public static final String APP_CONFIG_FILE_NAME = "torrentad.xml";
-	public static final String APP_AD_SERVICE_TASK_METADATA_FILE_NAME = "torrentad.properties";
 
 	public static final String APP_CONFIG_TAG_CONFIG_VALUES = "torrentad-config-values";
 	public static final String APP_CONFIG_TAG_WEBSITE_NAME = "website-name";
@@ -24,6 +23,8 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE = "mode";
 	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM = "item";
 	
+	public static final String APP_AD_SERVICE_TASK_METADATA_FILE_NAME = "torrentad.properties";
+
 	/**
 	 * 최근에 다운로드 받은 게시물 식별자
 	 * 게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.

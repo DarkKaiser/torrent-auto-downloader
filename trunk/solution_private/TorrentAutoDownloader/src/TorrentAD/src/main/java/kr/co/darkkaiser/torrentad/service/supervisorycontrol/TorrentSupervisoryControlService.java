@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.observation;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -18,9 +18,9 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
-public class TorrentObservationService implements Service {
+public class TorrentSupervisoryControlService implements Service {
 
-	private static final Logger logger = LoggerFactory.getLogger(TorrentObservationService.class);
+	private static final Logger logger = LoggerFactory.getLogger(TorrentSupervisoryControlService.class);
 
 	private WatchService watchService;
 
@@ -33,7 +33,7 @@ public class TorrentObservationService implements Service {
 
 	private final AES256Util aes256;
 
-	public TorrentObservationService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
+	public TorrentSupervisoryControlService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
 		if (aes256 == null) {
 			throw new NullPointerException("aes256");
 		}
