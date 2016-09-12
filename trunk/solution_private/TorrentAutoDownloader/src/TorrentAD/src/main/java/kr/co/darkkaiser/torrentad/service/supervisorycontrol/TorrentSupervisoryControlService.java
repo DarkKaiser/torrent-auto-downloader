@@ -1,13 +1,10 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.FileSystems;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchService;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,12 +20,14 @@ public class TorrentSupervisoryControlService implements Service {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentSupervisoryControlService.class);
 
-	private WatchService watchService;
+	private File downloadFileWriteLocation;
+	
+	// @@@@@ fileWatchExecutorTimer
+	private Timer watchExecutorTimer;
+	
+	// @@@@@ 토렌트 watch하는 타이머를 만들어서 actionsExecutorService에 주기적으로 계속 추가
 
-	private ExecutorService watchExecutorService;
-
-	// @@@@@ 변수명(task)
-	private ExecutorService tasksExecutorService;
+	private ExecutorService actionsExecutorService;
 
 	private final Configuration configuration;
 
@@ -48,72 +47,68 @@ public class TorrentSupervisoryControlService implements Service {
 	
 	@Override
 	public boolean start() throws Exception {
-		if (this.watchService != null) {
-			throw new IllegalStateException("watchService 객체는 이미 초기화되었습니다");
+		if (this.watchExecutorTimer != null) {
+			throw new IllegalStateException("tasksExecutorTimer 객체는 이미 초기화되었습니다.");
 		}
-		if (this.watchExecutorService != null) {
-			throw new IllegalStateException("watchExecutorService 객체는 이미 초기화되었습니다");
-		}
-		if (this.tasksExecutorService != null) {
-			throw new IllegalStateException("tasksExecutorService 객체는 이미 초기화되었습니다");
+		if (this.actionsExecutorService != null) {
+			throw new IllegalStateException("actionExecutorService 객체는 이미 초기화되었습니다");
 		}
 		if (this.configuration == null) {
 			throw new NullPointerException("configuration");
 		}
 
-		this.watchService = FileSystems.getDefault().newWatchService();
-		this.watchExecutorService = Executors.newCachedThreadPool();		
-		this.tasksExecutorService = Executors.newFixedThreadPool(1);
+		this.watchExecutorTimer = new Timer();
+		this.actionsExecutorService = Executors.newFixedThreadPool(1);
 
 		// @@@@@
-//		this.tasksExecutorService.submit(JOB);
+//		this.actionsExecutorService.submit(JOB);
 
 		// 파일에 대한 변경을 감시 할 경로를 등록한다.
-		try {
-			Path watchPath = Paths.get(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
-			watchPath.register(this.watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);//@@@@@ 파일 확장자를 어떻게 하냐에 따라(partfiles) 옵션값 수정
-		} catch (NoSuchFileException e) {
-			logger.error("파일에 대한 변경을 감시 할 경로를 등록하는 도중에 예외가 발생하였습니다.", e);
+		this.downloadFileWriteLocation = new File(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 
-			stop();
-
-			return false;
-		}
-
+		// @@@@@ 설정값 변경
 		// 파일에 대한 변경을 감시하는 서비스를 시작한다.
-		this.watchExecutorService.submit(new Runnable() {
+		this.watchExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				// @@@@@
-				System.out.println("################## 1");
+				// 파일 목록 로드
+				String fileList[] = TorrentSupervisoryControlService.this.downloadFileWriteLocation.list(new FilenameFilter() {
+
+				    @Override
+				    public boolean accept(File dir, String name) { 
+				        return true;//name.startsWith("TEMP");        // TEMP로 시작하는 파일들만 return 
+				    }
+				 
+				});
+				// 폴더는 제거해야 됨
+				if(fileList.length > 0){
+				    for(int i=0; i < fileList.length; i++){
+				        System.out.println(fileList[i]);
+				    }
+				}
+
+				// 파일 목록에 따라서 액션익스큐터서비스에 추가
+//				// @@@@@
+//				System.out.println("################## 1");
+//				// @@@@@ 이전에 생성된 파일들은 수동으로 추가해줘야됨, 누락되지않도록 해야됨
+//				// watch 서비스가 아니라 10초에 한번씩 파일목록을 뽑아서 수동으로 추가하는건??? 나쁘지 않을것 같음, 타이머 돌리면 됨
 			}
-		});
-		
-		// @@@@@ 이전에 생성된 파일들은 수동으로 추가해줘야됨, 누락되지않도록 해야됨
-		// watch 서비스가 아니라 10초에 한번씩 파일목록을 뽑아서 수동으로 추가하는건??? 나쁘지 않을것 같음, 타이머 돌리면 됨
+		}, 500, 5 * 1000);// @@@@@
 
 		return true;
 	}
 
 	@Override
 	public void stop() {
-		if (this.watchService != null) {
-			try {
-				this.watchService.close();
-			} catch (IOException e) {
-				logger.error(null, e);
-			}
+		if (this.watchExecutorTimer != null) {
+			this.watchExecutorTimer.cancel();
 		}
-		if (this.watchExecutorService != null) {
-			this.watchExecutorService.shutdownNow();
-		}
-		if (this.tasksExecutorService != null) {
-			this.tasksExecutorService.shutdown();
+		if (this.actionsExecutorService != null) {
+			this.actionsExecutorService.shutdown();
 		}
 
-		this.watchService = null;
-		this.watchExecutorService = null;
-		this.tasksExecutorService = null;
+		this.watchExecutorTimer = null;
+		this.actionsExecutorService = null;
 	}
 
 }
