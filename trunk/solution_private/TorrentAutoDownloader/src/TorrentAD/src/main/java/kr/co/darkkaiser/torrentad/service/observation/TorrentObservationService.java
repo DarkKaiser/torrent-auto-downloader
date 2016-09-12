@@ -10,6 +10,7 @@ import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentObservationService implements Service {
 
+	// @@@@@ 변수명
 	private ExecutorService tasksExecutorService;
 	
 	private final Configuration configuration;
@@ -36,7 +37,7 @@ public class TorrentObservationService implements Service {
 		if (this.configuration == null) {
 			throw new NullPointerException("configuration");
 		}
-		
+
 		this.tasksExecutorService = Executors.newFixedThreadPool(1);
 
 		// @@@@@
