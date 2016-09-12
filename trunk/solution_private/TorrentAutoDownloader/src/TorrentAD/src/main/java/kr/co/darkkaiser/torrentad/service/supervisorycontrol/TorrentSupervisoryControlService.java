@@ -29,7 +29,7 @@ public class TorrentSupervisoryControlService implements Service {
 
 	// @@@@@ 변수명(task)
 	private ExecutorService tasksExecutorService;
-		
+
 	private final Configuration configuration;
 
 	private final AES256Util aes256;
@@ -88,6 +88,9 @@ public class TorrentSupervisoryControlService implements Service {
 				System.out.println("################## 1");
 			}
 		});
+		
+		// @@@@@ 이전에 생성된 파일들은 수동으로 추가해줘야됨, 누락되지않도록 해야됨
+		// watch 서비스가 아니라 10초에 한번씩 파일목록을 뽑아서 수동으로 추가하는건??? 나쁘지 않을것 같음, 타이머 돌리면 됨
 
 		return true;
 	}
