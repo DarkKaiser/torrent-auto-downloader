@@ -1,14 +1,14 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 
-public class TorrentFileTransmitter implements FileTransmitter {
+public class TorrentFileTransmitter extends AbstractFileTransmitter {
 	
-	public TorrentFileTransmitter(Configuration configuration) {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+	public TorrentFileTransmitter(Configuration configuration) throws UnsupportedEncodingException {
+		super(configuration);
 	}
 
 	// @@@@@
@@ -18,18 +18,18 @@ public class TorrentFileTransmitter implements FileTransmitter {
 	//https://sourceforge.net/projects/transmission-rj/
 
 	@Override
-	public void prepare() {
+	public void prepare() throws Exception {
 		// @@@@@
 	}
 
 	@Override
-	public boolean transmit(File file) {
+	public boolean transmit(File file) throws Exception {
 		// @@@@@
 		return true;
 	}
 
 	@Override
-	public boolean transmitFinished() {
+	public boolean transmitFinished() throws Exception {
 		// @@@@@
 		return true;
 	}

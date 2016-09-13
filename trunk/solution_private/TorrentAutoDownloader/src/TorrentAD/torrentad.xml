@@ -73,7 +73,7 @@
 			<download-file-watch-interval-time-second>10</download-file-watch-interval-time-second>
 
 			<!-- FTP 서버 정보 -->
-			<ftp-server-address>darkkaiser.gonetis.com</ftp-server-address>
+			<ftp-server-host>darkkaiser.gonetis.com</ftp-server-host>
 			<ftp-server-port>55521</ftp-server-port>
 
 			<!-- FTP 서버 로그인 정보 -->

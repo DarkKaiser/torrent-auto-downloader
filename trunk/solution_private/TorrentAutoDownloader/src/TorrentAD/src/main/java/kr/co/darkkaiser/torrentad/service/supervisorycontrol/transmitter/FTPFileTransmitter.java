@@ -3,35 +3,38 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.ftp.FTPClient;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
-public class FTPFileTransmitter implements FileTransmitter {
+public class FTPFileTransmitter extends AbstractFileTransmitter {
 
+	private static final Logger logger = LoggerFactory.getLogger(FTPFileTransmitter.class);
+	
 	private FTPClient ftpClient;
 
-	private final Configuration configuration;
-
-	private final AES256Util aes256 = new AES256Util();
-
 	public FTPFileTransmitter(Configuration configuration) throws UnsupportedEncodingException {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
-
-		this.configuration = configuration;
+		super(configuration);
 	}
 
 	@Override
-	public void prepare() {
+	public void prepare() throws Exception {
 		// @@@@@
-		// FTP 서버에 접속한다.
+		String host = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_HOST);
+		String port = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_PORT);
 
+		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_ACCOUNT_ID);
+		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_ACCOUNT_PASSWORD));
+
+		// FTP 서버에 접속한다.
 		this.ftpClient = new FTPClient();
 	}
 
 	@Override
-	public boolean transmit(File file) {
+	public boolean transmit(File file) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
 
@@ -41,7 +44,7 @@ public class FTPFileTransmitter implements FileTransmitter {
 	}
 
 	@Override
-	public boolean transmitFinished() {
+	public boolean transmitFinished() throws Exception {
 		// @@@@@
 		return true;
 	}
