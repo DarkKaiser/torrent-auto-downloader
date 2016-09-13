@@ -27,35 +27,53 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	}
 
 	@Override
-	public void beforeExecute() {
-		super.beforeExecute();
-
+	protected void beforeExecute() {
+		// FileTransmitter를 생성한다.
 		this.transmitters.add(new TorrentFileTransmitter());
 		this.transmitters.add(new FTPFileTransmitter());
 	}
 
 	@Override
-	public void afterExecute() {
-		super.afterExecute();
-		
-		// @@@@@ 성공한 파일을 삭제한다.
-		for (Map.Entry<File, Boolean> elem : this.files.entrySet()) {
-//			System.out.println( String.format("키 : %s, 값 : %s", elem.getKey(), elem.getValue()) );
-		}
-		
+	protected void afterExecute() {
 		Iterator<FileTransmitter> iterator = this.transmitters.iterator();
 		while (iterator.hasNext()) {
-//			iterator.next().close();
+			iterator.next().transmitFinished();
 		}
 
 		this.transmitters.clear();
+
+		// 전송이 성공한 파일들은 삭제한다.
+		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
+			if (entry.getValue() == true) {
+				logger.debug("%s 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
+				entry.getKey().delete();
+			}
+		}
 	}
 
 	@Override
-	public void execute() throws Exception {
-		super.execute();
-		
-		// @@@@@
+	protected void execute() throws Exception {
+		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
+			File file = entry.getKey();
+
+			assert entry.getValue() == false;
+
+			try {
+				Iterator<FileTransmitter> iterator = this.transmitters.iterator();
+				while (iterator.hasNext()) {
+					FileTransmitter transmitter = iterator.next();
+					if (transmitter.support(file) == true) {
+						transmitter.prepare();
+						if (transmitter.transmit(file) == true)
+							entry.setValue(true);
+
+						break;
+					}
+				}
+			} catch (Exception e) {
+				logger.error("파일을 전송하는 도중에 예외가 발생하였습니다.({})", file.getName(), e);
+			}
+		}
 	}
 
 	@Override
@@ -80,7 +98,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		StringBuilder sb = new StringBuilder()
 				.append(FileTransmissionActionImpl.class.getSimpleName())
 				.append("{")
-				.append("filea:[");
+				.append("files:[");
 
 		boolean firstKeyword = true;
 		Iterator<File> iterator = this.files.keySet().iterator();

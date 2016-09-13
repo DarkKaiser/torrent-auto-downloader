@@ -34,17 +34,11 @@ public abstract class AbstractAction implements Action {
 		afterExecute();
 	}
 
-	@Override
-	public void beforeExecute() {
-	}
+	protected abstract void beforeExecute();
 
-	@Override
-	public void afterExecute() {
-	}
+	protected abstract void afterExecute();
 
-	@Override
-	public void execute() throws Exception {
-	}
+	protected abstract void execute() throws Exception;
 
 	@Override
 	public String toString() {

@@ -5,10 +5,10 @@ import java.io.File;
 public interface FileTransmitter {
 
 	void prepare();
-	
-	boolean transmit();
 
-	void transmitCompleted();
+	boolean transmit(File file);
+
+	boolean transmitFinished();
 
 	boolean support(File file);
 

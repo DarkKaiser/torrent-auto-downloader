@@ -19,20 +19,23 @@ public class TorrentFileTransmitter implements FileTransmitter {
 	}
 
 	@Override
-	public boolean transmit() {
+	public boolean transmit(File file) {
 		// @@@@@
 		return true;
 	}
 
 	@Override
-	public void transmitCompleted() {
+	public boolean transmitFinished() {
 		// @@@@@
+		return true;
 	}
 
 	@Override
 	public boolean support(File file) {
-		// @@@@@
-		return false;
+		if (file == null)
+			throw new NullPointerException("file");
+
+		return file.getName().toLowerCase().endsWith(".torrent");
 	}
 
 }

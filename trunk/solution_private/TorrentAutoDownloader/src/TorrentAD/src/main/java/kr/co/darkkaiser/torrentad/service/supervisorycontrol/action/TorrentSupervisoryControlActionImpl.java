@@ -7,23 +7,17 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	}
 
 	@Override
-	public void beforeExecute() {
-		super.beforeExecute();
-		
+	protected void beforeExecute() {
 		// @@@@@
 	}
 
 	@Override
-	public void afterExecute() {
-		super.afterExecute();
-		
+	protected void afterExecute() {
 		// @@@@@
 	}
 
 	@Override
-	public void execute() throws Exception {
-		super.execute();
-		
+	protected void execute() throws Exception {
 		// @@@@@
 	}
 
