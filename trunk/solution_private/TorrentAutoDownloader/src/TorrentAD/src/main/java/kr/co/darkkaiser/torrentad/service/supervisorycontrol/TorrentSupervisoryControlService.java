@@ -75,7 +75,8 @@ public class TorrentSupervisoryControlService implements Service {
 				    }
 				});
 
-				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION);
+				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(
+						ActionType.FILE_TRANSMISSION, TorrentSupervisoryControlService.this.aes256, TorrentSupervisoryControlService.this.configuration);
 
 				for (File file : listFiles) {
 					if (file.isFile() == true)
@@ -91,7 +92,8 @@ public class TorrentSupervisoryControlService implements Service {
 		this.torrentSupervisoryControlTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL));
+				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(
+						ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentSupervisoryControlService.this.aes256, TorrentSupervisoryControlService.this.configuration));
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000);
 		return true;

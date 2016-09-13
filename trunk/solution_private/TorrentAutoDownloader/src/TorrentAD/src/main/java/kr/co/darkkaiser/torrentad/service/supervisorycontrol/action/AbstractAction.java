@@ -3,17 +3,30 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
+
 public abstract class AbstractAction implements Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractAction.class);
 
-	protected final ActionType actionType;
+	private final ActionType actionType;
+	
+	protected final AES256Util aes256;
 
-	protected AbstractAction(ActionType actionType) {
+	protected final Configuration configuration;
+
+	protected AbstractAction(ActionType actionType, AES256Util aes256, Configuration configuration) {
 		if (actionType == null)
 			throw new NullPointerException("actionType");
+		if (aes256 == null)
+			throw new NullPointerException("aes256");
+		if (configuration == null)
+			throw new NullPointerException("configuration");
 
+		this.aes256 = aes256;
 		this.actionType = actionType;
+		this.configuration = configuration;
 	}
 
 	@Override

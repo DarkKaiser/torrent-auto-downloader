@@ -10,9 +10,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FTPFileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
@@ -22,15 +24,15 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	private List<FileTransmitter> transmitters = new ArrayList<>();
 
-	public FileTransmissionActionImpl() {
-		super(ActionType.FILE_TRANSMISSION);
+	public FileTransmissionActionImpl(AES256Util aes256, Configuration configuration) {
+		super(ActionType.FILE_TRANSMISSION, aes256, configuration);
 	}
 
 	@Override
 	protected void beforeExecute() {
 		// FileTransmitter를 생성한다.
-		this.transmitters.add(new TorrentFileTransmitter());
-		this.transmitters.add(new FTPFileTransmitter());
+		this.transmitters.add(new TorrentFileTransmitter(this.aes256, this.configuration));
+		this.transmitters.add(new FTPFileTransmitter(this.aes256, this.configuration));
 	}
 
 	@Override

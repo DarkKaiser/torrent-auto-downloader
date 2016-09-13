@@ -72,6 +72,10 @@
 			<!-- AD Service에 의해 다운로드 되는 파일을 감시하기 위한 간격(단위:초) -->
 			<download-file-watch-interval-time-second>10</download-file-watch-interval-time-second>
 
+			<!-- FTP 서버 정보 -->
+			<ftp-server-address>darkkaiser.gonetis.com</ftp-server-address>
+			<ftp-server-port>55521</ftp-server-port>
+
 			<!-- FTP 서버 로그인 정보 -->
 			<ftp-account-id>darkkaiser</ftp-account-id>
 			<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>

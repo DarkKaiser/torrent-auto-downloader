@@ -2,13 +2,20 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import java.io.File;
 
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.ftp.FTPClient;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class FTPFileTransmitter implements FileTransmitter {
 
 	private FTPClient ftpClient;
 	
-	public FTPFileTransmitter() {
+	public FTPFileTransmitter(AES256Util aes256, Configuration configuration) {
+		if (aes256 == null)
+			throw new NullPointerException("aes256");
+		if (configuration == null)
+			throw new NullPointerException("configuration");
+
 		this.ftpClient = new FTPClient();
 	}
 
