@@ -5,7 +5,10 @@ import java.io.File;
 public interface FileTransmitter {
 
 	// @@@@@
-	
-	boolean supportedFile(File file);
+	void prepare();
+	void cleanup();
+	boolean transmit();
+
+	boolean support(File file);
 
 }

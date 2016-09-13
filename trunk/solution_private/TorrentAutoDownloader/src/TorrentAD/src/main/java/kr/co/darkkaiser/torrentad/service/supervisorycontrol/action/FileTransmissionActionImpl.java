@@ -17,7 +17,7 @@ import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.Torrent
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileTransmissionActionImpl.class);
-	
+
 	private Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
 
 	private List<FileTransmitter> transmitters = new ArrayList<>();
@@ -29,11 +29,9 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	@Override
 	public void init() {
 		super.init();
-		
+
 		this.transmitters.add(new TorrentFileTransmitter());
 		this.transmitters.add(new FtpFileTransmitter());
-		
-		// @@@@@
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		while (iterator.hasNext()) {
 //			iterator.next().close();
 		}
-		
+
 		this.transmitters.clear();
 	}
 
@@ -80,6 +78,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	@Override
 	public void validate() {
 		super.validate();
+		// @@@@@ validate 삭제???
 	}
 	
 	@Override
