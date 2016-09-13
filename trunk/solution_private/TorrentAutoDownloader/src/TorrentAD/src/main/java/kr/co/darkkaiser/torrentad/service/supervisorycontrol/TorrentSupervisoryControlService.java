@@ -12,9 +12,9 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.Action;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.FileTransmissionAction;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlService implements Service {
@@ -71,25 +71,19 @@ public class TorrentSupervisoryControlService implements Service {
 				File[] listFiles = TorrentSupervisoryControlService.this.fileWatchLocation.listFiles(new FilenameFilter() {
 				    @Override
 				    public boolean accept(File dir, String name) {
-				        return !name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_DOWNLOADING_FILE_EXTENSION);
+				        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_DOWNLOADING_FILE_EXTENSION) == false;
 				    }
 				});
 
-				Action action = ActionFactory.createAction(ActionType.FILE_TRANSMISSION);
-				
+				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION);
+
 				for (File file : listFiles) {
-					if (file.isFile() == true) {
-						System.out.println(file.getAbsolutePath());
-						// 파일 목록에 따라서 액션익스큐터서비스에 추가
-						// @@@@@ 이전에 생성된 파일들은 수동으로 추가해줘야됨, 누락되지않도록 해야됨
-						// @@@@@
-//						this.actionsExecutorService.submit(JOB);
-					}
+					if (file.isFile() == true)
+						action.addFile(file);
 				}
-				
-				// @@@@@ 등록된 파일이 있는지 체크
-				
-				TorrentSupervisoryControlService.this.actionsExecutorService.submit(action);
+
+				if (action.getFileCount() > 0)
+					TorrentSupervisoryControlService.this.actionsExecutorService.submit(action);
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000);
 

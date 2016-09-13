@@ -15,7 +15,7 @@ public abstract class AbstractAction implements Action {
 	public ActionType getActionType() {
 		return this.actionType;
 	}
-	
+
 	@Override
 	public void run() {
 		// @@@@@

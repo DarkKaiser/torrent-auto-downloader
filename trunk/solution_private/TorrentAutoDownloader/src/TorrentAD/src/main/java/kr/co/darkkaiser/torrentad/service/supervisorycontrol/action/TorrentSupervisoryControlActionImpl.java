@@ -1,9 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
-// @@@@@
-public class TorrentSupervisoryControlAction extends AbstractAction {
+public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
-	public TorrentSupervisoryControlAction() {
+	public TorrentSupervisoryControlActionImpl() {
 		super(ActionType.TORRENT_SUPERVISORY_CONTROL);
 	}
 
@@ -15,7 +14,7 @@ public class TorrentSupervisoryControlAction extends AbstractAction {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(TorrentSupervisoryControlAction.class.getSimpleName())
+				.append(TorrentSupervisoryControlActionImpl.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
