@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,7 +15,6 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FTPFileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
@@ -24,15 +24,20 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	private List<FileTransmitter> transmitters = new ArrayList<>();
 
-	public FileTransmissionActionImpl(AES256Util aes256, Configuration configuration) {
-		super(ActionType.FILE_TRANSMISSION, aes256, configuration);
+	public FileTransmissionActionImpl(Configuration configuration) {
+		super(ActionType.FILE_TRANSMISSION, configuration);
 	}
 
 	@Override
 	protected void beforeExecute() {
-		// FileTransmitter를 생성한다.
-		this.transmitters.add(new TorrentFileTransmitter(this.aes256, this.configuration));
-		this.transmitters.add(new FTPFileTransmitter(this.aes256, this.configuration));
+		try {
+			this.transmitters.add(new TorrentFileTransmitter(this.configuration));
+			this.transmitters.add(new FTPFileTransmitter(this.configuration));
+		} catch (UnsupportedEncodingException e) {
+			logger.error(null, e);
+
+			this.transmitters.clear();
+		}
 	}
 
 	@Override

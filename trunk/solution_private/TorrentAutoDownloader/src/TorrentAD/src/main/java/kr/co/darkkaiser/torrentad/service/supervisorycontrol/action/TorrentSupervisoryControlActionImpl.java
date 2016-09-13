@@ -1,12 +1,11 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
-	public TorrentSupervisoryControlActionImpl(AES256Util aes256, Configuration configuration) {
-		super(ActionType.TORRENT_SUPERVISORY_CONTROL, aes256, configuration);
+	public TorrentSupervisoryControlActionImpl(Configuration configuration) {
+		super(ActionType.TORRENT_SUPERVISORY_CONTROL, configuration);
 	}
 
 	@Override

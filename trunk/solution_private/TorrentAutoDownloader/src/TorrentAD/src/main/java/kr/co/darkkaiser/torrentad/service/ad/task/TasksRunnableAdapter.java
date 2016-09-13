@@ -28,15 +28,12 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	
 	private final TaskMetadataRegistry taskMetadataRegistry;
 
-	private final AES256Util aes256;
+	private final AES256Util aes256 = new AES256Util();
 
-	public TasksRunnableAdapter(AES256Util aes256, Configuration configuration) throws Exception {
-		if (aes256 == null)
-			throw new NullPointerException("aes256");
+	public TasksRunnableAdapter(Configuration configuration) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
-		this.aes256 = aes256;
 		this.configuration = configuration;
 		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 

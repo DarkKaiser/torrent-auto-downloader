@@ -10,7 +10,6 @@ import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public final class TorrentAdService implements Service {
 
@@ -22,15 +21,10 @@ public final class TorrentAdService implements Service {
 
 	private final Configuration configuration;
 
-	private final AES256Util aes256;
-
-	public TorrentAdService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
-		if (aes256 == null)
-			throw new NullPointerException("aes256");
+	public TorrentAdService(Configuration configuration) throws UnsupportedEncodingException {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
-		this.aes256 = aes256;
 		this.configuration = configuration;
 	}
 
@@ -47,7 +41,7 @@ public final class TorrentAdService implements Service {
 		
 		this.tasksExecutorTimer = new Timer();
 		this.tasksExecutorService = Executors.newFixedThreadPool(1);
-		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.aes256, this.configuration);
+		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.configuration);
 
 		this.tasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override

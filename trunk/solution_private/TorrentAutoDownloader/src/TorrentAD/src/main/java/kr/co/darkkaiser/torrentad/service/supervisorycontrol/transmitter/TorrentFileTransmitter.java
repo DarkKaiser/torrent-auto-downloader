@@ -3,13 +3,10 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 import java.io.File;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentFileTransmitter implements FileTransmitter {
 	
-	public TorrentFileTransmitter(AES256Util aes256, Configuration configuration) {
-		if (aes256 == null)
-			throw new NullPointerException("aes256");
+	public TorrentFileTransmitter(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 	}

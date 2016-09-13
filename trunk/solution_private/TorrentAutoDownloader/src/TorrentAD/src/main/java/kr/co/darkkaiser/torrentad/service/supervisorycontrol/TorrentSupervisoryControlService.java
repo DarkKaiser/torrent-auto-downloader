@@ -15,7 +15,6 @@ import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.FileTransmissionAction;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlService implements Service {
 
@@ -29,15 +28,10 @@ public class TorrentSupervisoryControlService implements Service {
 
 	private final Configuration configuration;
 
-	private final AES256Util aes256;
-
-	public TorrentSupervisoryControlService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
-		if (aes256 == null)
-			throw new NullPointerException("aes256");
+	public TorrentSupervisoryControlService(Configuration configuration) throws UnsupportedEncodingException {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
-		this.aes256 = aes256;
 		this.configuration = configuration;
 	}
 	
@@ -75,8 +69,7 @@ public class TorrentSupervisoryControlService implements Service {
 				    }
 				});
 
-				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(
-						ActionType.FILE_TRANSMISSION, TorrentSupervisoryControlService.this.aes256, TorrentSupervisoryControlService.this.configuration);
+				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, TorrentSupervisoryControlService.this.configuration);
 
 				for (File file : listFiles) {
 					if (file.isFile() == true)
@@ -92,8 +85,7 @@ public class TorrentSupervisoryControlService implements Service {
 		this.torrentSupervisoryControlTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(
-						ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentSupervisoryControlService.this.aes256, TorrentSupervisoryControlService.this.configuration));
+				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentSupervisoryControlService.this.configuration));
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000);
 		return true;
