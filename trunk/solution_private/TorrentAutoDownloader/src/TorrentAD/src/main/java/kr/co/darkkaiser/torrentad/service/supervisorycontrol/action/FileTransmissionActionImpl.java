@@ -15,7 +15,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	private static final Logger logger = LoggerFactory.getLogger(FileTransmissionActionImpl.class);
 	
-	protected Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
+	private Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
 
 	public FileTransmissionActionImpl() {
 		super(ActionType.FILE_TRANSMISSION);
@@ -34,6 +34,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	@Override
 	public void execute() throws Exception {
 		// @@@@@
+		System.out.println("###");
 	}
 
 	@Override
@@ -43,7 +44,9 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		if (file.isFile() == false)
 			throw new UnsupportedTransmissionFileException(file.getAbsolutePath());
 
-		return this.files.put(file, false);
+		this.files.put(file, Boolean.FALSE);
+
+		return true;
 	}
 
 	@Override
