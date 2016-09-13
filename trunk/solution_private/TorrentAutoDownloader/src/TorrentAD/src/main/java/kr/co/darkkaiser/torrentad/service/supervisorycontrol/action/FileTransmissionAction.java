@@ -4,19 +4,19 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-// @@@@@
 //@@@@@ 토렌트 파일은 정지상태로 올리기
 //transmission rpc
 //https://github.com/stil4m/transmission-rpc-java
 //https://sourceforge.net/projects/transmission-rj/
 public class FileTransmissionAction extends AbstractAction {
 
-	protected Map<File, Boolean/* 액션 실행결과 */> files = new HashMap<>();
+	protected Map<File, Boolean/* 액션실행결과 */> files = new HashMap<>();
 
 	public FileTransmissionAction() {
 		super(ActionType.FILE_TRANSMISSION);
 	}
 	
+	// @@@@@
 	public boolean addFile(File file) {
 		if (file == null)
 			throw new NullPointerException("file");

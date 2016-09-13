@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
-public abstract class AbstractAction implements Action, Runnable {
+public abstract class AbstractAction implements Action {
 
 	protected final ActionType actionType;
 
@@ -40,8 +40,12 @@ public abstract class AbstractAction implements Action, Runnable {
 
 	@Override
 	public String toString() {
-		return new StringBuilder().append(AbstractAction.class.getSimpleName()).append("{").append("actionType:")
-				.append(this.actionType).append("}").toString();
+		return new StringBuilder()
+				.append(AbstractAction.class.getSimpleName())
+				.append("{")
+				.append("actionType:").append(this.actionType)
+				.append("}")
+				.toString();
 	}
 
 }

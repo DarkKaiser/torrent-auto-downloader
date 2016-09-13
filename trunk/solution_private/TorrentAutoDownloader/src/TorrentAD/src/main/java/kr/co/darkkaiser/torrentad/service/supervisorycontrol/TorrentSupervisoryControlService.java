@@ -12,6 +12,9 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.Action;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlService implements Service {
@@ -72,6 +75,8 @@ public class TorrentSupervisoryControlService implements Service {
 				    }
 				});
 
+				Action action = ActionFactory.createAction(ActionType.FILE_TRANSMISSION);
+				
 				for (File file : listFiles) {
 					if (file.isFile() == true) {
 						System.out.println(file.getAbsolutePath());
@@ -81,6 +86,10 @@ public class TorrentSupervisoryControlService implements Service {
 //						this.actionsExecutorService.submit(JOB);
 					}
 				}
+				
+				// @@@@@ 등록된 파일이 있는지 체크
+				
+				TorrentSupervisoryControlService.this.actionsExecutorService.submit(action);
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000);
 
@@ -88,9 +97,7 @@ public class TorrentSupervisoryControlService implements Service {
 		this.torrentSupervisoryControlTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				// @@@@@
-				// ActionFactory.createAction(ActionType.xxx)
-//				this.actionsExecutorService.submit(JOB);
+				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL));
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000);
 		return true;
