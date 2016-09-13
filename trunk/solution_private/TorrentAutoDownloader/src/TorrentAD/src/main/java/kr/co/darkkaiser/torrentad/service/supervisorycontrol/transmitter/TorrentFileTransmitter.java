@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
+import java.io.File;
+
 public class TorrentFileTransmitter implements FileTransmitter {
 
 	// @@@@@
@@ -9,9 +11,9 @@ public class TorrentFileTransmitter implements FileTransmitter {
 	//https://sourceforge.net/projects/transmission-rj/
 
 	@Override
-	public boolean supportedFile() {
+	public boolean supportedFile(File file) {
 		// @@@@@
 		return false;
 	}
-	
+
 }
