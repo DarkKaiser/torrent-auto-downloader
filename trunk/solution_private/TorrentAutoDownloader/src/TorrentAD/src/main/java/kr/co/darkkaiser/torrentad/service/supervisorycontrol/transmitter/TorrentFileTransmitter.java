@@ -10,11 +10,6 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 		super(configuration);
 	}
 
-	//@@@@@ 토렌트 파일은 정지상태로 올리기
-	//transmission rpc
-	//https://github.com/stil4m/transmission-rpc-java
-	//https://sourceforge.net/projects/transmission-rj/
-
 	@Override
 	public void prepare() throws Exception {
 		// @@@@@
@@ -22,7 +17,11 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean transmit(File file) throws Exception {
-		// @@@@@
+		//@@@@@ 토렌트 파일은 정지상태로 올리기
+		//transmission rpc
+		//https://github.com/stil4m/transmission-rpc-java
+		//https://sourceforge.net/projects/transmission-rj/
+
 		return true;
 	}
 

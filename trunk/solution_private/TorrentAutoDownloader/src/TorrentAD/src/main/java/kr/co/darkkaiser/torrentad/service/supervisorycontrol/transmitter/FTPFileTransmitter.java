@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +35,23 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 			logger.warn(String.format("FTP 서버 접속이 실패하였습니다.(Host:%s, Port:%s, Id:%s)", host, port, id));
 	}
 
+	// @@@@@
 	@Override
 	public boolean transmit(File file) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
+//		if (this.ftpClient == null)
+//			throw new NullPointerException("file");
+//		if (this.ftpClient.isConnected() == false)
+//			throw new NullPointerException("file");
 
-		// @@@@@
+		assert file.isDirectory() == true;
+		
+		if (file.exists() == true) {
+			throw new FileNotFoundException(file.getAbsolutePath());
+		} else {
+			this.ftpClient.upload(file.getAbsolutePath(), "");
+		}
 
 		return true;
 	}
