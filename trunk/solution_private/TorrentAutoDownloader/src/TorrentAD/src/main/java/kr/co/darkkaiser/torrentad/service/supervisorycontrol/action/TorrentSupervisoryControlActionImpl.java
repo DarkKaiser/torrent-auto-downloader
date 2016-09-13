@@ -7,6 +7,21 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	}
 
 	@Override
+	public void init() {
+		// @@@@@
+	}
+
+	@Override
+	public void cleanup() {
+		// @@@@@
+	}
+
+	@Override
+	public void execute() throws Exception {
+		// @@@@@
+	}
+
+	@Override
 	public void validate() {
 		super.validate();
 	}
