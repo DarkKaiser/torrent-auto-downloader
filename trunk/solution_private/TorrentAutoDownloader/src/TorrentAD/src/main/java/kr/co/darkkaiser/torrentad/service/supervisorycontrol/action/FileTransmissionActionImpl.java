@@ -14,10 +14,6 @@ import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTra
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FtpFileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
 
-//@@@@@ 토렌트 파일은 정지상태로 올리기
-//transmission rpc
-//https://github.com/stil4m/transmission-rpc-java
-//https://sourceforge.net/projects/transmission-rj/
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileTransmissionActionImpl.class);
