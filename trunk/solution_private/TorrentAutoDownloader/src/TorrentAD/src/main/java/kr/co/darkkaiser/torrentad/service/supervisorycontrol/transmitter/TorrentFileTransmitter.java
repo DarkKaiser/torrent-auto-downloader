@@ -1,17 +1,15 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 
 public class TorrentFileTransmitter extends AbstractFileTransmitter {
 	
-	public TorrentFileTransmitter(Configuration configuration) throws UnsupportedEncodingException {
+	public TorrentFileTransmitter(Configuration configuration) {
 		super(configuration);
 	}
 
-	// @@@@@
 	//@@@@@ 토렌트 파일은 정지상태로 올리기
 	//transmission rpc
 	//https://github.com/stil4m/transmission-rpc-java
@@ -29,7 +27,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 	}
 
 	@Override
-	public boolean transmitFinished() throws Exception {
+	public boolean transmitFinished() {
 		// @@@@@
 		return true;
 	}

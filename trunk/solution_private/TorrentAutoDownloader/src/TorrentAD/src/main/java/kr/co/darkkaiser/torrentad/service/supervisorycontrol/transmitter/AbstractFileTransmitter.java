@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
-import java.io.UnsupportedEncodingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +12,9 @@ public abstract class AbstractFileTransmitter implements FileTransmitter {
 	
 	protected final Configuration configuration;
 
-	private final AES256Util aes256 = new AES256Util();
+	private AES256Util aes256;
 
-	protected AbstractFileTransmitter(Configuration configuration) throws UnsupportedEncodingException {
+	protected AbstractFileTransmitter(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -24,6 +22,9 @@ public abstract class AbstractFileTransmitter implements FileTransmitter {
 	}
 
 	protected String decode(String encryption) throws Exception {
+		if (this.aes256 == null)
+			this.aes256 = new AES256Util();
+
 		try {
 			return this.aes256.decode(encryption);
 		} catch (Exception e) {

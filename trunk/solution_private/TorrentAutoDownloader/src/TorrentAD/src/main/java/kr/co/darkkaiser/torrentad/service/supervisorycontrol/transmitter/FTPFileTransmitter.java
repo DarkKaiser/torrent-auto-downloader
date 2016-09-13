@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 	
 	private FTPClient ftpClient;
 
-	public FTPFileTransmitter(Configuration configuration) throws UnsupportedEncodingException {
+	public FTPFileTransmitter(Configuration configuration) {
 		super(configuration);
 	}
 
@@ -44,7 +43,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 	}
 
 	@Override
-	public boolean transmitFinished() throws Exception {
+	public boolean transmitFinished() {
 		// @@@@@
 		return true;
 	}

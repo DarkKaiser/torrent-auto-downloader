@@ -8,7 +8,7 @@ public interface FileTransmitter {
 
 	boolean transmit(File file) throws Exception;
 
-	boolean transmitFinished() throws Exception;
+	boolean transmitFinished();
 
 	boolean support(File file);
 

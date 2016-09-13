@@ -1,7 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -30,14 +29,8 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	@Override
 	protected void beforeExecute() {
-		try {
-			this.transmitters.add(new TorrentFileTransmitter(this.configuration));
-			this.transmitters.add(new FTPFileTransmitter(this.configuration));
-		} catch (UnsupportedEncodingException e) {
-			logger.error(null, e);
-
-			this.transmitters.clear();
-		}
+		this.transmitters.add(new TorrentFileTransmitter(this.configuration));
+		this.transmitters.add(new FTPFileTransmitter(this.configuration));
 	}
 
 	@Override
