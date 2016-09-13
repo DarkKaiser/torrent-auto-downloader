@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,7 +35,6 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	@Override
 	public void execute() throws Exception {
 		// @@@@@
-		System.out.println("###");
 	}
 
 	@Override
@@ -61,13 +61,28 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
+		StringBuilder sb = new StringBuilder()
 				.append(FileTransmissionActionImpl.class.getSimpleName())
 				.append("{")
-				.append("fileCount:").append(getFileCount())
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+				.append("filea:[");
+
+		boolean firstKeyword = true;
+		Iterator<File> iterator = this.files.keySet().iterator();
+		while (iterator.hasNext()) {
+			if (firstKeyword == false) {
+				sb.append(",")
+				  .append(iterator.next().getName());
+			} else {
+				firstKeyword = false;
+				sb.append(iterator.next().getName());
+			}
+		}
+
+		sb.append("]")
+		  .append("}, ")
+		  .append(super.toString());
+
+		return sb.toString();
 	}
 
 }
