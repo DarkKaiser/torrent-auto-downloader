@@ -35,6 +35,18 @@ public abstract class AbstractAction implements Action {
 	}
 
 	@Override
+	public void init() {
+	}
+
+	@Override
+	public void cleanup() {
+	}
+
+	@Override
+	public void execute() throws Exception {
+	}
+
+	@Override
 	public void validate() {
 		if (this.actionType == null)
 			throw new NullPointerException("actionType");

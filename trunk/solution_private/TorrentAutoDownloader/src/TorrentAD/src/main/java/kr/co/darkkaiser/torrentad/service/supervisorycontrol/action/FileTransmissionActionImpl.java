@@ -1,12 +1,18 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FtpFileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
 
 //@@@@@ 토렌트 파일은 정지상태로 올리기
 //transmission rpc
@@ -18,22 +24,43 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	
 	private Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
 
+	private List<FileTransmitter> transmitters = new ArrayList<>();
+
 	public FileTransmissionActionImpl() {
 		super(ActionType.FILE_TRANSMISSION);
 	}
 
 	@Override
 	public void init() {
+		super.init();
+		
+		this.transmitters.add(new TorrentFileTransmitter());
+		this.transmitters.add(new FtpFileTransmitter());
+		
 		// @@@@@
 	}
 
 	@Override
 	public void cleanup() {
-		// @@@@@
+		super.cleanup();
+		
+		// @@@@@ 성공한 파일을 삭제한다.
+		for (Map.Entry<File, Boolean> elem : this.files.entrySet()) {
+//			System.out.println( String.format("키 : %s, 값 : %s", elem.getKey(), elem.getValue()) );
+		}
+		
+		Iterator<FileTransmitter> iterator = this.transmitters.iterator();
+		while (iterator.hasNext()) {
+//			iterator.next().close();
+		}
+		
+		this.transmitters.clear();
 	}
 
 	@Override
 	public void execute() throws Exception {
+		super.execute();
+		
 		// @@@@@
 	}
 
