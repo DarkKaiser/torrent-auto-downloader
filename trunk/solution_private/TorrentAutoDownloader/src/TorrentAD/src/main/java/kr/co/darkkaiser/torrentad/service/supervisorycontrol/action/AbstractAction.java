@@ -1,7 +1,12 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class AbstractAction implements Action {
 
+	private static final Logger logger = LoggerFactory.getLogger(AbstractAction.class);
+	
 	protected final ActionType actionType;
 
 	protected AbstractAction(ActionType actionType) {
@@ -17,8 +22,16 @@ public abstract class AbstractAction implements Action {
 	}
 
 	@Override
-	public void run() {
-		// @@@@@
+	public final void run() {
+		init();
+
+		try {
+			execute();
+		} catch (Exception e) {
+			logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
+		}
+
+		cleanup();
 	}
 
 	@Override
