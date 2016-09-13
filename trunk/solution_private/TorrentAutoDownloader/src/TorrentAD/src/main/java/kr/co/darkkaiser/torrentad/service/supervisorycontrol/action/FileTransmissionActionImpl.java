@@ -20,19 +20,17 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	public boolean addFile(File file) {
 		if (file == null)
 			throw new NullPointerException("file");
-		if (file.isFile() == false) {
-			// @@@@@
-		}
+		if (file.isFile() == false)
+			throw new UnsupportedTransmissionFileException(file.getAbsolutePath());
 
 		return this.files.put(file, false);
 	}
-	
+
 	@Override
 	public int getFileCount() {
-		// @@@@@ isEmptyFile
 		return this.files.size();
 	}
-	
+
 	@Override
 	public void validate() {
 		super.validate();
