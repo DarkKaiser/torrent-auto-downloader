@@ -20,9 +20,8 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);
 		
-		if (StringUtil.isBlank(detailPageURL) == true) {
+		if (StringUtil.isBlank(detailPageURL) == true)
 			throw new IllegalArgumentException("detailPageURL은 빈 문자열을 허용하지 않습니다.");
-		}
 
 		this.detailPageURL = detailPageURL;
 	}
@@ -32,9 +31,8 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	}
 
 	public void addDownloadLink(BogoBogoBoardItemDownloadLink downloadLink) {
-		if (downloadLink == null) {
+		if (downloadLink == null)
 			throw new NullPointerException("downloadLink");
-		}
 
 		this.downloadLinks.add(downloadLink);
 	}

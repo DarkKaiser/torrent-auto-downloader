@@ -43,15 +43,12 @@ public class App {
 	}
 
 	private void stop() {
-		if (this.torrentSupervisoryControlService != null) {
+		if (this.torrentSupervisoryControlService != null)
 			this.torrentSupervisoryControlService.stop();
-		}
-		if (this.torrentAdService != null) {
+		if (this.torrentAdService != null)
 			this.torrentAdService.stop();
-		}
-		if (this.configuration != null) {
+		if (this.configuration != null)
 			this.configuration.dispose();
-		}
 		
 		this.torrentAdService = null;
 		this.configuration = null;

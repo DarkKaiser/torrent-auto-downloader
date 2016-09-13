@@ -14,9 +14,8 @@ public abstract class FileUploadAction extends AbstractAction {
 	}
 	
 	public boolean addFile(File file) {
-		if (file == null) {
+		if (file == null)
 			throw new NullPointerException("file");
-		}
 
 		return this.files.put(file, false);
 	}

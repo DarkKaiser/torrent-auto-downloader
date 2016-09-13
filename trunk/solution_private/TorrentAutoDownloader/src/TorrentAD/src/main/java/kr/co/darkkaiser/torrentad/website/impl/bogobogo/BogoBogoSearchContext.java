@@ -41,9 +41,8 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	public void validate() {
 		super.validate();
 		
-		if (this.board == null) {
+		if (this.board == null)
 			throw new NullPointerException("board");
-		}
 	}
 
 	@Override

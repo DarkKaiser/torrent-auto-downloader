@@ -14,27 +14,24 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	private final List<List<String>> keywords = new ArrayList<>();
 
 	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode mode) {
-		if (mode == null) {
+		if (mode == null)
 			throw new NullPointerException("mode");
-		}
 
 		this.mode = mode;
 	}
 
 	@Override
 	public void add(String keyword) {
-		if (StringUtil.isBlank(keyword) == true) {
+		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
-		}
 
 		this.keywords.add(Arrays.asList(keyword.toUpperCase().split("\\+")));
 	}
 
 	@Override
 	public boolean isSatisfySearchCondition(String text) {
-		if (StringUtil.isBlank(text) == true) {
+		if (StringUtil.isBlank(text) == true)
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
-		}
 		
 		int index = 0;
 		String upperCaseText = text.toUpperCase();
@@ -42,28 +39,24 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		if (mode == WebSiteSearchKeywordsMode.INCLUDE) {
 			for (List<String> splitKeywords : this.keywords) {
 				for (index = 0; index < splitKeywords.size(); ++index) {
-					if (upperCaseText.contains(splitKeywords.get(index)) == false) {
+					if (upperCaseText.contains(splitKeywords.get(index)) == false)
 						break;
-					}
 				}
 
-				if (index == splitKeywords.size()) {
+				if (index == splitKeywords.size())
 					return true;
-				}
 			}
 
 			return false;
 		} else {
 			for (List<String> splitKeywords : this.keywords) {
 				for (index = 0; index < splitKeywords.size(); ++index) {
-					if (upperCaseText.contains(splitKeywords.get(index)) == false) {
+					if (upperCaseText.contains(splitKeywords.get(index)) == false)
 						break;
-					}
 				}
 
-				if (index == splitKeywords.size()) {
+				if (index == splitKeywords.size())
 					return false;
-				}
 			}
 
 			return true;
@@ -72,9 +65,8 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	@Override
 	public void validate() {
-		if (this.keywords.isEmpty() == true) {
+		if (this.keywords.isEmpty() == true)
 			throw new EmptySearchKeywordException("검색 키워드가 등록되어 있지 않습니다.");
-		}
 	}
 
 	@Override

@@ -27,9 +27,8 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 
 	@Override
 	public TaskResult run(WebSiteHandler handler) throws Exception {
-		if (handler == null) {
+		if (handler == null)
 			throw new NullPointerException("handler");
-		}
 
 		validate();
 

@@ -7,9 +7,8 @@ public abstract class AbstractAction implements Action, Callable<Integer> {
 	protected final ActionType actionType;
 	
 	protected AbstractAction(ActionType actionType) {
-		if (actionType == null) {
+		if (actionType == null)
 			throw new NullPointerException("actionType");
-		}
 
 		this.actionType = actionType;
 	}
@@ -27,9 +26,8 @@ public abstract class AbstractAction implements Action, Callable<Integer> {
 
 	@Override
 	public void validate() {
-		if (this.actionType == null) {
+		if (this.actionType == null)
 			throw new NullPointerException("actionType");
-		}
 	}
 
 	@Override

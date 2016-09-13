@@ -12,9 +12,8 @@ public abstract class AbstractWebSite implements WebSiteContext, WebSiteHandler 
 	protected WebSiteAccount account;
 
 	protected AbstractWebSite(WebSite site) {
-		if (site == null) {
+		if (site == null)
 			throw new NullPointerException("site");
-		}
 
 		this.site = site;
 	}

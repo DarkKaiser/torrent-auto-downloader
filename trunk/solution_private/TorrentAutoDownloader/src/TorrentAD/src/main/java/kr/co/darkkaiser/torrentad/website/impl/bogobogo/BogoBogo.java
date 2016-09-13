@@ -88,9 +88,8 @@ public class BogoBogo extends AbstractWebSite {
 	public BogoBogo(String downloadFileWriteLocation) {
 		super(WebSite.BOGOBOGO);
 		
-		if (StringUtil.isBlank(downloadFileWriteLocation) == true) {
+		if (StringUtil.isBlank(downloadFileWriteLocation) == true)
 			throw new IllegalArgumentException("downloadFileWriteLocation은 빈 문자열을 허용하지 않습니다.");
-		}
 		
 		if (downloadFileWriteLocation.endsWith(File.separator) == true) {
 			this.downloadFileWriteLocation = downloadFileWriteLocation;
@@ -101,9 +100,8 @@ public class BogoBogo extends AbstractWebSite {
 	
 	@Override
 	protected void login0(WebSiteAccount account) throws Exception {
-		if (account == null) {
+		if (account == null)
 			throw new NullPointerException("account");
-		}
 
 		account.validate();
 
@@ -119,18 +117,16 @@ public class BogoBogo extends AbstractWebSite {
 				.method(Connection.Method.POST)
 				.execute();
 
-		if (response.statusCode() != 200) {
+		if (response.statusCode() != 200)
 			throw new IOException("POST " + LOGIN_PROCESS_URL_1 + " returned " + response.statusCode() + ": " + response.statusMessage());
-		}
 
 		// 로그인이 정상적으로 완료되었는지 확인한다.
 		Document doc = response.parse();
 		String outerHtml = doc.outerHtml();
 		if (outerHtml.contains("님 로그인하셨습니다.\");") == false) {		// 'alert("xxx님 로그인하셨습니다.");' 문자열이 포함되어있는지 확인
 			// 'alert("로그인 정보가 x회 틀렸습니다.\n(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)");' 문자열이 포함되어있는지 확인
-			if (outerHtml.contains("회 틀렸습니다.") == true && outerHtml.contains("(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)") == true) {
+			if (outerHtml.contains("회 틀렸습니다.") == true && outerHtml.contains("(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)") == true)
 				throw new IncorrectLoginAccountException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
-			}
 
 			throw new UnknownLoginException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
 		}
@@ -182,15 +178,13 @@ public class BogoBogo extends AbstractWebSite {
 				.cookies(response.cookies())
 				.execute();
 
-		if (completedCheckResponse.statusCode() != 200) {
+		if (completedCheckResponse.statusCode() != 200)
 			throw new IOException("GET " + MAIN_PAGE_URL + " returned " + completedCheckResponse.statusCode() + ": " + completedCheckResponse.statusMessage());
-		}
 
 		Document completedCheckDoc = completedCheckResponse.parse();
 		String completedCheckOuterHtml = completedCheckDoc.outerHtml();
-		if (completedCheckOuterHtml.contains("<input type=\"button\" value=\"로그아웃\" id=\"lox\" onclick=\"window.location.href='/cdsb/login_process.php?mode=logout'\">") == false) {
+		if (completedCheckOuterHtml.contains("<input type=\"button\" value=\"로그아웃\" id=\"lox\" onclick=\"window.location.href='/cdsb/login_process.php?mode=logout'\">") == false)
 			throw new UnknownLoginException("GET " + MAIN_PAGE_URL + " return message:\n" + completedCheckOuterHtml);
-		}
 
 		/**
 		 * 로그인 완료 처리 수행
@@ -209,28 +203,24 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public boolean isLogin() {
-		if (getAccount() == null || this.loginConnResponse == null) {
+		if (getAccount() == null || this.loginConnResponse == null)
 			return false;
-		}
 
 		return true;
 	}
 
 	@Override
 	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException, Exception {
-		if (searchContext == null) {
+		if (searchContext == null)
 			throw new NullPointerException("searchContext");
-		}
 
-		if (isLogin() == false) {
+		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
-		}
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		if (loadBoardItems(siteSearchContext.getBoard()) == false) {
+		if (loadBoardItems(siteSearchContext.getBoard()) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
-		}
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 		List<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
@@ -241,9 +231,8 @@ public class BogoBogo extends AbstractWebSite {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
-			if (latestDownloadBoardItemIdentifier != WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE && latestDownloadBoardItemIdentifier >= boardItem.getIdentifier()) {
+			if (latestDownloadBoardItemIdentifier != WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE && latestDownloadBoardItemIdentifier >= boardItem.getIdentifier())
 				continue;
-			}
 
 			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
@@ -262,16 +251,13 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
-		if (searchContext == null) {
+		if (searchContext == null)
 			throw new NullPointerException("searchContext");
-		}
-		if (boardItem == null) {
+		if (boardItem == null)
 			throw new NullPointerException("boardItem");
-		}
 
-		if (isLogin() == false) {
+		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
-		}
 
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
@@ -301,9 +287,8 @@ public class BogoBogo extends AbstractWebSite {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (this.boards.containsKey(board) == true) {
+		if (this.boards.containsKey(board) == true)
 			return true;
-		}
 
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
@@ -317,9 +302,8 @@ public class BogoBogo extends AbstractWebSite {
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
 	
-				if (boardItemsResponse.statusCode() != 200) {
+				if (boardItemsResponse.statusCode() != 200)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
-				}
 	
 				Document boardItemsDoc = boardItemsResponse.parse();
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
@@ -332,9 +316,8 @@ public class BogoBogo extends AbstractWebSite {
 							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 
 							// 번호
-							if (iterator.next().text().contains("[공지]") == true) {
+							if (iterator.next().text().contains("[공지]") == true)
 								continue;
-							}
 
 							// 카테고리
 							iterator.next();
@@ -342,24 +325,20 @@ public class BogoBogo extends AbstractWebSite {
 							// 제목
 							Element titleElement = iterator.next();
 							String title = titleElement.text().trim();
-							if (title.contains("신고에의해 블라인드 된 글입니다.") == true) {
+							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
 								continue;
-							}
 							
 							Elements titleLinkElement = titleElement.getElementsByTag("a");
-							if (titleLinkElement.size() != 1) {
+							if (titleLinkElement.size() != 1)
 								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-							}
 
 							String detailPageURL = titleLinkElement.attr("href");
-							if (detailPageURL.startsWith("board.php") == false) {
+							if (detailPageURL.startsWith("board.php") == false)
 								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-							}
 
 							int noPos = detailPageURL.indexOf("no=");
-							if (noPos < 0) {
+							if (noPos < 0)
 								throw new ParseException(String.format("게시물의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-							}
 							String identifier = detailPageURL.substring(noPos + 3/* no= */, detailPageURL.indexOf("&", noPos));
 
 							// 작성자
@@ -413,9 +392,8 @@ public class BogoBogo extends AbstractWebSite {
 	                .cookies(this.loginConnResponse.cookies())
 	                .execute();
 
-			if (detailPageResponse.statusCode() != 200) {
+			if (detailPageResponse.statusCode() != 200)
 				throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
-			}
 
 			Document detailPageDoc = detailPageResponse.parse();
 			Elements elements = detailPageDoc.select("table.board01 tbody.num tr a[id^='downLink_num']");
@@ -436,9 +414,8 @@ public class BogoBogo extends AbstractWebSite {
 						String fileName = element.text();
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
-						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true) {
+						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true)
 							continue;
-						}
 
 						boardItem.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance(id, value1, value2, value3, value4, fileId, fileName));
 					}
@@ -477,9 +454,8 @@ public class BogoBogo extends AbstractWebSite {
 		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
-			if (downloadLink.isDownloadable() == false || downloadLink.isDownloadCompleted() == true) {
+			if (downloadLink.isDownloadable() == false || downloadLink.isDownloadCompleted() == true)
 				continue;
-			}
 
 			++downloadTryCount;
 
@@ -501,9 +477,8 @@ public class BogoBogo extends AbstractWebSite {
 		                .ignoreContentType(true)
 		                .execute();
 
-				if (downloadProcess1Response.statusCode() != 200) {
+				if (downloadProcess1Response.statusCode() != 200)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
-				}
 
 				String result = downloadProcess1Response.parse().body().html();
 				DownloadProcess1Result downloadProcess1Result = gson.fromJson(result, DownloadProcess1Result.class);
@@ -529,22 +504,19 @@ public class BogoBogo extends AbstractWebSite {
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
 				
-				if (downloadProcess2Response.statusCode() != 200) {
+				if (downloadProcess2Response.statusCode() != 200)
 					throw new IOException("POST " + downloadProcessURL2 + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
-				}
 
 				Document downloadProcess2Doc = downloadProcess2Response.parse();
 
 				// 다운로드 받는 파일의 이름을 구한다.
 				Elements elements = downloadProcess2Doc.select("#fileDetail p");
-				if (elements.size() != 3) {
+				if (elements.size() != 3)
 					throw new ParseException(String.format("<P> 태그의 갯수 불일치로 파일명 추출이 실패하였습니다.(추출된갯수:%d) CSS셀렉터를 확인하세요.", elements.size()), 0);
-				}
 
 				String fileName = elements.get(1).text().trim();
-				if (fileName.startsWith("Filename:") == false) {
+				if (fileName.startsWith("Filename:") == false)
 					throw new ParseException(String.format("추출된 문자열이 특정 문자열로 시작되지 않아 파일명 추출이 실패하였습니다.(추출된문자열:%s) CSS셀렉터를 확인하세요.", fileName), 0);
-				}
 
 				String downloadFileFullPath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
 				File file = new File(downloadFileFullPath);
@@ -568,15 +540,13 @@ public class BogoBogo extends AbstractWebSite {
 		                .ignoreContentType(true)
 		                .execute();
 
-				if (downloadProcess3Response.statusCode() != 200) {
+				if (downloadProcess3Response.statusCode() != 200)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
-				}
 				
 				// @@@@@ 인증실패라고 뜨는 경우가 있음
 //				System.out.println(downloadProcess3Response.parse());
-				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true) {
+				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true)
 					throw new ParseException("첨부파일 다운로드 결과로 Unauthorized Access가 반환되었습니다.", 0);
-				}
 
 				/**
 				 * 첨부파일 저장

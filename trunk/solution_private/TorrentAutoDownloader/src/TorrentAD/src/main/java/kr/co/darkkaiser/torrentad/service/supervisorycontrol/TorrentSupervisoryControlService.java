@@ -29,12 +29,10 @@ public class TorrentSupervisoryControlService implements Service {
 	private final AES256Util aes256;
 
 	public TorrentSupervisoryControlService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
-		if (aes256 == null) {
+		if (aes256 == null)
 			throw new NullPointerException("aes256");
-		}
-		if (configuration == null) {
+		if (configuration == null)
 			throw new NullPointerException("configuration");
-		}
 
 		this.aes256 = aes256;
 		this.configuration = configuration;
@@ -42,21 +40,16 @@ public class TorrentSupervisoryControlService implements Service {
 	
 	@Override
 	public boolean start() throws Exception {
-		if (this.fileWatchLocation != null) {
+		if (this.fileWatchLocation != null)
 			throw new IllegalStateException("fileWatchLocation 객체는 이미 초기화되었습니다.");
-		}
-		if (this.fileWatcherTimer != null) {
+		if (this.fileWatcherTimer != null)
 			throw new IllegalStateException("fileWatcherTimer 객체는 이미 초기화되었습니다.");
-		}
-		if (this.torrentSupervisoryControlTimer != null) {
+		if (this.torrentSupervisoryControlTimer != null)
 			throw new IllegalStateException("torrentSupervisoryControlTimer 객체는 이미 초기화되었습니다.");
-		}
-		if (this.actionsExecutorService != null) {
+		if (this.actionsExecutorService != null)
 			throw new IllegalStateException("actionExecutorService 객체는 이미 초기화되었습니다");
-		}
-		if (this.configuration == null) {
+		if (this.configuration == null)
 			throw new NullPointerException("configuration");
-		}
 
 		this.fileWatcherTimer = new Timer();
 		this.torrentSupervisoryControlTimer = new Timer();
@@ -105,15 +98,12 @@ public class TorrentSupervisoryControlService implements Service {
 
 	@Override
 	public void stop() {
-		if (this.fileWatcherTimer != null) {
+		if (this.fileWatcherTimer != null)
 			this.fileWatcherTimer.cancel();
-		}
-		if (this.torrentSupervisoryControlTimer != null) {
+		if (this.torrentSupervisoryControlTimer != null)
 			this.torrentSupervisoryControlTimer.cancel();
-		}
-		if (this.actionsExecutorService != null) {
+		if (this.actionsExecutorService != null)
 			this.actionsExecutorService.shutdown();
-		}
 
 		this.fileWatchLocation = null;
 

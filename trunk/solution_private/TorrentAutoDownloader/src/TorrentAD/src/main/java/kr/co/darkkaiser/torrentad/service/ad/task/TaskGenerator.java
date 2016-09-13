@@ -30,15 +30,12 @@ public final class TaskGenerator {
 	}
 
 	public static List<Task> generate(Configuration configuration, TaskMetadataRegistry taskMetadataRegistry, WebSite site) throws Exception {
-		if (configuration == null) {
+		if (configuration == null)
 			throw new NullPointerException("configuration");
-		}
-		if (taskMetadataRegistry == null) {
+		if (taskMetadataRegistry == null)
 			throw new NullPointerException("taskMetadataRegistry");
-		}
-		if (site == null) {
+		if (site == null)
 			throw new NullPointerException("site");
-		}
 		
 		List<Task> tasks = new ArrayList<>();
 

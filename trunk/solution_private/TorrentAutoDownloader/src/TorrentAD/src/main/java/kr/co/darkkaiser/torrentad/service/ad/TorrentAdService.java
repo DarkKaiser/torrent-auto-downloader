@@ -25,12 +25,10 @@ public final class TorrentAdService implements Service {
 	private final AES256Util aes256;
 
 	public TorrentAdService(AES256Util aes256, Configuration configuration) throws UnsupportedEncodingException {
-		if (aes256 == null) {
+		if (aes256 == null)
 			throw new NullPointerException("aes256");
-		}
-		if (configuration == null) {
+		if (configuration == null)
 			throw new NullPointerException("configuration");
-		}
 
 		this.aes256 = aes256;
 		this.configuration = configuration;
@@ -38,23 +36,19 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public boolean start() throws Exception {
-		if (this.tasksExecutorTimer != null) {
+		if (this.tasksExecutorTimer != null)
 			throw new IllegalStateException("tasksExecutorTimer 객체는 이미 초기화되었습니다.");
-		}
-		if (this.tasksExecutorService != null) {
+		if (this.tasksExecutorService != null)
 			throw new IllegalStateException("tasksExecutorService 객체는 이미 초기화되었습니다");
-		}
-		if (this.tasksRunnableAdapter != null) {
+		if (this.tasksRunnableAdapter != null)
 			throw new IllegalStateException("tasksRunnableAdapter 객체는 이미 초기화되었습니다");
-		}
-		if (this.configuration == null) {
+		if (this.configuration == null)
 			throw new NullPointerException("configuration");
-		}
 		
 		this.tasksExecutorTimer = new Timer();
 		this.tasksExecutorService = Executors.newFixedThreadPool(1);
 		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.aes256, this.configuration);
-		
+
 		this.tasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
@@ -67,13 +61,11 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public void stop() {
-		if (this.tasksExecutorTimer != null) {
+		if (this.tasksExecutorTimer != null)
 			this.tasksExecutorTimer.cancel();
-		}
 		
-		if (this.tasksExecutorService != null) {
+		if (this.tasksExecutorService != null)
 			this.tasksExecutorService.shutdown();
-		}
 		
 		this.tasksExecutorTimer = null;
 		this.tasksExecutorService = null;

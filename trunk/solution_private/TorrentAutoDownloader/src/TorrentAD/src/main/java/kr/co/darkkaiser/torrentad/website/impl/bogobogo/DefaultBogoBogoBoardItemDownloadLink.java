@@ -20,27 +20,20 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	}
 
 	private DefaultBogoBogoBoardItemDownloadLink(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
-		if (StringUtil.isBlank(id) == true) {
+		if (StringUtil.isBlank(id) == true)
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(value1) == true) {
+		if (StringUtil.isBlank(value1) == true)
 			throw new IllegalArgumentException("value1는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(value2) == true) {
+		if (StringUtil.isBlank(value2) == true)
 			throw new IllegalArgumentException("value2는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(value3) == true) {
+		if (StringUtil.isBlank(value3) == true)
 			throw new IllegalArgumentException("value3는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(value4) == true) {
+		if (StringUtil.isBlank(value4) == true)
 			throw new IllegalArgumentException("value4는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(fileId) == true) {
+		if (StringUtil.isBlank(fileId) == true)
 			throw new IllegalArgumentException("fileId는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(fileName) == true) {
+		if (StringUtil.isBlank(fileName) == true)
 			throw new IllegalArgumentException("fileName는 빈 문자열을 허용하지 않습니다.");
-		}
 		
 		this.id = id;
 		this.value1 = value1;

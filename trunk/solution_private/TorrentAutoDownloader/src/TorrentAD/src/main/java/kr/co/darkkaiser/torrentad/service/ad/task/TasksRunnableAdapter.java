@@ -31,12 +31,10 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	private final AES256Util aes256;
 
 	public TasksRunnableAdapter(AES256Util aes256, Configuration configuration) throws Exception {
-		if (aes256 == null) {
+		if (aes256 == null)
 			throw new NullPointerException("aes256");
-		}
-		if (configuration == null) {
+		if (configuration == null)
 			throw new NullPointerException("configuration");
-		}
 
 		this.aes256 = aes256;
 		this.configuration = configuration;

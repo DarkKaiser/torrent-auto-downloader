@@ -30,18 +30,14 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	}
 
 	private void validate0(String id, String password) {
-		if (id == null) {
+		if (id == null)
 			throw new NullPointerException("id");
-		}
-		if (StringUtil.isBlank(id) == true) {
+		if (StringUtil.isBlank(id) == true)
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (password == null) {
+		if (password == null)
 			throw new NullPointerException("password");
-		}
-		if (StringUtil.isBlank(password) == true) {
+		if (StringUtil.isBlank(password) == true)
 			throw new IllegalArgumentException("password는 빈 문자열을 허용하지 않습니다.");
-		}
 	}
 
 	@Override

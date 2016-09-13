@@ -22,18 +22,14 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	private final DateFormat registDateFormat;
 
 	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
-		if (board == null) {
+		if (board == null)
 			throw new NullPointerException("board");
-		}
-		if (identifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE) {
+		if (identifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
 			throw new InvalidBoardItemIdentifierValueException();
-		}
-		if (StringUtil.isBlank(title) == true) {
+		if (StringUtil.isBlank(title) == true)
 			throw new IllegalArgumentException("title은 빈 문자열을 허용하지 않습니다.");
-		}
-		if (StringUtil.isBlank(registDateString) == true) {
+		if (StringUtil.isBlank(registDateString) == true)
 			throw new IllegalArgumentException("registDateString은 빈 문자열을 허용하지 않습니다.");
-		}
 
 		this.board = board;
 		this.title = title;

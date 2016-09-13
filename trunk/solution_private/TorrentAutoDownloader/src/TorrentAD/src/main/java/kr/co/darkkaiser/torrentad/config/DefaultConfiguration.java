@@ -29,12 +29,10 @@ public final class DefaultConfiguration implements Configuration {
 	}
 
 	private void load(String filePath) throws Exception {
-		if (filePath == null) {
+		if (filePath == null)
 			throw new NullPointerException("filePath");
-		}
-		if (StringUtil.isBlank(filePath) == true) {
+		if (StringUtil.isBlank(filePath) == true)
 			throw new IllegalArgumentException("filePath는 빈 문자열을 허용하지 않습니다.");
-		}
 		
 		synchronized (this.configValues) {
 			this.filePath = null;

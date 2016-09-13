@@ -22,18 +22,14 @@ public abstract class AbstractTask implements Task {
 	protected final WebSiteSearchContext searchContext;
 
 	protected AbstractTask(TaskType taskType, String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
-		if (taskType == null) {
+		if (taskType == null)
 			throw new NullPointerException("taskType");
-		}
-		if (StringUtil.isBlank(taskId) == true) {
+		if (StringUtil.isBlank(taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (taskMetadataRegistry == null) {
+		if (taskMetadataRegistry == null)
 			throw new NullPointerException("taskMetadataRegistry");
-		}
-		if (site == null) {
+		if (site == null)
 			throw new NullPointerException("site");
-		}
 
 		this.site = site;
 		this.taskId = taskId;
@@ -78,21 +74,16 @@ public abstract class AbstractTask implements Task {
 
 	@Override
 	public void validate() {
-		if (this.taskType == null) {
+		if (this.taskType == null)
 			throw new NullPointerException("taskType");
-		}
-		if (StringUtil.isBlank(this.taskId) == true) {
+		if (StringUtil.isBlank(this.taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		}
-		if (this.taskMetadataRegistry == null) {
+		if (this.taskMetadataRegistry == null)
 			throw new NullPointerException("taskMetadataRegistry");
-		}
-		if (this.site == null) {
+		if (this.site == null)
 			throw new NullPointerException("site");
-		}
-		if (this.searchContext == null) {
+		if (this.searchContext == null)
 			throw new NullPointerException("searchContext");
-		}
 
 		this.searchContext.validate();
 	}

@@ -15,9 +15,8 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	private Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
 	public AbstractWebSiteSearchContext(WebSite site) {
-		if (site == null) {
+		if (site == null)
 			throw new NullPointerException("site");
-		}
 
 		this.site = site;
 
@@ -33,31 +32,26 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception {
-		if (type == null) {
+		if (type == null)
 			throw new NullPointerException("type");
-		}
-		if (searchKeywords == null) {
+		if (searchKeywords == null)
 			throw new NullPointerException("searchKeywords");
-		}
 
 		this.searchKeywords.get(type).add(searchKeywords);
 	}
 
 	@Override
 	public boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text) {
-		if (type == null) {
+		if (type == null)
 			throw new NullPointerException("type");
-		}
-		if (StringUtil.isBlank(text) == true) {
+		if (StringUtil.isBlank(text) == true)
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
-		}
 
 		Iterator<WebSiteSearchKeywords> iterator = this.searchKeywords.get(type).iterator();
 		if (iterator.hasNext() == true) {
 			while (iterator.hasNext()) {
-				if (iterator.next().isSatisfySearchCondition(text) == false) {
+				if (iterator.next().isSatisfySearchCondition(text) == false)
 					return false;
-				}
 			}
 			
 			return true;
@@ -68,15 +62,13 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public void validate() {
-		if (this.site == null) {
+		if (this.site == null)
 			throw new NullPointerException("site");
-		}
 
 		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (type.allowEmpty() == false) {
-				if (this.searchKeywords.get(type).isEmpty() == true) {
+				if (this.searchKeywords.get(type).isEmpty() == true)
 					throw new EmptySearchKeywordsException(String.format("검색 키워드가 등록되어 있지 않습니다.(%s)", type.getValue()));
-				}
 			}
 		}
 	}

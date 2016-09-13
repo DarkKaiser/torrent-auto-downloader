@@ -55,17 +55,14 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 
 	public static BogoBogoBoard fromString(String name) {
-		if (name == null) {
+		if (name == null)
 			throw new NullPointerException("name");
-		}
-		if (StringUtil.isBlank(name) == true) {
+		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
-		}
 
 		for (BogoBogoBoard board : BogoBogoBoard.values()) {
-			if (name.equals(board.getName()) == true) {
+			if (name.equals(board.getName()) == true)
 				return board;
-			}
 	    }
 		
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", BogoBogoBoard.class.getSimpleName(), name));
