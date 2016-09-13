@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 // @@@@@
-public abstract class FileUploadAction extends AbstractAction {
+//@@@@@ 토렌트 파일은 정지상태로 올리기
+//transmission rpc
+//https://github.com/stil4m/transmission-rpc-java
+//https://sourceforge.net/projects/transmission-rj/
+public class FileTransmissionAction extends AbstractAction {
 
 	protected Map<File, Boolean/* 액션 실행결과 */> files = new HashMap<>();
 
-	protected FileUploadAction(ActionType actionType) {
-		super(actionType);
+	public FileTransmissionAction() {
+		super(ActionType.FILE_TRANSMISSION);
 	}
 	
 	public boolean addFile(File file) {
@@ -28,7 +32,7 @@ public abstract class FileUploadAction extends AbstractAction {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(FileUploadAction.class.getSimpleName())
+				.append(FileTransmissionAction.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
