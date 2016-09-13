@@ -3,18 +3,13 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 import java.io.File;
 
 // @@@@@
-public class FtpFileTransmitter implements FileTransmitter {
+public class FTPFileTransmitter implements FileTransmitter {
 
-	public FtpFileTransmitter() {
+	public FTPFileTransmitter() {
 	}
 
 	@Override
 	public void prepare() {
-		// @@@@@
-	}
-
-	@Override
-	public void cleanup() {
 		// @@@@@
 	}
 	
@@ -22,6 +17,11 @@ public class FtpFileTransmitter implements FileTransmitter {
 	public boolean transmit() {
 		// @@@@@ prepare()
 		return true;
+	}
+
+	@Override
+	public void transmitCompleted() {
+		// @@@@@
 	}
 
 	@Override

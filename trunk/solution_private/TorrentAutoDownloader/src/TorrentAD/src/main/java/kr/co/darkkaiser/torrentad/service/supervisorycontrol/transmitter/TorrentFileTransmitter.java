@@ -19,14 +19,14 @@ public class TorrentFileTransmitter implements FileTransmitter {
 	}
 
 	@Override
-	public void cleanup() {
-		// @@@@@
-	}
-
-	@Override
 	public boolean transmit() {
 		// @@@@@
 		return true;
+	}
+
+	@Override
+	public void transmitCompleted() {
+		// @@@@@
 	}
 
 	@Override

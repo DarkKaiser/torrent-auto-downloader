@@ -4,10 +4,11 @@ import java.io.File;
 
 public interface FileTransmitter {
 
-	// @@@@@
 	void prepare();
-	void cleanup();
+	
 	boolean transmit();
+
+	void transmitCompleted();
 
 	boolean support(File file);
 

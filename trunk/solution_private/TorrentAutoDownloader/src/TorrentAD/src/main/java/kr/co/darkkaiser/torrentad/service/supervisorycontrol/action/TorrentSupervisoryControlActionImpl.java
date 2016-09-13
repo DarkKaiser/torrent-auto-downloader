@@ -7,15 +7,15 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	}
 
 	@Override
-	public void init() {
-		super.init();
+	public void beforeExecute() {
+		super.beforeExecute();
 		
 		// @@@@@
 	}
 
 	@Override
-	public void cleanup() {
-		super.cleanup();
+	public void afterExecute() {
+		super.afterExecute();
 		
 		// @@@@@
 	}
@@ -25,11 +25,6 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 		super.execute();
 		
 		// @@@@@
-	}
-
-	@Override
-	public void validate() {
-		super.validate();
 	}
 
 	@Override

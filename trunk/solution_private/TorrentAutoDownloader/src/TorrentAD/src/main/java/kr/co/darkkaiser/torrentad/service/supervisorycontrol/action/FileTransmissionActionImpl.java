@@ -10,8 +10,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FTPFileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FtpFileTransmitter;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
@@ -27,16 +27,16 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	}
 
 	@Override
-	public void init() {
-		super.init();
+	public void beforeExecute() {
+		super.beforeExecute();
 
 		this.transmitters.add(new TorrentFileTransmitter());
-		this.transmitters.add(new FtpFileTransmitter());
+		this.transmitters.add(new FTPFileTransmitter());
 	}
 
 	@Override
-	public void cleanup() {
-		super.cleanup();
+	public void afterExecute() {
+		super.afterExecute();
 		
 		// @@@@@ 성공한 파일을 삭제한다.
 		for (Map.Entry<File, Boolean> elem : this.files.entrySet()) {
@@ -75,12 +75,6 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		return this.files.size();
 	}
 
-	@Override
-	public void validate() {
-		super.validate();
-		// @@@@@ validate 삭제???
-	}
-	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()

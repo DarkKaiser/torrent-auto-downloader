@@ -4,14 +4,10 @@ public interface Action extends Runnable {
 
 	ActionType getActionType();
 	
-	void init();
+	void beforeExecute();
 	
-	void cleanup();
+	void afterExecute();
 
 	void execute() throws Exception;
-
-	void validate();
-	
-	boolean isValid();
 
 }

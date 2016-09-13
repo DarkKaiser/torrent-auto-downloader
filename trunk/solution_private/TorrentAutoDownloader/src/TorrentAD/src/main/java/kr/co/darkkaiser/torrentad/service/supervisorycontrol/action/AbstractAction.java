@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractAction implements Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractAction.class);
-	
+
 	protected final ActionType actionType;
 
 	protected AbstractAction(ActionType actionType) {
@@ -23,7 +23,7 @@ public abstract class AbstractAction implements Action {
 
 	@Override
 	public final void run() {
-		init();
+		beforeExecute();
 
 		try {
 			execute();
@@ -31,36 +31,19 @@ public abstract class AbstractAction implements Action {
 			logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
 		}
 
-		cleanup();
+		afterExecute();
 	}
 
 	@Override
-	public void init() {
+	public void beforeExecute() {
 	}
 
 	@Override
-	public void cleanup() {
+	public void afterExecute() {
 	}
 
 	@Override
 	public void execute() throws Exception {
-	}
-
-	@Override
-	public void validate() {
-		if (this.actionType == null)
-			throw new NullPointerException("actionType");
-	}
-
-	@Override
-	public boolean isValid() {
-		try {
-			validate();
-		} catch (Exception e) {
-			return false;
-		}
-
-		return true;
 	}
 
 	@Override
