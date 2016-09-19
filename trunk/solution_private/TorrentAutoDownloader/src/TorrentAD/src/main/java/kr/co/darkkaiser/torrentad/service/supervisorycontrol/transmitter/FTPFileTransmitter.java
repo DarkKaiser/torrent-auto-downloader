@@ -22,38 +22,42 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public void prepare() throws Exception {
-		if (this.ftpClient != null)
-			throw new IllegalStateException("ftpClient 객체는 이미 초기화되었습니다.");
+		if (this.ftpClient != null && this.ftpClient.isConnected() == true) 
+			return;
 
 		String host = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_HOST);
 		String port = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_PORT);
-		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_ACCOUNT_ID);
-		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_ACCOUNT_PASSWORD));
+		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_ID);
+		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_PASSWORD));
 
 		this.ftpClient = new FTPClient();
 		if (this.ftpClient.connect(host, Integer.parseInt(port), id, password) == false)
 			logger.warn(String.format("FTP 서버 접속이 실패하였습니다.(Host:%s, Port:%s, Id:%s)", host, port, id));
 	}
 
-	// @@@@@
 	@Override
 	public boolean transmit(File file) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
-//		if (this.ftpClient == null)
-//			throw new NullPointerException("file");
-//		if (this.ftpClient.isConnected() == false)
-//			throw new NullPointerException("file");
+		if (this.ftpClient == null)
+			throw new NullPointerException("ftpClient");
+		if (this.ftpClient.isConnected() == false)
+			throw new IllegalStateException("FTP 서버에 연결되어 있지 않습니다.");
 
-		assert file.isDirectory() == true;
-		
-		if (file.exists() == true) {
+		assert file.isDirectory() == false;
+
+		if (file.exists() == false) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		} else {
-			this.ftpClient.upload(file.getAbsolutePath(), "");
-		}
+			String remotePath = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_UPLOAD_LOCATION);
+			if (remotePath.endsWith("/") == true) {
+				remotePath += file.getName();
+			} else {
+				remotePath += "/" + file.getName();
+			}
 
-		return true;
+			return this.ftpClient.upload(file.getAbsolutePath(), remotePath);
+		}
 	}
 
 	@Override
@@ -78,7 +82,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 
 		if (file.isDirectory() == true)
 			return false;
-		
+
 		return true;
 	}
 

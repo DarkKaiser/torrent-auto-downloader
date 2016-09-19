@@ -45,7 +45,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		// 전송이 성공한 파일들은 삭제한다.
 		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
 			if (entry.getValue() == true) {
-				logger.debug("%s 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
+				logger.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
 				entry.getKey().delete();
 			}
 		}
@@ -64,8 +64,12 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 					FileTransmitter transmitter = iterator.next();
 					if (transmitter.support(file) == true) {
 						transmitter.prepare();
-						if (transmitter.transmit(file) == true)
+						if (transmitter.transmit(file) == true) {
 							entry.setValue(true);
+							logger.debug("{} 파일의 전송이 완료되었습니다.", file.getName());
+						} else {
+							logger.warn("{} 파일의 전송이 실패하였습니다.", file.getName());
+						}
 
 						break;
 					}

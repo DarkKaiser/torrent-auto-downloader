@@ -11,7 +11,7 @@
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
-			<download-file-write-location>d:\temp</download-file-write-location>
+			<download-file-write-location>c:\DataDrive\Temp</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
 			<task-execute-interval-time-second>60</task-execute-interval-time-second>
@@ -77,11 +77,11 @@
 			<ftp-server-port>55521</ftp-server-port>
 
 			<!-- FTP 서버 로그인 정보 -->
-			<ftp-account-id>darkkaiser</ftp-account-id>
-			<ftp-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-account-password>
+			<ftp-server-account-id>darkkaiser</ftp-server-account-id>
+			<ftp-server-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-server-account-password>
 
-			<!-- FTP 서버 업로드 위치 @@@@@ -->
-			<ftp-upload-location>/Public/Torrent/</ftp-upload-location>
+			<!-- FTP 서버 업로드 위치 -->
+			<ftp-server-upload-location>/Public/Torrent/</ftp-server-upload-location>
 
 			<!-- 토렌트 서버 로그인 정보 -->
 			<torrent-account-id>darkkaiser</torrent-account-id>

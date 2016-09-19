@@ -27,8 +27,9 @@ public final class Constants {
 	// SupervisoryControl Service 설정값 항목
 	public static final String APP_CONFIG_TAG_FTP_SERVER_HOST = "ftp-server-host";
 	public static final String APP_CONFIG_TAG_FTP_SERVER_PORT = "ftp-server-port";
-	public static final String APP_CONFIG_TAG_FTP_ACCOUNT_ID = "ftp-account-id";
-	public static final String APP_CONFIG_TAG_FTP_ACCOUNT_PASSWORD = "ftp-account-password";
+	public static final String APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_ID = "ftp-server-account-id";
+	public static final String APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_PASSWORD = "ftp-server-account-password";
+	public static final String APP_CONFIG_TAG_FTP_SERVER_UPLOAD_LOCATION = "ftp-server-upload-location";
 	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_ID = "torrent-account-id";
 	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_PASSWORD = "torrent-account-password";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";

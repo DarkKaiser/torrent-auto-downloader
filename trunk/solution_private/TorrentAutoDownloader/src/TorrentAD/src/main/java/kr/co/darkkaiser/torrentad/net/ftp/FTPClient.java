@@ -10,9 +10,13 @@ import java.io.IOException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
+import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-// @@@@@
 public class FTPClient {
+
+	private static final Logger logger = LoggerFactory.getLogger(FTPClient.class);
 
 	private org.apache.commons.net.ftp.FTPClient ftpClient;
 
@@ -20,32 +24,40 @@ public class FTPClient {
 	}
 
 	public boolean connect(final String host, final int port, final String user, final String password) throws Exception {
+		if (StringUtil.isBlank(host) == true)
+			throw new IllegalArgumentException("host는 빈 문자열을 허용하지 않습니다.");
+		if (StringUtil.isBlank(user) == true)
+			throw new IllegalArgumentException("user는 빈 문자열을 허용하지 않습니다.");
+		if (StringUtil.isBlank(password) == true)
+			throw new IllegalArgumentException("password는 빈 문자열을 허용하지 않습니다.");
+
+		disconnect();
+
 		this.ftpClient = new org.apache.commons.net.ftp.FTPClient();
 
-		FTPClientConfig config = new FTPClientConfig(FTPClientConfig.SYST_UNIX);
-		ftpClient.configure(config);
+		FTPClientConfig ftpClientConfig = new FTPClientConfig(FTPClientConfig.SYST_UNIX);
+		this.ftpClient.configure(ftpClientConfig);
 
 		try {
-			ftpClient.connect(host, port);
-			ftpClient.enterLocalPassiveMode();
+			this.ftpClient.connect(host, port);
 
-			int nReply = ftpClient.getReplyCode(); // ③ 응답이 정상적인지 확인하기위해 응답을 받아옴
-			if (!FTPReply.isPositiveCompletion(nReply)) { // ④ 응답이 정삭적인지 확인
-				ftpClient.disconnect(); // ⑤ 응답이 비정상이면 연결해제
-				ftpClient = null; // ftpClient = null;
-				System.out.println("FTP server refused connection.");
-				return false; // return false;
+			this.ftpClient.enterLocalPassiveMode();
+
+			// 응답이 정상적인지 확인한다.
+			int nReply = this.ftpClient.getReplyCode();
+			if (FTPReply.isPositiveCompletion(nReply) == false) {
+				disconnect();
+				logger.error("FTP server refused connection.");
+				return false;
 			}
-			
-			System.out.print(ftpClient.getReplyString()); // 응답 메세지를 찍어봅시다
-			
-			ftpClient.setSoTimeout(10000); // 현재 커넥션 timeout을 millisecond
-			ftpClient.login(user, password);
 
-			ftpClient.setControlEncoding("utf-8");
-			ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // ⑧ 파일 및 전송형태를 바이너리로
-															// 설정
+			this.ftpClient.login(user, password);
+
+			this.ftpClient.setSoTimeout(10000);
+			this.ftpClient.setControlEncoding("utf-8");
+			this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (Exception e) {
+			logger.error(null, e);
 			return false;
 		}
 
@@ -60,13 +72,13 @@ public class FTPClient {
 			try {
 				this.ftpClient.logout();
 			} catch (IOException e) {
-				System.err.println("error logging off the ftp client: " + e.getMessage());
+				logger.error("error logging off the ftp client: {}", e.getMessage());
 			}
-			
+
 			try {
 				this.ftpClient.disconnect();
 			} catch (IOException e) {
-				System.err.println("error disconnecting from the ftp client: " + e.getMessage());
+				logger.error("error disconnecting from the ftp client: {}", e.getMessage());
 			}
 		}
 
@@ -76,58 +88,32 @@ public class FTPClient {
 	public boolean isConnected() {
 		if (this.ftpClient == null)
 			return false;
-		
+
 		return this.ftpClient.isConnected();
 	}
 
-	public void download(final String localPath, final String remotePath) throws Exception {
+	public boolean download(final String localPath, final String remotePath) throws Exception {
 		BufferedOutputStream bos = null;
-		
+
 		try {
 			bos = new BufferedOutputStream(new FileOutputStream(localPath));
-			this.ftpClient.retrieveFile(remotePath, bos);
+			return this.ftpClient.retrieveFile(remotePath, bos);
 		} finally {
 			if (bos != null)
 				bos.close();
 		}
 	}
 
-	public void upload(final String localPath, final String remotePath) throws Exception {
-		boolean done = false;
+	public boolean upload(final String localPath, final String remotePath) throws Exception {
 		BufferedInputStream bis = null;
 
 		try {
 			bis = new BufferedInputStream(new FileInputStream(new File(localPath)));
-			done = this.ftpClient.storeFile(remotePath, bis);
+			return this.ftpClient.storeFile(remotePath, bis);
 		} finally {
 			if (bis != null)
 				bis.close();
 		}
-
-		if (done)
-			System.out.println("The first file is uploaded successfully.");
 	}
-
-	// OutputStream으로 업로드 예제
-	// // APPROACH #2: uploads second file using an OutputStream
-	// File secondLocalFile = new File("E:/Test/Report.doc");
-	// String secondRemoteFile = "test/Report.doc";
-	// inputStream = new FileInputStream(secondLocalFile);
-	//
-	// System.out.println("Start uploading second file");
-	// OutputStream outputStream = ftpClient.storeFileStream(secondRemoteFile);
-	// byte[] bytesIn = new byte[4096];
-	// int read = 0;
-	//
-	// while ((read = inputStream.read(bytesIn)) != -1) {
-	// outputStream.write(bytesIn, 0, read);
-	// }
-	// inputStream.close();
-	// outputStream.close();
-	//
-	// boolean completed = ftpClient.completePendingCommand();
-	// if (completed) {
-	// System.out.println("The second file is uploaded successfully.");
-	// }
 
 }
