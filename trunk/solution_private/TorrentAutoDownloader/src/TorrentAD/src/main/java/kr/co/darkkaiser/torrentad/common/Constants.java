@@ -30,10 +30,11 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_ID = "ftp-server-account-id";
 	public static final String APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_PASSWORD = "ftp-server-account-password";
 	public static final String APP_CONFIG_TAG_FTP_SERVER_UPLOAD_LOCATION = "ftp-server-upload-location";
-	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_ID = "torrent-account-id";
-	public static final String APP_CONFIG_TAG_TORRENT_ACCOUNT_PASSWORD = "torrent-account-password";
-	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";
+	public static final String APP_CONFIG_TAG_TORRENT_RPC_URL = "torrent-rpc-url";
+	public static final String APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID = "torrent-rpc-account-id";
+	public static final String APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD = "torrent-rpc-account-password";
 	public static final String APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND = "torrent-supervisory-control-interval-time-second";
+	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";
 
 	// AD Service Task
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";

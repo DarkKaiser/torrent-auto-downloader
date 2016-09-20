@@ -1,12 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -14,18 +9,16 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import nl.stil4m.transmission.api.TransmissionRpcClient;
+import kr.co.darkkaiser.torrentad.net.torrent.TorrentRpcClient;
 import nl.stil4m.transmission.api.domain.AddTorrentInfo;
 
 public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentFileTransmitter.class);
 	
-	// @@@@@
-//	private FTPClient ftpClient;
-	private TransmissionRpcClient rpcClient;
-	String header;
+	private TorrentRpcClient torrentRpcClient;
 
 	public TorrentFileTransmitter(Configuration configuration) {
 		super(configuration);
@@ -33,19 +26,22 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public void prepare() throws Exception {
+		if (this.torrentRpcClient != null && this.torrentRpcClient.isConnected() == true) 
+			return;
+
+		String url = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_URL);
+		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
+		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD));
+
+		this.torrentRpcClient = new TorrentRpcClient();
+		if (this.torrentRpcClient.connect(url, id, password) == false)
+			logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+	}
+
+	@Override
+	public boolean transmit(File file) throws Exception {
+
 		// @@@@@
-//		if (this.ftpClient != null && this.ftpClient.isConnected() == true) 
-//			return;
-//
-//		String host = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_HOST);
-//		String port = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_PORT);
-//		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_ID);
-//		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_PASSWORD));
-//
-//		this.ftpClient = new FTPClient();
-//		if (this.ftpClient.connect(host, Integer.parseInt(port), id, password) == false)
-//			logger.warn(String.format("FTP 서버 접속이 실패하였습니다.(Host:%s, Port:%s, Id:%s)", host, port, id));
-		
 		Connection.Response response = null;
 		try {
 			response = Jsoup.connect("http://darkkaiser.gonetis.com:9091/transmission/rpc")
@@ -60,7 +56,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 		int statusCode = response.statusCode();
 		System.out.println(statusCode);
-		header = response.header("X-Transmission-Session-Id");
+		String header = response.header("X-Transmission-Session-Id");
 //		if (statusCode == 409) {
 //			try {
 //				response = Jsoup.connect("http://darkkaiser.gonetis.com:9091/transmission/rpc")
@@ -86,10 +82,11 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 //        rpcConfiguration.setHost(URI.create("http://darkkaiser:DreamWakuWaku78@darkkaiser.gonetis.com:9091/transmission/rpc"));
 //        RpcClient client = new RpcClient(rpcConfiguration, objectMapper);
 //        rpcClient = new TransmissionRpcClient(client);
-	}
-
-	@Override
-	public boolean transmit(File file) throws Exception {
+		
+		
+		////////////////////////////////////////////////////////////////////
+		
+		
 		//@@@@@ 토렌트 파일은 정지상태로 올리기
 		//transmission rpc
 		//https://github.com/stil4m/transmission-rpc-java
@@ -147,7 +144,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 				Connection.Response completedCheckResponse = Jsoup.connect("http://darkkaiser.gonetis.com:9091/transmission/rpc")
 						.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0")
 						.header("Content-Type", "json")
-						.header("X-Transmission-Session-Id", this.header)
+						.header("X-Transmission-Session-Id", header)
 						.header("Authorization", "Basic ZGFya2thaXNlcjpEcmVhbVdha3VXYWt1Nzg=")
 						.method(Connection.Method.POST)
 //						.requestBody(body)
@@ -156,7 +153,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 						.ignoreContentType(true)
 						.execute();
 				
-				int statusCode = completedCheckResponse.statusCode();
+				statusCode = completedCheckResponse.statusCode();
 				System.out.println("### " + statusCode);
 
 				Document completedCheckDoc = completedCheckResponse.parse();
@@ -196,19 +193,16 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean transmitFinished() {
-		// @@@@@
-//		if (this.ftpClient != null) {
-//			try {
-//				this.ftpClient.disconnect();
-//			} catch (Exception e) {
-//				logger.error(null, e);
-//			}
-//
-//			this.ftpClient = null;
-//		}
-//
-//		return true;
-//		
+		if (this.torrentRpcClient != null) {
+			try {
+				this.torrentRpcClient.disconnect();
+			} catch (Exception e) {
+				logger.error(null, e);
+			}
+
+			this.torrentRpcClient = null;
+		}
+
 		return true;
 	}
 

@@ -83,11 +83,14 @@
 			<!-- FTP 서버 업로드 위치 -->
 			<ftp-server-upload-location>/Public/Torrent/</ftp-server-upload-location>
 
-			<!-- 토렌트 서버 로그인 정보 -->
-			<torrent-account-id>darkkaiser</torrent-account-id>
-			<torrent-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-account-password>
+			<!-- Torrent 서버 정보 -->
+			<torrent-rpc-url>http://darkkaiser.gonetis.com:9091/transmission/rpc</torrent-rpc-url>
 
-			<!-- 토렌트의 상태를 감시 및 제어하기 위한 간격(단위:초) -->
+			<!-- Torrent 서버 로그인 정보 -->
+			<torrent-rpc-account-id>darkkaiser</torrent-rpc-account-id>
+			<torrent-rpc-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-rpc-account-password>
+
+			<!-- Torrent 상태를 감시 및 제어하기 위한 간격(단위:초) -->
 			<torrent-supervisory-control-interval-time-second>30</torrent-supervisory-control-interval-time-second>
 		</torrentad-service-config-values>
 	</torrentad-supervisory-conttrol-service>
