@@ -20,9 +20,6 @@ public class FTPClient {
 
 	private org.apache.commons.net.ftp.FTPClient ftpClient;
 
-	public FTPClient() {
-	}
-
 	public boolean connect(final String host, final int port, final String user, final String password) throws Exception {
 		if (StringUtil.isBlank(host) == true)
 			throw new IllegalArgumentException("host는 빈 문자열을 허용하지 않습니다.");
