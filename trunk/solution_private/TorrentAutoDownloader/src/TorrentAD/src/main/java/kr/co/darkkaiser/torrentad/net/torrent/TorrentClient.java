@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface TorrentClient {
 
-	boolean connect(final String url, final String user, final String password) throws Exception;
+	boolean connect(final String user, final String password) throws Exception;
 
 	void disconnect() throws Exception;
 

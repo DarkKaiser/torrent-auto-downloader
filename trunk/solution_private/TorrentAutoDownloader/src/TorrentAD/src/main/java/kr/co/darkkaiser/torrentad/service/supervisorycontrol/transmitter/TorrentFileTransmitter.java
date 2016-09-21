@@ -30,8 +30,8 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
 		String password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD));
 
-		this.torrentClient = new TransmissionRpcClient();
-		if (this.torrentClient.connect(url, id, password) == false)
+		this.torrentClient = new TransmissionRpcClient(url);
+		if (this.torrentClient.connect(id, password) == false)
 			logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 	}
 

@@ -89,11 +89,11 @@ public class FTPClient {
 		return this.ftpClient.isConnected();
 	}
 
-	public boolean download(final String localPath, final String remotePath) throws Exception {
+	public boolean download(final File file, final String remotePath) throws Exception {
 		BufferedOutputStream bos = null;
 
 		try {
-			bos = new BufferedOutputStream(new FileOutputStream(localPath));
+			bos = new BufferedOutputStream(new FileOutputStream(file));
 			return this.ftpClient.retrieveFile(remotePath, bos);
 		} finally {
 			if (bos != null)
@@ -101,11 +101,11 @@ public class FTPClient {
 		}
 	}
 
-	public boolean upload(final String localPath, final String remotePath) throws Exception {
+	public boolean upload(final File file, final String remotePath) throws Exception {
 		BufferedInputStream bis = null;
 
 		try {
-			bis = new BufferedInputStream(new FileInputStream(new File(localPath)));
+			bis = new BufferedInputStream(new FileInputStream(file));
 			return this.ftpClient.storeFile(remotePath, bis);
 		} finally {
 			if (bis != null)

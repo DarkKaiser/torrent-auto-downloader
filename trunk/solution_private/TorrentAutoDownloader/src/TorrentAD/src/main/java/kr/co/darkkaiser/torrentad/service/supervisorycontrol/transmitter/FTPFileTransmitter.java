@@ -56,7 +56,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 				remotePath += "/" + file.getName();
 			}
 
-			return this.ftpClient.upload(file.getAbsolutePath(), remotePath);
+			return this.ftpClient.upload(file, remotePath);
 		}
 	}
 
