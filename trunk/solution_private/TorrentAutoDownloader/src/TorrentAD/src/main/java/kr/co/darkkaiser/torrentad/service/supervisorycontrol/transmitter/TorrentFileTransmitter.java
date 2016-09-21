@@ -49,8 +49,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 		if (file.exists() == false) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		} else {
-			// @@@@@ 실패에 대한 에러는 출력안해도 되나??? ftptransmitter와 합칠 가능성은??
-			return this.torrentClient.addTorrent(file, false);
+			return this.torrentClient.addTorrent(file, true);
 		}
 	}
 

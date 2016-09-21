@@ -14,7 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
-import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.BaseMethodResult;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.MethodResult;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.SessionGetMethodResult;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -73,8 +74,8 @@ public class TransmissionRpcClient implements TorrentClient {
 			}
 
 			String result = response.parse().body().html();
-			BaseMethodResult methodResult = gson.fromJson(result, BaseMethodResult.class);
-			if (methodResult.getResult().equals("success") == false) {
+			MethodResult methodResult = gson.fromJson(result, SessionGetMethodResult.class);
+			if (methodResult.isResultSuccess() == false) {
 				logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:session-get, 수신된 데이터:{})", result);
 				return false;
 			}
