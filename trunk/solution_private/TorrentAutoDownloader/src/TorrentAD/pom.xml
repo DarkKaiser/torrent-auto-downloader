@@ -58,19 +58,11 @@
 		<version>3.5</version>
 	</dependency>
 	<dependency>
-		<groupId>nl.stil4m</groupId>
-		<artifactId>transmission-rpc-java</artifactId>
-		<version>0.5.0</version>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpcore</artifactId>
+    	<version>4.4.5</version>
 	</dependency>
-    
+
   </dependencies>
   
-  <repositories>
-    <repository>
-		<id>stil4m-releases</id>
-    	<name>stil4m-releases</name>
-    	<url>https://github.com/stil4m/maven-repository/raw/master/releases/</url>
-	</repository>
-  </repositories>
-
 </project>

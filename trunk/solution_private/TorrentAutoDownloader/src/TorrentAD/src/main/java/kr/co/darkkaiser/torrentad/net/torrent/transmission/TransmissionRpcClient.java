@@ -1,27 +1,36 @@
-package kr.co.darkkaiser.torrentad.net.torrent;
+package kr.co.darkkaiser.torrentad.net.torrent.transmission;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TorrentRpcClient {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-	private static final Logger logger = LoggerFactory.getLogger(TorrentRpcClient.class);
+import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.BaseMethodResult;
+
+public class TransmissionRpcClient implements TorrentClient {
+
+	private static final Logger logger = LoggerFactory.getLogger(TransmissionRpcClient.class);
 
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
+	private Gson gson = new GsonBuilder().create();
+	
 	private Connection.Response loginConnResponse;
 	
 	private String sessionId;
 	
 	private String authorization;
-
+	
+	@Override
 	public boolean connect(final String url, final String user, final String password) throws Exception {
 		if (StringUtil.isBlank(url) == true)
 			throw new IllegalArgumentException("host는 빈 문자열을 허용하지 않습니다.");
@@ -31,54 +40,67 @@ public class TorrentRpcClient {
 			throw new IllegalArgumentException("password는 빈 문자열을 허용하지 않습니다.");
 
 		disconnect();
-		
+
 		// Authorization 헤더 문자열을 생성한다.
-		String authorization = String.format("Basic %s", Base64.encodeBase64(String.format("%s:%s", user, password).getBytes("UTF-8")));
-		
-		authorization = "Basic ZGFya2thaXNlcjpEcmVhbVdha3VXYWt1Nzg=";//@@@@@
+		String authorization = String.format("Basic %s", new String(Base64.encodeBase64(String.format("%s:%s", user, password).getBytes())));
 
 		Connection.Response response = Jsoup.connect(url)
 				.userAgent(USER_AGENT)
 				.header("Authorization", authorization)
-				.method(Connection.Method.GET)
-				.requestBody("{method: \"session-get\"}")
+				.requestBody("{\"method\": \"session-get\"}")
+				.method(Connection.Method.POST)
 				.ignoreHttpErrors(true)
+				.ignoreContentType(true)
 				.execute();
 
-		// @@@@@ 409가 맞나? 브라우저에서는 200이 나오지 않나?
-		if (response.statusCode() != 409) {
-			// @@@@@
-			throw new IOException("POST " + url + " returned " + response.statusCode() + ": " + response.statusMessage());
-		} else {
+		int statusCode = response.statusCode();
+		if (statusCode == HttpStatus.SC_CONFLICT) {
+			String sessionId = response.header("X-Transmission-Session-Id");
+
 			response = Jsoup.connect(url)
 					.userAgent(USER_AGENT)
 					.header("Authorization", authorization)
-					.header("X-Transmission-Session-Id", response.header("X-Transmission-Session-Id"))
-					.method(Connection.Method.GET)
-					.requestBody("{method: \"session-get\"}")
+					.header("X-Transmission-Session-Id", sessionId)
+					.requestBody("{\"method\": \"session-get\"}")
+					.method(Connection.Method.POST)
 					.ignoreHttpErrors(true)
+					.ignoreContentType(true)
 					.execute();
-			
-			if (response.statusCode() != 200) {
-				System.out.println("########## aa");
-			}
-			System.out.println("########## bb");
-			System.out.println(response.statusCode());
-		}
 
-		this.loginConnResponse = response;
-		this.authorization = authorization;
-		this.sessionId = response.header("X-Transmission-Session-Id");
+			if (response.statusCode() != HttpStatus.SC_OK) {
+				logger.error("POST " + url + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+				return false;
+			}
+
+			String result = response.parse().body().html();
+			BaseMethodResult methodResult = gson.fromJson(result, BaseMethodResult.class);
+			if (methodResult.getResult().equals("success") == false) {
+				logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:session-get, 수신된 데이터:{})", result);
+				return false;
+			}
+
+			this.sessionId = sessionId;
+			this.authorization = authorization;
+			this.loginConnResponse = response;
+		} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+			logger.error("POST " + url + " returned " + response.statusCode() + ": " + response.statusMessage() + ": 사용자 인증이 실패하였습니다.");
+			return false;
+		} else {
+			logger.error("POST " + url + " returned " + response.statusCode() + ": " + response.statusMessage());
+			return false;
+		}
 
 		return true;
 	}
 	
+	@Override
 	public void disconnect() throws Exception {
 		this.sessionId = null;
 		this.authorization = null;
 		this.loginConnResponse = null;
 	}
 
+	@Override
 	public boolean isConnected() {
 		if (this.loginConnResponse == null || StringUtil.isBlank(this.sessionId) == true || StringUtil.isBlank(this.authorization) == true)
 			return false;
@@ -86,8 +108,14 @@ public class TorrentRpcClient {
 		return true;
 	}
 
-	public boolean addTorrent(File file) throws Exception {
+	@Override
+	public boolean addTorrent(File file, boolean paused) throws Exception {
 		// @@@@@
+		//@@@@@ 토렌트 파일은 정지상태로 올리기
+		//transmission rpc
+		//https://github.com/stil4m/transmission-rpc-java
+		//https://sourceforge.net/projects/transmission-rj/
+
 //		Connection.Response completedCheckResponse = Jsoup.connect("http://darkkaiser.gonetis.com:9091/transmission/rpc")
 //				.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0")
 //				.header("Content-Type", "json")

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
@@ -117,7 +118,7 @@ public class BogoBogo extends AbstractWebSite {
 				.method(Connection.Method.POST)
 				.execute();
 
-		if (response.statusCode() != 200)
+		if (response.statusCode() != HttpStatus.SC_OK)
 			throw new IOException("POST " + LOGIN_PROCESS_URL_1 + " returned " + response.statusCode() + ": " + response.statusMessage());
 
 		// 로그인이 정상적으로 완료되었는지 확인한다.
@@ -178,7 +179,7 @@ public class BogoBogo extends AbstractWebSite {
 				.cookies(response.cookies())
 				.execute();
 
-		if (completedCheckResponse.statusCode() != 200)
+		if (completedCheckResponse.statusCode() != HttpStatus.SC_OK)
 			throw new IOException("GET " + MAIN_PAGE_URL + " returned " + completedCheckResponse.statusCode() + ": " + completedCheckResponse.statusMessage());
 
 		Document completedCheckDoc = completedCheckResponse.parse();
@@ -302,7 +303,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
 	
-				if (boardItemsResponse.statusCode() != 200)
+				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 	
 				Document boardItemsDoc = boardItemsResponse.parse();
@@ -392,7 +393,7 @@ public class BogoBogo extends AbstractWebSite {
 	                .cookies(this.loginConnResponse.cookies())
 	                .execute();
 
-			if (detailPageResponse.statusCode() != 200)
+			if (detailPageResponse.statusCode() != HttpStatus.SC_OK)
 				throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
 
 			Document detailPageDoc = detailPageResponse.parse();
@@ -477,7 +478,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .ignoreContentType(true)
 		                .execute();
 
-				if (downloadProcess1Response.statusCode() != 200)
+				if (downloadProcess1Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
 
 				String result = downloadProcess1Response.parse().body().html();
@@ -504,7 +505,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
 				
-				if (downloadProcess2Response.statusCode() != 200)
+				if (downloadProcess2Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + downloadProcessURL2 + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
 
 				Document downloadProcess2Doc = downloadProcess2Response.parse();
@@ -540,7 +541,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .ignoreContentType(true)
 		                .execute();
 
-				if (downloadProcess3Response.statusCode() != 200)
+				if (downloadProcess3Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
 				
 				// @@@@@ 인증실패라고 뜨는 경우가 있음

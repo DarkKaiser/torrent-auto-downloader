@@ -21,7 +21,6 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	@Override
 	protected void execute() throws Exception {
 		// @@@@@
-		System.out.println("#################");
 	}
 
 	@Override
