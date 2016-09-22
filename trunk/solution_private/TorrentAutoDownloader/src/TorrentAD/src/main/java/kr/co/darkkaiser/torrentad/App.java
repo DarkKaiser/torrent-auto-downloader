@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
+import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.TorrentSupervisoryControlService;
 
@@ -13,11 +14,10 @@ public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 	
-	private TorrentAdService torrentAdService;
-
-	private TorrentSupervisoryControlService torrentSupervisoryControlService;
-
 	private Configuration configuration;
+	
+	private Service torrentAdService;
+	private Service torrentSupervisoryControlService;
 
 	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
@@ -30,7 +30,7 @@ public class App {
 		}
 
 		this.configuration = configuration;
-		
+
 		try {
 			this.torrentSupervisoryControlService = new TorrentSupervisoryControlService(configuration);
 			this.torrentAdService = new TorrentAdService(configuration);
@@ -48,9 +48,10 @@ public class App {
 			this.torrentAdService.stop();
 		if (this.configuration != null)
 			this.configuration.dispose();
-		
-		this.torrentAdService = null;
+
 		this.configuration = null;
+		this.torrentAdService = null;
+		this.torrentSupervisoryControlService = null;
 	}
 
     private void addShutdownHook(final App app) {

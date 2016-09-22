@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.ad;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -21,7 +20,7 @@ public final class TorrentAdService implements Service {
 
 	private final Configuration configuration;
 
-	public TorrentAdService(Configuration configuration) throws UnsupportedEncodingException {
+	public TorrentAdService(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 

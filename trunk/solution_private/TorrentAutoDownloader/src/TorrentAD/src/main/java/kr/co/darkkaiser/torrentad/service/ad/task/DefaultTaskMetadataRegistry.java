@@ -17,9 +17,9 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultTaskMetadataRegistry.class);
 
-	private String filePath = null;
+	private final String filePath;
 
-	private Properties properties = new SortedProperties();
+	private final Properties properties = new SortedProperties();
 
 	public DefaultTaskMetadataRegistry(String filePath) {
 		if (filePath == null)
@@ -36,15 +36,12 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 		}
 	}
 
-	private void initialize() throws IOException {
+	private void initialize() throws FileNotFoundException, IOException {
 		assert this.filePath != null;
 		assert this.properties != null;
 
-		try {
-			try (FileInputStream fis = new FileInputStream(new File(this.filePath))) {
-				this.properties.load(fis);
-			}
-		} catch (FileNotFoundException e) {
+		try (FileInputStream fis = new FileInputStream(new File(this.filePath))) {
+			this.properties.load(fis);
 		}
 	}
 
@@ -64,20 +61,17 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 	public synchronized int getInt(String key, int defaultValue) {
 		assert this.properties != null;
 
-		int value = 0;
-
 		try {
-			value = Integer.parseInt(this.properties.getProperty(key));
-		} catch (Exception ex) {
+			return Integer.parseInt(this.properties.getProperty(key));
+		} catch (Exception e) {
 			return defaultValue;
 		}
-
-		return value;
 	}
 
 	@Override
 	public synchronized void setInt(String key, int value) {
 		assert this.properties != null;
+		
 		this.properties.setProperty(key, Integer.toString(value));
 
 		store();
@@ -87,20 +81,17 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 	public long getLong(String key, long defaultValue) {
 		assert this.properties != null;
 
-		long value = 0;
-
 		try {
-			value = Long.parseLong(this.properties.getProperty(key));
-		} catch (Exception ex) {
+			return Long.parseLong(this.properties.getProperty(key));
+		} catch (Exception e) {
 			return defaultValue;
 		}
-
-		return value;
 	}
 	
 	@Override
 	public void setLong(String key, long value) {
 		assert this.properties != null;
+		
 		this.properties.setProperty(key, Long.toString(value));
 
 		store();
@@ -112,9 +103,8 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 
 		String value = this.properties.getProperty(key);
 
-		if (value == null) {
+		if (value == null)
 			return defaultValue;
-		}
 
 		return value;
 	}
@@ -122,6 +112,7 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 	@Override
 	public synchronized void setString(String key, String value) {
 		assert this.properties != null;
+		
 		this.properties.setProperty(key, value);
 
 		store();
@@ -131,20 +122,17 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 	public synchronized double getDouble(String key, double defaultValue) {
 		assert this.properties != null;
 
-		double value = 0.0;
-
 		try {
-			value = Double.valueOf(this.properties.getProperty(key)).doubleValue();
-		} catch (Exception ex) {
+			return Double.valueOf(this.properties.getProperty(key)).doubleValue();
+		} catch (Exception e) {
 			return defaultValue;
 		}
-
-		return value;
 	}
 
 	@Override
 	public synchronized void setDouble(String key, double value) {
 		assert this.properties != null;
+		
 		this.properties.setProperty(key, Double.toString(value));
 
 		store();
@@ -154,20 +142,17 @@ public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
 	public synchronized boolean getBoolean(String key, boolean defaultValue) {
 		assert this.properties != null;
 
-		boolean value = false;
-
 		try {
-			value = Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
-		} catch (Exception ex) {
+			return Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
+		} catch (Exception e) {
 			return defaultValue;
 		}
-
-		return value;
 	}
 
 	@Override
 	public synchronized void setBoolean(String key, boolean value) {
 		assert this.properties != null;
+		
 		this.properties.setProperty(key, Boolean.toString(value));
 
 		store();

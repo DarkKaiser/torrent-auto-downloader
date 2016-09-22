@@ -74,6 +74,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		try {
 			validate();
 		} catch (Exception e) {
+			// @@@@@ log
 			return false;
 		}
 

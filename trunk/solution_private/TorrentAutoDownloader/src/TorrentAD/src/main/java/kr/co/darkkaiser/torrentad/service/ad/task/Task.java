@@ -18,7 +18,7 @@ public interface Task {
 
 	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
 
-	TaskResult run(WebSiteHandler handler) throws Exception;
+	TaskResult run(WebSiteHandler handler);
 
 	void validate();
 

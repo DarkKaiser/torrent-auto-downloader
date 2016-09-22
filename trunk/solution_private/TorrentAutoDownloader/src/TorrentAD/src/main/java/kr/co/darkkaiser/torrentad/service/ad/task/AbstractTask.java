@@ -1,6 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.ad.task;
 
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -11,6 +13,8 @@ import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public abstract class AbstractTask implements Task {
 
+	private static final Logger logger = LoggerFactory.getLogger(AbstractTask.class);
+	
 	protected final TaskType taskType;
 	
 	protected final String taskId;
@@ -93,6 +97,7 @@ public abstract class AbstractTask implements Task {
 		try {
 			validate();
 		} catch (Exception e) {
+			logger.debug(null, e);
 			return false;
 		}
 

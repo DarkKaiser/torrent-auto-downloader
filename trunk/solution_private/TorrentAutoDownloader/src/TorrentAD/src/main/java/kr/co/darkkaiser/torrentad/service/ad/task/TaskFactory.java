@@ -15,7 +15,7 @@ public final class TaskFactory {
 
 		throw new UnsupportedTaskException(String.format("구현되지 않은 Task 타입(%s)입니다.", type));
 	}
-	
+
 	private TaskFactory() {
 	}
 	

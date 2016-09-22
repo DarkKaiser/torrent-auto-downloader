@@ -92,11 +92,10 @@ public final class TaskGenerator {
 											cvSearchKeywordChildNode = cvSearchKeywordChildNode.getNextSibling();											
 										}
 
-										if (searchKeywords.isValid() == true) {
+										if (searchKeywords.isValid() == true)
 											task.addSearchKeywords(searchKeywordsType, searchKeywords);
-										} else {
-											throw new XMLParseException("생성된 SearchKeywords가 유효하지 않습니다.");
-										}
+										else
+											throw new XMLParseException(String.format("생성된 SearchKeywords가 유효하지 않습니다.(Task:%s)", taskId));
 									}
 								}
 							} else {
@@ -107,8 +106,8 @@ public final class TaskGenerator {
 					}
 
 					if (task.isValid() == true) {
-						logger.debug("Task 생성완료:{}", task.toString());
 						tasks.add(task);
+						logger.debug("Task 생성완료:{}", task.toString());
 					} else {
 						throw new XMLParseException(task.toString());
 					}
@@ -120,7 +119,6 @@ public final class TaskGenerator {
 		} catch (Exception e) {
 			logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
 			throw e;
-		} finally {
 		}
 
 		return tasks;

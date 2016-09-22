@@ -1,9 +1,13 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WebSiteAccountAdapter implements WebSiteAccount {
 
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteAccountAdapter.class);
+	
 	private final String id;
 	private final String password;
 
@@ -45,6 +49,7 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 		try {
 			validate();
 		} catch (Exception e) {
+			logger.debug(null, e);
 			return false;
 		}
 

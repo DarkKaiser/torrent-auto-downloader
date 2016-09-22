@@ -26,7 +26,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	}
 
 	@Override
-	public TaskResult run(WebSiteHandler handler) throws Exception {
+	public TaskResult run(WebSiteHandler handler) {
 		if (handler == null)
 			throw new NullPointerException("handler");
 
@@ -36,14 +36,14 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 			Iterator<WebSiteBoardItem> iterator = handler.search(this.searchContext);
 
 			if (iterator.hasNext() == false) {
-				logger.debug(String.format("검색된 게시물이 0건 입니다."));
+				logger.debug("검색된 게시물이 0건 입니다.(Task:{})", getTaskId());
 			} else {
 				while (iterator.hasNext()) {
 					WebSiteBoardItem boardItem = iterator.next();
 					assert boardItem != null;
 
 					Tuple<Integer, Integer> downloadCount = handler.download(this.searchContext, boardItem);
-					logger.info(String.format("검색된 게시물('%s')의 첨부파일 다운로드 작업이 종료되었습니다.(다운로드시도갯수:%d 다운로드성공갯수:%d)", boardItem.getTitle(), downloadCount.first(), downloadCount.last()));
+					logger.info(String.format("검색된 게시물('%s')의 첨부파일 다운로드 작업이 종료되었습니다.(Task:%s, 다운로드시도갯수:%d, 다운로드성공갯수:%d)", boardItem.getTitle(), getTaskId(), downloadCount.first(), downloadCount.last()));
 
 					// 환경설정파일에 게시물 식별자를 저장한다.
 					long identifier = boardItem.getIdentifier();

@@ -14,7 +14,7 @@ public class OnceTaskImpl extends AbstractTask implements OnceTask {
 	}
 
 	@Override
-	public TaskResult run(WebSiteHandler handler) throws Exception {
+	public TaskResult run(WebSiteHandler handler) {
 		throw new UnsupportedOperationException("Not implemented, yet");
 	}
 

@@ -3,7 +3,6 @@ package kr.co.darkkaiser.torrentad.service.supervisorycontrol;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +27,7 @@ public class TorrentSupervisoryControlService implements Service {
 
 	private final Configuration configuration;
 
-	public TorrentSupervisoryControlService(Configuration configuration) throws UnsupportedEncodingException {
+	public TorrentSupervisoryControlService(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 

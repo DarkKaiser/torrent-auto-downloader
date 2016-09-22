@@ -39,14 +39,14 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 
 		try {
 			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_TAG_WEBSITE_NAME);
 			throw e;
 		}
 
 		this.accountId = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
 		String encryptionPassword = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
-		
+
 		try {
 			this.accountPassword = this.aes256.decode(encryptionPassword);
 		} catch (Exception e) {
@@ -94,19 +94,19 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
 
 		for (Task task : this.tasks) {
-			logger.debug("Task 실행:{}", task);
+			logger.debug("Task({}) 실행:{}", task.getTaskId(), task);
 
 			try {
 				TaskResult taskResult = task.run(handler);
 				if (taskResult != TaskResult.OK) {
-					logger.error("Task 실행이 실패('{}') 하였습니다.", taskResult);
+					logger.error("Task({}) 실행이 실패('{}') 하였습니다.", task.getTaskId(), taskResult);
 					result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 				} else {
-					logger.debug("Task 실행이 완료되었습니다.");
+					logger.debug("Task({}) 실행이 완료되었습니다.", task.getTaskId());
 					result = TasksRunnableAdapterResult.OK(TaskResult.OK);
 				}
 			} catch (Throwable e) {
-				logger.error("Task 실행 중 예외가 발생하였습니다.", e);
+				logger.error("Task({}) 실행 중 예외가 발생하였습니다.", task.getTaskId(), e);
 				result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
 		}

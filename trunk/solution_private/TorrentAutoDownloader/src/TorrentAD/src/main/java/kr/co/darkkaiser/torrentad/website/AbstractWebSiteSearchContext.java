@@ -78,6 +78,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		try {
 			validate();
 		} catch (Exception e) {
+			// @@@@@ log
 			return false;
 		}
 
