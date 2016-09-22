@@ -8,7 +8,7 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.TorrentSupervisoryControlService;
+import kr.co.darkkaiser.torrentad.service.au.TorrentAuService;
 
 public class App {
 	
@@ -17,7 +17,7 @@ public class App {
 	private Configuration configuration;
 	
 	private Service torrentAdService;
-	private Service torrentSupervisoryControlService;
+	private Service torrentAuService;
 
 	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
@@ -32,9 +32,9 @@ public class App {
 		this.configuration = configuration;
 
 		try {
-			this.torrentSupervisoryControlService = new TorrentSupervisoryControlService(configuration);
+			this.torrentAuService = new TorrentAuService(configuration);
 			this.torrentAdService = new TorrentAdService(configuration);
-			return this.torrentSupervisoryControlService.start() && this.torrentAdService.start();
+			return this.torrentAuService.start() && this.torrentAdService.start();
 		} catch (Exception e) {
 			logger.error(null, e);
 			return false;
@@ -42,8 +42,8 @@ public class App {
 	}
 
 	private void stop() {
-		if (this.torrentSupervisoryControlService != null)
-			this.torrentSupervisoryControlService.stop();
+		if (this.torrentAuService != null)
+			this.torrentAuService.stop();
 		if (this.torrentAdService != null)
 			this.torrentAdService.stop();
 		if (this.configuration != null)
@@ -51,7 +51,7 @@ public class App {
 
 		this.configuration = null;
 		this.torrentAdService = null;
-		this.torrentSupervisoryControlService = null;
+		this.torrentAuService = null;
 	}
 
     private void addShutdownHook(final App app) {

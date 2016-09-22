@@ -24,7 +24,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION = "download-file-write-location";
 	public static final String APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND = "task-execute-interval-time-second";
 
-	// SupervisoryControl Service 설정값 항목
+	// AU Service 설정값 항목
 	public static final String APP_CONFIG_TAG_FTP_SERVER_HOST = "ftp-server-host";
 	public static final String APP_CONFIG_TAG_FTP_SERVER_PORT = "ftp-server-port";
 	public static final String APP_CONFIG_TAG_FTP_SERVER_ACCOUNT_ID = "ftp-server-account-id";

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.supervisorycontrol;
+package kr.co.darkkaiser.torrentad.service.au.action.supervisorycontrol;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +13,8 @@ import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult.Torrent;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.AbstractAction;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
+import kr.co.darkkaiser.torrentad.service.au.action.AbstractAction;
+import kr.co.darkkaiser.torrentad.service.au.action.ActionType;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {

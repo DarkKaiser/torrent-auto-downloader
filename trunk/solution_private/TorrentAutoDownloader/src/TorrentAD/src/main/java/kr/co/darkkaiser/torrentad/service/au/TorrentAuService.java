@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol;
+package kr.co.darkkaiser.torrentad.service.au;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,11 +11,11 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.transmission.FileTransmissionAction;
+import kr.co.darkkaiser.torrentad.service.au.action.ActionFactory;
+import kr.co.darkkaiser.torrentad.service.au.action.ActionType;
+import kr.co.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionAction;
 
-public class TorrentSupervisoryControlService implements Service {
+public class TorrentAuService implements Service {
 
 	private File fileWatchLocation;
 
@@ -27,7 +27,7 @@ public class TorrentSupervisoryControlService implements Service {
 
 	private final Configuration configuration;
 
-	public TorrentSupervisoryControlService(Configuration configuration) {
+	public TorrentAuService(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -61,14 +61,14 @@ public class TorrentSupervisoryControlService implements Service {
 		this.fileWatcherTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				File[] listFiles = TorrentSupervisoryControlService.this.fileWatchLocation.listFiles(new FilenameFilter() {
+				File[] listFiles = TorrentAuService.this.fileWatchLocation.listFiles(new FilenameFilter() {
 				    @Override
 				    public boolean accept(File dir, String name) {
 				        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false;
 				    }
 				});
 
-				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, TorrentSupervisoryControlService.this.configuration);
+				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, TorrentAuService.this.configuration);
 
 				for (File file : listFiles) {
 					if (file.isFile() == true)
@@ -76,7 +76,7 @@ public class TorrentSupervisoryControlService implements Service {
 				}
 
 				if (action.getFileCount() > 0)
-					TorrentSupervisoryControlService.this.actionsExecutorService.submit(action);
+					TorrentAuService.this.actionsExecutorService.submit(action);
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000);
 
@@ -84,7 +84,7 @@ public class TorrentSupervisoryControlService implements Service {
 		this.torrentSupervisoryControlTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				TorrentSupervisoryControlService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentSupervisoryControlService.this.configuration));
+				TorrentAuService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentAuService.this.configuration));
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000);
 		return true;

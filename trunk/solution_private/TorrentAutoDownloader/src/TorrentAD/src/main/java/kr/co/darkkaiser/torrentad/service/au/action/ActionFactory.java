@@ -1,8 +1,8 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
+package kr.co.darkkaiser.torrentad.service.au.action;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.supervisorycontrol.TorrentSupervisoryControlActionImpl;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.transmission.FileTransmissionActionImpl;
+import kr.co.darkkaiser.torrentad.service.au.action.supervisorycontrol.TorrentSupervisoryControlActionImpl;
+import kr.co.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionActionImpl;
 
 public final class ActionFactory {
 

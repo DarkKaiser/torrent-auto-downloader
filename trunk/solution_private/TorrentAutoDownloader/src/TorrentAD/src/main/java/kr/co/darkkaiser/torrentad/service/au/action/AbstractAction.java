@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
+package kr.co.darkkaiser.torrentad.service.au.action;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

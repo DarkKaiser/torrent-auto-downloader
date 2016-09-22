@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
+package kr.co.darkkaiser.torrentad.service.au.action;
 
 public interface Action extends Runnable {
 
