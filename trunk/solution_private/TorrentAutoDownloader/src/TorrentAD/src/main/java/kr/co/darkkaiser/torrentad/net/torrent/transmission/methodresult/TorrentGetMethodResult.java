@@ -13,17 +13,17 @@ public final class TorrentGetMethodResult extends AbstractMethodResult {
 	public final class Torrent {
 
 		private long id;
-		private long status;
+		private int status;		// 0:Stopped, 1:Check waiting, 2:Checking, 3:Download waiting, 4:Downloading, 5:Seed waiting, 6:Seeding
 		private boolean isStalled;
 		private boolean isFinished;
-		private long error;
+		private int error;
 		private String errorString;
 
 		public long getId() {
 			return this.id;
 		}
 		
-		public long status() {
+		public int status() {
 			return this.status;
 		}
 		
@@ -35,7 +35,7 @@ public final class TorrentGetMethodResult extends AbstractMethodResult {
 			return this.isFinished;
 		}
 		
-		public long error() {
+		public int error() {
 			return this.error;
 		}
 		

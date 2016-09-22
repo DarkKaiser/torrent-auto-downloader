@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpStatus;
@@ -21,6 +22,7 @@ import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.MethodRe
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.SessionGetMethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentAddMethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentStartMethodResult;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -170,9 +172,63 @@ public class TransmissionRpcClient implements TorrentClient {
 	}
 	
 	@Override
-	public void get() throws IOException {
-		// @@@@@
-		System.out.println("##################");
+	public boolean startTorrent(List<Long> ids) throws Exception {
+		if (ids == null)
+			throw new NullPointerException("ids");
+		
+		if (ids.isEmpty() == true)
+			return true;
+
+		if (isConnected() == false) {
+			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			return false;
+		}
+
+		// ID 목록을 문자열로 변환한다.
+		boolean first = true;
+		StringBuilder sbIds = new StringBuilder();
+		for (Long id : ids) {
+			if (first == false) {
+				sbIds.append(",")
+					 .append(id);
+			} else {
+				first = false;
+				sbIds.append(id);
+			}
+		}
+
+		Connection.Response response = Jsoup.connect(this.rpcURL)
+				.userAgent(USER_AGENT)
+				.header("Authorization", this.authorization)
+				.header("X-Transmission-Session-Id", this.sessionId)
+				.requestBody(String.format("{ \"method\":\"torrent-start\", \"arguments\":{\"ids\":[%s]}}", sbIds.toString()))
+				.method(Connection.Method.POST)
+				.ignoreHttpErrors(true)
+				.ignoreContentType(true)
+				.execute();
+
+		if (response.statusCode() != HttpStatus.SC_OK) {
+			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+			return false;
+		}
+
+		String result = response.parse().body().html();
+		TorrentStartMethodResult methodResult = gson.fromJson(result, TorrentStartMethodResult.class);
+		if (methodResult.isResultSuccess() == false) {
+			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-start, 수신된 데이터:{})", result);
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public TorrentGetMethodResult getTorrent() throws Exception {
+		if (isConnected() == false) {
+			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			return null;
+		}
+
 		Connection.Response response = Jsoup.connect(this.rpcURL)
 				.userAgent(USER_AGENT)
 				.header("Authorization", this.authorization)
@@ -183,21 +239,19 @@ public class TransmissionRpcClient implements TorrentClient {
 				.ignoreContentType(true)
 				.execute();
 
-//		{"arguments":{"torrents":[
-//		                          {"error":0,"errorString":"","id":3,"isFinished":false,"isStalled":false,"status":0},
-//		                          {"error":0,"errorString":"","id":4,"isFinished":false,"isStalled":false,"status":0},
-//		                          {"error":0,"errorString":"","id":5,"isFinished":false,"isStalled":false,"status":0},
-//		                          {"error":0,"errorString":"","id":6,"isFinished":false,"isStalled":false,"status":0}]},"result":"success"}
-
 		if (response.statusCode() != HttpStatus.SC_OK) {
 			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
-			return;
+			return null;
 		}
 
 		String result = response.parse().body().html();
 		TorrentGetMethodResult methodResult = gson.fromJson(result, TorrentGetMethodResult.class);
+		if (methodResult.isResultSuccess() == false) {
+			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-get, 수신된 데이터:{})", result);
+			return null;
+		}
 
-		System.out.println(result);
+		return methodResult;
 	}
 	
 	private String encodeFileToBase64(File file) throws IOException {

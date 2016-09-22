@@ -1,7 +1,9 @@
 package kr.co.darkkaiser.torrentad.net.torrent;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
+
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 
 public interface TorrentClient {
 
@@ -13,7 +15,8 @@ public interface TorrentClient {
 
 	boolean addTorrent(File file, boolean paused) throws Exception;
 
-	//@@@@@
-	void get() throws IOException;
+	boolean startTorrent(List<Long> ids) throws Exception;
+
+	TorrentGetMethodResult getTorrent() throws Exception;
 
 }
