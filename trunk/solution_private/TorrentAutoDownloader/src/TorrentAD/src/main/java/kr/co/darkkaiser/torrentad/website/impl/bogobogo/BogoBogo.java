@@ -528,6 +528,10 @@ public class BogoBogo extends AbstractWebSite {
 				
 				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
 
+				// 실제로 첨부파일을 다운로드 하기 전에 해당 사이트에서 처리 할 시간을 두기 위해서 대기한다.
+				// 이렇게 하지 않으면 첨부파일 다운로드가 실패하는 경우가 발생한다.
+				Thread.sleep(500);
+
 				/**
 				 * 첨부파일 다운로드 하기
 				 */
@@ -546,8 +550,6 @@ public class BogoBogo extends AbstractWebSite {
 				if (downloadProcess3Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
 
-				// @@@@@ 인증실패라고 뜨는 경우가 있음
-//				System.out.println(downloadProcess3Response.parse());
 				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true)
 					throw new ParseException("첨부파일 다운로드 결과로 Unauthorized Access가 반환되었습니다.", 0);
 
