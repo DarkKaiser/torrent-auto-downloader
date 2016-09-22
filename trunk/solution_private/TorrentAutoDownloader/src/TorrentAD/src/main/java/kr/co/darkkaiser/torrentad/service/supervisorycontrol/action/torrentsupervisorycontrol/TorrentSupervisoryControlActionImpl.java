@@ -1,69 +1,91 @@
 package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.torrentsupervisorycontrol;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.AbstractAction;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
+	private static final Logger logger = LoggerFactory.getLogger(TorrentSupervisoryControlActionImpl.class);
+
+	private TorrentClient torrentClient;
+	
+	private AES256Util aes256;
+	
 	public TorrentSupervisoryControlActionImpl(Configuration configuration) {
 		super(ActionType.TORRENT_SUPERVISORY_CONTROL, configuration);
 	}
 
 	@Override
 	protected void beforeExecute() {
+		if (this.torrentClient != null && this.torrentClient.isConnected() == true) 
+			return;
+
 		// @@@@@
-//		this.transmitters.add(new TorrentFileTransmitter(this.configuration));
-//		this.transmitters.add(new FTPFileTransmitter(this.configuration));
+		String url = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_URL);
+		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
+		String password = null;
+		try {
+			// @@@@@
+			password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.torrentClient = new TransmissionRpcClient(url);
+		try {
+			if (this.torrentClient.connect(id, password) == false)
+				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// @@@@@
 	}
 
 	@Override
 	protected void afterExecute() {
-		// @@@@@
-//		Iterator<FileTransmitter> iterator = this.transmitters.iterator();
-//		while (iterator.hasNext()) {
-//			iterator.next().transmitFinished();
-//		}
-//
-//		this.transmitters.clear();
-//
-//		// 전송이 성공한 파일들은 삭제한다.
-//		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
-//			if (entry.getValue() == true) {
-//				logger.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
-//				entry.getKey().delete();
-//			}
-//		}
+		if (this.torrentClient != null) {
+			try {
+				this.torrentClient.disconnect();
+			} catch (Exception e) {
+				logger.error(null, e);
+			}
+
+			this.torrentClient = null;
+		}
 	}
 
 	@Override
 	protected void execute() throws Exception {
+		if (this.torrentClient == null)
+			throw new NullPointerException("torrentClient");
+		if (this.torrentClient.isConnected() == false)
+			throw new IllegalStateException("토렌트 서버에 연결되어 있지 않습니다.");
+
 		// @@@@@
-//		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
-//			File file = entry.getKey();
-//
-//			assert entry.getValue() == false;
-//
-//			try {
-//				Iterator<FileTransmitter> iterator = this.transmitters.iterator();
-//				while (iterator.hasNext()) {
-//					FileTransmitter transmitter = iterator.next();
-//					if (transmitter.support(file) == true) {
-//						transmitter.prepare();
-//						if (transmitter.transmit(file) == true) {
-//							entry.setValue(true);
-//							logger.debug("{} 파일의 전송이 완료되었습니다.", file.getName());
-//						} else {
-//							logger.warn("{} 파일의 전송이 실패하였습니다.", file.getName());
-//						}
-//
-//						break;
-//					}
-//				}
-//			} catch (Exception e) {
-//				logger.error("파일을 전송하는 도중에 예외가 발생하였습니다.({})", file.getName(), e);
-//			}
-//		}
+		this.torrentClient.get();
+
+	}
+
+	protected String decode(String encryption) throws Exception {
+		if (this.aes256 == null)
+			this.aes256 = new AES256Util();
+
+		try {
+			return this.aes256.decode(encryption);
+		} catch (Exception e) {
+			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
+			throw e;
+		}
 	}
 
 	@Override

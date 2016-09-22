@@ -20,6 +20,7 @@ import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.MethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.SessionGetMethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentAddMethodResult;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -167,7 +168,38 @@ public class TransmissionRpcClient implements TorrentClient {
 
 		return true;
 	}
+	
+	@Override
+	public void get() throws IOException {
+		// @@@@@
+		System.out.println("##################");
+		Connection.Response response = Jsoup.connect(this.rpcURL)
+				.userAgent(USER_AGENT)
+				.header("Authorization", this.authorization)
+				.header("X-Transmission-Session-Id", this.sessionId)
+				.requestBody("{\"method\": \"torrent-get\", \"arguments\":{\"fields\":[\"id\",\"isFinished\",\"error\",\"errorString\",\"isStalled\",\"status\"]}}")
+				.method(Connection.Method.POST)
+				.ignoreHttpErrors(true)
+				.ignoreContentType(true)
+				.execute();
 
+//		{"arguments":{"torrents":[
+//		                          {"error":0,"errorString":"","id":3,"isFinished":false,"isStalled":false,"status":0},
+//		                          {"error":0,"errorString":"","id":4,"isFinished":false,"isStalled":false,"status":0},
+//		                          {"error":0,"errorString":"","id":5,"isFinished":false,"isStalled":false,"status":0},
+//		                          {"error":0,"errorString":"","id":6,"isFinished":false,"isStalled":false,"status":0}]},"result":"success"}
+
+		if (response.statusCode() != HttpStatus.SC_OK) {
+			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+			return;
+		}
+
+		String result = response.parse().body().html();
+		TorrentGetMethodResult methodResult = gson.fromJson(result, TorrentGetMethodResult.class);
+
+		System.out.println(result);
+	}
+	
 	private String encodeFileToBase64(File file) throws IOException {
 		assert file != null;
 
@@ -191,5 +223,6 @@ public class TransmissionRpcClient implements TorrentClient {
 			throw e;
 		}
 	}
+
 
 }
