@@ -4,29 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public final class TorrentAddMethodResult extends AbstractMethodResult {
 
-	private final class Argument {
+	public final class Argument {
 		
 		@SerializedName("torrent-added")
-		private TorreatAdded torrentAdded;
+		public TorreatAdded torrentAdded;
 
-		@SuppressWarnings("unused")
-		public long getId() {
-			return this.torrentAdded.getId();
-		}
-		
-		@SuppressWarnings("unused")
-		public String getName() {
-			return this.torrentAdded.getName();
-		}
-
-		@SuppressWarnings("unused")
-		public String getHashString() {
-			return this.torrentAdded.getHashString();
-		}
+		@SerializedName("torrent-duplicate")
+		public TorreatAdded torrentDuplicate;
 
 	}
 	
-	private final class TorreatAdded {
+	public final class TorreatAdded {
 				
 		private long id;
 		private String name;

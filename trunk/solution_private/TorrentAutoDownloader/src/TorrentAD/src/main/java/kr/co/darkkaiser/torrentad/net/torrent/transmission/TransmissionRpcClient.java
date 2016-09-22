@@ -120,14 +120,16 @@ public class TransmissionRpcClient implements TorrentClient {
 	public boolean addTorrent(File file, boolean paused) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
-		
-		// @@@@@
-		if (isConnected() == false)
-			return false;
+
+		if (isConnected() == false) {
+			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			return false;			
+		}
 
 		String filePath = file.getAbsolutePath().toLowerCase();
 		if (filePath.endsWith(".torrent") == false) {
-			throw new IllegalArgumentException("토렌트 파일이 아닙니다.");
+			logger.error("토렌트 서버에 추가하시려는 파일이 토렌트 파일이 아닙니다.({})", file.getAbsolutePath());
+			return false;
 		}
 
 		Connection.Response response = Jsoup.connect(this.rpcURL)
@@ -146,13 +148,22 @@ public class TransmissionRpcClient implements TorrentClient {
 		}
 
 		String result = response.parse().body().html();
-		MethodResult methodResult = gson.fromJson(result, TorrentAddMethodResult.class);
+		TorrentAddMethodResult methodResult = gson.fromJson(result, TorrentAddMethodResult.class);
 		if (methodResult.isResultSuccess() == false) {
 			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-add, 수신된 데이터:{})", result);
 			return false;
 		}
-		
-		// @@@@@ 실패처리
+
+		if (methodResult.arguments == null || (methodResult.arguments.torrentAdded == null && methodResult.arguments.torrentDuplicate == null)) {
+			logger.error("토렌트 서버에서 수신된 데이터의 파싱 결과가 유효하지 않습니다.(method:torrent-add, 수신된 데이터:{})", result);
+			return false;
+		} else if (methodResult.arguments.torrentDuplicate != null) {
+			assert methodResult.arguments.torrentAdded == null;
+			logger.warn("토렌트 서버에 이미 등록되어 있는 토렌트입니다.(method:torrent-add, 파일:{})", file.getAbsolutePath());
+			return true;
+		}
+
+		assert methodResult.arguments.torrentAdded != null;
 
 		return true;
 	}
