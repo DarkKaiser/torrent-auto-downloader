@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.filetransmission;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.transmission;
 
 import java.io.File;
 

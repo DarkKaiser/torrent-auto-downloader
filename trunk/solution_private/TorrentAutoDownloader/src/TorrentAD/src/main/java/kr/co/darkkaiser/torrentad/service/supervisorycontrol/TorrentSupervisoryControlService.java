@@ -13,7 +13,7 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.filetransmission.FileTransmissionAction;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.transmission.FileTransmissionAction;
 
 public class TorrentSupervisoryControlService implements Service {
 

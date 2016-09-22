@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.torrentsupervisorycontrol;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.supervisorycontrol;
 
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.Action;
 
