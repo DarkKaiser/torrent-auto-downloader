@@ -14,9 +14,9 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.AbstractAction;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.UnsupportedTransmissionFileException;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.FTPFileTransmitter;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.FileTransmitter;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.TorrentFileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FTPFileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 

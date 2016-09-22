@@ -17,8 +17,6 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 	private TorrentClient torrentClient;
 	
-	private AES256Util aes256;
-	
 	public TorrentSupervisoryControlActionImpl(Configuration configuration) {
 		super(ActionType.TORRENT_SUPERVISORY_CONTROL, configuration);
 	}
@@ -28,27 +26,26 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 		if (this.torrentClient != null && this.torrentClient.isConnected() == true) 
 			return;
 
-		// @@@@@
 		String url = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_URL);
 		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
-		String password = null;
+		String password = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD);
+
 		try {
-			// @@@@@
-			password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD));
+			password = new AES256Util().decode(password);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
+			return;
 		}
 
 		this.torrentClient = new TransmissionRpcClient(url);
+
 		try {
 			if (this.torrentClient.connect(id, password) == false)
 				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
+			return;
 		}
-		// @@@@@
 	}
 
 	@Override
@@ -73,19 +70,6 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 		// @@@@@
 		this.torrentClient.get();
-
-	}
-
-	protected String decode(String encryption) throws Exception {
-		if (this.aes256 == null)
-			this.aes256 = new AES256Util();
-
-		try {
-			return this.aes256.decode(encryption);
-		} catch (Exception e) {
-			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
-			throw e;
-		}
 	}
 
 	@Override

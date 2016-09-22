@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
