@@ -25,6 +25,7 @@ public class App {
 		try {
 			configuration = new DefaultConfiguration();
 		} catch (Exception e) {
+			logger.error(null, e);
 			return false;
 		}
 

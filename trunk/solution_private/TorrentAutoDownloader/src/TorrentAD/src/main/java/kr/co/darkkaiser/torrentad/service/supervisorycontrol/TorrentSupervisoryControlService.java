@@ -65,7 +65,7 @@ public class TorrentSupervisoryControlService implements Service {
 				File[] listFiles = TorrentSupervisoryControlService.this.fileWatchLocation.listFiles(new FilenameFilter() {
 				    @Override
 				    public boolean accept(File dir, String name) {
-				        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_DOWNLOADING_FILE_EXTENSION) == false;
+				        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false;
 				    }
 				});
 

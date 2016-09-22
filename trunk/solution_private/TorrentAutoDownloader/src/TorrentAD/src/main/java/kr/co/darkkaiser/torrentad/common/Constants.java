@@ -6,7 +6,7 @@ public final class Constants {
 	public static final String APP_VERSION = "0.0.1";
 	
 	// AD Service Task에서 다운로드 진행중인 파일의 임시 확장자
-	public static final String AD_SERVICE_TASK_DOWNLOADING_FILE_EXTENSION = ".notyet";
+	public static final String AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION = ".notyet";
 
 	
 	/**
@@ -48,7 +48,7 @@ public final class Constants {
 
 
 	/*
-	 * AD Service Task 메타데이터 관련
+	 * AD Service Task의 메타데이터 파일 관련
 	 */
 	public static final String AD_SERVICE_TASK_METADATA_FILE_NAME = "torrentad.properties";
 

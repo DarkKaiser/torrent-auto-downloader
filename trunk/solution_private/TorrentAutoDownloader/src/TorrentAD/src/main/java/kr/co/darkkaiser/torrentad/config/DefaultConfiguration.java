@@ -33,7 +33,7 @@ public final class DefaultConfiguration implements Configuration {
 			throw new NullPointerException("filePath");
 		if (StringUtil.isBlank(filePath) == true)
 			throw new IllegalArgumentException("filePath는 빈 문자열을 허용하지 않습니다.");
-		
+
 		synchronized (this.configValues) {
 			this.filePath = null;
 			this.configValues.clear();
@@ -55,7 +55,7 @@ public final class DefaultConfiguration implements Configuration {
 							Node cvChildNode = cvChildNodeList.item(cvChildNodeListIndex);
 							if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 								this.configValues.put(cvChildNode.getNodeName(), cvChildNode.getTextContent());
-								logger.debug("환경설정정보:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
+								logger.debug("프로그램 설정정보:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
 							}
 						}
 					}
@@ -63,11 +63,11 @@ public final class DefaultConfiguration implements Configuration {
 
 				this.filePath = filePath;
 			} catch (FileNotFoundException e) {
-				logger.error("환경설정정보 파일을 찾을 수 없습니다.(파일경로 :'{}')", filePath, e);
+				logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(파일경로:'{}')", filePath, e);
 				throw e;
 			} catch (Exception e) {
 				this.configValues.clear();
-				logger.error("환경설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
+				logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
 				throw e;
 			}
 		}
