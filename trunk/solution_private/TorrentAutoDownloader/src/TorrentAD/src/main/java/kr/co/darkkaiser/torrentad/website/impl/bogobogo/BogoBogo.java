@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
@@ -483,8 +484,7 @@ public class BogoBogo extends AbstractWebSite {
 
 				String result = downloadProcess1Response.parse().body().html();
 				DownloadProcess1Result downloadProcess1Result = gson.fromJson(result, DownloadProcess1Result.class);
-				if (StringUtil.isBlank(downloadProcess1Result.getStat()) == true ||
-						StringUtil.isBlank(downloadProcess1Result.getKey()) == true ||
+				if (StringUtil.isBlank(downloadProcess1Result.getStat()) == true || StringUtil.isBlank(downloadProcess1Result.getKey()) == true ||
 						downloadProcess1Result.getStat().equals("true") == false) {
 					throw new JsonParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다.(%s)", result));
 				}
@@ -519,12 +519,14 @@ public class BogoBogo extends AbstractWebSite {
 				if (fileName.startsWith("Filename:") == false)
 					throw new ParseException(String.format("추출된 문자열이 특정 문자열로 시작되지 않아 파일명 추출이 실패하였습니다.(추출된문자열:%s) CSS셀렉터를 확인하세요.", fileName), 0);
 
-				String downloadFileFullPath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
-				File file = new File(downloadFileFullPath);
-				if (file.isFile() == true) {
-					logger.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFileFullPath);
+				String downloadFilePath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
+				File downloadFile = new File(downloadFilePath);
+				if (downloadFile.exists() == true) {
+					logger.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
 					continue;
 				}
+				
+				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
 
 				/**
 				 * 첨부파일 다운로드 하기
@@ -552,15 +554,16 @@ public class BogoBogo extends AbstractWebSite {
 				/**
 				 * 첨부파일 저장
 				 */
-				// @@@@@ 파일 저장시 확장자를 바꿔서 저장했다가 이름을 바꾸는 식으로 변경, .netyet
-				FileOutputStream fos = new FileOutputStream(file);
+				FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
-
+				
+				notyetDownloadFile.renameTo(downloadFile);
+				
 				++downloadCompletedCount;
 				downloadLink.setDownloadCompleted(true);
 				
-				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFileFullPath);
+				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
 			} catch (ParseException e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			} catch (Exception e) {
