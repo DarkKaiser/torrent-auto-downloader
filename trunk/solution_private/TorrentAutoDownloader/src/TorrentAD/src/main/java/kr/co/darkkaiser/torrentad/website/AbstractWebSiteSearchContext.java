@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractWebSiteSearchContext implements WebSiteSearchContext {
 
+	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSiteSearchContext.class);
+	
 	private final WebSite site;
 
-	private Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
+	private final Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
 	public AbstractWebSiteSearchContext(WebSite site) {
 		if (site == null)
@@ -31,7 +35,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	}
 
 	@Override
-	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception {
+	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) {
 		if (type == null)
 			throw new NullPointerException("type");
 		if (searchKeywords == null)
@@ -68,7 +72,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (type.allowEmpty() == false) {
 				if (this.searchKeywords.get(type).isEmpty() == true)
-					throw new EmptySearchKeywordsException(String.format("검색 키워드가 등록되어 있지 않습니다.(%s)", type.getValue()));
+					throw new EmptySearchKeywordsException(String.format("등록된 검색 키워드 목록이 없습니다.(%s)", type.getValue()));
 			}
 		}
 	}
@@ -78,7 +82,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		try {
 			validate();
 		} catch (Exception e) {
-			// @@@@@ log
+			logger.debug(null, e);
 			return false;
 		}
 

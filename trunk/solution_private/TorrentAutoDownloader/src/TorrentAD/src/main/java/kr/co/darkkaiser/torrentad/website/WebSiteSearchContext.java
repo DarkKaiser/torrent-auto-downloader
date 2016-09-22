@@ -4,13 +4,13 @@ public interface WebSiteSearchContext {
 
 	WebSite getWebSite();
 
-	void setBoardName(String name) throws Exception;
+	void setBoardName(String name);
 
 	long getLatestDownloadBoardItemIdentifier();
 
 	void setLatestDownloadBoardItemIdentifier(long identifier);
 
-	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
+	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords);
 
 	boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text);
 

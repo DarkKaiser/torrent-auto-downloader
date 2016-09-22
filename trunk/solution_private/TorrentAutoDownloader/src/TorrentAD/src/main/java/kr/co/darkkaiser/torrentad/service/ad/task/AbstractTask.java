@@ -62,7 +62,7 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public void setBoardName(String name) throws Exception {
+	public void setBoardName(String name) {
 		this.searchContext.setBoardName(name);
 	}
 
@@ -72,7 +72,7 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception {
+	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) {
 		this.searchContext.addSearchKeywords(type, searchKeywords);
 	}
 

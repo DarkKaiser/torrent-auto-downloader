@@ -12,11 +12,11 @@ public interface Task {
 	
 	TaskMetadataRegistry getTaskMetadataRegistry();
 
-	void setBoardName(String name) throws Exception;
+	void setBoardName(String name);
 
 	void setLatestDownloadBoardItemIdentifier(long identifier);
 
-	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) throws Exception;
+	void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords);
 
 	TaskResult run(WebSiteHandler handler);
 

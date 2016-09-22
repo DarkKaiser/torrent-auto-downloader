@@ -6,9 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
+	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteSearchKeywords.class);
+	
 	private final WebSiteSearchKeywordsMode mode;
 
 	private final List<List<String>> keywords = new ArrayList<>();
@@ -74,7 +78,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		try {
 			validate();
 		} catch (Exception e) {
-			// @@@@@ log
+			logger.debug(null, e);
 			return false;
 		}
 

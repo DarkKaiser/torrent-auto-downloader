@@ -19,12 +19,8 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	}
 
 	@Override
-	public void setBoardName(String name) throws Exception {
-		try {
-			this.board = BogoBogoBoard.fromString(name);
-		} catch (Exception e) {
-			throw e;
-		}
+	public void setBoardName(String name) {
+		this.board = BogoBogoBoard.fromString(name);
 	}
 
 	@Override
