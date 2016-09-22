@@ -13,7 +13,7 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionFactory;
 import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.FileTransmissionAction;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.filetransmission.FileTransmissionAction;
 
 public class TorrentSupervisoryControlService implements Service {
 
@@ -99,11 +99,10 @@ public class TorrentSupervisoryControlService implements Service {
 		if (this.actionsExecutorService != null)
 			this.actionsExecutorService.shutdown();
 
-		this.fileWatchLocation = null;
-
 		this.fileWatcherTimer = null;
-		this.torrentSupervisoryControlTimer = null;
 		this.actionsExecutorService = null;
+		this.torrentSupervisoryControlTimer = null;
+		this.fileWatchLocation = null;
 	}
 
 }

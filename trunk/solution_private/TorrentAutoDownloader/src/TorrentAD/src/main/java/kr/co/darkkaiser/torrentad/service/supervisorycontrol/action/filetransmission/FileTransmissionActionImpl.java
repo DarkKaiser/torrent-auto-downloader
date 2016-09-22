@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.filetransmission;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FTPFileTransmitter;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.FileTransmitter;
-import kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter.TorrentFileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.AbstractAction;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.UnsupportedTransmissionFileException;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.FTPFileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.FileTransmitter;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter.TorrentFileTransmitter;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
@@ -21,7 +24,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	private Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
 
-	private List<FileTransmitter> transmitters = new ArrayList<>();
+	private List<FileTransmitter> fileTransmitters = new ArrayList<>();
 
 	public FileTransmissionActionImpl(Configuration configuration) {
 		super(ActionType.FILE_TRANSMISSION, configuration);
@@ -29,18 +32,18 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	@Override
 	protected void beforeExecute() {
-		this.transmitters.add(new TorrentFileTransmitter(this.configuration));
-		this.transmitters.add(new FTPFileTransmitter(this.configuration));
+		this.fileTransmitters.add(new TorrentFileTransmitter(this.configuration));
+		this.fileTransmitters.add(new FTPFileTransmitter(this.configuration));
 	}
 
 	@Override
 	protected void afterExecute() {
-		Iterator<FileTransmitter> iterator = this.transmitters.iterator();
+		Iterator<FileTransmitter> iterator = this.fileTransmitters.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().transmitFinished();
 		}
 
-		this.transmitters.clear();
+		this.fileTransmitters.clear();
 
 		// 전송이 성공한 파일들은 삭제한다.
 		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
@@ -59,7 +62,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 			assert entry.getValue() == false;
 
 			try {
-				Iterator<FileTransmitter> iterator = this.transmitters.iterator();
+				Iterator<FileTransmitter> iterator = this.fileTransmitters.iterator();
 				while (iterator.hasNext()) {
 					FileTransmitter transmitter = iterator.next();
 					if (transmitter.support(file) == true) {

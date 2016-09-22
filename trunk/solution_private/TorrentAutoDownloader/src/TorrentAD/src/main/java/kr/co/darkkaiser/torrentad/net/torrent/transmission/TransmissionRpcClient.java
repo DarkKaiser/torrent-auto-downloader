@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.MethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.SessionGetMethodResult;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentAddMethodResult;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -27,8 +28,6 @@ public class TransmissionRpcClient implements TorrentClient {
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 	
 	private final String rpcURL;
-	
-	private Connection.Response loginConnResponse;
 	
 	private String sessionId;
 	
@@ -92,7 +91,6 @@ public class TransmissionRpcClient implements TorrentClient {
 
 			this.sessionId = sessionId;
 			this.authorization = authorization;
-			this.loginConnResponse = response;
 		} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
 			logger.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage() + ": 사용자 인증이 실패하였습니다.");
 			return false;
@@ -108,12 +106,11 @@ public class TransmissionRpcClient implements TorrentClient {
 	public void disconnect() throws Exception {
 		this.sessionId = null;
 		this.authorization = null;
-		this.loginConnResponse = null;
 	}
 
 	@Override
 	public boolean isConnected() {
-		if (this.loginConnResponse == null || StringUtil.isBlank(this.sessionId) == true || StringUtil.isBlank(this.authorization) == true)
+		if (StringUtil.isBlank(this.sessionId) == true || StringUtil.isBlank(this.authorization) == true)
 			return false;
 
 		return true;
@@ -123,6 +120,10 @@ public class TransmissionRpcClient implements TorrentClient {
 	public boolean addTorrent(File file, boolean paused) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
+		
+		// @@@@@
+		if (isConnected() == false)
+			return false;
 
 		String filePath = file.getAbsolutePath().toLowerCase();
 		if (filePath.endsWith(".torrent") == false) {

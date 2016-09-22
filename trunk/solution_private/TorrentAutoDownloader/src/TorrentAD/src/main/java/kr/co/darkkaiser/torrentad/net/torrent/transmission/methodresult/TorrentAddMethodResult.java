@@ -1,27 +1,27 @@
-package kr.co.darkkaiser.torrentad.net.torrent.transmission;
+package kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult;
 
 import com.google.gson.annotations.SerializedName;
 
-import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.AbstractMethodResult;
-
-// @@@@@
 public final class TorrentAddMethodResult extends AbstractMethodResult {
 
 	private final class Argument {
 		
 		@SerializedName("torrent-added")
-		private TorreatAdded torrentadded;
+		private TorreatAdded torrentAdded;
 
+		@SuppressWarnings("unused")
 		public long getId() {
-			return this.torrentadded.getId();
+			return this.torrentAdded.getId();
 		}
 		
+		@SuppressWarnings("unused")
 		public String getName() {
-			return this.torrentadded.getName();
+			return this.torrentAdded.getName();
 		}
 
+		@SuppressWarnings("unused")
 		public String getHashString() {
-			return this.torrentadded.getHashString();
+			return this.torrentAdded.getHashString();
 		}
 
 	}
@@ -29,9 +29,7 @@ public final class TorrentAddMethodResult extends AbstractMethodResult {
 	private final class TorreatAdded {
 				
 		private long id;
-		
 		private String name;
-		
 		private String hashString;
 
 		public long getId() {
@@ -48,19 +46,6 @@ public final class TorrentAddMethodResult extends AbstractMethodResult {
 	
 	}
 
-	// @@@@@ 배열 아닌가?
-	private Argument arguments;
+	public Argument arguments;
 	
-	public long getId() {
-		return this.arguments.getId();
-	}
-	
-	public String getName() {
-		return this.arguments.getName();
-	}
-	
-	public String getHashString() {
-		return this.arguments.getHashString();
-	}
-
 }

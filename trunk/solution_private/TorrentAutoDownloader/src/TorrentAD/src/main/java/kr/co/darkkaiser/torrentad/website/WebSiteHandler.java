@@ -10,9 +10,9 @@ public interface WebSiteHandler {
 
 	void logout() throws Exception;
 
-	Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws Exception;
+	Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException;
 
-	Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception;
+	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception;
 
 	boolean isLogin();
 

@@ -135,8 +135,8 @@ public class BogoBogo extends AbstractWebSite {
 		/**
 		 * 로그인 2단계 수행
 		 */
-		// 간혹 ConnectException 예외가 발생하므로 최대 3번 루프를 돌린다.
-		for (int loop = 0; loop < 3; ++loop) {
+		// 간혹 ConnectException 예외가 발생하므로 루프를 돌린다.
+		for (int loopCount = 0; loopCount < 3; ++loopCount) {
 			try {
 				Jsoup.connect(doc.select("img").attr("src"))
 					.userAgent(USER_AGENT)
@@ -154,7 +154,7 @@ public class BogoBogo extends AbstractWebSite {
 				logger.error("GET {}", doc.select("img").attr("src"));
 				throw e;
 			}
-			
+
 			break;
 		}
 
@@ -211,7 +211,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException, Exception {
+	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -241,7 +241,7 @@ public class BogoBogo extends AbstractWebSite {
 
 				resultList.add(boardItem);
 
-				logger.debug("검색된게시물:" + boardItem);
+				logger.debug("검색된 게시물:" + boardItem);
 			}
 		}
 
@@ -302,7 +302,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .method(Connection.Method.GET)
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
-	
+
 				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 	
@@ -441,7 +441,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer, Integer> downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -543,7 +543,7 @@ public class BogoBogo extends AbstractWebSite {
 
 				if (downloadProcess3Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
-				
+
 				// @@@@@ 인증실패라고 뜨는 경우가 있음
 //				System.out.println(downloadProcess3Response.parse());
 				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true)
@@ -568,7 +568,7 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		return new Tuple<Integer, Integer>(downloadTryCount, downloadCompletedCount);
+		return new Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */>(downloadTryCount, downloadCompletedCount);
 	}
 
 	@Override
@@ -576,12 +576,10 @@ public class BogoBogo extends AbstractWebSite {
 		return new StringBuilder()
 				.append(BogoBogo.class.getSimpleName())
 				.append("{")
-				.append("로그인 여부:").append(isLogin())
-				.append(", 다운로드파일 저장위치:").append(this.downloadFileWriteLocation)
+				.append("다운로드파일 저장위치:").append(this.downloadFileWriteLocation)
 				.append("}, ")
 				.append(super.toString())
 				.toString();
 	}
-
 
 }

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.transmitter;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.filetransmitter;
 
 import java.io.File;
 import java.io.FileNotFoundException;

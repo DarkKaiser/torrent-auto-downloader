@@ -1,6 +1,8 @@
-package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action;
+package kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.torrentsupervisorycontrol;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.AbstractAction;
+import kr.co.darkkaiser.torrentad.service.supervisorycontrol.action.ActionType;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 

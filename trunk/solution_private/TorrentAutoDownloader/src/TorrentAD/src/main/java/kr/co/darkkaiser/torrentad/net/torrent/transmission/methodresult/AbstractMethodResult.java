@@ -3,12 +3,12 @@ package kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult;
 public abstract class AbstractMethodResult implements MethodResult {
 
 	private long tag;
-	
+
 	private String result;
 
 	@Override
 	public long getTag() {
-		return tag;
+		return this.tag;
 	}
 
 	@Override
