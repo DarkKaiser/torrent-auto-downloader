@@ -322,7 +322,8 @@ public class BogoBogo extends AbstractWebSite {
 								continue;
 
 							// 카테고리
-							iterator.next();
+							if (board.hasCategoryInfo() == true)
+								iterator.next();
 
 							// 제목
 							Element titleElement = iterator.next();

@@ -6,21 +6,25 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public enum BogoBogoBoard implements WebSiteBoard {
 
-	MOVIE_NEW			("newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie"),
-	MOVIE_KOR			("kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie"),
-	MOVIE_HD			("hdmovie", 			"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie"),
-	KOR_DRAMA_ON		("kordramaon", 			"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon"),
-	KOR_ENTERTAINMENT	("korentertainment",	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain"),
-	ANI_ON				("anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion");
+	MOVIE_NEW			("newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
+	MOVIE_KOR			("kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
+	MOVIE_HD			("hdmovie", 			"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
+	KOR_DRAMA_ON		("kordramaon", 			"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
+	KOR_ENTERTAINMENT	("korentertainment",	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
+	ANI_ON				("anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
 	private String name;
 	private String description;
 	private String url;
 	
-	private BogoBogoBoard(String name, String description, String url) {
+	// 목록에서 카테고리 정보를 가지고 있는지의 여부
+	private boolean hasCategoryInfo;
+
+	private BogoBogoBoard(String name, String description, String url, boolean hasCategoryInfo) {
 		this.name = name;
 		this.description = description;
 		this.url = url;
+		this.hasCategoryInfo = hasCategoryInfo;
 	}
 	
 	@Override
@@ -36,6 +40,11 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	@Override
 	public String getURL() {
 		return this.url;
+	}
+	
+	@Override
+	public boolean hasCategoryInfo() {
+		return this.hasCategoryInfo;
 	}
 
 	/**
