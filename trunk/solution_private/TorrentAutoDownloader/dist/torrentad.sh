@@ -3,6 +3,8 @@
 # 서버명
 SRV_NAME=TorrentAD
 
+cd /usr/local/torrentad/
+
 case "$1" in
 stop)
   PROCESS_COUNT=`ps ax | grep -v grep | grep java | grep $SRV_NAME | wc -l`
