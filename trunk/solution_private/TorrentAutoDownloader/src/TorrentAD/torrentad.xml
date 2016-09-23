@@ -89,6 +89,9 @@
 
 			<!-- Torrent 상태를 감시 및 제어하기 위한 간격(단위:초) -->
 			<torrent-supervisory-control-interval-time-second>30</torrent-supervisory-control-interval-time-second>
+
+			<!-- Torrent 서버에서 한번에 다운로드 받을 수 있는 최대 개수 -->
+			<max-concurrent-downloading-torrent-count>2</max-concurrent-downloading-torrent-count>
 		</torrentad-service-config-values>
 	</torrentad-au-service>
 	

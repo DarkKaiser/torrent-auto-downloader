@@ -21,12 +21,14 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentSupervisoryControlActionImpl.class);
 	
-	private static final int MAX_TORRENT_DOWNLOADING_COUNT = 2;
-
 	private TorrentClient torrentClient;
 	
+	private final int maxConcurrentDownloadingTorrentCount;
+
 	public TorrentSupervisoryControlActionImpl(Configuration configuration) {
 		super(ActionType.TORRENT_SUPERVISORY_CONTROL, configuration);
+
+		this.maxConcurrentDownloadingTorrentCount = Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_MAX_CONCURRENT_DOWNLOADING_TORRENT_COUNT));
 	}
 
 	@Override
@@ -107,8 +109,8 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 					}
 				}
 				
-				if (ids.isEmpty() == false && downloadingCount < MAX_TORRENT_DOWNLOADING_COUNT) {
-					int possibleDownloadCount = MAX_TORRENT_DOWNLOADING_COUNT - downloadingCount;
+				if (ids.isEmpty() == false && downloadingCount < this.maxConcurrentDownloadingTorrentCount) {
+					int possibleDownloadCount = this.maxConcurrentDownloadingTorrentCount - downloadingCount;
 					
 					while (true) {
 						if (ids.size() <= possibleDownloadCount)

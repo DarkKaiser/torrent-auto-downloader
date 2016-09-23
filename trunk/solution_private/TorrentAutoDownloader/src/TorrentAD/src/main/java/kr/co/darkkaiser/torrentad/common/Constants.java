@@ -34,6 +34,7 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID = "torrent-rpc-account-id";
 	public static final String APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD = "torrent-rpc-account-password";
 	public static final String APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND = "torrent-supervisory-control-interval-time-second";
+	public static final String APP_CONFIG_TAG_MAX_CONCURRENT_DOWNLOADING_TORRENT_COUNT = "max-concurrent-downloading-torrent-count";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";
 
 	// AD Service Task
