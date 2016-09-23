@@ -9,6 +9,7 @@ import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
 import kr.co.darkkaiser.torrentad.service.au.TorrentAuService;
+import kr.co.darkkaiser.torrentad.service.bot.TelegramBotService;
 
 public class App {
 	
@@ -18,6 +19,7 @@ public class App {
 	
 	private Service torrentAdService;
 	private Service torrentAuService;
+	private Service torrentBotService;
 
 	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
@@ -34,7 +36,8 @@ public class App {
 		try {
 			this.torrentAuService = new TorrentAuService(configuration);
 			this.torrentAdService = new TorrentAdService(configuration);
-			return this.torrentAuService.start() && this.torrentAdService.start();
+			this.torrentBotService = new TelegramBotService(configuration);
+			return this.torrentAuService.start() && this.torrentAdService.start() && this.torrentBotService.start();
 		} catch (Exception e) {
 			logger.error(null, e);
 			return false;
@@ -42,6 +45,8 @@ public class App {
 	}
 
 	private void stop() {
+		if (this.torrentBotService != null)
+			this.torrentBotService.stop();
 		if (this.torrentAuService != null)
 			this.torrentAuService.stop();
 		if (this.torrentAdService != null)
@@ -52,6 +57,7 @@ public class App {
 		this.configuration = null;
 		this.torrentAdService = null;
 		this.torrentAuService = null;
+		this.torrentBotService = null;
 	}
 
     private void addShutdownHook(final App app) {
