@@ -11,7 +11,7 @@
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
-			<download-file-write-location>e:\Temp</download-file-write-location>
+			<download-file-write-location>d:\Temp</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
 			<task-execute-interval-time-second>60</task-execute-interval-time-second>

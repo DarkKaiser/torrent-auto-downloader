@@ -36,6 +36,9 @@ public class FTPClient {
 		this.ftpClient.configure(ftpClientConfig);
 
 		try {
+			// 파일명의 한글 깨짐을 방지하기 위해 연결을 맺기 전에 설정한다. 
+			this.ftpClient.setControlEncoding("utf-8");
+
 			this.ftpClient.connect(host, port);
 
 			this.ftpClient.enterLocalPassiveMode();
@@ -51,7 +54,6 @@ public class FTPClient {
 			this.ftpClient.login(user, password);
 
 			this.ftpClient.setSoTimeout(10000);
-			this.ftpClient.setControlEncoding("utf-8");
 			this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (Exception e) {
 			logger.error(null, e);
@@ -94,7 +96,12 @@ public class FTPClient {
 
 		try {
 			bos = new BufferedOutputStream(new FileOutputStream(file));
-			return this.ftpClient.retrieveFile(remotePath, bos);
+			if (this.ftpClient.retrieveFile(remotePath, bos) == false) {
+				logger.error("FTP 서버에서의 파일 다운로드가 실패하였습니다.({})", file.getAbsolutePath());
+				return false;
+			}
+			
+			return true;
 		} finally {
 			if (bos != null)
 				bos.close();
@@ -106,7 +113,12 @@ public class FTPClient {
 
 		try {
 			bis = new BufferedInputStream(new FileInputStream(file));
-			return this.ftpClient.storeFile(remotePath, bis);
+			if (this.ftpClient.storeFile(remotePath, bis) == false) {
+				logger.error("FTP 서버로의 파일 업로드가 실패하였습니다.({})", file.getAbsolutePath());
+				return false;
+			}
+
+			return true;
 		} finally {
 			if (bis != null)
 				bis.close();

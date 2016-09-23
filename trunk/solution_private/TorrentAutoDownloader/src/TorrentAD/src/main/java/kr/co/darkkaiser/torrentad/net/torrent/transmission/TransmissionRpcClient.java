@@ -175,14 +175,14 @@ public class TransmissionRpcClient implements TorrentClient {
 	public boolean startTorrent(List<Long> ids) throws Exception {
 		if (ids == null)
 			throw new NullPointerException("ids");
-		
-		if (ids.isEmpty() == true)
-			return true;
 
 		if (isConnected() == false) {
 			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
 			return false;
 		}
+
+		if (ids.isEmpty() == true)
+			return true;
 
 		// ID 목록을 문자열로 변환한다.
 		boolean first = true;
@@ -213,7 +213,7 @@ public class TransmissionRpcClient implements TorrentClient {
 		}
 
 		String result = response.parse().body().html();
-		TorrentStartMethodResult methodResult = gson.fromJson(result, TorrentStartMethodResult.class);
+		MethodResult methodResult = gson.fromJson(result, TorrentStartMethodResult.class);
 		if (methodResult.isResultSuccess() == false) {
 			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-start, 수신된 데이터:{})", result);
 			return false;
@@ -277,6 +277,5 @@ public class TransmissionRpcClient implements TorrentClient {
 			throw e;
 		}
 	}
-
 
 }
