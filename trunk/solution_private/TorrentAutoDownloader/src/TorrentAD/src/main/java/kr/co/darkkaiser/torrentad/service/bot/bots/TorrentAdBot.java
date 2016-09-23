@@ -24,7 +24,7 @@ public class TorrentAdBot extends TelegramLongPollingCommandBot {
         register(new StartCommand());
         HelpCommand helpCommand = new HelpCommand(this);
         register(helpCommand);
-        
+
         // @@@@@
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
 //        userState.put(message.getFrom().getId(), WAITINGCHANNEL);

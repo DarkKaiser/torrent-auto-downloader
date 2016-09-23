@@ -53,7 +53,7 @@ public class TelegramBotService implements Service {
 		// @@@@@ 서비스 중지가 안되는것 같음, 프로세스가 안 떨어짐
 //        // @@@@@
 //        Thread.sleep(1000);
-//        app.stop();
+//        app.stop(); 봇 내부의 private final ExecutorService exe = Executors.newSingleThreadExecutor(); 이거 때문인거 같음
 
 		this.telegramBotsApi = null;
 	}
