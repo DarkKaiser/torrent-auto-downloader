@@ -528,9 +528,9 @@ public class BogoBogo extends AbstractWebSite {
 				
 				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
 
-				// 실제로 첨부파일을 다운로드 하기 전에 해당 사이트에서 처리 할 시간을 두기 위해서 대기한다.
+				// 다운로드 사이트에서 10초 대기시간이 있으므로 대기한다.
 				// 이렇게 하지 않으면 첨부파일 다운로드가 실패하는 경우가 발생한다.
-				Thread.sleep(500);
+				Thread.sleep(10000);
 
 				/**
 				 * 첨부파일 다운로드 하기
@@ -543,7 +543,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .data("file_id", downloadProcess2Doc.select("input[id=file_id]").val())
 		                .data("valid_id", downloadProcess2Doc.select("input[id=valid_id]").val())
 		                .method(Connection.Method.POST)
-		                .cookies(this.loginConnResponse.cookies())
+		                .cookies(downloadProcess2Response.cookies())
 		                .ignoreContentType(true)
 		                .execute();
 
