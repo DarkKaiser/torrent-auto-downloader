@@ -58,7 +58,10 @@ public class App {
         Runnable shutdownHook = new Runnable() {
             public void run() {
             	logger.info("{} 프로그램을 종료하는 중입니다...", Constants.APP_NAME);
-                app.stop();
+                
+            	app.stop();
+                
+            	logger.info("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
             }
         };
 
