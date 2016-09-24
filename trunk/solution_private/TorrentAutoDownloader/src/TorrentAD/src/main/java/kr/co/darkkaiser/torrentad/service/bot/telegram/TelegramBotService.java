@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot;
+package kr.co.darkkaiser.torrentad.service.bot.telegram;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -10,10 +10,10 @@ import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.service.Service;
-import kr.co.darkkaiser.torrentad.service.bot.bots.TorrentAdBot;
+import kr.co.darkkaiser.torrentad.service.bot.BotService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.bots.TorrentAdBot;
 
-public class TelegramBotService implements Service {
+public class TelegramBotService implements BotService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
 	
