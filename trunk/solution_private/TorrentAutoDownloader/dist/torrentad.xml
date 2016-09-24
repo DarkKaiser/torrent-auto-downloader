@@ -107,12 +107,60 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
+			<torrentad-periodic-task id="taskRui">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>쇼핑왕+루이</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-task>
+			
 			<torrentad-periodic-task id="taskOneNightTwoDays">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
 						<item>해피+선데이+1박2일</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-task>
+
+			<torrentad-periodic-task id="taskOlive">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>올리브쇼</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-task>
+
+			<torrentad-periodic-task id="taskMiunWori">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>미운우리새끼</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
