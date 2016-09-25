@@ -17,15 +17,15 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	private String name;
 	private String description;
 	private String url;
-	
-	// 목록에서 카테고리 정보를 가지고 있는지의 여부
-	private boolean hasCategoryInfo;
 
-	private BogoBogoBoard(String name, String description, String url, boolean hasCategoryInfo) {
+	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
+	private boolean hasCategory;
+
+	private BogoBogoBoard(String name, String description, String url, boolean hasCategory) {
 		this.name = name;
 		this.description = description;
 		this.url = url;
-		this.hasCategoryInfo = hasCategoryInfo;
+		this.hasCategory = hasCategory;
 	}
 	
 	@Override
@@ -44,8 +44,8 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 	
 	@Override
-	public boolean hasCategoryInfo() {
-		return this.hasCategoryInfo;
+	public boolean hasCategory() {
+		return this.hasCategory;
 	}
 
 	/**

@@ -8,7 +8,7 @@ public interface WebSiteBoard {
 	
 	String getURL();
 	
-	boolean hasCategoryInfo();
+	boolean hasCategory();
 	
 	String getDefaultRegistDateFormatString();
 	

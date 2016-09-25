@@ -322,7 +322,7 @@ public class BogoBogo extends AbstractWebSite {
 								continue;
 
 							// 카테고리
-							if (board.hasCategoryInfo() == true)
+							if (board.hasCategory() == true)
 								iterator.next();
 
 							// 제목
