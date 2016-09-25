@@ -7,9 +7,7 @@ public interface WebSiteBoard {
 	String getDescription();
 	
 	String getURL();
-	
-	boolean hasCategory();
-	
+
 	String getDefaultRegistDateFormatString();
 	
 	int getDefaultLoadPageCount();

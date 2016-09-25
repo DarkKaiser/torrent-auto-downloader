@@ -42,11 +42,6 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	public String getURL() {
 		return this.url;
 	}
-	
-	@Override
-	public boolean hasCategory() {
-		return this.hasCategory;
-	}
 
 	/**
 	 * 게시판 목록의 등록일자 포맷을 반환합니다.
@@ -62,6 +57,10 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	@Override
 	public int getDefaultLoadPageCount() {
 		return 5;
+	}
+
+	public boolean hasCategory() {
+		return this.hasCategory;
 	}
 
 	public static BogoBogoBoard fromString(String name) {
