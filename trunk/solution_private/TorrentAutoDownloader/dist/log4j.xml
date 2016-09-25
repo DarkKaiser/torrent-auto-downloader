@@ -9,11 +9,12 @@
 		</layout>
     </appender>
 
-	<!-- DailyRollingFileAppender -->
-	<appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">
+	<!-- CustomDailyRollingFileAppender -->
+	<appender name="dailyout" class="kr.co.darkkaiser.torrentad.util.log4j.CustomDailyRollingFileAppender">
 		<param name="File" value="logs/dailyout.log"/>
 		<param name="Append" value="true"/>
 		<param name="DatePattern" value="'.'yyyyMMdd"/>
+		<param name="maxBackupIndex" value="30"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS}] [%c{1}] [%L] [%p] %m%n"/>
  		</layout>
