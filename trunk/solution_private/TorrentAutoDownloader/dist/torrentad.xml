@@ -107,6 +107,22 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
+			<torrentad-periodic-task id="taskK2">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>The+K2</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-task>
+			
 			<torrentad-periodic-task id="taskRui">
 				<board-name>kordramaon</board-name>
 
