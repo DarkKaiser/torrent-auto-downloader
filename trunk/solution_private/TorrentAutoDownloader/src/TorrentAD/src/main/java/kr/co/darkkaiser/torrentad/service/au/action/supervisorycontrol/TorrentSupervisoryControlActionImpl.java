@@ -32,9 +32,9 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	}
 
 	@Override
-	protected void beforeExecute() {
+	protected boolean beforeExecute() {
 		if (this.torrentClient != null && this.torrentClient.isConnected() == true) 
-			return;
+			return true;
 
 		String url = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_URL);
 		String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
@@ -44,7 +44,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 			password = new AES256Util().decode(password);
 		} catch (Exception e) {
 			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
-			return;
+			return false;
 		}
 
 		this.torrentClient = new TransmissionRpcClient(url);
@@ -54,8 +54,10 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 		} catch (Exception e) {
 			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
-			return;
+			return false;
 		}
+		
+		return true;
 	}
 
 	@Override

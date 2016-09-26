@@ -61,7 +61,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 				}
 			}
 		} catch (FailedLoadBoardItemsException e) {
-			logger.error(null, e);
+			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
 			return TaskResult.FAILED;
 		} catch (Exception e) {
 			logger.error(null, e);

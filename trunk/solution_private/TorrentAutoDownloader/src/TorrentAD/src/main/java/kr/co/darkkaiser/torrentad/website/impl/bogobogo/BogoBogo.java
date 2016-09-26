@@ -292,18 +292,19 @@ public class BogoBogo extends AbstractWebSite {
 		if (this.boards.containsKey(board) == true)
 			return true;
 
+		String url = null;
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
-				String url = String.format("%s&page=%s", board.getURL(), pageNo);
+				url = String.format("%s&page=%s", board.getURL(), pageNo);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
 		                .cookies(this.loginConnResponse.cookies())
 		                .execute();
-
+				
 				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 	
@@ -362,10 +363,10 @@ public class BogoBogo extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return false;
 		} catch (ParseException e) {
-			logger.error("게시판({}) 데이터를 로드하는 중에 예외가 발생하였습니다.", board, e);
+			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
 			return false;
 		} catch (Exception e) {
-			logger.error("게시판({}) 데이터를 로드하는 중에 예외가 발생하였습니다.", board, e);
+			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
 			return false;
 		}
 

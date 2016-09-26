@@ -31,9 +31,10 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 	}
 
 	@Override
-	protected void beforeExecute() {
+	protected boolean beforeExecute() {
 		this.fileTransmitters.add(new TorrentFileTransmitter(this.configuration));
 		this.fileTransmitters.add(new FTPFileTransmitter(this.configuration));
+		return true;
 	}
 
 	@Override

@@ -30,18 +30,18 @@ public abstract class AbstractAction implements Action {
 
 	@Override
 	public final void run() {
-		beforeExecute();
-
-		try {
-			execute();
-		} catch (Exception e) {
-			logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
+		if (beforeExecute() == true) {
+			try {
+				execute();
+			} catch (Exception e) {
+				logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
+			}
 		}
 
 		afterExecute();
 	}
 
-	protected abstract void beforeExecute();
+	protected abstract boolean beforeExecute();
 
 	protected abstract void afterExecute();
 
