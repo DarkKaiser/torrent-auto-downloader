@@ -20,7 +20,7 @@
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 		<torrentad-periodic-tasks>
 
-			<torrentad-periodic-task id="taskLiveAlone">
+			<torrentad-periodic-task id="LiveAlone" description="나혼자산다">
 				<!-- 게시판 이름 -->
 				<board-name>korentertainment</board-name>
 
@@ -59,7 +59,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskHoney">
+			<torrentad-periodic-task id="Honey" description="자기야-백년손님">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -75,7 +75,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskRefrigerator">
+			<torrentad-periodic-task id="Refrigerator" description="냉장고를부탁해">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -91,7 +91,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 
-			<torrentad-periodic-task id="taskMoonlight">
+			<torrentad-periodic-task id="Moonlight" description="구르미그린달빛">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
@@ -107,7 +107,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskK2">
+			<torrentad-periodic-task id="K2" description="The K2">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
@@ -123,7 +123,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskRui">
+			<torrentad-periodic-task id="Rui" description="쇼핑왕 루이">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
@@ -139,7 +139,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskOneNightTwoDays">
+			<torrentad-periodic-task id="OneNightTwoDays" description="1박2일">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -155,7 +155,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 
-			<torrentad-periodic-task id="taskOlive">
+			<torrentad-periodic-task id="Olive" description="올리브쇼">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -171,7 +171,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 
-			<torrentad-periodic-task id="taskMiunWori">
+			<torrentad-periodic-task id="MiunWori" description="미운우리새끼">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -187,7 +187,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskInfiniteChallenge">
+			<torrentad-periodic-task id="InfiniteChallenge" description="무한도전">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -203,7 +203,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskBrotherKnow">
+			<torrentad-periodic-task id="BrotherKnow" description="아는형님">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -219,7 +219,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskJipbap">
+			<torrentad-periodic-task id="Jipbap" description="집밥 백선생">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -235,7 +235,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskOnePiece">
+			<torrentad-periodic-task id="OnePiece" description="원피스">
 				<board-name>anion</board-name>
 
 				<search-keywords type="title">
@@ -263,7 +263,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskNaruto">
+			<torrentad-periodic-task id="Naruto" description="나루토">
 				<board-name>anion</board-name>
 
 				<search-keywords type="title">
@@ -291,7 +291,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskDragonBall">
+			<torrentad-periodic-task id="DragonBall" description="드래곤볼 슈퍼">
 				<board-name>anion</board-name>
 
 				<search-keywords type="title">
@@ -319,7 +319,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskJasonBourne1">
+			<torrentad-periodic-task id="JasonBourne1" description="제이슨본(최신)">
 				<board-name>newmovie</board-name>
 
 				<search-keywords type="title">
@@ -344,7 +344,7 @@
 				</search-keywords>
 			</torrentad-periodic-task>
 			
-			<torrentad-periodic-task id="taskJasonBourne2">
+			<torrentad-periodic-task id="JasonBourne2" description="제이슨본(고화질)">
 				<board-name>hdmovie</board-name>
 
 				<search-keywords type="title">

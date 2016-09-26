@@ -10,6 +10,8 @@ public interface Task {
 	
 	String getTaskId();
 	
+	String getTaskDescription();
+	
 	TaskMetadataRegistry getTaskMetadataRegistry();
 
 	void setBoardName(String name);

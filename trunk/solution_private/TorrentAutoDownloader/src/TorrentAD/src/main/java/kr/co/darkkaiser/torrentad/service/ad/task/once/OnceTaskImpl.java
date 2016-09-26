@@ -9,8 +9,8 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class OnceTaskImpl extends AbstractTask implements OnceTask {
 
-	public OnceTaskImpl(String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
-		super(TaskType.ONCE, taskId, taskMetadataRegistry, site);
+	public OnceTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+		super(TaskType.ONCE, taskId, taskDescription, taskMetadataRegistry, site);
 	}
 
 	@Override

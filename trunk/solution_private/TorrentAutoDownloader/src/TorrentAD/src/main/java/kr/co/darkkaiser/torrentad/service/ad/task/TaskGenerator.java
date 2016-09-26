@@ -54,7 +54,8 @@ public final class TaskGenerator {
 
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
 					String taskId = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_ID).getNodeValue();
-					Task task = TaskFactory.createTask(TaskType.PERIODIC, taskId, taskMetadataRegistry, site);
+					String taskDescription = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION).getNodeValue();
+					Task task = TaskFactory.createTask(TaskType.PERIODIC, taskId, taskDescription, taskMetadataRegistry, site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {

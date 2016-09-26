@@ -18,6 +18,7 @@ public abstract class AbstractTask implements Task {
 	protected final TaskType taskType;
 	
 	protected final String taskId;
+	protected final String taskDescription;
 	
 	protected final TaskMetadataRegistry taskMetadataRegistry;
 
@@ -25,7 +26,7 @@ public abstract class AbstractTask implements Task {
 
 	protected final WebSiteSearchContext searchContext;
 
-	protected AbstractTask(TaskType taskType, String taskId, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+	protected AbstractTask(TaskType taskType, String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
 		if (taskType == null)
 			throw new NullPointerException("taskType");
 		if (StringUtil.isBlank(taskId) == true)
@@ -41,6 +42,12 @@ public abstract class AbstractTask implements Task {
 		this.taskMetadataRegistry = taskMetadataRegistry;
 		this.searchContext = this.site.createSearchContext();
 
+		if (StringUtil.isBlank(taskDescription) == false) {
+			this.taskDescription = taskDescription;
+		} else {
+			this.taskDescription = taskId;
+		}
+
 		// 최근에 다운로드 받은 게시불 식별자를 구한다.
 		String key = String.format("%s.%s", this.taskId, Constants.AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
 		setLatestDownloadBoardItemIdentifier(taskMetadataRegistry.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
@@ -54,6 +61,11 @@ public abstract class AbstractTask implements Task {
 	@Override
 	public String getTaskId() {
 		return this.taskId;
+	}
+	
+	@Override
+	public String getTaskDescription() {
+		return this.taskDescription;
 	}
 	
 	@Override
@@ -111,6 +123,7 @@ public abstract class AbstractTask implements Task {
 				.append("{")
 				.append("taskType:").append(this.taskType)
 				.append(", taskId:").append(this.taskId)
+				.append(", taskDescription:").append(this.taskDescription)
 				.append(", site:").append(this.site)
 				.append(", searchContext:").append(this.searchContext)
 				.append("}")

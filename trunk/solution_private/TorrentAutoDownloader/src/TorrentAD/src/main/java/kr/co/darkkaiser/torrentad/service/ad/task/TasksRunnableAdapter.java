@@ -94,19 +94,19 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
 
 		for (Task task : this.tasks) {
-			logger.debug("Task를 실행합니다.(Task:{})", task.getTaskId());
+			logger.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
 
 			try {
 				TaskResult taskResult = task.run(handler);
 				if (taskResult != TaskResult.OK) {
-					logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskId());
+					logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskDescription());
 					result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 				} else {
-					logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskId());
+					logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
 					result = TasksRunnableAdapterResult.OK(TaskResult.OK);
 				}
 			} catch (Throwable e) {
-				logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskId(), e);
+				logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
 				result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
 		}
