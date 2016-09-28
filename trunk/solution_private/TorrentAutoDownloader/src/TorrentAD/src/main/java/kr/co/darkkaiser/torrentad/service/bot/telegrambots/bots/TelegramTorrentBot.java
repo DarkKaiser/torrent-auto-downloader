@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.bots;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,9 +8,9 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.commands.CommandRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.commands.HelpCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.commands.ListCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.CommandRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.HelpCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.ListCommand;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
@@ -27,6 +27,24 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 	// job.list(chat_id)
 
 	public TelegramTorrentBot() {
+		// 부모클래스의 멤버변수 액세스
+//		http://stackoverflow.com/questions/3603405/access-a-private-variable-of-the-super-class-in-java-jchart2d
+//		 try {
+//			Field field = TelegramLongPollingBot.class.getDeclaredField("exe");
+//			field.setAccessible(true);
+//	        Object value = field.get(this);
+//	        field.setAccessible(false);
+//
+//	        if (value == null) {
+//	            return null;
+//	        } else if (Rectangle2D.class.isAssignableFrom(value.getClass())) {
+//	            return (Rectangle2D) value;
+//	        }
+//	        throw new RuntimeException("Wrong value");
+//		} catch (NoSuchFieldException | SecurityException e) {
+//			e.printStackTrace();
+//		}
+		 
 		this.commandRegistry = new CommandRegistry();
 		
 		this.commandRegistry.register(new ListCommand());

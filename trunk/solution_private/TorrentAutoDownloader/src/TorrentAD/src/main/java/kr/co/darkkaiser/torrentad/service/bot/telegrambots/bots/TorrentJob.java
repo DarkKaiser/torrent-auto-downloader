@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.bots;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots;
 
 import java.util.concurrent.ExecutorService;
 

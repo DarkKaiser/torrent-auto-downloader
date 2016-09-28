@@ -9,7 +9,7 @@ import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
 import kr.co.darkkaiser.torrentad.service.au.TorrentAuService;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.TelegramBotService;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambots.TelegramBotService;
 
 public class App {
 	

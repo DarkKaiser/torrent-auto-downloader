@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.commands;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands;
 
 import org.telegram.telegrambots.bots.commands.BotCommand;
 
