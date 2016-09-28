@@ -11,19 +11,15 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.bots.commands.BotCommand;
 
-public class StartCommand extends BotCommand {
+public class ListCommand extends AbstractBotCommand {
 
-	public StartCommand() {
-		super("start", "토렌트 검색을 시작합니다.");
+	public ListCommand() {
+		super("검색", "토렌트 검색을 시작합니다.");
 	}
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-		
-		
-		
 		System.out.println("############3");
 		// @@@@@
 //		DatabaseManager databseManager = DatabaseManager.getInstance();
@@ -66,6 +62,7 @@ public class StartCommand extends BotCommand {
 //        } catch (TelegramApiException e) {
 //        }
 	}
+	
 	private static ReplyKeyboardMarkup getMainMenuKeyboard(String language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
