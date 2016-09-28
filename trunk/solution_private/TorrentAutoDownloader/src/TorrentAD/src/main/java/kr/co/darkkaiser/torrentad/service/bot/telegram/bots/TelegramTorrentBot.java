@@ -18,8 +18,13 @@ public class TelegramTorrentBot extends TelegramLongPollingCommandBot {
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 	
 	// @@@@@
-	private final ConcurrentHashMap<Integer, Integer> userState = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Integer/* CHAT_ID */, User> userState = new ConcurrentHashMap<>();
 	
+	private TorrentJob job;
+	// job.search(chat_id)
+	// job.get(chat_id)
+	// job.list(chat_id)
+
 	public TelegramTorrentBot() {
         register(new StartCommand());
         HelpCommand helpCommand = new HelpCommand(this);
