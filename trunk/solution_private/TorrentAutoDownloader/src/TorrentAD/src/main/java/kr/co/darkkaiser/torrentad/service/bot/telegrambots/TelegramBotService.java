@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.logging.BotLogger;
+import org.telegram.telegrambots.updatesreceivers.BotSession;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
@@ -39,7 +40,8 @@ public class TelegramBotService implements BotService {
 		this.telegramBotsApi = new TelegramBotsApi();
 
 		try {
-			this.telegramBotsApi.registerBot(new TelegramTorrentBot());
+			BotSession registerBot = this.telegramBotsApi.registerBot(new TelegramTorrentBot());
+//			registerBot.close();@@@@@ 했을때 제대로 종료되는지 확인해보기, stop에서 적용
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 			return false;
