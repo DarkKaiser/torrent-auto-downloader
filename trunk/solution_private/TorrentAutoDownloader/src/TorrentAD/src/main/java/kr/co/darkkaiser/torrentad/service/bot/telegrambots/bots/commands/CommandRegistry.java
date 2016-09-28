@@ -18,6 +18,7 @@ public class CommandRegistry implements ICommandRegistry {
 
 	private BiConsumer<AbsSender, Message> defaultConsumer;
 
+	// @@@@@ registerDefaultCommand
 	@Override
 	public void registerDefaultAction(BiConsumer<AbsSender, Message> defaultConsumer) {
 		this.defaultConsumer = defaultConsumer;
@@ -88,10 +89,11 @@ public class CommandRegistry implements ICommandRegistry {
 				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
 				commands.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
 				return true;
-			} else if (defaultConsumer != null) {
-				// @@@@@ 명령이 아니면 검색어일수 있으므로 처리가되면 안됨
-				defaultConsumer.accept(absSender, message);
-				return true;
+				// @@@@@ 함수로 빼서 처리
+//			} else if (defaultConsumer != null) {
+//				// @@@@@ 명령이 아니면 검색어일수 있으므로 처리가되면 안됨
+//				defaultConsumer.accept(absSender, message);
+//				return true;
 			}
 		}
 

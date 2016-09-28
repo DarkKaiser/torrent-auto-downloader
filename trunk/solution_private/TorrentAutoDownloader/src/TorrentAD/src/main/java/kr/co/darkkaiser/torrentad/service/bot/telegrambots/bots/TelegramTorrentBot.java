@@ -109,9 +109,14 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
                 if (this.commandRegistry.executeCommand(this, message)) {
                     return;
                 }
+                
+                // 검색어나 기타 다른것인지 확인
+                // this.commandRegistry.executeDefaultCommand()
+                
 //            }
         }
 
+		// ?????
 //        processNonCommandUpdate(update);
 	}
 
