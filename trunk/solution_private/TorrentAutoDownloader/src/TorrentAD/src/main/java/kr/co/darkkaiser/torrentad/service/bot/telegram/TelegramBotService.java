@@ -11,7 +11,7 @@ import org.telegram.telegrambots.logging.BotLogger;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.bots.TorrentAdBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.bots.TelegramTorrentBot;
 
 public class TelegramBotService implements BotService {
 
@@ -39,7 +39,7 @@ public class TelegramBotService implements BotService {
 		this.telegramBotsApi = new TelegramBotsApi();
 
 		try {
-			this.telegramBotsApi.registerBot(new TorrentAdBot());
+			this.telegramBotsApi.registerBot(new TelegramTorrentBot());
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 			return false;
@@ -50,11 +50,6 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public void stop() {
-		// @@@@@ 서비스 중지가 안되는것 같음, 프로세스가 안 떨어짐
-//        // @@@@@
-//        Thread.sleep(1000);
-//        app.stop(); 봇 내부의 private final ExecutorService exe = Executors.newSingleThreadExecutor(); 이거 때문인거 같음
-
 		this.telegramBotsApi = null;
 	}
 

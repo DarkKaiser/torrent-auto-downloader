@@ -13,14 +13,14 @@ import org.telegram.telegrambots.bots.TelegramLongPollingCommandBot;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.commands.HelpCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.commands.StartCommand;
 
-public class TorrentAdBot extends TelegramLongPollingCommandBot {
+public class TelegramTorrentBot extends TelegramLongPollingCommandBot {
 
-	private static final Logger logger = LoggerFactory.getLogger(TorrentAdBot.class);
+	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 	
 	// @@@@@
 	private final ConcurrentHashMap<Integer, Integer> userState = new ConcurrentHashMap<>();
 	
-	public TorrentAdBot() {
+	public TelegramTorrentBot() {
         register(new StartCommand());
         HelpCommand helpCommand = new HelpCommand(this);
         register(helpCommand);
