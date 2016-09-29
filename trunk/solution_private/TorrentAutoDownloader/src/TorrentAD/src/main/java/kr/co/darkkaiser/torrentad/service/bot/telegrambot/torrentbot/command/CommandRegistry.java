@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command;
 
 import java.util.Arrays;
 import java.util.Collection;

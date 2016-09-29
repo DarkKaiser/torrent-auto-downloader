@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -6,29 +6,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command.CommandRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command.HelpCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command.ListCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.CommandRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.HelpCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.ListCommand;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 	
-	private final CommandRegistry commandRegistry;
+	private final CommandRegistry commandRegistry = new CommandRegistry();
 	
 	// @@@@@
-	private final ConcurrentHashMap<Integer/* CHAT_ID or user id */, User> userState = new ConcurrentHashMap<>();
-	
+	private final ConcurrentHashMap<Long/* CHAT_ID */, User> chats = new ConcurrentHashMap<>();
+
 	// @@@@@
 	private TorrentJob job;
 
 	public TelegramTorrentBot() {
-		this.commandRegistry = new CommandRegistry();
-
 		this.commandRegistry.register(new ListCommand());
         this.commandRegistry.register(new HelpCommand(this.commandRegistry));
 
@@ -53,13 +52,24 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 		if (update == null)
 			throw new NullPointerException("update");
 
+		// 인라인키보드는 콜백쿼리가 들어옴
+		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
+		
+		// command => Request
+		// chat_id를 구해서 해당 user를 구한다.
+		// user에서 이전에 실행된 Request를 구한다.
+		// 이전 Request에 신규 메시지를 넘겨주면서 execute???
+			// 반환값으로 NoneRequest 혹은 신규 Request를 받아서 다시 저장해둔다.
+		
 		try {
+			
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
 	            if (this.commandRegistry.executeCommand(this, message))
 	                return;
 
 	            // 검색어나 기타 다른것인지 확인
+	            Long chatId = message.getChatId();
 	            // @@@@@
 	        }
 
@@ -73,25 +83,29 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 		if (update == null)
 			throw new NullPointerException("update");
 
-		if (update.hasMessage() == true) {
+		// @@@@@
+//		if (update.hasMessage() == true) {
 			Message message = update.getMessage();
+			CallbackQuery callbackQuery = update.getCallbackQuery();
+			message = callbackQuery.getMessage();
 
 			StringBuilder sbMessage = new StringBuilder();
-			if (message.hasText() == true)
+			if (message != null && message.hasText() == true)
 				sbMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
 			sbMessage.append("명령어를 모르시면 '도움'을 입력하세요.");
 
 			SendMessage commandUnknownMessage = new SendMessage();
 			commandUnknownMessage.setChatId(message.getChatId().toString());
-			commandUnknownMessage.setText(sbMessage.toString());
+			commandUnknownMessage.setText(callbackQuery.getData());
+//			commandUnknownMessage.setText(sbMessage.toString());
 
 			try {
 				sendMessage(commandUnknownMessage);
 			} catch (TelegramApiException e) {
 				logger.error(null, e);
 			}
-		}
+//		}
 	}
 
 }

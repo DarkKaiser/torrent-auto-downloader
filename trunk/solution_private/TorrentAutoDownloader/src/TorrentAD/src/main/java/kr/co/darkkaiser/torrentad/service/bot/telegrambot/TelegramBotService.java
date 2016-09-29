@@ -12,7 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.BotSession;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.TelegramTorrentBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.TelegramTorrentBot;
 
 public class TelegramBotService implements BotService {
 

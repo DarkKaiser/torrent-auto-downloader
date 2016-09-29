@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,9 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.ForceReplyKeyboard;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.AbsSender;
 
@@ -43,8 +45,34 @@ public class ListCommand extends AbstractBotCommand {
         ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
         forceReplyKeyboard.setSelective(true);
 
-        answer.setReplyMarkup(getMainMenuKeyboard(""));
+//        answer.setReplyMarkup(getMainMenuKeyboard(""));
+        
+        InlineKeyboardMarkup inline = new InlineKeyboardMarkup();
+        
+        List<InlineKeyboardButton> keyboard = new ArrayList<>();
+        InlineKeyboardButton keyboardFirstRow = new InlineKeyboardButton();
+        keyboardFirstRow.setText("TEXT lsadjfla sdfljasldf lasjdfl asdlfj alsdjf lasfja sldjflas dflasjdf lasdjfljaslf");
+        keyboardFirstRow.setCallbackData("data");
+        keyboard.add(keyboardFirstRow);
 
+        InlineKeyboardButton keyboardFirstRow2 = new InlineKeyboardButton();
+        keyboardFirstRow2.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
+        keyboardFirstRow2.setCallbackData("data2");
+        keyboard.add(keyboardFirstRow2);
+        
+        List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
+        InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
+        keyboardFirstRow3.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
+        keyboardFirstRow3.setCallbackData("data3");
+        keyboard2.add(keyboardFirstRow3);
+        
+        List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
+        keyboards.add(keyboard);
+        keyboards.add(keyboard2);
+
+		inline.setKeyboard(keyboards);
+        answer.setReplyMarkup(inline);
+        
         try {
             absSender.sendMessage(answer);
         } catch (TelegramApiException e) {
