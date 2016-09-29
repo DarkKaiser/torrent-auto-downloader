@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.commands;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.command;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import org.jsoup.helper.StringUtil;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.bots.commands.BotCommand;
@@ -16,16 +17,16 @@ public class CommandRegistry implements ICommandRegistry {
 
 	private final Map<String, BotCommand> commands = new LinkedHashMap<>();
 
-	private BiConsumer<AbsSender, Message> defaultConsumer;
-
-	// @@@@@ registerDefaultCommand
 	@Override
-	public void registerDefaultAction(BiConsumer<AbsSender, Message> defaultConsumer) {
-		this.defaultConsumer = defaultConsumer;
+	public void registerDefaultAction(BiConsumer<AbsSender, Message> unknownCommand) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public final boolean register(BotCommand botCommand) {
+		if (botCommand == null)
+			throw new NullPointerException("botCommand");
+
 		if (this.commands.containsKey(botCommand.getCommandIdentifier()) == true) {
 			return false;
 		}
@@ -37,7 +38,11 @@ public class CommandRegistry implements ICommandRegistry {
 
 	@Override
 	public final Map<BotCommand, Boolean> registerAll(BotCommand... botCommands) {
+		if (botCommands == null)
+			throw new NullPointerException("botCommands");
+
 		Map<BotCommand, Boolean> resultMap = new HashMap<>(botCommands.length);
+		
 		for (BotCommand botCommand : botCommands) {
 			resultMap.put(botCommand, register(botCommand));
 		}
@@ -47,6 +52,9 @@ public class CommandRegistry implements ICommandRegistry {
 
 	@Override
 	public final boolean deregister(BotCommand botCommand) {
+		if (botCommand == null)
+			throw new NullPointerException("botCommand");
+
 		if (this.commands.containsKey(botCommand.getCommandIdentifier()) == true) {
 			this.commands.remove(botCommand.getCommandIdentifier());
 			return true;
@@ -57,11 +65,15 @@ public class CommandRegistry implements ICommandRegistry {
 
 	@Override
 	public final Map<BotCommand, Boolean> deregisterAll(BotCommand... botCommands) {
+		if (botCommands == null)
+			throw new NullPointerException("botCommands");
+
 		Map<BotCommand, Boolean> resultMap = new HashMap<>(botCommands.length);
+		
 		for (BotCommand botCommand : botCommands) {
 			resultMap.put(botCommand, deregister(botCommand));
 		}
-		
+
 		return resultMap;
 	}
 
@@ -72,12 +84,19 @@ public class CommandRegistry implements ICommandRegistry {
 
 	@Override
 	public final BotCommand getRegisteredCommand(String commandIdentifier) {
+		if (StringUtil.isBlank(commandIdentifier) == true)
+			throw new IllegalArgumentException("commandIdentifier는 빈 문자열을 허용하지 않습니다.");
+
 		return this.commands.get(commandIdentifier);
 	}
 
 	public final boolean executeCommand(AbsSender absSender, Message message) {
-		// @@@@@
-		if (message.hasText()) {
+		if (absSender == null)
+			throw new NullPointerException("absSender");
+		if (message == null)
+			throw new NullPointerException("message");
+
+		if (message.hasText() == true) {
 			String commandMessage = message.getText();
 			String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
 
@@ -89,11 +108,6 @@ public class CommandRegistry implements ICommandRegistry {
 				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
 				commands.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
 				return true;
-				// @@@@@ 함수로 빼서 처리
-//			} else if (defaultConsumer != null) {
-//				// @@@@@ 명령이 아니면 검색어일수 있으므로 처리가되면 안됨
-//				defaultConsumer.accept(absSender, message);
-//				return true;
 			}
 		}
 

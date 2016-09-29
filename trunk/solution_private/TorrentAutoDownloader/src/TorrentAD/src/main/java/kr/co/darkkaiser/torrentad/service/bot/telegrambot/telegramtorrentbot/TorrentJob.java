@@ -14,7 +14,10 @@ public class TorrentJob {
 	private WebSiteHandler webSiteHandler;
 	
 	private TorrentClient transmissionRpcClient;
-	
+	// job.search(chat_id)
+	// job.get(chat_id)
+	// job.list(chat_id)
+
 	public TorrentJob() {
 		// 웹사이트 초기하
 		// 트랜스미션 초기화
