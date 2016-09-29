@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot;
 
 public class User {
 

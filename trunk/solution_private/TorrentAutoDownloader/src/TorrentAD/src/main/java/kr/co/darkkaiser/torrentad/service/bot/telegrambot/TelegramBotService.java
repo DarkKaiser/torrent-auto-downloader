@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambots;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -12,14 +12,16 @@ import org.telegram.telegrambots.updatesreceivers.BotSession;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.TelegramTorrentBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.TelegramTorrentBot;
 
 public class TelegramBotService implements BotService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
 	
 	private TelegramBotsApi telegramBotsApi;
-	
+
+	private BotSession telegramTorrentBotSession;
+
 	private final Configuration configuration;
 
 	public TelegramBotService(Configuration configuration) {
@@ -40,8 +42,7 @@ public class TelegramBotService implements BotService {
 		this.telegramBotsApi = new TelegramBotsApi();
 
 		try {
-			BotSession registerBot = this.telegramBotsApi.registerBot(new TelegramTorrentBot());
-//			registerBot.close();@@@@@ 했을때 제대로 종료되는지 확인해보기, stop에서 적용
+			this.telegramTorrentBotSession = this.telegramBotsApi.registerBot(new TelegramTorrentBot());
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 			return false;
@@ -52,7 +53,15 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public void stop() {
+		// 종료할 때 TelegramBot API에서 무조건 예외가 발생하므로 로그를 출력하지 않도록 한다.
+		BotLogger.setLevel(Level.OFF);
+
+		if (this.telegramTorrentBotSession != null) {
+			this.telegramTorrentBotSession.close();
+		}
+
 		this.telegramBotsApi = null;
+		this.telegramTorrentBotSession = null;
 	}
 
 }

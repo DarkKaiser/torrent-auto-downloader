@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,9 +8,9 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.CommandRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.HelpCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambots.bots.commands.ListCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.commands.CommandRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.commands.HelpCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.telegramtorrentbot.commands.ListCommand;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
