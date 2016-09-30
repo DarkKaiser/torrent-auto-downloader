@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp;
 
 import org.telegram.telegrambots.bots.commands.BotCommand;
 

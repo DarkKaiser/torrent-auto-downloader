@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -90,6 +90,7 @@ public class CommandRegistry implements ICommandRegistry {
 		return this.commands.get(commandIdentifier);
 	}
 
+	// @@@@@
 	public final boolean executeCommand(AbsSender absSender, Message message) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");

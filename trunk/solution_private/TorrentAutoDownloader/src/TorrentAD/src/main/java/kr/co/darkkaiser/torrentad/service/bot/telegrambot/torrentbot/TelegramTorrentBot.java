@@ -11,9 +11,9 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.CommandRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.HelpCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command.ListCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp.CommandRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp.HelpCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp.ListCommand;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
@@ -55,14 +55,20 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 		// 인라인키보드는 콜백쿼리가 들어옴
 		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
 		
-		// command => Request
 		// chat_id를 구해서 해당 user를 구한다.
 		// user에서 이전에 실행된 Request를 구한다.
-		// 이전 Request에 신규 메시지를 넘겨주면서 execute???
+		// 신규 Request에 이전 메시지를 넘겨주면서 execute???
 			// 반환값으로 NoneRequest 혹은 신규 Request를 받아서 다시 저장해둔다.
+
 		
+//		if (신규 객체가 SearchingRequest 객체라면) {
+//			if (이전 객체가 InputSearchKeywordResponse 아니라면)
+//				이전객체.cancel();
+//
+//			user.execute(신규객체Request, 이전객체Response);
+//		}
+
 		try {
-			
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
 	            if (this.commandRegistry.executeCommand(this, message))

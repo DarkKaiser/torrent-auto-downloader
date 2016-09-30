@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.commandtemp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 public class ListCommand extends AbstractBotCommand {
 
 	public ListCommand() {
-		super("검색", "토렌트 검색을 시작합니다.");
+		super("조회", "게시판을 조회합니다.");
 	}
 
 	@Override

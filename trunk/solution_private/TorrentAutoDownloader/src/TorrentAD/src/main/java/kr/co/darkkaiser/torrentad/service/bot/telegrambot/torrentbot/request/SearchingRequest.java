@@ -1,6 +1,10 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot;
+package kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.request;
 
-public class InputSearchKeywordRequest {
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.State;
+import kr.co.darkkaiser.torrentad.service.bot.telegrambot.torrentbot.User;
+
+//@shable
+public class SearchingRequest {
 	
 	public void execute() {
 		
@@ -22,12 +26,14 @@ public class InputSearchKeywordRequest {
 	// 확장명령(기본명령 이후 진행되는 명령)
 
 	// @@@@@
-	public State execute(String message/*, NewRequest */) {
+	public State execute(InputSearchKeywordRequest prevRequest, User user, String message/*, NewRequest */) {
 		// 기본 명령어인가?
-		if (hasDefaultCommand() == true) {
+		if (hasDefaultCommandRequest() == true) {
 			// requestId 변경
 //			parent.addRequestId();
-
+			user.incrementRequestId();
+			
+			prevRequest.cancel();
 //			return NewRequest.execute();
 		}
 
@@ -73,7 +79,7 @@ public class InputSearchKeywordRequest {
 		return false;
 	}
 
-	private boolean hasDefaultCommand() {
+	private boolean hasDefaultCommandRequest() {
 		// TODO Auto-generated method stub
 		return false;
 	}
