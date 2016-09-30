@@ -1,6 +1,5 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message.response;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response;
 
-// @@@@@
 public abstract class AbstractResponse implements Response {
 
 	@Override
@@ -8,8 +7,7 @@ public abstract class AbstractResponse implements Response {
 		return new StringBuilder()
 				.append(AbstractResponse.class.getSimpleName())
 				.append("{")
-				.append("}, ")
-				.append(super.toString())
+				.append("}")
 				.toString();
 	}
 

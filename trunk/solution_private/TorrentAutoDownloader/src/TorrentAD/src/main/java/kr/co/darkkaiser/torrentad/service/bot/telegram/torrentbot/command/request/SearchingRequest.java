@@ -1,18 +1,16 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
 
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
 public class SearchingRequest extends AbstractRequest {
+	
+	public SearchingRequest() {
+	}
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-		// @@@@@
-	}
-	
-	@Override
-	public void cancel() {
 		// @@@@@
 	}
 	

@@ -1,13 +1,13 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
 
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
-public class ListRequest extends BotCommandAbstractRequest {
+public class HelpRequest extends AbstractBotCommandRequest {
 
-	public ListRequest() {
-		super("조회", "게시판을 조회합니다.");
+	public HelpRequest() {
+		super("도움", "도움말을 표시합니다.");
 	}
 	
 	@Override
@@ -16,14 +16,9 @@ public class ListRequest extends BotCommandAbstractRequest {
 	}
 	
 	@Override
-	public void cancel() {
-		// @@@@@
-	}
-	
-	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(ListRequest.class.getSimpleName())
+				.append(HelpRequest.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
