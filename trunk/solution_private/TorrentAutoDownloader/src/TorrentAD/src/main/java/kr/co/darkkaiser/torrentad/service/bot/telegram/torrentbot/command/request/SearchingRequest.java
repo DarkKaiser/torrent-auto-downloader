@@ -4,14 +4,18 @@ import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+
 public class SearchingRequest extends AbstractRequest {
 	
 	public SearchingRequest() {
+		super("search");
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
+		return null;
 	}
 	
 	@Override

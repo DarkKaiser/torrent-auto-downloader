@@ -1,10 +1,18 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Base;
+import org.telegram.telegrambots.api.objects.Chat;
+import org.telegram.telegrambots.api.objects.User;
+import org.telegram.telegrambots.bots.AbsSender;
 
-public interface Response extends Base {
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
+
+public interface Response {
 	
+	String getIdentifier();
+
 	// @@@@@
-	void cancel();
+	void cancel(AbsSender absSender, User user, Chat chat);
+
+	boolean allow(Request request);
 
 }

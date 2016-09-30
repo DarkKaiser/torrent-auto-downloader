@@ -1,8 +1,10 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.request.SearchingRequest;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
-public class User {
+public class Chat {
+	
+	private Response response;
 
 	// @@@@@
 	private long requestId = 0;
@@ -23,10 +25,12 @@ public class User {
 		return this.requestId;
 	}
 	
-	public void execute(SearchingRequest request) {
-		incrementRequestId();
-		
-		request.execute();
+	public Response getResponse() {
+		return this.response;
+	}
+
+	public void setResponse(Response execute) {
+		this.response = execute;
 	}
 
 }
