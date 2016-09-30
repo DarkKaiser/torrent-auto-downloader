@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message.response;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Base;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BaseExecutor;

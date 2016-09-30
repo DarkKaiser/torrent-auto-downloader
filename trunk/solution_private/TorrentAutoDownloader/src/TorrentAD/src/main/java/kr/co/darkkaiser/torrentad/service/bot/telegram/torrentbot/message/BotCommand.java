@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message;
 
 public interface BotCommand {
 

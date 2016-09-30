@@ -11,10 +11,6 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.commandtemp.CommandRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.commandtemp.HelpCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.commandtemp.ListCommand;
-
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);

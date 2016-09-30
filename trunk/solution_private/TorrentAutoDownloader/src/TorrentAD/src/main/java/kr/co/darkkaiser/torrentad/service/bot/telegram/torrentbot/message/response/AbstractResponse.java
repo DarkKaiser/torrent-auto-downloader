@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.message.response;
 
 // @@@@@
 public abstract class AbstractResponse implements Response {
