@@ -12,7 +12,7 @@ public class TorrentJob {
 	
 	private WebSite webSite;
 	private WebSiteHandler webSiteHandler;
-	
+
 	private TorrentClient transmissionRpcClient;
 	// job.search(chat_id)
 	// job.get(chat_id)
@@ -23,7 +23,7 @@ public class TorrentJob {
 		// 트랜스미션 초기화
 	}
 
-	public void search() {
+	public void search(long chatId, long requestId) {
 		// @@@@@
 		if (a != null) {
 			a.submit(new Runnable() {
