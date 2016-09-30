@@ -4,8 +4,12 @@ import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
-public class SearchingRequest extends AbstractRequest {
+public class ListRequest extends BotCommandAbstractRequest {
 
+	public ListRequest() {
+		super("조회", "게시판을 조회합니다.");
+	}
+	
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
@@ -19,7 +23,7 @@ public class SearchingRequest extends AbstractRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SearchingRequest.class.getSimpleName())
+				.append(ListRequest.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

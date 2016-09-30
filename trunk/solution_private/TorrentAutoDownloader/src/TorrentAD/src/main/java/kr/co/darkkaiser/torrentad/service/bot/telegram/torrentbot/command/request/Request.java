@@ -6,6 +6,4 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BaseEx
 // @@@@@
 public interface Request extends Base, BaseExecutor {
 
-	void test();
-	
 }
