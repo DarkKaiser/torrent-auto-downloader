@@ -14,10 +14,10 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	FOREIGN_DRAMA_ON	(6, "foreigndramaon", 		"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
 	ANI_ON				(7, "anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
-	private int id;
-	private String name;
-	private String description;
-	private String url;
+	private final int id;
+	private final String name;
+	private final String description;
+	private final String url;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
