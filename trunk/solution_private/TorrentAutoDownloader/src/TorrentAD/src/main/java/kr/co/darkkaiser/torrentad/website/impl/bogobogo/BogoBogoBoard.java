@@ -70,6 +70,15 @@ public enum BogoBogoBoard implements WebSiteBoard {
 		return this.hasCategory;
 	}
 
+	public static BogoBogoBoard byId(int id) {
+		for (BogoBogoBoard board : BogoBogoBoard.values()) {
+			if (board.getId() == id)
+				return board;
+	    }
+
+		throw new IllegalArgumentException(String.format("열거형 %s에서 %d에 해당하는 id가 없습니다.", BogoBogoBoard.class.getSimpleName(), id));
+	}
+
 	public static BogoBogoBoard fromString(String name) {
 		if (name == null)
 			throw new NullPointerException("name");
