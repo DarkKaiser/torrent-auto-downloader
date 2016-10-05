@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
 
 public enum WebSite {
@@ -21,6 +22,16 @@ public enum WebSite {
 		@Override
 		public WebSiteSearchContext createSearchContext() {
 			return new BogoBogoSearchContext();
+		}
+
+		@Override
+		public WebSiteBoard getBoard(String name) {
+			return BogoBogoBoard.fromString(name);
+		}
+
+		@Override
+		public WebSiteBoard[] getBoardValues() {
+			return BogoBogoBoard.values();
 		}
 	};
 
@@ -57,6 +68,10 @@ public enum WebSite {
 	public WebSiteSearchKeywords createSearchKeywords(String modeValue) {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
+
+	public abstract WebSiteBoard getBoard(String name);
+
+	public abstract WebSiteBoard[] getBoardValues();
 
 	@Override
 	public String toString() {
