@@ -6,15 +6,14 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public enum BogoBogoBoard implements WebSiteBoard {
 
-	MOVIE_NEW			(1, "newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
-	MOVIE_KOR			(2, "kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
-	MOVIE_HD			(3, "hdmovie", 				"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
-	KOR_DRAMA_ON		(4, "kordramaon", 			"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
-	KOR_ENTERTAINMENT	(5, "korentertainment",		"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
-	FOREIGN_DRAMA_ON	(6, "foreigndramaon", 		"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
-	ANI_ON				(7, "anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
+	MOVIE_NEW			("newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
+	MOVIE_KOR			("kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
+	MOVIE_HD			("hdmovie", 			"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
+	KOR_DRAMA_ON		("kordramaon", 			"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
+	KOR_ENTERTAINMENT	("korentertainment",	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
+	FOREIGN_DRAMA_ON	("foreigndramaon", 		"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
+	ANI_ON				("anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
-	private final int id;
 	private final String name;
 	private final String description;
 	private final String url;
@@ -22,19 +21,13 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	private BogoBogoBoard(int id, String name, String description, String url, boolean hasCategory) {
-		this.id = id;
+	private BogoBogoBoard(String name, String description, String url, boolean hasCategory) {
 		this.name = name;
 		this.description = description;
 		this.url = url;
 		this.hasCategory = hasCategory;
 	}
 	
-	@Override
-	public int getId() {
-		return this.id;
-	}
-
 	@Override
 	public String getName() {
 		return this.name;
@@ -70,15 +63,6 @@ public enum BogoBogoBoard implements WebSiteBoard {
 		return this.hasCategory;
 	}
 
-	public static BogoBogoBoard byId(int id) {
-		for (BogoBogoBoard board : BogoBogoBoard.values()) {
-			if (board.getId() == id)
-				return board;
-	    }
-
-		throw new IllegalArgumentException(String.format("열거형 %s에서 %d에 해당하는 id가 없습니다.", BogoBogoBoard.class.getSimpleName(), id));
-	}
-
 	public static BogoBogoBoard fromString(String name) {
 		if (name == null)
 			throw new NullPointerException("name");
@@ -95,7 +79,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 
 	@Override
 	public String toString() {
-		return String.format("%s(%d:%s)", getDescription(), getId(), getName());
+		return String.format("%s(%s)", getDescription(), getName());
 	}
 
 }

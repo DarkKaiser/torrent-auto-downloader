@@ -53,7 +53,7 @@ public enum WebSite {
 	public abstract WebSiteAccount createAccount(String id, String password);
 	
 	public abstract WebSiteSearchContext createSearchContext();
-
+	
 	public WebSiteSearchKeywords createSearchKeywords(String modeValue) {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
