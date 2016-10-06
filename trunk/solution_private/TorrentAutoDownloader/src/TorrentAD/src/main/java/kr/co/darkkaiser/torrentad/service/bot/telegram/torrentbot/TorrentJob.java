@@ -3,7 +3,6 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
@@ -15,6 +14,8 @@ import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
+import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
@@ -27,7 +28,7 @@ public class TorrentJob {
 
 	private TorrentClient torrentClient;
 	
-	private WebSiteAdapter siteAdapter;
+	private WebSiteConnector siteAdapter;
 	
 	private Configuration configuration;
 	
@@ -39,7 +40,7 @@ public class TorrentJob {
 
 	public TorrentJob(Configuration configuration) throws Exception {
 		// 웹사이트 초기하
-		this.siteAdapter = new WebSiteAdapter(configuration);
+		this.siteAdapter = new DefaultWebSiteConnector(configuration);
 		this.siteAdapter.login();
 		// 트랜스미션 초기화
 		
@@ -48,9 +49,11 @@ public class TorrentJob {
 	}
 
 	public void search(long chatId, long requestId) throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = this.siteAdapter.getHandler();
+		WebSiteHandler handler = (WebSiteHandler) this.siteAdapter.getConnection();
 		
-		WebSiteBoard board = this.siteAdapter.getBoard("newmovie");
+//		WebSiteBoard[] boardValues = this.site.getBoardValues();
+//		return this.site.getBoard(name);
+		WebSiteBoard board = this.siteAdapter.getSite().getBoard("newmovie");
 		
 		
 
@@ -64,7 +67,7 @@ public class TorrentJob {
 	}
 
 	public void list() throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = this.siteAdapter.getHandler();
+		WebSiteHandler handler = (WebSiteHandler) this.siteAdapter.getConnection();
 
 		Iterator<WebSiteBoardItem> searcha = handler.list(BogoBogoBoard.ANI_ON);
 		while (searcha.hasNext()) {

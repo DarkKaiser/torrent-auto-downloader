@@ -8,28 +8,21 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
-import kr.co.darkkaiser.torrentad.website.WebSite;
-import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
-import kr.co.darkkaiser.torrentad.website.WebSiteConnection;
+import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapterResult> {
 
 	private static final Logger logger = LoggerFactory.getLogger(TasksRunnableAdapter.class);
 
-	private final WebSite site;
-
-	private final String accountId;
-	private final String accountPassword;
+	private WebSiteConnector connector;
 
 	private final List<Task> tasks;
 
 	private final Configuration configuration;
 	
 	private final TaskMetadataRegistry taskMetadataRegistry;
-
-	private final AES256Util aes256 = new AES256Util();
 
 	public TasksRunnableAdapter(Configuration configuration) throws Exception {
 		if (configuration == null)
@@ -38,25 +31,10 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 		this.configuration = configuration;
 		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 
-		try {
-			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
-		} catch (RuntimeException e) {
-			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_TAG_WEBSITE_NAME);
-			throw e;
-		}
-
-		this.accountId = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
-		String encryptionPassword = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
-
-		try {
-			this.accountPassword = this.aes256.decode(encryptionPassword);
-		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 비밀번호('{}')의 복호화 작업이 실패하였습니다.", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
-			throw e;
-		}
+		this.connector = new DefaultWebSiteConnector(configuration);
 
 		// Task 목록을 생성한다.
-		this.tasks = TaskGenerator.generate(this.configuration, this.taskMetadataRegistry, this.site);
+		this.tasks = TaskGenerator.generate(this.configuration, this.taskMetadataRegistry, this.connector.getSite());
 	}
 
 	@Override
@@ -75,23 +53,10 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 	}
 
 	private TasksRunnableAdapterResult call0() throws Exception {
-		WebSiteAccount account = null;
-		try {
-			account = this.site.createAccount(this.accountId, this.accountPassword);
-		} catch (Exception e) {
-			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD), e);
-			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
-		}
-
-		WebSiteConnection connection = this.site.createConnection(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
-		try {
-			connection.login(account);
-		} catch (Exception e) {
-			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", this.site, e);
+		if (this.connector.login() == false)
 			return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
-		}
 
-		WebSiteHandler handler = (WebSiteHandler) connection;
+		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
 
 		// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
 		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
@@ -114,7 +79,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			}
 		}
 
-		connection.logout();
+		this.connector.logout();
 
 		return result;
 	}
