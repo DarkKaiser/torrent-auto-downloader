@@ -6,14 +6,14 @@ import kr.co.darkkaiser.torrentad.util.Tuple;
 
 public interface WebSiteHandler {
 
-	void login(WebSiteAccount account) throws Exception;
+	// @@@@@
+	Iterator<WebSiteBoardItem> list(WebSiteBoard board) throws FailedLoadBoardItemsException;
 
-	void logout() throws Exception;
+	// @@@@@
+	Iterator<WebSiteBoardItem> search(WebSiteBoard board, String searchKeyword) throws FailedLoadBoardItemsException;
 
 	Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException;
 
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception;
-
-	boolean isLogin();
 
 }

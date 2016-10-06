@@ -42,7 +42,7 @@ public class TelegramBotService implements BotService {
 		this.telegramBotsApi = new TelegramBotsApi();
 
 		try {
-			this.telegramTorrentBotSession = this.telegramBotsApi.registerBot(new TelegramTorrentBot());
+			this.telegramTorrentBotSession = this.telegramBotsApi.registerBot(new TelegramTorrentBot(this.configuration));
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 			return false;
@@ -53,7 +53,7 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public void stop() {
-		// 종료할 때 TelegramBot API에서 무조건 예외가 발생하므로 로그를 출력하지 않도록 한다.
+		// 종료할 때 TelegramBot API에서 예외가 항상 발생하므로 로그를 출력하지 않도록 한다.
 		BotLogger.setLevel(Level.OFF);
 
 		if (this.telegramTorrentBotSession != null) {

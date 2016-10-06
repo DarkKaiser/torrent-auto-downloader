@@ -11,6 +11,7 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnection;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapterResult> {
@@ -82,13 +83,15 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			return TasksRunnableAdapterResult.INVALID_ACCOUNT();
 		}
 
-		WebSiteHandler handler = this.site.createHandler(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+		WebSiteConnection connection = this.site.createConnection(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 		try {
-			handler.login(account);
+			connection.login(account);
 		} catch (Exception e) {
 			logger.error("웹사이트('{}') 로그인이 실패하였습니다.", this.site, e);
 			return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
 		}
+
+		WebSiteHandler handler = (WebSiteHandler) connection;
 
 		// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
 		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
@@ -111,7 +114,7 @@ public final class TasksRunnableAdapter implements Callable<TasksRunnableAdapter
 			}
 		}
 
-		handler.logout();
+		connection.logout();
 
 		return result;
 	}

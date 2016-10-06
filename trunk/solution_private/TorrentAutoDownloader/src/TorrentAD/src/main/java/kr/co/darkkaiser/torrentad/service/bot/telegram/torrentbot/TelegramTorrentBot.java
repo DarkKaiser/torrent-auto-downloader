@@ -12,6 +12,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.bots.commands.BotCommand;
 
+import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestResponseRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.HelpRequest;
@@ -20,6 +21,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
+// @@@@@
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
@@ -30,15 +32,20 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 	
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
-
+	
 	// @@@@@
 	private TorrentJob job;
+	
+	private final Configuration configuration;
 
-	public TelegramTorrentBot() {
+	public TelegramTorrentBot(Configuration configuration) throws Exception {
+		this.configuration = configuration;
+		
         this.requestResponseRegistry.register(new ListRequest());
         this.requestResponseRegistry.register(new SearchingRequest());
         this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
 
+        this.job = new TorrentJob(this.configuration);
 //        // @@@@@
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
 //        userState.put(message.getFrom().getId(), WAITINGCHANNEL);
@@ -108,6 +115,10 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 				
 				return;
 			}
+			
+			//this.job.getTorrentStatus();
+//			this.job.list();
+			this.job.search(0, 0);
 			
 			onCommandUnknownMessage(update);
 			

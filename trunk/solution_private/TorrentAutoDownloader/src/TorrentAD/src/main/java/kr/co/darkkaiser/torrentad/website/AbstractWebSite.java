@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractWebSite implements WebSiteContext, WebSiteHandler {
+public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	

@@ -10,7 +10,7 @@ public enum WebSite {
 
 	BOGOBOGO("보고보고") {
 		@Override
-		public WebSiteHandler createHandler(String downloadFileWriteLocation) {
+		public WebSiteConnection createConnection(String downloadFileWriteLocation) {
 			return new BogoBogo(downloadFileWriteLocation);
 		}
 
@@ -58,7 +58,7 @@ public enum WebSite {
 		return new DefaultWebSiteAccount(id, password);
 	}
 	
-	public abstract WebSiteHandler createHandler(String downloadFileWriteLocation);
+	public abstract WebSiteConnection createConnection(String downloadFileWriteLocation);
 	
 	public abstract WebSiteSearchContext createSearchContext();
 	
