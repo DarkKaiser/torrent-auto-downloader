@@ -4,14 +4,14 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WebSiteAccountAdapter implements WebSiteAccount {
+public class DefaultWebSiteAccount implements WebSiteAccount {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteAccountAdapter.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteAccount.class);
 	
 	private final String id;
 	private final String password;
 
-	protected WebSiteAccountAdapter(String id, String password) {
+	protected DefaultWebSiteAccount(String id, String password) {
 		validate0(id, password);
 
 		this.id = id;
@@ -59,7 +59,7 @@ public class WebSiteAccountAdapter implements WebSiteAccount {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-			.append(WebSiteAccountAdapter.class.getSimpleName())
+			.append(DefaultWebSiteAccount.class.getSimpleName())
 			.append("{")
 			.append(", id:").append(this.id)
 			.append("}")

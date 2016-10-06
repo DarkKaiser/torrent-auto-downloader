@@ -15,11 +15,6 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteAccount createAccount(String id, String password) {
-			return new WebSiteAccountAdapter(id, password);
-		}
-
-		@Override
 		public WebSiteSearchContext createSearchContext() {
 			return new BogoBogoSearchContext();
 		}
@@ -59,9 +54,11 @@ public enum WebSite {
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 
-	public abstract WebSiteHandler createHandler(String downloadFileWriteLocation);
+	public WebSiteAccount createAccount(String id, String password) {
+		return new DefaultWebSiteAccount(id, password);
+	}
 	
-	public abstract WebSiteAccount createAccount(String id, String password);
+	public abstract WebSiteHandler createHandler(String downloadFileWriteLocation);
 	
 	public abstract WebSiteSearchContext createSearchContext();
 	
