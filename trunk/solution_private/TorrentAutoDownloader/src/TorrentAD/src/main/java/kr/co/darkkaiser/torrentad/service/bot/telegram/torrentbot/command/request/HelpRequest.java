@@ -16,10 +16,10 @@ public class HelpRequest extends AbstractBotCommandRequest {
 
 	private static final Logger logger = LoggerFactory.getLogger(HelpRequest.class);
 
-	private RequestResponseRegistry requestResponseRegistry;
-	
+	private final RequestResponseRegistry requestResponseRegistry;
+
 	public HelpRequest(RequestResponseRegistry requestResponseRegistry) {
-		super("도움", "도움", "도움말을 표시합니다.");
+		super("help", "도움", "도움말을 표시합니다.");
 
 		if (requestResponseRegistry == null)
 			throw new NullPointerException("requestResponseRegistry");
@@ -27,9 +27,9 @@ public class HelpRequest extends AbstractBotCommandRequest {
 		this.requestResponseRegistry = requestResponseRegistry;
 	}
 	
+	// @@@@@
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-		// @@@@@
 		StringBuilder sbMessage = new StringBuilder();
 		sbMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
@@ -50,10 +50,10 @@ public class HelpRequest extends AbstractBotCommandRequest {
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		return new StringBuilder()

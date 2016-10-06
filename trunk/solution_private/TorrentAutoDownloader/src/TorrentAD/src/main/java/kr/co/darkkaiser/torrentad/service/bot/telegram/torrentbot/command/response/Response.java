@@ -7,12 +7,13 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 
 public interface Response {
-	
+
 	String getIdentifier();
 
 	// @@@@@
-	void cancel(AbsSender absSender, User user, Chat chat);
-
 	boolean allow(Request request);
+
+	// @@@@@
+	void cancel(AbsSender absSender, User user, Chat chat);
 
 }

@@ -8,6 +8,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.respon
 
 public class ListRequest extends AbstractBotCommandRequest {
 
+	// @@@@@
 	public ListRequest() {
 		super("list", "조회", "게시판을 조회합니다.");
 //		uper("조회", "게시판을 조회합니다.");

@@ -10,11 +10,11 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 	private static final String COMMAND_INIT_CHARACTER = "/";
 
 	private final String command;
-	private final String commanddescription;
+	private final String commandDescription;
 
 	public AbstractBotCommandRequest(String identifier, String command, String commandDescription) {
 		super(identifier);
-		
+
 		if (StringUtil.isBlank(command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");
 
@@ -25,7 +25,7 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 			throw new IllegalArgumentException("command의 길이는 최대 " + COMMAND_MAX_LENGTH + "자 입니다.");
 
 		this.command = command.toLowerCase();
-		this.commanddescription = commandDescription;
+		this.commandDescription = commandDescription;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 
 	@Override
 	public String getCommandDescription() {
-		return this.commanddescription;
+		return this.commandDescription;
 	}
 	
 	@Override

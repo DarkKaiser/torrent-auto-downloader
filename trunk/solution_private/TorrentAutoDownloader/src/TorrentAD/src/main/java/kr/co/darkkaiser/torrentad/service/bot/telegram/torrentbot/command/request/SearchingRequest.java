@@ -8,6 +8,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.respon
 
 public class SearchingRequest extends AbstractRequest {
 	
+	// @@@@@
 	public SearchingRequest() {
 		super("search");
 	}
