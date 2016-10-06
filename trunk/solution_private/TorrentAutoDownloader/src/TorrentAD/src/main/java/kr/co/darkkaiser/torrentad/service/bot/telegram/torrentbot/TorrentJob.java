@@ -4,56 +4,58 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
+import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
-import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
-import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
 // @@@@@
 public class TorrentJob {
+	
+	private static final Logger logger = LoggerFactory.getLogger(TorrentJob.class);
+
 	private ExecutorService a;
 	
-	private WebSite webSite;
-	private WebSiteHandler webSiteHandler;
-
 	private TorrentClient torrentClient;
 	
-	private WebSiteConnector siteAdapter;
+	private final WebSiteConnector connector;
 	
-	private Configuration configuration;
+	private final Configuration configuration;
 	
-	
-	
-	// job.search(chat_id)
-	// job.get(chat_id)
-	// job.list(chat_id)
-
 	public TorrentJob(Configuration configuration) throws Exception {
+		if (configuration == null)
+			throw new NullPointerException("configuration");
+
+		this.configuration = configuration;
+		
+		// @@@@@
 		// 웹사이트 초기하
-		this.siteAdapter = new DefaultWebSiteConnector(configuration);
-		this.siteAdapter.login();
+		this.connector = new DefaultWebSiteConnector(configuration);
+		this.connector.login();
+		
 		// 트랜스미션 초기화
 		
-		this.configuration = configuration;
 		this.a = Executors.newFixedThreadPool(1);
 	}
 
 	public void search(long chatId, long requestId) throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = (WebSiteHandler) this.siteAdapter.getConnection();
+		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
 		
 //		WebSiteBoard[] boardValues = this.site.getBoardValues();
 //		return this.site.getBoard(name);
-		WebSiteBoard board = this.siteAdapter.getSite().getBoard("newmovie");
+		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
 		
 		
 
@@ -67,7 +69,7 @@ public class TorrentJob {
 	}
 
 	public void list() throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = (WebSiteHandler) this.siteAdapter.getConnection();
+		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
 
 		Iterator<WebSiteBoardItem> searcha = handler.list(BogoBogoBoard.ANI_ON);
 		while (searcha.hasNext()) {
@@ -130,8 +132,5 @@ public class TorrentJob {
 			});
 		}
 	}
-	
 
-
-	
 }

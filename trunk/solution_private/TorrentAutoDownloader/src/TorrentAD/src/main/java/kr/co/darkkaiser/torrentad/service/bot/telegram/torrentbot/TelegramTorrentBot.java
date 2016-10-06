@@ -29,7 +29,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 	private final CommandRegistry commandRegistry = new CommandRegistry();
 	
 	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
-	
+
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
 	
