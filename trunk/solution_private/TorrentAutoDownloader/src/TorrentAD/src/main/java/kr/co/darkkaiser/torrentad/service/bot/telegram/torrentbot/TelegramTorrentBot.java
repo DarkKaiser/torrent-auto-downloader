@@ -25,13 +25,11 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.respon
 public class TelegramTorrentBot extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
-	
-	private final CommandRegistry commandRegistry = new CommandRegistry();
-	
-	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
 
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
+
+	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
 	
 	// @@@@@
 	private TorrentJob job;
@@ -39,8 +37,11 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 	private final Configuration configuration;
 
 	public TelegramTorrentBot(Configuration configuration) throws Exception {
+		if (configuration == null)
+			throw new NullPointerException("configuration");
+
 		this.configuration = configuration;
-		
+
         this.requestResponseRegistry.register(new ListRequest());
         this.requestResponseRegistry.register(new SearchingRequest());
         this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
