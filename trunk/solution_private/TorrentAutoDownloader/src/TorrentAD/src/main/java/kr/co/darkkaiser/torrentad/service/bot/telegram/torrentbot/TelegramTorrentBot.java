@@ -20,9 +20,10 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+import kr.co.darkkaiser.torrentad.util.Disposable;
 
 // @@@@@
-public class TelegramTorrentBot extends TelegramLongPollingBot {
+public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
@@ -166,6 +167,11 @@ public class TelegramTorrentBot extends TelegramLongPollingBot {
 				logger.error(null, e);
 			}
 		}
+	}
+
+	@Override
+	public void dispose() {
+		// @@@@@
 	}
 
 }

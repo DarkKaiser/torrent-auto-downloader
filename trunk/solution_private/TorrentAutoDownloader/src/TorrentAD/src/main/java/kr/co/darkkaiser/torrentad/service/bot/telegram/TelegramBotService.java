@@ -18,9 +18,11 @@ public class TelegramBotService implements BotService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
 	
-	private TelegramBotsApi telegramBotsApi;
+	private TelegramBotsApi botsApi;
 
-	private BotSession telegramTorrentBotSession;
+	private TelegramTorrentBot torrentBot;
+	
+	private BotSession torrentBotSession;
 
 	private final Configuration configuration;
 
@@ -39,10 +41,11 @@ public class TelegramBotService implements BotService {
 		BotLogger.setLevel(Level.ALL);
 		BotLogger.registerLogger(new ConsoleHandler());
 
-		this.telegramBotsApi = new TelegramBotsApi();
+		this.botsApi = new TelegramBotsApi();
 
 		try {
-			this.telegramTorrentBotSession = this.telegramBotsApi.registerBot(new TelegramTorrentBot(this.configuration));
+			this.torrentBot = new TelegramTorrentBot(this.configuration);
+			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 			return false;
@@ -56,12 +59,17 @@ public class TelegramBotService implements BotService {
 		// 종료할 때 TelegramBot API에서 예외가 항상 발생하므로 로그를 출력하지 않도록 한다.
 		BotLogger.setLevel(Level.OFF);
 
-		if (this.telegramTorrentBotSession != null) {
-			this.telegramTorrentBotSession.close();
+		if (this.torrentBotSession != null) {
+			this.torrentBotSession.close();
+			this.torrentBotSession = null;
 		}
 
-		this.telegramBotsApi = null;
-		this.telegramTorrentBotSession = null;
+		if (this.torrentBot != null) {
+			this.torrentBot.dispose();
+			this.torrentBot = null;
+		}
+
+		this.botsApi = null;
 	}
 
 }
