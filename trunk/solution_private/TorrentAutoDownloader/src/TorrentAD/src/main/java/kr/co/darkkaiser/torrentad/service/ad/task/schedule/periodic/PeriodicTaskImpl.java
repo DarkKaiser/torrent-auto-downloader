@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.ad.task.periodic;
+package kr.co.darkkaiser.torrentad.service.ad.task.schedule.periodic;
 
 import java.util.Iterator;
 

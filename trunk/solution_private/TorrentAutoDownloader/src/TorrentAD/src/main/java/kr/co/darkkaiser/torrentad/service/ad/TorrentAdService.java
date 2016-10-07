@@ -12,11 +12,12 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
 
 public final class TorrentAdService implements Service {
 
-	private Timer tasksExecutorTimer;
-
-	private ExecutorService tasksExecutorService;
-
-	private TasksRunnableAdapter tasksRunnableAdapter;
+	private Timer scheduleTasksExecutorTimer;
+	private ExecutorService scheduleTasksExecutorService;
+	private TasksRunnableAdapter scheduleTasksRunnableAdapter;
+	
+	// @@@@@
+	private ExecutorService immediatelyTasksExecutorService;
 
 	private final Configuration configuration;
 
@@ -29,23 +30,23 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public boolean start() throws Exception {
-		if (this.tasksExecutorTimer != null)
-			throw new IllegalStateException("tasksExecutorTimer 객체는 이미 초기화되었습니다.");
-		if (this.tasksExecutorService != null)
-			throw new IllegalStateException("tasksExecutorService 객체는 이미 초기화되었습니다");
-		if (this.tasksRunnableAdapter != null)
-			throw new IllegalStateException("tasksRunnableAdapter 객체는 이미 초기화되었습니다");
+		if (this.scheduleTasksExecutorTimer != null)
+			throw new IllegalStateException("scheduleTasksExecutorTimer 객체는 이미 초기화되었습니다.");
+		if (this.scheduleTasksExecutorService != null)
+			throw new IllegalStateException("scheduleTasksExecutorService 객체는 이미 초기화되었습니다");
+		if (this.scheduleTasksRunnableAdapter != null)
+			throw new IllegalStateException("scheduleTasksRunnableAdapter 객체는 이미 초기화되었습니다");
 		if (this.configuration == null)
 			throw new NullPointerException("configuration");
 		
-		this.tasksExecutorTimer = new Timer();
-		this.tasksExecutorService = Executors.newFixedThreadPool(1);
-		this.tasksRunnableAdapter = new TasksRunnableAdapter(this.configuration);
+		this.scheduleTasksExecutorTimer = new Timer();
+		this.scheduleTasksExecutorService = Executors.newFixedThreadPool(1);
+		this.scheduleTasksRunnableAdapter = new TasksRunnableAdapter(this.configuration);
 
-		this.tasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
+		this.scheduleTasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				TorrentAdService.this.tasksExecutorService.submit(TorrentAdService.this.tasksRunnableAdapter);
+				TorrentAdService.this.scheduleTasksExecutorService.submit(TorrentAdService.this.scheduleTasksRunnableAdapter);
 			}
 		}, 500, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
 
@@ -54,15 +55,15 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public void stop() {
-		if (this.tasksExecutorTimer != null)
-			this.tasksExecutorTimer.cancel();
+		if (this.scheduleTasksExecutorTimer != null)
+			this.scheduleTasksExecutorTimer.cancel();
 		
-		if (this.tasksExecutorService != null)
-			this.tasksExecutorService.shutdown();
+		if (this.scheduleTasksExecutorService != null)
+			this.scheduleTasksExecutorService.shutdown();
 		
-		this.tasksExecutorTimer = null;
-		this.tasksExecutorService = null;
-		this.tasksRunnableAdapter = null;
+		this.scheduleTasksExecutorTimer = null;
+		this.scheduleTasksExecutorService = null;
+		this.scheduleTasksRunnableAdapter = null;
 	}
 	
 }
