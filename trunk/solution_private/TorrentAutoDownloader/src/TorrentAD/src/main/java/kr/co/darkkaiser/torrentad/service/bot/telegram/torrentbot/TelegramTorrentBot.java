@@ -28,7 +28,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
 	// @@@@@
-	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chats = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
 
 	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
 	
@@ -102,7 +102,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				
 				
 	            Long chatId = message.getChatId();
-	            ChatRoom user = this.chats.get(chatId);
+	            Chat user = this.chats.get(chatId);
 	            if (user != null) {
 	            	Response response = user.getResponse();
 	            	if (response != null) {
