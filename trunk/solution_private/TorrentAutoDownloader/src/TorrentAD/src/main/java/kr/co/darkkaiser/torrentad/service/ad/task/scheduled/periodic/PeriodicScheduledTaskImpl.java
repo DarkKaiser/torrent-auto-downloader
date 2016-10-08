@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.ad.task.schedule.periodic;
+package kr.co.darkkaiser.torrentad.service.ad.task.scheduled.periodic;
 
 import java.util.Iterator;
 
@@ -17,12 +17,12 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
+public class PeriodicScheduledTaskImpl extends AbstractTask implements PeriodicScheduledTask {
 
-	private static final Logger logger = LoggerFactory.getLogger(PeriodicTaskImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PeriodicScheduledTaskImpl.class);
 
-	public PeriodicTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
-		super(TaskType.PERIODIC, taskId, taskDescription, taskMetadataRegistry, site);
+	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class PeriodicTaskImpl extends AbstractTask implements PeriodicTask {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(PeriodicTaskImpl.class.getSimpleName())
+				.append(PeriodicScheduledTaskImpl.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

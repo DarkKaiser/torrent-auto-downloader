@@ -18,8 +18,8 @@
 		</torrentad-service-config-values>
 
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
-		<torrentad-periodic-tasks>
-			<torrentad-periodic-task id="abc123" description="테스트 메시지">
+		<torrentad-periodic-scheduled-tasks>
+			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
 				<board-name>newmovie</board-name>
 
@@ -55,13 +55,13 @@
 					</search-keyword>
 					-->
 				</search-keywords>
-			</torrentad-periodic-task>
-		</torrentad-periodic-tasks>
+			</torrentad-periodic-scheduled-task>
+		</torrentad-periodic-scheduled-tasks>
 
 		<!-- 오직 한번만 토렌트 파일을 다운로드 받는 태스크 -->
-		<torrentad-once-tasks>
-			<torrentad-once-task/>
-		</torrentad-once-tasks>
+		<torrentad-once-scheduled-tasks>
+			<torrentad-once-scheduled-task/>
+		</torrentad-once-scheduled-tasks>
 	</torrentad-ad-service>
 
 	<torrentad-au-service>

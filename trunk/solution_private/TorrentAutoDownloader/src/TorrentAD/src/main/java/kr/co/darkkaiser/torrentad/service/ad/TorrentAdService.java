@@ -8,13 +8,13 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
-import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
+import kr.co.darkkaiser.torrentad.service.ad.task.ScheduledTasksRunnableAdapter;
 
 public final class TorrentAdService implements Service {
 
-	private Timer scheduleTasksExecutorTimer;
-	private ExecutorService scheduleTasksExecutorService;
-	private TasksRunnableAdapter scheduleTasksRunnableAdapter;
+	private Timer scheduledTasksExecutorTimer;
+	private ExecutorService scheduledTasksExecutorService;
+	private ScheduledTasksRunnableAdapter scheduledTasksRunnableAdapter;
 	
 	// @@@@@
 	private ExecutorService immediatelyTasksExecutorService;
@@ -30,23 +30,23 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public boolean start() throws Exception {
-		if (this.scheduleTasksExecutorTimer != null)
-			throw new IllegalStateException("scheduleTasksExecutorTimer 객체는 이미 초기화되었습니다.");
-		if (this.scheduleTasksExecutorService != null)
-			throw new IllegalStateException("scheduleTasksExecutorService 객체는 이미 초기화되었습니다");
-		if (this.scheduleTasksRunnableAdapter != null)
-			throw new IllegalStateException("scheduleTasksRunnableAdapter 객체는 이미 초기화되었습니다");
+		if (this.scheduledTasksExecutorTimer != null)
+			throw new IllegalStateException("scheduledTasksExecutorTimer 객체는 이미 초기화되었습니다.");
+		if (this.scheduledTasksExecutorService != null)
+			throw new IllegalStateException("scheduledTasksExecutorService 객체는 이미 초기화되었습니다");
+		if (this.scheduledTasksRunnableAdapter != null)
+			throw new IllegalStateException("scheduledTasksRunnableAdapter 객체는 이미 초기화되었습니다");
 		if (this.configuration == null)
 			throw new NullPointerException("configuration");
 		
-		this.scheduleTasksExecutorTimer = new Timer();
-		this.scheduleTasksExecutorService = Executors.newFixedThreadPool(1);
-		this.scheduleTasksRunnableAdapter = new TasksRunnableAdapter(this.configuration);
+		this.scheduledTasksExecutorTimer = new Timer();
+		this.scheduledTasksExecutorService = Executors.newFixedThreadPool(1);
+		this.scheduledTasksRunnableAdapter = new ScheduledTasksRunnableAdapter(this.configuration);
 
-		this.scheduleTasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
+		this.scheduledTasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				TorrentAdService.this.scheduleTasksExecutorService.submit(TorrentAdService.this.scheduleTasksRunnableAdapter);
+				TorrentAdService.this.scheduledTasksExecutorService.submit(TorrentAdService.this.scheduledTasksRunnableAdapter);
 			}
 		}, 500, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
 
@@ -55,15 +55,15 @@ public final class TorrentAdService implements Service {
 
 	@Override
 	public void stop() {
-		if (this.scheduleTasksExecutorTimer != null)
-			this.scheduleTasksExecutorTimer.cancel();
+		if (this.scheduledTasksExecutorTimer != null)
+			this.scheduledTasksExecutorTimer.cancel();
 		
-		if (this.scheduleTasksExecutorService != null)
-			this.scheduleTasksExecutorService.shutdown();
+		if (this.scheduledTasksExecutorService != null)
+			this.scheduledTasksExecutorService.shutdown();
 		
-		this.scheduleTasksExecutorTimer = null;
-		this.scheduleTasksExecutorService = null;
-		this.scheduleTasksRunnableAdapter = null;
+		this.scheduledTasksExecutorTimer = null;
+		this.scheduledTasksExecutorService = null;
+		this.scheduledTasksRunnableAdapter = null;
 	}
 	
 }

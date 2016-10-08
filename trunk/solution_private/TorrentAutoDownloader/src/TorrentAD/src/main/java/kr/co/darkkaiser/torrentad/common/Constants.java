@@ -40,13 +40,13 @@ public final class Constants {
 	// AD Service Task
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";
 	public static final String APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION = "description";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK = "torrentad-periodic-task";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME = "board-name";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS = "search-keywords";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_ATTR_TYPE = "type";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD = "search-keyword";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE = "mode";
-	public static final String APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM = "item";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK = "torrentad-periodic-scheduled-task";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_BOARD_NAME = "board-name";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS = "search-keywords";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS_ATTR_TYPE = "type";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD = "search-keyword";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ATTR_MODE = "mode";
+	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ITEM = "item";
 
 
 	/*

@@ -22,11 +22,11 @@ import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
-public final class TaskGenerator {
+public final class ScheduledTaskGenerator {
 	
-	private static final Logger logger = LoggerFactory.getLogger(TaskGenerator.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScheduledTaskGenerator.class);
 	
-	private TaskGenerator() {
+	private ScheduledTaskGenerator() {
 	}
 
 	public static List<Task> generate(Configuration configuration, TaskMetadataRegistry taskMetadataRegistry, WebSite site) throws Exception {
@@ -47,7 +47,7 @@ public final class TaskGenerator {
 			doc.getDocumentElement().normalize();
 
 			String nodeName = null;
-			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_PERIODIC_TASK);
+			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK);
 
 			for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
 				Node cvNode = cvNodeList.item(cvNodeListIndex);
@@ -55,7 +55,7 @@ public final class TaskGenerator {
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
 					String taskId = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_ID).getNodeValue();
 					String taskDescription = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION).getNodeValue();
-					Task task = TaskFactory.createTask(TaskType.PERIODIC, taskId, taskDescription, taskMetadataRegistry, site);
+					Task task = TaskFactory.createTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
@@ -64,10 +64,10 @@ public final class TaskGenerator {
 						if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 							nodeName = cvChildNode.getNodeName();
 
-							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_BOARD_NAME) == true) {
+							if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_BOARD_NAME) == true) {
 								task.setBoardName(cvChildNode.getTextContent().trim());
-							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS) == true) {
-								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORDS_ATTR_TYPE).getNodeValue();
+							} else if (nodeName.equals(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS) == true) {
+								String searchKeywordsTypeString = cvChildNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS_ATTR_TYPE).getNodeValue();
 								WebSiteSearchKeywordsType searchKeywordsType = WebSiteSearchKeywordsType.fromString(searchKeywordsTypeString);
 
 								NodeList cvSearchKeywordNodeList = cvChildNode.getChildNodes();
@@ -76,8 +76,8 @@ public final class TaskGenerator {
 
 									if (cvSearchKeywordNode.getNodeType() == Node.ELEMENT_NODE) {
 										String searchKeywordsMode = WebSiteSearchKeywordsMode.getDefault().getValue();
-										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE) != null) {
-											searchKeywordsMode = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ATTR_MODE).getNodeValue();
+										if (cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ATTR_MODE) != null) {
+											searchKeywordsMode = cvSearchKeywordNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ATTR_MODE).getNodeValue();
 										}
 
 										WebSiteSearchKeywords searchKeywords = site.createSearchKeywords(searchKeywordsMode);
@@ -85,7 +85,7 @@ public final class TaskGenerator {
 										Node cvSearchKeywordChildNode = cvSearchKeywordNode.getFirstChild();
 										while (cvSearchKeywordChildNode != null) {
 											if (cvSearchKeywordChildNode.getNodeType() == Node.ELEMENT_NODE) {
-												if (cvSearchKeywordChildNode.getNodeName().equals(Constants.APP_CONFIG_TAG_PERIODIC_TASK_SEARCH_KEYWORD_ITEM) == true) {
+												if (cvSearchKeywordChildNode.getNodeName().equals(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ITEM) == true) {
 													searchKeywords.add(cvSearchKeywordChildNode.getTextContent().trim());
 												}
 											}

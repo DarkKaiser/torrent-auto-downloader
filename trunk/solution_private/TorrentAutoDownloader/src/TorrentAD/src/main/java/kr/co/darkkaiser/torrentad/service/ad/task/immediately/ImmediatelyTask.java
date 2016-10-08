@@ -4,6 +4,4 @@ import kr.co.darkkaiser.torrentad.service.ad.task.Task;
 
 public interface ImmediatelyTask extends Task {
 	
-	// @@@@@
-
 }
