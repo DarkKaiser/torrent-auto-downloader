@@ -10,8 +10,8 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistryImpl;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapterResult;
-import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.ScheduledTaskGenerator;
 
+// @@@@@
 public final class ImmediatelyTasksRunnableAdapter implements TasksRunnableAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTasksRunnableAdapter.class);

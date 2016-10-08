@@ -1,13 +1,13 @@
 package kr.co.darkkaiser.torrentad.service.ad.task.scheduled.once;
 
-import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class OnceScheduledTaskImpl extends AbstractTask implements OnceScheduledTask {
+public class OnceScheduledTaskImpl extends AbstractScheduledTask implements OnceScheduledTask {
 
 	public OnceScheduledTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
 		super(TaskType.ONCE_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);

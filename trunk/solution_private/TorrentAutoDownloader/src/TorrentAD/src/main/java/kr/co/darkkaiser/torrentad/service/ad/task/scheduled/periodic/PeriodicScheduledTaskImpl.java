@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -17,7 +17,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class PeriodicScheduledTaskImpl extends AbstractTask implements PeriodicScheduledTask {
+public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements PeriodicScheduledTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicScheduledTaskImpl.class);
 
