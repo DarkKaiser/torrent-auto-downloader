@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.ad.task;
+package kr.co.darkkaiser.torrentad.service.ad.task.scheduled;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +17,10 @@ import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.service.ad.task.Task;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskFactory;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;

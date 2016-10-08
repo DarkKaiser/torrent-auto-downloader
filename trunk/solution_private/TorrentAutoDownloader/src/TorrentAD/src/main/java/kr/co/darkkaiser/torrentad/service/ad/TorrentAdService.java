@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
-import kr.co.darkkaiser.torrentad.service.ad.task.ScheduledTasksRunnableAdapter;
+import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.ScheduledTasksRunnableAdapter;
 
 public final class TorrentAdService implements Service {
 

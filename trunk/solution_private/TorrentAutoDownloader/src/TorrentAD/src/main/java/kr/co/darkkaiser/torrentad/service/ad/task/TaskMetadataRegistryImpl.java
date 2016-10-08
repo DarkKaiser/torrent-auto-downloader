@@ -13,15 +13,15 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.util.SortedProperties;
 
-public final class DefaultTaskMetadataRegistry implements TaskMetadataRegistry {
+public final class TaskMetadataRegistryImpl implements TaskMetadataRegistry {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultTaskMetadataRegistry.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskMetadataRegistryImpl.class);
 
 	private final String filePath;
 
 	private final Properties properties = new SortedProperties();
 
-	public DefaultTaskMetadataRegistry(String filePath) {
+	public TaskMetadataRegistryImpl(String filePath) {
 		if (filePath == null)
 			throw new NullPointerException("filePath");
 		if (StringUtil.isBlank(filePath) == true)

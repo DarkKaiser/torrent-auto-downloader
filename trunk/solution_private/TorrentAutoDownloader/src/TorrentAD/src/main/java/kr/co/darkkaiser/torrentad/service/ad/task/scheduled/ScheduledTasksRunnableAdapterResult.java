@@ -1,4 +1,6 @@
-package kr.co.darkkaiser.torrentad.service.ad.task;
+package kr.co.darkkaiser.torrentad.service.ad.task.scheduled;
+
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 
 public final class ScheduledTasksRunnableAdapterResult {
 

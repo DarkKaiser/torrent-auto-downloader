@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.ad.task;
+package kr.co.darkkaiser.torrentad.service.ad.task.scheduled;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.service.ad.task.Task;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistryImpl;
+import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -29,7 +33,7 @@ public final class ScheduledTasksRunnableAdapter implements Callable<ScheduledTa
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		this.taskMetadataRegistry = new DefaultTaskMetadataRegistry(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
+		this.taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 
 		this.connector = new DefaultWebSiteConnector(configuration);
 
