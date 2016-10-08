@@ -7,6 +7,9 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
+	// @@@@@
+	protected ImmediatelyTaskCallable callable;
+	
 	public ImmediatelyTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
 		super(TaskType.IMMEDIATELY, taskId, taskDescription, taskMetadataRegistry);
 	}
@@ -14,12 +17,18 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 	@Override
 	public TaskResult run() {
 		// @@@@@
+//		callable.run();
+		
 		return null;
 	}
 
 	@Override
 	public void validate() {
 		super.validate();
+
+		// @@@@@
+		if (this.callable == null)
+			throw new NullPointerException("callable");
 	}
 
 	@Override
