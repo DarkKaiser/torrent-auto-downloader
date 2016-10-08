@@ -59,7 +59,7 @@ public final class ScheduledTaskGenerator {
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
 					String taskId = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_ID).getNodeValue();
 					String taskDescription = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION).getNodeValue();
-					ScheduledTask task = (ScheduledTask) TaskFactory.createTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
+					ScheduledTask task = (ScheduledTask) TaskFactory.createScheduleTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
