@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.ad.task;
 
-import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-
 public interface Task {
 
 	TaskType getTaskType();
@@ -11,8 +9,6 @@ public interface Task {
 	String getTaskDescription();
 
 	TaskMetadataRegistry getTaskMetadataRegistry();
-
-	TaskResult run(WebSiteHandler handler);
 
 	void validate();
 

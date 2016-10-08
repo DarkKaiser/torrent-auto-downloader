@@ -4,7 +4,6 @@ import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
-import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
@@ -13,9 +12,8 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 	}
 
 	@Override
-	public TaskResult run(WebSiteHandler handler) {
+	public TaskResult run() {
 		// @@@@@
-		
 		return null;
 	}
 

@@ -8,12 +8,12 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.Task;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistryImpl;
-import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapter;
-import kr.co.darkkaiser.torrentad.service.ad.task.TasksRunnableAdapterResult;
+import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
+import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapterResult;
 
-public final class ImmediatelyTasksRunnableAdapter implements TasksRunnableAdapter {
+public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTasksRunnableAdapter.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTasksCallableAdapter.class);
 
 	private final Task task;
 
@@ -21,7 +21,7 @@ public final class ImmediatelyTasksRunnableAdapter implements TasksRunnableAdapt
 
 	private final TaskMetadataRegistry taskMetadataRegistry;
 	
-	public ImmediatelyTasksRunnableAdapter(Configuration configuration) throws Exception {
+	public ImmediatelyTasksCallableAdapter(Configuration configuration) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -35,7 +35,7 @@ public final class ImmediatelyTasksRunnableAdapter implements TasksRunnableAdapt
 	}
 
 	@Override
-	public TasksRunnableAdapterResult call() throws Exception {
+	public TasksCallableAdapterResult call() throws Exception {
 		try {
 			// @@@@@
 //			if (this.connector.login() == false)
@@ -71,7 +71,7 @@ public final class ImmediatelyTasksRunnableAdapter implements TasksRunnableAdapt
 			logger.error(null, e);
 		}
 
-		return TasksRunnableAdapterResult.UNEXPECTED_EXCEPTION();
+		return TasksCallableAdapterResult.UNEXPECTED_EXCEPTION();
 	}
 
 }

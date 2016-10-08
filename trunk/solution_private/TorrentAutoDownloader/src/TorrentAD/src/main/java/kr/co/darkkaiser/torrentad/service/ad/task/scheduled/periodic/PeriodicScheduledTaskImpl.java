@@ -12,7 +12,6 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
-import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -21,8 +20,8 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicScheduledTaskImpl.class);
 
-	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
-		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
+	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
+		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry);
 	}
 
 	@Override

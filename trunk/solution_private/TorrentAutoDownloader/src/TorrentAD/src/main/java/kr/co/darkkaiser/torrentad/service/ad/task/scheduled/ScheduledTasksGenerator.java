@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.service.ad.task.Task;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskFactory;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
@@ -26,14 +25,14 @@ import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
-public final class ScheduledTaskGenerator {
+public final class ScheduledTasksGenerator {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ScheduledTaskGenerator.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasksGenerator.class);
 	
-	private ScheduledTaskGenerator() {
+	private ScheduledTasksGenerator() {
 	}
 
-	public static List<Task> generate(Configuration configuration, TaskMetadataRegistry taskMetadataRegistry, WebSite site) throws Exception {
+	public static List<ScheduledTask> generate(Configuration configuration, TaskMetadataRegistry taskMetadataRegistry, WebSite site) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 		if (taskMetadataRegistry == null)
@@ -41,7 +40,7 @@ public final class ScheduledTaskGenerator {
 		if (site == null)
 			throw new NullPointerException("site");
 		
-		List<Task> tasks = new ArrayList<>();
+		List<ScheduledTask> tasks = new ArrayList<>();
 
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -59,7 +58,8 @@ public final class ScheduledTaskGenerator {
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
 					String taskId = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_ID).getNodeValue();
 					String taskDescription = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION).getNodeValue();
-					ScheduledTask task = (ScheduledTask) TaskFactory.createScheduleTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry, site);
+					ScheduledTask task = ((ScheduledTask) TaskFactory.createTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry))
+							.setWebSite(site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();
 					for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {

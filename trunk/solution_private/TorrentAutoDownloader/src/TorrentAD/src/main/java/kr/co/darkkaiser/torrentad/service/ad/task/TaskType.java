@@ -13,7 +13,7 @@ public enum TaskType {
 	PERIODIC_SCHEDULED,
 
 	/**
-	 * 당장 처리되는 태스크
+	 * 당장 처리되는 Task
 	 */
 
 	// 요청이 들어오는 즉시 처리되는 Task

@@ -12,13 +12,16 @@ import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public abstract class AbstractScheduledTask extends AbstractTask implements ScheduledTask {
 
-	protected final WebSite site;
+	protected WebSite site;
 
-	protected final WebSiteSearchContext searchContext;
+	protected WebSiteSearchContext searchContext;
 
-	public AbstractScheduledTask(TaskType taskType, String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry, WebSite site) {
+	public AbstractScheduledTask(TaskType taskType, String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
 		super(taskType, taskId, taskDescription, taskMetadataRegistry);
+	}
 
+	@Override
+	public ScheduledTask setWebSite(WebSite site) {
 		if (site == null)
 			throw new NullPointerException("site");
 
@@ -28,6 +31,8 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 		// 최근에 다운로드 받은 게시불 식별자를 구한다.
 		String key = String.format("%s.%s", this.taskId, Constants.AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
 		setLatestDownloadBoardItemIdentifier(taskMetadataRegistry.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
+		
+		return this;
 	}
 
 	@Override
