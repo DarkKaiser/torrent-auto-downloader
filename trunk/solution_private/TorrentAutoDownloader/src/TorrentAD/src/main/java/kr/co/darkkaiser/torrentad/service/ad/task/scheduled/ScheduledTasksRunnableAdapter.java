@@ -45,44 +45,40 @@ public final class ScheduledTasksRunnableAdapter implements TasksRunnableAdapter
 	@Override
 	public TasksRunnableAdapterResult call() throws Exception {
 		try {
-			return call0();
+			if (this.connector.login() == false)
+				return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
+
+			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
+
+			// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
+			TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
+
+			for (Task task : this.tasks) {
+				logger.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
+
+				try {
+					TaskResult taskResult = task.run(handler);
+					if (taskResult != TaskResult.OK) {
+						logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskDescription());
+						result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
+					} else {
+						logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
+						result = TasksRunnableAdapterResult.OK(TaskResult.OK);
+					}
+				} catch (Throwable e) {
+					logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
+					result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
+				}
+			}
+
+			this.connector.logout();
+
+			return result;
 		} catch (Exception e) {
 			logger.error(null, e);
 		}
 
 		return TasksRunnableAdapterResult.UNEXPECTED_EXCEPTION();
-	}
-
-	private TasksRunnableAdapterResult call0() throws Exception {
-		if (this.connector.login() == false)
-			return TasksRunnableAdapterResult.WEBSITE_LOGIN_FAILED();
-
-		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-
-		// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
-		TasksRunnableAdapterResult result = TasksRunnableAdapterResult.OK();
-
-		for (Task task : this.tasks) {
-			logger.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
-
-			try {
-				TaskResult taskResult = task.run(handler);
-				if (taskResult != TaskResult.OK) {
-					logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskDescription());
-					result = TasksRunnableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
-				} else {
-					logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
-					result = TasksRunnableAdapterResult.OK(TaskResult.OK);
-				}
-			} catch (Throwable e) {
-				logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
-				result = TasksRunnableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
-			}
-		}
-
-		this.connector.logout();
-
-		return result;
 	}
 
 }
