@@ -8,7 +8,6 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
-// @@@@@ RequestRegistry, ResponseRegistry로 분리?
 public interface RequestResponseRegistry {
 
 	boolean register(Request request);
@@ -26,9 +25,11 @@ public interface RequestResponseRegistry {
 	Collection<Response> getRegisteredResponses();
 	
 	Response getRegisteredResponse(String identifier);
-	
+
+	// @@@@@
 	boolean execute(AbsSender absSender, Update update);
 	
+	// @@@@@
 	Request get(Update update);
 	
 }

@@ -26,7 +26,7 @@ public class HelpRequest extends AbstractBotCommandRequest {
 
 		this.requestResponseRegistry = requestResponseRegistry;
 	}
-	
+
 	// @@@@@
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {

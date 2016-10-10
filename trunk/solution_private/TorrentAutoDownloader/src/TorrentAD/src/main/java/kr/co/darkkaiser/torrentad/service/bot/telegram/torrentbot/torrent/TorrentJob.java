@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent;
 
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +12,8 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.action.ListBoardImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
@@ -25,6 +27,8 @@ import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 public class TorrentJob {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TorrentJob.class);
+	
+	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 
 	private ExecutorService a;
 	
@@ -34,20 +38,28 @@ public class TorrentJob {
 	
 	private final Configuration configuration;
 	
-	public TorrentJob(Configuration configuration) throws Exception {
+	public TorrentJob(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
+		if (immediatelyTaskExecutorService == null)
+			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		
+		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
+
 		// @@@@@
 		// 웹사이트 초기하
 		this.connector = new DefaultWebSiteConnector(configuration);
 		this.connector.login();
-		
+
 		// 트랜스미션 초기화
 		
 		this.a = Executors.newFixedThreadPool(1);
+	}
+
+	public void list() {
+		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
+		this.immediatelyTaskExecutorService.submit(new ListBoardImmediatelyTaskAction(this.connector, board));
 	}
 
 	public void search(long chatId, long requestId) throws FailedLoadBoardItemsException {
@@ -62,16 +74,6 @@ public class TorrentJob {
 		System.out.println("############# search");
 		// @@@@@
 		Iterator<WebSiteBoardItem> searcha = handler.search(board, "드래곤");
-		while (searcha.hasNext()) {
-			WebSiteBoardItem next = searcha.next();
-			System.out.println(next);
-		}
-	}
-
-	public void list() throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-
-		Iterator<WebSiteBoardItem> searcha = handler.list(BogoBogoBoard.ANI_ON);
 		while (searcha.hasNext()) {
 			WebSiteBoardItem next = searcha.next();
 			System.out.println(next);

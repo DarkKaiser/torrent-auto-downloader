@@ -21,23 +21,24 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 
-// @@@@@
 public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
-	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
-
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
 
+	// @@@@@
 	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
 	
 	// @@@@@
 	private TorrentJob job;
 	
+	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+
 	private final Configuration configuration;
 	
 	public TelegramTorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
@@ -49,12 +50,12 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.configuration = configuration;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
-        this.requestResponseRegistry.register(new ListRequest());
-        this.requestResponseRegistry.register(new SearchingRequest());
-        this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
+		this.requestResponseRegistry.register(new ListRequest());
+		this.requestResponseRegistry.register(new SearchingRequest());
+		this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
 
-        this.job = new TorrentJob(this.configuration);
-//        // @@@@@
+		// @@@@@
+		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
 //        userState.put(message.getFrom().getId(), WAITINGCHANNEL);
 //        userState.remove(message.getFrom().getId());
@@ -72,6 +73,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	@Override
 	public void onUpdateReceived(Update update) {
+		// @@@@@
 		if (update == null)
 			throw new NullPointerException("update");
 
@@ -125,8 +127,9 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 			}
 			
 			//this.job.getTorrentStatus();
-//			this.job.list();
-			this.job.search(0, 0);
+			this.job.list();
+			this.job.list();
+//			this.job.search(0, 0);
 			
 			onCommandUnknownMessage(update);
 			

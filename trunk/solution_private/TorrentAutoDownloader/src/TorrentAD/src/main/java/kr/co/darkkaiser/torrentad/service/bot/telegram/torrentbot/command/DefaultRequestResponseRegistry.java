@@ -22,7 +22,7 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 	
 	private final Map<String, Request> requestMap = new LinkedHashMap<>();
 	private final Map<String, Response> responseMap = new LinkedHashMap<>();
-	
+
 	@Override
 	public final boolean register(Request request) {
 		if (request == null)
@@ -164,5 +164,29 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 
 		return false;
 	}
+//	// @@@@@
+//	public final boolean executeCommand(AbsSender absSender, Message message) {
+//		if (absSender == null)
+//			throw new NullPointerException("absSender");
+//		if (message == null)
+//			throw new NullPointerException("message");
+//
+//		if (message.hasText() == true) {
+//			String commandMessage = message.getText();
+//			String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+//
+//			String command = commandSplit[0];
+//			if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+//				command = command.substring(1);
+//
+//			if (commands.containsKey(command) == true) {
+//				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+//				commands.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
+//				return true;
+//			}
+//		}
+//
+//		return false;
+//	}
 
 }

@@ -212,29 +212,26 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	// @@@@@
 	@Override
-	public Iterator<WebSiteBoardItem> list(WebSiteBoard board) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadAlways) throws FailedLoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
-		
-		BogoBogoBoard b = (BogoBogoBoard) board;
-		if (loadBoardItems(b) == false)
+
+		if (loadBoardItems((BogoBogoBoard) board, loadAlways) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
-		List<BogoBogoBoardItem> boardItems = this.boards.get(board);// 여러번 호출되면 중복되서 저장될수있음
 
-		for (BogoBogoBoardItem boardItem : boardItems) {
+		for (BogoBogoBoardItem boardItem : this.boards.get(board)) {
 			assert boardItem != null;
 			resultList.add(boardItem);
 		}
 
 		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
-		
+
 		return resultList.iterator();
 	}
 
@@ -263,9 +260,10 @@ public class BogoBogo extends AbstractWebSite {
 
 		return resultList.iterator();
 	}
+	
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext, boolean reload) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -274,15 +272,14 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		if (loadBoardItems(siteSearchContext.getBoard()) == false)
+		if (loadBoardItems(siteSearchContext.getBoard(), reload) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
-		List<BogoBogoBoardItem> boardItems = this.boards.get(siteSearchContext.getBoard());
 
 		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
 		
-		for (BogoBogoBoardItem boardItem : boardItems) {
+		for (BogoBogoBoardItem boardItem : this.boards.get(siteSearchContext.getBoard())) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
@@ -338,12 +335,16 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink(siteBoardItem);
 	}
 
-	private boolean loadBoardItems(BogoBogoBoard board) {
+	private boolean loadBoardItems(BogoBogoBoard board, boolean loadAlways) {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (this.boards.containsKey(board) == true)
-			return true;
+		if (loadAlways == true) {
+			this.boards.remove(board);
+		} else {
+			if (this.boards.containsKey(board) == true)
+				return true;
+		}
 
 		String url = null;
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
