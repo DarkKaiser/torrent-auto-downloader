@@ -60,7 +60,7 @@ public class TorrentJob {
 
 	public void search(long chatId, long requestId) {
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
-		this.immediatelyTaskExecutorService.submit(new SearchBoardImmediatelyTaskAction(this.connector, board));
+		this.immediatelyTaskExecutorService.submit(new SearchBoardImmediatelyTaskAction(this.connector));
 	}
 
 	public void getTorrentStatus() {

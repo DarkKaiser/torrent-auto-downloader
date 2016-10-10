@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -18,15 +17,10 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 
 	private final WebSiteConnector connector;
 	
-	private final WebSiteBoard board;
-
-	public SearchBoardImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
+	public SearchBoardImmediatelyTaskAction(WebSiteConnector connector) {
 		if (connector == null)
 			throw new NullPointerException("connector");
-		if (board == null)
-			throw new NullPointerException("board");
 
-		this.board = board;
 		this.connector = connector;
 	}
 
@@ -68,8 +62,6 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 		
 		if (this.connector == null)
 			throw new NullPointerException("connector");
-		if (this.board == null)
-			throw new NullPointerException("board");
 	}
 
 }
