@@ -285,7 +285,6 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음
 		for (BogoBogoBoard board : BogoBogoBoard.values()) {
 			try {
 				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, String.format("&search=subject&keyword=%s&recom=", keyword));
@@ -373,6 +372,7 @@ public class BogoBogo extends AbstractWebSite {
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
+			// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
 				url = String.format("%s&page=%d&%s", board.getURL(), pageNo, queryString);
 
