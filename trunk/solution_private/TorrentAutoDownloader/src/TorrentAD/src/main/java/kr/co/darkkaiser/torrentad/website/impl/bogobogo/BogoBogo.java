@@ -220,7 +220,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		if (loadBoardItems((BogoBogoBoard) board, loadAlways) == false)
+		if (loadBoardItems((BogoBogoBoard) board, "", loadAlways) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -235,23 +235,21 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteBoard board, String searchKeyword) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> search(WebSiteBoard board, String searchKeyword, boolean loadAlways) throws FailedLoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		BogoBogoBoard b = (BogoBogoBoard) board;
-		if (loadBoardItems(b, searchKeyword) == false)
+		// @@@@@ board에 저장이 되면 안됨
+		if (loadBoardItems((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", searchKeyword), loadAlways) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
-		List<BogoBogoBoardItem> boardItems = this.boards.get(board);
 
-		for (BogoBogoBoardItem boardItem : boardItems) {
+		for (BogoBogoBoardItem boardItem : this.boards.get(board)) {
 			assert boardItem != null;
 			resultList.add(boardItem);
 		}
@@ -263,7 +261,7 @@ public class BogoBogo extends AbstractWebSite {
 	
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext, boolean reload) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -272,7 +270,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		if (loadBoardItems(siteSearchContext.getBoard(), reload) == false)
+		if (loadBoardItems(siteSearchContext.getBoard(), "", loadAlways) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -335,9 +333,14 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink(siteBoardItem);
 	}
 
-	private boolean loadBoardItems(BogoBogoBoard board, boolean loadAlways) {
+	private boolean loadBoardItems(BogoBogoBoard board, String queryString, boolean loadAlways) {
 		assert board != null;
 		assert isLogin() == true;
+
+		if (StringUtil.isBlank(queryString) == true)
+			queryString = "";
+		if (queryString.startsWith("&") == true)
+			queryString = queryString.substring(1);
 
 		if (loadAlways == true) {
 			this.boards.remove(board);
@@ -351,7 +354,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		try {
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
-				url = String.format("%s&page=%s", board.getURL(), pageNo);
+				url = String.format("%s&page=%d&%s", board.getURL(), pageNo, queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
@@ -431,99 +434,6 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 	
-	// @@@@@
-	private boolean loadBoardItems(BogoBogoBoard board, String searchKeyword) {
-		assert board != null;
-		assert isLogin() == true;
-
-		if (this.boards.containsKey(board) == true)
-			return true;
-
-		String url = null;
-		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
-
-		try {
-			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
-				url = String.format("%s&page=%s&search=subject&keyword=%s&recom=", board.getURL(), pageNo, searchKeyword);
-
-				Connection.Response boardItemsResponse = Jsoup.connect(url)
-						.userAgent(USER_AGENT)
-		                .method(Connection.Method.GET)
-		                .cookies(this.loginConnResponse.cookies())
-		                .execute();
-				
-				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
-	
-				Document boardItemsDoc = boardItemsResponse.parse();
-				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
-				
-				if (elements.isEmpty() == true) {
-					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
-				} else {
-					try {
-						for (Element element : elements) {
-							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
-
-							// 번호
-							if (iterator.next().text().contains("[공지]") == true)
-								continue;
-
-							// 카테고리
-							if (board.hasCategory() == true)
-								iterator.next();
-
-							// 제목
-							Element titleElement = iterator.next();
-							String title = titleElement.text().trim();
-							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
-								continue;
-							
-							Elements titleLinkElement = titleElement.getElementsByTag("a");
-							if (titleLinkElement.size() != 1)
-								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-
-							String detailPageURL = titleLinkElement.attr("href");
-							if (detailPageURL.startsWith("board.php") == false)
-								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-
-							int noPos = detailPageURL.indexOf("no=");
-							if (noPos < 0)
-								throw new ParseException(String.format("게시물의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-							String identifier = detailPageURL.substring(noPos + 3/* no= */, detailPageURL.indexOf("&", noPos));
-
-							// 작성자
-							iterator.next();
-
-							// 날짜
-							String registDate = iterator.next().text().trim();
-
-							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
-						}
-					} catch (NoSuchElementException e) {
-						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
-						throw e;
-					}
-				}
-			}
-		} catch (NoSuchElementException e) {
-			// 아무 처리도 하지 않는다.
-			return false;
-		} catch (ParseException e) {
-			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
-			return false;
-		} catch (Exception e) {
-			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
-			return false;
-		}
-
-		Collections.sort(boardItems, new WebSiteBoardItemAscCompare());
-		
-		this.boards.put(board, boardItems);
-
-		return true;
-	}
-
 	private boolean loadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;

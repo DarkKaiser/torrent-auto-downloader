@@ -1,6 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent;
 
-import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,14 +13,11 @@ import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.action.ListBoardImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.action.SearchBoardImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
-import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
-import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
 // @@@@@
 public class TorrentJob {
@@ -62,22 +58,9 @@ public class TorrentJob {
 		this.immediatelyTaskExecutorService.submit(new ListBoardImmediatelyTaskAction(this.connector, board));
 	}
 
-	public void search(long chatId, long requestId) throws FailedLoadBoardItemsException {
-		WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-		
-//		WebSiteBoard[] boardValues = this.site.getBoardValues();
-//		return this.site.getBoard(name);
+	public void search(long chatId, long requestId) {
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
-		
-		
-
-		System.out.println("############# search");
-		// @@@@@
-		Iterator<WebSiteBoardItem> searcha = handler.search(board, "드래곤");
-		while (searcha.hasNext()) {
-			WebSiteBoardItem next = searcha.next();
-			System.out.println(next);
-		}
+		this.immediatelyTaskExecutorService.submit(new SearchBoardImmediatelyTaskAction(this.connector, board));
 	}
 
 	public void getTorrentStatus() {
