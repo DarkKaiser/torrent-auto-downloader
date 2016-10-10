@@ -5,13 +5,21 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTasksCallableAdapter;
 import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.ScheduledTasksCallableAdapter;
 
-public final class TorrentAdService implements Service {
+public final class TorrentAdService implements Service, ImmediatelyTaskExecutorService {
+
+	private static final Logger logger = LoggerFactory.getLogger(TorrentAdService.class);
 
 	private Timer scheduledTasksExecutorTimer;
 	private ExecutorService scheduledTasksExecutorService;
@@ -72,6 +80,18 @@ public final class TorrentAdService implements Service {
 		this.scheduledTasksExecutorService = null;
 		this.scheduledTasksCallableAdapter = null;
 		this.immediatelyTasksExecutorService = null;
+	}
+
+	@Override
+	public boolean submit(ImmediatelyTaskAction action) {
+		try {
+			this.immediatelyTasksExecutorService.submit(new ImmediatelyTasksCallableAdapter(this.configuration, action));
+		} catch (Exception e) {
+			logger.error("ImmediatelyTaskAction의 작업 요청이 실패하였습니다.", e);
+			return false;
+		}
+
+		return true;
 	}
 
 }

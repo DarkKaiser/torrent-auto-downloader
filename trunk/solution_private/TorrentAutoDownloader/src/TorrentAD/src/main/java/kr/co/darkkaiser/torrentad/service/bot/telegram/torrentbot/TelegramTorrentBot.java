@@ -13,6 +13,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.bots.commands.BotCommand;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestResponseRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.HelpRequest;
@@ -27,6 +28,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
+	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
 
@@ -36,12 +39,15 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	private TorrentJob job;
 	
 	private final Configuration configuration;
-
-	public TelegramTorrentBot(Configuration configuration) throws Exception {
+	
+	public TelegramTorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
+		if (immediatelyTaskExecutorService == null)
+			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
+		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
         this.requestResponseRegistry.register(new ListRequest());
         this.requestResponseRegistry.register(new SearchingRequest());

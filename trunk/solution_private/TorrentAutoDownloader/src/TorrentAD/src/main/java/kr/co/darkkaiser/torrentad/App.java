@@ -8,18 +8,19 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.config.DefaultConfiguration;
 import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.au.TorrentAuService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.TelegramBotService;
 
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
-	
-	private Configuration configuration;
-	
+		
 	private Service torrentAdService;
 	private Service torrentAuService;
 	private Service torrentBotService;
+
+	private Configuration configuration;
 
 	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
@@ -36,7 +37,8 @@ public class App {
 		try {
 			this.torrentAuService = new TorrentAuService(configuration);
 			this.torrentAdService = new TorrentAdService(configuration);
-			this.torrentBotService = new TelegramBotService(configuration);
+			this.torrentBotService = new TelegramBotService((ImmediatelyTaskExecutorService) this.torrentAdService, configuration);
+
 			return this.torrentAuService.start() && this.torrentAdService.start() && this.torrentBotService.start();
 		} catch (Exception e) {
 			logger.error(null, e);

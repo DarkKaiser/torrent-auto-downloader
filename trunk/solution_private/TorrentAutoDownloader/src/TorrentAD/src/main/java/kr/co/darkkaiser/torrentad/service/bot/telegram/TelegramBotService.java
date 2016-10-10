@@ -11,6 +11,7 @@ import org.telegram.telegrambots.logging.BotLogger;
 import org.telegram.telegrambots.updatesreceivers.BotSession;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TelegramTorrentBot;
 
@@ -18,6 +19,8 @@ public class TelegramBotService implements BotService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
 	
+	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+
 	private TelegramBotsApi botsApi;
 
 	private TelegramTorrentBot torrentBot;
@@ -26,11 +29,14 @@ public class TelegramBotService implements BotService {
 
 	private final Configuration configuration;
 
-	public TelegramBotService(Configuration configuration) {
+	public TelegramBotService(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) {
+		if (immediatelyTaskExecutorService == null)
+			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
+		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
 
 	@Override
@@ -44,7 +50,7 @@ public class TelegramBotService implements BotService {
 		this.botsApi = new TelegramBotsApi();
 
 		try {
-			this.torrentBot = new TelegramTorrentBot(this.configuration);
+			this.torrentBot = new TelegramTorrentBot(this.immediatelyTaskExecutorService, this.configuration);
 			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
