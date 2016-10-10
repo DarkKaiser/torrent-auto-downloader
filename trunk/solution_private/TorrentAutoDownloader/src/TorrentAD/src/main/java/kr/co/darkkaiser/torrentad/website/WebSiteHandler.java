@@ -19,7 +19,7 @@ public interface WebSiteHandler {
 	/**
 	 * 해당 키워드를 포함하는 모든 게시판의 게시물을 검색한다.
 	 */
-	Iterator<WebSiteBoardItem> searchAll(String keyword) throws Exception;
+	Iterator<WebSiteBoardItem> searchAllBoards(String keyword) throws Exception;
 
 	/**
 	 * 검색컨텍스트에 등록된 첨부파일 검색조건과 일치하는 첨부파일을 모두 다운로드한다.

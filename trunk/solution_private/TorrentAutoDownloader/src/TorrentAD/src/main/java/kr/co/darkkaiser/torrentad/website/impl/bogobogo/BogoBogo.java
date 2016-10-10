@@ -275,9 +275,8 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@ 함수명
 	@Override
-	public Iterator<WebSiteBoardItem> searchAll(String keyword) throws Exception {
+	public Iterator<WebSiteBoardItem> searchAllBoards(String keyword) throws Exception {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("searchKeyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -286,7 +285,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음 
+		// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음
 		for (BogoBogoBoard board : BogoBogoBoard.values()) {
 			try {
 				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, String.format("&search=subject&keyword=%s&recom=", keyword));
