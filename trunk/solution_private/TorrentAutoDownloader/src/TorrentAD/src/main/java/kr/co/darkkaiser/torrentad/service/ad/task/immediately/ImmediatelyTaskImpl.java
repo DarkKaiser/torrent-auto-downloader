@@ -11,12 +11,17 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTaskImpl.class);
-	
-	// @@@@@ 변수명
-	protected ImmediatelyTaskCallable callable;
-	
+
+	protected ImmediatelyTaskAction action;
+
 	public ImmediatelyTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
 		super(TaskType.IMMEDIATELY, taskId, taskDescription, taskMetadataRegistry);
+	}
+	
+	@Override
+	public ImmediatelyTask setAction(ImmediatelyTaskAction action) {
+		this.action = action;
+		return this;
 	}
 
 	@Override
@@ -24,7 +29,7 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 		validate();
 
 		try {
-			if (this.callable.call() == false)
+			if (this.action.call() == false)
 				return TaskResult.FAILED;
 		} catch (Exception e) {
 			logger.error(null, e);
@@ -38,11 +43,10 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 	public void validate() {
 		super.validate();
 
-		// @@@@@ 변수명
-		if (this.callable == null)
-			throw new NullPointerException("callable");
+		if (this.action == null)
+			throw new NullPointerException("action");
 
-		this.callable.validate();
+		this.action.validate();
 	}
 
 	@Override
@@ -50,7 +54,7 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 		return new StringBuilder()
 				.append(ImmediatelyTaskImpl.class.getSimpleName())
 				.append("{")
-				.append("callable:").append(this.callable)//@@@@@ 변수명
+				.append("action:").append(this.action)
 				.append("}, ")
 				.append(super.toString())
 				.toString();

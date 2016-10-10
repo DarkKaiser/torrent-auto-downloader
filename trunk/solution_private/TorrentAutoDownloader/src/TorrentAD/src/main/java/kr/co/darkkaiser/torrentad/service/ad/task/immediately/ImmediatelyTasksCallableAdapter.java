@@ -1,12 +1,14 @@
 package kr.co.darkkaiser.torrentad.service.ad.task.immediately;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskFactory;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistryImpl;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
@@ -18,23 +20,21 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTasksCallableAdapter.class);
 
 	private final ImmediatelyTask task;
+	
+	private static AtomicInteger count = new AtomicInteger(0);
 
-	@SuppressWarnings("unused")
-	private final Configuration configuration;
-
-	private final TaskMetadataRegistry taskMetadataRegistry;
-
-	public ImmediatelyTasksCallableAdapter(Configuration configuration, ImmediatelyTaskCallable callable) throws Exception {
+	public ImmediatelyTasksCallableAdapter(Configuration configuration, ImmediatelyTaskAction action) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
+		if (action == null)
+			throw new NullPointerException("action");
 
-		this.configuration = configuration;
-		this.taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
+		String name = action.getName();
+		if (StringUtil.isBlank(name) == true)
+			throw new IllegalArgumentException("ImmediatelyTaskAction의 name은 빈 문자열을 허용하지 않습니다.");
 
-		// @@@@@ taskId는 랜덤생성, taskDescription(정보 있어야됨, 아니면 call 함수를 수정, ImmediatelyTaskCallable 객체에서 받는다??)
-		// Task를 생성한다.
-		String description = callable.getDescription();
-		this.task = (ImmediatelyTask) TaskFactory.createTask(TaskType.IMMEDIATELY, "taskId", description, taskMetadataRegistry);
+		TaskMetadataRegistryImpl taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
+		this.task = ((ImmediatelyTask) TaskFactory.createTask(TaskType.IMMEDIATELY, String.format("ImmediatelyTask_%05d", count.incrementAndGet()), name, taskMetadataRegistry)).setAction(action);
 	}
 
 	@Override

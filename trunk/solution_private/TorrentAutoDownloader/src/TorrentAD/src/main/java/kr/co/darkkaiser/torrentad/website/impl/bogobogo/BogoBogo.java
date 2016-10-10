@@ -651,8 +651,9 @@ public class BogoBogo extends AbstractWebSite {
 		                .data("valid_id", downloadProcess1Result.getMsg())
 		                .method(Connection.Method.POST)
 		                .cookies(this.loginConnResponse.cookies())
+						.timeout(60 * 1000)
 		                .execute();
-				
+
 				if (downloadProcess2Response.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + downloadProcessURL2 + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
 

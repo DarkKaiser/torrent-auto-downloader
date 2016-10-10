@@ -4,6 +4,8 @@ import kr.co.darkkaiser.torrentad.service.ad.task.Task;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 
 public interface ImmediatelyTask extends Task {
+	
+	ImmediatelyTask setAction(ImmediatelyTaskAction action);
 
 	TaskResult run();
 
