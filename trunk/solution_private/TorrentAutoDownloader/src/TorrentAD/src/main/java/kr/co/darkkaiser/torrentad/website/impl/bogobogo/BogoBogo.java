@@ -235,30 +235,6 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteBoard board, String searchKeyword, boolean loadAlways) throws FailedLoadBoardItemsException {
-		if (board == null)
-			throw new NullPointerException("board");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		// @@@@@ board에 저장이 되면 안됨
-		if (loadBoardItems((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", searchKeyword), loadAlways) == false)
-			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
-
-		List<WebSiteBoardItem> resultList = new ArrayList<>();
-
-		for (BogoBogoBoardItem boardItem : this.boards.get(board)) {
-			assert boardItem != null;
-			resultList.add(boardItem);
-		}
-
-		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
-
-		return resultList.iterator();
-	}
-	
 
 	@Override
 	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
@@ -299,6 +275,31 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
+	@Override
+	public Iterator<WebSiteBoardItem> search(String keyword) throws FailedLoadBoardItemsException {
+		if (StringUtil.isBlank(keyword) == true)
+			throw new IllegalArgumentException("searchKeyword는 빈 문자열을 허용하지 않습니다.");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		// @@@@@ board에 저장이 되면 안됨, 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음 
+		BogoBogoBoard[] boardValues = BogoBogoBoard.values();
+		if (loadBoardItems(BogoBogoBoard.ANI_ON, String.format("&search=subject&keyword=%s&recom=", keyword), true) == false)
+			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", BogoBogoBoard.ANI_ON.toString()));
+
+		List<WebSiteBoardItem> resultList = new ArrayList<>();
+
+		for (BogoBogoBoardItem boardItem : this.boards.get(BogoBogoBoard.ANI_ON)) {
+			assert boardItem != null;
+			resultList.add(boardItem);
+		}
+
+		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
+
+		return resultList.iterator();
+	}
+	
 	@Override
 	public Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
 		if (searchContext == null)

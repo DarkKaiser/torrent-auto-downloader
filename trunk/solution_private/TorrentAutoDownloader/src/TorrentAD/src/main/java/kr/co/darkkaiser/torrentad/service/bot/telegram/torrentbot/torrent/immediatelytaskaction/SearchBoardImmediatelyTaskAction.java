@@ -1,26 +1,26 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.action;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.immediatelytaskaction;
 
 import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class ListBoardImmediatelyTaskAction implements ImmediatelyTaskAction {
+public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ListBoardImmediatelyTaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(SearchBoardImmediatelyTaskAction.class);
 
 	private final WebSiteConnector connector;
 	
 	private final WebSiteBoard board;
 
-	public ListBoardImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
+	public SearchBoardImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
 		if (connector == null)
 			throw new NullPointerException("connector");
 		if (board == null)
@@ -32,14 +32,15 @@ public class ListBoardImmediatelyTaskAction implements ImmediatelyTaskAction {
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s 리스트", this.connector.getSite().getName(), this.board.getDescription());
+		return String.format("%s > 전체 게시판 검색", this.connector.getSite().getName());
 	}
 
 	@Override
 	public Boolean call() throws Exception {
 		try {
+			// @@@@@
 			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
+			Iterator<WebSiteBoardItem> iterator = handler.search("드래곤");
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 			while (iterator.hasNext() == true) {
@@ -63,22 +64,12 @@ public class ListBoardImmediatelyTaskAction implements ImmediatelyTaskAction {
 
 	@Override
 	public void validate() {
+		super.validate();
+		
 		if (this.connector == null)
 			throw new NullPointerException("connector");
 		if (this.board == null)
 			throw new NullPointerException("board");
-	}
-
-	@Override
-	public boolean isValid() {
-		try {
-			validate();
-		} catch (Exception e) {
-			logger.debug(null, e);
-			return false;
-		}
-
-		return true;
 	}
 
 }
