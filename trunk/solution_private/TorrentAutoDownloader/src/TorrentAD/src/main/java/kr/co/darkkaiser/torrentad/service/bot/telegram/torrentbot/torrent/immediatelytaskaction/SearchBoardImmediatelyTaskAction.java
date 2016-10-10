@@ -40,7 +40,7 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 		try {
 			// @@@@@
 			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-			Iterator<WebSiteBoardItem> iterator = handler.search("드래곤");
+			Iterator<WebSiteBoardItem> iterator = handler.searchAll("드래곤");
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 			while (iterator.hasNext() == true) {

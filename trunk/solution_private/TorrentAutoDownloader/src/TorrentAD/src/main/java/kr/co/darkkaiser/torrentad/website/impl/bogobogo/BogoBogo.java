@@ -237,7 +237,7 @@ public class BogoBogo extends AbstractWebSite {
 
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -275,24 +275,31 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
+	// @@@@@ 함수명
 	@Override
-	public Iterator<WebSiteBoardItem> search(String keyword) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> searchAll(String keyword) throws Exception {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("searchKeyword는 빈 문자열을 허용하지 않습니다.");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		// @@@@@ board에 저장이 되면 안됨, 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음 
-		BogoBogoBoard[] boardValues = BogoBogoBoard.values();
-		if (loadBoardItems(BogoBogoBoard.ANI_ON, String.format("&search=subject&keyword=%s&recom=", keyword), true) == false)
-			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", BogoBogoBoard.ANI_ON.toString()));
-
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (BogoBogoBoardItem boardItem : this.boards.get(BogoBogoBoard.ANI_ON)) {
-			assert boardItem != null;
-			resultList.add(boardItem);
+		// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음 
+		for (BogoBogoBoard board : BogoBogoBoard.values()) {
+			try {
+				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, String.format("&search=subject&keyword=%s&recom=", keyword));
+				if (boardItems == null)
+					throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+
+				for (BogoBogoBoardItem boardItem : boardItems) {
+					assert boardItem != null;
+					resultList.add(boardItem);
+				}
+			} catch (Exception e) {
+				logger.error(null, e);
+			}
 		}
 
 		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
@@ -338,17 +345,30 @@ public class BogoBogo extends AbstractWebSite {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (StringUtil.isBlank(queryString) == true)
-			queryString = "";
-		if (queryString.startsWith("&") == true)
-			queryString = queryString.substring(1);
-
 		if (loadAlways == true) {
 			this.boards.remove(board);
 		} else {
 			if (this.boards.containsKey(board) == true)
 				return true;
 		}
+
+		List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
+		if (boardItems == null)
+			return false;
+
+		this.boards.put(board, boardItems);
+
+		return true;
+	}
+
+	private List<BogoBogoBoardItem> loadBoardItems0(BogoBogoBoard board, String queryString) {
+		assert board != null;
+		assert isLogin() == true;
+
+		if (StringUtil.isBlank(queryString) == true)
+			queryString = "";
+		if (queryString.startsWith("&") == true)
+			queryString = queryString.substring(1);
 
 		String url = null;
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
@@ -419,20 +439,18 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		} catch (NoSuchElementException e) {
 			// 아무 처리도 하지 않는다.
-			return false;
+			return null;
 		} catch (ParseException e) {
 			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
-			return false;
+			return null;
 		} catch (Exception e) {
 			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
-			return false;
+			return null;
 		}
 
 		Collections.sort(boardItems, new WebSiteBoardItemAscCompare());
 		
-		this.boards.put(board, boardItems);
-
-		return true;
+		return boardItems;
 	}
 	
 	private boolean loadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
