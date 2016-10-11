@@ -10,6 +10,7 @@ import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
 public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -32,9 +33,10 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			// @@@@@
+			// @@@@@ connector에서 로그인이 안 되어있을때의 처리, 오랜 경과시간 이후의 처리
+			
 			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-			Iterator<WebSiteBoardItem> iterator = handler.searchAllBoards("드래곤");
+			Iterator<WebSiteBoardItem> iterator = handler.searchNow(BogoBogoBoard.ANI_ON, "드래곤");
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 			while (iterator.hasNext() == true) {

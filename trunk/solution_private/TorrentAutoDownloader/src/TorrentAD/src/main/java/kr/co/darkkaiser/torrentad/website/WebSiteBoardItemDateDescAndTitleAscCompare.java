@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.website;
 
 import java.util.Comparator;
 
-public class WebSiteBoardItemDateDescTitleAscCompare implements Comparator<WebSiteBoardItem> {
+public class WebSiteBoardItemDateDescAndTitleAscCompare implements Comparator<WebSiteBoardItem> {
 
 	@Override
 	public int compare(WebSiteBoardItem lhs, WebSiteBoardItem rhs) {

@@ -19,7 +19,7 @@ import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
-// @@@@@
+// @@@@@ 클래스를 삭제해도 되지 않나??? 삭제하지 않는다면 TorrentProxy or TorrentAdapter
 public class TorrentJob {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TorrentJob.class);

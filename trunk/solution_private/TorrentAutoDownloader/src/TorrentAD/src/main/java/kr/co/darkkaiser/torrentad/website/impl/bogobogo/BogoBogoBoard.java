@@ -48,7 +48,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	 */
 	@Override
 	public int getDefaultLoadPageCount() {
-		return 5;
+		return 3;
 	}
 
 	/**

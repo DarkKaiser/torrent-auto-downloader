@@ -38,7 +38,6 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDateDescTitleAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
@@ -220,14 +219,14 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadAlways) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow) throws FailedLoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		if (loadBoardItems((BogoBogoBoard) board, "", loadAlways) == false)
+		if (loadBoardItems((BogoBogoBoard) board, "", loadNow) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -246,7 +245,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -255,7 +254,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		if (loadBoardItems(siteSearchContext.getBoard(), "", loadAlways) == false)
+		if (loadBoardItems(siteSearchContext.getBoard(), "", loadNow) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -284,39 +283,30 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@ 전체 보드를 할 것인가???
 	@Override
-	public Iterator<WebSiteBoardItem> searchAllBoards(String keyword) {
+	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword) throws FailedLoadBoardItemsException {
 		if (StringUtil.isBlank(keyword) == true)
-			throw new IllegalArgumentException("searchKeyword는 빈 문자열을 허용하지 않습니다.");
+			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		String queryString = String.format("&search=subject&keyword=%s&recom=", keyword);
+		List<BogoBogoBoardItem> boardItems = loadBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		if (boardItems == null)
+			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (BogoBogoBoard board : BogoBogoBoard.values()) {
-			try {
-				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
-				if (boardItems == null)
-					throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
-
-				for (BogoBogoBoardItem boardItem : boardItems) {
-					assert boardItem != null;
-					
-					resultList.add(boardItem);
-					
-					logger.debug("검색된 게시물:" + boardItem);
-				}
-			} catch (Exception e) {
-				logger.error(null, e);
-			}
+		for (BogoBogoBoardItem boardItem : boardItems) {
+			assert boardItem != null;
+			
+			resultList.add(boardItem);
+			
+			logger.debug("검색된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemDateDescTitleAscCompare());
-		
+		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
+
 		return resultList.iterator();
 	}
 
@@ -354,11 +344,11 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink(siteBoardItem);
 	}
 
-	private boolean loadBoardItems(BogoBogoBoard board, String queryString, boolean loadAlways) {
+	private boolean loadBoardItems(BogoBogoBoard board, String queryString, boolean loadNow) {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (loadAlways == true) {
+		if (loadNow == true) {
 			this.boards.remove(board);
 		} else {
 			if (this.boards.containsKey(board) == true)
@@ -387,8 +377,8 @@ public class BogoBogo extends AbstractWebSite {
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
-			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
-				url = String.format("%s&page=%d&%s", board.getURL(), pageNo, queryString);
+			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
+				url = String.format("%s&page=%d&%s", board.getURL(), page, queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
@@ -399,7 +389,7 @@ public class BogoBogo extends AbstractWebSite {
 
 				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
-	
+
 				Document boardItemsDoc = boardItemsResponse.parse();
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
 
