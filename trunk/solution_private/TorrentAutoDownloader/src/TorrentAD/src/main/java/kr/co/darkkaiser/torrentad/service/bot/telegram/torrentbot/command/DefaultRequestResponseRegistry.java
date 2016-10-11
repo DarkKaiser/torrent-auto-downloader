@@ -21,6 +21,7 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestResponseRegistry.class);
 	
 	private final Map<String, Request> requestMap = new LinkedHashMap<>();
+
 	private final Map<String, Response> responseMap = new LinkedHashMap<>();
 
 	@Override
@@ -37,6 +38,19 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 	}
 
 	@Override
+	public final boolean register(Response response) {
+		if (response == null)
+			throw new NullPointerException("response");
+		
+		if (this.responseMap.containsKey(response.getIdentifier()) == true)
+			return false;
+		
+		this.responseMap.put(response.getIdentifier(), response);
+		
+		return true;
+	}
+
+	@Override
 	public final boolean deregister(Request request) {
 		if (request == null)
 			throw new NullPointerException("request");
@@ -47,19 +61,6 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 		}
 		
 		return false;
-	}
-
-	@Override
-	public final boolean register(Response response) {
-		if (response == null)
-			throw new NullPointerException("response");
-
-		if (this.responseMap.containsKey(response.getIdentifier()) == true)
-			return false;
-		
-		this.responseMap.put(response.getIdentifier(), response);
-		
-		return true;
 	}
 
 	@Override
@@ -100,21 +101,21 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 
 		return this.responseMap.get(identifier);
 	}
-	
+
 	public Request get(Update update) {
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
 
 	            String commandMessage = message.getText();
-				String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+				String[] commandMessageArrays = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
 
-				String command = commandSplit[0];
+				String command = commandMessageArrays[0];
 				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
 					command = command.substring(1);
 
 				if (this.requestMap.containsKey(command) == true) {
-					String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+					String[] parameters = Arrays.copyOfRange(commandMessageArrays, 1, commandMessageArrays.length);
 //					this.requestMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
 					return this.requestMap.get(command);
 				}
@@ -123,8 +124,8 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 	            Long chatId = message.getChatId();
 	            // @@@@@
 	        }
-
-//			onCommandUnknownMessage(update);
+			
+			// @@@@@ callback message
 		} catch (Exception e) {
 			logger.error(null, e);
 		}

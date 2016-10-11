@@ -102,10 +102,18 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 //			user.execute(신규객체Request, 이전객체Response);
 //		}
 
-		
 		try {
 			Request request = this.requestResponseRegistry.get(update);
 			if (request != null) {
+//				if (update.hasMessage() == true) {
+//	            Message message = update.getMessage();
+//	            if (this.commandRegistry.executeCommand(this, message))
+//	                return;
+//
+//	            // 검색어나 기타 다른것인지 확인
+//	            Long chatId = message.getChatId();
+//	            // @@@@@
+//	        }
 	            Message message = update.getMessage();
 
 	            String commandMessage = message.getText();
@@ -134,24 +142,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				
 				return;
 			}
-			
-			this.job.getTorrentStatus();
-//			this.job.list();
-//			this.job.search(0, 0);
-			
+
 			onCommandUnknownMessage(update);
-			
-//			if (update.hasMessage() == true) {
-//	            Message message = update.getMessage();
-//	            if (this.commandRegistry.executeCommand(this, message))
-//	                return;
-//
-//	            // 검색어나 기타 다른것인지 확인
-//	            Long chatId = message.getChatId();
-//	            // @@@@@
-//	        }
-//
-//			onCommandUnknownMessage(update);
 		} catch (Exception e) {
 			logger.error(null, e);
 		}
@@ -161,6 +153,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		assert update != null;
 
 		StringBuilder sbMessage = new StringBuilder();
+		
+		// @@@@@ update.hasMessage, update.hasCallback.... 각각 모두 처리?
 
 		Message message = update.getMessage();
 		if (message != null && message.hasText() == true)
