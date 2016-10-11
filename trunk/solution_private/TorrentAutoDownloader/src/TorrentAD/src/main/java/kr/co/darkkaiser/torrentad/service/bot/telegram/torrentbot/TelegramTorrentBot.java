@@ -126,9 +126,9 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				return;
 			}
 			
-			//this.job.getTorrentStatus();
+			this.job.getTorrentStatus();
 //			this.job.list();
-			this.job.search(0, 0);
+//			this.job.search(0, 0);
 			
 			onCommandUnknownMessage(update);
 			

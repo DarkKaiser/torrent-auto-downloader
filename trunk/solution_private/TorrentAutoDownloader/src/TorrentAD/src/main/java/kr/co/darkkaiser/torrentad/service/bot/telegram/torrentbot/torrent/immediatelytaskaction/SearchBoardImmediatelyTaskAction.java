@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
 public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -18,16 +18,21 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 
 	private final WebSiteConnector connector;
 	
-	public SearchBoardImmediatelyTaskAction(WebSiteConnector connector) {
+	private final WebSiteBoard board;
+
+	public SearchBoardImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
 		if (connector == null)
 			throw new NullPointerException("connector");
+		if (board == null)
+			throw new NullPointerException("board");
 
+		this.board = board;
 		this.connector = connector;
 	}
 
 	@Override
 	public String getName() {
-		return String.format("%s > 전체 게시판 검색", this.connector.getSite().getName());
+		return String.format("%s > %s 검색", this.connector.getSite().getName(), this.board.getDescription());
 	}
 
 	@Override
@@ -36,13 +41,17 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 			// @@@@@ connector에서 로그인이 안 되어있을때의 처리, 오랜 경과시간 이후의 처리
 			
 			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-			Iterator<WebSiteBoardItem> iterator = handler.searchNow(BogoBogoBoard.ANI_ON, "드래곤");
+			Iterator<WebSiteBoardItem> iterator = handler.searchNow(this.board, "드래곤");
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 			while (iterator.hasNext() == true) {
 				WebSiteBoardItem next = iterator.next();
 				System.out.println(next);
 			}
+		} catch (FailedLoadBoardItemsException e) {
+			// @@@@@
+//			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
+			return false;
 		} catch (Exception e) {
 			logger.error(null, e);
 			
@@ -60,6 +69,8 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 		
 		if (this.connector == null)
 			throw new NullPointerException("connector");
+		if (this.board == null)
+			throw new NullPointerException("board");
 	}
 
 }
