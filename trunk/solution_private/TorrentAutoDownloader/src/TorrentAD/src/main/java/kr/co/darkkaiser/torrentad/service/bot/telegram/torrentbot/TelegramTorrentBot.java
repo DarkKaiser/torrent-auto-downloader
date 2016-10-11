@@ -31,16 +31,15 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
 
-	// @@@@@
 	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
-	
-	// @@@@@
-	private TorrentJob job;
-	
+		
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 
 	private final Configuration configuration;
 	
+	// @@@@@
+	private TorrentJob job;
+
 	public TelegramTorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
@@ -50,15 +49,25 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.configuration = configuration;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
+		// Request를 등록한다.
 		this.requestResponseRegistry.register(new ListRequest());
 		this.requestResponseRegistry.register(new SearchingRequest());
 		this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
+
+		// Response를 등록한다.
+		// @@@@@
 
 		// @@@@@
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
 //        userState.put(message.getFrom().getId(), WAITINGCHANNEL);
 //        userState.remove(message.getFrom().getId());
+	}
+	
+	@Override
+	public void dispose() {
+		// @@@@@
+//		this.job.dispose();
 	}
 
 	@Override
@@ -73,10 +82,10 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	@Override
 	public void onUpdateReceived(Update update) {
-		// @@@@@
 		if (update == null)
 			throw new NullPointerException("update");
 
+		// @@@@@
 		// 인라인키보드는 콜백쿼리가 들어옴
 		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
 		
@@ -149,38 +158,25 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	}
 
 	private void onCommandUnknownMessage(Update update) {
-		if (update == null)
-			throw new NullPointerException("update");
+		assert update != null;
 
-		// @@@@@
-		if (update.hasMessage() == true) {
-			Message message = update.getMessage();
-//			CallbackQuery callbackQuery = update.getCallbackQuery();
-//			message = callbackQuery.getMessage();
+		StringBuilder sbMessage = new StringBuilder();
 
-			StringBuilder sbMessage = new StringBuilder();
-			if (message != null && message.hasText() == true)
-				sbMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
+		Message message = update.getMessage();
+		if (message != null && message.hasText() == true)
+			sbMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
-			sbMessage.append("명령어를 모르시면 '도움'을 입력하세요.");
+		sbMessage.append("명령어를 모르시면 '도움'을 입력하세요.");
 
-			SendMessage commandUnknownMessage = new SendMessage();
-			commandUnknownMessage.setChatId(message.getChatId().toString());
-//			commandUnknownMessage.setText(callbackQuery.getData());
-			commandUnknownMessage.setText(sbMessage.toString());
+		SendMessage commandUnknownMessage = new SendMessage();
+		commandUnknownMessage.setChatId(message.getChatId().toString())
+							 .setText(sbMessage.toString());
 
-			try {
-				sendMessage(commandUnknownMessage);
-			} catch (TelegramApiException e) {
-				logger.error(null, e);
-			}
+		try {
+			sendMessage(commandUnknownMessage);
+		} catch (TelegramApiException e) {
+			logger.error(null, e);
 		}
-	}
-
-	@Override
-	public void dispose() {
-		// @@@@@
-//		this.job.dispose();
 	}
 
 }

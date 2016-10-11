@@ -49,10 +49,10 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 		if (this.configuration == null)
 			throw new NullPointerException("configuration");
 		
-		this.scheduledTasksExecutorTimer = new Timer();
 		this.scheduledTasksExecutorService = Executors.newFixedThreadPool(1);
 		this.scheduledTasksCallableAdapter = new ScheduledTasksCallableAdapter(this.configuration);
-		
+
+		this.scheduledTasksExecutorTimer = new Timer();
 		this.scheduledTasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
@@ -84,6 +84,11 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 
 	@Override
 	public boolean submit(ImmediatelyTaskAction action) {
+		if (this.immediatelyTasksExecutorService == null) {
+			logger.error("ImmediatelyTasksExecutorService가 중지된 상태에서 submit이 요청되었습니다.");
+			return false;
+		}
+
 		try {
 			this.immediatelyTasksExecutorService.submit(new ImmediatelyTasksCallableAdapter(this.configuration, action));
 		} catch (Exception e) {
