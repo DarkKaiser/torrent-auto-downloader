@@ -41,10 +41,6 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 				WebSiteBoardItem next = iterator.next();
 				System.out.println(next);
 			}
-		} catch (FailedLoadBoardItemsException e) {
-			// @@@@@
-//			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
-			return false;
 		} catch (Exception e) {
 			logger.error(null, e);
 			

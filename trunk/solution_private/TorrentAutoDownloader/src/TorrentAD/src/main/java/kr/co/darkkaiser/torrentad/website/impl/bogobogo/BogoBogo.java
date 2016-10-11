@@ -38,7 +38,8 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemAscCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDateDescTitleAscCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
@@ -60,6 +61,9 @@ public class BogoBogo extends AbstractWebSite {
 	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
+
+	private static final int URL_CONNECTION_TIMEOUT_LONG_MILLISECOND = 60 * 1000;
+	private static final int URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND = 15 * 1000;
 
 	private Connection.Response loginConnResponse;
 
@@ -118,6 +122,7 @@ public class BogoBogo extends AbstractWebSite {
 				.data("user_id", account.id())
 				.data("passwd", account.password())
 				.method(Connection.Method.POST)
+				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK)
@@ -143,6 +148,7 @@ public class BogoBogo extends AbstractWebSite {
 				Jsoup.connect(doc.select("img").attr("src"))
 					.userAgent(USER_AGENT)
 					.cookies(response.cookies())
+					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 					.ignoreContentType(true)
 					.get();
 			} catch (ConnectException e) {
@@ -170,6 +176,7 @@ public class BogoBogo extends AbstractWebSite {
 			.data("STR", doc.select("input[name=STR]").val())
 			.data("todo", doc.select("input[name=todo]").val())
 			.cookies(response.cookies())
+			.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 			.post();
 
 		/**
@@ -227,14 +234,16 @@ public class BogoBogo extends AbstractWebSite {
 
 		for (BogoBogoBoardItem boardItem : this.boards.get(board)) {
 			assert boardItem != null;
+
 			resultList.add(boardItem);
+
+			logger.debug("조회된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
+		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
 
 		return resultList.iterator();
 	}
-
 
 	@Override
 	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadAlways) throws FailedLoadBoardItemsException {
@@ -252,7 +261,7 @@ public class BogoBogo extends AbstractWebSite {
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
 		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
-		
+
 		for (BogoBogoBoardItem boardItem : this.boards.get(siteSearchContext.getBoard())) {
 			assert boardItem != null;
 
@@ -270,41 +279,47 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
-		
+		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
+
 		return resultList.iterator();
 	}
 
+	// @@@@@ 전체 보드를 할 것인가???
 	@Override
-	public Iterator<WebSiteBoardItem> searchAllBoards(String keyword) throws Exception {
+	public Iterator<WebSiteBoardItem> searchAllBoards(String keyword) {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("searchKeyword는 빈 문자열을 허용하지 않습니다.");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
+		String queryString = String.format("&search=subject&keyword=%s&recom=", keyword);
+
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
 		for (BogoBogoBoard board : BogoBogoBoard.values()) {
 			try {
-				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, String.format("&search=subject&keyword=%s&recom=", keyword));
+				List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
 				if (boardItems == null)
 					throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 				for (BogoBogoBoardItem boardItem : boardItems) {
 					assert boardItem != null;
+					
 					resultList.add(boardItem);
+					
+					logger.debug("검색된 게시물:" + boardItem);
 				}
 			} catch (Exception e) {
 				logger.error(null, e);
 			}
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemAscCompare());
-
+		Collections.sort(resultList, new WebSiteBoardItemDateDescTitleAscCompare());
+		
 		return resultList.iterator();
 	}
-	
+
 	@Override
 	public Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
 		if (searchContext == null)
@@ -372,7 +387,6 @@ public class BogoBogo extends AbstractWebSite {
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
-			// @@@@@ 10페이지를 검색해쓰나 데이터는 8페이지만 있는 경우도 있음
 			for (int pageNo = 1; pageNo <= board.getDefaultLoadPageCount(); ++pageNo) {
 				url = String.format("%s&page=%d&%s", board.getURL(), pageNo, queryString);
 
@@ -380,23 +394,29 @@ public class BogoBogo extends AbstractWebSite {
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
 		                .cookies(this.loginConnResponse.cookies())
+		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .execute();
-				
+
 				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 	
 				Document boardItemsDoc = boardItemsResponse.parse();
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
-				
+
 				if (elements.isEmpty() == true) {
-					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
+					if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
+						// 해당 페이지가 존재하지 않는 경우... 아무 처리도 하지 않는다.
+					} else {
+						throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
+					}
 				} else {
 					try {
 						for (Element element : elements) {
 							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 
 							// 번호
-							if (iterator.next().text().contains("[공지]") == true)
+							String no = iterator.next().text();
+							if (no.contains("[공지]"/* 공지사항 */) == true || no.contains("등록된 글이 없습니다."/* 페이지에 게시물이 0건인 경우... */) == true)
 								continue;
 
 							// 카테고리
@@ -447,7 +467,7 @@ public class BogoBogo extends AbstractWebSite {
 			return null;
 		}
 
-		Collections.sort(boardItems, new WebSiteBoardItemAscCompare());
+		Collections.sort(boardItems, new WebSiteBoardItemIdentifierAscCompare());
 		
 		return boardItems;
 	}
@@ -469,6 +489,7 @@ public class BogoBogo extends AbstractWebSite {
 					.userAgent(USER_AGENT)
 	                .method(Connection.Method.GET)
 	                .cookies(this.loginConnResponse.cookies())
+	                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 	                .execute();
 
 			if (detailPageResponse.statusCode() != HttpStatus.SC_OK)
@@ -553,6 +574,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .data("article_id", downloadLink.getId())
 		                .method(Connection.Method.POST)
 		                .cookies(this.loginConnResponse.cookies())
+		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .ignoreContentType(true)
 		                .execute();
 
@@ -580,7 +602,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .data("valid_id", downloadProcess1Result.getMsg())
 		                .method(Connection.Method.POST)
 		                .cookies(this.loginConnResponse.cookies())
-						.timeout(60 * 1000)
+						.timeout(URL_CONNECTION_TIMEOUT_LONG_MILLISECOND)
 		                .execute();
 
 				if (downloadProcess2Response.statusCode() != HttpStatus.SC_OK)
@@ -622,6 +644,7 @@ public class BogoBogo extends AbstractWebSite {
 		                .data("valid_id", downloadProcess2Doc.select("input[id=valid_id]").val())
 		                .method(Connection.Method.POST)
 		                .cookies(downloadProcess2Response.cookies())
+		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .ignoreContentType(true)
 		                .execute();
 
