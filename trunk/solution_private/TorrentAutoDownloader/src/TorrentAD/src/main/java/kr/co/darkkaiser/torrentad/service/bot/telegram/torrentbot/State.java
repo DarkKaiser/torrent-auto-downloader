@@ -157,7 +157,6 @@ confirm_torrent_status
 	WAITING {
 		@Override
 		boolean execute() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	},
@@ -165,7 +164,6 @@ confirm_torrent_status
 	WAITING_BOARD_SELECT {
 		@Override
 		boolean execute() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	},
@@ -173,7 +171,6 @@ confirm_torrent_status
 	WAITING_BOARDITEM_SELECT {
 		@Override
 		boolean execute() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	},

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -88,6 +89,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		// @@@@@
 		// 인라인키보드는 콜백쿼리가 들어옴
 		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
+//		CallbackQuery callbackQuery = update.getCallbackQuery();
 		
 		// chat_id를 구해서 해당 user를 구한다.
 		// user에서 이전에 실행된 Request를 구한다.
@@ -124,8 +126,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 					command = command.substring(1);
 
 				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-				
-				
+
 	            Long chatId = message.getChatId();
 	            Chat user = this.chats.get(chatId);
 	            if (user != null) {
@@ -139,11 +140,9 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				
 				Response execute = request.execute(this, message.getFrom(), message.getChat(), parameters);
 				user.setResponse(execute);
-				
-				return;
+			} else {
+				onCommandUnknownMessage(update);
 			}
-
-			onCommandUnknownMessage(update);
 		} catch (Exception e) {
 			logger.error(null, e);
 		}

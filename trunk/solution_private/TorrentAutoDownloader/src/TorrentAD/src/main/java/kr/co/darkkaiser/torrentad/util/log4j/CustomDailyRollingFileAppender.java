@@ -456,12 +456,10 @@ class ModifiedTimeSortableFile extends File implements Serializable, Comparable<
 
 	public ModifiedTimeSortableFile(String parent, String child) {
 		super(parent, child);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ModifiedTimeSortableFile(URI uri) {
 		super(uri);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ModifiedTimeSortableFile(File parent, String child) {
