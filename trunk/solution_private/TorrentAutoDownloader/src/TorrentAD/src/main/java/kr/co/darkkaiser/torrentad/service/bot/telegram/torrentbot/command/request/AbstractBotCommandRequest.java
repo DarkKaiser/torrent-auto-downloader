@@ -12,8 +12,8 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 	private final String command;
 	private final String commandDescription;
 
-	public AbstractBotCommandRequest(String identifier, String command, String commandDescription) {
-		super(identifier);
+	public AbstractBotCommandRequest(String command, String commandDescription) {
+		super(command);
 
 		if (StringUtil.isBlank(command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");

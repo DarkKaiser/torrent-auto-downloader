@@ -20,8 +20,9 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.ListRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectBoardRequest;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectionWebSiteBoardRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.SelectionWebSiteBoardResponse;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 
@@ -51,12 +52,13 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
 		// Request를 등록한다.
-		this.requestResponseRegistry.register(new SelectBoardRequest());
+		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequest(this.requestResponseRegistry));
 		this.requestResponseRegistry.register(new ListRequest());
 		this.requestResponseRegistry.register(new SearchingRequest());
 		this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
 
 		// Response를 등록한다.
+		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse());
 		// @@@@@
 
 		// @@@@@

@@ -10,12 +10,18 @@ public class ListRequest extends AbstractBotCommandRequest {
 
 	// @@@@@
 	public ListRequest() {
-		super("list", "조회", "게시판을 조회합니다.");
-//		uper("조회", "게시판을 조회합니다.");
+		super("조회 [갯수]", "게시판을 조회합니다.");
 	}
 
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+		// 게시판이 이미 선택되어있는지 확인, 선택되어 있지 않다면 게시판부터 선택하라고 메시지 출력
+		
+		// 게시판 조회중 메시지 출력 후 request 저장
+		// 조회 진행중 다른 조회/검색 요청이 들어오면 이전 조회 요청은 중지됨, 
+		// 하지만 선택등의 명령이 들어오면 조회는 계속 유효??? 간단하게 하기 위해서 다른 명령이 들어오면 무조건 취소되도록 처리...??
+		
+		
 		// @@@@@
 		return null;
 	}

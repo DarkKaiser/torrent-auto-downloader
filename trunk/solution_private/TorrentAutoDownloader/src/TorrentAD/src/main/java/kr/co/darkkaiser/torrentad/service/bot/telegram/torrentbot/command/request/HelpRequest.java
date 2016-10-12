@@ -19,7 +19,7 @@ public class HelpRequest extends AbstractBotCommandRequest {
 	private final RequestResponseRegistry requestResponseRegistry;
 
 	public HelpRequest(RequestResponseRegistry requestResponseRegistry) {
-		super("help", "도움", "도움말을 표시합니다.");
+		super("도움", "도움말을 표시합니다.");
 
 		if (requestResponseRegistry == null)
 			throw new NullPointerException("requestResponseRegistry");
@@ -27,7 +27,6 @@ public class HelpRequest extends AbstractBotCommandRequest {
 		this.requestResponseRegistry = requestResponseRegistry;
 	}
 
-	// @@@@@
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		StringBuilder sbMessage = new StringBuilder();
@@ -36,14 +35,15 @@ public class HelpRequest extends AbstractBotCommandRequest {
 		for (Request request : this.requestResponseRegistry.getRegisteredRequests()) {
 			if (request instanceof BotCommand) {
 				BotCommand command = (BotCommand) request;
-				sbMessage.append("<b>").append(command.getCommand()).append("</b>\n").append(command.getCommandDescription()).append("\n\n");
+				sbMessage.append("<b>").append(command.getCommand()).append("</b>\n")
+						.append(command.getCommandDescription()).append("\n\n");
 			}
 		}
 
-		SendMessage helpMessage = new SendMessage();
-		helpMessage.setChatId(chat.getId().toString());
-		helpMessage.setText(sbMessage.toString());
-		helpMessage.enableHtml(true);
+		SendMessage helpMessage = new SendMessage()
+				.setChatId(chat.getId().toString())
+				.setText(sbMessage.toString())
+				.enableHtml(true);
 
 		try {
 			absSender.sendMessage(helpMessage);

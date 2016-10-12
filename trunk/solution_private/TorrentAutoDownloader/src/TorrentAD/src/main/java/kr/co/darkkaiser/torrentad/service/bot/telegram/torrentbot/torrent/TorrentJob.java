@@ -44,6 +44,8 @@ public class TorrentJob {
 	}
 
 	public void list() {
+//		this.connector.getSite().getBoardValues()
+		
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
 		this.immediatelyTaskExecutorService.submit(new ListBoardImmediatelyTaskAction(this.connector, board));
 	}

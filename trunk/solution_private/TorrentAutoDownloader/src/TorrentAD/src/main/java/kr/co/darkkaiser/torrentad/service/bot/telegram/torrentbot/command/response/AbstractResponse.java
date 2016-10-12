@@ -29,7 +29,7 @@ public abstract class AbstractResponse implements Response {
 		// 허용가능한 request인지 반환
 		return false;
 	}
-	
+
 	@Override
 	public void cancel(AbsSender absSender, User user, Chat chat) {
 		// @@@@@
