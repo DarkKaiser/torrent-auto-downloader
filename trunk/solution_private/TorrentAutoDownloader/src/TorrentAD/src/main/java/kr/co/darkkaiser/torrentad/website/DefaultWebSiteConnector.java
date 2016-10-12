@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +11,8 @@ import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 public class DefaultWebSiteConnector implements WebSiteConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteConnector.class);
+
+	private final String owner;
 
 	private final WebSite site;
 
@@ -22,10 +25,13 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 
 	private final AES256Util aes256 = new AES256Util();
 
-	public DefaultWebSiteConnector(Configuration configuration) throws Exception {
+	public DefaultWebSiteConnector(String owner, Configuration configuration) throws Exception {
+		if (StringUtil.isBlank(owner) == true)
+			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
+		this.owner = owner;
 		this.configuration = configuration;
 
 		try {
@@ -56,7 +62,8 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 			return false;
 		}
 
-		this.connection = this.site.createConnection(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+		this.connection = this.site.createConnection(getOwner(), this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+		
 		try {
 			this.connection.login(account);
 		} catch (Exception e) {
@@ -80,6 +87,11 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public String getOwner() {
+		return this.owner;
 	}
 
 	@Override

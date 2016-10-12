@@ -91,9 +91,9 @@ public class BogoBogo extends AbstractWebSite {
 
 	}
 
-	public BogoBogo(String downloadFileWriteLocation) {
-		super(WebSite.BOGOBOGO);
-		
+	public BogoBogo(String owner, String downloadFileWriteLocation) {
+		super(owner, WebSite.BOGOBOGO);
+
 		if (StringUtil.isBlank(downloadFileWriteLocation) == true)
 			throw new IllegalArgumentException("downloadFileWriteLocation은 빈 문자열을 허용하지 않습니다.");
 		

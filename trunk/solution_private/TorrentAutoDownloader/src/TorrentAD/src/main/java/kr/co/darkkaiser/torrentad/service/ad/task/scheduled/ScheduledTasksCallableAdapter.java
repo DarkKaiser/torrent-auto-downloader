@@ -35,7 +35,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 		this.configuration = configuration;
 		this.taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 
-		this.connector = new DefaultWebSiteConnector(configuration);
+		this.connector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);
 
 		// Task 목록을 생성한다.
 		this.tasks = ScheduledTasksGenerator.generate(this.configuration, this.taskMetadataRegistry, this.connector.getSite());

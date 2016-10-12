@@ -6,6 +6,8 @@ public interface WebSiteConnector {
 
 	boolean logout();
 
+	String getOwner();
+
 	WebSite getSite();
 
 	WebSiteConnection getConnection();

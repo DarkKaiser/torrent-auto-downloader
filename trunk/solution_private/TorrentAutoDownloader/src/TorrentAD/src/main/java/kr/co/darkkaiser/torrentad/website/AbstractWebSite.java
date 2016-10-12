@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,39 +8,48 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
+	protected final String owner;
+
 	protected final WebSite site;
 
 	protected WebSiteAccount account;
-
-	protected AbstractWebSite(WebSite site) {
+	
+	protected AbstractWebSite(String owner, WebSite site) {
+		if (StringUtil.isBlank(owner) == true)
+			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
 		if (site == null)
 			throw new NullPointerException("site");
 
+		this.owner = owner;
 		this.site = site;
 	}
 
 	@Override
 	public void login(WebSiteAccount account) throws Exception {
-		logger.info("웹사이트('{}')를 로그인합니다.", getName());
+		logger.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
 
 		logout0();
 		login0(account);
 
-		logger.info("웹사이트('{}')가 로그인 되었습니다.", getName());
+		logger.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
 	}
 	
 	protected abstract void login0(WebSiteAccount account) throws Exception;
 	
 	@Override
 	public void logout() throws Exception {
-		logger.info("웹사이트('{}')를 로그아웃합니다.", getName());
+		logger.info("{} 에서 웹사이트('{}')를 로그아웃합니다.", getOwner(), getName());
 
 		logout0();
 
-		logger.info("웹사이트('{}')가 로그아웃 되었습니다.", getName());
+		logger.info("{} 에서 웹사이트('{}')가 로그아웃 되었습니다.", getOwner(), getName());
 	}
 
 	protected abstract void logout0() throws Exception;
+
+	protected String getOwner() {
+		return this.owner;
+	}
 
 	@Override
 	public String getName() {
@@ -61,8 +71,9 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		return new StringBuilder()
 			.append(AbstractWebSite.class.getSimpleName())
 			.append("{")
-			.append("site:").append(this.site)
-			.append(", account:").append(this.account)
+			.append("owner:").append(getOwner())
+			.append(", site:").append(this.site)
+			.append(", account:").append(getAccount())
 			.append("}")
 			.toString();
 	}

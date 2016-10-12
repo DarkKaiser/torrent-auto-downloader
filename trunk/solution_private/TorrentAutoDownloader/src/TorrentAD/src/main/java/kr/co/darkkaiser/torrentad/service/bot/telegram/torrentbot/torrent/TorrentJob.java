@@ -37,7 +37,7 @@ public class TorrentJob {
 
 		// @@@@@
 		// 웹사이트 초기하
-		this.connector = new DefaultWebSiteConnector(configuration);
+		this.connector = new DefaultWebSiteConnector(TorrentJob.class.getSimpleName(), configuration);
 		this.connector.login();
 
 		// 트랜스미션 초기화
