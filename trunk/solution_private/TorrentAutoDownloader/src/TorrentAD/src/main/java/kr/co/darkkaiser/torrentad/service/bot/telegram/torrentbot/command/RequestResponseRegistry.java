@@ -30,6 +30,6 @@ public interface RequestResponseRegistry {
 	boolean execute(AbsSender absSender, Update update);
 	
 	// @@@@@
-	Request get(Update update);
+	Request getRequest(Update update);
 	
 }

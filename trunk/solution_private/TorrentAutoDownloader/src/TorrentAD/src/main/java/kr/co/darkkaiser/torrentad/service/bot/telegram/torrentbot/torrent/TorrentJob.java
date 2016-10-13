@@ -1,5 +1,9 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent;
 
+import org.telegram.telegrambots.api.objects.Chat;
+import org.telegram.telegrambots.api.objects.User;
+import org.telegram.telegrambots.bots.AbsSender;
+
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
@@ -20,7 +24,7 @@ public class TorrentJob {
 
 	private TorrentClient torrentClient;
 	
-	private final WebSiteConnector connector;
+	public final WebSiteConnector connector;
 	
 	private final Configuration configuration;
 
@@ -43,11 +47,17 @@ public class TorrentJob {
 		// 트랜스미션 초기화
 	}
 
-	public void list() {
+	public void list(AbsSender absSender, User user, Chat chat) {
 //		this.connector.getSite().getBoardValues()
 		
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
-		this.immediatelyTaskExecutorService.submit(new ListBoardImmediatelyTaskAction(this.connector, board));
+		
+		ListBoardImmediatelyTaskAction list = new ListBoardImmediatelyTaskAction(this.connector, board);
+		list.absSender = absSender;
+		list.user = user;
+		list.chat = chat;
+		
+		this.immediatelyTaskExecutorService.submit(list);
 	}
 
 	public void search(long chatId, long requestId) {

@@ -20,6 +20,8 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.ListRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedBoardItemRequest;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedWebSiteBoardRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectionWebSiteBoardRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.SelectionWebSiteBoardResponse;
@@ -31,7 +33,9 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
 	// @@@@@
-	private final ConcurrentHashMap<Long/* CHAT_ID */, Chat> chats = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chats = new ConcurrentHashMap<>();
+	
+	private ChatRoom chat = new ChatRoom();
 
 	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
 		
@@ -51,18 +55,21 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.configuration = configuration;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
+		// @@@@@
+		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
+
 		// Request를 등록한다.
-		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequest(this.requestResponseRegistry));
-		this.requestResponseRegistry.register(new ListRequest());
+		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequest(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new SelectedWebSiteBoardRequest(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new SelectedBoardItemRequest(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new ListRequest(this.job, this.chat));
 		this.requestResponseRegistry.register(new SearchingRequest());
 		this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
 
 		// Response를 등록한다.
-		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse());
+		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse(this.chat));
 		// @@@@@
 
-		// @@@@@
-		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
 //        userState.put(message.getFrom().getId(), WAITINGCHANNEL);
 //        userState.remove(message.getFrom().getId());
@@ -88,10 +95,28 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	public void onUpdateReceived(Update update) {
 		if (update == null)
 			throw new NullPointerException("update");
+		
+		//////////////////////////////////////////////////////////
+		try {
+			Request request = this.requestResponseRegistry.getRequest(update);
+			if (request != null) {
+				Message message = update.getMessage();
+				
+				System.out.println("######## " + request);
+				request.execute(this, message.getFrom(), message.getChat(), null);
+				
+				return;
+			}
+			
+			onUnknownCommandMessage(update);
+		} catch (Exception e) {
+			logger.error(null, e);
+		}
+		//////////////////////////////////////////////////////////
 
 		// @@@@@
 		// 인라인키보드는 콜백쿼리가 들어옴
-		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
+//		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
 //		CallbackQuery callbackQuery = update.getCallbackQuery();
 		
 		// chat_id를 구해서 해당 user를 구한다.
@@ -106,54 +131,54 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 //
 //			user.execute(신규객체Request, 이전객체Response);
 //		}
-
-		try {
-			Request request = this.requestResponseRegistry.get(update);
-			if (request != null) {
-//				if (update.hasMessage() == true) {
-//	            Message message = update.getMessage();
-//	            if (this.commandRegistry.executeCommand(this, message))
-//	                return;
 //
-//	            // 검색어나 기타 다른것인지 확인
+//		try {
+//			Request request = this.requestResponseRegistry.getRequest(update);
+//			if (request != null) {
+////				if (update.hasMessage() == true) {
+////	            Message message = update.getMessage();
+////	            if (this.commandRegistry.executeCommand(this, message))
+////	                return;
+////
+////	            // 검색어나 기타 다른것인지 확인
+////	            Long chatId = message.getChatId();
+////	            // @@@@@
+////	        }
+//	            Message message = update.getMessage();
+//
+//	            String commandMessage = message.getText();
+//				String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+//
+//				String command = commandSplit[0];
+//				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+//					command = command.substring(1);
+//
+//				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+//
 //	            Long chatId = message.getChatId();
-//	            // @@@@@
-//	        }
-	            Message message = update.getMessage();
-
-	            String commandMessage = message.getText();
-				String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
-
-				String command = commandSplit[0];
-				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
-					command = command.substring(1);
-
-				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-
-	            Long chatId = message.getChatId();
-	            Chat user = this.chats.get(chatId);
-	            if (user != null) {
-	            	Response response = user.getResponse();
-	            	if (response != null) {
-	            		if (response.allow(request) == false) {
-	            			response.cancel(this, message.getFrom(), message.getChat());
-	            		}
-	            	}
-	            }
-	            
-//	            request.prepareExecute(response);
-				
-				Response execute = request.execute(this, message.getFrom(), message.getChat(), parameters);
-				user.setResponse(execute);
-			} else {
-				onCommandUnknownMessage(update);
-			}
-		} catch (Exception e) {
-			logger.error(null, e);
-		}
+//	            ChatRoom user = this.chats.get(chatId);
+//	            if (user != null) {
+//	            	Response response = user.getResponse();
+//	            	if (response != null) {
+//	            		if (response.allow(request) == false) {
+//	            			response.cancel(this, message.getFrom(), message.getChat());
+//	            		}
+//	            	}
+//	            }
+//	            
+////	            request.prepareExecute(response);
+//				
+//				Response execute = request.execute(this, message.getFrom(), message.getChat(), parameters);
+//				user.setResponse(execute);
+//			} else {
+//				onUnknownCommandMessage(update);
+//			}
+//		} catch (Exception e) {
+//			logger.error(null, e);
+//		}
 	}
 
-	private void onCommandUnknownMessage(Update update) {
+	private void onUnknownCommandMessage(Update update) {
 		assert update != null;
 
 		StringBuilder sbMessage = new StringBuilder();
@@ -166,12 +191,12 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 		sbMessage.append("명령어를 모르시면 '도움'을 입력하세요.");
 
-		SendMessage commandUnknownMessage = new SendMessage();
-		commandUnknownMessage.setChatId(message.getChatId().toString())
+		SendMessage unknownCommandMessage = new SendMessage();
+		unknownCommandMessage.setChatId(message.getChatId().toString())
 							 .setText(sbMessage.toString());
 
 		try {
-			sendMessage(commandUnknownMessage);
+			sendMessage(unknownCommandMessage);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}

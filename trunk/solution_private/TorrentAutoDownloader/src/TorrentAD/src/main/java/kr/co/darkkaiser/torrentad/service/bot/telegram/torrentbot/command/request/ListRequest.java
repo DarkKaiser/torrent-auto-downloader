@@ -1,28 +1,73 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.TelegramApiException;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
 public class ListRequest extends AbstractBotCommandRequest {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ListRequest.class);
+	
+	private ChatRoom chat;
+	
+	private TorrentJob job;
 
 	// @@@@@
-	public ListRequest() {
-		super("조회 [갯수]", "게시판을 조회합니다.");
+	// 조회 [갯수]
+	public ListRequest(TorrentJob job, ChatRoom chat) {
+		super("조회", "게시판을 조회합니다.");
+		
+		this.job = job;
+		this.chat = chat;
 	}
 
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-		// 게시판이 이미 선택되어있는지 확인, 선택되어 있지 않다면 게시판부터 선택하라고 메시지 출력
+		if (this.chat.getBoard() == null) {
+			StringBuilder sbMessage = new StringBuilder();
+			sbMessage.append("게시판을 먼저 선택하세요.");
+
+			SendMessage helpMessage = new SendMessage()
+					.setChatId(chat.getId().toString())
+					.setText(sbMessage.toString())
+					.enableHtml(true);
+
+			try {
+				absSender.sendMessage(helpMessage);
+			} catch (TelegramApiException e) {
+				logger.error(null, e);
+			}
+
+			return null;
+		}
+
+		StringBuilder sbMessage = new StringBuilder();
+		sbMessage.append(String.format("%s 게시판 조회중입니다.", this.chat.getBoard().getDescription()));
+
+		SendMessage helpMessage = new SendMessage()
+				.setChatId(chat.getId().toString())
+				.setText(sbMessage.toString())
+				.enableHtml(true);
+
+		try {
+			absSender.sendMessage(helpMessage);
+		} catch (TelegramApiException e) {
+			logger.error(null, e);
+		}
 		
-		// 게시판 조회중 메시지 출력 후 request 저장
-		// 조회 진행중 다른 조회/검색 요청이 들어오면 이전 조회 요청은 중지됨, 
-		// 하지만 선택등의 명령이 들어오면 조회는 계속 유효??? 간단하게 하기 위해서 다른 명령이 들어오면 무조건 취소되도록 처리...??
-		
+		this.job.list(absSender, user, chat);
 		
 		// @@@@@
+		
 		return null;
 	}
 

@@ -19,10 +19,12 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
+import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItem;
 
-public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
+public class SelectedWebSiteBoardRequest extends AbstractRequest {
 
-	private static final Logger logger = LoggerFactory.getLogger(SelectionWebSiteBoardRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectedWebSiteBoardRequest.class);
 
 	private final RequestResponseRegistry requestResponseRegistry;
 	
@@ -30,8 +32,8 @@ public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
 	
 	private final ChatRoom chat;
 	
-	public SelectionWebSiteBoardRequest(RequestResponseRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
-		super("선택", "검색 및 조회하려는 게시판을 선택합니다.");
+	public SelectedWebSiteBoardRequest(RequestResponseRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+		super("선택완료");
 		
 		if (requestResponseRegistry == null)
 			throw new NullPointerException("requestResponseRegistry");
@@ -44,15 +46,22 @@ public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
 	@Override
 	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
+		WebSiteBoard board = BogoBogoBoard.ANI_ON;
+		this.chat.setBoard(board);
+		
 		SendMessage answer = new SendMessage();
 		answer.setChatId(chat.getId().toString());
-		answer.setText("조회 할 게시판을 선택하세요.");
-
-		ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
-		forceReplyKeyboard.setSelective(true);
-
-		answer.setReplyMarkup(getMainMenuKeyboard(""));
-
+		answer.setText(String.format("%s 게시판이 선택되었습니다.", board.getDescription()));
+		
+		// 키보드 숨기기 안됨
+		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+		replyKeyboardMarkup.setSelective(true);
+		
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		replyKeyboardMarkup.setKeyboard(keyboard);
+		
+		answer.setReplyMarkup(replyKeyboardMarkup);
+		
 		try {
 			absSender.sendMessage(answer);
 		} catch (TelegramApiException e) {
@@ -61,31 +70,10 @@ public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
 		return null;
 	}
 
-	private ReplyKeyboardMarkup getMainMenuKeyboard(String language) {
-		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-		replyKeyboardMarkup.setSelective(true);
-		replyKeyboardMarkup.setResizeKeyboard(true);
-		replyKeyboardMarkup.setOneTimeKeyboad(true);
-		
-		WebSiteBoard[] boardValues = this.job.connector.getSite().getBoardValues();
-		
-		List<KeyboardRow> keyboard = new ArrayList<>();
-		for (WebSiteBoard board : boardValues) {
-			KeyboardRow keyboardFirstRow = new KeyboardRow();
-			keyboardFirstRow.add("선택완료 1" + board.getDescription());
-			
-			keyboard.add(keyboardFirstRow);
-		}
-		
-		replyKeyboardMarkup.setKeyboard(keyboard);
-
-		return replyKeyboardMarkup;
-	}
-
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectionWebSiteBoardRequest.class.getSimpleName())
+				.append(SelectedWebSiteBoardRequest.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

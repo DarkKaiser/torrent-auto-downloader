@@ -102,7 +102,8 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 		return this.responseMap.get(identifier);
 	}
 
-	public Request get(Update update) {
+	// @@@@@
+	public Request getRequest(Update update) {
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
@@ -114,18 +115,8 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
 					command = command.substring(1);
 
-				if (this.requestMap.containsKey(command) == true) {
-					String[] parameters = Arrays.copyOfRange(commandMessageArrays, 1, commandMessageArrays.length);
-//					this.requestMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
-					return this.requestMap.get(command);
-				}
-
-	            // 검색어나 기타 다른것인지 확인
-	            Long chatId = message.getChatId();
-	            // @@@@@
+				return this.requestMap.get(command);
 	        }
-			
-			// @@@@@ callback message
 		} catch (Exception e) {
 			logger.error(null, e);
 		}
