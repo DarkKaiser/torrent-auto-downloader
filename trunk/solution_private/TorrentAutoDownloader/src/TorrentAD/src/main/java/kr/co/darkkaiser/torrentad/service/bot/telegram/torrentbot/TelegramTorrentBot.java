@@ -1,16 +1,15 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.bots.commands.BotCommand;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
@@ -23,7 +22,6 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedBoardItemRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedWebSiteBoardRequest;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectionWebSiteBoardRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.SelectionWebSiteBoardResponse;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
@@ -105,6 +103,15 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				System.out.println("######## " + request);
 				request.execute(this, message.getFrom(), message.getChat(), null);
 				
+				return;
+			}
+			
+			CallbackQuery callbackQuery = update.getCallbackQuery();
+			if (callbackQuery != null) {
+				// 인라인키보드 반환
+//				EditMessageReplyMarkup e;
+				
+				System.out.println(callbackQuery);
 				return;
 			}
 			

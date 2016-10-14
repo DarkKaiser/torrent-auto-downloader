@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
@@ -13,6 +12,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
@@ -57,18 +57,18 @@ public class SelectedBoardItemRequest extends AbstractRequest {
       List<InlineKeyboardButton> keyboard = new ArrayList<>();
       InlineKeyboardButton keyboardFirstRow = new InlineKeyboardButton();
       keyboardFirstRow.setText("TEXT lsadjfla sdfljasldf lasjdfl asdlfj alsdjf lasfja sldjflas dflasjdf lasdjfljaslf");
-      keyboardFirstRow.setCallbackData("data");
+      keyboardFirstRow.setCallbackData("callbackData");
       keyboard.add(keyboardFirstRow);
 
       InlineKeyboardButton keyboardFirstRow2 = new InlineKeyboardButton();
       keyboardFirstRow2.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-      keyboardFirstRow2.setCallbackData("data2");
+      keyboardFirstRow2.setCallbackData("keyboardFirstRow2");
       keyboard.add(keyboardFirstRow2);
       
       List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
       InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
       keyboardFirstRow3.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-      keyboardFirstRow3.setCallbackData("data3");
+      keyboardFirstRow3.setCallbackData("keyboardFirstRow3");
       keyboard2.add(keyboardFirstRow3);
       
       List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
