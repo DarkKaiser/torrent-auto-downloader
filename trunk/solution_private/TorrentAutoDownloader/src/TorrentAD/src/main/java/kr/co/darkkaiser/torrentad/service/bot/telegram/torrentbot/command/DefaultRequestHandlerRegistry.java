@@ -53,6 +53,16 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	}
 
 	@Override
+	public RequestHandler getRegisteredHandler(Class<?> clazz) {
+		for (RequestHandler handler : getRegisteredHandlers()) {
+			if (clazz.isInstance(handler) == true)
+				return handler;
+		}
+
+		return null;
+	}
+
+	@Override
 	public final RequestHandler getRegisteredHandler(String identifier) {
 		if (StringUtil.isBlank(identifier) == true)
 			throw new IllegalArgumentException("identifier는 빈 문자열을 허용하지 않습니다.");
@@ -81,7 +91,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 
 		return null;
 	}
-	
+
 	// @@@@@
 	@Override
 	public boolean execute(AbsSender absSender, Update update) {

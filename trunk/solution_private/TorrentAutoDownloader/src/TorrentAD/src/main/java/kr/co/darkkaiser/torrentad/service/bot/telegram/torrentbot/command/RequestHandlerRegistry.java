@@ -14,13 +14,15 @@ public interface RequestHandlerRegistry {
 	boolean deregister(RequestHandler handler);
 
 	Collection<RequestHandler> getRegisteredHandlers();
+
+	RequestHandler getRegisteredHandler(Class<?> clazz);
 	
 	RequestHandler getRegisteredHandler(String identifier);
-	
-	// @@@@@
-	boolean execute(AbsSender absSender, Update update);
-	
+
 	// @@@@@
 	RequestHandler getRequest(Update update);
+
+	// @@@@@
+	boolean execute(AbsSender absSender, Update update);
 
 }

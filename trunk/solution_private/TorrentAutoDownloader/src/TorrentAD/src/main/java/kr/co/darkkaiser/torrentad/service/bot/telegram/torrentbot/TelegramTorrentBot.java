@@ -13,6 +13,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
@@ -32,10 +33,11 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chats = new ConcurrentHashMap<>();
 	
+	// @@@@@
 	private ChatRoom chat = new ChatRoom();
 
-	private final RequestHandlerRegistry requestResponseRegistry = new DefaultRequestHandlerRegistry();
-		
+	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
+
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 
 	private final Configuration configuration;
@@ -55,23 +57,15 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		// @@@@@
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
-		// Request를 등록한다.
-		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequestHandler(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new SelectedWebSiteBoardRequestHandler(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new SelectedBoardItemRequestHandler(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new ListRequestHandler(this.job, this.chat));
-		this.requestResponseRegistry.register(new SearchingRequestHandler());
-		this.requestResponseRegistry.register(new HelpRequestHandler(this.requestResponseRegistry));
-
-		// Response를 등록한다.
-//		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse(this.chat));
-		// @@@@@
-
-//        int state = userState.getOrDefault(message.getFrom().getId(), 0);
-//        userState.put(message.getFrom().getId(), WAITINGCHANNEL);
-//        userState.remove(message.getFrom().getId());
+		// RequestHandler를 등록한다.
+		this.requestHandlerRegistry.register(new SelectionWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new ListRequestHandler(this.job, this.chat));
+		this.requestHandlerRegistry.register(new SearchingRequestHandler());
+		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
-	
+
 	@Override
 	public void dispose() {
 		// @@@@@
@@ -95,7 +89,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		
 		//////////////////////////////////////////////////////////
 		try {
-			RequestHandler request = this.requestResponseRegistry.getRequest(update);
+			RequestHandler request = this.requestHandlerRegistry.getRequest(update);
 			if (request != null) {
 				Message message = update.getMessage();
 				
@@ -185,24 +179,22 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	}
 
 	private void onUnknownCommandMessage(Update update) {
-		assert update != null;
-
-		StringBuilder sbMessage = new StringBuilder();
-		
-		// @@@@@ update.hasMessage, update.hasCallback.... 각각 모두 처리?
+		StringBuilder sbMessageText = new StringBuilder();
 
 		Message message = update.getMessage();
 		if (message != null && message.hasText() == true)
-			sbMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
+			sbMessageText.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
-		sbMessage.append("명령어를 모르시면 '도움'을 입력하세요.");
+		BotCommand command = (BotCommand) this.requestHandlerRegistry.getRegisteredHandler(HelpRequestHandler.class);
+		sbMessageText.append("명령어를 모르시면 '").append(command.getCommand()).append("'을 입력하세요.");
 
-		SendMessage unknownCommandMessage = new SendMessage();
-		unknownCommandMessage.setChatId(message.getChatId().toString())
-							 .setText(sbMessage.toString());
+		SendMessage unknownMessage = new SendMessage()
+				.setChatId(message.getChatId().toString())
+				.setText(sbMessageText.toString())
+				.enableHtml(true);
 
 		try {
-			sendMessage(unknownCommandMessage);
+			sendMessage(unknownMessage);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}
