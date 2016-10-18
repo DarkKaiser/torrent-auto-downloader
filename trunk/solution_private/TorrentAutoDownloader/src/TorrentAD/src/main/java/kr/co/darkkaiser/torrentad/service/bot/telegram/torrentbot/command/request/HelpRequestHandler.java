@@ -9,16 +9,16 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
-public class HelpRequest extends AbstractBotCommandRequest {
+public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(HelpRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(HelpRequestHandler.class);
 
-	private final RequestResponseRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestResponseRegistry;
 
-	public HelpRequest(RequestResponseRegistry requestResponseRegistry) {
+	public HelpRequestHandler(RequestHandlerRegistry requestResponseRegistry) {
 		super("도움", "도움말을 표시합니다.");
 
 		if (requestResponseRegistry == null)
@@ -32,7 +32,7 @@ public class HelpRequest extends AbstractBotCommandRequest {
 		StringBuilder sbMessage = new StringBuilder();
 		sbMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
-		for (Request request : this.requestResponseRegistry.getRegisteredRequests()) {
+		for (RequestHandler request : this.requestResponseRegistry.getRegisteredHandlers()) {
 			if (request instanceof BotCommand) {
 				BotCommand command = (BotCommand) request;
 				sbMessage.append("<b>").append(command.getCommand()).append("</b>\n")
@@ -57,7 +57,7 @@ public class HelpRequest extends AbstractBotCommandRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(HelpRequest.class.getSimpleName())
+				.append(HelpRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

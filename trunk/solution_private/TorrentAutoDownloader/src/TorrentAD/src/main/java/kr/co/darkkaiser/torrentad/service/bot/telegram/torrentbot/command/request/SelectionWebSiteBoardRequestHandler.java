@@ -15,22 +15,22 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
+public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(SelectionWebSiteBoardRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectionWebSiteBoardRequestHandler.class);
 
-	private final RequestResponseRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestResponseRegistry;
 	
 	private final TorrentJob job;
 	
 	private final ChatRoom chat;
 	
-	public SelectionWebSiteBoardRequest(RequestResponseRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+	public SelectionWebSiteBoardRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
 		super("선택", "검색 및 조회하려는 게시판을 선택합니다.");
 		
 		if (requestResponseRegistry == null)
@@ -85,7 +85,7 @@ public class SelectionWebSiteBoardRequest extends AbstractBotCommandRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectionWebSiteBoardRequest.class.getSimpleName())
+				.append(SelectionWebSiteBoardRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

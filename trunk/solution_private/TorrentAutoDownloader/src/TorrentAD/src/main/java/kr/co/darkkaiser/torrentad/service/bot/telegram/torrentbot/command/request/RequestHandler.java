@@ -6,7 +6,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
-public interface Request {
+public interface RequestHandler {
 
 	String getIdentifier();
 

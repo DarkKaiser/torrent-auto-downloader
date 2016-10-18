@@ -6,10 +6,10 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
-public class SearchingRequest extends AbstractRequest {
+public class SearchingRequestHandler extends AbstractRequestHandler {
 	
 	// @@@@@
-	public SearchingRequest() {
+	public SearchingRequestHandler() {
 		super("search");
 	}
 
@@ -22,7 +22,7 @@ public class SearchingRequest extends AbstractRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SearchingRequest.class.getSimpleName())
+				.append(SearchingRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

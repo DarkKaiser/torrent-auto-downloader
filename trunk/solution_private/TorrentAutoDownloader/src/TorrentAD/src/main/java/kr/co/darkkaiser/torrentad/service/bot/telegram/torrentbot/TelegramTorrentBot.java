@@ -13,16 +13,15 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestResponseRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.HelpRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.ListRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedBoardItemRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedWebSiteBoardRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectionWebSiteBoardRequest;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.SelectionWebSiteBoardResponse;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.HelpRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.ListRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.RequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SearchingRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedBoardItemRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectedWebSiteBoardRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.SelectionWebSiteBoardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 
@@ -35,12 +34,12 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	
 	private ChatRoom chat = new ChatRoom();
 
-	private final RequestResponseRegistry requestResponseRegistry = new DefaultRequestResponseRegistry();
+	private final RequestHandlerRegistry requestResponseRegistry = new DefaultRequestHandlerRegistry();
 		
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 
 	private final Configuration configuration;
-
+	
 	// @@@@@
 	private TorrentJob job;
 
@@ -57,15 +56,15 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
 		// Request를 등록한다.
-		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequest(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new SelectedWebSiteBoardRequest(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new SelectedBoardItemRequest(this.requestResponseRegistry, this.job, this.chat));
-		this.requestResponseRegistry.register(new ListRequest(this.job, this.chat));
-		this.requestResponseRegistry.register(new SearchingRequest());
-		this.requestResponseRegistry.register(new HelpRequest(this.requestResponseRegistry));
+		this.requestResponseRegistry.register(new SelectionWebSiteBoardRequestHandler(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new SelectedWebSiteBoardRequestHandler(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new SelectedBoardItemRequestHandler(this.requestResponseRegistry, this.job, this.chat));
+		this.requestResponseRegistry.register(new ListRequestHandler(this.job, this.chat));
+		this.requestResponseRegistry.register(new SearchingRequestHandler());
+		this.requestResponseRegistry.register(new HelpRequestHandler(this.requestResponseRegistry));
 
 		// Response를 등록한다.
-		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse(this.chat));
+//		this.requestResponseRegistry.register(new SelectionWebSiteBoardResponse(this.chat));
 		// @@@@@
 
 //        int state = userState.getOrDefault(message.getFrom().getId(), 0);
@@ -96,7 +95,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		
 		//////////////////////////////////////////////////////////
 		try {
-			Request request = this.requestResponseRegistry.getRequest(update);
+			RequestHandler request = this.requestResponseRegistry.getRequest(update);
 			if (request != null) {
 				Message message = update.getMessage();
 				

@@ -4,7 +4,7 @@ import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 
-public abstract class AbstractBotCommandRequest extends AbstractRequest implements BotCommand {
+public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
 
 	private static final int COMMAND_MAX_LENGTH = 32;
 	private static final String COMMAND_INIT_CHARACTER = "/";
@@ -12,7 +12,7 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 	private final String command;
 	private final String commandDescription;
 
-	public AbstractBotCommandRequest(String command, String commandDescription) {
+	public AbstractBotCommandRequestHandler(String command, String commandDescription) {
 		super(command);
 
 		if (StringUtil.isBlank(command) == true)
@@ -41,7 +41,7 @@ public abstract class AbstractBotCommandRequest extends AbstractRequest implemen
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(AbstractBotCommandRequest.class.getSimpleName())
+				.append(AbstractBotCommandRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("command:").append(getCommand())
 				.append(", commandDescription:").append(getCommandDescription())

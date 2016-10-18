@@ -14,23 +14,23 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
-public class SelectedWebSiteBoardRequest extends AbstractRequest {
+public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(SelectedWebSiteBoardRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectedWebSiteBoardRequestHandler.class);
 
-	private final RequestResponseRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestResponseRegistry;
 	
 	private final TorrentJob job;
 	
 	private final ChatRoom chat;
 	
-	public SelectedWebSiteBoardRequest(RequestResponseRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+	public SelectedWebSiteBoardRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
 		super("선택완료");
 		
 		if (requestResponseRegistry == null)
@@ -71,7 +71,7 @@ public class SelectedWebSiteBoardRequest extends AbstractRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectedWebSiteBoardRequest.class.getSimpleName())
+				.append(SelectedWebSiteBoardRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

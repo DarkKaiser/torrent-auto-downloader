@@ -13,50 +13,34 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.bots.commands.BotCommand;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.RequestHandler;
 
-public final class DefaultRequestResponseRegistry implements RequestResponseRegistry {
+public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestResponseRegistry.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestHandlerRegistry.class);
 	
-	private final Map<String, Request> requestMap = new LinkedHashMap<>();
-
-	private final Map<String, Response> responseMap = new LinkedHashMap<>();
+	private final Map<String, RequestHandler> handlerMap = new LinkedHashMap<>();
 
 	@Override
-	public final boolean register(Request request) {
-		if (request == null)
-			throw new NullPointerException("request");
+	public final boolean register(RequestHandler handler) {
+		if (handler == null)
+			throw new NullPointerException("handler");
 
-		if (this.requestMap.containsKey(request.getIdentifier()) == true)
+		if (this.handlerMap.containsKey(handler.getIdentifier()) == true)
 			return false;
 
-		this.requestMap.put(request.getIdentifier(), request);
+		this.handlerMap.put(handler.getIdentifier(), handler);
 		
 		return true;
 	}
 
 	@Override
-	public final boolean register(Response response) {
-		if (response == null)
-			throw new NullPointerException("response");
-		
-		if (this.responseMap.containsKey(response.getIdentifier()) == true)
-			return false;
-		
-		this.responseMap.put(response.getIdentifier(), response);
-		
-		return true;
-	}
+	public final boolean deregister(RequestHandler handler) {
+		if (handler == null)
+			throw new NullPointerException("handler");
 
-	@Override
-	public final boolean deregister(Request request) {
-		if (request == null)
-			throw new NullPointerException("request");
-
-		if (this.requestMap.containsKey(request.getIdentifier()) == true) {
-			this.requestMap.remove(request.getIdentifier());
+		if (this.handlerMap.containsKey(handler.getIdentifier()) == true) {
+			this.handlerMap.remove(handler.getIdentifier());
 			return true;
 		}
 		
@@ -64,46 +48,20 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 	}
 
 	@Override
-	public final boolean deregister(Response response) {
-		if (response == null)
-			throw new NullPointerException("response");
-
-		if (this.responseMap.containsKey(response.getIdentifier()) == true) {
-			this.responseMap.remove(response.getIdentifier());
-			return true;
-		}
-		
-		return false;
+	public final Collection<RequestHandler> getRegisteredHandlers() {
+		return this.handlerMap.values();
 	}
 
 	@Override
-	public final Collection<Request> getRegisteredRequests() {
-		return this.requestMap.values();
-	}
-
-	@Override
-	public final Collection<Response> getRegisteredResponses() {
-		return this.responseMap.values();
-	}
-
-	@Override
-	public final Request getRegisteredRequest(String identifier) {
+	public final RequestHandler getRegisteredHandler(String identifier) {
 		if (StringUtil.isBlank(identifier) == true)
 			throw new IllegalArgumentException("identifier는 빈 문자열을 허용하지 않습니다.");
 
-		return this.requestMap.get(identifier);
-	}
-
-	@Override
-	public final Response getRegisteredResponse(String identifier) {
-		if (StringUtil.isBlank(identifier) == true)
-			throw new IllegalArgumentException("identifier는 빈 문자열을 허용하지 않습니다.");
-
-		return this.responseMap.get(identifier);
+		return this.handlerMap.get(identifier);
 	}
 
 	// @@@@@
-	public Request getRequest(Update update) {
+	public RequestHandler getRequest(Update update) {
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
@@ -115,7 +73,7 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
 					command = command.substring(1);
 
-				return this.requestMap.get(command);
+				return this.handlerMap.get(command);
 	        }
 		} catch (Exception e) {
 			logger.error(null, e);
@@ -138,14 +96,14 @@ public final class DefaultRequestResponseRegistry implements RequestResponseRegi
 				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
 					command = command.substring(1);
 
-				if (this.requestMap.containsKey(command) == true) {
+				if (this.handlerMap.containsKey(command) == true) {
 					String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-					this.requestMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
+					this.handlerMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
 					return true;
 				}
 
 	            // 검색어나 기타 다른것인지 확인
-	            Long chatId = message.getChatId();
+//	            Long chatId = message.getChatId();
 	            // @@@@@
 	        }
 

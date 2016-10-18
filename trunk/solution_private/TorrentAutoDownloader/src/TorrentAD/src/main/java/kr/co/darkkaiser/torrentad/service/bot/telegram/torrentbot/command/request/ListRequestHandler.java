@@ -12,9 +12,9 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
-public class ListRequest extends AbstractBotCommandRequest {
+public class ListRequestHandler extends AbstractBotCommandRequestHandler {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ListRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ListRequestHandler.class);
 	
 	private ChatRoom chat;
 	
@@ -22,7 +22,7 @@ public class ListRequest extends AbstractBotCommandRequest {
 
 	// @@@@@
 	// 조회 [갯수]
-	public ListRequest(TorrentJob job, ChatRoom chat) {
+	public ListRequestHandler(TorrentJob job, ChatRoom chat) {
 		super("조회", "게시판을 조회합니다.");
 		
 		this.job = job;
@@ -164,7 +164,7 @@ public class ListRequest extends AbstractBotCommandRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(ListRequest.class.getSimpleName())
+				.append(ListRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

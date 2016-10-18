@@ -5,7 +5,7 @@ import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.Request;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.RequestHandler;
 
 public abstract class AbstractResponse implements Response {
 
@@ -24,7 +24,7 @@ public abstract class AbstractResponse implements Response {
 	}
 	
 	@Override
-	public boolean allow(Request request) {
+	public boolean allow(RequestHandler request) {
 		// @@@@@
 		// 허용가능한 request인지 반환
 		return false;

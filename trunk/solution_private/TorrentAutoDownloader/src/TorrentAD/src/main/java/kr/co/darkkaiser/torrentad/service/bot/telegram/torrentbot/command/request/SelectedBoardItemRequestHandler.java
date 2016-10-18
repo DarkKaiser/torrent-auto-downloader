@@ -15,21 +15,21 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestResponseRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
-public class SelectedBoardItemRequest extends AbstractRequest {
+public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(SelectedBoardItemRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectedBoardItemRequestHandler.class);
 
-	private final RequestResponseRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestResponseRegistry;
 	
 	private final TorrentJob job;
 	
 	private final ChatRoom chat;
 	
-	public SelectedBoardItemRequest(RequestResponseRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+	public SelectedBoardItemRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
 		super("게시물");
 		
 		if (requestResponseRegistry == null)
@@ -89,7 +89,7 @@ public class SelectedBoardItemRequest extends AbstractRequest {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectedBoardItemRequest.class.getSimpleName())
+				.append(SelectedBoardItemRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
