@@ -74,6 +74,22 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
+            
+			<torrentad-periodic-scheduled-task id="ThreeGoHang" description="삼시세끼">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>삼시세끼+어촌편</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
 			
 			<torrentad-periodic-scheduled-task id="Refrigerator" description="냉장고를부탁해">
 				<board-name>korentertainment</board-name>
