@@ -28,20 +28,20 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-		StringBuilder sbMessage = new StringBuilder();
-		sbMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
+		StringBuilder sbMessageText = new StringBuilder();
+		sbMessageText.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
 		for (RequestHandler handler : this.requestHandlerRegistry.getRegisteredHandlers()) {
 			if (handler instanceof BotCommand) {
 				BotCommand command = (BotCommand) handler;
-				sbMessage.append("<b>").append(command.getCommand()).append("</b>\n")
+				sbMessageText.append("<b>").append(command.getCommand()).append("</b>\n")
 						.append(command.getCommandDescription()).append("\n\n");
 			}
 		}
 
 		SendMessage helpMessage = new SendMessage()
 				.setChatId(chat.getId().toString())
-				.setText(sbMessage.toString())
+				.setText(sbMessageText.toString())
 				.enableHtml(true);
 
 		try {

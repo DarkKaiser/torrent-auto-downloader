@@ -7,7 +7,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
 
 	private static final int BOT_COMMAND_MAX_LENGTH = 32;
-	private static final String BOT_COMMAND_INIT_CHARACTER = "/";
+	private static final String BOT_COMMAND_INITIAL_CHARACTER = "/";
 
 	private final String command;
 	private final String commandDescription;
@@ -18,7 +18,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		if (StringUtil.isBlank(command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");
 
-		if (command.startsWith(BOT_COMMAND_INIT_CHARACTER) == true)
+		if (command.startsWith(BOT_COMMAND_INITIAL_CHARACTER) == true)
 			command = command.substring(1);
 
 		if (command.length() > BOT_COMMAND_MAX_LENGTH)

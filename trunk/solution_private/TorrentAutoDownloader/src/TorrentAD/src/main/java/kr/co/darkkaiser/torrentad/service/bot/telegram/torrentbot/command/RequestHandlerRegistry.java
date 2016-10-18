@@ -22,5 +22,5 @@ public interface RequestHandlerRegistry {
 	
 	// @@@@@
 	RequestHandler getRequest(Update update);
-	
+
 }

@@ -18,7 +18,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestHandlerRegistry.class);
-	
+
 	private final Map<String, RequestHandler> handlerMap = new LinkedHashMap<>();
 
 	@Override
@@ -30,7 +30,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 			return false;
 
 		this.handlerMap.put(handler.getIdentifier(), handler);
-		
+
 		return true;
 	}
 
