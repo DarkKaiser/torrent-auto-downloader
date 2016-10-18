@@ -89,7 +89,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		
 		//////////////////////////////////////////////////////////
 		try {
-			RequestHandler request = this.requestHandlerRegistry.getRequest(update);
+			RequestHandler request = this.requestHandlerRegistry.getRequestHandler(update);
 			if (request != null) {
 				Message message = update.getMessage();
 				
@@ -185,7 +185,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		if (message != null && message.hasText() == true)
 			sbMessageText.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
-		BotCommand command = (BotCommand) this.requestHandlerRegistry.getRegisteredHandler(HelpRequestHandler.class);
+		BotCommand command = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
 		sbMessageText.append("명령어를 모르시면 '").append(command.getCommand()).append("'을 입력하세요.");
 
 		SendMessage unknownMessage = new SendMessage()
@@ -201,3 +201,61 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	}
 
 }
+
+
+// @@@@@
+//@Override
+//public boolean execute(AbsSender absSender, Update update) {
+//	try {
+//		if (update.hasMessage() == true) {
+//            Message message = update.getMessage();
+//
+//            String commandMessage = message.getText();
+//			String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+//
+//			String command = commandSplit[0];
+//			if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+//				command = command.substring(1);
+//
+//			if (this.handlerMap.containsKey(command) == true) {
+//				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+//				this.handlerMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
+//				return true;
+//			}
+//
+//            // 검색어나 기타 다른것인지 확인
+////            Long chatId = message.getChatId();
+//            // @@@@@
+//        }
+//
+////		onCommandUnknownMessage(update);
+//	} catch (Exception e) {
+//		logger.error(null, e);
+//	}
+//
+//	return false;
+//}
+//// @@@@@
+//public final boolean executeCommand(AbsSender absSender, Message message) {
+//	if (absSender == null)
+//		throw new NullPointerException("absSender");
+//	if (message == null)
+//		throw new NullPointerException("message");
+//
+//	if (message.hasText() == true) {
+//		String commandMessage = message.getText();
+//		String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+//
+//		String command = commandSplit[0];
+//		if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+//			command = command.substring(1);
+//
+//		if (commands.containsKey(command) == true) {
+//			String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+//			commands.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
+//			return true;
+//		}
+//	}
+//
+//	return false;
+//}

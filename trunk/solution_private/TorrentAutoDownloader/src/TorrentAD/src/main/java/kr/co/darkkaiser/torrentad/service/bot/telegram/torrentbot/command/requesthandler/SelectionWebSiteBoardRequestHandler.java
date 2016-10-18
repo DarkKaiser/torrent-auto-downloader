@@ -24,7 +24,7 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 
 	private static final Logger logger = LoggerFactory.getLogger(SelectionWebSiteBoardRequestHandler.class);
 
-	private final RequestHandlerRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestHandlerRegistry;
 	
 	private final TorrentJob job;
 	
@@ -38,7 +38,7 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 
 		this.job = job;
 		this.chat = chat;
-		this.requestResponseRegistry = requestResponseRegistry;
+		this.requestHandlerRegistry = requestResponseRegistry;
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 		try {
 			absSender.sendMessage(answer);
 		} catch (TelegramApiException e) {
+			logger.error(null, e);
 		}
 	}
 

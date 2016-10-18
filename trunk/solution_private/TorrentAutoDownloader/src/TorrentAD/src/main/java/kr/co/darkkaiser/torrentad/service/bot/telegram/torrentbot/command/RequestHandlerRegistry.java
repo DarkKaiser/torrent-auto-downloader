@@ -3,7 +3,6 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 import java.util.Collection;
 
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 
@@ -13,16 +12,13 @@ public interface RequestHandlerRegistry {
 
 	boolean deregister(RequestHandler handler);
 
-	Collection<RequestHandler> getRegisteredHandlers();
+	Collection<RequestHandler> getRequestHandlers();
 
-	RequestHandler getRegisteredHandler(Class<?> clazz);
+	RequestHandler getRequestHandler(Class<?> clazz);
 	
-	RequestHandler getRegisteredHandler(String identifier);
+	RequestHandler getRequestHandler(String identifier);
 
 	// @@@@@
-	RequestHandler getRequest(Update update);
-
-	// @@@@@
-	boolean execute(AbsSender absSender, Update update);
+	RequestHandler getRequestHandler(Update update);
 
 }
