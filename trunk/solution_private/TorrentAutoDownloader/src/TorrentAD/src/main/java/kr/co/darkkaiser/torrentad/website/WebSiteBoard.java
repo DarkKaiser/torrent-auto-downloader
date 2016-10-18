@@ -1,8 +1,10 @@
 package kr.co.darkkaiser.torrentad.website;
 
 public interface WebSiteBoard {
-
+	
 	String getName();
+	
+	String getShortName();
 
 	String getDescription();
 

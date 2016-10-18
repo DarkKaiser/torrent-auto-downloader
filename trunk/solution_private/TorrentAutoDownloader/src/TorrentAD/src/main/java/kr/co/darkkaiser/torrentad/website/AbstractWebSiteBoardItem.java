@@ -68,9 +68,9 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		return new StringBuilder()
 				.append(AbstractWebSiteBoardItem.class.getSimpleName())
 				.append("{")
-				.append("board:").append(this.board)
-				.append(", identifier:").append(this.identifier)
-				.append(", title:").append(this.title)
+				.append("board:").append(getBoard())
+				.append(", identifier:").append(getIdentifier())
+				.append(", title:").append(getTitle())
 				.append(", registDate:").append(getRegistDateString())
 				.append("}")
 				.toString();

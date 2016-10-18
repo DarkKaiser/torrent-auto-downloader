@@ -6,23 +6,25 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public enum BogoBogoBoard implements WebSiteBoard {
 
-	MOVIE_NEW			("newmovie", 			"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
-	MOVIE_KOR			("kormovie", 			"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
-	MOVIE_HD			("hdmovie", 			"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
-	KOR_DRAMA_ON		("kordramaon", 			"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
-	KOR_ENTERTAINMENT	("korentertainment",	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
-	FOREIGN_DRAMA_ON	("foreigndramaon", 		"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
-	ANI_ON				("anion", 				"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
+	MOVIE_NEW			("newmovie", 			"m01", 	"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
+	MOVIE_KOR			("kormovie", 			"m02", 	"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
+	MOVIE_HD			("hdmovie", 			"m03", 	"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
+	KOR_DRAMA_ON		("kordramaon", 			"k01", 	"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
+	KOR_ENTERTAINMENT	("korentertainment",	"k02", 	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
+	FOREIGN_DRAMA_ON	("foreigndramaon", 		"k03", 	"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
+	ANI_ON				("anion", 				"a01", 	"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
 	private final String name;
+	private final String shortName;
 	private final String description;
 	private final String url;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	private BogoBogoBoard(String name, String description, String url, boolean hasCategory) {
+	private BogoBogoBoard(String name, String shortName, String description, String url, boolean hasCategory) {
 		this.name = name;
+		this.shortName = shortName;
 		this.description = description;
 		this.url = url;
 		this.hasCategory = hasCategory;
@@ -31,6 +33,11 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public String getShortName() {
+		return this.shortName;
 	}
 
 	@Override
@@ -79,7 +86,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 
 	@Override
 	public String toString() {
-		return String.format("%s(%s)", getDescription(), getName());
+		return String.format("%s(%s:%s)", getDescription(), getShortName(), getName());
 	}
 
 }
