@@ -16,9 +16,6 @@ public interface RequestHandlerRegistry {
 
 	RequestHandler getRequestHandler(Class<?> clazz);
 	
-	RequestHandler getRequestHandler(String identifier);
-
-	// @@@@@
 	RequestHandler getRequestHandler(Update update);
 
 }

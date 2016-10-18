@@ -3,11 +3,9 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reque
 import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
-
-	private static final int BOT_COMMAND_MAX_LENGTH = 32;
-	private static final String BOT_COMMAND_INITIAL_CHARACTER = "/";
 
 	private final String command;
 	private final String commandDescription;
@@ -18,11 +16,11 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		if (StringUtil.isBlank(command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");
 
-		if (command.startsWith(BOT_COMMAND_INITIAL_CHARACTER) == true)
+		if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true)
 			command = command.substring(1);
 
-		if (command.length() > BOT_COMMAND_MAX_LENGTH)
-			throw new IllegalArgumentException("command의 길이는 최대 " + BOT_COMMAND_MAX_LENGTH + "자 입니다.");
+		if (command.length() > BotCommandUtils.COMMAND_MAX_LENGTH)
+			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandUtils.COMMAND_MAX_LENGTH + "자 입니다.");
 
 		this.command = command.toLowerCase();
 		this.commandDescription = commandDescription;

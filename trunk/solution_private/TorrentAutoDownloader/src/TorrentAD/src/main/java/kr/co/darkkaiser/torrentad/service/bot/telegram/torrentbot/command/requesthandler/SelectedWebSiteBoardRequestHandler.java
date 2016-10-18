@@ -28,6 +28,8 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 	
 	private final TorrentJob job;
 	
+//	private final WebSite webSite; job 보다는 이걸 받아야 됨
+	
 	private final ChatRoom chat;
 	
 	public SelectedWebSiteBoardRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {

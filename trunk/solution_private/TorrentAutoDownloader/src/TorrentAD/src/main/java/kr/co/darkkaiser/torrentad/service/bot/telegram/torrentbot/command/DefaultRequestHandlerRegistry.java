@@ -4,12 +4,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.commands.BotCommand;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 
@@ -17,7 +15,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestHandlerRegistry.class);
 
-	private final Map<String, RequestHandler> handlerMap = new LinkedHashMap<>();
+	private final Map<String/* 식별자 */, RequestHandler> handlerMap = new LinkedHashMap<>();
 
 	@Override
 	public synchronized final boolean register(RequestHandler handler) {
@@ -64,28 +62,28 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	}
 
 	@Override
-	public synchronized final RequestHandler getRequestHandler(String identifier) {
-		if (StringUtil.isBlank(identifier) == true)
-			throw new IllegalArgumentException("identifier는 빈 문자열을 허용하지 않습니다.");
-
-		return this.handlerMap.get(identifier);
-	}
-
-	@Override
 	public synchronized final RequestHandler getRequestHandler(Update update) {
+		if (update == null)
+			throw new NullPointerException("update");
+
 		// @@@@@
-		// 해당 requester로 command를 넘겨서 찾도록 한다.
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
 
 	            String commandMessage = message.getText();
-				String[] commandMessageArrays = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+				String[] commandMessageArrays = commandMessage.split(BotCommandUtils.COMMAND_PARAMETER_SEPARATOR);
 
 				String command = commandMessageArrays[0];
-				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+				if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true)
 					command = command.substring(1);
 
+				// @@@@@
+				// 해당 requester로 command를 넘겨서 찾도록 한다.
+				for (RequestHandler handler : getRequestHandlers()) {
+//					if (handler.possibleProcess(command) == true)
+//						return handler;
+				}
 				return this.handlerMap.get(command);
 	        }
 		} catch (Exception e) {
