@@ -1,11 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class ChatRoom {
-	
-	private Response response;
 	
 	private WebSiteBoard board;
 
@@ -28,14 +25,6 @@ public class ChatRoom {
 		return this.requestId;
 	}
 	
-	public Response getResponse() {
-		return this.response;
-	}
-
-	public void setResponse(Response execute) {
-		this.response = execute;
-	}
-
 	public WebSiteBoard getBoard() {
 		return board;
 	}

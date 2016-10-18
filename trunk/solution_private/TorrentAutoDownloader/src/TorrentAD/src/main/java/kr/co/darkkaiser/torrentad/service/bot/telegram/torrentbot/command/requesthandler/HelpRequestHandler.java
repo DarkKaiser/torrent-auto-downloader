@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,31 +10,30 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 
 public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(HelpRequestHandler.class);
 
-	private final RequestHandlerRegistry requestResponseRegistry;
+	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public HelpRequestHandler(RequestHandlerRegistry requestResponseRegistry) {
+	public HelpRequestHandler(RequestHandlerRegistry requestHandlerRegistry) {
 		super("도움", "도움말을 표시합니다.");
 
-		if (requestResponseRegistry == null)
-			throw new NullPointerException("requestResponseRegistry");
+		if (requestHandlerRegistry == null)
+			throw new NullPointerException("requestHandlerRegistry");
 
-		this.requestResponseRegistry = requestResponseRegistry;
+		this.requestHandlerRegistry = requestHandlerRegistry;
 	}
 
 	@Override
-	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		StringBuilder sbMessage = new StringBuilder();
 		sbMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
-		for (RequestHandler request : this.requestResponseRegistry.getRegisteredHandlers()) {
-			if (request instanceof BotCommand) {
-				BotCommand command = (BotCommand) request;
+		for (RequestHandler handler : this.requestHandlerRegistry.getRegisteredHandlers()) {
+			if (handler instanceof BotCommand) {
+				BotCommand command = (BotCommand) handler;
 				sbMessage.append("<b>").append(command.getCommand()).append("</b>\n")
 						.append(command.getCommandDescription()).append("\n\n");
 			}
@@ -50,8 +49,6 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}
-
-		return null;
 	}
 
 	@Override

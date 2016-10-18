@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
 public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
@@ -41,7 +40,7 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
 		// 상세페이지 url을 넘겨주면 보고보고에서 다운로드 링크를 넘겨주는 부분 만들어야 됨
 
@@ -82,8 +81,6 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
           absSender.sendMessage(answer);
       } catch (TelegramApiException e) {
       }
-//      
-		return null;
 	}
 
 	@Override

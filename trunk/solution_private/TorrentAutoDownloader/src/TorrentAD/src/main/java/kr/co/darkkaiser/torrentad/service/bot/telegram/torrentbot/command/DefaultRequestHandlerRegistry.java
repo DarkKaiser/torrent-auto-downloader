@@ -13,7 +13,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.bots.commands.BotCommand;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.RequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 
 public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	

@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request.RequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 
 public interface RequestHandlerRegistry {
 

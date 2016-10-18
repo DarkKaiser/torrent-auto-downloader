@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
@@ -42,7 +41,7 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 	}
 
 	@Override
-	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
 		SendMessage answer = new SendMessage();
 		answer.setChatId(chat.getId().toString());
@@ -57,8 +56,6 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 			absSender.sendMessage(answer);
 		} catch (TelegramApiException e) {
 		}
-
-		return null;
 	}
 
 	private ReplyKeyboardMarkup getMainMenuKeyboard(String language) {

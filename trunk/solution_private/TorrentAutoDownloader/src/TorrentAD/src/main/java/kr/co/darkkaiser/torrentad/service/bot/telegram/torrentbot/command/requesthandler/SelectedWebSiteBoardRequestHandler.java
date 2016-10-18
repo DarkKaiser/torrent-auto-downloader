@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
@@ -42,7 +41,7 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		// @@@@@
 		WebSiteBoard board = BogoBogoBoard.ANI_ON;
 		this.chat.setBoard(board);
@@ -64,8 +63,6 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 			absSender.sendMessage(answer);
 		} catch (TelegramApiException e) {
 		}
-
-		return null;
 	}
 
 	@Override

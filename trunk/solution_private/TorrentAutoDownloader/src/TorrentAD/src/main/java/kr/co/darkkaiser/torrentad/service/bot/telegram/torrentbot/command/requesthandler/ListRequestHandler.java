@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,6 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.response.Response;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
 public class ListRequestHandler extends AbstractBotCommandRequestHandler {
@@ -30,7 +29,7 @@ public class ListRequestHandler extends AbstractBotCommandRequestHandler {
 	}
 
 	@Override
-	public Response execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		if (this.chat.getBoard() == null) {
 			StringBuilder sbMessage = new StringBuilder();
 			sbMessage.append("게시판을 먼저 선택하세요.");
@@ -46,7 +45,7 @@ public class ListRequestHandler extends AbstractBotCommandRequestHandler {
 				logger.error(null, e);
 			}
 
-			return null;
+			return;
 		}
 
 		StringBuilder sbMessage = new StringBuilder();
@@ -66,8 +65,6 @@ public class ListRequestHandler extends AbstractBotCommandRequestHandler {
 		this.job.list(absSender, user, chat);
 		
 		// @@@@@
-		
-		return null;
 	}
 
 //	@Override
