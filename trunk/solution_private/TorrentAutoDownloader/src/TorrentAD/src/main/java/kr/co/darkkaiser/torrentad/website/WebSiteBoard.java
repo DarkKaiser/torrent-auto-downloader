@@ -4,7 +4,7 @@ public interface WebSiteBoard {
 	
 	String getName();
 	
-	String getShortName();
+	String getCode();
 
 	String getDescription();
 

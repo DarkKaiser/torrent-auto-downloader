@@ -10,6 +10,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
+import kr.co.darkkaiser.torrentad.util.OutParam;
 
 public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	
@@ -72,19 +73,19 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	            Message message = update.getMessage();
 
 	            String commandMessage = message.getText();
-				String[] commandMessageArrays = commandMessage.split(BotCommandUtils.COMMAND_PARAMETER_SEPARATOR);
-
-				String command = commandMessageArrays[0];
-				if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true)
-					command = command.substring(1);
-
+	            
+	            OutParam<String> outC = new OutParam<String>();
+	            OutParam<String[]> outD = new OutParam<String[]>();
+	            BotCommandUtils.parse(commandMessage, outC, outD);
+	            
 				// @@@@@
 				// 해당 requester로 command를 넘겨서 찾도록 한다.
 				for (RequestHandler handler : getRequestHandlers()) {
 //					if (handler.possibleProcess(command) == true)
 //						return handler;
 				}
-				return this.handlerMap.get(command);
+				
+				return this.handlerMap.get(outC.get());
 	        }
 		} catch (Exception e) {
 			logger.error(null, e);

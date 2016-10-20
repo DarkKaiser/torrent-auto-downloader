@@ -15,16 +15,16 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	ANI_ON				("anion", 				"a01", 	"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
 	private final String name;
-	private final String shortName;
+	private final String code;
 	private final String description;
 	private final String url;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	private BogoBogoBoard(String name, String shortName, String description, String url, boolean hasCategory) {
+	private BogoBogoBoard(String name, String code, String description, String url, boolean hasCategory) {
 		this.name = name;
-		this.shortName = shortName;
+		this.code = code;
 		this.description = description;
 		this.url = url;
 		this.hasCategory = hasCategory;
@@ -36,8 +36,8 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 
 	@Override
-	public String getShortName() {
-		return this.shortName;
+	public String getCode() {
+		return this.code;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 
 	@Override
 	public String toString() {
-		return String.format("%s(%s:%s)", getDescription(), getShortName(), getName());
+		return String.format("%s(%s:%s)", getDescription(), getCode(), getName());
 	}
 
 }
