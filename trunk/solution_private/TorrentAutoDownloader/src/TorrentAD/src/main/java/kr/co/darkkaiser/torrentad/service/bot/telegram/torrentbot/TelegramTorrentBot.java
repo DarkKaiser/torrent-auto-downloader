@@ -14,6 +14,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
@@ -25,6 +26,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectionWebSiteBoardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
+import kr.co.darkkaiser.torrentad.util.OutParam;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
 
@@ -89,14 +91,24 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		
 		//////////////////////////////////////////////////////////
 		try {
-			RequestHandler request = this.requestHandlerRegistry.getRequestHandler(update);
-			if (request != null) {
-				Message message = update.getMessage();
+			if (update.hasMessage() == true) {
+	            Message message = update.getMessage();
+
+	            String commandMessage = message.getText();
+
+	            OutParam<String> outCommand = new OutParam<>();
+				OutParam<String[]> outParameters = new OutParam<>();
+	            BotCommandUtils.parse(commandMessage, outCommand, outParameters);
+
+				RequestHandler request = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get());
+				if (request != null) {
+					
+					System.out.println("######## " + request);
+					request.execute(this, message.getFrom(), message.getChat(), null);
+					
+					return;
+				}
 				
-				System.out.println("######## " + request);
-				request.execute(this, message.getFrom(), message.getChat(), null);
-				
-				return;
 			}
 			
 			CallbackQuery callbackQuery = update.getCallbackQuery();

@@ -4,16 +4,15 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
-import kr.co.darkkaiser.torrentad.util.OutParam;
 
 public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DefaultRequestHandlerRegistry.class);
 
 	private final Map<String/* 식별자 */, RequestHandler> handlerMap = new LinkedHashMap<>();
@@ -63,34 +62,18 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	}
 
 	@Override
-	public synchronized final RequestHandler getRequestHandler(Update update) {
-		if (update == null)
-			throw new NullPointerException("update");
+	public synchronized final RequestHandler getRequestHandler(String command, String[] parameters) {
+		if (StringUtil.isBlank(command) == true)
+			return null;
 
-		// @@@@@
-		try {
-			if (update.hasMessage() == true) {
-	            Message message = update.getMessage();
-
-	            String commandMessage = message.getText();
-	            
-	            OutParam<String> outC = new OutParam<String>();
-	            OutParam<String[]> outD = new OutParam<String[]>();
-	            BotCommandUtils.parse(commandMessage, outC, outD);
-	            
-				// @@@@@
-				// 해당 requester로 command를 넘겨서 찾도록 한다.
-				for (RequestHandler handler : getRequestHandlers()) {
-//					if (handler.possibleProcess(command) == true)
-//						return handler;
-				}
-				
-				return this.handlerMap.get(outC.get());
-	        }
-		} catch (Exception e) {
-			logger.error(null, e);
+		for (RequestHandler handler : getRequestHandlers()) {
+			// @@@@@
+			// 해당 requester로 command를 넘겨서 찾도록 한다.
+//			if (handler.possibleProcess(outCommand.get(), outParameters.get()) == true)
+//				return handler;
+			return this.handlerMap.get(command);
 		}
-
+		
 		return null;
 	}
 

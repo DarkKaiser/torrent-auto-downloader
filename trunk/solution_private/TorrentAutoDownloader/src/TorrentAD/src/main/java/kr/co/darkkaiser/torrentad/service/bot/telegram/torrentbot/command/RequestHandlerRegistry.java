@@ -2,8 +2,6 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
 import java.util.Collection;
 
-import org.telegram.telegrambots.api.objects.Update;
-
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 
 public interface RequestHandlerRegistry {
@@ -16,6 +14,6 @@ public interface RequestHandlerRegistry {
 
 	RequestHandler getRequestHandler(Class<?> clazz);
 	
-	RequestHandler getRequestHandler(Update update);
+	RequestHandler getRequestHandler(String command, String[] parameters);
 
 }
