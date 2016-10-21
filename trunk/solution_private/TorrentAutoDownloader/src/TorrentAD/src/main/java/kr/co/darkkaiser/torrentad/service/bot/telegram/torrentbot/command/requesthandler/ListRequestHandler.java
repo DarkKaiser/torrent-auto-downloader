@@ -28,6 +28,12 @@ public class ListRequestHandler extends AbstractBotCommandRequestHandler {
 		this.job = job;
 		this.chat = chat;
 	}
+	
+	@Override
+	public boolean executable(String command, String[] parameters) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {

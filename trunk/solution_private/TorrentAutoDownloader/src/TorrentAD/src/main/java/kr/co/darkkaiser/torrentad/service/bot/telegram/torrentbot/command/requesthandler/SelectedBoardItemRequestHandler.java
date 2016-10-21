@@ -39,6 +39,12 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 		this.chat = chat;
 		this.requestResponseRegistry = requestResponseRegistry;
 	}
+	
+	@Override
+	public boolean executable(String command, String[] parameters) {
+		// @@@@@
+		return false;
+	}
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {

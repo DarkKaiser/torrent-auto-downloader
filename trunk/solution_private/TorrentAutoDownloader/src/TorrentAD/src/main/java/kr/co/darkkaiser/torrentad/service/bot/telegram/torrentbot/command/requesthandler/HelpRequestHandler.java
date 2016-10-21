@@ -27,6 +27,14 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 	}
 
 	@Override
+	public boolean executable(String command, String[] parameters) {
+		if (super.executable0(command, parameters, false) == false)
+			return false;
+
+		return true;
+	}
+
+	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 		StringBuilder sbMessageText = new StringBuilder();
 		sbMessageText.append("입력 가능한 명령어는 아래와 같습니다:\n\n");

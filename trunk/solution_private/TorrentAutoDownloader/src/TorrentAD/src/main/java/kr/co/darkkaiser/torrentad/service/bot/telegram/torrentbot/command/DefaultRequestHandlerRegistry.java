@@ -66,14 +66,12 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 		if (StringUtil.isBlank(command) == true)
 			return null;
 
+		// 주어진 명령을 실행할 수 있는 RequestHandler를 찾아서 반환한다.
 		for (RequestHandler handler : getRequestHandlers()) {
-			// @@@@@
-			// 해당 requester로 command를 넘겨서 찾도록 한다.
-//			if (handler.possibleProcess(outCommand.get(), outParameters.get()) == true)
-//				return handler;
-			return this.handlerMap.get(command);
+			if (handler.executable(command, parameters) == true)
+				return handler;
 		}
-		
+
 		return null;
 	}
 

@@ -13,7 +13,7 @@ public interface RequestHandlerRegistry {
 	Collection<RequestHandler> getRequestHandlers();
 
 	RequestHandler getRequestHandler(Class<?> clazz);
-	
+
 	RequestHandler getRequestHandler(String command, String[] parameters);
 
 }

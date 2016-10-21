@@ -8,6 +8,8 @@ public interface RequestHandler {
 
 	String getIdentifier();
 
+	boolean executable(String command, String[] parameters);
+	
 	// @@@@@
 	void execute(AbsSender absSender, User user, Chat chat, String[] arguments);
 

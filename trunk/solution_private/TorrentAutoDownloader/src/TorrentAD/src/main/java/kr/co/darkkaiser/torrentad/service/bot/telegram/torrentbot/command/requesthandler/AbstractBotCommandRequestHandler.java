@@ -35,6 +35,21 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	public String getCommandDescription() {
 		return this.commandDescription;
 	}
+
+	protected boolean executable0(String command, String[] parameters, boolean requiredParameters) {
+		if (getCommand().equals(command) == false)
+			return false;
+		
+		if (requiredParameters == true) {
+			if (parameters == null || parameters.length == 0)
+				return false;
+		} else {
+			if (parameters != null && parameters.length > 0)
+				return false;
+		}
+
+		return true;
+	}
 	
 	@Override
 	public String toString() {

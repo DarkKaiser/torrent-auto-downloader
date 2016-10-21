@@ -20,10 +20,9 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.ListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SearchingRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectedBoardItemRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectedWebSiteBoardRequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectionWebSiteBoardRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectWebSiteBoardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 import kr.co.darkkaiser.torrentad.util.OutParam;
@@ -60,11 +59,10 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
 		// RequestHandler를 등록한다.
-		this.requestHandlerRegistry.register(new SelectionWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
 		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
 		this.requestHandlerRegistry.register(new ListRequestHandler(this.job, this.chat));
-		this.requestHandlerRegistry.register(new SearchingRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
 

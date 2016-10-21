@@ -20,9 +20,9 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.Torren
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 // @@@@@
-public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
+public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(SelectionWebSiteBoardRequestHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectWebSiteBoardRequestHandler.class);
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 	
@@ -30,15 +30,23 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 	
 	private final ChatRoom chat;
 	
-	public SelectionWebSiteBoardRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
-		super("선택", "검색 및 조회하려는 게시판을 선택합니다.");
-		
+	public SelectWebSiteBoardRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+		super("선택", "조회 및 검색하려는 게시판을 선택합니다.");
+
 		if (requestResponseRegistry == null)
 			throw new NullPointerException("requestResponseRegistry");
 
 		this.job = job;
 		this.chat = chat;
 		this.requestHandlerRegistry = requestResponseRegistry;
+	}
+	
+	@Override
+	public boolean executable(String command, String[] parameters) {
+		if (super.executable0(command, parameters, false) == false)
+			return false;
+
+		return true;
 	}
 
 	@Override
@@ -84,7 +92,7 @@ public class SelectionWebSiteBoardRequestHandler extends AbstractBotCommandReque
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectionWebSiteBoardRequestHandler.class.getSimpleName())
+				.append(SelectWebSiteBoardRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
