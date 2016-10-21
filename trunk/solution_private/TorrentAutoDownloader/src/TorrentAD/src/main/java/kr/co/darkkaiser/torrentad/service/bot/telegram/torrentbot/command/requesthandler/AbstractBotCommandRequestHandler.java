@@ -8,9 +8,14 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
 
 	private final String command;
+	private final String commandSyntax;
 	private final String commandDescription;
-
+	
 	public AbstractBotCommandRequestHandler(String command, String commandDescription) {
+		this(command, command, commandDescription);
+	}
+
+	public AbstractBotCommandRequestHandler(String command, String commandSyntax, String commandDescription) {
 		super(command);
 
 		if (StringUtil.isBlank(command) == true)
@@ -23,6 +28,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandUtils.COMMAND_MAX_LENGTH + "자 입니다.");
 
 		this.command = command.toLowerCase();
+		this.commandSyntax = commandSyntax;
 		this.commandDescription = commandDescription;
 	}
 
@@ -30,25 +36,29 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	public String getCommand() {
 		return this.command;
 	}
+	
+	@Override
+	public String getCommandSyntax() {
+		return this.commandSyntax;
+	}
 
 	@Override
 	public String getCommandDescription() {
 		return this.commandDescription;
 	}
 
-	protected boolean executable0(String command, String[] parameters, boolean requiredParameters) {
+	protected boolean executable0(String command, String[] parameters, int minParametersCount, int maxParametersCount) {
 		if (getCommand().equals(command) == false)
 			return false;
 
-		if (requiredParameters == true) {
-			if (parameters == null || parameters.length == 0)
-				return false;
-		} else {
-			if (parameters != null && parameters.length > 0)
-				return false;
-		}
+		int parametersCount = 0;
+		if (parameters != null)
+			parametersCount = parameters.length;
 
-		return true;
+		if (minParametersCount <= parametersCount && parametersCount <= maxParametersCount)
+			return true;
+
+		return false;
 	}
 	
 	@Override
@@ -57,6 +67,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 				.append(AbstractBotCommandRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("command:").append(getCommand())
+				.append(", commandSyntax:").append(getCommandSyntax())
 				.append(", commandDescription:").append(getCommandDescription())
 				.append("}, ")
 				.append(super.toString())

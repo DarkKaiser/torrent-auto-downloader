@@ -10,7 +10,6 @@ public interface RequestHandler {
 
 	boolean executable(String command, String[] parameters, boolean containInitialChar);
 
-	// @@@@@
 	void execute(AbsSender absSender, User user, Chat chat, String command, String[] parameters, boolean containInitialChar);
 
 }

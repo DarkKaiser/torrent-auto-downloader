@@ -28,7 +28,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, false) == false)
+		if (super.executable0(command, parameters, 0, 0) == false)
 			return false;
 
 		return true;
@@ -42,7 +42,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 		for (RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
 			if (handler instanceof BotCommand) {
 				BotCommand botCommand = (BotCommand) handler;
-				sbMessageText.append("<b>").append(botCommand.getCommand()).append("</b>\n")
+				sbMessageText.append("<b>").append(botCommand.getCommandSyntax()).append("</b>\n")
 						.append(botCommand.getCommandDescription()).append("\n\n");
 			}
 		}

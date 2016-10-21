@@ -59,7 +59,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 		// RequestHandler를 등록한다.
 		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.job.connector.getSite()));
-		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.job.connector.getSite(), this.chat, this.requestHandlerRegistry));
+		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.job.connector.getSite(), this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
 		this.requestHandlerRegistry.register(new ListRequestHandler(this.job, this.chat));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));

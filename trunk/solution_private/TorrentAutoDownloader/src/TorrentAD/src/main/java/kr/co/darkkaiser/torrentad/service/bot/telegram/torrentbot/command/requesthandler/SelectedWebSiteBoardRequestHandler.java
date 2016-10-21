@@ -8,7 +8,6 @@ import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -20,23 +19,17 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 
 	private final WebSite site;
 
-	// @@@@@
-	private final ChatRoom chat;
-
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public SelectedWebSiteBoardRequestHandler(WebSite site, ChatRoom chat, RequestHandlerRegistry requestHandlerRegistry) {
+	public SelectedWebSiteBoardRequestHandler(WebSite site, RequestHandlerRegistry requestHandlerRegistry) {
 		super("선택완료");
 
 		if (site == null)
 			throw new NullPointerException("site");
-		if (chat == null)// @@@@@
-			throw new NullPointerException("chat");
 		if (requestHandlerRegistry == null)
 			throw new NullPointerException("requestHandlerRegistry");
 
 		this.site = site;
-		this.chat = chat;//@@@@@
 		this.requestHandlerRegistry = requestHandlerRegistry;
 	}
 
@@ -52,8 +45,8 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 	public void execute(AbsSender absSender, User user, Chat chat, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 
-		// @@@@@
-		this.chat.setBoard(board);
+		// @@@@@ 파라메터로 받아야됨, 여러군데에서 사용되기 때문에 변하는 상태를 가지고 있으면 안됨
+//		this.chat.setBoard(board);
 
 		StringBuilder sbMessageText = new StringBuilder();
 		sbMessageText.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");

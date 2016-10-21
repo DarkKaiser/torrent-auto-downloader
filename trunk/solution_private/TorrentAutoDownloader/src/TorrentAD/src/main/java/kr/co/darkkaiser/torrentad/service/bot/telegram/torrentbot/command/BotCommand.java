@@ -4,6 +4,8 @@ public interface BotCommand {
 
 	String getCommand();
 
+	String getCommandSyntax();
+
 	String getCommandDescription();
 
 }

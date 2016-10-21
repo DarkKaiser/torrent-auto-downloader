@@ -14,7 +14,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(SelectWebSiteBoardRequestHandler.class);
-	
+
 	private final WebSite site;
 
 	public SelectWebSiteBoardRequestHandler(WebSite site) {
@@ -28,7 +28,7 @@ public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestH
 
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, false) == false)
+		if (super.executable0(command, parameters, 0, 0) == false)
 			return false;
 
 		return true;
