@@ -94,7 +94,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		StringBuilder sb = new StringBuilder()
 				.append(AbstractWebSiteSearchContext.class.getSimpleName())
 				.append("{")
-				.append("site:").append(this.site)
+				.append("site:").append(getWebSite())
 				.append(", searchKeywords:");
 
 		boolean firstKeywordsType = true;

@@ -27,7 +27,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters) {
+	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
 		if (super.executable0(command, parameters, false) == false)
 			return false;
 
@@ -35,25 +35,25 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbMessageText = new StringBuilder();
 		sbMessageText.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
 		for (RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
 			if (handler instanceof BotCommand) {
-				BotCommand command = (BotCommand) handler;
-				sbMessageText.append("<b>").append(command.getCommand()).append("</b>\n")
-						.append(command.getCommandDescription()).append("\n\n");
+				BotCommand botCommand = (BotCommand) handler;
+				sbMessageText.append("<b>").append(botCommand.getCommand()).append("</b>\n")
+						.append(botCommand.getCommandDescription()).append("\n\n");
 			}
 		}
 
-		SendMessage helpMessage = new SendMessage()
+		SendMessage answerMessage = new SendMessage()
 				.setChatId(chat.getId().toString())
 				.setText(sbMessageText.toString())
 				.enableHtml(true);
 
 		try {
-			absSender.sendMessage(helpMessage);
+			absSender.sendMessage(answerMessage);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}

@@ -39,7 +39,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	protected boolean executable0(String command, String[] parameters, boolean requiredParameters) {
 		if (getCommand().equals(command) == false)
 			return false;
-		
+
 		if (requiredParameters == true) {
 			if (parameters == null || parameters.length == 0)
 				return false;

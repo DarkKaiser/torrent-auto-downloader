@@ -12,7 +12,7 @@ public final class BotCommandUtils {
 	public static final String COMMAND_INITIAL_CHARACTER = "/";
     public static final String COMMAND_PARAMETER_SEPARATOR = " ";
 
-    public static final void parse(String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters) {
+    public static final void parse(String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 		if (outCommand == null)
@@ -23,8 +23,13 @@ public final class BotCommandUtils {
 		String[] messageArrays = message.split(BotCommandUtils.COMMAND_PARAMETER_SEPARATOR);
 
 		String command = messageArrays[0];
-		if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true)
+		if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true) {
 			command = command.substring(1);
+
+			outContainInitialChar.set(true);
+		} else {
+			outContainInitialChar.set(false);
+		}
 
 		outCommand.set(command);
 		outParameters.set(Arrays.copyOfRange(messageArrays, 1, messageArrays.length));

@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 
 //@@@@@
@@ -41,13 +41,13 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters) {
+	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
 		// @@@@@
 		return false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	public void execute(AbsSender absSender, User user, Chat chat, String command, String[] parameters, boolean containInitialChar) {
 		// @@@@@
 		// 상세페이지 url을 넘겨주면 보고보고에서 다운로드 링크를 넘겨주는 부분 만들어야 됨
 
@@ -101,3 +101,57 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 	}
 
 }
+
+
+/*
+
+@Override
+public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+	// @@@@@
+	SendMessage answer = new SendMessage();
+	answer.setChatId(chat.getId().toString());
+	answer.setText("조회 할 게시판을 선택하세요.");
+
+	ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
+	forceReplyKeyboard.setSelective(true);
+
+	answer.setReplyMarkup(getMainMenuKeyboard(""));
+
+	try {
+		absSender.sendMessage(answer);
+	} catch (TelegramApiException e) {
+		logger.error(null, e);
+	}
+}
+
+private ReplyKeyboardMarkup getMainMenuKeyboard(String language) {
+	ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+	replyKeyboardMarkup.setSelective(true);
+	replyKeyboardMarkup.setResizeKeyboard(true);
+	replyKeyboardMarkup.setOneTimeKeyboad(true);
+
+	WebSiteBoard[] boardValues = this.site.getBoardValues();
+
+	List<KeyboardRow> keyboard = new ArrayList<>();
+	for (WebSiteBoard board : boardValues) {
+		KeyboardRow keyboardFirstRow = new KeyboardRow();
+		keyboardFirstRow.add(String.format("선택완료 %s. %s", board.getCode(), board.getDescription()));
+		
+		keyboard.add(keyboardFirstRow);
+	}
+	
+	replyKeyboardMarkup.setKeyboard(keyboard);
+
+	return replyKeyboardMarkup;
+}
+*/
+/*
+// 키보드 숨기기 안됨
+ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+replyKeyboardMarkup.setSelective(true);
+
+List<KeyboardRow> keyboard = new ArrayList<>();
+replyKeyboardMarkup.setKeyboard(keyboard);
+
+answerMessage.setReplyMarkup(replyKeyboardMarkup);
+*/

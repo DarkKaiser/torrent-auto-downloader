@@ -14,6 +14,6 @@ public interface RequestHandlerRegistry {
 
 	RequestHandler getRequestHandler(Class<?> clazz);
 
-	RequestHandler getRequestHandler(String command, String[] parameters);
+	RequestHandler getRequestHandler(String command, String[] parameters, boolean containInitialChar);
 
 }

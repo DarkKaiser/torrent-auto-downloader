@@ -62,13 +62,13 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 	}
 
 	@Override
-	public synchronized final RequestHandler getRequestHandler(String command, String[] parameters) {
+	public synchronized final RequestHandler getRequestHandler(String command, String[] parameters, boolean containInitialChar) {
 		if (StringUtil.isBlank(command) == true)
 			return null;
 
 		// 주어진 명령을 실행할 수 있는 RequestHandler를 찾아서 반환한다.
 		for (RequestHandler handler : getRequestHandlers()) {
-			if (handler.executable(command, parameters) == true)
+			if (handler.executable(command, parameters, containInitialChar) == true)
 				return handler;
 		}
 

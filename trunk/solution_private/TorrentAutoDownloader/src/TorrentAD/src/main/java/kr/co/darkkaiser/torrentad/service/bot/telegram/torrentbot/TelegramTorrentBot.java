@@ -18,14 +18,13 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.ListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectedBoardItemRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectedWebSiteBoardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectWebSiteBoardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 import kr.co.darkkaiser.torrentad.util.OutParam;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
 
@@ -45,7 +44,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	
 	// @@@@@
 	private TorrentJob job;
-
+	
 	public TelegramTorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
@@ -59,8 +58,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
 		// RequestHandler를 등록한다.
-		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
-		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.job.connector.getSite()));
+		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.job.connector.getSite(), this.chat, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
 		this.requestHandlerRegistry.register(new ListRequestHandler(this.job, this.chat));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
@@ -96,13 +95,14 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
-	            BotCommandUtils.parse(commandMessage, outCommand, outParameters);
+				OutParam<Boolean> outContainInitialChar = new OutParam<>();
+	            BotCommandUtils.parse(commandMessage, outCommand, outParameters, outContainInitialChar);
 
-				RequestHandler request = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get());
+				RequestHandler request = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (request != null) {
 					
 					System.out.println("######## " + request);
-					request.execute(this, message.getFrom(), message.getChat(), null);
+					request.execute(this, message.getFrom(), message.getChat(), outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}
