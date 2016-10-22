@@ -61,7 +61,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.job.connector.getSite()));
 		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.job.connector.getSite(), this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
-		this.requestHandlerRegistry.register(new ListRequestHandler(this.job, this.chat));
+		this.requestHandlerRegistry.register(new RetrieveWebSiteBoardRequestHandler(this.job, this.chat));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
 
@@ -102,7 +102,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 				if (request != null) {
 					
 					System.out.println("######## " + request);
-					request.execute(this, message.getFrom(), message.getChat(), outCommand.get(), outParameters.get(), outContainInitialChar.get());
+					request.execute(this, message.getFrom(), message.getChat(), null, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}

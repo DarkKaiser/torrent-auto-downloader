@@ -8,6 +8,7 @@ import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
@@ -35,7 +36,7 @@ public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestH
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbMessageText = new StringBuilder();
 		sbMessageText.append("조회 및 검색하려는 게시판을 선택하세요:\n\n");
 
