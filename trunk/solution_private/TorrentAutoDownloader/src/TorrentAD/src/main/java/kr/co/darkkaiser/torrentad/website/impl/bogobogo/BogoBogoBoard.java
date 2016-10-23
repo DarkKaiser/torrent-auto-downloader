@@ -6,13 +6,13 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public enum BogoBogoBoard implements WebSiteBoard {
 
-	MOVIE_NEW			("newmovie", 			"m01", 	"영화 > 최신외국영화", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
-	MOVIE_KOR			("kormovie", 			"m02", 	"영화 > 한국영화", 					BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
-	MOVIE_HD			("hdmovie", 			"m03", 	"영화 > DVD고화질영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
-	KOR_DRAMA_ON		("kordramaon", 			"k01", 	"한국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
-	KOR_ENTERTAINMENT	("korentertainment",	"k02", 	"한국TV프로그램 > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
-	FOREIGN_DRAMA_ON	("foreigndramaon", 		"k03", 	"외국TV프로그램 > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
-	ANI_ON				("anion", 				"a01", 	"애니메이션 > 방영중", 				BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
+	MOVIE_NEW			("newmovie", 			"m01", 	"영화 > 최신외국영화", 		BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
+	MOVIE_KOR			("kormovie", 			"m02", 	"영화 > 한국영화", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
+	MOVIE_HD			("hdmovie", 			"m03", 	"영화 > DVD고화질영화", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
+	KOR_DRAMA_ON		("kordramaon", 			"k01", 	"한국TV > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
+	KOR_ENTERTAINMENT	("korentertainment",	"k02", 	"한국TV > 쇼/오락/스포츠", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
+	FOREIGN_DRAMA_ON	("foreigndramaon", 		"f01", 	"외국TV > 드라마(방영중)", 	BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
+	ANI_ON				("anion", 				"a01", 	"애니메이션 > 방영중", 		BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false);
 
 	private final String name;
 	private final String code;
