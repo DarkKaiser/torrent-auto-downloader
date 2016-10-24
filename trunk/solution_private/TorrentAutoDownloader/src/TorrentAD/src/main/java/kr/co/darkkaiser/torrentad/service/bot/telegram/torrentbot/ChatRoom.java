@@ -2,9 +2,13 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class ChatRoom {
-	
+public final class ChatRoom {
+
 	private WebSiteBoard board;
+	
+	private int boardItemsListCount;
+
+	private int boardItemsSearchCount;
 
 	// @@@@@
 	private long requestId = 0;
@@ -31,6 +35,13 @@ public class ChatRoom {
 
 	public void setBoard(WebSiteBoard board) {
 		this.board = board;
+	}
+
+	public void setBoardItemsListCount(int retrieveCount) {
+	}
+	
+	public int getBoardItemsListCount() {
+		return 10;
 	}
 
 }

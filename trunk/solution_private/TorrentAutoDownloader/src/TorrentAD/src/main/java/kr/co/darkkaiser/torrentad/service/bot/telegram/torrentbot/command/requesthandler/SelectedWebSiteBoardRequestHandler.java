@@ -39,9 +39,11 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
+		if (board == null) {
+			// @@@@@ 선택되지 않으면??			
+		}
 
-		// @@@@@ 파라메터로 받아야됨, 여러군데에서 사용되기 때문에 변하는 상태를 가지고 있으면 안됨
-//		this.chat.setBoard(board);
+		chatRoom.setBoard(board);
 
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
