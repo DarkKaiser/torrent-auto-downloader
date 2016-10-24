@@ -13,6 +13,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	// 설정 가능한 최소/최대 조회 건수
 	public static final int MIN_BOARD_ITEMS_LIST_COUNT = 5;
 	public static final int MAX_BOARD_ITEMS_LIST_COUNT = 50;
+	public static final int DEFAULT_BOARD_ITEMS_LIST_COUNT = MAX_BOARD_ITEMS_LIST_COUNT;
 
 	//@@@@@
 //	private TorrentJob job;
@@ -48,7 +49,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 					return;
 				}
 
-				chatRoom.setBoardItemsListCount(listCount);
+				chatRoom.setMaxBoardItemsListCount(listCount);
 			} catch (NumberFormatException e) {
 				sendAnswerMessage(absSender, chat.getId().toString(), "입력된 조회 건수가 유효하지 않습니다.\n조회 건수는 숫자만 입력 가능합니다.");
 				return;
@@ -64,7 +65,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		// 게시판 조회중 메시지를 보낸다.
 		StringBuilder sbAnswerMessage = new StringBuilder();
-		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 최대 ").append(chatRoom.getBoardItemsListCount()).append("건 조회중입니다.\n")
+		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건 조회중입니다.\n")
 				.append("잠시만 기다려 주세요.");
 
 		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
