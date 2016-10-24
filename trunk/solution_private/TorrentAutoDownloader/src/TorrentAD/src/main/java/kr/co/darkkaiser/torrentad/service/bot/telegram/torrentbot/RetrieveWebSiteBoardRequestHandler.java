@@ -43,9 +43,9 @@ public class RetrieveWebSiteBoardRequestHandler extends AbstractBotCommandReques
 		WebSiteBoard board = chatRoom.getBoard();
 		if (board == null) {
 			// @@@@@
-			StringBuilder sbMessageText = new StringBuilder();
-			sbMessageText.append("조회 및 검색하려는 게시판을 먼저 선택하세요.");
-			sendAnswerMessage(absSender, user, chat, sbMessageText.toString());
+			StringBuilder sbAnswerMessage = new StringBuilder();
+			sbAnswerMessage.append("조회 및 검색하려는 게시판을 먼저 선택하세요.");
+			sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 			return;
 
 			
@@ -64,15 +64,15 @@ public class RetrieveWebSiteBoardRequestHandler extends AbstractBotCommandReques
 			try {
 				int listCount = Integer.parseInt(parameters[0]);
 				if (listCount < MIN_RETRIEVE_BOARD_ITEMS_COUNT || listCount > MAX_RETRIEVE_BOARD_ITEMS_COUNT) {
-					StringBuilder sbMessageText = new StringBuilder();
-					sbMessageText.append("설정 가능한 조회 건수는 최소 ").append(MIN_RETRIEVE_BOARD_ITEMS_COUNT).append("건에서 최대 ").append(MAX_RETRIEVE_BOARD_ITEMS_COUNT).append("건 입니다.");
-					sendAnswerMessage(absSender, user, chat, sbMessageText.toString());
+					StringBuilder sbAnswerMessage = new StringBuilder();
+					sbAnswerMessage.append("설정 가능한 조회 건수는 최소 ").append(MIN_RETRIEVE_BOARD_ITEMS_COUNT).append("건에서 최대 ").append(MAX_RETRIEVE_BOARD_ITEMS_COUNT).append("건 입니다.");
+					sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 					return;
 				}
 
 				// @@@@@ 조회건수를 저장한다.
 			} catch (NumberFormatException e) {
-				sendAnswerMessage(absSender, user, chat, "조회 건수는 숫자만 입력 가능합니다.");
+				sendAnswerMessage(absSender, chat.getId().toString(), "조회 건수는 숫자만 입력 가능합니다.");
 				return;
 			}
 		}
@@ -96,20 +96,6 @@ public class RetrieveWebSiteBoardRequestHandler extends AbstractBotCommandReques
 		this.job.list(absSender, user, chat);
 		
 		// @@@@@
-	}
-
-	// 상위로 올리기@@@@@
-	private void sendAnswerMessage(AbsSender absSender, User user, Chat chat, String messageText) {
-		SendMessage answerMessage = new SendMessage()
-				.setChatId(chat.getId().toString())
-				.setText(messageText)
-				.enableHtml(true);
-
-		try {
-			absSender.sendMessage(answerMessage);
-		} catch (TelegramApiException e) {
-			logger.error(null, e);
-		}
 	}
 
 	@Override

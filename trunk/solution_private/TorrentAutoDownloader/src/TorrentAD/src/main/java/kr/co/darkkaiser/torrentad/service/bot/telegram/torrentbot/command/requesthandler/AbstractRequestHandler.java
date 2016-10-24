@@ -1,9 +1,16 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public abstract class AbstractRequestHandler implements RequestHandler {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(AbstractRequestHandler.class);
+	
 	private final String identifier;
 
 	public AbstractRequestHandler(String identifier) {
@@ -18,6 +25,26 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		return this.identifier;
 	}
 
+	protected void sendAnswerMessage(AbsSender absSender, String chatId, String message) {
+		if (absSender == null)
+			throw new NullPointerException("absSender");
+		if (StringUtil.isBlank(chatId) == true)
+			throw new IllegalArgumentException("chatId는 빈 문자열을 허용하지 않습니다.");
+		if (StringUtil.isBlank(message) == true)
+			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
+
+		SendMessage answerMessage = new SendMessage()
+				.setChatId(chatId)
+				.setText(message)
+				.enableHtml(true);
+
+		try {
+			absSender.sendMessage(answerMessage);
+		} catch (TelegramApiException e) {
+			logger.error(null, e);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return new StringBuilder()

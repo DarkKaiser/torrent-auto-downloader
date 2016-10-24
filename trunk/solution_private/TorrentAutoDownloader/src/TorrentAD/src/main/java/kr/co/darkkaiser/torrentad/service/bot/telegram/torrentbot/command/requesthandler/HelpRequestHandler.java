@@ -1,20 +1,14 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 
 public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(HelpRequestHandler.class);
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
@@ -37,27 +31,18 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 
 	@Override
 	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
-		StringBuilder sbMessageText = new StringBuilder();
-		sbMessageText.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
+		StringBuilder sbAnswerMessage = new StringBuilder();
+		sbAnswerMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
 		for (RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
 			if (handler instanceof BotCommand) {
 				BotCommand botCommand = (BotCommand) handler;
-				sbMessageText.append("<b>").append(botCommand.getCommandSyntax()).append("</b>\n")
+				sbAnswerMessage.append("<b>").append(botCommand.getCommandSyntax()).append("</b>\n")
 						.append(botCommand.getCommandDescription()).append("\n\n");
 			}
 		}
 
-		SendMessage answerMessage = new SendMessage()
-				.setChatId(chat.getId().toString())
-				.setText(sbMessageText.toString())
-				.enableHtml(true);
-
-		try {
-			absSender.sendMessage(answerMessage);
-		} catch (TelegramApiException e) {
-			logger.error(null, e);
-		}
+		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 	}
 
 	@Override

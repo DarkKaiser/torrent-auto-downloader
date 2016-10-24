@@ -1,12 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
@@ -15,8 +11,6 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(SelectedWebSiteBoardRequestHandler.class);
 
 	private final WebSite site;
 
@@ -49,19 +43,10 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 		// @@@@@ 파라메터로 받아야됨, 여러군데에서 사용되기 때문에 변하는 상태를 가지고 있으면 안됨
 //		this.chat.setBoard(board);
 
-		StringBuilder sbMessageText = new StringBuilder();
-		sbMessageText.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
+		StringBuilder sbAnswerMessage = new StringBuilder();
+		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
 
-		SendMessage answerMessage = new SendMessage()
-				.setChatId(chat.getId().toString())
-				.setText(sbMessageText.toString())
-				.enableHtml(true);
-		
-		try {
-			absSender.sendMessage(answerMessage);
-		} catch (TelegramApiException e) {
-			logger.error(null, e);
-		}
+		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {
