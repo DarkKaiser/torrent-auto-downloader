@@ -18,10 +18,10 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.ListWebSiteBoardRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectWebSiteBoardRequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.SelectedWebSiteBoardRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectedRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 import kr.co.darkkaiser.torrentad.util.OutParam;
@@ -58,10 +58,10 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
 		// RequestHandler를 등록한다.
-		this.requestHandlerRegistry.register(new SelectWebSiteBoardRequestHandler(this.job.connector.getSite()));
-		this.requestHandlerRegistry.register(new SelectedWebSiteBoardRequestHandler(this.job.connector.getSite(), this.requestHandlerRegistry));
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.job.connector.getSite()));
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.job.connector.getSite(), this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
-		this.requestHandlerRegistry.register(new ListWebSiteBoardRequestHandler(this.job));
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this.job));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
 

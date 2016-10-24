@@ -8,7 +8,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class ListWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
 	
 	// 설정 가능한 최소/최대 조회 건수
 	public static final int MIN_BOARD_ITEMS_LIST_COUNT = 5;
@@ -17,7 +17,7 @@ public class ListWebSiteBoardRequestHandler extends AbstractBotCommandRequestHan
 	//@@@@@
 //	private TorrentJob job;
 
-	public ListWebSiteBoardRequestHandler(TorrentJob job) {
+	public WebSiteBoardListRequestHandler(TorrentJob job) {
 		super("조회", "조회 [건수]", "선택된 게시판을 조회합니다.");
 		
 		// @@@@@
@@ -76,7 +76,7 @@ public class ListWebSiteBoardRequestHandler extends AbstractBotCommandRequestHan
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(ListWebSiteBoardRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardListRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

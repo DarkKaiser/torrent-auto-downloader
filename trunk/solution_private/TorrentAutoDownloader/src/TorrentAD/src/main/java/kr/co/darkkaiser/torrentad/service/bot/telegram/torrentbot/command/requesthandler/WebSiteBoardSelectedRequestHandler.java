@@ -10,13 +10,13 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Reques
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 	private final WebSite site;
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public SelectedWebSiteBoardRequestHandler(WebSite site, RequestHandlerRegistry requestHandlerRegistry) {
+	public WebSiteBoardSelectedRequestHandler(WebSite site, RequestHandlerRegistry requestHandlerRegistry) {
 		super("선택완료");
 
 		if (site == null)
@@ -63,7 +63,7 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 					return board;
 			}
 		} else if (parameters.length == 1) {
-			BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(SelectWebSiteBoardRequestHandler.class);
+			BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSelectRequestHandler.class);
 			if (botCommand != null && botCommand.getCommand().equals(command) == true) {
 				String parameter = parameters[0];
 				for (WebSiteBoard board : boardValues) {
@@ -79,7 +79,7 @@ public class SelectedWebSiteBoardRequestHandler extends AbstractRequestHandler {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectedWebSiteBoardRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardSelectedRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("site:").append(this.site)
 				.append("}, ")

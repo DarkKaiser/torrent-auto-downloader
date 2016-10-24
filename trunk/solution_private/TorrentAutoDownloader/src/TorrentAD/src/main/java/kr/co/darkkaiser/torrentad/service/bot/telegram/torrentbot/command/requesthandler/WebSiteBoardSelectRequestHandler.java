@@ -8,11 +8,11 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private final WebSite site;
 
-	public SelectWebSiteBoardRequestHandler(WebSite site) {
+	public WebSiteBoardSelectRequestHandler(WebSite site) {
 		super("선택", "조회 및 검색하려는 게시판을 선택합니다.");
 
 		if (site == null)
@@ -50,7 +50,7 @@ public class SelectWebSiteBoardRequestHandler extends AbstractBotCommandRequestH
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(SelectWebSiteBoardRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardSelectRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("site:").append(this.site)
 				.append("}, ")
