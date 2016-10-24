@@ -10,11 +10,6 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
 	
-	// 설정 가능한 최소/최대 조회 건수
-	public static final int MIN_BOARD_ITEMS_LIST_COUNT = 5;
-	public static final int MAX_BOARD_ITEMS_LIST_COUNT = 50;
-	public static final int DEFAULT_BOARD_ITEMS_LIST_COUNT = MAX_BOARD_ITEMS_LIST_COUNT;
-
 	//@@@@@
 //	private TorrentJob job;
 
@@ -39,10 +34,10 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 			// 입력된 조회 건수를 확인하고, 설정값을 저장한다.
 			try {
 				int listCount = Integer.parseInt(parameters[0]);
-				if (listCount < MIN_BOARD_ITEMS_LIST_COUNT || listCount > MAX_BOARD_ITEMS_LIST_COUNT) {
+				if (listCount < ChatRoom.MIN_BOARD_ITEMS_LIST_COUNT || listCount > ChatRoom.MAX_BOARD_ITEMS_LIST_COUNT) {
 					StringBuilder sbAnswerMessage = new StringBuilder();
 					sbAnswerMessage.append("입력된 조회 건수가 유효하지 않습니다.\n")
-							.append("설정 가능한 조회 건수는 최소 ").append(MIN_BOARD_ITEMS_LIST_COUNT).append("건에서 최대 ").append(MAX_BOARD_ITEMS_LIST_COUNT).append("건 입니다.");
+							.append("설정 가능한 조회 건수는 최소 ").append(ChatRoom.MIN_BOARD_ITEMS_LIST_COUNT).append("건에서 최대 ").append(ChatRoom.MAX_BOARD_ITEMS_LIST_COUNT).append("건 입니다.");
 
 					sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 

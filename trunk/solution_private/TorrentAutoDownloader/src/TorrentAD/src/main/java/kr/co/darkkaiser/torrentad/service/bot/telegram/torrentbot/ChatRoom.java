@@ -1,18 +1,27 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListRequestHandler;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public final class ChatRoom {
+
+	// 게시판 최대 검색 건수 최소/최대/기본값
+	public static final int MIN_BOARD_ITEMS_LIST_COUNT = 5;
+	public static final int MAX_BOARD_ITEMS_LIST_COUNT = 50;
+	public static final int DEFAULT_BOARD_ITEMS_LIST_COUNT = MAX_BOARD_ITEMS_LIST_COUNT;
+
+	// 게시판 최대 검색 건수 최소/최대/기본값
+	public static final int MIN_BOARD_ITEMS_SEARCH_COUNT = 5;
+	public static final int MAX_BOARD_ITEMS_SEARCH_COUNT = 50;
+	public static final int DEFAULT_BOARD_ITEMS_SEARCH_COUNT = MAX_BOARD_ITEMS_SEARCH_COUNT;
 
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
 
 	// 게시판 최대 조회 건수
-	private int maxBoardItemsListCount = WebSiteBoardListRequestHandler.DEFAULT_BOARD_ITEMS_LIST_COUNT;
+	private int maxBoardItemsListCount = DEFAULT_BOARD_ITEMS_LIST_COUNT;
 
 	// 게시판 최대 검색 건수
-	private int maxBoardItemsSearchCount;
+	private int maxBoardItemsSearchCount = DEFAULT_BOARD_ITEMS_SEARCH_COUNT;
 
 	// @@@@@
 	private long requestId = 0;
@@ -43,10 +52,9 @@ public final class ChatRoom {
 	}
 	
 	public synchronized void setMaxBoardItemsListCount(int maxBoardItemsListCount) {
-		// @@@@@ 상수를 어디에 선언할것인가?
-		if (maxBoardItemsListCount > WebSiteBoardListRequestHandler.MAX_BOARD_ITEMS_LIST_COUNT)
+		if (maxBoardItemsListCount > MAX_BOARD_ITEMS_LIST_COUNT)
 			throw new ArithmeticException("Overflow maxBoardItemsListCount");
-		if (maxBoardItemsListCount < WebSiteBoardListRequestHandler.MIN_BOARD_ITEMS_LIST_COUNT)
+		if (maxBoardItemsListCount < MIN_BOARD_ITEMS_LIST_COUNT)
 			throw new ArithmeticException("Underflow maxBoardItemsListCount");
 
 		this.maxBoardItemsListCount = maxBoardItemsListCount;
@@ -57,7 +65,10 @@ public final class ChatRoom {
 	}
 
 	public synchronized void setMaxBoardItemsSearchCount(int maxBoardItemsSearchCount) {
-		// @@@@@ min, max
+		if (maxBoardItemsSearchCount > MAX_BOARD_ITEMS_SEARCH_COUNT)
+			throw new ArithmeticException("Overflow maxBoardItemsSearchCount");
+		if (maxBoardItemsSearchCount < MIN_BOARD_ITEMS_SEARCH_COUNT)
+			throw new ArithmeticException("Underflow maxBoardItemsSearchCount");
 
 		this.maxBoardItemsSearchCount = maxBoardItemsSearchCount;
 	}
