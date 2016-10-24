@@ -21,19 +21,19 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class ListBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ListBoardImmediatelyTaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListImmediatelyTaskAction.class);
 
-	private final WebSiteConnector connector;
-	
 	private final WebSiteBoard board;
+	
+	private final WebSiteConnector connector;
 	
 	public AbsSender absSender;
 	public User user;
 	public Chat chat;
 
-	public ListBoardImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
+	public WebSiteBoardListImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
 		if (connector == null)
 			throw new NullPointerException("connector");
 		if (board == null)

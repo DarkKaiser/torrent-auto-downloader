@@ -4,20 +4,30 @@ import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
 	
-	//@@@@@
-//	private TorrentJob job;
-
-	public WebSiteBoardListRequestHandler(TorrentJob job) {
+	//@@@@@ 삭제대상?
+	private final WebSiteConnector connector;
+	
+	//@@@@@ 삭제대상? bot에서 모두 처리
+	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+	
+	public WebSiteBoardListRequestHandler(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, WebSiteConnector connector) {
 		super("조회", "조회 [건수]", "선택된 게시판을 조회합니다.");
 		
-		// @@@@@
-//		this.job = job;
+		if (immediatelyTaskExecutorService == null)
+			throw new NullPointerException("immediatelyTaskExecutorService");
+		if (connector == null)
+			throw new NullPointerException("connector");
+
+		this.connector = connector;
+		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
 	
 	@Override
@@ -58,15 +68,20 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 			return;
 		}
 
-		// 게시판 조회중 메시지를 보낸다.
+		// 게시판 조회중 메시지를 사용자에게 보낸다.
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건 조회중입니다.\n")
 				.append("잠시만 기다려 주세요.");
 
 		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
 
-		// @@@@@
-//		this.job.list(absSender, user, chat);
+		// @@@@@ 어떻게 조회 요청할것인가? requestID 넘겨야 됨 
+		// 고민해볼것.:: action으로 telegramtorrentbot을 넘기고, action에서 getConnector() 를 호출하여 connector를 구하는건??
+		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.connector, board);
+		list.absSender = absSender;
+		list.user = user;
+		list.chat = chat;
+		this.immediatelyTaskExecutorService.submit(list);
 	}
 
 	@Override

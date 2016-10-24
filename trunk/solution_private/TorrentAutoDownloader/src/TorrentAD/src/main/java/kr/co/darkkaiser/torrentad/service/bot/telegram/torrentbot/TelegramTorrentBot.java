@@ -26,6 +26,8 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.TorrentJob;
 import kr.co.darkkaiser.torrentad.util.Disposable;
 import kr.co.darkkaiser.torrentad.util.OutParam;
+import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
 public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
 
@@ -39,6 +41,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
 
+	private final WebSiteConnector connector;
+	
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 
 	private final Configuration configuration;
@@ -56,13 +60,17 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
 		// @@@@@
+		this.connector = new DefaultWebSiteConnector(TelegramTorrentBot.class.getSimpleName(), configuration);
+		this.connector.login();
+
+		// @@@@@
 		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
 
 		// RequestHandler를 등록한다.
-		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.job.connector.getSite()));
-		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.job.connector.getSite(), this.requestHandlerRegistry));
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.connector.getSite()));
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.connector.getSite(), this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
-		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this.job));
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(immediatelyTaskExecutorService, this.connector));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
@@ -70,7 +78,9 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	@Override
 	public void dispose() {
 		// @@@@@
-//		this.job.dispose();
+		if (this.connector != null) {
+			this.connector.logout();
+		}
 	}
 
 	@Override
