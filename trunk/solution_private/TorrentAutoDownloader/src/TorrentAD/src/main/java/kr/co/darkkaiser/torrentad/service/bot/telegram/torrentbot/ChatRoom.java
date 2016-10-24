@@ -2,25 +2,16 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
+// @@@@@
 public final class ChatRoom {
 
 	private WebSiteBoard board;
-	
-	private int boardItemsListCount;
 
-	private int boardItemsSearchCount;
+	private int boardItemsListCount;
 
 	// @@@@@
 	private long requestId = 0;
 	
-	private State state = State.WAITING;
-	
-	// private Response response
-	
-	public void test() {
-		this.state.execute();
-	}
-
 	public void incrementRequestId() {
 		++requestId;
 	}
@@ -29,19 +20,36 @@ public final class ChatRoom {
 		return this.requestId;
 	}
 	
-	public WebSiteBoard getBoard() {
-		return board;
+	public synchronized WebSiteBoard getBoard() {
+		return this.board;
 	}
 
-	public void setBoard(WebSiteBoard board) {
+	public synchronized void setBoard(WebSiteBoard board) {
+		if (board == null)
+			throw new NullPointerException("board");
+
 		this.board = board;
 	}
 
-	public void setBoardItemsListCount(int retrieveCount) {
+	public synchronized int getBoardItemsListCount() {
+		return this.boardItemsListCount;
 	}
 	
-	public int getBoardItemsListCount() {
-		return 10;
+	public synchronized void setBoardItemsListCount(int boardItemsListCount) {
+		// @@@@@ min, max
+
+		this.boardItemsListCount = boardItemsListCount;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append(ChatRoom.class.getSimpleName())
+				.append("{")
+				.append("board:").append(getBoard())
+				.append(", boardItemsListCount:").append(getBoardItemsListCount())
+				.append("}")
+				.toString();
 	}
 
 }
