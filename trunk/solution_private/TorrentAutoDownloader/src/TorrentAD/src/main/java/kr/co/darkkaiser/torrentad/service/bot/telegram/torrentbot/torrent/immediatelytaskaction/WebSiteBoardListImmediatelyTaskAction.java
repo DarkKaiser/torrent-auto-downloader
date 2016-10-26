@@ -15,6 +15,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ResourceGet;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
@@ -27,20 +28,20 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 
 	private final WebSiteBoard board;
 	
-	private final WebSiteConnector connector;
+	private WebSiteConnector connector;
 	
 	public AbsSender absSender;
 	public User user;
 	public Chat chat;
 
-	public WebSiteBoardListImmediatelyTaskAction(WebSiteConnector connector, WebSiteBoard board) {
-		if (connector == null)
-			throw new NullPointerException("connector");
+	public WebSiteBoardListImmediatelyTaskAction(ResourceGet get, WebSiteBoard board) {
+//		if (connector == null)
+//			throw new NullPointerException("connector");
 		if (board == null)
 			throw new NullPointerException("board");
 
 		this.board = board;
-		this.connector = connector;
+//		this.connector = connector;
 	}
 
 	@Override

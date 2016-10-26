@@ -30,7 +30,7 @@ import kr.co.darkkaiser.torrentad.util.OutParam;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
-public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable {
+public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable, ResourceGet {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
@@ -41,8 +41,6 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 	private final WebSiteConnector connector;
 	
-	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
-
 	private final Configuration configuration;
 	
 	// @@@@@
@@ -55,7 +53,6 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 
 		// @@@@@
 		this.connector = new DefaultWebSiteConnector(TelegramTorrentBot.class.getSimpleName(), configuration);
@@ -68,7 +65,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.connector.getSite()));
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.connector.getSite(), this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job));
-		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(immediatelyTaskExecutorService, this.connector));
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 	}
@@ -123,7 +120,6 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 					
 					return;
 				}
-				
 			}
 			
 			CallbackQuery callbackQuery = update.getCallbackQuery();

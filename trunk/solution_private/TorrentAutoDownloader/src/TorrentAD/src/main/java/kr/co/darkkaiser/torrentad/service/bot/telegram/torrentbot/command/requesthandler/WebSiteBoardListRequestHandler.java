@@ -4,27 +4,26 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ResourceGet;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
-import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
-	
-	//@@@@@ 삭제대상?
-	private final WebSiteConnector connector;
-	
-	//@@@@@ 삭제대상? bot에서 모두 처리
+
+	// @@@@@
+	private final ResourceGet resourceGet;
+
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListRequestHandler(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, WebSiteConnector connector) {
+	public WebSiteBoardListRequestHandler(ResourceGet resourceGet, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("조회", "조회 [건수]", "선택된 게시판을 조회합니다.");
-		
+
+		if (resourceGet == null)
+			throw new NullPointerException("resourceGet");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
-		if (connector == null)
-			throw new NullPointerException("connector");
 
-		this.connector = connector;
+		this.resourceGet = resourceGet;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
 	
@@ -75,7 +74,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		// @@@@@ 어떻게 조회 요청할것인가? requestID 넘겨야 됨 
 		// 고민해볼것.:: action으로 telegramtorrentbot을 넘기고, action에서 getConnector() 를 호출하여 connector를 구하는건??
-		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.connector, board);
+		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.resourceGet, board);
 		list.absSender = absSender;
 		this.immediatelyTaskExecutorService.submit(list);
 	}

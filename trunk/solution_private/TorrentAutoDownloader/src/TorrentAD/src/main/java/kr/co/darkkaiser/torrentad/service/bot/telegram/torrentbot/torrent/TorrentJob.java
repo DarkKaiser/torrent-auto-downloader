@@ -50,7 +50,7 @@ public class TorrentJob {
 	public void list(AbsSender absSender, User user, Chat chat) {
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
 		
-		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.connector, board);
+		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(null, board);
 		list.absSender = absSender;
 		list.user = user;
 		list.chat = chat;
