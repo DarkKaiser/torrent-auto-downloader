@@ -27,16 +27,13 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 	
 	private final TorrentJob job;
 	
-	private final ChatRoom chat;
-	
-	public SelectedBoardItemRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job, ChatRoom chat) {
+	public SelectedBoardItemRequestHandler(RequestHandlerRegistry requestResponseRegistry, TorrentJob job) {
 		super("게시물");
 		
 		if (requestResponseRegistry == null)
 			throw new NullPointerException("requestResponseRegistry");
 
 		this.job = job;
-		this.chat = chat;
 		this.requestResponseRegistry = requestResponseRegistry;
 	}
 	

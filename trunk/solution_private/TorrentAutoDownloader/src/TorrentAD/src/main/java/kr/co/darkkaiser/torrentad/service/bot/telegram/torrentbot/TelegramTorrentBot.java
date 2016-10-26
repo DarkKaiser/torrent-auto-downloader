@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
+import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -34,11 +35,8 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 
 	// @@@@@
-	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chats = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chatRooms = new ConcurrentHashMap<>();
 	
-	// @@@@@
-	private ChatRoom chat = new ChatRoom();
-
 	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
 
 	private final WebSiteConnector connector;
@@ -69,7 +67,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 		// RequestHandler를 등록한다.
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.connector.getSite()));
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.connector.getSite(), this.requestHandlerRegistry));
-		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job, this.chat));
+		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(immediatelyTaskExecutorService, this.connector));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
@@ -112,9 +110,16 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 
 				RequestHandler request = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (request != null) {
+					Chat chat = message.getChat();
+					Long chatId = chat.getId();
+					ChatRoom chatRoom = this.chatRooms.get(chatId);
+					if (chatRoom == null) {
+						chatRoom = new ChatRoom(chatId);
+						this.chatRooms.put(chatId, chatRoom);
+					}
 					
 					System.out.println("######## " + request);
-					request.execute(this, message.getFrom(), message.getChat(), this.chat, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+					request.execute(this, message.getFrom(), message.getChat(), chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}

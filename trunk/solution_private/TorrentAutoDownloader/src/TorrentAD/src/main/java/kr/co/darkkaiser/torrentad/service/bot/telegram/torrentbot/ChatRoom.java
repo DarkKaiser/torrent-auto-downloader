@@ -13,6 +13,8 @@ public final class ChatRoom {
 	public static final int MIN_BOARD_ITEMS_SEARCH_COUNT = 5;
 	public static final int MAX_BOARD_ITEMS_SEARCH_COUNT = 50;
 	public static final int DEFAULT_BOARD_ITEMS_SEARCH_COUNT = MAX_BOARD_ITEMS_SEARCH_COUNT;
+	
+	private final long chatId;
 
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
@@ -25,6 +27,14 @@ public final class ChatRoom {
 
 	// @@@@@
 	private long requestId = 0;
+	
+	public ChatRoom(long chatId) {
+		this.chatId = chatId;
+	}
+	
+	public long getChatId() {
+		return this.chatId;
+	}
 	
 	// @@@@@
 	public void incrementRequestId() {
@@ -78,7 +88,8 @@ public final class ChatRoom {
 		return new StringBuilder()
 				.append(ChatRoom.class.getSimpleName())
 				.append("{")
-				.append("board:").append(getBoard())
+				.append("chatId:").append(getChatId())
+				.append(", board:").append(getBoard())
 				.append(", maxBoardItemsListCount:").append(getMaxBoardItemsListCount())
 				.append(", maxBoardItemsSearchCount:").append(getMaxBoardItemsSearchCount())
 				.append("}")
