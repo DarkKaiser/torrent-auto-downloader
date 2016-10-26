@@ -30,7 +30,7 @@ import kr.co.darkkaiser.torrentad.util.OutParam;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
-public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable, ResourceGet {
+public class TelegramTorrentBot extends TelegramLongPollingBot implements Disposable, TorrentBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(TelegramTorrentBot.class);
 

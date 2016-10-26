@@ -4,18 +4,18 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ResourceGet;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
 
 	// @@@@@
-	private final ResourceGet resourceGet;
+	private final TorrentBot resourceGet;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListRequestHandler(ResourceGet resourceGet, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardListRequestHandler(TorrentBot resourceGet, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("조회", "조회 [건수]", "선택된 게시판을 조회합니다.");
 
 		if (resourceGet == null)
