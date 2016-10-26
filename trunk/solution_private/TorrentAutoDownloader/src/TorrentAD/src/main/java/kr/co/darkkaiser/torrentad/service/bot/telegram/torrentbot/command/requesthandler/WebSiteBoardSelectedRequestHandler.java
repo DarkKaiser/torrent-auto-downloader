@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
@@ -37,7 +35,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 		if (board == null) {
 			// @@@@@ 선택되지 않으면??			
@@ -48,7 +46,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
 
-		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
+		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {

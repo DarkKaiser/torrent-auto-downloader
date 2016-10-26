@@ -119,7 +119,7 @@ public class TelegramTorrentBot extends TelegramLongPollingBot implements Dispos
 					}
 					
 					System.out.println("######## " + request);
-					request.execute(this, message.getFrom(), message.getChat(), chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+					request.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}

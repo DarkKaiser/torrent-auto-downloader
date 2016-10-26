@@ -25,16 +25,14 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		return this.identifier;
 	}
 
-	protected void sendAnswerMessage(AbsSender absSender, String chatId, String message) {
+	protected void sendAnswerMessage(AbsSender absSender, long chatId, String message) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
-		if (StringUtil.isBlank(chatId) == true)
-			throw new IllegalArgumentException("chatId는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
 		SendMessage answerMessage = new SendMessage()
-				.setChatId(chatId)
+				.setChatId(Long.toString(chatId))
 				.setText(message)
 				.enableHtml(true);
 

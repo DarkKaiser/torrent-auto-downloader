@@ -6,8 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -44,12 +42,12 @@ public class SelectedBoardItemRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		// @@@@@
 		// 상세페이지 url을 넘겨주면 보고보고에서 다운로드 링크를 넘겨주는 부분 만들어야 됨
 
       SendMessage answer = new SendMessage();
-      answer.setChatId(chat.getId().toString());
+      answer.setChatId(Long.toString(chatRoom.getChatId()));
       answer.setText("다운로드 하시려는 파일을 클릭하세요.");
       
       ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();

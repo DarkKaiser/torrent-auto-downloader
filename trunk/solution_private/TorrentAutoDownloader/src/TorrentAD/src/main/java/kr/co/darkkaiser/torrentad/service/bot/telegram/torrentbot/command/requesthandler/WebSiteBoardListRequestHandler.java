@@ -1,7 +1,5 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
@@ -39,7 +37,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	}
 
 	@Override
-	public void execute(AbsSender absSender, User user, Chat chat, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		if (parameters != null && parameters.length > 0) {
 			// 입력된 조회 건수를 확인하고, 설정값을 저장한다.
 			try {
@@ -49,14 +47,14 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 					sbAnswerMessage.append("입력된 조회 건수가 유효하지 않습니다.\n")
 							.append("설정 가능한 조회 건수는 최소 ").append(ChatRoom.MIN_BOARD_ITEMS_LIST_COUNT).append("건에서 최대 ").append(ChatRoom.MAX_BOARD_ITEMS_LIST_COUNT).append("건 입니다.");
 
-					sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
+					sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
 					return;
 				}
 
 				chatRoom.setMaxBoardItemsListCount(listCount);
 			} catch (NumberFormatException e) {
-				sendAnswerMessage(absSender, chat.getId().toString(), "입력된 조회 건수가 유효하지 않습니다.\n조회 건수는 숫자만 입력 가능합니다.");
+				sendAnswerMessage(absSender, chatRoom.getChatId(), "입력된 조회 건수가 유효하지 않습니다.\n조회 건수는 숫자만 입력 가능합니다.");
 				return;
 			}
 		}
@@ -64,7 +62,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 		// 조회할 게시판이 선택되었는지 확인한다.
 		WebSiteBoard board = chatRoom.getBoard();
 		if (board == null) {
-			sendAnswerMessage(absSender, chat.getId().toString(), "조회 및 검색하려는 게시판을 먼저 선택하세요.");
+			sendAnswerMessage(absSender, chatRoom.getChatId(), "조회 및 검색하려는 게시판을 먼저 선택하세요.");
 			return;
 		}
 
@@ -73,14 +71,12 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건 조회중입니다.\n")
 				.append("잠시만 기다려 주세요.");
 
-		sendAnswerMessage(absSender, chat.getId().toString(), sbAnswerMessage.toString());
+		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
 		// @@@@@ 어떻게 조회 요청할것인가? requestID 넘겨야 됨 
 		// 고민해볼것.:: action으로 telegramtorrentbot을 넘기고, action에서 getConnector() 를 호출하여 connector를 구하는건??
 		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.connector, board);
 		list.absSender = absSender;
-		list.user = user;
-		list.chat = chat;
 		this.immediatelyTaskExecutorService.submit(list);
 	}
 
