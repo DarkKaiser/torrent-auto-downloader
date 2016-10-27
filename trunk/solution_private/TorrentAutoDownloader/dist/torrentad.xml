@@ -171,12 +171,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="Olive" description="올리브쇼">
+			<torrentad-periodic-scheduled-task id="WednesdayFood" description="수요미식회">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>올리브쇼</item>
+						<item>수요미식회</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
