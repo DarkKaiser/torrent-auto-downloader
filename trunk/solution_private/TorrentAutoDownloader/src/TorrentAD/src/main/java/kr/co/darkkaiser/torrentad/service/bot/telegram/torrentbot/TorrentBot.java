@@ -63,7 +63,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		// RequestHandler를 등록한다.
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.connector.getSite()));
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.connector.getSite(), this.requestHandlerRegistry));
-		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job));
+//		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
@@ -225,7 +225,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	@Override
 	public WebSiteConnector getWebSiteConnector() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.connector;
 	}
 
 	@Override

@@ -16,6 +16,9 @@ public final class ChatRoom {
 	
 	private final long chatId;
 
+	// @@@@@
+	private Long requestId = (long) 0;
+
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
 
@@ -29,13 +32,15 @@ public final class ChatRoom {
 		this.chatId = chatId;
 	}
 	
-	public long getChatId() {
+	public final long getChatId() {
 		return this.chatId;
 	}
 
-	public long incrementAndGetRequestId() {
-		// @@@@@
-		return 0;
+	// @@@@@
+	public Long incrementAndGetRequestId() {
+		synchronized (this.requestId) {
+			return ++this.requestId;
+		}
 	}
 
 	public synchronized WebSiteBoard getBoard() {

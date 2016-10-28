@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.AbsSender;
@@ -19,7 +18,6 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotReso
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
@@ -35,13 +33,9 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	private final AbsSender absSender;
 
 	// @@@@@
-	private WebSiteConnector connector;
-	
-	// @@@@@
-	public User user;
-	// @@@@@
 	public Chat chat;
 
+	// @@@@@ chatRoom, WebSite 객체 필요
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, WebSiteBoard board, TorrentBotResource torrentBotResource, AbsSender absSender) {
 		if (board == null)
 			throw new NullPointerException("board");
@@ -59,13 +53,13 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	@Override
 	public String getName() {
 		// @@@@@
-		return String.format("%s > %s 조회", this.connector.getSite().getName(), this.board.getDescription());
+		return String.format("%s > %s 조회", this.torrentBotResource.getWebSiteConnector().getSite().getName(), this.board.getDescription());
 	}
 
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
+			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getWebSiteConnector().getConnection();
 			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
