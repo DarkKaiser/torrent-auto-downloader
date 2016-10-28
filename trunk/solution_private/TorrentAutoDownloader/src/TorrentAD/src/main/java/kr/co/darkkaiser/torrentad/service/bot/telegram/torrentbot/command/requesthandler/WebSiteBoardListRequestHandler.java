@@ -4,26 +4,25 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.torrent.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
 
-	// @@@@@
-	private final TorrentBot resourceGet;
+	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListRequestHandler(TorrentBot resourceGet, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("조회", "조회 [건수]", "선택된 게시판을 조회합니다.");
 
-		if (resourceGet == null)
-			throw new NullPointerException("resourceGet");
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 
-		this.resourceGet = resourceGet;
+		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
 	
@@ -74,7 +73,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		// @@@@@ 어떻게 조회 요청할것인가? requestID 넘겨야 됨 
 		// 고민해볼것.:: action으로 telegramtorrentbot을 넘기고, action에서 getConnector() 를 호출하여 connector를 구하는건??
-		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.resourceGet, board);
+		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.torrentBotResource, board);
 		list.absSender = absSender;
 		this.immediatelyTaskExecutorService.submit(list);
 	}

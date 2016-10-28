@@ -15,7 +15,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
@@ -34,7 +34,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	public User user;
 	public Chat chat;
 
-	public WebSiteBoardListImmediatelyTaskAction(TorrentBot get, WebSiteBoard board) {
+	public WebSiteBoardListImmediatelyTaskAction(TorrentBotResource get, WebSiteBoard board) {
 //		if (connector == null)
 //			throw new NullPointerException("connector");
 		if (board == null)

@@ -13,7 +13,7 @@ import org.telegram.telegrambots.updatesreceivers.BotSession;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TelegramTorrentBot;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
 
 public class TelegramBotService implements BotService {
 
@@ -23,7 +23,7 @@ public class TelegramBotService implements BotService {
 
 	private TelegramBotsApi botsApi;
 
-	private TelegramTorrentBot torrentBot;
+	private TorrentBot torrentBot;
 	
 	private BotSession torrentBotSession;
 
@@ -50,7 +50,7 @@ public class TelegramBotService implements BotService {
 		this.botsApi = new TelegramBotsApi();
 
 		try {
-			this.torrentBot = new TelegramTorrentBot(this.immediatelyTaskExecutorService, this.configuration);
+			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.configuration);
 			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
