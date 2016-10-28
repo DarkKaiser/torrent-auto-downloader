@@ -223,7 +223,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 
 	@Override
-	public WebSiteConnector getConnector() {
+	public WebSiteConnector getWebSiteConnector() {
 		// TODO Auto-generated method stub
 		return null;
 	}

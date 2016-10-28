@@ -25,25 +25,12 @@ public final class ChatRoom {
 	// 게시판 최대 검색 건수
 	private int maxBoardItemsSearchCount = DEFAULT_BOARD_ITEMS_SEARCH_COUNT;
 
-	// @@@@@
-	private long requestId = 0;
-	
 	public ChatRoom(long chatId) {
 		this.chatId = chatId;
 	}
 	
 	public long getChatId() {
 		return this.chatId;
-	}
-	
-	// @@@@@
-	public void incrementRequestId() {
-		++requestId;
-	}
-	
-	// @@@@@
-	public long getRequestId() {
-		return this.requestId;
 	}
 	
 	public synchronized WebSiteBoard getBoard() {

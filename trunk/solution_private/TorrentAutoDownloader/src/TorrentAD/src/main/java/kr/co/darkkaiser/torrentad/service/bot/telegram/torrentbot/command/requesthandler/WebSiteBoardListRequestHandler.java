@@ -66,7 +66,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		// 게시판 조회중 메시지를 사용자에게 보낸다.
 		StringBuilder sbAnswerMessage = new StringBuilder();
-		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건 조회중입니다.\n")
+		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다.(최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건)\n")
 				.append("잠시만 기다려 주세요.");
 
 		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
