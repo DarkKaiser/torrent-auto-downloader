@@ -26,29 +26,39 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListImmediatelyTaskAction.class);
 	
-	private final TorrentBotResource torrentBotResource;
-
-	private final WebSiteBoard board;
+	private final long requestId;
 	
+	private final WebSiteBoard board;
+
+	private final TorrentBotResource torrentBotResource;
+	
+	private final AbsSender absSender;
+
 	// @@@@@
 	private WebSiteConnector connector;
 	
-	public AbsSender absSender;
+	// @@@@@
 	public User user;
+	// @@@@@
 	public Chat chat;
 
-	public WebSiteBoardListImmediatelyTaskAction(TorrentBotResource torrentBotResource, WebSiteBoard board) {
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
+	public WebSiteBoardListImmediatelyTaskAction(long requestId, WebSiteBoard board, TorrentBotResource torrentBotResource, AbsSender absSender) {
 		if (board == null)
 			throw new NullPointerException("board");
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
+		if (absSender == null)
+			throw new NullPointerException("absSender");
 
 		this.board = board;
+		this.requestId = requestId;
+		this.absSender = absSender;
 		this.torrentBotResource = torrentBotResource;
 	}
 
 	@Override
 	public String getName() {
+		// @@@@@
 		return String.format("%s > %s 조회", this.connector.getSite().getName(), this.board.getDescription());
 	}
 
@@ -124,10 +134,12 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	public void validate() {
 		super.validate();
 
-		if (this.torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
 		if (this.board == null)
 			throw new NullPointerException("board");
+		if (this.torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
+		if (this.absSender == null)
+			throw new NullPointerException("absSender");
 	}
 
 }

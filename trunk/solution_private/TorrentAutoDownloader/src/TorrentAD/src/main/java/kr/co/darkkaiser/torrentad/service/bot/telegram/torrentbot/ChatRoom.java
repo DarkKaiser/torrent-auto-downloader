@@ -32,7 +32,12 @@ public final class ChatRoom {
 	public long getChatId() {
 		return this.chatId;
 	}
-	
+
+	public long incrementAndGetRequestId() {
+		// @@@@@
+		return 0;
+	}
+
 	public synchronized WebSiteBoard getBoard() {
 		return this.board;
 	}

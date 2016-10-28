@@ -71,11 +71,8 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
-		// @@@@@ 어떻게 조회 요청할것인가? requestID 넘겨야 됨 
-		// 고민해볼것.:: action으로 telegramtorrentbot을 넘기고, action에서 getConnector() 를 호출하여 connector를 구하는건??
-		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(this.torrentBotResource, board);
-		list.absSender = absSender;
-		this.immediatelyTaskExecutorService.submit(list);
+		// 게시판 조회를 시작한다.
+		this.immediatelyTaskExecutorService.submit(new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), board, this.torrentBotResource, absSender));
 	}
 
 	@Override

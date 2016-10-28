@@ -11,7 +11,6 @@ import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.GetTorrentImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.SearchBoardImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -50,12 +49,12 @@ public class TorrentJob {
 	public void list(AbsSender absSender, User user, Chat chat) {
 		WebSiteBoard board = this.connector.getSite().getBoard("newmovie");
 		
-		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(null, board);
-		list.absSender = absSender;
-		list.user = user;
-		list.chat = chat;
-		
-		this.immediatelyTaskExecutorService.submit(list);
+//		WebSiteBoardListImmediatelyTaskAction list = new WebSiteBoardListImmediatelyTaskAction(null, board);
+//		list.absSender = absSender;
+//		list.user = user;
+//		list.chat = chat;
+//		
+//		this.immediatelyTaskExecutorService.submit(list);
 	}
 
 	public void search(long chatId, long requestId) {
