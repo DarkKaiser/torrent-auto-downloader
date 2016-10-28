@@ -38,7 +38,11 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 		if (board == null) {
-			// @@@@@ 선택되지 않으면??			
+			writeLogMessage("입력된 명령에 해당하는 게시판을 찾을 수 없습니다.", command, parameters, containInitialChar);
+
+			sendAnswerMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
+
+			return;
 		}
 
 		chatRoom.setBoard(board);

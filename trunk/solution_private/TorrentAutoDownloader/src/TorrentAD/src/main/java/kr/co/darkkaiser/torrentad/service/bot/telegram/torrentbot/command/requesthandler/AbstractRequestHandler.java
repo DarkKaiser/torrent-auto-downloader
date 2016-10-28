@@ -42,7 +42,26 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 			logger.error(null, e);
 		}
 	}
-	
+
+	protected void writeLogMessage(String message, String command, String[] parameters, boolean containInitialChar) {
+		StringBuilder sbLogMessage = new StringBuilder()
+				.append(message).append("(")
+				.append("command:").append(command)
+				.append(", parameters:[");
+
+		if (parameters != null && parameters.length > 0) {
+			for (String parameter : parameters)
+				sbLogMessage.append(parameter).append(",");
+
+			sbLogMessage.delete(sbLogMessage.length() - 1, sbLogMessage.length());
+		}
+
+		sbLogMessage.append("]")
+				.append(", containInitialChar:").append(containInitialChar).append(")");
+
+		logger.error(sbLogMessage.toString());
+	}
+
 	@Override
 	public String toString() {
 		return new StringBuilder()

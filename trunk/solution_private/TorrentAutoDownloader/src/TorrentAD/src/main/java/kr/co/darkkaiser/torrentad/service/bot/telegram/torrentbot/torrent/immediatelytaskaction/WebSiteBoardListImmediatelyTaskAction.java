@@ -25,23 +25,26 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListImmediatelyTaskAction.class);
+	
+	private final TorrentBotResource torrentBotResource;
 
 	private final WebSiteBoard board;
 	
+	// @@@@@
 	private WebSiteConnector connector;
 	
 	public AbsSender absSender;
 	public User user;
 	public Chat chat;
 
-	public WebSiteBoardListImmediatelyTaskAction(TorrentBotResource get, WebSiteBoard board) {
-//		if (connector == null)
-//			throw new NullPointerException("connector");
+	public WebSiteBoardListImmediatelyTaskAction(TorrentBotResource torrentBotResource, WebSiteBoard board) {
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
 		if (board == null)
 			throw new NullPointerException("board");
 
 		this.board = board;
-//		this.connector = connector;
+		this.torrentBotResource = torrentBotResource;
 	}
 
 	@Override
@@ -121,8 +124,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	public void validate() {
 		super.validate();
 
-		if (this.connector == null)
-			throw new NullPointerException("connector");
+		if (this.torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
 		if (this.board == null)
 			throw new NullPointerException("board");
 	}
