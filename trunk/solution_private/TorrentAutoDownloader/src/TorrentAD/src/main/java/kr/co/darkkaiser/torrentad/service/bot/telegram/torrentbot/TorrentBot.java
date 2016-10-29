@@ -1,13 +1,19 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -81,12 +87,12 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 	@Override
 	public String getBotUsername() {
-		return "darkkaiser_torrentad_bot";
+		return TorrentBotConfig.BOT_USERNAME;
 	}
 
 	@Override
 	public String getBotToken() {
-		return "298010919:AAEcnGlwklr6PXMQ4UUB7JbgMN3zTqrr6r4";
+		return TorrentBotConfig.BOT_TOKEN;
 	}
 
 	@Override
@@ -109,7 +115,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
 					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
-
+					
 					return;
 				}
 			}
@@ -121,6 +127,50 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				// 인라인키보드 반환
 //				EditMessageReplyMarkup e;
 				System.out.println(callbackQuery);
+				
+				AnswerCallbackQuery a = new AnswerCallbackQuery();
+				a.setCallbackQueryId(callbackQuery.getId());
+//				a.setText("ddd");
+				answerCallbackQuery(a);
+				
+				
+				
+				Message message = callbackQuery.getMessage();
+				
+				EditMessageText e = new EditMessageText();
+				e.setChatId(message.getChat().getId().toString())
+				.setMessageId(message.getMessageId())
+				.setText("ddd");
+				
+			      InlineKeyboardMarkup inline = new InlineKeyboardMarkup();
+			      
+			      List<InlineKeyboardButton> keyboard = new ArrayList<>();
+			      InlineKeyboardButton keyboardFirstRow = new InlineKeyboardButton();
+			      keyboardFirstRow.setText("새 텍스트");
+			      keyboardFirstRow.setCallbackData("callbackData");
+			      keyboard.add(keyboardFirstRow);
+
+			      InlineKeyboardButton keyboardFirstRow2 = new InlineKeyboardButton();
+			      keyboardFirstRow2.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
+			      keyboardFirstRow2.setCallbackData("keyboardFirstRow2");
+			      keyboard.add(keyboardFirstRow2);
+			      
+			      List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
+			      InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
+			      keyboardFirstRow3.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
+			      keyboardFirstRow3.setCallbackData("keyboardFirstRow3");
+			      keyboard2.add(keyboardFirstRow3);
+			      
+			      List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
+			      keyboards.add(keyboard);
+			      keyboards.add(keyboard2);
+
+					inline.setKeyboard(keyboards);
+
+				e.setReplyMarkup(inline);
+				
+				editMessageText(e);
+
 				return;
 			}
 			//////////////////////////////////////////////////////////
@@ -164,63 +214,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 
 }
-
-// @@@@@
-//@Override
-//public boolean execute(AbsSender absSender, Update update) {
-//	try {
-//		if (update.hasMessage() == true) {
-//            Message message = update.getMessage();
-//
-//            String commandMessage = message.getText();
-//			String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
-//
-//			String command = commandSplit[0];
-//			if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
-//				command = command.substring(1);
-//
-//			if (this.handlerMap.containsKey(command) == true) {
-//				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-//				this.handlerMap.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
-//				return true;
-//			}
-//
-//            // 검색어나 기타 다른것인지 확인
-////            Long chatId = message.getChatId();
-//            // @@@@@
-//        }
-//
-////		onCommandUnknownMessage(update);
-//	} catch (Exception e) {
-//		logger.error(null, e);
-//	}
-//
-//	return false;
-//}
-//// @@@@@
-//public final boolean executeCommand(AbsSender absSender, Message message) {
-//	if (absSender == null)
-//		throw new NullPointerException("absSender");
-//	if (message == null)
-//		throw new NullPointerException("message");
-//
-//	if (message.hasText() == true) {
-//		String commandMessage = message.getText();
-//		String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
-//
-//		String command = commandSplit[0];
-//		if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
-//			command = command.substring(1);
-//
-//		if (commands.containsKey(command) == true) {
-//			String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-//			commands.get(command).execute(absSender, message.getFrom(), message.getChat(), parameters);
-//			return true;
-//		}
-//	}
-//
-//	return false;
-//}
 
 // @@@@@
 // 인라인키보드는 콜백쿼리가 들어옴
