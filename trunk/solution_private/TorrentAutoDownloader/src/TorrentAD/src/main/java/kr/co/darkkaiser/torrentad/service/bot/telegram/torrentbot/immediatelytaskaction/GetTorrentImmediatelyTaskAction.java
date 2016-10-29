@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
-import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
 
-public class GetTorrentImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class GetTorrentImmediatelyTaskAction extends AbstractTorrentBotImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GetTorrentImmediatelyTaskAction.class);
 	

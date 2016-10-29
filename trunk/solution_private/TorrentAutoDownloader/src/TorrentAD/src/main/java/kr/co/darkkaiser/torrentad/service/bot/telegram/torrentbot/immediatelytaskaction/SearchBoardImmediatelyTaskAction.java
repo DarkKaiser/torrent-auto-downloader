@@ -5,14 +5,13 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class SearchBoardImmediatelyTaskAction extends AbstractTorrentBotImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SearchBoardImmediatelyTaskAction.class);
 
