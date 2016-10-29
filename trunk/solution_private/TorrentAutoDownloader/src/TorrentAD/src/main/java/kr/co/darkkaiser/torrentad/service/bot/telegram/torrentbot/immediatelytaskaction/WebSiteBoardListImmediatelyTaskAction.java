@@ -7,13 +7,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -23,28 +23,30 @@ import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListImmediatelyTaskAction.class);
-	
+
 	private final long requestId;
-	
+
 	private final WebSiteBoard board;
+
+	private final ChatRoom chatRoom;
 
 	private final TorrentBotResource torrentBotResource;
 	
 	private final AbsSender absSender;
 
-	// @@@@@
-	public Chat chat;
-
-	// @@@@@ chatRoom, WebSite 객체 필요
-	public WebSiteBoardListImmediatelyTaskAction(long requestId, WebSiteBoard board, TorrentBotResource torrentBotResource, AbsSender absSender) {
+	// @@@@@ WebSite 객체 필요
+	public WebSiteBoardListImmediatelyTaskAction(long requestId, WebSiteBoard board, ChatRoom chatRoom, TorrentBotResource torrentBotResource, AbsSender absSender) {
 		if (board == null)
 			throw new NullPointerException("board");
+		if (chatRoom == null)
+			throw new NullPointerException("chatRoom");
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 
 		this.board = board;
+		this.chatRoom = chatRoom;
 		this.requestId = requestId;
 		this.absSender = absSender;
 		this.torrentBotResource = torrentBotResource;
@@ -53,13 +55,13 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	@Override
 	public String getName() {
 		// @@@@@
-		return String.format("%s > %s 조회", this.torrentBotResource.getWebSiteConnector().getSite().getName(), this.board.getDescription());
+		return String.format("%s > %s 조회", this.torrentBotResource.getSiteConnector().getSite().getName(), this.board.getDescription());
 	}
 
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getWebSiteConnector().getConnection();
+			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
@@ -98,7 +100,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			replyKeyboardMarkup.setKeyboard(keyboard);
 			
 			// 토렌트봇으로 메시지 보내기
-			SendMessage helpMessage = new SendMessage().setChatId(chat.getId().toString())
+			SendMessage helpMessage = new SendMessage().setChatId(Long.toString(this.chatRoom.getChatId()))
 					.enableHtml(true)
 					.setText("조회 완료되었습니다.")
 					.setReplyMarkup(replyKeyboardMarkup);
@@ -130,6 +132,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 
 		if (this.board == null)
 			throw new NullPointerException("board");
+		if (this.chatRoom == null)
+			throw new NullPointerException("chatRoom");
 		if (this.torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
 		if (this.absSender == null)

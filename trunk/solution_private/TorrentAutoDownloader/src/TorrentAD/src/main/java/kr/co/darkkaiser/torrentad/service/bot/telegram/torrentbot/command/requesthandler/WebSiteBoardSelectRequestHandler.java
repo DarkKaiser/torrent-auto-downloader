@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reque
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
@@ -10,13 +11,13 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 	private final WebSite site;
 
-	public WebSiteBoardSelectRequestHandler(WebSite site) {
+	public WebSiteBoardSelectRequestHandler(TorrentBotResource torrentBotResource) {
 		super("선택", "조회 및 검색하려는 게시판을 선택합니다.");
 
-		if (site == null)
-			throw new NullPointerException("site");
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
 
-		this.site = site;
+		this.site = torrentBotResource.getSite();
 	}
 
 	@Override

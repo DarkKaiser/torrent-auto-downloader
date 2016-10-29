@@ -3,6 +3,7 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reque
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -14,15 +15,15 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public WebSiteBoardSelectedRequestHandler(WebSite site, RequestHandlerRegistry requestHandlerRegistry) {
+	public WebSiteBoardSelectedRequestHandler(TorrentBotResource torrentBotResource, RequestHandlerRegistry requestHandlerRegistry) {
 		super("선택완료");
 
-		if (site == null)
-			throw new NullPointerException("site");
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
 		if (requestHandlerRegistry == null)
 			throw new NullPointerException("requestHandlerRegistry");
 
-		this.site = site;
+		this.site = torrentBotResource.getSite();
 		this.requestHandlerRegistry = requestHandlerRegistry;
 	}
 
@@ -41,7 +42,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 			sendAnswerMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
 
 			writeErrorLog("입력된 명령에 해당하는 게시판을 찾을 수 없습니다.", command, parameters, containInitialChar);
-
+			
 			return;
 		}
 

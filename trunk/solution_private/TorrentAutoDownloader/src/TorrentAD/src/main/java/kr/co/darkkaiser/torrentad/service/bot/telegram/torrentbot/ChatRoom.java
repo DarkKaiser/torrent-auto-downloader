@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public final class ChatRoom {
@@ -13,14 +15,14 @@ public final class ChatRoom {
 	public static final int MIN_BOARD_ITEMS_SEARCH_COUNT = 5;
 	public static final int MAX_BOARD_ITEMS_SEARCH_COUNT = 50;
 	public static final int DEFAULT_BOARD_ITEMS_SEARCH_COUNT = MAX_BOARD_ITEMS_SEARCH_COUNT;
-	
-	private final long chatId;
 
-	// @@@@@
-	private Long requestId = (long) 0;
+	private final long chatId;
 
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
+
+	// 사용자가 조회, 검색등의 작업을 요청하였을 때, 각각의 작업을 구분하기 위한 ID
+	private AtomicLong requestId = new AtomicLong(0);
 
 	// 게시판 최대 조회 건수
 	private int maxBoardItemsListCount = DEFAULT_BOARD_ITEMS_LIST_COUNT;
@@ -36,11 +38,12 @@ public final class ChatRoom {
 		return this.chatId;
 	}
 
-	// @@@@@
-	public Long incrementAndGetRequestId() {
-		synchronized (this.requestId) {
-			return ++this.requestId;
-		}
+	public long getRequestId() {
+		return this.requestId.get();
+	}
+
+	public long incrementAndGetRequestId() {
+		return this.requestId.incrementAndGet();
 	}
 
 	public synchronized WebSiteBoard getBoard() {
@@ -87,6 +90,7 @@ public final class ChatRoom {
 				.append("{")
 				.append("chatId:").append(getChatId())
 				.append(", board:").append(getBoard())
+				.append(", requestId:").append(getRequestId())
 				.append(", maxBoardItemsListCount:").append(getMaxBoardItemsListCount())
 				.append(", maxBoardItemsSearchCount:").append(getMaxBoardItemsSearchCount())
 				.append("}")

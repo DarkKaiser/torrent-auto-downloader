@@ -20,7 +20,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 
 	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasksCallableAdapter.class);
 
-	private WebSiteConnector connector;
+	private WebSiteConnector siteConnector;
 
 	private final List<ScheduledTask> tasks;
 
@@ -35,19 +35,19 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 		this.configuration = configuration;
 		this.taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
 
-		this.connector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);
+		this.siteConnector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);
 
 		// Task 목록을 생성한다.
-		this.tasks = ScheduledTasksGenerator.generate(this.configuration, this.taskMetadataRegistry, this.connector.getSite());
+		this.tasks = ScheduledTasksGenerator.generate(this.configuration, this.taskMetadataRegistry, this.siteConnector.getSite());
 	}
 
 	@Override
 	public TasksCallableAdapterResult call() throws Exception {
 		try {
-			if (this.connector.login() == false)
+			if (this.siteConnector.login() == false)
 				return TasksCallableAdapterResult.WEBSITE_LOGIN_FAILED();
 
-			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
+			WebSiteHandler handler = (WebSiteHandler) this.siteConnector.getConnection();
 
 			// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
 			TasksCallableAdapterResult result = TasksCallableAdapterResult.OK();
@@ -70,7 +70,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 				}
 			}
 
-			this.connector.logout();
+			this.siteConnector.logout();
 
 			return result;
 		} catch (Exception e) {

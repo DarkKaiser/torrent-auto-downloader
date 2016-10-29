@@ -27,43 +27,30 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectedRequestHandler;
 import kr.co.darkkaiser.torrentad.util.OutParam;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
+import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 
 public class TorrentBot extends TelegramLongPollingBot implements TorrentBotResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentBot.class);
 
-	// @@@@@
 	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chatRooms = new ConcurrentHashMap<>();
-	
+
+	private final WebSiteConnector siteConnector;
+
 	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
 
-	private final WebSiteConnector connector;
-	
-	private final Configuration configuration;
-	
-	// @@@@@
-	private TorrentJob job;
-	
 	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
-		this.configuration = configuration;
-
-		// @@@@@
-		this.connector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
-		this.connector.login();
-
-		// @@@@@
-		this.job = new TorrentJob(immediatelyTaskExecutorService, this.configuration);
-
-		// RequestHandler를 등록한다.
-		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this.connector.getSite()));
-		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this.connector.getSite(), this.requestHandlerRegistry));
-//		this.requestHandlerRegistry.register(new SelectedBoardItemRequestHandler(this.requestHandlerRegistry, this.job));
+		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
+		
+		// 사용가능한 RequestHandler를 모두 등록한다.
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this));
+		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
@@ -71,10 +58,26 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 	@Override
 	public void dispose() {
+		if (this.siteConnector != null)
+			this.siteConnector.logout();
+
+		this.chatRooms.clear();
+	}
+
+	@Override
+	public WebSite getSite() {
+		return this.siteConnector.getSite();
+	}
+	
+	@Override
+	public WebSiteConnector getSiteConnector() {
+		return this.siteConnector;
+	}
+
+	@Override
+	public TorrentClient getTorrentClient() {
 		// @@@@@
-		if (this.connector != null) {
-			this.connector.logout();
-		}
+		return null;
 	}
 
 	@Override
@@ -114,7 +117,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 						this.chatRooms.put(chatId, chatRoom);
 					}
 					
-					System.out.println("######## " + request);
 					request.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
@@ -201,37 +203,25 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 
 	private void onUnknownCommandMessage(Update update) {
-		StringBuilder sbMessageText = new StringBuilder();
+		StringBuilder sbAnswerMessage = new StringBuilder();
 
 		Message message = update.getMessage();
 		if (message != null && message.hasText() == true)
-			sbMessageText.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
+			sbAnswerMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
-		BotCommand command = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
-		sbMessageText.append("명령어를 모르시면 '").append(command.getCommand()).append("'을 입력하세요.");
+		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
+		sbAnswerMessage.append("명령어를 모르시면 '").append(botCommand.getCommand()).append("'을 입력하세요.");
 
-		SendMessage unknownMessage = new SendMessage()
+		SendMessage answerMessage = new SendMessage()
 				.setChatId(message.getChatId().toString())
-				.setText(sbMessageText.toString())
+				.setText(sbAnswerMessage.toString())
 				.enableHtml(true);
 
 		try {
-			sendMessage(unknownMessage);
+			sendMessage(answerMessage);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}
-	}
-
-	@Override
-	public WebSiteConnector getWebSiteConnector() {
-		// TODO Auto-generated method stub
-		return this.connector;
-	}
-
-	@Override
-	public TorrentClient getTorrentClient() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
