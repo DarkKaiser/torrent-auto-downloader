@@ -16,6 +16,8 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
+		if (torrentBotResource.getSite() == null)
+			throw new NullPointerException("site");
 
 		this.site = torrentBotResource.getSite();
 	}

@@ -20,6 +20,8 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
+		if (torrentBotResource.getSite() == null)
+			throw new NullPointerException("site");
 		if (requestHandlerRegistry == null)
 			throw new NullPointerException("requestHandlerRegistry");
 

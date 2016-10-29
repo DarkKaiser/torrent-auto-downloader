@@ -16,6 +16,7 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.AbstractImmediatel
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
+import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -26,6 +27,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 
 	private final long requestId;
 
+	private final WebSite site;
+
 	private final WebSiteBoard board;
 
 	private final ChatRoom chatRoom;
@@ -34,7 +37,6 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	
 	private final AbsSender absSender;
 
-	// @@@@@ WebSite 객체 필요
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, WebSiteBoard board, ChatRoom chatRoom, TorrentBotResource torrentBotResource, AbsSender absSender) {
 		if (board == null)
 			throw new NullPointerException("board");
@@ -44,18 +46,20 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			throw new NullPointerException("torrentBotResource");
 		if (absSender == null)
 			throw new NullPointerException("absSender");
+		if (torrentBotResource.getSite() == null)
+			throw new NullPointerException("site");
 
 		this.board = board;
 		this.chatRoom = chatRoom;
 		this.requestId = requestId;
 		this.absSender = absSender;
 		this.torrentBotResource = torrentBotResource;
+		this.site = torrentBotResource.getSite();
 	}
 
 	@Override
 	public String getName() {
-		// @@@@@
-		return String.format("%s > %s 조회", this.torrentBotResource.getSiteConnector().getSite().getName(), this.board.getDescription());
+		return String.format("%s > %s 조회", this.site.getName(), this.board.getDescription());
 	}
 
 	@Override
@@ -130,6 +134,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	public void validate() {
 		super.validate();
 
+		if (this.site == null)
+			throw new NullPointerException("site");
 		if (this.board == null)
 			throw new NullPointerException("board");
 		if (this.chatRoom == null)
