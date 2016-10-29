@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
-import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -94,112 +93,42 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	public void onUpdateReceived(Update update) {
 		if (update == null)
 			throw new NullPointerException("update");
-		
-		//////////////////////////////////////////////////////////
+
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
 
-	            String commandMessage = message.getText();
-
+	            // 수신된 메시지를 명령+파라메터로 분리한다.
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
 				OutParam<Boolean> outContainInitialChar = new OutParam<>();
-	            BotCommandUtils.parse(commandMessage, outCommand, outParameters, outContainInitialChar);
+	            BotCommandUtils.parse(message.getText(), outCommand, outParameters, outContainInitialChar);
 
-				RequestHandler request = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
-				if (request != null) {
-					Chat chat = message.getChat();
-					Long chatId = chat.getId();
-					ChatRoom chatRoom = this.chatRooms.get(chatId);
-					if (chatRoom == null) {
-						chatRoom = new ChatRoom(chatId);
-						this.chatRooms.put(chatId, chatRoom);
-					}
-					
-					request.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
-					
+	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
+				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
+				if (requestHandler != null) {
+					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
+					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+
 					return;
 				}
 			}
 			
+			// @@@@@
+			//////////////////////////////////////////////////////////
 			CallbackQuery callbackQuery = update.getCallbackQuery();
 			if (callbackQuery != null) {
 				// 인라인키보드 반환
 //				EditMessageReplyMarkup e;
-				
 				System.out.println(callbackQuery);
 				return;
 			}
+			//////////////////////////////////////////////////////////
 			
 			onUnknownCommandMessage(update);
 		} catch (Exception e) {
 			logger.error(null, e);
 		}
-		//////////////////////////////////////////////////////////
-
-		// @@@@@
-		// 인라인키보드는 콜백쿼리가 들어옴
-//		System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
-//		CallbackQuery callbackQuery = update.getCallbackQuery();
-		
-		// chat_id를 구해서 해당 user를 구한다.
-		// user에서 이전에 실행된 Request를 구한다.
-		// 신규 Request에 이전 메시지를 넘겨주면서 execute???
-			// 반환값으로 NoneRequest 혹은 신규 Request를 받아서 다시 저장해둔다.
-
-
-//		if (신규 객체가 SearchingRequest 객체라면) {
-//			if (이전 객체가 InputSearchKeywordResponse 아니라면)
-//				이전객체.cancel();
-//
-//			user.execute(신규객체Request, 이전객체Response);
-//		}
-//
-//		try {
-//			Request request = this.requestResponseRegistry.getRequest(update);
-//			if (request != null) {
-////				if (update.hasMessage() == true) {
-////	            Message message = update.getMessage();
-////	            if (this.commandRegistry.executeCommand(this, message))
-////	                return;
-////
-////	            // 검색어나 기타 다른것인지 확인
-////	            Long chatId = message.getChatId();
-////	            // @@@@@
-////	        }
-//	            Message message = update.getMessage();
-//
-//	            String commandMessage = message.getText();
-//				String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
-//
-//				String command = commandSplit[0];
-//				if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
-//					command = command.substring(1);
-//
-//				String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-//
-//	            Long chatId = message.getChatId();
-//	            ChatRoom user = this.chats.get(chatId);
-//	            if (user != null) {
-//	            	Response response = user.getResponse();
-//	            	if (response != null) {
-//	            		if (response.allow(request) == false) {
-//	            			response.cancel(this, message.getFrom(), message.getChat());
-//	            		}
-//	            	}
-//	            }
-//	            
-////	            request.prepareExecute(response);
-//				
-//				Response execute = request.execute(this, message.getFrom(), message.getChat(), parameters);
-//				user.setResponse(execute);
-//			} else {
-//				onUnknownCommandMessage(update);
-//			}
-//		} catch (Exception e) {
-//			logger.error(null, e);
-//		}
 	}
 
 	private void onUnknownCommandMessage(Update update) {
@@ -222,6 +151,16 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}
+	}
+
+	private ChatRoom getChatRoom(Long chatId) {
+		ChatRoom chatRoom = this.chatRooms.get(chatId);
+		if (chatRoom == null) {
+			chatRoom = new ChatRoom(chatId);
+			this.chatRooms.put(chatId, chatRoom);
+		}
+
+		return chatRoom;
 	}
 
 }
@@ -282,4 +221,67 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 //	}
 //
 //	return false;
+//}
+
+// @@@@@
+// 인라인키보드는 콜백쿼리가 들어옴
+//System.out.println(update.getCallbackQuery() + " : " + update);//@@@@@
+//CallbackQuery callbackQuery = update.getCallbackQuery();
+
+// chat_id를 구해서 해당 user를 구한다.
+// user에서 이전에 실행된 Request를 구한다.
+// 신규 Request에 이전 메시지를 넘겨주면서 execute???
+	// 반환값으로 NoneRequest 혹은 신규 Request를 받아서 다시 저장해둔다.
+
+
+//if (신규 객체가 SearchingRequest 객체라면) {
+//	if (이전 객체가 InputSearchKeywordResponse 아니라면)
+//		이전객체.cancel();
+//
+//	user.execute(신규객체Request, 이전객체Response);
+//}
+//
+//try {
+//	Request request = this.requestResponseRegistry.getRequest(update);
+//	if (request != null) {
+////		if (update.hasMessage() == true) {
+////        Message message = update.getMessage();
+////        if (this.commandRegistry.executeCommand(this, message))
+////            return;
+////
+////        // 검색어나 기타 다른것인지 확인
+////        Long chatId = message.getChatId();
+////        // @@@@@
+////    }
+//        Message message = update.getMessage();
+//
+//        String commandMessage = message.getText();
+//		String[] commandSplit = commandMessage.split(BotCommand.COMMAND_PARAMETER_SEPARATOR);
+//
+//		String command = commandSplit[0];
+//		if (command.startsWith(BotCommand.COMMAND_INIT_CHARACTER) == true)
+//			command = command.substring(1);
+//
+//		String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+//
+//        Long chatId = message.getChatId();
+//        ChatRoom user = this.chats.get(chatId);
+//        if (user != null) {
+//        	Response response = user.getResponse();
+//        	if (response != null) {
+//        		if (response.allow(request) == false) {
+//        			response.cancel(this, message.getFrom(), message.getChat());
+//        		}
+//        	}
+//        }
+//        
+////        request.prepareExecute(response);
+//		
+//		Response execute = request.execute(this, message.getFrom(), message.getChat(), parameters);
+//		user.setResponse(execute);
+//	} else {
+//		onUnknownCommandMessage(update);
+//	}
+//} catch (Exception e) {
+//	logger.error(null, e);
 //}

@@ -11,7 +11,6 @@ public interface TorrentBotResource extends Disposable {
 
 	WebSiteConnector getSiteConnector();
 
-	// @@@@@ 함수명 수정
 	TorrentClient getTorrentClient();
 
 }
