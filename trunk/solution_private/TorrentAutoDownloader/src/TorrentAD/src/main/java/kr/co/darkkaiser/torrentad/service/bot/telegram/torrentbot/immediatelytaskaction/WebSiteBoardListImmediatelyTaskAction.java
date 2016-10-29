@@ -65,7 +65,12 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	@Override
 	public Boolean call() throws Exception {
 		try {
+			// connector 로그인은 누가 할것인가?
+
+			this.torrentBotResource.getSiteConnector().login();
 			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
+			
+			
 			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
@@ -114,7 +119,6 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			} catch (TelegramApiException e) {
 				logger.error(null, e);
 			}
-
 		} catch (FailedLoadBoardItemsException e) {
 			// @@@@@
 //			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
