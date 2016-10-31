@@ -55,7 +55,8 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	 */
 	@Override
 	public int getDefaultLoadPageCount() {
-		return 3;
+		// 페이지당 25건의 게시물을 보여주므로 100건정도 캐싱하고 있기 위해서 4페이지를 로드한다.
+		return 4;
 	}
 
 	/**

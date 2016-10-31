@@ -48,6 +48,11 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		return this.identifier;
 	}
 
+	// @@@@@
+	public String getCode() {
+		return String.format("%s_%d", getBoard().getCode(), getIdentifier());
+	}
+
 	@Override
 	public String getTitle() {
 		return this.title;
