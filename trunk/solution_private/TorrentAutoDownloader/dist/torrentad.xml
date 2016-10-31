@@ -107,22 +107,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="Moonlight" description="구르미그린달빛">
-				<board-name>kordramaon</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>구르미+그린+달빛</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="K2" description="The K2">
 				<board-name>kordramaon</board-name>
 
@@ -155,38 +139,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="OneNightTwoDays" description="1박2일">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>해피+선데이+1박2일</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-
-			<torrentad-periodic-scheduled-task id="WednesdayFood" description="수요미식회">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>수요미식회</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-
 			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
 				<board-name>korentertainment</board-name>
 
@@ -370,6 +322,104 @@
 					<search-keyword>
 						<item>제이슨+본</item>
 						<item>Jason+Bourne</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2016</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+            
+			<torrentad-periodic-scheduled-task id="DoctorStrange1" description="닥터스트레인지(최신)">
+				<board-name>newmovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>닥터+스트레인지</item>
+						<item>Doctor+Strange</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2016</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="DoctorStrange2" description="닥터스트레인지(고화질)">
+				<board-name>hdmovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>닥터+스트레인지</item>
+						<item>Doctor+Strange</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2016</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+            
+			<torrentad-periodic-scheduled-task id="BusanTrain1" description="부산행(한국영화)">
+				<board-name>kormovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>부산행</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2016</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+            
+			<torrentad-periodic-scheduled-task id="BusanTrain2" description="부산행(고화질)">
+				<board-name>hdmovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>부산행</item>
 					</search-keyword>
 					<search-keyword>
 						<item>2016</item>
