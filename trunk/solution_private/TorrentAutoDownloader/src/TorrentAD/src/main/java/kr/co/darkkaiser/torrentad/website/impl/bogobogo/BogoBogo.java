@@ -289,6 +289,9 @@ public class BogoBogo extends AbstractWebSite {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
+		if (board == null)
+			throw new NullPointerException("board");
+
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
@@ -302,7 +305,7 @@ public class BogoBogo extends AbstractWebSite {
 			assert boardItem != null;
 			
 			resultList.add(boardItem);
-			
+
 			logger.debug("검색된 게시물:" + boardItem);
 		}
 
