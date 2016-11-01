@@ -66,6 +66,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	private Connection.Response loginConnResponse;
 
+	// 조회된 결과 목록
 	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boards = new HashMap<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
@@ -311,7 +312,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<Integer, Integer> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception {
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws Exception {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 		if (boardItem == null)

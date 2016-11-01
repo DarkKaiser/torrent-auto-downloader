@@ -33,6 +33,6 @@ public interface WebSiteHandler {
 	/**
 	 * 검색컨텍스트에 등록된 첨부파일 검색조건과 일치하는 첨부파일을 모두 다운로드한다.
 	 */
-	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteSearchContext searchContext, WebSiteBoardItem boardItem) throws Exception;
+	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws Exception;
 
 }

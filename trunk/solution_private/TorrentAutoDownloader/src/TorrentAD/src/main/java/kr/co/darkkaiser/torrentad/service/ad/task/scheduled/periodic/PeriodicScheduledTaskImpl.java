@@ -41,7 +41,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 					WebSiteBoardItem boardItem = iterator.next();
 					assert boardItem != null;
 
-					Tuple<Integer, Integer> downloadCount = handler.download(this.searchContext, boardItem);
+					Tuple<Integer, Integer> downloadCount = handler.download(boardItem, this.searchContext);
 
 					logger.info(String.format("검색된 게시물('%s')의 첨부파일 다운로드 작업이 종료되었습니다.(Task:%s, 다운로드시도갯수:%d, 다운로드성공갯수:%d)", boardItem.getTitle(), getTaskDescription(), downloadCount.first(), downloadCount.last()));
 

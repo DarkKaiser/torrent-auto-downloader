@@ -1,21 +1,17 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.replykeyboard.ForceReplyKeyboard;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImmediatelyTaskAction {
 	
@@ -60,56 +56,34 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 
 	@Override
 	public Boolean call() throws Exception {
+		// @@@@@
 		try {
 			// connector 로그인은 누가 할것인가?
+			this.torrentBotResource.getSiteConnector().login();
+			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
+			
 
-		      SendMessage answer = new SendMessage();
-		      answer.setChatId(Long.toString(chatRoom.getChatId()));
-		      answer.setText("다운로드 하시려는 파일을 클릭하세요.");
-		      
-		      ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
-		      forceReplyKeyboard.setSelective(true);
+			// 게시판을 조회한다.
+			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
 
-		      InlineKeyboardMarkup inline = new InlineKeyboardMarkup();
-		      
-		      List<InlineKeyboardButton> keyboard = new ArrayList<>();
-		      InlineKeyboardButton keyboardFirstRow = new InlineKeyboardButton();
-		      keyboardFirstRow.setText("TEXT lsadjfla sdfljasldf lasjdfl asdlfj alsdjf lasfja sldjflas dflasjdf lasdjfljaslf");
-		      keyboardFirstRow.setCallbackData("callbackData");
-		      keyboard.add(keyboardFirstRow);
+			if (iterator.hasNext() == false) {
+				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), "조회된 게시물이 없습니다.");
+			} else {
+				StringBuilder sbAnswerMessage = new StringBuilder();
+				
+				int i = 0;
+				while (iterator.hasNext() == true) {
+					++i;
+					if (i > 30)
+						break;
+					
+					WebSiteBoardItem boardItem = iterator.next();
+					sbAnswerMessage.append(boardItem.getTitle()).append("\n");
+				}
 
-		      InlineKeyboardButton keyboardFirstRow2 = new InlineKeyboardButton();
-		      keyboardFirstRow2.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-		      keyboardFirstRow2.setCallbackData("keyboardFirstRow2");
-		      keyboard.add(keyboardFirstRow2);
-		      
-		      List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
-		      InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
-		      keyboardFirstRow3.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-		      keyboardFirstRow3.setCallbackData("keyboardFirstRow3");
-		      keyboard2.add(keyboardFirstRow3);
-		      
-		      List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
-		      keyboards.add(keyboard);
-		      keyboards.add(keyboard2);
+				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
+			}
 
-				inline.setKeyboard(keyboards);
-		      answer.setReplyMarkup(inline);
-		      
-		      try {
-		          absSender.sendMessage(answer);
-		      } catch (TelegramApiException e) {
-		    	  
-		      }
-		      
-//		      
-//		      
-//			this.torrentBotResource.getSiteConnector().login();
-//			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
-//			
-//			
-//			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
-//
 //			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 //			ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 //			replyKeyboardMarkup.setSelective(true);
