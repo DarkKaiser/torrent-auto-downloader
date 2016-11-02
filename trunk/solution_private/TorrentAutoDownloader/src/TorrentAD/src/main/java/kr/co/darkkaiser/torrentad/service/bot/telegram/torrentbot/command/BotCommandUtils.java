@@ -57,7 +57,7 @@ public final class BotCommandUtils {
     // @@@@@ 이 함수를 여기다 둬야하나???
     // 가변인자를 둬서 들어온 순서대로 만들어주는건??? 이 함수를 이용하는 쪽에서 순서나 그런건 정함
     public static final String test(WebSiteBoardItem boardItem) {
-    	return String.format("%s%s%s", boardItem.getBoard().getCode(), ONE_COMPLEX_COMMAND_SEPARATOR, boardItem.getIdentifier());
+    	return String.format("/%s%s%s", boardItem.getBoard().getCode(), ONE_COMPLEX_COMMAND_SEPARATOR, boardItem.getIdentifier());
     }
 
 	private BotCommandUtils() {

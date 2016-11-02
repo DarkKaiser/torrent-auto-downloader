@@ -8,6 +8,8 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
@@ -62,23 +64,31 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 			this.torrentBotResource.getSiteConnector().login();
 			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 			
+			////////////////////////////////////////////////////////////////
 
 			// 게시판을 조회한다.
 			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
-
+			
+			StringBuilder sbAnswerMessage = new StringBuilder();
+			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n");
+			
 			if (iterator.hasNext() == false) {
-				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), "조회된 게시물이 없습니다.");
+				// @@@@@
+				sbAnswerMessage.append("\n조회된 게시물이 없습니다.");
+
+				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
 			} else {
-				StringBuilder sbAnswerMessage = new StringBuilder();
+				sbAnswerMessage.append("\n");
 				
+				// @@@@@
 				int i = 0;
 				while (iterator.hasNext() == true) {
 					++i;
-					if (i > 30)
+					if (i > 5)
 						break;
 					
 					WebSiteBoardItem boardItem = iterator.next();
-					sbAnswerMessage.append(boardItem.getTitle()).append("\n");
+					sbAnswerMessage.append(boardItem.getTitle()).append(BotCommandUtils.test(boardItem)).append("\n\n");
 				}
 
 				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
