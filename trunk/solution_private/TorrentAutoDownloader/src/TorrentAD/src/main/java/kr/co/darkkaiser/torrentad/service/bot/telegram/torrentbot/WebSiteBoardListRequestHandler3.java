@@ -1,11 +1,17 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
+import java.util.Iterator;
+
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractBotCommandRequestHandler;
+import kr.co.darkkaiser.torrentad.util.Tuple;
+import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 
@@ -40,10 +46,33 @@ public class WebSiteBoardListRequestHandler3 extends AbstractBotCommandRequestHa
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
 		WebSiteBoard board = BogoBogoBoard.MOVIE_NEW;
-		String key = parameters[1];
+		long key = Long.parseLong(parameters[1]);
 		
 		
 		WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
+		
+		try {
+			Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
+			while (iterator.hasNext() == true) {
+				WebSiteBoardItem boardItem = iterator.next();
+				
+				if (boardItem.getIdentifier() == key) {
+					// 다운로드
+					Tuple<Integer,Integer> download = handler.download2(boardItem);
+					
+					System.out.println(String.format("%d개중 %d개가 다운로드되었습니다.", download.first(), download.last()));
+					
+					return;
+				}
+			}
+			
+		} catch (FailedLoadBoardItemsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

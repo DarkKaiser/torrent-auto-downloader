@@ -1,24 +1,20 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
+import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
@@ -31,6 +27,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectedRequestHandler;
 import kr.co.darkkaiser.torrentad.util.OutParam;
+import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
@@ -42,8 +39,16 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chatRooms = new ConcurrentHashMap<>();
 
 	private final WebSiteConnector siteConnector;
-
+	
+	// @@@@@
+	private TorrentClient torrentClient;
+	
+	// @@@@@
+	private AES256Util aes256;
+	
 	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
+	
+	private final Configuration configuration;
 
 	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
@@ -51,13 +56,15 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
+		this.configuration = configuration;//@@@@@
+		
 		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
 		
 		// 사용가능한 RequestHandler를 모두 등록한다.
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this));
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
-		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
+		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 		
 		// @@@@@
@@ -86,7 +93,42 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	@Override
 	public TorrentClient getTorrentClient() {
 		// @@@@@
-		return null;
+		if (this.torrentClient == null) {
+			String url = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_URL);
+			String id = this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_ID);
+			String password = "";
+			try {
+				password = decode(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_RPC_ACCOUNT_PASSWORD));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			this.torrentClient = new TransmissionRpcClient(url);
+			try {
+				if (this.torrentClient.connect(id, password) == false) {
+//				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return this.torrentClient;
+	}
+
+	// @@@@@
+	protected String decode(String encryption) throws Exception {
+		if (this.aes256 == null)
+			this.aes256 = new AES256Util();
+
+		try {
+			return this.aes256.decode(encryption);
+		} catch (Exception e) {
+//			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
+			throw e;
+		}
 	}
 
 	@Override

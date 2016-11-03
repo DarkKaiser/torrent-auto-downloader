@@ -68,7 +68,7 @@ public class TorrentJob {
 			e.printStackTrace();
 		}
 		
-		this.immediatelyTaskExecutorService.submit(new GetTorrentImmediatelyTaskAction(this.torrentClient));
+//		this.immediatelyTaskExecutorService.submit(new GetTorrentImmediatelyTaskAction(this.torrentClient));
 	}
 
 	protected String decode(String encryption) throws Exception {

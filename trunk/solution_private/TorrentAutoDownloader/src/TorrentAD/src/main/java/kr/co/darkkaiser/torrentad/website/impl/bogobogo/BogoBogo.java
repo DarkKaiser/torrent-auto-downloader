@@ -276,7 +276,7 @@ public class BogoBogo extends AbstractWebSite {
 
 			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
-				loadBoardItemDownloadLink(boardItem);
+				loadBoardItemDownloadLink(boardItem);//@@@@@ 이것만 여기에 둬야하나??? 다른 함수와는 다른 동작
 
 				resultList.add(boardItem);
 
@@ -319,6 +319,38 @@ public class BogoBogo extends AbstractWebSite {
 		Collections.sort(resultList, comparator);
 
 		return resultList.iterator();
+	}
+	
+	// @@@@@
+	@Override
+	public Tuple<Integer, Integer> download2(WebSiteBoardItem boardItem) throws Exception {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+
+		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
+		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return new Tuple<Integer, Integer>(-1, -1);
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		while (iterator.hasNext() == true) {
+			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			downloadLink.setDownloadable(true);
+		}
+
+		return downloadBoardItemDownloadLink(siteBoardItem);
 	}
 
 	@Override
