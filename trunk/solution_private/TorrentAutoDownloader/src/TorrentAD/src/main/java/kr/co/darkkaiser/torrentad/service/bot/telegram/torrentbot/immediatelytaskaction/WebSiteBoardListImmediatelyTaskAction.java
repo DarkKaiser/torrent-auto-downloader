@@ -56,9 +56,9 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 		return String.format("%s > %s 조회", this.site.getName(), this.board.getDescription());
 	}
 
+	// @@@@@
 	@Override
 	public Boolean call() throws Exception {
-		// @@@@@
 		try {
 			// connector 로그인은 누가 할것인가?
 			this.torrentBotResource.getSiteConnector().login();

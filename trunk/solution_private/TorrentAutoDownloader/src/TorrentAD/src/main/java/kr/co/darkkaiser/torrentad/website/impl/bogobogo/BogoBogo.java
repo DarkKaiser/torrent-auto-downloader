@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -220,7 +221,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow) throws FailedLoadBoardItemsException {
+	public ListIterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow) throws FailedLoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 
@@ -242,11 +243,11 @@ public class BogoBogo extends AbstractWebSite {
 
 		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
 
-		return resultList.iterator();
+		return resultList.listIterator();
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow) throws FailedLoadBoardItemsException {
+	public ListIterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 
@@ -281,11 +282,11 @@ public class BogoBogo extends AbstractWebSite {
 
 		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
 
-		return resultList.iterator();
+		return resultList.listIterator();
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword) throws FailedLoadBoardItemsException {
+	public ListIterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword) throws FailedLoadBoardItemsException {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -311,7 +312,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
 
-		return resultList.iterator();
+		return resultList.listIterator();
 	}
 
 	@Override
