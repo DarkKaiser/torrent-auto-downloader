@@ -8,10 +8,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -221,9 +221,11 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public ListIterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
+		if (comparator == null)
+			throw new NullPointerException("comparator");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -241,15 +243,17 @@ public class BogoBogo extends AbstractWebSite {
 			logger.debug("조회된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
+		Collections.sort(resultList, comparator);
 
-		return resultList.listIterator();
+		return resultList.iterator();
 	}
 
 	@Override
-	public ListIterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
+		if (comparator == null)
+			throw new NullPointerException("comparator");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -280,18 +284,20 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
+		Collections.sort(resultList, comparator);
 
-		return resultList.listIterator();
+		return resultList.iterator();
 	}
 
 	@Override
-	public ListIterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
 		if (board == null)
 			throw new NullPointerException("board");
+		if (comparator == null)
+			throw new NullPointerException("comparator");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -310,9 +316,9 @@ public class BogoBogo extends AbstractWebSite {
 			logger.debug("검색된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, new WebSiteBoardItemIdentifierAscCompare());
+		Collections.sort(resultList, comparator);
 
-		return resultList.listIterator();
+		return resultList.iterator();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,6 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -67,7 +66,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 			////////////////////////////////////////////////////////////////
 
 			// 게시판을 조회한다.
-			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
+			ListIterator<WebSiteBoardItem> iterator = handler.list(this.board, true);
 			
 			StringBuilder sbAnswerMessage = new StringBuilder();
 			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n");
@@ -82,13 +81,13 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 				
 				// @@@@@
 				int i = 0;
-				while (iterator.hasNext() == true) {
+				while (iterator.hasPrevious() == true) {
 					++i;
 					if (i > 5)
 						break;
 					
-					WebSiteBoardItem boardItem = iterator.next();
-					sbAnswerMessage.append(boardItem.getTitle()).append(BotCommandUtils.test(boardItem)).append("\n\n");
+					WebSiteBoardItem boardItem = iterator.previous();
+					sbAnswerMessage.append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle()).append(BotCommandUtils.test(boardItem)).append("\n\n");
 				}
 
 				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
