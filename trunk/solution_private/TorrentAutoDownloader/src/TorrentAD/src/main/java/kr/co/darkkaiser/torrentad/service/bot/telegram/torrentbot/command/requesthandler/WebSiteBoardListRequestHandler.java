@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
@@ -35,7 +36,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
 		if (parameters != null && parameters.length > 0) {
 			// 입력된 조회 건수를 확인하고, 설정값을 저장한다.
 			try {
@@ -71,9 +72,10 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
+		// @@@@@
 		// 게시판 조회를 시작한다.
 		this.immediatelyTaskExecutorService.submit(
-				new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), board, chatRoom, this.torrentBotResource, absSender));
+				new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), board, chatRoom, this.torrentBotResource, absSender, -1));
 	}
 
 	@Override

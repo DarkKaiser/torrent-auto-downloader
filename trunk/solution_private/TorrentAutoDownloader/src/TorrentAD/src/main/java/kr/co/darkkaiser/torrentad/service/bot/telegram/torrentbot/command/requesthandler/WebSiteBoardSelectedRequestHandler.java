@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
@@ -38,7 +39,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 		if (board == null) {
 			sendAnswerMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");

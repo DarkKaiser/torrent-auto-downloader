@@ -59,6 +59,10 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler());
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
+		
+		// @@@@@
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler2(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler3(this, immediatelyTaskExecutorService));
 	}
 
 	@Override
@@ -114,7 +118,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
-					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get(), update);
 					
 					return;
 				}
@@ -124,6 +128,26 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			//////////////////////////////////////////////////////////
 			CallbackQuery callbackQuery = update.getCallbackQuery();
 			if (callbackQuery != null) {
+				String data = callbackQuery.getData();
+				Message message = callbackQuery.getMessage();
+				
+	            OutParam<String> outCommand = new OutParam<>();
+				OutParam<String[]> outParameters = new OutParam<>();
+				OutParam<Boolean> outContainInitialChar = new OutParam<>();
+	            BotCommandUtils.parse(data, outCommand, outParameters, outContainInitialChar);
+	            
+	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
+				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
+				if (requestHandler != null) {
+					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
+					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get(), update);
+					
+					return;
+				}
+				
+				System.out.println("############### callbackquery 못찾음");
+				
+				/*
 				// 인라인키보드 반환
 //				EditMessageReplyMarkup e;
 				System.out.println(callbackQuery);
@@ -172,6 +196,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				editMessageText(e);
 
 				return;
+				*/
 			}
 			//////////////////////////////////////////////////////////
 			

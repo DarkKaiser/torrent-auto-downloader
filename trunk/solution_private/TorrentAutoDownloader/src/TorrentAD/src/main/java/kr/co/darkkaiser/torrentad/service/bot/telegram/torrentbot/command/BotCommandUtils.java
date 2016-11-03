@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.util.OutParam;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 
 public final class BotCommandUtils {
 
@@ -56,8 +55,17 @@ public final class BotCommandUtils {
     
     // @@@@@ 이 함수를 여기다 둬야하나???
     // 가변인자를 둬서 들어온 순서대로 만들어주는건??? 이 함수를 이용하는 쪽에서 순서나 그런건 정함
-    public static final String test(WebSiteBoardItem boardItem) {
-    	return String.format("/%s%s%s", boardItem.getBoard().getCode(), ONE_COMPLEX_COMMAND_SEPARATOR, boardItem.getIdentifier());
+    public static final String generateCommand(String... strs) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("/");
+    	
+    	for (String str : strs) {
+    		sb.append(str).append(ONE_COMPLEX_COMMAND_SEPARATOR);
+    	}
+    	
+    	sb.delete(sb.length() - 1, sb.length());
+    	
+    	return sb.toString();
     }
 
 	private BotCommandUtils() {

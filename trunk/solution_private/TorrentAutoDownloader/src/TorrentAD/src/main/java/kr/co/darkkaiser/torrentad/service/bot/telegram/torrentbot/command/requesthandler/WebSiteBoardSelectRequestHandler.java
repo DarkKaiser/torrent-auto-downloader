@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
@@ -31,7 +32,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("조회 및 검색하려는 게시판을 선택하세요:\n\n");
 
