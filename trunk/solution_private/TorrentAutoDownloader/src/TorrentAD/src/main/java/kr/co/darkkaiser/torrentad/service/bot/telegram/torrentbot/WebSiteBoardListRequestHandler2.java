@@ -53,8 +53,6 @@ public class WebSiteBoardListRequestHandler2 extends AbstractRequestHandler {
 
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
-
-		//this.torrentBotResource.getSiteConnector().login();
 		WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 		
 		WebSiteBoard board = BogoBogoBoard.MOVIE_NEW;

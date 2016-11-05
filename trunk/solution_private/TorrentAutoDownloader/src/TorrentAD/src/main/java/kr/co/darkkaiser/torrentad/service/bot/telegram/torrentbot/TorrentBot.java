@@ -155,7 +155,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
 				OutParam<Boolean> outContainInitialChar = new OutParam<>();
-	            BotCommandUtils.parse(message.getText(), outCommand, outParameters, outContainInitialChar);
+	            BotCommandUtils.parseBotCommand(message.getText(), outCommand, outParameters, outContainInitialChar);
 
 	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
@@ -177,7 +177,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
 				OutParam<Boolean> outContainInitialChar = new OutParam<>();
-	            BotCommandUtils.parse(data, outCommand, outParameters, outContainInitialChar);
+	            BotCommandUtils.parseBotCommand(data, outCommand, outParameters, outContainInitialChar);
 	            
 	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());

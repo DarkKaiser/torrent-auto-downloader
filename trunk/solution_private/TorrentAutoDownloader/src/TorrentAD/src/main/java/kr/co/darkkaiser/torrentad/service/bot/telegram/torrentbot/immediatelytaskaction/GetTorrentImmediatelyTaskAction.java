@@ -16,7 +16,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotReso
 import kr.co.darkkaiser.torrentad.website.WebSite;
 
 // @@@@@
-public class GetTorrentImmediatelyTaskAction extends AbstractTorrentBotImmediatelyTaskAction {
+public class GetTorrentImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GetTorrentImmediatelyTaskAction.class);
 	

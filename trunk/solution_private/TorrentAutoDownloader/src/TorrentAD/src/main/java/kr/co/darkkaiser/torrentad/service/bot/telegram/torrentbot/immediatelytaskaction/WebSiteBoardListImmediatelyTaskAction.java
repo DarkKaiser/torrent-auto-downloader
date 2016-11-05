@@ -1,20 +1,18 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -22,7 +20,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImmediatelyTaskAction {
+public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListImmediatelyTaskAction.class);
 
@@ -71,176 +69,63 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 	@Override
 	public Boolean call() throws Exception {
 		try {
+			////////////////////////////////////////////////////////////////
+			// @@@@@
 			// connector 로그인은 누가 할것인가?
 			this.torrentBotResource.getSiteConnector().login();
 			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
-			
 			////////////////////////////////////////////////////////////////
 
-			// 게시판을 조회한다.
+			// 선택된 게시판을 조회한다.
 			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true, new WebSiteBoardItemIdentifierDescCompare());
 			
-			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n");
-			
-			if (iterator.hasNext() == false) {
-				// @@@@@
-				sbAnswerMessage.append("\n조회된 게시물이 없습니다.");
+			// @@@@@
+			if (this.chatRoom.getRequestId() != this.requestId)
+				return true;
 
-				sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
+			if (iterator.hasNext() == false) {
+				StringBuilder sbAnswerMessage = new StringBuilder();
+				sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회 결과가 0 건입니다.");
+
+				sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
 			} else {
-				sbAnswerMessage.append("\n");
-				
-				// @@@@@
-				int i = 0;
-				long min = Long.MAX_VALUE;
-				long max = Long.MIN_VALUE;
-				while (iterator.hasNext() == true) {
-					++i;
-					if (i > 5)
-						break;
-					
+				StringBuilder sbAnswerMessage = new StringBuilder();
+				sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n\n");
+
+				// 조회된 게시물의 목록을 구한다.
+				long keyMinValue = Long.MAX_VALUE;
+				long keyMaxValue = Long.MIN_VALUE;
+				for (int index = 0; iterator.hasNext() == true && index < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ++index) {
 					WebSiteBoardItem boardItem = iterator.next();
-					if (boardItem.getIdentifier() < min)
-						min = boardItem.getIdentifier();
-					if (boardItem.getIdentifier() > max)
-						max = boardItem.getIdentifier();
-					
+					keyMinValue = Math.min(keyMinValue, boardItem.getIdentifier());
+					keyMaxValue = Math.max(keyMaxValue, boardItem.getIdentifier());
+
+					// @@@@@
 					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
-				if (this.messageId == -1) {
-					SendMessage answerMessage = new SendMessage()
-							.setChatId(Long.toString(this.chatRoom.getChatId()))
-//							.setMessageId(this.messageId)
-							.setText(sbAnswerMessage.toString())
-							.enableHtml(true);
+				// 인라인 키보드를 설정한다.
+				List<InlineKeyboardButton> keyboardButtonList = Arrays.asList(
+						new InlineKeyboardButton()
+								.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA)),
+						new InlineKeyboardButton()
+								.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, Long.toString(keyMaxValue))),
+						new InlineKeyboardButton()
+								.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, Long.toString(keyMinValue)))
+				);
 
-					InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-					List<InlineKeyboardButton> keyboard = new ArrayList<>();
-					InlineKeyboardButton inlineKeyboardPreviousButton = new InlineKeyboardButton();
-					inlineKeyboardPreviousButton.setText("이전");
-					inlineKeyboardPreviousButton.setCallbackData(String.format("lsa_%s_%s_%s", this.board.getCode(), "PREV", Long.toString(max)));
-					keyboard.add(inlineKeyboardPreviousButton);
+				InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList));
 
-					InlineKeyboardButton inlineKeyboardNextButton = new InlineKeyboardButton();
-					inlineKeyboardNextButton.setText("다음");
-					inlineKeyboardNextButton.setCallbackData(String.format("lsa_%s_%s_%s", this.board.getCode(), "NEXT", Long.toString(min)));
-					keyboard.add(inlineKeyboardNextButton);
-
-//					List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
-					InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
-					keyboardFirstRow3.setText("새로읽기");
-					keyboardFirstRow3.setCallbackData(String.format("lsa_%s_%s", this.board.getCode(), "REFRESH"));
-					keyboard.add(keyboardFirstRow3);
-
-					List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
-					keyboards.add(keyboard);
-//					keyboards.add(keyboard2);
-
-					inlineKeyboardMarkup.setKeyboard(keyboards);
-					answerMessage.setReplyMarkup(inlineKeyboardMarkup);
-
-//					sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
-
-					try {
-						absSender.sendMessage(answerMessage);
-					} catch (TelegramApiException e) {
-						logger.error(null, e);
-					}
+				// 클라이언트로 조회된 결과 메시지를 전송한다.
+				if (this.messageId == -1) {//@@@@@
+					BotCommandUtils.sendMessage(absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
 				} else {
-					EditMessageText answerMessage = new EditMessageText()
-							.setChatId(Long.toString(this.chatRoom.getChatId()))
-							.setMessageId(this.messageId)
-							.setText(sbAnswerMessage.toString())
-							.enableHtml(true);
-
-					InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-					List<InlineKeyboardButton> keyboard = new ArrayList<>();
-					InlineKeyboardButton inlineKeyboardPreviousButton = new InlineKeyboardButton();
-					inlineKeyboardPreviousButton.setText("이전");
-					inlineKeyboardPreviousButton.setCallbackData(String.format("lsa_%s_%s_%s", this.board.getCode(), "PREV", Long.toString(max)));
-					keyboard.add(inlineKeyboardPreviousButton);
-
-					InlineKeyboardButton inlineKeyboardNextButton = new InlineKeyboardButton();
-					inlineKeyboardNextButton.setText("다음");
-					inlineKeyboardNextButton.setCallbackData(String.format("lsa_%s_%s_%s", this.board.getCode(), "NEXT", Long.toString(min)));
-					keyboard.add(inlineKeyboardNextButton);
-
-//					List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
-					InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
-					keyboardFirstRow3.setText("새로읽기");
-					keyboardFirstRow3.setCallbackData(String.format("lsa_%s_%s", this.board.getCode(), "REFRESH"));
-					keyboard.add(keyboardFirstRow3);
-
-					List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
-					keyboards.add(keyboard);
-//					keyboards.add(keyboard2);
-
-					inlineKeyboardMarkup.setKeyboard(keyboards);
-					answerMessage.setReplyMarkup(inlineKeyboardMarkup);
-
-//					sendAnswerMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
-
-					try {
-						absSender.editMessageText(answerMessage);
-					} catch (TelegramApiException e) {
-						logger.error(null, e);
-					}
+					BotCommandUtils.editMessageText(absSender, this.chatRoom.getChatId(), messageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
 				}
-				
 			}
-
-//			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
-//			ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-//			replyKeyboardMarkup.setSelective(true);
-//			replyKeyboardMarkup.setResizeKeyboard(true);
-//			replyKeyboardMarkup.setOneTimeKeyboad(true);
-//			
-//			int i = 0;
-//			List<KeyboardRow> keyboard = new ArrayList<>();
-//			while (iterator.hasNext() == true) {
-//				i++;
-//				if (i == 10)
-//					break;
-////				StringBuilder sbMessage = new StringBuilder();
-//				WebSiteBoardItem next = iterator.next();
-//				// System.out.println(next);
-//				KeyboardRow keyboardFirstRow = new KeyboardRow();
-//				keyboardFirstRow.add("게시물 " + next.toString());
-//				
-//				keyboard.add(keyboardFirstRow);
-////				sbMessage.append(next + "\n");
-////
-////				SendMessage helpMessage = new SendMessage()
-////						.setChatId(chat.getId().toString())
-////						.setText(sbMessage.toString())
-////						.enableHtml(true);
-////				
-////				try {
-////					absSender.sendMessage(helpMessage);
-////				} catch (TelegramApiException e) {
-////					logger.error(null, e);
-////				}
-//			}
-//			
-//			replyKeyboardMarkup.setKeyboard(keyboard);
-//			
-//			// 토렌트봇으로 메시지 보내기
-//			SendMessage helpMessage = new SendMessage().setChatId(Long.toString(this.chatRoom.getChatId()))
-//					.enableHtml(true)
-//					.setText("조회 완료되었습니다.")
-//					.setReplyMarkup(replyKeyboardMarkup);
-//			
-//			try {
-//				absSender.sendMessage(helpMessage);
-//			} catch (TelegramApiException e) {
-//				logger.error(null, e);
-//			}
-//		} catch (FailedLoadBoardItemsException e) {
-//			// @@@@@
-////			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
-//			return false;
 		} catch (Exception e) {
 			logger.error(null, e);
 			
@@ -252,6 +137,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractTorrentBotImm
 		return true;
 	}
 
+	//@@@@@
 	@Override
 	public void validate() {
 		super.validate();
