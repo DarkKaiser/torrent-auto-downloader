@@ -11,6 +11,7 @@ public interface RequestHandler {
 
 	boolean executable(String command, String[] parameters, boolean containInitialChar);
 
+	// @@@@@ Update 넣어야하나???
 	void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update);
 
 }

@@ -20,8 +20,22 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteBoard getBoard(String name) {
+		public WebSiteBoard getBoardByName(String name) {
 			return BogoBogoBoard.fromString(name);
+		}
+
+		@Override
+		public WebSiteBoard getBoardByCode(String code) {
+			if (StringUtil.isBlank(code) == true)
+				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
+
+			WebSiteBoard[] boardValues = getBoardValues();
+			for (WebSiteBoard board : boardValues) {
+				if (board.getCode().equals(code) == true)
+					return board;
+			}
+
+			return null;
 		}
 
 		@Override
@@ -66,7 +80,9 @@ public enum WebSite {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
 
-	public abstract WebSiteBoard getBoard(String name);
+	public abstract WebSiteBoard getBoardByName(String name);
+
+	public abstract WebSiteBoard getBoardByCode(String code);
 
 	public abstract WebSiteBoard[] getBoardValues();
 

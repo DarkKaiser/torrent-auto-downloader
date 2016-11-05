@@ -87,7 +87,7 @@ public class WebSiteBoardListRequestHandler2 extends AbstractBotCommandRequestHa
 					if (boardItem.getIdentifier() > max)
 						max = boardItem.getIdentifier();
 					
-					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.generateCommand("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 				
 					AnswerCallbackQuery a1 = new AnswerCallbackQuery();
@@ -129,7 +129,7 @@ public class WebSiteBoardListRequestHandler2 extends AbstractBotCommandRequestHa
 					if (boardItem.getIdentifier() > max)
 						max = boardItem.getIdentifier();
 
-					temp.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.generateCommand("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					temp.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 					temp2.insert(0, temp.toString());
 					temp.delete(0, temp.length());
 				}
@@ -163,8 +163,7 @@ public class WebSiteBoardListRequestHandler2 extends AbstractBotCommandRequestHa
 				//@@@@@
 				// 게시판 조회중 메시지를 사용자에게 보낸다.
 				sbAnswerMessage.delete(0, sbAnswerMessage.length());
-				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다.(최대 ").append(chatRoom.getMaxBoardItemsListCount()).append("건)\n")
-						.append("잠시만 기다려 주세요.");
+				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다. 잠시만 기다려 주세요.");
 
 				EditMessageText ee = new EditMessageText();
 				ee.setChatId(Long.toString(chatRoom.getChatId()))

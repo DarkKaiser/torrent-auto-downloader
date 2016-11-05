@@ -43,7 +43,7 @@ public class TorrentJob {
 	}
 
 	public void search(long chatId, long requestId) {
-		WebSiteBoard board = this.connector.getSite().getBoard("anion");
+		WebSiteBoard board = this.connector.getSite().getBoardByName("anion");
 		this.immediatelyTaskExecutorService.submit(new SearchBoardImmediatelyTaskAction(this.connector, board));
 	}
 

@@ -80,7 +80,7 @@ public class WebSiteBoardListRequestHandler3 extends AbstractBotCommandRequestHa
 						BogoBogoBoardItemDownloadLink next = downloadLinkIterator.next();
 
 						++i;
-						sbAnswerMessage.append(next.getFileName()).append(", 확장자:").append(next.getValue4()).append(" ").append(BotCommandUtils.generateCommand("dl", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(i))).append("\n");
+						sbAnswerMessage.append(next.getFileName()).append(", 확장자:").append(next.getValue4()).append(" ").append(BotCommandUtils.toComplexBotCommandString("dl", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(i))).append("\n");
 					}
 
 					sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());

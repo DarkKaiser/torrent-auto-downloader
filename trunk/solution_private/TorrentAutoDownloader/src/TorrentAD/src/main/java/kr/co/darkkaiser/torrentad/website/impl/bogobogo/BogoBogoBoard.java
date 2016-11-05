@@ -71,8 +71,6 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 
 	public static BogoBogoBoard fromString(String name) {
-		if (name == null)
-			throw new NullPointerException("name");
 		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 

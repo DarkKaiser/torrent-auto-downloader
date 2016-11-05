@@ -21,11 +21,11 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		if (StringUtil.isBlank(command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");
 
-		if (command.startsWith(BotCommandUtils.COMMAND_INITIAL_CHARACTER) == true)
+		if (command.startsWith(BotCommandUtils.BOT_COMMAND_INITIAL_CHARACTER) == true)
 			command = command.substring(1);
 
-		if (command.length() > BotCommandUtils.COMMAND_MAX_LENGTH)
-			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandUtils.COMMAND_MAX_LENGTH + "자 입니다.");
+		if (command.length() > BotCommandUtils.BOT_COMMAND_MAX_LENGTH)
+			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandUtils.BOT_COMMAND_MAX_LENGTH + "자 입니다.");
 
 		this.command = command.toLowerCase();
 		this.commandSyntax = commandSyntax;

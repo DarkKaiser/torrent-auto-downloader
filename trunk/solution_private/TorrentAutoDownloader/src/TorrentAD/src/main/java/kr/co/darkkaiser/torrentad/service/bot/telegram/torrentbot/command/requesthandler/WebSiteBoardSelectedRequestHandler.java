@@ -51,31 +51,22 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 		chatRoom.setBoard(board);
 
-		StringBuilder sbAnswerMessage = new StringBuilder();
-		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
+		StringBuilder sbAnswerMessage = new StringBuilder()
+				.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
 
 		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {
-		WebSiteBoard[] boardValues = this.site.getBoardValues();
-
 		if (parameters == null || parameters.length == 0) {
 			if (containInitialChar == false)
 				return null;
 
-			for (WebSiteBoard board : boardValues) {
-				if (board.getCode().equals(command) == true)
-					return board;
-			}
+			return this.site.getBoardByCode(command);
 		} else if (parameters.length == 1) {
 			BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSelectRequestHandler.class);
 			if (botCommand != null && botCommand.getCommand().equals(command) == true) {
-				String parameter = parameters[0];
-				for (WebSiteBoard board : boardValues) {
-					if (board.getCode().equals(parameter) == true)
-						return board;
-				}
+				return this.site.getBoardByCode(parameters[0]);
 			}
 		}
 

@@ -7,8 +7,6 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExe
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.GetTorrentImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler {
 	
