@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.delete_target;
 
 // @@@@@
 public enum State {
