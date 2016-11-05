@@ -40,6 +40,7 @@ public interface WebSiteHandler {
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws Exception;
 	
 	// @@@@@
-	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download2(WebSiteBoardItem boardItem) throws Exception;
-
+	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download2(WebSiteBoardItem boardItem, long index) throws Exception;
+	void download3(WebSiteBoardItem boardItem) throws Exception;
+	
 }

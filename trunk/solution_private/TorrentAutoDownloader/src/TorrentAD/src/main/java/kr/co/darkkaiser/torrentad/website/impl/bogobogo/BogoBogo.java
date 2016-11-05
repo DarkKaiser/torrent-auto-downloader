@@ -320,10 +320,42 @@ public class BogoBogo extends AbstractWebSite {
 
 		return resultList.iterator();
 	}
-	
+
 	// @@@@@
 	@Override
-	public Tuple<Integer, Integer> download2(WebSiteBoardItem boardItem) throws Exception {
+	public void download3(WebSiteBoardItem boardItem) throws Exception {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+
+		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
+		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return;
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		while (iterator.hasNext() == true) {
+			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			downloadLink.setDownloadable(true);
+		}
+
+		return;
+	}
+
+	// @@@@@
+	@Override
+	public Tuple<Integer, Integer> download2(WebSiteBoardItem boardItem, long index) throws Exception {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -344,10 +376,15 @@ public class BogoBogo extends AbstractWebSite {
 		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
 
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		int i = 0;
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
-			downloadLink.setDownloadable(true);
+			++i;
+			if (i == index)
+				downloadLink.setDownloadable(true);
+			else
+				downloadLink.setDownloadable(false);
 		}
 
 		return downloadBoardItemDownloadLink(siteBoardItem);

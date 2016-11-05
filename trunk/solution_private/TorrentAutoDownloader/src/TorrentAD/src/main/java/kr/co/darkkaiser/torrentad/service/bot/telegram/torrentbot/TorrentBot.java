@@ -70,6 +70,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		// @@@@@
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler2(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler3(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler4(this, immediatelyTaskExecutorService));
 	}
 
 	@Override
