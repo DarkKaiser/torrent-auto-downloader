@@ -6,7 +6,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractBotCommandRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractRequestHandler;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -18,14 +18,14 @@ import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItem;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItemDownloadLink;
 
 // @@@@@
-public class WebSiteBoardListRequestHandler4 extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
 
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public WebSiteBoardListRequestHandler4(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("dl", "뺄것");
+		super("dl");
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");

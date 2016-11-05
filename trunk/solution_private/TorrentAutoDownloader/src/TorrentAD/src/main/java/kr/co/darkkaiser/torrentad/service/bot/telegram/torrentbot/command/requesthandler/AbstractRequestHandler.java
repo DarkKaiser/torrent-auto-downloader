@@ -24,6 +24,17 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 	public String getIdentifier() {
 		return this.identifier;
 	}
+	
+	protected boolean executable0(String command, String[] parameters, int minParametersCount, int maxParametersCount) {
+		int parametersCount = 0;
+		if (parameters != null)
+			parametersCount = parameters.length;
+
+		if (minParametersCount <= parametersCount && parametersCount <= maxParametersCount)
+			return true;
+
+		return false;
+	}
 
 	protected void sendAnswerMessage(AbsSender absSender, long chatId, String message) {
 		if (absSender == null)

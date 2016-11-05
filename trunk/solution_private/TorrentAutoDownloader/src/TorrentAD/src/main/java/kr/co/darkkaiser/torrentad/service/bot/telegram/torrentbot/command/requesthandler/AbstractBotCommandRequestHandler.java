@@ -47,6 +47,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		return this.commandDescription;
 	}
 
+	@Override
 	protected boolean executable0(String command, String[] parameters, int minParametersCount, int maxParametersCount) {
 		if (getCommand().equals(command) == false)
 			return false;
