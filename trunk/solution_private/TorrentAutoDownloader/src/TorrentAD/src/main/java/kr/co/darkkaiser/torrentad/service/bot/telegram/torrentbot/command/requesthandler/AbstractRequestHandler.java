@@ -3,9 +3,6 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reque
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.bots.AbsSender;
-
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 
 public abstract class AbstractRequestHandler implements RequestHandler {
 	
@@ -34,10 +31,6 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 			return true;
 
 		return false;
-	}
-
-	protected void sendAnswerMessage(AbsSender absSender, long chatId, String message) {
-		BotCommandUtils.sendMessage(absSender, chatId, message);
 	}
 
 	protected void writeErrorLog(String message, String command, String[] parameters, boolean containInitialChar) {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -108,6 +109,19 @@ public final class BotCommandUtils {
 
 		try {
 			absSender.editMessageText(editMessageText);
+		} catch (TelegramApiException e) {
+			logger.error(null, e);
+		}
+	}
+	
+	public static void answerCallbackQuery(AbsSender absSender, AnswerCallbackQuery answerCallbackQuery) {
+		if (absSender == null)
+			throw new NullPointerException("absSender");
+		if (answerCallbackQuery == null)
+			throw new NullPointerException("answerCallbackQuery");
+
+		try {
+			absSender.answerCallbackQuery(answerCallbackQuery);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
 		}

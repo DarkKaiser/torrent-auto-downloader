@@ -6,6 +6,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
@@ -36,11 +37,11 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		// 조회할 게시판이 선택되었는지 확인한다.
 		WebSiteBoard board = chatRoom.getBoard();
 		if (board == null) {
-			sendAnswerMessage(absSender, chatRoom.getChatId(), "조회 및 검색하려는 게시판을 먼저 선택하세요.");
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "조회 및 검색하려는 게시판을 먼저 선택하세요.");
 			return;
 		}
 
@@ -48,7 +49,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 		StringBuilder sbAnswerMessage = new StringBuilder()
 				.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다. 잠시만 기다려 주세요.");
 
-		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
 		// @@@@@
 		// 게시판 조회를 시작한다.

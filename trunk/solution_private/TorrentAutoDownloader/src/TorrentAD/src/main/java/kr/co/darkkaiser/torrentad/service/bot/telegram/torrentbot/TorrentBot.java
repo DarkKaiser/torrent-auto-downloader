@@ -68,7 +68,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 		
 		// @@@@@
-		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler2(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardListResultInlineCommandRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler3(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler4(this, immediatelyTaskExecutorService));
 	}
@@ -161,7 +161,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
-					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get(), update);
+					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}
@@ -183,7 +183,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
-					requestHandler.execute(this, chatRoom, outCommand.get(), outParameters.get(), outContainInitialChar.get(), update);
+					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					
 					return;
 				}

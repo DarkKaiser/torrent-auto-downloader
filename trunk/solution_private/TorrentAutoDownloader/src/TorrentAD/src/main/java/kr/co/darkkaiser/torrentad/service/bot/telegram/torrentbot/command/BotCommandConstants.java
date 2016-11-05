@@ -22,21 +22,21 @@ public final class BotCommandConstants {
     // 게시물 출력 갯수
     public static final int LASR_BOARD_ITEM_OUTPUT_COUNT = 5;
 
-    // 조회 결과 인라인 명령
+    // 조회 결과 목록내의 인라인 명령
     public static final String LASR_LIST_RESULT_INLINE_COMMAND = "ls-rslt-inline";
 
-    // 검색 결과 인라인 명령
+    // 검색 결과 목록내의 인라인 명령
     public static final String LASR_SEARCH_RESULT_INLINE_COMMAND = "sc-rslt-inline";
 
-	// 인라인 키보드 새로고침 버튼
+	// 결과 목록내의 인라인 키보드 새로고침 버튼
 	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT = "새로고침";
 	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA = "REFRESH";
 
-	// 인라인 키보드 이전페이지 버튼
+	// 결과 목록내의 인라인 키보드 이전페이지 버튼
 	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "이전 페이지";
 	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "PREV_PAGE";
 	
-	// 인라인 키보드 다음페이지 버튼
+	// 결과 목록내의 인라인 키보드 다음페이지 버튼
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "다음 페이지";
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "NEXT_PAGE";
 

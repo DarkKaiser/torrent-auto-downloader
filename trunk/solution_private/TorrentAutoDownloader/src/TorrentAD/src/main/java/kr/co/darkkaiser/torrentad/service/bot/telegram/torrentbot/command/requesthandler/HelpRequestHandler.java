@@ -5,6 +5,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 
 public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
@@ -29,7 +30,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
@@ -41,7 +42,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler {
 			}
 		}
 
-		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 	}
 
 	@Override

@@ -87,7 +87,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회 결과가 0 건입니다.");
 
-				sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
+				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
 			} else {
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n\n");
@@ -108,13 +108,13 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 				List<InlineKeyboardButton> keyboardButtonList = Arrays.asList(
 						new InlineKeyboardButton()
 								.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA)),
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode())),
 						new InlineKeyboardButton()
 								.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, Long.toString(keyMaxValue))),
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(keyMaxValue))),
 						new InlineKeyboardButton()
 								.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, this.board.getCode(), BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, Long.toString(keyMinValue)))
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(keyMinValue)))
 				);
 
 				InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList));

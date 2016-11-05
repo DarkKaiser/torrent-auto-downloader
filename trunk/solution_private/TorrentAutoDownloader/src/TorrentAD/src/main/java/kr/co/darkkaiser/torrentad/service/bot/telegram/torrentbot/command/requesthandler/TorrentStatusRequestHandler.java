@@ -6,6 +6,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.GetTorrentImmediatelyTaskAction;
 
 public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler {
@@ -35,8 +36,8 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
-		sendAnswerMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 다운로드 상태를 조회중입니다.\n잠시만 기다려 주세요.");
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 다운로드 상태를 조회중입니다. 잠시만 기다려 주세요.");
 
 		// @@@@@
 		// 게시판 조회를 시작한다.

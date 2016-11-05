@@ -6,6 +6,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -39,10 +40,10 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 		if (board == null) {
-			sendAnswerMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
 
 			writeErrorLog("입력된 명령에 해당하는 게시판을 찾을 수 없습니다.", command, parameters, containInitialChar);
 			
@@ -51,10 +52,10 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 		chatRoom.setBoard(board);
 
-		StringBuilder sbAnswerMessage = new StringBuilder()
-				.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
-
-		sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+		StringBuilder sbAnswerMessage = new StringBuilder();
+		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.");
+		
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractRequestHandler;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
@@ -46,7 +47,7 @@ public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
 
 	// @@@@@
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = BogoBogoBoard.MOVIE_NEW;
 		long key = Long.parseLong(parameters[1]);
 		long index = Long.parseLong(parameters[2]);
@@ -63,13 +64,13 @@ public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
 					BogoBogoBoardItem bogobogoBoardItem = (BogoBogoBoardItem) boardItem;
 					Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
 					if (downloadLinkIterator.hasNext() == false) {
-						sendAnswerMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
+						BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
 						return;
 					}
 					
 					Tuple<Integer,Integer> download = handler.download2(boardItem, index);
 
-					sendAnswerMessage(absSender, chatRoom.getChatId(), "파일을 다운로드합니다.");
+					BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "파일을 다운로드합니다.");
 					
 					return;
 				}

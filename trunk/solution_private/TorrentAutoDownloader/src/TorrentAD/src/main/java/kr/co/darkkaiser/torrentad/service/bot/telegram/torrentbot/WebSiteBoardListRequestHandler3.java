@@ -46,7 +46,7 @@ public class WebSiteBoardListRequestHandler3 extends AbstractRequestHandler {
 
 	// @@@@@
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, String command, String[] parameters, boolean containInitialChar, Update update) {
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		WebSiteBoard board = BogoBogoBoard.MOVIE_NEW;
 		long key = Long.parseLong(parameters[1]);
 
@@ -67,7 +67,7 @@ public class WebSiteBoardListRequestHandler3 extends AbstractRequestHandler {
 					
 					downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
 					if (downloadLinkIterator.hasNext() == false) {
-						sendAnswerMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
+						BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
 						return;
 					}
 					
@@ -82,7 +82,7 @@ public class WebSiteBoardListRequestHandler3 extends AbstractRequestHandler {
 						sbAnswerMessage.append(next.getFileName()).append(", 확장자:").append(next.getValue4()).append(" ").append(BotCommandUtils.toComplexBotCommandString("dl", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(i))).append("\n");
 					}
 
-					sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+					BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 //					Tuple<Integer,Integer> download = handler.download2(boardItem);
 					
 					return;
