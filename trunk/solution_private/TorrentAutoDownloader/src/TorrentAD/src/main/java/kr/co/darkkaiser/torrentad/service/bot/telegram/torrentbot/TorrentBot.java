@@ -150,7 +150,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
-
+	            
 	            // 수신된 메시지를 명령+파라메터로 분리한다.
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();

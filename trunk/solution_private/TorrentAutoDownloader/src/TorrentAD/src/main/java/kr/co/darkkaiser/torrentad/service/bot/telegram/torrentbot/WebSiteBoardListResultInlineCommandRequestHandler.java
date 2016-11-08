@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
@@ -26,6 +28,8 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractRequestHandler {
+
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultInlineCommandRequestHandler.class);
 
 	private final WebSite site;
 	
@@ -80,7 +84,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 
 		String inlineCommand = parameters[0];
 		WebSiteBoard board = this.site.getBoardByCode(parameters[1]);
-		
+
 		if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
 			AnswerCallbackQuery a1 = new AnswerCallbackQuery();
 			a1.setCallbackQueryId(update.getCallbackQuery().getId());
@@ -112,7 +116,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 
 			// 게시판 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), board, chatRoom, this.torrentBotResource, absSender, update.getCallbackQuery().getMessage().getMessageId()));
+					new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), update.getCallbackQuery().getMessage().getMessageId(), absSender, chatRoom, board, this.torrentBotResource));
 
 			return;
 		}
@@ -219,8 +223,9 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			// 클라이언트로 조회된 결과 메시지를 전송한다.@@@@@
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), update.getCallbackQuery().getMessage().getMessageId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
 		} catch (FailedLoadBoardItemsException e) {
-			e.printStackTrace();
-//			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
+			logger.error(null, e);
+
+			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}
 	}
 

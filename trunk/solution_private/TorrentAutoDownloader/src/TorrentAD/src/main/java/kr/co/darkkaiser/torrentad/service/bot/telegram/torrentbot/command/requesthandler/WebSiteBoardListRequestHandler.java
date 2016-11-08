@@ -51,10 +51,9 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
-		// @@@@@
 		// 게시판 조회를 시작한다.
 		this.immediatelyTaskExecutorService.submit(
-				new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), board, chatRoom, this.torrentBotResource, absSender, -1));
+				new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), absSender, chatRoom, board, this.torrentBotResource));
 	}
 
 	@Override
