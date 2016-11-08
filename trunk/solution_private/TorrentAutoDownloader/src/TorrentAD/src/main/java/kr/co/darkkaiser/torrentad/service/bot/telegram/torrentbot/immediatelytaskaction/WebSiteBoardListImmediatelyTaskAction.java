@@ -128,8 +128,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			}
 		} catch (Exception e) {
 			logger.error(null, e);
-			
-			// @@@@@ 클라이언트로 조회실패 전송
+
+			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
 			
 			return false;
 		}

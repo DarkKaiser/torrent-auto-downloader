@@ -126,7 +126,11 @@ public final class BotCommandUtils {
 			logger.error(null, e);
 		}
 	}
-	
+
+	public static void sendExceptionMessage(AbsSender absSender, long chatId, Throwable e) {
+		sendMessage(absSender, chatId, String.format("요청을 처리하는 중 예외가 발생하였습니다. 관리자에게 문의하세요.\n\n예외 : %s", e.toString()));
+	}
+
 	private BotCommandUtils() {
 	}
 

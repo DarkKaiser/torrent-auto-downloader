@@ -220,6 +220,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), update.getCallbackQuery().getMessage().getMessageId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
 		} catch (FailedLoadBoardItemsException e) {
 			e.printStackTrace();
+//			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
 		}
 	}
 
