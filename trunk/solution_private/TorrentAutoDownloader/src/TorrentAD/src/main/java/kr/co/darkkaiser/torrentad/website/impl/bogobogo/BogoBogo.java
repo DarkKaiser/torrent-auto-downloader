@@ -484,18 +484,33 @@ public class BogoBogo extends AbstractWebSite {
 						for (Element element : elements) {
 							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 
+							//
 							// 번호
+							//
 							String no = iterator.next().text();
 							if (no.contains("[공지]"/* 공지사항 */) == true || no.contains("등록된 글이 없습니다."/* 페이지에 게시물이 0건인 경우... */) == true)
 								continue;
 
+							//
 							// 카테고리
+							//
 							if (board.hasCategory() == true)
 								iterator.next();
 
+							//
 							// 제목
+							//
 							Element titleElement = iterator.next();
 							String title = titleElement.text().trim();
+
+							// trim()으로 제거되지 않는 공백(no-break space=줄바꿈없는공백)을 모두 제거한다.
+							while (true) {
+								if (Character.isSpaceChar(title.charAt(0)) == false)
+									break;
+
+								title = title.substring(1);
+							}
+
 							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
 								continue;
 							
@@ -512,10 +527,14 @@ public class BogoBogo extends AbstractWebSite {
 								throw new ParseException(String.format("게시물의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							String identifier = detailPageURL.substring(noPos + 3/* no= */, detailPageURL.indexOf("&", noPos));
 
+							//
 							// 작성자
+							//
 							iterator.next();
 
+							//
 							// 날짜
+							//
 							String registDate = iterator.next().text().trim();
 
 							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
