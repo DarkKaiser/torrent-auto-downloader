@@ -33,14 +33,14 @@ public final class BotCommandConstants {
 
 	// 결과 목록내의 인라인 키보드 새로고침 버튼
 	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT = "새로고침";
-	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA = "REFRESH";
+	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA = "refresh";
 
 	// 결과 목록내의 인라인 키보드 이전페이지 버튼
 	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "이전 페이지";
-	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "PREV_PAGE";
+	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "prev_page";
 	
 	// 결과 목록내의 인라인 키보드 다음페이지 버튼
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "다음 페이지";
-	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "NEXT_PAGE";
+	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "next_page";
 
 }

@@ -114,11 +114,14 @@ public final class BotCommandUtils {
 		}
 	}
 	
-	public static void answerCallbackQuery(AbsSender absSender, AnswerCallbackQuery answerCallbackQuery) {
+	public static void answerCallbackQuery(AbsSender absSender, String callbackQueryId, String text) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
-		if (answerCallbackQuery == null)
-			throw new NullPointerException("answerCallbackQuery");
+
+		AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
+		answerCallbackQuery.setCallbackQueryId(callbackQueryId);
+		if (StringUtil.isBlank(text) == false)
+			answerCallbackQuery.setText(text);
 
 		try {
 			absSender.answerCallbackQuery(answerCallbackQuery);

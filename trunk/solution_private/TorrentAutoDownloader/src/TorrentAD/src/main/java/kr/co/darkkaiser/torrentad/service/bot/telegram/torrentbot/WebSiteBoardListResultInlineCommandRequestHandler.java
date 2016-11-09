@@ -7,7 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -58,22 +57,24 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			return false;
 
 		String inlineCommand = parameters[0];
-		if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false
-				&& inlineCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
-				&& inlineCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
-			return false;
-		}
-
-		if (this.site.getBoardByCode(parameters[1]) == null)
-			return false;
-
 		if (parameters.length >= 3) {
+			if (inlineCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
+					&& inlineCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
+				return false;
+			}
+			
 			try {
 		        Long.parseLong(parameters[2]);
 		    } catch (NumberFormatException e) {
 		        return false;
 		    }
+		} else {
+			if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
+				return false;
 		}
+
+		if (this.site.getBoardByCode(parameters[1]) == null)
+			return false;
 
 		return true;
 	}
@@ -82,57 +83,45 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 
+		////////////////////////////////////////////////////////////
+		// @@@@@
 		String inlineCommand = parameters[0];
 		WebSiteBoard board = this.site.getBoardByCode(parameters[1]);
 
-		if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-			AnswerCallbackQuery a1 = new AnswerCallbackQuery();
-			a1.setCallbackQueryId(update.getCallbackQuery().getId());
-			try {
-				absSender.answerCallbackQuery(a1);
-			} catch (TelegramApiException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			//@@@@@
-			// 게시판 조회중 메시지를 사용자에게 보낸다.
-			sbAnswerMessage.delete(0, sbAnswerMessage.length());
-			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다. 잠시만 기다려 주세요.");
-
-			EditMessageText ee = new EditMessageText();
-			ee.setChatId(Long.toString(chatRoom.getChatId()))
-			.setMessageId(update.getCallbackQuery().getMessage().getMessageId())
-			.setText(sbAnswerMessage.toString())
-			.enableHtml(true);
-
-			try {
-				absSender.editMessageText(ee);
-			} catch (TelegramApiException e) {
-//				logger.error(null, e);
-			}
-
-			//sendAnswerMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
-
-			// 게시판 조회를 시작한다.
-			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), update.getCallbackQuery().getMessage().getMessageId(), absSender, chatRoom, board, this.torrentBotResource));
-
-			return;
-		}
-		
-			
-		
 		try {
+			String callbackQueryId = update.getCallbackQuery().getId();
+			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
+
+			if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId, "");
+				
+				//@@@@@
+				// 게시판 조회중 메시지를 사용자에게 보낸다.
+				sbAnswerMessage.delete(0, sbAnswerMessage.length());
+				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다. 잠시만 기다려 주세요.");
+
+				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString());
+
+				// 게시판 조회를 시작한다.
+				this.immediatelyTaskExecutorService.submit(
+						new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), callbackQueryMessageId, absSender, chatRoom, board, this.torrentBotResource));
+
+				return;
+			}
+			////////////////////////////////////////////////////////////
+			
+			////////////////////////////////////////////////////////////
 			// @@@@@
 			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
+			////////////////////////////////////////////////////////////
 
 			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n\n");
 			
 			long keyValue = Long.parseLong(parameters[2]);
 			long keyMinValue = Long.MAX_VALUE;
 			long keyMaxValue = Long.MIN_VALUE;
-			if (parameters[1].equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+			if (inlineCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				// 선택된 게시판을 조회한다.
 				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
 
 				int index = 0;
@@ -152,17 +141,12 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 				
-				AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
-				answerCallbackQuery.setCallbackQueryId(update.getCallbackQuery().getId());
-				if (index == 0) {
-					answerCallbackQuery.setText("마지막 페이지입니다.");
-				}
-				
-				BotCommandUtils.answerCallbackQuery(absSender, answerCallbackQuery);
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId, index == 0 ? "마지막 페이지입니다." : "");
 			
 				if (index == 0)
 					return;
-			} else if (parameters[1].equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+			} else if (inlineCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				// 선택된 게시판을 조회한다.
 				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierAscCompare());
 				
 				StringBuilder temp = new StringBuilder();
@@ -189,21 +173,14 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 					temp.delete(0, temp.length());
 				}
 			
-				AnswerCallbackQuery a1 = new AnswerCallbackQuery();
-				a1.setCallbackQueryId(update.getCallbackQuery().getId());
-				if (i == 0) {
-					a1.setText("첫 페이지입니다.");
-				}
-				try {
-					absSender.answerCallbackQuery(a1);
-				} catch (TelegramApiException e1) {
-					e1.printStackTrace();
-				}
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId, i == 0 ? "첫 페이지입니다." : "");
+
 				if (i == 0)
 					return;
 
 				sbAnswerMessage.append(temp2.toString());
 			}
+			////////////////////////////////////////////////////////////
 
 			// 인라인 키보드를 설정한다.
 			List<InlineKeyboardButton> keyboardButtonList = Arrays.asList(
@@ -220,8 +197,8 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList));
 
-			// 클라이언트로 조회된 결과 메시지를 전송한다.@@@@@
-			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), update.getCallbackQuery().getMessage().getMessageId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
+			// 클라이언트로 조회된 결과 메시지를 전송한다.
+			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
 		} catch (FailedLoadBoardItemsException e) {
 			logger.error(null, e);
 
