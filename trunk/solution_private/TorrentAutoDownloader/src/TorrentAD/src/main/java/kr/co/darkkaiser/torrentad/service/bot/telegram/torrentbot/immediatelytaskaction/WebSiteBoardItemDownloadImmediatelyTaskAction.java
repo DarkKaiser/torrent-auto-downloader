@@ -8,18 +8,17 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkListImmediatelyTaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadImmediatelyTaskAction.class);
 	
 	private final int messageId;
 
@@ -30,12 +29,14 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 	private final WebSiteBoard board;
 	
 	private final long boardItemIdentifier;
+	
+	private final long boardItemDownloadLinkIndex;
 
 	private final TorrentBotResource torrentBotResource;
 
 	private final WebSite site;
 
-	public WebSiteBoardItemDownloadLinkListImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, long boardItemDownloadLinkIndex, TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -52,13 +53,14 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 		this.messageId = messageId;
 		this.absSender = absSender;
 		this.boardItemIdentifier = boardItemIdentifier;
+		this.boardItemDownloadLinkIndex = boardItemDownloadLinkIndex;
 		this.torrentBotResource = torrentBotResource;
 		this.site = torrentBotResource.getSite();
 	}
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s > %d 첨부파일 조회", this.site.getName(), this.board.getDescription(), this.boardItemIdentifier);
+		return String.format("%s > %s > %d > %d 첨부파일 다운로드", this.site.getName(), this.board.getDescription(), this.boardItemIdentifier, this.boardItemDownloadLinkIndex);
 	}
 
 	@Override
@@ -79,31 +81,17 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 				if (boardItem.getIdentifier() != this.boardItemIdentifier)
 					continue;
 
-				// 해당 게시물의 첨부파일에 대한 다운로드 링크가 없는경우 읽어들인다.
-				Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator = boardItem.downloadLinkIterator();
-				if (downloadLinkIterator.hasNext() == false) {
-					if (handler.loadDownloadLink(boardItem) == false) {
-						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택된 게시물의 첨부파일 확인이 실패하였습니다.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
-						return true;
-					}
+				Tuple<Integer, Integer> tuple = handler.download(boardItem, this.boardItemDownloadLinkIndex);
+				
+				if (tuple.first() < 0 && tuple.last() < 0) {
+					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일에 대한 정보를 찾을 수 없습니다. 다운로드가 실패하였습니다.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
+				} else if (tuple.first() == 0 && tuple.last() == 0) {
+					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일에 대한 정보를 찾을 수 없습니다. 다운로드가 실패하였습니다.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
+				} else if (tuple.first() == 1 && tuple.last() == 0) {
+					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 실패하였습니다. 다시 시도하여 주세요.", this.messageId);
+				} else if (tuple.first() == 1 && tuple.last() == 1) {
+					// @@@@@ 다운로드 완료, 파일 업로드 바로 처리되도록...
 				}
-
-				downloadLinkIterator = boardItem.downloadLinkIterator();
-				if (downloadLinkIterator.hasNext() == false) {
-					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택된 게시물의 첨부파일이 존재하지 않습니다.", this.messageId);
-					return true;
-				}
-
-				// 선택된 게시물의 첨부파일에 대한 정보를 사용자에게 보낸다.
-				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("선택된 게시물의 첨부파일 확인이 완료되었습니다.\n\n");
-
-				for (int index = 0; downloadLinkIterator.hasNext() == true; ++index) {
-					WebSiteBoardItemDownloadLink next = downloadLinkIterator.next();
-					sbAnswerMessage.append(index + 1).append(". ").append(next).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(index))).append("\n\n");
-				}
-
-				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), this.messageId);
 
 				return true;
 			}

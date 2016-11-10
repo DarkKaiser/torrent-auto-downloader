@@ -340,53 +340,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
 
-		// 다운로드 링크에서 이미 다운로드가 완료된 항목은 제외시킨다.
-		iterator = siteBoardItem.downloadLinkIterator();
-		while (iterator.hasNext() == true) {
-			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
-			// @@@@@ 사용자가 동시에 여러개 날릴때 여러번 다운로드 받게 되는데 이때 같은 객체이므로 다운로드도 여러번 되는거 아닌가?
-			downloadLink.setDownloadable(true);
-//			downloadLink.setDownloadable(downloadLink.isDownloadCompleted() == false);
-		}
-
 		return true;
-	}
-
-	// @@@@@
-	@Override
-	public Tuple<Integer, Integer> download2(WebSiteBoardItem boardItem, long index) throws Exception {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
-
-		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
-		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return new Tuple<Integer, Integer>(-1, -1);
-			}
-		}
-
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
-
-		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
-		int i = 0;
-		iterator = siteBoardItem.downloadLinkIterator();
-		while (iterator.hasNext() == true) {
-			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
-			++i;
-			if (i == index)
-				downloadLink.setDownloadable(true);
-			else
-				downloadLink.setDownloadable(false);
-		}
-
-		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
 	@Override
@@ -418,6 +372,37 @@ public class BogoBogo extends AbstractWebSite {
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
 			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
+		}
+
+		return downloadBoardItemDownloadLink0(siteBoardItem);
+	}
+
+	@Override
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws Exception {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return new Tuple<Integer, Integer>(-1, -1);
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		for (int index = 0; iterator.hasNext() == true; ++index) {
+			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
+			downloadLink.setDownloadable(index == downloadLinkIndex);
 		}
 
 		return downloadBoardItemDownloadLink0(siteBoardItem);
