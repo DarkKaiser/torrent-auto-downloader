@@ -33,7 +33,7 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		return false;
 	}
 
-	protected void writeErrorLog(String message, String command, String[] parameters, boolean containInitialChar) {
+	protected void logError(String message, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbLogMessage = new StringBuilder()
 				.append(message).append("(")
 				.append("command:").append(command)

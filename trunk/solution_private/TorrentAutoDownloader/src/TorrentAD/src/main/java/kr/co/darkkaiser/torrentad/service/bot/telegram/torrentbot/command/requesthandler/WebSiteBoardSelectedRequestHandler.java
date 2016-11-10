@@ -45,7 +45,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 		if (board == null) {
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
 
-			writeErrorLog("입력된 명령에 해당하는 게시판을 찾을 수 없습니다.", command, parameters, containInitialChar);
+			logError("입력된 명령에 해당하는 게시판을 찾을 수 없습니다.", command, parameters, containInitialChar);
 			
 			return;
 		}

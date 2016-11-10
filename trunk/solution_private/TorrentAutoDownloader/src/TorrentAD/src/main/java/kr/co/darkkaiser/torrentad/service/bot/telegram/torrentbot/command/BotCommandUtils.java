@@ -20,7 +20,7 @@ public final class BotCommandUtils {
 	
     public static final void parseBotCommand(String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
 		if (StringUtil.isBlank(message) == true)
-			throw new IllegalArgumentException("message??�?문자?�을 ?�용?��? ?�습?�다.");
+			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 		if (outCommand == null)
 			throw new NullPointerException("outCommand");
 		if (outParameters == null)
@@ -37,7 +37,7 @@ public final class BotCommandUtils {
 			outContainInitialChar.set(false);
 		}
 
-		// ComplexBotCommand?��? ?�인?�다.
+		// ComplexBotCommand인지 확인한다.
 		if (messageArrays.length == 1) {
 			String[] commandArrays = command.split(BotCommandConstants.COMPLEX_BOT_COMMAND_PARAMETER_SEPARATOR);
 			if (commandArrays.length > 1) {
@@ -71,7 +71,7 @@ public final class BotCommandUtils {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (StringUtil.isBlank(message) == true)
-			throw new IllegalArgumentException("message??�?문자?�을 ?�용?��? ?�습?�다.");
+			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
 		SendMessage sendMessage = new SendMessage()
 				.setChatId(Long.toString(chatId))
@@ -96,7 +96,7 @@ public final class BotCommandUtils {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (StringUtil.isBlank(message) == true)
-			throw new IllegalArgumentException("message??�?문자?�을 ?�용?��? ?�습?�다.");
+			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
 		EditMessageText editMessageText = new EditMessageText()
 				.setChatId(Long.toString(chatId))
@@ -135,7 +135,7 @@ public final class BotCommandUtils {
 	}
 
 	public static void sendExceptionMessage(AbsSender absSender, long chatId, Throwable e) {
-		sendMessage(absSender, chatId, String.format("?�청??처리?�는 �??�외가 발생?��??�니?? 관리자?�게 문의?�세??\n\n?�외 : %s", e.toString()));
+		sendMessage(absSender, chatId, String.format("요청을 처리하는 중 예외가 발생하였습니다. 관리자에게 문의하세요.\n\n예외 : %s", e.toString()));
 	}
 
 	private BotCommandUtils() {

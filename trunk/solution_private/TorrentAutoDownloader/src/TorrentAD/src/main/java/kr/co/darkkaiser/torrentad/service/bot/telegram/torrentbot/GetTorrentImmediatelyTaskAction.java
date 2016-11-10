@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.List;
 
@@ -11,8 +11,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult.Torrent;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 
 // @@@@@

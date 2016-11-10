@@ -1,10 +1,11 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.AbstractImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;

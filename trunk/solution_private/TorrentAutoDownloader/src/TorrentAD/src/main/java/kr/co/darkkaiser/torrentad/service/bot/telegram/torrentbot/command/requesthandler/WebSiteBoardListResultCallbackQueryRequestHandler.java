@@ -17,7 +17,6 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotReso
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
@@ -140,7 +139,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
 					// @@@@@ 추후 문자열 수정
-					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_DOWNLOAD_LINK_LIST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
@@ -172,7 +171,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
 					// @@@@@ 추후 문자열 수정
-					sbBoardItemInfo.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString("ls", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbBoardItemInfo.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_DOWNLOAD_LINK_LIST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 
 					sbAnswerMessage.insert(offsetBoardItemInfo, sbBoardItemInfo);
 					sbBoardItemInfo.delete(0, sbBoardItemInfo.length());
@@ -206,7 +205,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 
 			// 클라이언트로 조회된 결과 메시지를 전송한다.
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
-		} catch (FailedLoadBoardItemsException e) {
+		} catch (Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);

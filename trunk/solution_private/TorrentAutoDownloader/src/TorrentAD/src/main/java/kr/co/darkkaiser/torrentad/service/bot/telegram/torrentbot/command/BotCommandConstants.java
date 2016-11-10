@@ -43,4 +43,7 @@ public final class BotCommandConstants {
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "다음 페이지";
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "next-page";
 
+    // 조회 및 검색 결과 게시물 목록에서 게시물의 다운로드 링크 조회 인라인 명령
+    public static final String LASR_DOWNLOAD_LINK_LIST_INLINE_COMMAND = "ls";
+
 }
