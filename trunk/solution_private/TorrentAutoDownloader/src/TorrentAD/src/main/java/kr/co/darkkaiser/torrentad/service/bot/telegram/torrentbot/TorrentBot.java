@@ -29,6 +29,8 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectedRequestHandler;
 import kr.co.darkkaiser.torrentad.util.OutParam;
 import kr.co.darkkaiser.torrentad.util.crypto.AES256Util;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
@@ -50,6 +52,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private final RequestHandlerRegistry requestHandlerRegistry = new DefaultRequestHandlerRegistry();
 	
 	private final Configuration configuration;
+	
+	private final MetadataRepository metadataRepository;
 
 	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
@@ -58,6 +62,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
+		this.metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
 		
 		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
 		
@@ -207,7 +212,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private ChatRoom getChatRoom(Long chatId) {
 		ChatRoom chatRoom = this.chatRooms.get(chatId);
 		if (chatRoom == null) {
-			chatRoom = new ChatRoom(chatId);
+			// @@@@@ check
+			chatRoom = new ChatRoom(chatId, this.siteConnector.getSite(), this.metadataRepository);
 			this.chatRooms.put(chatId, chatRoom);
 		}
 

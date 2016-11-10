@@ -2,21 +2,40 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.jsoup.helper.StringUtil;
+
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public final class ChatRoom {
 
 	private final long chatId;
 
-	// @@@@@ 저장 및 로드되도록
+	// 사용자가 조회, 검색등의 작업을 요청하였을 때, 각각의 작업을 구분하기 위한 ID
+	private final AtomicLong requestId = new AtomicLong(0);
+
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
 
-	// 사용자가 조회, 검색등의 작업을 요청하였을 때, 각각의 작업을 구분하기 위한 ID
-	private AtomicLong requestId = new AtomicLong(0);
+	private final MetadataRepository metadataRepository;
 
-	public ChatRoom(long chatId) {
+	public ChatRoom(long chatId, WebSite site, MetadataRepository metadataRepository) {
+		if (site == null)
+			throw new NullPointerException("site");
+		if (metadataRepository == null)
+			throw new NullPointerException("metadataRepository");
+
 		this.chatId = chatId;
+		this.metadataRepository = metadataRepository;
+		
+		// @@@@@
+//		String code = this.metadataRepository.getString("", "");
+//		if (StringUtil.isBlank(code) == false) {
+//			WebSiteBoard board = site.getBoardByCode(code);
+//			if (board != null)
+//				this.board = board;
+//		}
 	}
 
 	public final long getChatId() {
@@ -39,6 +58,9 @@ public final class ChatRoom {
 		if (board == null)
 			throw new NullPointerException("board");
 
+		// @@@@@ 저장
+//		this.metadataRepository.setString("", board.getCode());
+		
 		this.board = board;
 	}
 
