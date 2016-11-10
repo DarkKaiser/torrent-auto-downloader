@@ -345,7 +345,8 @@ public class BogoBogo extends AbstractWebSite {
 		while (iterator.hasNext() == true) {
 			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
 			// @@@@@ 사용자가 동시에 여러개 날릴때 여러번 다운로드 받게 되는데 이때 같은 객체이므로 다운로드도 여러번 되는거 아닌가?
-			downloadLink.setDownloadable(downloadLink.isDownloadCompleted() == false);
+			downloadLink.setDownloadable(true);
+//			downloadLink.setDownloadable(downloadLink.isDownloadCompleted() == false);
 		}
 
 		return true;

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractRequestHandler;
 import kr.co.darkkaiser.torrentad.util.Tuple;
@@ -19,14 +20,14 @@ import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItem;
 
 // @@@@@
-public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
+public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandler {
 
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListRequestHandler4(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("dl");
+	public WebSiteBoardItemDownloadRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+		super(BotCommandConstants.INLINE_COMMAND_DOWNLOAD);
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -89,7 +90,7 @@ public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(WebSiteBoardListRequestHandler4.class.getSimpleName())
+				.append(WebSiteBoardItemDownloadRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

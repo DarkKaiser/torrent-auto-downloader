@@ -10,13 +10,13 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardDownloadLinkListImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardItemDownloadLinkListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardDownloadLinkListRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardDownloadLinkListRequestHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkListRequestHandler.class);
 
 	private final WebSite site;
 
@@ -24,7 +24,7 @@ public class WebSiteBoardDownloadLinkListRequestHandler extends AbstractRequestH
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardDownloadLinkListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardItemDownloadLinkListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST);
 
 		if (torrentBotResource == null)
@@ -71,7 +71,7 @@ public class WebSiteBoardDownloadLinkListRequestHandler extends AbstractRequestH
 
 			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardDownloadLinkListImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
+					new WebSiteBoardItemDownloadLinkListImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 
@@ -82,7 +82,7 @@ public class WebSiteBoardDownloadLinkListRequestHandler extends AbstractRequestH
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(WebSiteBoardDownloadLinkListRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardItemDownloadLinkListRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

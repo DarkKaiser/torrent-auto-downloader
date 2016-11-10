@@ -23,7 +23,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.TorrentStatusRequestHandler;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardDownloadLinkListRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardItemDownloadLinkListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListResultCallbackQueryRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectRequestHandler;
@@ -71,8 +71,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		
 		// @@@@@
 		this.requestHandlerRegistry.register(new WebSiteBoardListResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));
-		this.requestHandlerRegistry.register(new WebSiteBoardDownloadLinkListRequestHandler(this, immediatelyTaskExecutorService));
-		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler4(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadLinkListRequestHandler(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadRequestHandler(this, immediatelyTaskExecutorService));
 	}
 
 	@Override
