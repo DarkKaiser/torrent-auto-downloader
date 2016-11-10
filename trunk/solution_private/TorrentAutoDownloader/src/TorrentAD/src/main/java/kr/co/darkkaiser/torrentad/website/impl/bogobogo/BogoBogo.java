@@ -495,6 +495,11 @@ public class BogoBogo extends AbstractWebSite {
 								title = title.substring(1);
 							}
 
+							// 제목끝에 붙어있는 댓글수('(0)') 문자열을 제거한다.
+							if (title.charAt(title.length() - 1) == ')') {
+								title = title.substring(0, title.lastIndexOf("(")).trim();
+							}
+
 							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
 								continue;
 							
