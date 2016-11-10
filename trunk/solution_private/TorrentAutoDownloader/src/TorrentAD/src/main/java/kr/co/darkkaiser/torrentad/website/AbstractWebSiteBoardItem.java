@@ -12,6 +12,7 @@ import org.jsoup.helper.StringUtil;
 
 public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 
+	// 게시판
 	private final WebSiteBoard board;
 
 	// 식별자
@@ -25,7 +26,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	private final DateFormat registDateFormat;
 
 	// 첨부파일에 대한 다운로드 링크 목록
-	private List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
+	private final List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
 	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
 		if (board == null)
@@ -69,7 +70,6 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 		return this.registDateFormat.format(this.registDate);
 	}
 	
-	// @@@@@
 	@Override
 	public void addDownloadLink(WebSiteBoardItemDownloadLink downloadLink) {
 		if (downloadLink == null)
