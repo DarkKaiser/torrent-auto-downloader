@@ -63,13 +63,23 @@ public final class BotCommandUtils {
     			.toString();
     }
 
-	public static void sendMessage(AbsSender absSender, long chatId, String message) {
-		sendMessage(absSender, chatId, message, null);
+	public static void sendMessage(AbsSender absSender, Long chatId, String message) {
+		sendMessage(absSender, chatId, message, null, null);
 	}
 
-	public static void sendMessage(AbsSender absSender, long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId) {
+		sendMessage(absSender, chatId, message, replyToMessageId, null);
+	}
+
+	public static void sendMessage(AbsSender absSender, Long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+		sendMessage(absSender, chatId, message, null, inlineKeyboardMarkup);
+	}
+
+	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId, InlineKeyboardMarkup inlineKeyboardMarkup) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
+		if (chatId == null)
+			throw new NullPointerException("chatId");
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
@@ -77,6 +87,9 @@ public final class BotCommandUtils {
 				.setChatId(Long.toString(chatId))
 				.setText(message)
 				.enableHtml(true);
+
+		if (replyToMessageId != null)
+			sendMessage.setReplyToMessageId(replyToMessageId);
 
 		if (inlineKeyboardMarkup != null)
 			sendMessage.setReplyMarkup(inlineKeyboardMarkup);
@@ -88,13 +101,17 @@ public final class BotCommandUtils {
 		}
 	}
 	
-	public static void editMessageText(AbsSender absSender, long chatId, int messageId, String message) {
+	public static void editMessageText(AbsSender absSender, Long chatId, Integer messageId, String message) {
 		editMessageText(absSender, chatId, messageId, message, null);
 	}
 
-	public static void editMessageText(AbsSender absSender, long chatId, int messageId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+	public static void editMessageText(AbsSender absSender, Long chatId, Integer messageId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
+		if (chatId == null)
+			throw new NullPointerException("chatId");
+		if (messageId == null)
+			throw new NullPointerException("messageId");
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
@@ -134,7 +151,7 @@ public final class BotCommandUtils {
 		}
 	}
 
-	public static void sendExceptionMessage(AbsSender absSender, long chatId, Throwable e) {
+	public static void sendExceptionMessage(AbsSender absSender, Long chatId, Throwable e) {
 		sendMessage(absSender, chatId, String.format("요청을 처리하는 중 예외가 발생하였습니다. 관리자에게 문의하세요.\n\n예외 : %s", e.toString()));
 	}
 
