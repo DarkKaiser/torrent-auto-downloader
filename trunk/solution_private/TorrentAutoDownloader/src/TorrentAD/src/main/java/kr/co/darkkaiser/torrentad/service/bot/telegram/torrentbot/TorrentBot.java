@@ -133,12 +133,12 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 	@Override
 	public String getBotUsername() {
-		return TorrentBotConfig.BOT_USERNAME;
+		return this.configuration.getValue(Constants.APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_USERNAME);
 	}
 
 	@Override
 	public String getBotToken() {
-		return TorrentBotConfig.BOT_TOKEN;
+		return this.configuration.getValue(Constants.APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_TOKEN);
 	}
 
 	@Override

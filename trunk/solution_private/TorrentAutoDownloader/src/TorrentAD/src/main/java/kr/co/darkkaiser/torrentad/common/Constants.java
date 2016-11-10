@@ -37,6 +37,10 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_MAX_CONCURRENT_DOWNLOADING_TORRENT_COUNT = "max-concurrent-downloading-torrent-count";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND = "download-file-watch-interval-time-second";
 
+	// Bot Service 설정값 항목
+	public static final String APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_USERNAME = "telegram-torrentbot-username";
+	public static final String APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_TOKEN = "telegram-torrentbot-token";
+
 	// AD Service Task
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";
 	public static final String APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION = "description";
