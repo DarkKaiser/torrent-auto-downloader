@@ -39,7 +39,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	private final WebSite site;
 
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
-		this(requestId, BotCommandConstants.INVALID_MESSAGE_ID, absSender, chatRoom, board, torrentBotResource);
+		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, torrentBotResource);
 	}
 
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
@@ -124,7 +124,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList));
 
 			// 클라이언트로 조회된 결과 메시지를 전송한다.
-			if (this.messageId == BotCommandConstants.INVALID_MESSAGE_ID) {
+			if (this.messageId == BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID) {
 				BotCommandUtils.sendMessage(absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
 			} else {
 				BotCommandUtils.editMessageText(absSender, this.chatRoom.getChatId(), messageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);

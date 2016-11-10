@@ -13,9 +13,9 @@ public final class BotCommandConstants {
 
     // ComplexBotCommand의 구분자
     public static final String COMPLEX_BOT_COMMAND_PARAMETER_SEPARATOR = "_";
-    
-    // @@@@@
-    public static final int INVALID_MESSAGE_ID = -1;
+
+    // 유효하지 않은 TelegramBot 메시지ID
+    public static final int INVALID_BOT_COMMAND_MESSAGE_ID = -1;
 
     
     /**
