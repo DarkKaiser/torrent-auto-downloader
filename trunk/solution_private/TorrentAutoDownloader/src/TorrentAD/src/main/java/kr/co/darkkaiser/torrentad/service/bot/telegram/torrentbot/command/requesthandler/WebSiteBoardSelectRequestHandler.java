@@ -41,7 +41,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 		for (int index = 0; index < boardValues.length; ++index) {
 			WebSiteBoard board = boardValues[index];
 
-			sbAnswerMessage.append(index + 1).append(". ")
+			sbAnswerMessage.append(String.format("%02d", index + 1)).append(". ")
 					.append(board.getDescription())
 					.append(" : ")
 					.append("/").append(board.getCode()).append("\n");

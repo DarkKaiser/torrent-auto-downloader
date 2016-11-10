@@ -96,7 +96,7 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 
 				// 선택된 게시물의 첨부파일에 대한 정보를 사용자에게 보낸다.
 				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("선택된 게시물의 첨부파일 확인이 완료되었습니다.\n\n");
+				sbAnswerMessage.append("선택된 게시물의 첨부파일 확인이 완료되었습니다:\n\n");
 
 				for (int index = 0; downloadLinkIterator.hasNext() == true; ++index) {
 					WebSiteBoardItemDownloadLink next = downloadLinkIterator.next();

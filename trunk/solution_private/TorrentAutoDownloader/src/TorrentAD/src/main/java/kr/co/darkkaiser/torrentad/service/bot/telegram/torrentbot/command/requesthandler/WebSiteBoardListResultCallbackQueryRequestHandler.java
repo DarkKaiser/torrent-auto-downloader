@@ -92,9 +92,6 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			// 새로고침 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-				// 수신된 CallbackQuery에 대한 응답을 보낸다.
-				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
-
 				// 게시판 조회중 메시지를 사용자에게 보낸다.
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다. 잠시만 기다려 주세요.");
@@ -118,7 +115,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			long identifierValue = Long.parseLong(parameters[2]);
 
 			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판 조회가 완료되었습니다.\n\n");
+			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판 조회가 완료되었습니다:\n\n");
 
 			//
 			// 다음페이지 인라인명령
@@ -138,7 +135,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbAnswerMessage.append("(").append(boardItem.getRegistDateString()).append(")").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append("(").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
@@ -169,7 +166,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbBoardItemInfo.append("(").append(boardItem.getRegistDateString()).append(")").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbBoardItemInfo.append("(").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 
 					sbAnswerMessage.insert(offsetBoardItemInfo, sbBoardItemInfo);
 					sbBoardItemInfo.delete(0, sbBoardItemInfo.length());

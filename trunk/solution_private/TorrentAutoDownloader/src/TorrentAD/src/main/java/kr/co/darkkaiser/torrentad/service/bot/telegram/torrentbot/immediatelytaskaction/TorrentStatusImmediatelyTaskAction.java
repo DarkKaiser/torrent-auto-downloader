@@ -57,7 +57,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				List<Torrent> torrents = methodResult.arguments.torrents;
 
 				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("토렌트 서버의 상태 조회가 완료되었습니다.\n\n");
+				sbAnswerMessage.append("토렌트 서버의 상태 조회가 완료되었습니다:\n\n");
 
 				if (torrents.size() == 0) {
 					sbAnswerMessage.append("등록된 토렌트 파일이 없습니다.");
