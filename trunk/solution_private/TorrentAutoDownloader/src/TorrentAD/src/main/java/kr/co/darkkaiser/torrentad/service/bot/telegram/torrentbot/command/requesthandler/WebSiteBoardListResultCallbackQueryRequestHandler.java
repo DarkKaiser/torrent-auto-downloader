@@ -20,8 +20,8 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytas
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractRequestHandler {
@@ -125,7 +125,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
 				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
+				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
@@ -154,7 +154,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			//
 			} else if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
 				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierAscCompare());
+				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierAsc());
 
 				// 조회된 게시물의 이전페이지 목록을 구한다.
 				int outputBoardItemCount = 0;

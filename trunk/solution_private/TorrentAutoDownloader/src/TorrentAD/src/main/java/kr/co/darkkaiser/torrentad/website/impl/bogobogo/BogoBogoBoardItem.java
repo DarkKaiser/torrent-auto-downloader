@@ -8,6 +8,7 @@ import java.util.List;
 import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.website.AbstractWebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 
 public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 
@@ -15,7 +16,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	private String detailPageURL;
 
 	// 게시물 첨부파일의 다운로드 링크 목록
-	private List<BogoBogoBoardItemDownloadLink> downloadLinks = new ArrayList<>();
+	private List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
 	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);
@@ -41,7 +42,8 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 		this.downloadLinks.clear();
 	}
 
-	public Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator() {
+	@Override
+	public Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator() {
 		return this.downloadLinks.iterator();
 	}
 
@@ -54,7 +56,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 				.append(", downloadLinks:");
 
 		boolean firstKeyword = true;
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = this.downloadLinks.iterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = this.downloadLinks.iterator();
 		while (iterator.hasNext()) {
 			if (firstKeyword == false) {
 				sb.append("|")

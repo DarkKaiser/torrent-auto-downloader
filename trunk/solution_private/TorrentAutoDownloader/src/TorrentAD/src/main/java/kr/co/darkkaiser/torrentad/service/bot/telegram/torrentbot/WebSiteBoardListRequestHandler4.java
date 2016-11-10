@@ -12,11 +12,11 @@ import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItem;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItemDownloadLink;
 
 // @@@@@
 public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
@@ -55,14 +55,14 @@ public class WebSiteBoardListRequestHandler4 extends AbstractRequestHandler {
 		WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 		
 		try {
-			Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
+			Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
 			while (iterator.hasNext() == true) {
 				WebSiteBoardItem boardItem = iterator.next();
 				
 				if (boardItem.getIdentifier() == key) {
 					// 다운로드
 					BogoBogoBoardItem bogobogoBoardItem = (BogoBogoBoardItem) boardItem;
-					Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
+					Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
 					if (downloadLinkIterator.hasNext() == false) {
 						BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
 						return;

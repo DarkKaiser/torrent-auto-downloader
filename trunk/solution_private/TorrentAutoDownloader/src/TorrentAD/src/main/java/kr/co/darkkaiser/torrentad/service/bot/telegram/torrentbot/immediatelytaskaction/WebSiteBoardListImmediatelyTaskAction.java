@@ -17,7 +17,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
@@ -79,7 +79,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			////////////////////////////////////////////////////////////////
 
 			// 선택된 게시판을 조회한다.
-			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true, new WebSiteBoardItemIdentifierDescCompare());
+			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true, new WebSiteBoardItemComparatorIdentifierDesc());
 
 			// 현재의 작업요청 이후에 클라이언트로부터 새로운 작업요청이 들어온 경우, 현재 작업요청을 클라이언트로 알리지 않는다.
 			if (this.chatRoom.getRequestId() != this.requestId)

@@ -1,6 +1,8 @@
 package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
-public interface BogoBogoBoardItemDownloadLink {
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
+
+public interface BogoBogoBoardItemDownloadLink extends WebSiteBoardItemDownloadLink {
 
 	String getId();
 
@@ -15,13 +17,5 @@ public interface BogoBogoBoardItemDownloadLink {
 	String getFileId();
 	
 	String getFileName();
-	
-	boolean isDownloadable();
-	
-	void setDownloadable(boolean flag);
-
-	boolean isDownloadCompleted();
-	
-	void setDownloadCompleted(boolean flag);
 
 }

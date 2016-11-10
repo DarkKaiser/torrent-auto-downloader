@@ -1,6 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
 import java.util.Date;
+import java.util.Iterator;
 
 public interface WebSiteBoardItem {
 
@@ -13,5 +14,7 @@ public interface WebSiteBoardItem {
 	Date getRegistDate();
 
 	String getRegistDateString();
+
+	Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator();
 
 }

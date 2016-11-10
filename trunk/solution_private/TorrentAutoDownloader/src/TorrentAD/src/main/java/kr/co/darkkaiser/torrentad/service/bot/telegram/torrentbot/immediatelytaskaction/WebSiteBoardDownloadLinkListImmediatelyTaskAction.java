@@ -12,10 +12,9 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItem;
-import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItemDownloadLink;
 
 public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -73,7 +72,7 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 			////////////////////////////////////////////////////////////////
 
 			// 선택된 게시판을 조회한다.
-			Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
+			Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
 			while (iterator.hasNext() == true) {
 				// 사용자가 선택한 게시물을 찾는다.
 				WebSiteBoardItem boardItem = iterator.next();
@@ -82,10 +81,9 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 
 //				// @@@@@
 //				// 다운로드
-				BogoBogoBoardItem bogobogoBoardItem = (BogoBogoBoardItem) boardItem;
-				Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
+				Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator = boardItem.downloadLinkIterator();
 				if (downloadLinkIterator.hasNext() == false) {
-					handler.download3(bogobogoBoardItem);
+					handler.download3(boardItem);
 				}
 				
 //				downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();

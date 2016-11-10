@@ -13,7 +13,7 @@ import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTas
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
@@ -33,7 +33,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 		validate();
 
 		try {
-			Iterator<WebSiteBoardItem> iterator = handler.listAndSearch(this.searchContext, false, new WebSiteBoardItemIdentifierAscCompare());
+			Iterator<WebSiteBoardItem> iterator = handler.listAndSearch(this.searchContext, false, new WebSiteBoardItemComparatorIdentifierAsc());
 
 			if (iterator.hasNext() == false) {
 				logger.debug("검색된 게시물이 0건 입니다.(Task:{})", getTaskDescription());

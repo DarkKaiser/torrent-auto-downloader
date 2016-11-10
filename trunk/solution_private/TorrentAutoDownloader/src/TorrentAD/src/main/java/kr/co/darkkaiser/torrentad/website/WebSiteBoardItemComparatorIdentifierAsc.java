@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.website;
 
 import java.util.Comparator;
 
-public class WebSiteBoardItemIdentifierAscCompare implements Comparator<WebSiteBoardItem> {
+public class WebSiteBoardItemComparatorIdentifierAsc implements Comparator<WebSiteBoardItem> {
 
 	@Override
 	public int compare(WebSiteBoardItem lhs, WebSiteBoardItem rhs) {

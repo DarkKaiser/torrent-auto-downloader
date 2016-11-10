@@ -9,7 +9,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytas
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
@@ -43,7 +43,7 @@ public class SearchBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAct
 			// @@@@@ connector에서 로그인이 안 되어있을때의 처리, 오랜 경과시간 이후의 처리
 			
 			WebSiteHandler handler = (WebSiteHandler) this.connector.getConnection();
-			Iterator<WebSiteBoardItem> iterator = handler.searchNow(this.board, "드래곤", new WebSiteBoardItemIdentifierDescCompare());
+			Iterator<WebSiteBoardItem> iterator = handler.searchNow(this.board, "드래곤", new WebSiteBoardItemComparatorIdentifierDesc());
 
 			// @@@@@ 읽어드린 게시물 데이터를 클라이언트로 전송
 			while (iterator.hasNext() == true) {

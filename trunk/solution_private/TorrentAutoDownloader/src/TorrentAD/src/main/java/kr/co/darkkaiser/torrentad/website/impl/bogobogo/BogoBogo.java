@@ -39,7 +39,8 @@ import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
@@ -330,7 +331,7 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 
 		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
@@ -343,7 +344,7 @@ public class BogoBogo extends AbstractWebSite {
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
-			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
 			downloadLink.setDownloadable(true);
 		}
 
@@ -362,7 +363,7 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 
 		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
@@ -376,7 +377,7 @@ public class BogoBogo extends AbstractWebSite {
 		int i = 0;
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
-			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
 			++i;
 			if (i == index)
 				downloadLink.setDownloadable(true);
@@ -401,7 +402,7 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
 		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
@@ -414,7 +415,7 @@ public class BogoBogo extends AbstractWebSite {
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
-			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
 			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
 
@@ -553,7 +554,7 @@ public class BogoBogo extends AbstractWebSite {
 			return null;
 		}
 
-		Collections.sort(boardItems, new WebSiteBoardItemIdentifierAscCompare());
+		Collections.sort(boardItems, new WebSiteBoardItemComparatorIdentifierAsc());
 		
 		return boardItems;
 	}
@@ -637,9 +638,9 @@ public class BogoBogo extends AbstractWebSite {
 
 		assert StringUtil.isBlank(detailPageURL) == false;
 		
-		Iterator<BogoBogoBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
-			BogoBogoBoardItemDownloadLink downloadLink = iterator.next();
+			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
 			if (downloadLink.isDownloadable() == false || downloadLink.isDownloadCompleted() == true)
 				continue;
 
