@@ -5,9 +5,9 @@ import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.GetTorrentImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.TorrentStatusImmediatelyTaskAction;
 
 public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler {
 	
@@ -16,7 +16,7 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public TorrentStatusRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("상태", "토렌트 서버의 다운로드 상태를 조회합니다.");
+		super("상태", "토렌트 서버의 상태를 조회합니다.");
 		
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -37,12 +37,11 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 다운로드 상태를 조회중입니다. 잠시만 기다려 주세요.");
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 상태를 조회중입니다. 잠시만 기다려 주세요.");
 
-		// @@@@@
-		// 게시판 조회를 시작한다.
+		// 토렌트 상태 조회를 시작한다.
 		this.immediatelyTaskExecutorService.submit(
-				new GetTorrentImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), chatRoom, this.torrentBotResource, absSender));
+				new TorrentStatusImmediatelyTaskAction(absSender, chatRoom, this.torrentBotResource));
 	}
 
 	@Override

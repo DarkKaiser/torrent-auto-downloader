@@ -233,7 +233,7 @@ public class TransmissionRpcClient implements TorrentClient {
 				.userAgent(USER_AGENT)
 				.header("Authorization", this.authorization)
 				.header("X-Transmission-Session-Id", this.sessionId)
-				.requestBody("{\"method\": \"torrent-get\", \"arguments\":{\"fields\":[\"id\",\"isFinished\",\"error\",\"errorString\",\"isStalled\",\"status\"]}}")
+				.requestBody("{\"method\": \"torrent-get\", \"arguments\":{\"fields\":[\"id\",\"name\",\"isFinished\",\"percentDone\",\"error\",\"errorString\",\"isStalled\",\"status\"]}}")
 				.method(Connection.Method.POST)
 				.ignoreHttpErrors(true)
 				.ignoreContentType(true)
