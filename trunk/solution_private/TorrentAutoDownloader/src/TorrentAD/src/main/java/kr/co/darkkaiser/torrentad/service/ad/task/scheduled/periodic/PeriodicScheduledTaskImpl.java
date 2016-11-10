@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import kr.co.darkkaiser.torrentad.util.Tuple;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
@@ -21,8 +21,8 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicScheduledTaskImpl.class);
 
-	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
-		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry);
+	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, MetadataRepository metadataRepository) {
+		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, metadataRepository);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 							this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 
 							// 다운로드 받은 게시물 식별자를 저장한다.
-							String key = String.format("%s.%s", getTaskId(), Constants.AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
-							getTaskMetadataRegistry().setLong(key, identifier);
+							String key = String.format("%s.%s", getTaskId(), Constants.MR_ITEM_AD_SERVICE_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+							getMetadataRepository().setLong(key, identifier);
 						}
 					}
 				}

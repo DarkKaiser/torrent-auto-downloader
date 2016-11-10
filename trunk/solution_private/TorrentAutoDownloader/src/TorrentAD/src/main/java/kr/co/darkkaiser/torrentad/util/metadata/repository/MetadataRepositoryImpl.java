@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.ad.task;
+package kr.co.darkkaiser.torrentad.util.metadata.repository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,15 +13,15 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.util.SortedProperties;
 
-public final class TaskMetadataRegistryImpl implements TaskMetadataRegistry {
+public final class MetadataRepositoryImpl implements MetadataRepository {
 
-	private static final Logger logger = LoggerFactory.getLogger(TaskMetadataRegistryImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MetadataRepositoryImpl.class);
 
 	private final String filePath;
 
 	private final Properties properties = new SortedProperties();
 
-	public TaskMetadataRegistryImpl(String filePath) {
+	public MetadataRepositoryImpl(String filePath) {
 		if (filePath == null)
 			throw new NullPointerException("filePath");
 		if (StringUtil.isBlank(filePath) == true)

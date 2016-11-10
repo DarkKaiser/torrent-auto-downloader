@@ -4,6 +4,8 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+
 public abstract class AbstractTask implements Task {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractTask.class);
@@ -13,19 +15,19 @@ public abstract class AbstractTask implements Task {
 	protected final String taskId;
 	protected final String taskDescription;
 	
-	protected final TaskMetadataRegistry taskMetadataRegistry;
+	protected final MetadataRepository metadataRepository;
 	
-	protected AbstractTask(TaskType taskType, String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
+	protected AbstractTask(TaskType taskType, String taskId, String taskDescription, MetadataRepository metadataRepository) {
 		if (taskType == null)
 			throw new NullPointerException("taskType");
 		if (StringUtil.isBlank(taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		if (taskMetadataRegistry == null)
-			throw new NullPointerException("taskMetadataRegistry");
+		if (metadataRepository == null)
+			throw new NullPointerException("metadataRepository");
 
 		this.taskId = taskId;
 		this.taskType = taskType;
-		this.taskMetadataRegistry = taskMetadataRegistry;
+		this.metadataRepository = metadataRepository;
 
 		if (StringUtil.isBlank(taskDescription) == false) {
 			this.taskDescription = taskDescription;
@@ -50,8 +52,8 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public TaskMetadataRegistry getTaskMetadataRegistry() {
-		return this.taskMetadataRegistry;
+	public MetadataRepository getMetadataRepository() {
+		return this.metadataRepository;
 	}
 
 	@Override
@@ -60,8 +62,8 @@ public abstract class AbstractTask implements Task {
 			throw new NullPointerException("taskType");
 		if (StringUtil.isBlank(this.taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		if (this.taskMetadataRegistry == null)
-			throw new NullPointerException("taskMetadataRegistry");
+		if (this.metadataRepository == null)
+			throw new NullPointerException("metadataRepository");
 	}
 
 	@Override

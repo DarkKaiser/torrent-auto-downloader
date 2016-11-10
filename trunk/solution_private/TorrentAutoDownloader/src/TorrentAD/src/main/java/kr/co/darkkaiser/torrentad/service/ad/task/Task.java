@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.service.ad.task;
 
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+
 public interface Task {
 
 	TaskType getTaskType();
@@ -8,7 +10,7 @@ public interface Task {
 
 	String getTaskDescription();
 
-	TaskMetadataRegistry getTaskMetadataRegistry();
+	MetadataRepository getMetadataRepository();
 
 	void validate();
 

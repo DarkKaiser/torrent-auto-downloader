@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
@@ -14,8 +14,8 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 
 	protected ImmediatelyTaskAction action;
 
-	public ImmediatelyTaskImpl(String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
-		super(TaskType.IMMEDIATELY, taskId, taskDescription, taskMetadataRegistry);
+	public ImmediatelyTaskImpl(String taskId, String taskDescription, MetadataRepository metadataRepository) {
+		super(TaskType.IMMEDIATELY, taskId, taskDescription, metadataRepository);
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
-package kr.co.darkkaiser.torrentad.service.ad.task;
+package kr.co.darkkaiser.torrentad.util.metadata.repository;
 
-public interface TaskMetadataRegistry {
+public interface MetadataRepository {
 
 	int getInt(String key, int defaultValue);
 

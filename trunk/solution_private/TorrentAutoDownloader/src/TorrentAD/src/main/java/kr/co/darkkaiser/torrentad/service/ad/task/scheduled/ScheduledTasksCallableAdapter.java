@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistryImpl;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapterResult;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 import kr.co.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
@@ -26,19 +26,19 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 
 	private final Configuration configuration;
 	
-	private final TaskMetadataRegistry taskMetadataRegistry;
+	private final MetadataRepository metadataRepository;
 
 	public ScheduledTasksCallableAdapter(Configuration configuration) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		this.taskMetadataRegistry = new TaskMetadataRegistryImpl(Constants.AD_SERVICE_TASK_METADATA_FILE_NAME);
+		this.metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
 
 		this.siteConnector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);
 
 		// Task 목록을 생성한다.
-		this.tasks = ScheduledTasksGenerator.generate(this.configuration, this.taskMetadataRegistry, this.siteConnector.getSite());
+		this.tasks = ScheduledTasksGenerator.generate(this.configuration, this.metadataRepository, this.siteConnector.getSite());
 	}
 
 	@Override

@@ -18,8 +18,8 @@ import org.w3c.dom.NodeList;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskFactory;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
@@ -32,11 +32,11 @@ public final class ScheduledTasksGenerator {
 	private ScheduledTasksGenerator() {
 	}
 
-	public static List<ScheduledTask> generate(Configuration configuration, TaskMetadataRegistry taskMetadataRegistry, WebSite site) throws Exception {
+	public static List<ScheduledTask> generate(Configuration configuration, MetadataRepository metadataRepository, WebSite site) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
-		if (taskMetadataRegistry == null)
-			throw new NullPointerException("taskMetadataRegistry");
+		if (metadataRepository == null)
+			throw new NullPointerException("metadataRepository");
 		if (site == null)
 			throw new NullPointerException("site");
 		
@@ -58,7 +58,7 @@ public final class ScheduledTasksGenerator {
 				if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
 					String taskId = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_ID).getNodeValue();
 					String taskDescription = cvNode.getAttributes().getNamedItem(Constants.APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION).getNodeValue();
-					ScheduledTask task = ((ScheduledTask) TaskFactory.createTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, taskMetadataRegistry))
+					ScheduledTask task = ((ScheduledTask) TaskFactory.createTask(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, metadataRepository))
 							.setWebSite(site);
 
 					NodeList cvChildNodeList = cvNode.getChildNodes();

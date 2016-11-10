@@ -2,8 +2,8 @@ package kr.co.darkkaiser.torrentad.service.ad.task.scheduled;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.service.ad.task.AbstractTask;
-import kr.co.darkkaiser.torrentad.service.ad.task.TaskMetadataRegistry;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
@@ -16,8 +16,8 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 
 	protected WebSiteSearchContext searchContext;
 
-	public AbstractScheduledTask(TaskType taskType, String taskId, String taskDescription, TaskMetadataRegistry taskMetadataRegistry) {
-		super(taskType, taskId, taskDescription, taskMetadataRegistry);
+	public AbstractScheduledTask(TaskType taskType, String taskId, String taskDescription, MetadataRepository metadataRepository) {
+		super(taskType, taskId, taskDescription, metadataRepository);
 	}
 
 	@Override
@@ -28,9 +28,9 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 		this.site = site;
 		this.searchContext = this.site.createSearchContext();
 
-		// 최근에 다운로드 받은 게시불 식별자를 구한다.
-		String key = String.format("%s.%s", this.taskId, Constants.AD_SERVICE_TASK_METADATA_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
-		setLatestDownloadBoardItemIdentifier(taskMetadataRegistry.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
+		// 최근에 다운로드 받은 게시물 식별자를 구한다.
+		String key = String.format("%s.%s", this.taskId, Constants.MR_ITEM_AD_SERVICE_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+		setLatestDownloadBoardItemIdentifier(metadataRepository.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
 		
 		return this;
 	}
