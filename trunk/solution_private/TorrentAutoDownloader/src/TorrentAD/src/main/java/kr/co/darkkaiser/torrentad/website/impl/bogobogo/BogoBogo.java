@@ -275,9 +275,6 @@ public class BogoBogo extends AbstractWebSite {
 				continue;
 
 			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
-				// 다운로드 링크 로드가 실패하더라도 검색 결과에 포함시키고, 나중에 한번 더 로드한다.
-				loadBoardItemDownloadLink(boardItem);//@@@@@ 이것만 여기에 둬야하나??? 다른 함수와는 다른 동작
-
 				resultList.add(boardItem);
 
 				logger.debug("검색된 게시물:" + boardItem);

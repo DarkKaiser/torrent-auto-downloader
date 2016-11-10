@@ -63,13 +63,15 @@ public class WebSiteBoardDownloadLinkListRequestHandler extends AbstractRequestH
 			if (board == null)
 				throw new NullPointerException("board");
 
-			long identifierValue = Long.parseLong(parameters[1]);
-		
-			// @@@@@ message
+			long identifier = Long.parseLong(parameters[1]);
 
-			// 게시판 조회를 시작한다.
+			// 선택된 게시물의 첨부파일 확인중 메시지를 사용자에게 보낸다.
+			int messageId = update.getMessage().getMessageId();
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택된 게시물의 첨부파일을 확인중입니다. 잠시만 기다려 주세요.", messageId);
+
+			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardDownloadLinkListImmediatelyTaskAction(absSender, chatRoom, board, identifierValue, this.torrentBotResource));
+					new WebSiteBoardDownloadLinkListImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 

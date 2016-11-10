@@ -20,6 +20,8 @@ import kr.co.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItemDownloa
 public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardDownloadLinkListImmediatelyTaskAction.class);
+	
+	private final int messageId;
 
 	private final AbsSender absSender;
 
@@ -27,13 +29,14 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 
 	private final WebSiteBoard board;
 	
-	private final long identifierValue;
+	private final long identifier;
 
 	private final TorrentBotResource torrentBotResource;
 	
 	private final WebSite site;
 
-	public WebSiteBoardDownloadLinkListImmediatelyTaskAction(AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long identifierValue, TorrentBotResource torrentBotResource) {
+	// @@@@@
+	public WebSiteBoardDownloadLinkListImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long identifierValue, TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -45,9 +48,10 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 		if (torrentBotResource.getSite() == null)
 			throw new NullPointerException("site");
 
+		this.messageId = messageId;
 		this.board = board;
 		this.chatRoom = chatRoom;
-		this.identifierValue = identifierValue;
+		this.identifier = identifierValue;
 		this.absSender = absSender;
 		this.torrentBotResource = torrentBotResource;
 		this.site = torrentBotResource.getSite();
@@ -55,7 +59,7 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s 다운로드 링크 조회", this.site.getName(), this.board.getDescription());
+		return String.format("%s > %s > %d 첨부파일 조회", this.site.getName(), this.board.getDescription(), this.identifier);
 	}
 
 	@Override
@@ -73,42 +77,42 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 			while (iterator.hasNext() == true) {
 				// 사용자가 선택한 게시물을 찾는다.
 				WebSiteBoardItem boardItem = iterator.next();
-				if (boardItem.getIdentifier() != this.identifierValue)
+				if (boardItem.getIdentifier() != this.identifier)
 					continue;
 
-				// @@@@@
-				// 다운로드
+//				// @@@@@
+//				// 다운로드
 				BogoBogoBoardItem bogobogoBoardItem = (BogoBogoBoardItem) boardItem;
 				Iterator<BogoBogoBoardItemDownloadLink> downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
 				if (downloadLinkIterator.hasNext() == false) {
 					handler.download3(bogobogoBoardItem);
 				}
 				
-				downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
-				if (downloadLinkIterator.hasNext() == false) {
-					BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
-					return true;
-				}
-				
-				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("어떤 파일에 대한 첨부파일 조회가 완료되었습니다.\n\n");
-
-				int i = 0;
-				while (downloadLinkIterator.hasNext() == true) {
-					BogoBogoBoardItemDownloadLink next = downloadLinkIterator.next();
-
-					++i;
-					sbAnswerMessage.append(next.getFileName()).append(", 확장자:").append(next.getValue4()).append(" ").append(BotCommandUtils.toComplexBotCommandString("dl", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(i))).append("\n");
-				}
-
-				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
-//					Tuple<Integer,Integer> download = handler.download2(boardItem);
+//				downloadLinkIterator = bogobogoBoardItem.downloadLinkIterator();
+//				if (downloadLinkIterator.hasNext() == false) {
+//					BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "다운로드 할 첨부파일을 읽을 수 업습니다.");
+//					return true;
+//				}
+//				
+//				StringBuilder sbAnswerMessage = new StringBuilder();
+//				sbAnswerMessage.append("어떤 파일에 대한 첨부파일 조회가 완료되었습니다.\n\n");
+//
+//				int i = 0;
+//				while (downloadLinkIterator.hasNext() == true) {
+//					BogoBogoBoardItemDownloadLink next = downloadLinkIterator.next();
+//
+//					++i;
+//					sbAnswerMessage.append(next.getFileName()).append(", 확장자:").append(next.getValue4()).append(" ").append(BotCommandUtils.toComplexBotCommandString("dl", boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(i))).append("\n");
+//				}
+//
+//				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+////					Tuple<Integer,Integer> download = handler.download2(boardItem);
 
 				return true;
 			}
 
-			// 선택한 게시물을 찾을 수 없는 경우, 사용자에게 에러 메시지츨 보낸다.
-			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택하신 게시물을 찾을 수 없습니다. 다시 조회 혹은 검색을 하여주세요. 문제가 계속해서 발생하사면 관리자에게 문의하세요.");
+			// 선택한 게시물을 찾을 수 없는 경우, 사용자에게 에러 메시지를 보낸다.
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "해당 게시물을 찾을 수 없습니다. 조회 또는 검색을 다시 시도하여 주세요.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
 		} catch (Exception e) {
 			logger.error(null, e);
 
@@ -124,6 +128,7 @@ public class WebSiteBoardDownloadLinkListImmediatelyTaskAction extends AbstractI
 	public void validate() {
 		super.validate();
 
+		// @@@@@
 		if (this.absSender == null)
 			throw new NullPointerException("absSender");
 		if (this.chatRoom == null)

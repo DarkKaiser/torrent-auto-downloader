@@ -52,11 +52,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 
 		chatRoom.setBoard(board);
 
-		BotCommandUtils.sendMessage(
-				absSender,
-				chatRoom.getChatId(),
-				new StringBuilder().append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.").toString(),
-				update.getMessage().getMessageId());
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.").toString());
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {
