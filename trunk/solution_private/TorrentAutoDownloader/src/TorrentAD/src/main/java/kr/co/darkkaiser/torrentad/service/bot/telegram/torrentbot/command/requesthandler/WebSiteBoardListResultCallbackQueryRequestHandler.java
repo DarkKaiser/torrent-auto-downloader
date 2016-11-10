@@ -1,4 +1,4 @@
-package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,9 +12,10 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.AbstractRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -24,9 +25,9 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierAscCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemIdentifierDescCompare;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultInlineCommandRequestHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultCallbackQueryRequestHandler.class);
 
 	private final WebSite site;
 	
@@ -34,8 +35,8 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListResultInlineCommandRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND);
+	public WebSiteBoardListResultCallbackQueryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+		super(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND);
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -54,10 +55,10 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 		if (super.executable0(command, parameters, 2, 3) == false)
 			return false;
 
-		String inlineCommand = parameters[0];
+		String callbackQueryCommand = parameters[0];
 		if (parameters.length >= 3) {
-			if (inlineCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
-					&& inlineCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
+			if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
+					&& callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
 				return false;
 			}
 			
@@ -67,7 +68,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 		        return false;
 		    }
 		} else {
-			if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
+			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
 				return false;
 		}
 
@@ -84,14 +85,14 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			if (board == null)
 				throw new NullPointerException("board");
 
-			String inlineCommand = parameters[0];
+			String callbackQueryCommand = parameters[0];
 			String callbackQueryId = update.getCallbackQuery().getId();
 			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
 
 			//
 			// 새로고침 인라인명령
 			//
-			if (inlineCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
 				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
 
@@ -123,7 +124,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			//
 			// 다음페이지 인라인명령
 			//
-			if (inlineCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
+			if (callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
 				// 선택된 게시판을 조회한다.
 				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierDescCompare());
 
@@ -152,7 +153,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 			//
 			// 이전페이지 인라인명령
 			//
-			} else if (inlineCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+			} else if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
 				// 선택된 게시판을 조회한다.
 				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemIdentifierAscCompare());
 
@@ -185,20 +186,20 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 					BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
 				}
 			} else {
-				throw new IllegalArgumentException(String.format("지원하지 않는 인라인 명령(%s)입니다.", inlineCommand));
+				throw new IllegalArgumentException(String.format("지원하지 않는 인라인 명령(%s)입니다.", callbackQueryCommand));
 			}
 
 			// 인라인 키보드를 설정한다.
 			List<InlineKeyboardButton> keyboardButtonList = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, board.getCode())),
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, board.getCode())),
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMaxValue))),
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMaxValue))),
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_INLINE_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMinValue)))
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMinValue)))
 			);
 
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList));
@@ -215,7 +216,7 @@ public class WebSiteBoardListResultInlineCommandRequestHandler extends AbstractR
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(WebSiteBoardListResultInlineCommandRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardListResultCallbackQueryRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
