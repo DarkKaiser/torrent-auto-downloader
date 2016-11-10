@@ -47,11 +47,11 @@ public final class BotCommandConstants {
 	public static final String LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA = "refresh";
 
 	// 조회 및 검색 결과 게시물 목록에서 CallbackQuery 명령의 이전페이지 InlineKyeboard 버튼
-	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "이전 페이지";
+	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "《 이전 페이지";
 	public static final String LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "prev-page";
 	
 	// 조회 및 검색 결과 게시물 목록에서 CallbackQuery 명령의 다음페이지 InlineKyeboard 버튼
-	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "다음 페이지";
+	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT = "다음 페이지 》";
 	public static final String LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA = "next-page";
 
 }
