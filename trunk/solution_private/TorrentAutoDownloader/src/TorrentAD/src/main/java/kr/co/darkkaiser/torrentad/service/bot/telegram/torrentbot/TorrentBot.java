@@ -4,12 +4,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
@@ -59,7 +57,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
-		this.configuration = configuration;//@@@@@
+		this.configuration = configuration;
 		
 		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
 		
@@ -69,8 +67,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
-		
-		// @@@@@
 		this.requestHandlerRegistry.register(new WebSiteBoardListResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadLinkListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadRequestHandler(this, immediatelyTaskExecutorService));
@@ -153,7 +149,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		try {
 			if (update.hasMessage() == true) {
 	            Message message = update.getMessage();
-	            
+
 	            // 수신된 메시지를 명령+파라메터로 분리한다.
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
@@ -165,86 +161,29 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
 					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
-					
 					return;
 				}
 			}
 			
-			// @@@@@
-			//////////////////////////////////////////////////////////
 			CallbackQuery callbackQuery = update.getCallbackQuery();
 			if (callbackQuery != null) {
 				String data = callbackQuery.getData();
 				Message message = callbackQuery.getMessage();
-				
+
+	            // 수신된 메시지를 명령+파라메터로 분리한다.
 	            OutParam<String> outCommand = new OutParam<>();
 				OutParam<String[]> outParameters = new OutParam<>();
 				OutParam<Boolean> outContainInitialChar = new OutParam<>();
 	            BotCommandUtils.parseBotCommand(data, outCommand, outParameters, outContainInitialChar);
-	            
+
 	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
 					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
-					
 					return;
 				}
-				
-				System.out.println("############### callbackquery 못찾음");
-				
-				/*
-				// 인라인키보드 반환
-//				EditMessageReplyMarkup e;
-				System.out.println(callbackQuery);
-				
-				AnswerCallbackQuery a = new AnswerCallbackQuery();
-				a.setCallbackQueryId(callbackQuery.getId());
-//				a.setText("ddd");
-				answerCallbackQuery(a);
-				
-				
-				
-				Message message = callbackQuery.getMessage();
-				
-				EditMessageText e = new EditMessageText();
-				e.setChatId(message.getChat().getId().toString())
-				.setMessageId(message.getMessageId())
-				.setText("ddd");
-				
-			      InlineKeyboardMarkup inline = new InlineKeyboardMarkup();
-			      
-			      List<InlineKeyboardButton> keyboard = new ArrayList<>();
-			      InlineKeyboardButton keyboardFirstRow = new InlineKeyboardButton();
-			      keyboardFirstRow.setText("새 텍스트");
-			      keyboardFirstRow.setCallbackData("callbackData");
-			      keyboard.add(keyboardFirstRow);
-
-			      InlineKeyboardButton keyboardFirstRow2 = new InlineKeyboardButton();
-			      keyboardFirstRow2.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-			      keyboardFirstRow2.setCallbackData("keyboardFirstRow2");
-			      keyboard.add(keyboardFirstRow2);
-			      
-			      List<InlineKeyboardButton> keyboard2 = new ArrayList<>();
-			      InlineKeyboardButton keyboardFirstRow3 = new InlineKeyboardButton();
-			      keyboardFirstRow3.setText("TEXT asjdfl asdlfjlas dfa sdlfj2");
-			      keyboardFirstRow3.setCallbackData("keyboardFirstRow3");
-			      keyboard2.add(keyboardFirstRow3);
-			      
-			      List<List<InlineKeyboardButton>> keyboards = new ArrayList<>();
-			      keyboards.add(keyboard);
-			      keyboards.add(keyboard2);
-
-					inline.setKeyboard(keyboards);
-
-				e.setReplyMarkup(inline);
-				
-				editMessageText(e);
-
-				return;
-				*/
 			}
-			//////////////////////////////////////////////////////////
 			
 			onUnknownCommandMessage(update);
 		} catch (Exception e) {
@@ -262,16 +201,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
 		sbAnswerMessage.append("명령어를 모르시면 '").append(botCommand.getCommand()).append("'을 입력하세요.");
 
-		SendMessage answerMessage = new SendMessage()
-				.setChatId(message.getChatId().toString())
-				.setText(sbAnswerMessage.toString())
-				.enableHtml(true);
-
-		try {
-			sendMessage(answerMessage);
-		} catch (TelegramApiException e) {
-			logger.error(null, e);
-		}
+		BotCommandUtils.sendMessage(this, message.getChatId(), sbAnswerMessage.toString());
 	}
 
 	private ChatRoom getChatRoom(Long chatId) {
