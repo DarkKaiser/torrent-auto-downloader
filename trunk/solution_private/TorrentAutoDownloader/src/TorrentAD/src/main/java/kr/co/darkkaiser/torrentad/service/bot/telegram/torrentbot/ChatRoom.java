@@ -8,6 +8,7 @@ public final class ChatRoom {
 
 	private final long chatId;
 
+	// @@@@@ 저장 및 로드되도록
 	// 조회 및 검색하려는 게시판
 	private WebSiteBoard board;
 
