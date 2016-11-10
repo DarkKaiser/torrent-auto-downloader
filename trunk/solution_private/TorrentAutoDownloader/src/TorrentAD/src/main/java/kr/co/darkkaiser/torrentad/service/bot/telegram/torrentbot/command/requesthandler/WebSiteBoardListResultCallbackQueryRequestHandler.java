@@ -138,8 +138,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					// @@@@@ 추후 문자열 수정
-					sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append("(").append(boardItem.getRegistDateString()).append(")").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
@@ -170,8 +169,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					// @@@@@ 추후 문자열 수정
-					sbBoardItemInfo.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbBoardItemInfo.append("(").append(boardItem.getRegistDateString()).append(")").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 
 					sbAnswerMessage.insert(offsetBoardItemInfo, sbBoardItemInfo);
 					sbBoardItemInfo.delete(0, sbBoardItemInfo.length());
