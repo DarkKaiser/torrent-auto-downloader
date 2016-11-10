@@ -39,8 +39,12 @@ public interface WebSiteHandler {
 	 */
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws Exception;
 	
+	/**
+	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.
+	 */
+	boolean loadDownloadLink(WebSiteBoardItem boardItem) throws Exception;
+
 	// @@@@@
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download2(WebSiteBoardItem boardItem, long index) throws Exception;
-	void download3(WebSiteBoardItem boardItem) throws Exception;
 	
 }

@@ -231,7 +231,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		if (loadBoardItems((BogoBogoBoard) board, "", loadNow) == false)
+		if (loadBoardItems0((BogoBogoBoard) board, "", loadNow) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -261,7 +261,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		if (loadBoardItems(siteSearchContext.getBoard(), "", loadNow) == false)
+		if (loadBoardItems0(siteSearchContext.getBoard(), "", loadNow) == false)
 			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
@@ -319,9 +319,8 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@
 	@Override
-	public void download3(WebSiteBoardItem boardItem) throws Exception {
+	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws Exception {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -330,25 +329,26 @@ public class BogoBogo extends AbstractWebSite {
 
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 
-		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
 		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return;
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem));
+				return false;
 			}
 		}
 
 		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
 
-		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		// 다운로드 링크에서 이미 다운로드가 완료된 항목은 제외시킨다.
 		iterator = siteBoardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
-			downloadLink.setDownloadable(true);
+			// @@@@@ 사용자가 동시에 여러개 날릴때 여러번 다운로드 받게 되는데 이때 같은 객체이므로 다운로드도 여러번 되는거 아닌가?
+			downloadLink.setDownloadable(downloadLink.isDownloadCompleted() == false);
 		}
 
-		return;
+		return true;
 	}
 
 	// @@@@@
@@ -365,7 +365,7 @@ public class BogoBogo extends AbstractWebSite {
 		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
 		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
 				return new Tuple<Integer, Integer>(-1, -1);
 			}
@@ -385,7 +385,7 @@ public class BogoBogo extends AbstractWebSite {
 				downloadLink.setDownloadable(false);
 		}
 
-		return downloadBoardItemDownloadLink(siteBoardItem);
+		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
 	@Override
@@ -401,10 +401,10 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
-		// 다운로드 링크 로드가 이전에 실패한 경우 다시 로드한다. 
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
 		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink(siteBoardItem) == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
 				return new Tuple<Integer, Integer>(-1, -1);
 			}
@@ -419,10 +419,10 @@ public class BogoBogo extends AbstractWebSite {
 			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
 
-		return downloadBoardItemDownloadLink(siteBoardItem);
+		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
-	private boolean loadBoardItems(BogoBogoBoard board, String queryString, boolean loadNow) {
+	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -558,8 +558,8 @@ public class BogoBogo extends AbstractWebSite {
 		
 		return boardItems;
 	}
-	
-	private boolean loadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
+
+	private boolean loadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -627,7 +627,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink(BogoBogoBoardItem boardItem) {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 

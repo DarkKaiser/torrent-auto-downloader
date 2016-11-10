@@ -3,7 +3,10 @@ package kr.co.darkkaiser.torrentad.website;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.jsoup.helper.StringUtil;
 
@@ -20,6 +23,9 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	// 등록일자
 	private final Date registDate;
 	private final DateFormat registDateFormat;
+
+	// 첨부파일에 대한 다운로드 링크 목록
+	private List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
 	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
 		if (board == null)
@@ -62,18 +68,50 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	public String getRegistDateString() {
 		return this.registDateFormat.format(this.registDate);
 	}
+	
+	// @@@@@
+	@Override
+	public void addDownloadLink(WebSiteBoardItemDownloadLink downloadLink) {
+		if (downloadLink == null)
+			throw new NullPointerException("downloadLink");
+
+		this.downloadLinks.add(downloadLink);
+	}
+
+	@Override
+	public void clearDownloadLink() {
+		this.downloadLinks.clear();
+	}
+
+	@Override
+	public Iterator<WebSiteBoardItemDownloadLink> downloadLinkIterator() {
+		return this.downloadLinks.iterator();
+	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
+		StringBuilder sb = new StringBuilder()
 				.append(AbstractWebSiteBoardItem.class.getSimpleName())
 				.append("{")
 				.append("board:").append(getBoard())
 				.append(", identifier:").append(getIdentifier())
 				.append(", title:").append(getTitle())
 				.append(", registDate:").append(getRegistDateString())
-				.append("}")
-				.toString();
+				.append(", downloadLinks:");
+
+		boolean firstKeyword = true;
+		Iterator<WebSiteBoardItemDownloadLink> iterator = this.downloadLinks.iterator();
+		while (iterator.hasNext()) {
+			if (firstKeyword == false) {
+				sb.append("|")
+				  .append(iterator.next());
+			} else {
+				firstKeyword = false;
+				sb.append(iterator.next());
+			}
+		}
+
+		return sb.append("}").toString();
 	}
 
 }

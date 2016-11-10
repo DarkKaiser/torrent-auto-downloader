@@ -105,7 +105,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 				identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
 				// @@@@@ 추후 문자열 수정
-				sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_DOWNLOAD_LINK_LIST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+				sbAnswerMessage.append(boardItem.getIdentifier()).append(" : ").append(boardItem.getRegistDateString()).append(" : ").append(boardItem.getTitle().trim()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 			}
 
 			// 인라인 키보드를 설정한다.

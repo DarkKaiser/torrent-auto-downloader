@@ -11,7 +11,7 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	private final String value4;
 	private final String fileId;
 	private final String fileName;
-	
+
 	private boolean downloadable = true;
 	private boolean downloadCompleted = false;
 
@@ -101,7 +101,15 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 
 	@Override
 	public String toString() {
-		return getFileName();
+		// 파일명에 확장자가 포함되어 있는지 확인하여, 확장자가 포함되어 있지 않다면 추가하여 반환한다.
+		String fileName = getFileName();
+		String fileExtension = getValue4();
+		String temp = fileName.substring(fileName.length() - fileExtension.length());
+		if (fileExtension.equalsIgnoreCase(temp) == true) {
+			return fileName;
+		}
+
+		return String.format("%s.%s", getFileName(), getValue4());
 	}
-	
+
 }
