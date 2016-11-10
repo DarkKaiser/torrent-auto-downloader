@@ -69,7 +69,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandl
 
 			// 첨부파일 다운로드 시작 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
-			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택한 첨부파일을 다운로드합니다.", messageId);
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택한 첨부파일을 다운로드합니다. 다운로드 작업은 10초정도 소요됩니다.", messageId);
 
 			// 첨부파일 다운로드를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
