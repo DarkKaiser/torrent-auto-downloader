@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.common;
 public final class Constants {
 
 	public static final String APP_NAME = "TorrentAD";
-	public static final String APP_VERSION = "0.0.1";
+	public static final String APP_VERSION = "0.0.2";
 	
 	// AD Service Task에서 다운로드 진행중인 파일의 임시 확장자
 	public static final String AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION = ".notyet";
