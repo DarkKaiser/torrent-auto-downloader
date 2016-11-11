@@ -100,7 +100,7 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 
 				for (int index = 0; downloadLinkIterator.hasNext() == true; ++index) {
 					WebSiteBoardItemDownloadLink next = downloadLinkIterator.next();
-					sbAnswerMessage.append(index + 1).append(". ").append(next).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(index))).append("\n\n");
+					sbAnswerMessage.append("☞ ").append(next).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_DOWNLOAD, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()), Integer.toString(index))).append("\n\n");
 				}
 
 				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), this.messageId);

@@ -2,8 +2,6 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.jsoup.helper.StringUtil;
-
 import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;

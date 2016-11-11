@@ -62,9 +62,8 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				if (torrents.size() == 0) {
 					sbAnswerMessage.append("등록된 토렌트 파일이 없습니다.");
 				} else {
-					int index = 0;
 					for (Torrent torrent : torrents) {
-						sbAnswerMessage.append(++index).append(". ").append(torrent.getName()).append("(").append(torrent.getStatusString()).append(", ").append((int) (torrent.getPercentDone() * 100)).append("%)\n\n");
+						sbAnswerMessage.append("☞ ").append(torrent.getName()).append(" (").append((int) (torrent.getPercentDone() * 100)).append("%, ").append(torrent.getStatusString()).append(")\n\n");
 					}
 				}
 
