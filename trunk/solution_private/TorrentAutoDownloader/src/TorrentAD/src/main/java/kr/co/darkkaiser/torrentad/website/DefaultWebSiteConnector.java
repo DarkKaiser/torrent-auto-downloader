@@ -106,6 +106,10 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 
 	@Override
 	public final WebSiteConnection getConnection() {
+		// 로그아웃 되어있다면 자동으로 로그인하도록 한다.
+		if (isLogin() == false)
+			login();
+
 		return this.connection;
 	}
 
