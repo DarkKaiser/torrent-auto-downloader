@@ -22,8 +22,11 @@ public final class BotCommandConstants {
      * 인라인 명령
      */
 
-    // 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
-    public static final String INLINE_COMMAND_DOWNLOAD_LINK_LIST = "ls";
+    // 게시판 조회 결과 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
+    public static final String INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST = "ls";
+
+    // 게시판 검색 결과 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
+    public static final String INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST = "sc";
 
     // 선택된 첨부파일 다운로드 Inline 명령
     public static final String INLINE_COMMAND_DOWNLOAD = "dl";
