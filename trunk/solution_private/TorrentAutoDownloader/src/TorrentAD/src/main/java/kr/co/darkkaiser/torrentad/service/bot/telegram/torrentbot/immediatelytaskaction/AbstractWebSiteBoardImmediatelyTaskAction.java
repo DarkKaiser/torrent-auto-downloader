@@ -22,7 +22,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSiteBoardImmediatelyTaskAction.class);
 
 	protected final long requestId;
@@ -78,10 +78,10 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 				return true;
 
 			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] ").append(getLASCompletedString()).append(":\n\n");
+			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] ").append(lasCompletedString()).append(":\n\n");
 
 			if (iterator.hasNext() == false) {
-				sbAnswerMessage.append(getLASNoResultDataString());
+				sbAnswerMessage.append(lasNoResultDataString());
 
 				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
 
@@ -96,22 +96,22 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 				identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 				identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(BotCommandUtils.toComplexBotCommandString(getLASDownloadLinkListInlineCommand(), boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(BotCommandUtils.toComplexBotCommandString(lasDownloadLinkListInlineCommand(), boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 			}
 
 			// 인라인 키보드를 설정한다.
 			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getLASCallbackQueryCommand(), BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode()))
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(lasCallbackQueryCommand(), BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode()))
 			);
 			List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getLASCallbackQueryCommand(), BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMaxValue))),
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(lasCallbackQueryCommand(), BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMaxValue))),
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getLASCallbackQueryCommand(), BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMinValue)))
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(lasCallbackQueryCommand(), BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMinValue)))
 			);
 
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
@@ -135,13 +135,13 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 
 	protected abstract Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException;
 
-	protected abstract String getLASCompletedString();
+	protected abstract String lasCompletedString();
 
-	protected abstract String getLASNoResultDataString();
+	protected abstract String lasNoResultDataString();
 
-	protected abstract String getLASCallbackQueryCommand();
+	protected abstract String lasCallbackQueryCommand();
 
-	protected abstract String getLASDownloadLinkListInlineCommand();
+	protected abstract String lasDownloadLinkListInlineCommand();
 
 	@Override
 	public void validate() {

@@ -24,6 +24,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAs
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
+// @@@@@ list와 search 공통으로 뽑기
 public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultCallbackQueryRequestHandler.class);

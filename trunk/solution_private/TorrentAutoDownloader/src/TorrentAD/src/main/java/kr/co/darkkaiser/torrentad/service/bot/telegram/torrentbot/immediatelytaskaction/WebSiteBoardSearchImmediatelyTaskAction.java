@@ -36,27 +36,28 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 		return String.format("%s > %s 검색", this.site.getName(), this.board.getDescription());
 	}
 
+	@Override
 	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
 		return this.siteHandler.searchNow(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
 	}
 
 	@Override
-	protected String getLASCompletedString() {
+	protected String lasCompletedString() {
 		return "게시판 검색이 완료되었습니다";
 	}
 
 	@Override
-	protected String getLASNoResultDataString() {
+	protected String lasNoResultDataString() {
 		return "검색 결과 데이터가 없습니다.";
 	}
 
 	@Override
-	protected String getLASCallbackQueryCommand() {
+	protected String lasCallbackQueryCommand() {
 		return BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND;
 	}
 
 	@Override
-	protected String getLASDownloadLinkListInlineCommand() {
+	protected String lasDownloadLinkListInlineCommand() {
 		return BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST;
 	}
 
