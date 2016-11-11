@@ -1,12 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <torrentad>
 
+	<!--
+		* 지원 가능한 웹사이트 정보
+            1. 보고보고(BogoBogo)
+                - 영화 > 최신외국영화 : newmovie
+                - 영화 > 한국영화 : kormovie
+                - 영화 > 한국영화 : hdmovie
+                - 한국TV > 드라마(방영중) : kordramaon
+                - 한국TV > 드라마(종방) : kordramaover
+                - 한국TV > 쇼/오락/스포츠 : korentertainment
+                - 외국TV > 드라마(방영중) : foreigndramaon
+                - 외국TV > 드라마(종방) : foreigndramaover
+                - 애니메이션 > 종방 : aniover
+                - 애니메이션 > 방영중 : anion
+                - 유아, 아동용 : baby
+                - 게임 : game
+                - 만화책, 소설 : book
+                - 유틸리티, 강좌 : util
+                - 자막 나누기 : smi
+	-->
+
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
-			<!-- 사이트 이름 -->
+			<!-- 웹사이트 이름 -->
 			<website-name>보고보고</website-name>
 
-			<!-- 사이트 로그인 정보 -->
+			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id>darkkaiser</website-account-id>
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
 
