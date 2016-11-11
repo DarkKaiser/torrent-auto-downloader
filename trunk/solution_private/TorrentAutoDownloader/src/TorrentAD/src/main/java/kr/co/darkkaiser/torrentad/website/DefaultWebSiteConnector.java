@@ -43,7 +43,7 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 		}
 
 		// 웹사이트 Connection 객체를 생성한다.
-		this.connection = this.site.createConnection(getOwner(), this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+		this.connection = this.site.createConnection(this, getOwner(), this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
 
 		// 웹사이트 접속 계정정보를 읽어들인다.
 		this.accountId = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);

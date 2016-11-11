@@ -42,6 +42,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
+import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
@@ -96,7 +97,11 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	public BogoBogo(String owner, String downloadFileWriteLocation) {
-		super(owner, WebSite.BOGOBOGO);
+		this(null, owner, downloadFileWriteLocation);
+	}
+
+	public BogoBogo(WebSiteConnector siteConnector, String owner, String downloadFileWriteLocation) {
+		super(siteConnector, owner, WebSite.BOGOBOGO);
 
 		if (StringUtil.isBlank(downloadFileWriteLocation) == true)
 			throw new IllegalArgumentException("downloadFileWriteLocation은 빈 문자열을 허용하지 않습니다.");
@@ -448,7 +453,7 @@ public class BogoBogo extends AbstractWebSite {
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
-		                .cookies(this.loginConnResponse.cookies()) // @@@@@
+		                .cookies(this.loginConnResponse.cookies())
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .execute();
 

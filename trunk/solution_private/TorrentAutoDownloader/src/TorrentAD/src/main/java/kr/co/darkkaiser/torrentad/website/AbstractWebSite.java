@@ -8,22 +8,26 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 	
+	protected final WebSiteConnector siteConnector;
+	
 	protected final String owner;
 
 	protected final WebSite site;
 
 	protected WebSiteAccount account;
 	
-	protected AbstractWebSite(String owner, WebSite site) {
+	protected AbstractWebSite(WebSiteConnector siteConnector, String owner, WebSite site) {
 		if (StringUtil.isBlank(owner) == true)
 			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
 		if (site == null)
 			throw new NullPointerException("site");
 
-		this.owner = owner;
-		this.site = site;
-	}
+		this.siteConnector = siteConnector;
 
+		this.site = site;
+		this.owner = owner;
+	}
+	
 	@Override
 	public void login(WebSiteAccount account) throws Exception {
 		logger.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
@@ -46,6 +50,10 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 
 	protected abstract void logout0() throws Exception;
+
+	public WebSiteConnector getSiteConnector() {
+		return this.siteConnector;
+	}
 
 	protected String getOwner() {
 		return this.owner;
