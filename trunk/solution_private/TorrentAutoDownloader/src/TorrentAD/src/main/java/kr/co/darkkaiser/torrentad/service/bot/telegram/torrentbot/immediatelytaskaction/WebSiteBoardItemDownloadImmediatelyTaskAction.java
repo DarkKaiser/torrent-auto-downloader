@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.AbsSender;
 
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
@@ -33,10 +34,14 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	private final long boardItemDownloadLinkIndex;
 
 	private final TorrentBotResource torrentBotResource;
+	
+	private final FileTransmissionExecutorService fileTransmissionExecutorService;
 
 	private final WebSite site;
 
-	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, long boardItemDownloadLinkIndex, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, long boardItemDownloadLinkIndex, 
+			TorrentBotResource torrentBotResource, FileTransmissionExecutorService fileTransmissionExecutorService) {
+
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -47,15 +52,18 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 			throw new NullPointerException("torrentBotResource");
 		if (torrentBotResource.getSite() == null)
 			throw new NullPointerException("site");
+		if (fileTransmissionExecutorService == null)
+			throw new NullPointerException("fileTransmissionExecutorService");
 
 		this.board = board;
 		this.chatRoom = chatRoom;
 		this.messageId = messageId;
 		this.absSender = absSender;
+		this.site = torrentBotResource.getSite();
+		this.torrentBotResource = torrentBotResource;
 		this.boardItemIdentifier = boardItemIdentifier;
 		this.boardItemDownloadLinkIndex = boardItemDownloadLinkIndex;
-		this.torrentBotResource = torrentBotResource;
-		this.site = torrentBotResource.getSite();
+		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 
 	@Override
@@ -90,7 +98,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 				} else if (tuple.first() == 1 && tuple.last() == 0) {
 					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 실패하였습니다. 다시 시도하여 주세요.", this.messageId);
 				} else if (tuple.first() == 1 && tuple.last() == 1) {
-					// @@@@@ 다운로드 완료, 파일 업로드 바로 처리되도록...
+					this.fileTransmissionExecutorService.submit();
 				}
 
 				return true;
@@ -123,6 +131,8 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 			throw new NullPointerException("torrentBotResource");
 		if (this.site == null)
 			throw new NullPointerException("site");
+		if (this.fileTransmissionExecutorService == null)
+			throw new NullPointerException("fileTransmissionExecutorService");
 	}
 
 }

@@ -14,8 +14,9 @@ import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.au.action.ActionFactory;
 import kr.co.darkkaiser.torrentad.service.au.action.ActionType;
 import kr.co.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionAction;
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 
-public class TorrentAuService implements Service {
+public class TorrentAuService implements Service, FileTransmissionExecutorService {
 
 	private File fileWatchLocation;
 
@@ -61,22 +62,7 @@ public class TorrentAuService implements Service {
 		this.fileWatcherTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				File[] listFiles = TorrentAuService.this.fileWatchLocation.listFiles(new FilenameFilter() {
-				    @Override
-				    public boolean accept(File dir, String name) {
-				        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false;
-				    }
-				});
-
-				FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, TorrentAuService.this.configuration);
-
-				for (File file : listFiles) {
-					if (file.isFile() == true)
-						action.addFile(file);
-				}
-
-				if (action.getFileCount() > 0)
-					TorrentAuService.this.actionsExecutorService.submit(action);
+				TorrentAuService.this.submit();
 			}
 		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000);
 
@@ -103,6 +89,26 @@ public class TorrentAuService implements Service {
 		this.actionsExecutorService = null;
 		this.torrentSupervisoryControlTimer = null;
 		this.fileWatchLocation = null;
+	}
+
+	@Override
+	public void submit() {
+		File[] listFiles = this.fileWatchLocation.listFiles(new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false;
+		    }
+		});
+
+		FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, this.configuration);
+
+		for (File file : listFiles) {
+			if (file.isFile() == true)
+				action.addFile(file);
+		}
+
+		if (action.getFileCount() > 0)
+			this.actionsExecutorService.submit(action);
 	}
 
 }

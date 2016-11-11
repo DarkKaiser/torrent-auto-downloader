@@ -15,6 +15,7 @@ import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
@@ -56,9 +57,11 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	
 	private final MetadataRepository metadataRepository;
 
-	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) throws Exception {
+	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService, Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
+		if (fileTransmissionExecutorService == null)
+			throw new NullPointerException("fileTransmissionExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -75,7 +78,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardListResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadLinkListRequestHandler(this, immediatelyTaskExecutorService));
-		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadRequestHandler(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadRequestHandler(this, immediatelyTaskExecutorService, fileTransmissionExecutorService));
 		
 		initChatRooms();
 	}

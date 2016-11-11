@@ -6,6 +6,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
@@ -24,7 +25,9 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandl
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardItemDownloadRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	private final FileTransmissionExecutorService fileTransmissionExecutorService;
+	
+	public WebSiteBoardItemDownloadRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService) {
 		super(BotCommandConstants.INLINE_COMMAND_DOWNLOAD);
 
 		if (torrentBotResource == null)
@@ -33,10 +36,13 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandl
 			throw new NullPointerException("site");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
+		if (fileTransmissionExecutorService == null)
+			throw new NullPointerException("fileTransmissionExecutorService");
 
 		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
+		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 	
 	@Override
@@ -73,7 +79,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandl
 
 			// 첨부파일 다운로드를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, downloadLinkIndex, this.torrentBotResource));
+					new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
 		} catch (Exception e) {
 			logger.error(null, e);
 

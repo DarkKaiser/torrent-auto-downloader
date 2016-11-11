@@ -10,6 +10,7 @@ import kr.co.darkkaiser.torrentad.service.Service;
 import kr.co.darkkaiser.torrentad.service.ad.TorrentAdService;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.au.TorrentAuService;
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.TelegramBotService;
 
 public class App {
@@ -37,7 +38,7 @@ public class App {
 		try {
 			this.torrentAuService = new TorrentAuService(configuration);
 			this.torrentAdService = new TorrentAdService(configuration);
-			this.torrentBotService = new TelegramBotService((ImmediatelyTaskExecutorService) this.torrentAdService, configuration);
+			this.torrentBotService = new TelegramBotService((ImmediatelyTaskExecutorService) this.torrentAdService, (FileTransmissionExecutorService) this.torrentAuService, configuration);
 
 			return this.torrentAuService.start() && this.torrentAdService.start() && this.torrentBotService.start();
 		} catch (Exception e) {

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.BotSession;
 
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.BotService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
 
@@ -20,6 +21,8 @@ public class TelegramBotService implements BotService {
 	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
 	
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+	
+	private final FileTransmissionExecutorService fileTransmissionExecutorService;
 
 	private TelegramBotsApi botsApi;
 
@@ -29,14 +32,17 @@ public class TelegramBotService implements BotService {
 
 	private final Configuration configuration;
 
-	public TelegramBotService(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, Configuration configuration) {
+	public TelegramBotService(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService, Configuration configuration) {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
+		if (fileTransmissionExecutorService == null)
+			throw new NullPointerException("fileTransmissionExecutorService");
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
+		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 
 	@Override
@@ -50,7 +56,7 @@ public class TelegramBotService implements BotService {
 		this.botsApi = new TelegramBotsApi();
 
 		try {
-			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.configuration);
+			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.fileTransmissionExecutorService, this.configuration);
 			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
 		} catch (TelegramApiException e) {
 			logger.error(null, e);
