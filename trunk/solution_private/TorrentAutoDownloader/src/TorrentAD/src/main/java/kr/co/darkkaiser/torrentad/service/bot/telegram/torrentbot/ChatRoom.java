@@ -2,6 +2,9 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.jsoup.helper.StringUtil;
+
+import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -26,14 +29,13 @@ public final class ChatRoom {
 
 		this.chatId = chatId;
 		this.metadataRepository = metadataRepository;
-		
-		// @@@@@
-//		String code = this.metadataRepository.getString("", "");
-//		if (StringUtil.isBlank(code) == false) {
-//			WebSiteBoard board = site.getBoardByCode(code);
-//			if (board != null)
-//				this.board = board;
-//		}
+
+		String boardCode = this.metadataRepository.getString(getProperiesKeyString(Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE), "");
+		if (StringUtil.isBlank(boardCode) == false) {
+			WebSiteBoard board = site.getBoardByCode(boardCode);
+			if (board != null)
+				this.board = board;
+		}
 	}
 
 	public final long getChatId() {
@@ -56,10 +58,12 @@ public final class ChatRoom {
 		if (board == null)
 			throw new NullPointerException("board");
 
-		// @@@@@ 저장
-//		this.metadataRepository.setString("", board.getCode());
-		
 		this.board = board;
+		this.metadataRepository.setString(getProperiesKeyString(Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE), this.board.getCode());
+	}
+
+	private String getProperiesKeyString(String subKey) {
+		return String.format("%s-%d.%s", Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_PREFIX, this.chatId, subKey);
 	}
 
 	@Override

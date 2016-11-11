@@ -58,7 +58,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 							this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 
 							// 다운로드 받은 게시물 식별자를 저장한다.
-							String key = String.format("%s.%s", getTaskId(), Constants.MR_ITEM_AD_SERVICE_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+							String key = String.format("%s.%s", getTaskId(), Constants.MR_ITEM_AD_SERVICE_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
 							getMetadataRepository().setLong(key, identifier);
 						}
 					}

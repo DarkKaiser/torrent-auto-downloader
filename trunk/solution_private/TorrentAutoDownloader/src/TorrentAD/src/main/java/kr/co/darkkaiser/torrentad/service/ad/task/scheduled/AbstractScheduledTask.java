@@ -29,7 +29,7 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 		this.searchContext = this.site.createSearchContext();
 
 		// 최근에 다운로드 받은 게시물 식별자를 구한다.
-		String key = String.format("%s.%s", this.taskId, Constants.MR_ITEM_AD_SERVICE_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
+		String key = String.format("%s.%s", this.taskId, Constants.MR_ITEM_AD_SERVICE_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER);
 		setLatestDownloadBoardItemIdentifier(metadataRepository.getLong(key, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
 		
 		return this;

@@ -58,10 +58,23 @@ public final class Constants {
 	 */
 	public static final String METADATA_REPOSITORY_FILE_NAME = "torrentad.properties";
 
-	// AD Service Task에서 사용하는  최근에 다운로드 받은 게시물 식별자
+	// AD Service
+	// 최근에 다운로드 받은 게시물 식별자
 	// 게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.
 	// 게시물 식별자가 비어있는 경우는 읽어들인 게시물의 모든 항목을 검색 대상으로 한다.
-	public static final String MR_ITEM_AD_SERVICE_TASK_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
+	public static final String MR_ITEM_AD_SERVICE_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
+
+	// Bot Service
+	// 등록된 모든 대화방의 ID 목록
+	public static final String MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS = "chat-ids";
+    public static final String MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR = ",";
+
+	// Bot Service
+	public static final String MR_ITEM_BOT_SERVICE_CHAT_ID_PREFIX = "chat-id";
+	
+	// Bot Service
+	// 대화방에서 조회 및 검색하기 위해 선택한 게시판의 코드명
+	public static final String MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE = "board-code";
 
 	private Constants() {
 	}

@@ -2,6 +2,7 @@ package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -75,6 +76,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new WebSiteBoardListResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadLinkListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardItemDownloadRequestHandler(this, immediatelyTaskExecutorService));
+		
+		initChatRooms();
 	}
 
 	@Override
@@ -123,6 +126,19 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		return this.torrentClient;
 	}
 
+	private void initChatRooms() {
+		String chatIds = this.metadataRepository.getString(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS, "");
+		String[] chatIdArrays = chatIds.split(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR);
+		for (String chatId : chatIdArrays) {
+			if (StringUtil.isBlank(chatId) == false) {
+				try {
+					newChatRoom(Long.parseLong(chatId));
+				} catch (NumberFormatException e) {
+				}
+			}
+		}
+	}
+	
 	// @@@@@
 	protected String decode(String encryption) throws Exception {
 		if (this.aes256 == null)
@@ -212,11 +228,24 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private ChatRoom getChatRoom(Long chatId) {
 		ChatRoom chatRoom = this.chatRooms.get(chatId);
 		if (chatRoom == null) {
-			// @@@@@ check
-			chatRoom = new ChatRoom(chatId, this.siteConnector.getSite(), this.metadataRepository);
-			this.chatRooms.put(chatId, chatRoom);
+			chatRoom = newChatRoom(chatId);
+
+			// 새로 생성된 대화방의 ID를저장한다.
+			StringBuilder sbValue = new StringBuilder();
+			for (Long id : this.chatRooms.keySet()) {
+				sbValue.append(id).append(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR);
+			}
+			
+			this.metadataRepository.setString(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS, sbValue.toString());
 		}
 
+		return chatRoom;
+	}
+
+	private ChatRoom newChatRoom(Long chatId) {
+		assert this.chatRooms.get(chatId) == null;
+		ChatRoom chatRoom = new ChatRoom(chatId, this.siteConnector.getSite(), this.metadataRepository);
+		this.chatRooms.put(chatId, chatRoom);
 		return chatRoom;
 	}
 
