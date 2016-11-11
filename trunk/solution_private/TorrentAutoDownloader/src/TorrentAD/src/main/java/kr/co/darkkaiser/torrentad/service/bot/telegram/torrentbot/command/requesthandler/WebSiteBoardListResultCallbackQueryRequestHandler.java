@@ -79,6 +79,8 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+		WebSiteHandler siteHandler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
+
 		try {
 			WebSiteBoard board = this.site.getBoardByCode(parameters[1]);
 			if (board == null)
@@ -105,11 +107,6 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 				return;
 			}
 
-			////////////////////////////////////////////////////////////
-			// @@@@@
-			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
-			////////////////////////////////////////////////////////////
-
 			long identifierMinValue = Long.MAX_VALUE;
 			long identifierMaxValue = Long.MIN_VALUE;
 			long identifierValue = Long.parseLong(parameters[2]);
@@ -122,7 +119,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
 				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
+				Iterator<WebSiteBoardItem> iterator = siteHandler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
@@ -150,7 +147,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 			//
 			} else if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
 				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = handler.list(board, false, new WebSiteBoardItemComparatorIdentifierAsc());
+				Iterator<WebSiteBoardItem> iterator = siteHandler.list(board, false, new WebSiteBoardItemComparatorIdentifierAsc());
 
 				// 조회된 게시물의 이전페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
