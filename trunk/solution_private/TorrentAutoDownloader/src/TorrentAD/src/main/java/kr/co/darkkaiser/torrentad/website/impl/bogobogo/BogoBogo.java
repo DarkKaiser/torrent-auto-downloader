@@ -448,7 +448,7 @@ public class BogoBogo extends AbstractWebSite {
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
-//		                .cookies(this.loginConnResponse.cookies())@@@@@
+		                .cookies(this.loginConnResponse.cookies()) // @@@@@
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .execute();
 
@@ -462,9 +462,7 @@ public class BogoBogo extends AbstractWebSite {
 					if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
 						// 해당 페이지가 존재하지 않는 경우... 아무 처리도 하지 않는다.
 					} else if (boardItemsDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
-						// @@@@@
-						System.out.println("################");
-						throw new NoPermissionException();
+						throw new NoPermissionException(String.format("게시판 접근 권한이 없습니다.(URL:%s)", url));
 					} else {
 						throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 					}
@@ -584,7 +582,11 @@ public class BogoBogo extends AbstractWebSite {
 			Elements elements = detailPageDoc.select("table.board01 tbody.num tr a[id^='downLink_num']");
 
 			if (elements.isEmpty() == true) {
-				throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
+				if (detailPageDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
+					throw new NoPermissionException(String.format("게시판 접근 권한이 없습니다.(URL:%s)", detailPageURL));
+				} else {
+					throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
+				}
 			} else {
 				try {
 					String[] exceptFileExtension = { "JPG", "JPEG", "GIF", "PNG" };
@@ -627,7 +629,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) throws NoPermissionException {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -754,8 +756,6 @@ public class BogoBogo extends AbstractWebSite {
 				downloadLink.setDownloadCompleted(true);
 				
 				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
-			} catch (NoPermissionException e) {
-				throw e;
 			} catch (ParseException e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			} catch (Exception e) {
