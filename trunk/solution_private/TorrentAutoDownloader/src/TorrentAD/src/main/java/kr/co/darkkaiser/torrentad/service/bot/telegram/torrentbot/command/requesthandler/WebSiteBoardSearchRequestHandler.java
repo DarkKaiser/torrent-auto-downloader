@@ -54,17 +54,17 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		try {
-			String searchKeyword;
+			String keyword;
 			WebSiteBoard board = chatRoom.getBoard();
 			if (parameters.length == 2) {
-				searchKeyword = parameters[1];
+				keyword = parameters[1];
 				board = this.site.getBoardByCode(parameters[0]);
 				if (board == null)
 					throw new NullPointerException("board");
 
 				chatRoom.setBoard(board);
 			} else {
-				searchKeyword = parameters[0];
+				keyword = parameters[0];
 			}
 			
 			// 게시판 검색중 메시지를 사용자에게 보낸다.
@@ -75,7 +75,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 
 			// 게시판 검색을 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardSearchImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), absSender, chatRoom, board, searchKeyword, this.torrentBotResource));
+					new WebSiteBoardSearchImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), absSender, chatRoom, board, keyword, this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 
