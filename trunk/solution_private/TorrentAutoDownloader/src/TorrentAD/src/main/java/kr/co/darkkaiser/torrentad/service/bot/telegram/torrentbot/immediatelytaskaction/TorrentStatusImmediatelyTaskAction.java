@@ -44,13 +44,16 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			/////////////////////////////////////////////////////
-			// @@@@@
 			TorrentClient torrentClient = this.torrentBotResource.getTorrentClient();
-			/////////////////////////////////////////////////////
-			
+
+			// 토렌트 서버의 상태를 조회한다.
 			TorrentGetMethodResult methodResult = torrentClient.getTorrent();
-			
+			if (methodResult == null) {
+				torrentClient.disconnect();
+				torrentClient = this.torrentBotResource.getTorrentClient();				
+				methodResult = torrentClient.getTorrent();
+			}
+
 			if (methodResult == null) {
 				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "토렌트 서버의 상태 조회가 실패하였습니다.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.");	
 			} else {
