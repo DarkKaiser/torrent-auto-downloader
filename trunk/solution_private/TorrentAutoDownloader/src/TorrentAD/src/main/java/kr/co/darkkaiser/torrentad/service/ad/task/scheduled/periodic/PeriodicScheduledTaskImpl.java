@@ -11,7 +11,7 @@ import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
-import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
+import kr.co.darkkaiser.torrentad.website.LoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
@@ -64,7 +64,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 					}
 				}
 			}
-		} catch (FailedLoadBoardItemsException e) {
+		} catch (LoadBoardItemsException e) {
 			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
 			return TaskResult.FAILED;
 		} catch (Exception e) {

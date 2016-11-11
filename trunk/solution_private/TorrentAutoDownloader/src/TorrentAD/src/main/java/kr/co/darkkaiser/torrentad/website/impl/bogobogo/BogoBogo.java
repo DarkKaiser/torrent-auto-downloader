@@ -32,8 +32,9 @@ import com.google.gson.JsonParseException;
 import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.AbstractWebSite;
-import kr.co.darkkaiser.torrentad.website.FailedLoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.IncorrectLoginAccountException;
+import kr.co.darkkaiser.torrentad.website.LoadBoardItemsException;
+import kr.co.darkkaiser.torrentad.website.NoPermissionException;
 import kr.co.darkkaiser.torrentad.website.UnknownLoginException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteAccount;
@@ -222,7 +223,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 		if (comparator == null)
@@ -232,7 +233,7 @@ public class BogoBogo extends AbstractWebSite {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
 		if (loadBoardItems0((BogoBogoBoard) board, "", loadNow) == false)
-			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
@@ -250,7 +251,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 		if (comparator == null)
@@ -262,7 +263,7 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
 
 		if (loadBoardItems0(siteSearchContext.getBoard(), "", loadNow) == false)
-			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
+			throw new LoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
@@ -288,7 +289,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws FailedLoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -302,7 +303,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<BogoBogoBoardItem> boardItems = loadBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
 		if (boardItems == null)
-			throw new FailedLoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
@@ -320,7 +321,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws Exception {
+	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -344,7 +345,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws Exception {
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 		if (boardItem == null)
@@ -378,7 +379,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws Exception {
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -408,7 +409,7 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
-	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) {
+	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -428,7 +429,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private List<BogoBogoBoardItem> loadBoardItems0(BogoBogoBoard board, String queryString) {
+	private List<BogoBogoBoardItem> loadBoardItems0(BogoBogoBoard board, String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -447,7 +448,7 @@ public class BogoBogo extends AbstractWebSite {
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
-		                .cookies(this.loginConnResponse.cookies())
+//		                .cookies(this.loginConnResponse.cookies())@@@@@
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .execute();
 
@@ -460,6 +461,10 @@ public class BogoBogo extends AbstractWebSite {
 				if (elements.isEmpty() == true) {
 					if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
 						// 해당 페이지가 존재하지 않는 경우... 아무 처리도 하지 않는다.
+					} else if (boardItemsDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
+						// @@@@@
+						System.out.println("################");
+						throw new NoPermissionException();
 					} else {
 						throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 					}
@@ -534,6 +539,8 @@ public class BogoBogo extends AbstractWebSite {
 					}
 				}
 			}
+		} catch (NoPermissionException e) {
+			throw e;
 		} catch (NoSuchElementException e) {
 			// 아무 처리도 하지 않는다.
 			return null;
@@ -550,7 +557,7 @@ public class BogoBogo extends AbstractWebSite {
 		return boardItems;
 	}
 
-	private boolean loadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
+	private boolean loadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -602,6 +609,8 @@ public class BogoBogo extends AbstractWebSite {
 					throw e;
 				}
 			}
+		} catch (NoPermissionException e) {
+			throw e;
 		} catch (NoSuchElementException e) {
 			boardItem.clearDownloadLink();
 			return false;
@@ -618,7 +627,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -745,6 +754,8 @@ public class BogoBogo extends AbstractWebSite {
 				downloadLink.setDownloadCompleted(true);
 				
 				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+			} catch (NoPermissionException e) {
+				throw e;
 			} catch (ParseException e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			} catch (Exception e) {
