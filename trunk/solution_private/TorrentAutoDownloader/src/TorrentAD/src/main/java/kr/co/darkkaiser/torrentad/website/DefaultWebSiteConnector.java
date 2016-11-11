@@ -34,6 +34,7 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 		this.owner = owner;
 		this.configuration = configuration;
 
+		// 웹사이트 정보를 읽어들인다.
 		try {
 			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
 		} catch (RuntimeException e) {
@@ -41,6 +42,10 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 			throw e;
 		}
 
+		// 웹사이트 Connection 객체를 생성한다.
+		this.connection = this.site.createConnection(getOwner(), this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
+
+		// 웹사이트 접속 계정정보를 읽어들인다.
 		this.accountId = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID);
 		String encryptionPassword = this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD);
 
@@ -62,8 +67,6 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 			return false;
 		}
 
-		this.connection = this.site.createConnection(getOwner(), this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION));
-		
 		try {
 			this.connection.login(account);
 		} catch (Exception e) {
@@ -77,10 +80,7 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 	@Override
 	public boolean logout() {
 		try {
-			if (this.connection != null) {
-				this.connection.logout();
-				this.connection = null;
-			}
+			this.connection.logout();
 		} catch (Exception e) {
 			logger.error("웹사이트('{}') 로그아웃이 실패하였습니다.", this.site, e);
 			return false;
@@ -91,9 +91,6 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 	
 	@Override
 	public boolean isLogin() {
-		if (this.connection == null)
-			return false;
-
 		return this.connection.isLogin();
 	}
 

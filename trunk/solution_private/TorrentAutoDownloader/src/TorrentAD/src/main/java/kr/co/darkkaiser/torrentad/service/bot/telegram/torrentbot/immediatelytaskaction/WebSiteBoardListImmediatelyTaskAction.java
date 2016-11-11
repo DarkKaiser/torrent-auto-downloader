@@ -34,9 +34,9 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 
 	private final WebSiteBoard board;
 
-	private final TorrentBotResource torrentBotResource;
-	
 	private final WebSite site;
+
+	private final WebSiteHandler siteHandler;
 
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
 		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, torrentBotResource);
@@ -53,14 +53,21 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			throw new NullPointerException("torrentBotResource");
 		if (torrentBotResource.getSite() == null)
 			throw new NullPointerException("site");
+		if (torrentBotResource.getSiteConnector() == null)
+			throw new NullPointerException("siteConnector");
+		if (torrentBotResource.getSiteConnector().getConnection() == null)
+			throw new NullPointerException("siteConnection");
 
-		this.board = board;
-		this.chatRoom = chatRoom;
 		this.requestId = requestId;
 		this.messageId = messageId;
+		
 		this.absSender = absSender;
-		this.torrentBotResource = torrentBotResource;
+		this.chatRoom = chatRoom;
+		
+		this.board = board;
+		
 		this.site = torrentBotResource.getSite();
+		this.siteHandler = (WebSiteHandler) torrentBotResource.getSiteConnector().getConnection();
 	}
 
 	@Override
@@ -71,15 +78,8 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			////////////////////////////////////////////////////////////////
-			// @@@@@
-			// connector 로그인은 누가 할것인가?
-			this.torrentBotResource.getSiteConnector().login();
-			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
-			////////////////////////////////////////////////////////////////
-
 			// 선택된 게시판을 조회한다.
-			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, true, new WebSiteBoardItemComparatorIdentifierDesc());
+			Iterator<WebSiteBoardItem> iterator = this.siteHandler.list(this.board, true, new WebSiteBoardItemComparatorIdentifierDesc());
 
 			// 현재의 작업요청 이후에 클라이언트로부터 새로운 작업요청이 들어온 경우, 현재 작업요청을 클라이언트로 알리지 않는다.
 			if (this.chatRoom.getRequestId() != this.requestId)
@@ -151,10 +151,10 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractImmediatelyTa
 			throw new NullPointerException("chatRoom");
 		if (this.board == null)
 			throw new NullPointerException("board");
-		if (this.torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
 		if (this.site == null)
 			throw new NullPointerException("site");
+		if (this.siteHandler == null)
+			throw new NullPointerException("siteHandler");
 	}
 
 }

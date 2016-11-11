@@ -33,11 +33,11 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	
 	private final long boardItemDownloadLinkIndex;
 
-	private final TorrentBotResource torrentBotResource;
-	
 	private final FileTransmissionExecutorService fileTransmissionExecutorService;
 
 	private final WebSite site;
+
+	private final WebSiteHandler siteHandler;
 
 	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, long boardItemDownloadLinkIndex, 
 			TorrentBotResource torrentBotResource, FileTransmissionExecutorService fileTransmissionExecutorService) {
@@ -52,17 +52,25 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 			throw new NullPointerException("torrentBotResource");
 		if (torrentBotResource.getSite() == null)
 			throw new NullPointerException("site");
+		if (torrentBotResource.getSiteConnector() == null)
+			throw new NullPointerException("siteConnector");
+		if (torrentBotResource.getSiteConnector().getConnection() == null)
+			throw new NullPointerException("siteConnection");
 		if (fileTransmissionExecutorService == null)
 			throw new NullPointerException("fileTransmissionExecutorService");
 
-		this.board = board;
-		this.chatRoom = chatRoom;
 		this.messageId = messageId;
+		
 		this.absSender = absSender;
-		this.site = torrentBotResource.getSite();
-		this.torrentBotResource = torrentBotResource;
+		this.chatRoom = chatRoom;
+		
+		this.board = board;
 		this.boardItemIdentifier = boardItemIdentifier;
 		this.boardItemDownloadLinkIndex = boardItemDownloadLinkIndex;
+		
+		this.site = torrentBotResource.getSite();
+		this.siteHandler = (WebSiteHandler) torrentBotResource.getSiteConnector().getConnection();
+
 		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 
@@ -74,22 +82,15 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	@Override
 	public Boolean call() throws Exception {
 		try {
-			////////////////////////////////////////////////////////////////
-			// @@@@@
-			// connector 로그인은 누가 할것인가?
-			this.torrentBotResource.getSiteConnector().login();
-			WebSiteHandler handler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
-			////////////////////////////////////////////////////////////////
-
 			// 선택된 게시판을 조회한다.
-			Iterator<WebSiteBoardItem> iterator = handler.list(this.board, false, new WebSiteBoardItemComparatorIdentifierDesc());
+			Iterator<WebSiteBoardItem> iterator = this.siteHandler.list(this.board, false, new WebSiteBoardItemComparatorIdentifierDesc());
 			while (iterator.hasNext() == true) {
 				// 사용자가 선택한 게시물을 찾는다.
 				WebSiteBoardItem boardItem = iterator.next();
 				if (boardItem.getIdentifier() != this.boardItemIdentifier)
 					continue;
 
-				Tuple<Integer, Integer> tuple = handler.download(boardItem, this.boardItemDownloadLinkIndex);
+				Tuple<Integer, Integer> tuple = this.siteHandler.download(boardItem, this.boardItemDownloadLinkIndex);
 				
 				if (tuple.first() < 0 && tuple.last() < 0) {
 					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일에 대한 정보를 찾을 수 없습니다. 다운로드가 실패하였습니다.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
@@ -127,10 +128,10 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 			throw new NullPointerException("chatRoom");
 		if (this.board == null)
 			throw new NullPointerException("board");
-		if (this.torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
 		if (this.site == null)
 			throw new NullPointerException("site");
+		if (this.siteHandler == null)
+			throw new NullPointerException("siteHandler");
 		if (this.fileTransmissionExecutorService == null)
 			throw new NullPointerException("fileTransmissionExecutorService");
 	}
