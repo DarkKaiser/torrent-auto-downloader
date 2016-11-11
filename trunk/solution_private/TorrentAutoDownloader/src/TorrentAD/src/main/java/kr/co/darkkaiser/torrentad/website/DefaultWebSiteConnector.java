@@ -73,7 +73,7 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 
 		return true;
 	}
-
+	
 	@Override
 	public boolean logout() {
 		try {
@@ -89,6 +89,14 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 		return true;
 	}
 	
+	@Override
+	public boolean isLogin() {
+		if (this.connection == null)
+			return false;
+
+		return this.connection.isLogin();
+	}
+
 	@Override
 	public String getOwner() {
 		return this.owner;
