@@ -9,6 +9,7 @@ import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -71,11 +72,11 @@ public final class BotCommandUtils {
 		sendMessage(absSender, chatId, message, replyToMessageId, null);
 	}
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
-		sendMessage(absSender, chatId, message, null, inlineKeyboardMarkup);
+	public static void sendMessage(AbsSender absSender, Long chatId, String message, ReplyKeyboard replyMarkup) {
+		sendMessage(absSender, chatId, message, null, replyMarkup);
 	}
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId, InlineKeyboardMarkup inlineKeyboardMarkup) {
+	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId, ReplyKeyboard replyMarkup) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatId == null)
@@ -91,8 +92,8 @@ public final class BotCommandUtils {
 		if (replyToMessageId != null)
 			sendMessage.setReplyToMessageId(replyToMessageId);
 
-		if (inlineKeyboardMarkup != null)
-			sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+		if (replyMarkup != null)
+			sendMessage.setReplyMarkup(replyMarkup);
 
 		try {
 			absSender.sendMessage(sendMessage);
