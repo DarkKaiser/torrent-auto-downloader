@@ -16,6 +16,8 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskAct
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
 import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTasksCallableAdapter;
 import kr.co.darkkaiser.torrentad.service.ad.task.scheduled.ScheduledTasksCallableAdapter;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 
 public final class TorrentAdService implements Service, ImmediatelyTaskExecutorService {
 
@@ -28,12 +30,16 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 	private ExecutorService immediatelyTasksExecutorService;
 
 	private final Configuration configuration;
+	
+	private final MetadataRepository metadataRepository;
 
 	public TorrentAdService(Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
+		// @@@@@
+		this.metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
 	}
 
 	@Override
@@ -50,7 +56,7 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 			throw new NullPointerException("configuration");
 		
 		this.scheduledTasksExecutorService = Executors.newFixedThreadPool(1);
-		this.scheduledTasksCallableAdapter = new ScheduledTasksCallableAdapter(this.configuration);
+		this.scheduledTasksCallableAdapter = new ScheduledTasksCallableAdapter(this.configuration, this.metadataRepository);
 
 		this.scheduledTasksExecutorTimer = new Timer();
 		this.scheduledTasksExecutorTimer.scheduleAtFixedRate(new TimerTask() {
@@ -90,7 +96,7 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 		}
 
 		try {
-			this.immediatelyTasksExecutorService.submit(new ImmediatelyTasksCallableAdapter(this.configuration, action));
+			this.immediatelyTasksExecutorService.submit(new ImmediatelyTasksCallableAdapter(this.configuration, this.metadataRepository, action));
 		} catch (Exception e) {
 			logger.error("ImmediatelyTaskAction의 작업 요청이 실패하였습니다.", e);
 			return false;

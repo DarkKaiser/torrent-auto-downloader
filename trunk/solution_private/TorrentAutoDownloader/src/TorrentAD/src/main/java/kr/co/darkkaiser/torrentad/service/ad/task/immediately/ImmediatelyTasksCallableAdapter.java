@@ -6,14 +6,13 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.darkkaiser.torrentad.common.Constants;
 import kr.co.darkkaiser.torrentad.config.Configuration;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskFactory;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskResult;
 import kr.co.darkkaiser.torrentad.service.ad.task.TaskType;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
 import kr.co.darkkaiser.torrentad.service.ad.task.TasksCallableAdapterResult;
-import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
+import kr.co.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 
 public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapter {
 
@@ -23,7 +22,7 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	
 	private static AtomicInteger count = new AtomicInteger(0);
 
-	public ImmediatelyTasksCallableAdapter(Configuration configuration, ImmediatelyTaskAction action) throws Exception {
+	public ImmediatelyTasksCallableAdapter(Configuration configuration, MetadataRepository metadataRepository, ImmediatelyTaskAction action) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 		if (action == null)
@@ -33,7 +32,6 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("ImmediatelyTaskAction의 name은 빈 문자열을 허용하지 않습니다.");
 
-		MetadataRepositoryImpl metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
 		this.task = ((ImmediatelyTask) TaskFactory.createTask(TaskType.IMMEDIATELY, String.format("ImmediatelyTask_%05d", count.incrementAndGet()), name, metadataRepository)).setAction(action);
 	}
 
