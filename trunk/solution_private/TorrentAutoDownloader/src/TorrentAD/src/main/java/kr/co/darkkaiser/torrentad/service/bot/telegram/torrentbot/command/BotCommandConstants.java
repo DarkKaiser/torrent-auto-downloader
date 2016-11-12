@@ -37,7 +37,7 @@ public final class BotCommandConstants {
      */
 
     // 조회 및 검색 결과 게시물의 게시물 출력 갯수
-    public static final int LASR_OUTPUT_BOARD_ITEM_COUNT = 7;
+    public static final int LASR_OUTPUT_BOARD_ITEM_COUNT = 10;
 
     // 조회 결과 게시물 목록에서 CallbackQuery 명령
     public static final String LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND = "ls-rslt-inline";

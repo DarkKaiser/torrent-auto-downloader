@@ -69,7 +69,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			
 			// 게시판 검색중 메시지를 사용자에게 보낸다.
 			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다. 잠시만 기다려 주세요.");
+			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다.");
 
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
 
