@@ -30,7 +30,7 @@ public final class ChatRoom {
 		this.chatId = chatId;
 		this.metadataRepository = metadataRepository;
 
-		String boardCode = this.metadataRepository.getString(getProperiesKeyString(Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE), "");
+		String boardCode = this.metadataRepository.getString(getProperiesKeyString(Constants.BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE), "");
 		if (StringUtil.isBlank(boardCode) == false) {
 			WebSiteBoard board = site.getBoardByCode(boardCode);
 			if (board != null)
@@ -59,11 +59,11 @@ public final class ChatRoom {
 			throw new NullPointerException("board");
 
 		this.board = board;
-		this.metadataRepository.setString(getProperiesKeyString(Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE), this.board.getCode());
+		this.metadataRepository.setString(getProperiesKeyString(Constants.BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE), this.board.getCode());
 	}
 
 	private String getProperiesKeyString(String subKey) {
-		return String.format("%s-%d.%s", Constants.MR_ITEM_BOT_SERVICE_CHAT_ID_PREFIX, this.chatId, subKey);
+		return String.format("%s-%d.%s", Constants.BOT_SERVICE_MR_KEY_CHAT_ID_PREFIX, this.chatId, subKey);
 	}
 
 	@Override

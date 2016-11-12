@@ -38,8 +38,7 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		// @@@@@
-		this.metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
+		this.metadataRepository = new MetadataRepositoryImpl(Constants.AD_SERVICE_METADATA_REPOSITORY_FILE_NAME);
 	}
 
 	@Override

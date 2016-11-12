@@ -63,7 +63,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
-		this.metadataRepository = new MetadataRepositoryImpl(Constants.METADATA_REPOSITORY_FILE_NAME);
+		this.metadataRepository = new MetadataRepositoryImpl(Constants.BOT_SERVICE_METADATA_REPOSITORY_FILE_NAME);
 		
 		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
 		
@@ -129,8 +129,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 
 	private void initChatRooms() {
-		String chatIds = this.metadataRepository.getString(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS, "");
-		String[] chatIdArrays = chatIds.split(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR);
+		String chatIds = this.metadataRepository.getString(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS, "");
+		String[] chatIdArrays = chatIds.split(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS_SEPARATOR);
 		for (String chatId : chatIdArrays) {
 			if (StringUtil.isBlank(chatId) == false) {
 				try {
@@ -222,10 +222,10 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			// 새로 생성된 대화방의 ID를저장한다.
 			StringBuilder sbValue = new StringBuilder();
 			for (Long id : this.chatRooms.keySet()) {
-				sbValue.append(id).append(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR);
+				sbValue.append(id).append(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS_SEPARATOR);
 			}
 			
-			this.metadataRepository.setString(Constants.MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS, sbValue.toString());
+			this.metadataRepository.setString(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS, sbValue.toString());
 		}
 
 		return chatRoom;

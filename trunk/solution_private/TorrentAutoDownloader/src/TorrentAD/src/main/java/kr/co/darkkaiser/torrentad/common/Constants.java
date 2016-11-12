@@ -10,7 +10,7 @@ public final class Constants {
 
 	
 	/**
-	 * 프로그램 환경설정 파일 관련
+	 * 프로그램 환경설정 관련
 	 */
 	public static final String APP_CONFIG_FILE_NAME = "torrentad.xml";
 
@@ -41,7 +41,12 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_USERNAME = "telegram-torrentbot-username";
 	public static final String APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_TOKEN = "telegram-torrentbot-token";
 
-	// AD Service Task
+	
+	/**
+	 * AD Service 관련
+	 */
+	
+	// AD Service Task 항목
 	public static final String APP_CONFIG_TAG_TASK_ATTR_ID = "id";
 	public static final String APP_CONFIG_TAG_TASK_ATTR_DESCRIPTION = "description";
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK = "torrentad-periodic-scheduled-task";
@@ -56,25 +61,37 @@ public final class Constants {
 	/*
 	 * 메타데이터 저장소 파일 관련
 	 */
-	public static final String METADATA_REPOSITORY_FILE_NAME = "torrentad.properties";
 
+	//------------
 	// AD Service
+	//------------
+
+	// AD Service 메타데이터 저장소 파일명
+	public static final String AD_SERVICE_METADATA_REPOSITORY_FILE_NAME = "torrentad.ad.properties";
+
 	// 최근에 다운로드 받은 게시물 식별자
 	// 게시물 식별자 이후에 등록된 게시물을 검색 대상으로 한다.
 	// 게시물 식별자가 비어있는 경우는 읽어들인 게시물의 모든 항목을 검색 대상으로 한다.
-	public static final String MR_ITEM_AD_SERVICE_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
+	public static final String AD_SERVICE_MR_KEY_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
+
+	//-------------
+	// Bot Service
+	//-------------
+
+	// Bot Service 메타데이터 저장소 파일명
+	public static final String BOT_SERVICE_METADATA_REPOSITORY_FILE_NAME = "torrentad.bot.properties";
 
 	// Bot Service
 	// 등록된 모든 대화방의 ID 목록
-	public static final String MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS = "chat-ids";
-    public static final String MR_ITEM_BOT_SERVICE_REGISTERED_CHAT_IDS_SEPARATOR = ",";
+	public static final String BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS = "chat-ids";
+    public static final String BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS_SEPARATOR = ",";
 
 	// Bot Service
-	public static final String MR_ITEM_BOT_SERVICE_CHAT_ID_PREFIX = "chat-id";
+	public static final String BOT_SERVICE_MR_KEY_CHAT_ID_PREFIX = "chat-id";
 	
 	// Bot Service
 	// 대화방에서 조회 및 검색하기 위해 선택한 게시판의 코드명
-	public static final String MR_ITEM_BOT_SERVICE_CHAT_ID_SUBKEY_BOARD_CODE = "board-code";
+	public static final String BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE = "board-code";
 
 	private Constants() {
 	}
