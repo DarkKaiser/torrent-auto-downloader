@@ -493,20 +493,13 @@ public class BogoBogo extends AbstractWebSite {
 							// 제목
 							//
 							Element titleElement = iterator.next();
-							String title = titleElement.text().trim();
-
-							// trim()으로 제거되지 않는 공백(no-break space=줄바꿈없는공백)을 모두 제거한다.
-							while (true) {
-								if (Character.isSpaceChar(title.charAt(0)) == false)
-									break;
-
-								title = title.substring(1);
-							}
+							String title = titleElement.text();
 
 							// 제목끝에 붙어있는 댓글수('(0)') 문자열을 제거한다.
-							if (title.charAt(title.length() - 1) == ')') {
-								title = title.substring(0, title.lastIndexOf("(")).trim();
-							}
+							if (title.charAt(title.length() - 1) == ')')
+								title = title.substring(0, title.lastIndexOf("("));
+
+							title = trimString(title);
 
 							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
 								continue;
@@ -603,7 +596,7 @@ public class BogoBogo extends AbstractWebSite {
 						String value3 = element.attr("val3");
 						String value4 = element.attr("val4");
 						String fileId = element.attr("file_id");
-						String fileName = element.text();
+						String fileName = trimString(element.text());
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
 						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true)
@@ -769,6 +762,22 @@ public class BogoBogo extends AbstractWebSite {
 		}
 
 		return new Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */>(downloadTryCount, downloadCompletedCount);
+	}
+
+	private String trimString(String value) {
+		int start = 0;
+        int length = value.length();
+
+		// Character.isSpaceChar() : trim()으로 제거되지 않는 공백(no-break space=줄바꿈없는공백)을 제거하기 위해 사용한다.
+
+		while ((start < length) && (Character.isSpaceChar(value.charAt(start)) == true)) {
+			start++;
+		}
+		while ((start < length) && (Character.isSpaceChar(value.charAt(length - 1)) == true)) {
+			length--;
+		}
+
+        return ((start > 0) || (length < value.length())) ? value.substring(start, length) : value;
 	}
 
 	@Override
