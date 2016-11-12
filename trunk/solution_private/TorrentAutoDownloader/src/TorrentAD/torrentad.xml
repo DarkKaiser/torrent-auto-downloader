@@ -21,7 +21,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>newmovie</board-name>
+				<board-name>korentertainment</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
@@ -31,10 +31,10 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>치하야후루</item>
+						<item>무한도전</item>
 					</search-keyword>
-					<search-keyword mode="exclude">
-						<item>IMAX</item>
+					<search-keyword>
+						<item>720p+NEXT</item>
 					</search-keyword>
 				</search-keywords>
 				
@@ -63,7 +63,7 @@
 	<torrentad-au-service>
 		<torrentad-service-config-values>
 			<!-- AD Service에 의해 다운로드 되는 파일을 감시하기 위한 간격(단위:초) -->
-			<download-file-watch-interval-time-second>10</download-file-watch-interval-time-second>
+			<download-file-watch-interval-time-second>20</download-file-watch-interval-time-second>
 
 			<!-- FTP 서버 정보 -->
 			<ftp-server-host>darkkaiser.gonetis.com</ftp-server-host>
