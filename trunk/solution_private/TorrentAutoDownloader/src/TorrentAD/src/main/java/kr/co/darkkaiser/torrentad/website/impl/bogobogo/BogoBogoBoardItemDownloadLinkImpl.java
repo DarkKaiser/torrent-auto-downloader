@@ -2,7 +2,7 @@ package kr.co.darkkaiser.torrentad.website.impl.bogobogo;
 
 import org.jsoup.helper.StringUtil;
 
-public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoardItemDownloadLink {
+public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardItemDownloadLink {
 
 	private final String id;
 	private final String value1;
@@ -16,10 +16,10 @@ public final class DefaultBogoBogoBoardItemDownloadLink implements BogoBogoBoard
 	private boolean downloadCompleted = false;
 
 	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
-		return new DefaultBogoBogoBoardItemDownloadLink(id, value1, value2, value3, value4, fileId, fileName);
+		return new BogoBogoBoardItemDownloadLinkImpl(id, value1, value2, value3, value4, fileId, fileName);
 	}
 
-	private DefaultBogoBogoBoardItemDownloadLink(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
+	private BogoBogoBoardItemDownloadLinkImpl(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
 		if (StringUtil.isBlank(id) == true)
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(value1) == true)

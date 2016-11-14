@@ -73,6 +73,9 @@ public class BogoBogo extends AbstractWebSite {
 	// 조회된 결과 목록
 	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boards = new HashMap<>();
 
+	// 검색된 결과 목록@@@@@
+	private Map<Long, List<BogoBogoBoardItem>> search = new HashMap<>();
+
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
 
@@ -604,7 +607,7 @@ public class BogoBogo extends AbstractWebSite {
 						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true)
 							continue;
 
-						boardItem.addDownloadLink(DefaultBogoBogoBoardItemDownloadLink.newInstance(id, value1, value2, value3, value4, fileId, fileName));
+						boardItem.addDownloadLink(BogoBogoBoardItemDownloadLinkImpl.newInstance(id, value1, value2, value3, value4, fileId, fileName));
 					}
 				} catch (NoSuchElementException e) {
 					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);

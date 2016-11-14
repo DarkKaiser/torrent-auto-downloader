@@ -36,6 +36,11 @@ public interface WebSiteHandler {
 	Iterator<WebSiteBoardItem> search(WebSiteBoard board, String keyword, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
 
 	/**
+	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.
+	 */
+	boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException;
+
+	/**
 	 * 검색컨텍스트에 등록된 첨부파일 검색조건과 일치하는 첨부파일을 모두 다운로드한다.
 	 */
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException;
@@ -45,9 +50,4 @@ public interface WebSiteHandler {
 	 */
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException;
 	
-	/**
-	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.
-	 */
-	boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException;
-
 }
