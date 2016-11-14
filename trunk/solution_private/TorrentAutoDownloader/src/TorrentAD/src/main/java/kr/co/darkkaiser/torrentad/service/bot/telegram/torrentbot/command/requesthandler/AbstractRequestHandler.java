@@ -22,16 +22,7 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		return this.identifier;
 	}
 	
-	protected boolean executable0(String command, String[] parameters, int minParametersCount, int maxParametersCount) {
-		int parametersCount = 0;
-		if (parameters != null)
-			parametersCount = parameters.length;
-
-		if (minParametersCount <= parametersCount && parametersCount <= maxParametersCount)
-			return true;
-
-		return false;
-	}
+	protected abstract boolean executable0(String command, String[] parameters, boolean containInitialChar, int minParametersCount, int maxParametersCount);
 
 	protected void logError(String message, String command, String[] parameters, boolean containInitialChar) {
 		StringBuilder sbLogMessage = new StringBuilder()

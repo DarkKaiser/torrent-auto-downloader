@@ -7,17 +7,18 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExe
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public WebSiteBoardListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("조회", "선택된 게시판을 조회합니다.");
+		super("list", "조회", "/list (조회)", "선택된 게시판을 조회합니다.");
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -30,7 +31,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 0, 0) == false)
+		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
 			return false;
 
 		return true;

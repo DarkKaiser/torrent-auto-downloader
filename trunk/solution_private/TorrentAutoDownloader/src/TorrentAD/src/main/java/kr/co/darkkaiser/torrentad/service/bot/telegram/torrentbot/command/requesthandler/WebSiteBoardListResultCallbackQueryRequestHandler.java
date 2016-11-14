@@ -25,7 +25,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDe
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 // @@@@@ list와 search 공통으로 뽑기
-public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultCallbackQueryRequestHandler.class);
 
@@ -52,7 +52,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractR
 	
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 2, 3) == false)
+		if (super.executable0(command, parameters, containInitialChar, 2, 3) == false)
 			return false;
 
 		String callbackQueryCommand = parameters[0];

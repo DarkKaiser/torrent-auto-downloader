@@ -7,17 +7,18 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExe
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.TorrentStatusImmediatelyTaskAction;
 
-public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler {
+public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 	
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public TorrentStatusRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("상태", "토렌트 서버의 상태를 조회합니다.");
-		
+		super("status", "상태", "/status (상태)", "토렌트 서버의 상태를 조회합니다.");
+
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
 		if (immediatelyTaskExecutorService == null)
@@ -29,7 +30,7 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 0, 0) == false)
+		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
 			return false;
 
 		return true;

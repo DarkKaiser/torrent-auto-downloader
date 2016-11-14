@@ -209,7 +209,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			sbAnswerMessage.append("'").append(message.getText()).append("'는 등록되지 않은 명령어입니다.\n");
 
 		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
-		sbAnswerMessage.append("명령어를 모르시면 '").append(botCommand.getCommand()).append("'을 입력하세요.");
+		sbAnswerMessage.append("명령어를 모르시면 '/").append(botCommand.getCommand()).append("'을 입력하세요.");
 
 		BotCommandUtils.sendMessage(this, message.getChatId(), sbAnswerMessage.toString());
 	}

@@ -9,11 +9,12 @@ import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExe
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchRequestHandler.class);
 
@@ -24,7 +25,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public WebSiteBoardSearchRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super("검색", "검색 [검색어]\n검색 [게시판] [검색어]", "선택된 게시판을 검색합니다.");
+		super("search", "검색", "/search (검색) [검색어]\n/search (검색) [게시판] [검색어]", "선택된 게시판을 검색합니다.");
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -40,7 +41,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 1, 2) == false)
+		if (super.executable0(command, parameters, containInitialChar, 1, 2) == false)
 			return false;
 
 		if (parameters.length == 2) {

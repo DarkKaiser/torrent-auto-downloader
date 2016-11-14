@@ -8,14 +8,15 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCom
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
 
 	private final String command;
+	private final String commandKor;
 	private final String commandSyntax;
 	private final String commandDescription;
-	
-	public AbstractBotCommandRequestHandler(String command, String commandDescription) {
-		this(command, command, commandDescription);
+
+	public AbstractBotCommandRequestHandler(String command) {
+		this(command, "", "", "");
 	}
 
-	public AbstractBotCommandRequestHandler(String command, String commandSyntax, String commandDescription) {
+	public AbstractBotCommandRequestHandler(String command, String commandKor, String commandSyntax, String commandDescription) {
 		super(command);
 
 		if (StringUtil.isBlank(command) == true)
@@ -23,11 +24,20 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 
 		if (command.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
 			command = command.substring(1);
-
 		if (command.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
 			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandConstants.BOT_COMMAND_MAX_LENGTH + "자 입니다.");
 
+		if (StringUtil.isBlank(commandKor) == false) {
+			if (commandKor.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
+				commandKor = commandKor.substring(1);
+			if (commandKor.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
+				throw new IllegalArgumentException("commandKor의 길이는 최대 " + BotCommandConstants.BOT_COMMAND_MAX_LENGTH + "자 입니다.");
+		} else {
+			commandKor = "";
+		}
+
 		this.command = command.toLowerCase();
+		this.commandKor = commandKor;
 		this.commandSyntax = commandSyntax;
 		this.commandDescription = commandDescription;
 	}
@@ -35,6 +45,11 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	@Override
 	public String getCommand() {
 		return this.command;
+	}
+	
+	@Override
+	public String getCommandKor() {
+		return this.commandKor;
 	}
 	
 	@Override
@@ -48,10 +63,17 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	}
 
 	@Override
-	protected boolean executable0(String command, String[] parameters, int minParametersCount, int maxParametersCount) {
-		if (getCommand().equals(command) == false)
-			return false;
+	protected boolean executable0(String command, String[] parameters, boolean containInitialChar, int minParametersCount, int maxParametersCount) {
+		// 명령 Check
+		if (command.equals(getCommand()) == true) {
+			if (containInitialChar == false)
+				return false;
+		} else {
+			if (command.equals(getCommandKor()) == false)
+				return false;
+		}
 
+		// 파라메터 갯수 Check
 		int parametersCount = 0;
 		if (parameters != null)
 			parametersCount = parameters.length;
@@ -68,6 +90,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 				.append(AbstractBotCommandRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("command:").append(getCommand())
+				.append(", commandKor:").append(getCommandKor())
 				.append(", commandSyntax:").append(getCommandSyntax())
 				.append(", commandDescription:").append(getCommandDescription())
 				.append("}, ")

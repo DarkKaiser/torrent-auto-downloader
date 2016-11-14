@@ -6,15 +6,16 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
 	private final WebSite site;
 
 	public WebSiteBoardSelectRequestHandler(TorrentBotResource torrentBotResource) {
-		super("선택", "조회 및 검색하려는 게시판을 선택합니다.");
+		super("select", "선택", "/select (선택)", "조회 및 검색하려는 게시판을 선택합니다.");
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -26,7 +27,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 0, 0) == false)
+		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
 			return false;
 
 		return true;

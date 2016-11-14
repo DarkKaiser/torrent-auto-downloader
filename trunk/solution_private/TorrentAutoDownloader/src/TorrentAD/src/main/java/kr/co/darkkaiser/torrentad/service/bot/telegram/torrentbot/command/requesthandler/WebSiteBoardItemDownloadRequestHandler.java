@@ -15,7 +15,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytas
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadRequestHandler.class);
 
@@ -47,9 +47,9 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractRequestHandl
 	
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, 3, 3) == false)
+		if (super.executable0(command, parameters, containInitialChar, 3, 3) == false)
 			return false;
-		
+
 		if (this.site.getBoardByCode(parameters[0]) == null)
 			return false;
 

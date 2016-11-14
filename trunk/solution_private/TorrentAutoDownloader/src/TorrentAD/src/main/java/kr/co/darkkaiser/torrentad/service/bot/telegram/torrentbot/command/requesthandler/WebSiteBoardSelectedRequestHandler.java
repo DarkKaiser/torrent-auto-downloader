@@ -11,14 +11,14 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.Reques
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
+public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private final WebSite site;
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
 	public WebSiteBoardSelectedRequestHandler(TorrentBotResource torrentBotResource, RequestHandlerRegistry requestHandlerRegistry) {
-		super("선택완료");
+		super("$selected$");
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -63,8 +63,13 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractRequestHandler {
 			return this.site.getBoardByCode(command);
 		} else if (parameters.length == 1) {
 			BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSelectRequestHandler.class);
-			if (botCommand != null && botCommand.getCommand().equals(command) == true) {
-				return this.site.getBoardByCode(parameters[0]);
+			if (botCommand != null) {
+				if (command.equals(botCommand.getCommand()) == true && containInitialChar == true) {
+					return this.site.getBoardByCode(parameters[0]);
+				}
+
+				if (command.equals(botCommand.getCommandKor()) == true)
+					return this.site.getBoardByCode(parameters[0]);
 			}
 		}
 
