@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
@@ -62,11 +63,8 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 				return false;
 			}
 			
-			try {
-		        Long.parseLong(parameters[2]);
-		    } catch (NumberFormatException e) {
-		        return false;
-		    }
+			if (StringUtil.isNumeric(parameters[2]) == false)
+				return false;
 		} else {
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
 				return false;

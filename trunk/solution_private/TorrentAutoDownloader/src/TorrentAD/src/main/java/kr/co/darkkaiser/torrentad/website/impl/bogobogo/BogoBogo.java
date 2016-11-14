@@ -326,95 +326,6 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	@Override
-	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
-
-		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
-		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem));
-				return false;
-			}
-		}
-
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
-
-		return true;
-	}
-
-	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException {
-		if (searchContext == null)
-			throw new NullPointerException("searchContext");
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
-		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
-
-		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
-		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return new Tuple<Integer, Integer>(-1, -1);
-			}
-		}
-
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
-
-		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
-		iterator = siteBoardItem.downloadLinkIterator();
-		while (iterator.hasNext() == true) {
-			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
-			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
-		}
-
-		return downloadBoardItemDownloadLink0(siteBoardItem);
-	}
-
-	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
-
-		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
-		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return new Tuple<Integer, Integer>(-1, -1);
-			}
-		}
-
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
-
-		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
-		iterator = siteBoardItem.downloadLinkIterator();
-		for (int index = 0; iterator.hasNext() == true; ++index) {
-			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
-			downloadLink.setDownloadable(index == downloadLinkIndex);
-		}
-
-		return downloadBoardItemDownloadLink0(siteBoardItem);
-	}
-
 	// @@@@@ listBoardItems0, searchBoardItems0
 	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
 		assert board != null;
@@ -553,6 +464,95 @@ public class BogoBogo extends AbstractWebSite {
 		Collections.sort(boardItems, new WebSiteBoardItemComparatorIdentifierAsc());
 		
 		return boardItems;
+	}
+
+	@Override
+	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem));
+				return false;
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		return true;
+	}
+
+	@Override
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException {
+		if (searchContext == null)
+			throw new NullPointerException("searchContext");
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
+
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return new Tuple<Integer, Integer>(-1, -1);
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		while (iterator.hasNext() == true) {
+			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
+			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
+		}
+
+		return downloadBoardItemDownloadLink0(siteBoardItem);
+	}
+
+	@Override
+	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		BogoBogoBoardItem siteBoardItem = (BogoBogoBoardItem) boardItem;
+
+		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
+		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		if (iterator.hasNext() == false) {
+			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				return new Tuple<Integer, Integer>(-1, -1);
+			}
+		}
+
+		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+
+		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
+		iterator = siteBoardItem.downloadLinkIterator();
+		for (int index = 0; iterator.hasNext() == true; ++index) {
+			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
+			downloadLink.setDownloadable(index == downloadLinkIndex);
+		}
+
+		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
 	private boolean loadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) throws NoPermissionException {

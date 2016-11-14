@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
@@ -47,11 +48,8 @@ public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractBotC
 		if (this.site.getBoardByCode(parameters[0]) == null)
 			return false;
 
-		try {
-	        Long.parseLong(parameters[1]);
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
+		if (StringUtil.isNumeric(parameters[1]) == false)
+			return false;
 
 		return true;
 	}
