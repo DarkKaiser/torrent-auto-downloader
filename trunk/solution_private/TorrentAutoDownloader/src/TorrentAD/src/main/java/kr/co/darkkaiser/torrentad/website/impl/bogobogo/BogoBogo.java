@@ -74,7 +74,7 @@ public class BogoBogo extends AbstractWebSite {
 	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boards = new HashMap<>();
 
 	// 검색된 결과 목록@@@@@
-	private Map<Long, List<BogoBogoBoardItem>> search = new HashMap<>();
+	private List<WebSiteSearchResult> searchResults = new ArrayList<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
@@ -250,7 +250,7 @@ public class BogoBogo extends AbstractWebSite {
 
 			resultList.add(boardItem);
 
-			logger.debug("조회된 게시물:" + boardItem);
+			// logger.debug("조회된 게시물:" + boardItem);
 		}
 
 		Collections.sort(resultList, comparator);
@@ -287,7 +287,7 @@ public class BogoBogo extends AbstractWebSite {
 			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				resultList.add(boardItem);
 
-				logger.debug("검색된 게시물:" + boardItem);
+				// logger.debug("필터링된 게시물:" + boardItem);
 			}
 		}
 
@@ -297,7 +297,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> search(WebSiteBoard board, String keyword, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -309,27 +309,52 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		// @@@@@ loadNow
-		List<BogoBogoBoardItem> boardItems = loadBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		///////////////////////////////////////////////////////////
+		
+		// 이전에 동일한 검색 기록이 존재하는 경우 제거한다.
+		for (WebSiteSearchResult result : this.searchResults) {
+			if (result.getBoard().equals(board) == true && result.getKeyword().equals(keyword) == true) {
+				this.searchResults.remove(result);
+				break;
+			}
+		}
+		
+		WebSiteSearchResult webSiteSearchResult = new WebSiteSearchResult(0, board, keyword);
+		this.searchResults.add(webSiteSearchResult);
+		
+		List<BogoBogoBoardItem> boardItems = loadBoardItems0_0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		
+//		if (loadNow == true) {
+//			this.boards.remove(board);
+//		} else {
+//			if (this.boards.containsKey(board) == true)
+//				return true;
+//		}
+//
+//		// @@@@@ loadNow
+////		List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
+////		if (boardItems == null)
+////			return false;
+////
+////		this.boards.put(board, boardItems);
+//		List<BogoBogoBoardItem> boardItems = searchBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword), loadNow);
 		if (boardItems == null)
 			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
-
-		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
 		for (BogoBogoBoardItem boardItem : boardItems) {
 			assert boardItem != null;
 			
-			resultList.add(boardItem);
+			webSiteSearchResult.add(boardItem);
 
-			logger.debug("검색된 게시물:" + boardItem);
+			// logger.debug("검색된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, comparator);
+//		Collections.sort(resultList, comparator);
 
-		return resultList.iterator();
+		return webSiteSearchResult.getIterator();
+		///////////////////////////////////////////////////////////
 	}
 
-	// @@@@@ listBoardItems0, searchBoardItems0
 	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
@@ -341,7 +366,7 @@ public class BogoBogo extends AbstractWebSite {
 				return true;
 		}
 
-		List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
+		List<BogoBogoBoardItem> boardItems = loadBoardItems0_0(board, queryString);
 		if (boardItems == null)
 			return false;
 
@@ -349,8 +374,8 @@ public class BogoBogo extends AbstractWebSite {
 
 		return true;
 	}
-
-	private List<BogoBogoBoardItem> loadBoardItems0(BogoBogoBoard board, String queryString) throws NoPermissionException {
+	
+	private List<BogoBogoBoardItem> loadBoardItems0_0(BogoBogoBoard board, String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
