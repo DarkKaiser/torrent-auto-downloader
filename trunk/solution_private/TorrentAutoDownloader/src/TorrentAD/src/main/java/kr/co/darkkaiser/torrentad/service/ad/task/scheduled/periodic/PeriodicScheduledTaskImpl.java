@@ -33,7 +33,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 		validate();
 
 		try {
-			Iterator<WebSiteBoardItem> iterator = handler.listAndSearch(this.searchContext, true, new WebSiteBoardItemComparatorIdentifierAsc());
+			Iterator<WebSiteBoardItem> iterator = handler.listAndFilter(this.searchContext, true, new WebSiteBoardItemComparatorIdentifierAsc());
 
 			if (iterator.hasNext() == false) {
 				logger.debug("검색된 게시물이 0건 입니다.(Task:{})", getTaskDescription());

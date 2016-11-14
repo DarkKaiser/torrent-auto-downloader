@@ -23,7 +23,7 @@ public interface WebSiteHandler {
 	 * @param loadNow 등록된 게시판의 게시물을 다시 조회할지의 여부, false일 경우 기존에 읽어들인 데이터가 있을 경우 기존 데이터를 반환한다.
 	 * @param comparator 검색된 게시물 정렬자
 	 */
-	Iterator<WebSiteBoardItem> listAndSearch(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
+	Iterator<WebSiteBoardItem> listAndFilter(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
 
 	/**
 	 * 검색하려는 게시판에서 해당 키워드를 포함하는 게시물을 항상 다시 검색한다.
