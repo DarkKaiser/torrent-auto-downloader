@@ -415,6 +415,7 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
+	// @@@@@ listBoardItems0, searchBoardItems0
 	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
