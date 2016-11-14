@@ -82,11 +82,11 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
+	public Tuple<Long/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		assert isLogin() == true;
 		
 		try {
-			return this.site.searchNow(board, keyword, comparator);
+			return this.site.search(board, keyword, comparator);
 		} catch (NoPermissionException e) {
 			// 일정 시간이 지나 서버에서 로그아웃되어, 게시판에 대한 접근 권한이 없는 경우 다시 로그인하도록 한다.
 			WebSiteConnector siteConnector = this.site.getSiteConnector();
@@ -96,7 +96,7 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 			siteConnector.logout();
 			siteConnector.login();
 
-			return this.site.searchNow(board, keyword, comparator);
+			return this.site.search(board, keyword, comparator);
 		}
 	}
 

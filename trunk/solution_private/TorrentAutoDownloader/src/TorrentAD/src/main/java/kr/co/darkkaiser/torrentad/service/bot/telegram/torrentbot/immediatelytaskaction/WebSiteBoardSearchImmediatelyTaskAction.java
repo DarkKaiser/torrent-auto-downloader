@@ -8,6 +8,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.LoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.NoPermissionException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -38,7 +39,9 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 
 	@Override
 	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
-		return this.siteHandler.searchNow(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
+		// @@@@@ identifier를 반환해야 한다.
+		Tuple<Long, Iterator<WebSiteBoardItem>> search = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
+		return search.last();
 	}
 
 	@Override

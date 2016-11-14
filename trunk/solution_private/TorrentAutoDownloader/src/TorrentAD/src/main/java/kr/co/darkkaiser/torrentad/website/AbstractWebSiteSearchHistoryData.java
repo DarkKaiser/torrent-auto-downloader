@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,7 +17,7 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 
 	protected final String keyword;
 	
-	private final List<WebSiteBoardItem> results;
+	protected final List<WebSiteBoardItem> results;
 
 	public AbstractWebSiteSearchHistoryData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
 		if (board == null)
@@ -47,6 +48,11 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 	@Override
 	public String getKeyword() {
 		return this.keyword;
+	}
+	
+	@Override
+	public Iterator<WebSiteBoardItem> resultIterator() {
+		return this.results.iterator();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import java.util.Iterator;
+
 public interface WebSiteSearchHistoryData {
 
 	long getIdentifier();
@@ -7,5 +9,7 @@ public interface WebSiteSearchHistoryData {
 	WebSiteBoard getBoard();
 
 	String getKeyword();
+	
+	Iterator<WebSiteBoardItem> resultIterator();
 
 }

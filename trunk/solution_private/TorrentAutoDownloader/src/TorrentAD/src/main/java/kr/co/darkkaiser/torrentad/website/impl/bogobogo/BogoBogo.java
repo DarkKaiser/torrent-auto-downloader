@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.apache.http.HttpStatus;
@@ -301,15 +302,15 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
+	// @@@@@ 반환값 다시 생각해보기...
 	@Override
-	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
-		if (StringUtil.isBlank(keyword) == true)
-			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
-
+	public Tuple<Long/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (board == null)
 			throw new NullPointerException("board");
 		if (comparator == null)
 			throw new NullPointerException("comparator");
+		if (StringUtil.isBlank(keyword) == true)
+			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -318,9 +319,8 @@ public class BogoBogo extends AbstractWebSite {
 		this.searchHistoryDataList.removeIf(new Predicate<WebSiteSearchHistoryData>() {
 			@Override
 			public boolean test(WebSiteSearchHistoryData historyData) {
-				if (historyData.getBoard().equals(board) == true && historyData.getKeyword().equals(keyword) == true) {
+				if (historyData.getBoard().equals(board) == true && historyData.getKeyword().equals(keyword) == true)
 					return true;
-				}
 				
 				return false;
 			}
@@ -349,15 +349,13 @@ public class BogoBogo extends AbstractWebSite {
 
 		// 검색 기록을 남기고, 결과를 반환한다.
 		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
-		// @@@@@
 		this.searchHistoryDataList.add(historyData);
 
-		// identifier 반환해야 됨 @@@@@
-		return resultList.iterator();
+		return new Tuple<Long, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator());
 	}
 	
-	// @@@@@
-	public Iterator<WebSiteBoardItem> searchNow(int identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	// @@@@@ 함수명 변경, comparator 제거??
+	public Iterator<WebSiteBoardItem> searchNow(long identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (comparator == null)
 			throw new NullPointerException("comparator");
 
@@ -366,16 +364,13 @@ public class BogoBogo extends AbstractWebSite {
 
 		// @@@@@
 		///////////////////////////////////////////////////////////
-		WebSiteSearchHistoryData search = null;
-		for (WebSiteSearchHistoryData result : this.searchHistoryDataList) {
-			if (result.getIdentifier() == identifier) {
-				search = result;
-				break;
+		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
+		for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
+			if (historyData.getIdentifier() == identifier) {
+				return historyData.resultIterator();
 			}
 		}
-		
-//		Collections.sort(resultList, comparator);
-		//return search.getIterator();
+
 		return null;
 		///////////////////////////////////////////////////////////
 	}
