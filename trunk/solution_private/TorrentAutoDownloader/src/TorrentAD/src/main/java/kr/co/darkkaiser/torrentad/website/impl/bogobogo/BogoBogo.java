@@ -11,9 +11,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
@@ -45,6 +47,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchHistoryData;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 
 public class BogoBogo extends AbstractWebSite {
@@ -68,13 +71,15 @@ public class BogoBogo extends AbstractWebSite {
 	private static final int URL_CONNECTION_TIMEOUT_LONG_MILLISECOND = 60 * 1000;
 	private static final int URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND = 15 * 1000;
 
+	private static final int MAX_SEARCH_HISTORY_DATA_COUNT = 100;
+
 	private Connection.Response loginConnResponse;
 
 	// 조회된 결과 목록
-	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boards = new HashMap<>();
+	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boardList = new HashMap<>();
 
-	// 검색된 결과 목록@@@@@
-	private List<WebSiteSearchResult> searchResults = new ArrayList<>();
+	// 검색된 결과 목록
+	private List<BogoBogoSearchHistoryData> searchHistoryDataList = new LinkedList<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
@@ -245,7 +250,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (BogoBogoBoardItem boardItem : this.boards.get(board)) {
+		for (BogoBogoBoardItem boardItem : this.boardList.get(board)) {
 			assert boardItem != null;
 
 			resultList.add(boardItem);
@@ -277,7 +282,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
 
-		for (BogoBogoBoardItem boardItem : this.boards.get(siteSearchContext.getBoard())) {
+		for (BogoBogoBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
@@ -309,49 +314,69 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		///////////////////////////////////////////////////////////
+		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
+		this.searchHistoryDataList.removeIf(new Predicate<WebSiteSearchHistoryData>() {
+			@Override
+			public boolean test(WebSiteSearchHistoryData historyData) {
+				if (historyData.getBoard().equals(board) == true && historyData.getKeyword().equals(keyword) == true) {
+					return true;
+				}
+				
+				return false;
+			}
+		});
 		
-		// 이전에 동일한 검색 기록이 존재하는 경우 제거한다.
-		for (WebSiteSearchResult result : this.searchResults) {
-			if (result.getBoard().equals(board) == true && result.getKeyword().equals(keyword) == true) {
-				this.searchResults.remove(result);
+		// 오래된 검색 기록은 모두 제거한다.
+		while (this.searchHistoryDataList.size() > (MAX_SEARCH_HISTORY_DATA_COUNT - 1))
+			this.searchHistoryDataList.remove(0);
+
+		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
+		List<BogoBogoBoardItem> boardItems = loadBoardItems0_0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		if (boardItems == null)
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+
+		List<WebSiteBoardItem> resultList = new ArrayList<>();
+
+		for (BogoBogoBoardItem boardItem : boardItems) {
+			assert boardItem != null;
+
+			resultList.add(boardItem);
+
+			// logger.debug("조회된 게시물:" + boardItem);
+		}
+
+		Collections.sort(resultList, comparator);
+
+		// 검색 기록을 남기고, 결과를 반환한다.
+		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
+		// @@@@@
+		this.searchHistoryDataList.add(historyData);
+
+		// identifier 반환해야 됨 @@@@@
+		return resultList.iterator();
+	}
+	
+	// @@@@@
+	public Iterator<WebSiteBoardItem> searchNow(int identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+		if (comparator == null)
+			throw new NullPointerException("comparator");
+
+		if (isLogin() == false)
+			throw new IllegalStateException("로그인 상태가 아닙니다.");
+
+		// @@@@@
+		///////////////////////////////////////////////////////////
+		WebSiteSearchHistoryData search = null;
+		for (WebSiteSearchHistoryData result : this.searchHistoryDataList) {
+			if (result.getIdentifier() == identifier) {
+				search = result;
 				break;
 			}
 		}
 		
-		WebSiteSearchResult webSiteSearchResult = new WebSiteSearchResult(0, board, keyword);
-		this.searchResults.add(webSiteSearchResult);
-		
-		List<BogoBogoBoardItem> boardItems = loadBoardItems0_0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
-		
-//		if (loadNow == true) {
-//			this.boards.remove(board);
-//		} else {
-//			if (this.boards.containsKey(board) == true)
-//				return true;
-//		}
-//
-//		// @@@@@ loadNow
-////		List<BogoBogoBoardItem> boardItems = loadBoardItems0(board, queryString);
-////		if (boardItems == null)
-////			return false;
-////
-////		this.boards.put(board, boardItems);
-//		List<BogoBogoBoardItem> boardItems = searchBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword), loadNow);
-		if (boardItems == null)
-			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
-
-		for (BogoBogoBoardItem boardItem : boardItems) {
-			assert boardItem != null;
-			
-			webSiteSearchResult.add(boardItem);
-
-			// logger.debug("검색된 게시물:" + boardItem);
-		}
-
 //		Collections.sort(resultList, comparator);
-
-		return webSiteSearchResult.getIterator();
+		//return search.getIterator();
+		return null;
 		///////////////////////////////////////////////////////////
 	}
 
@@ -360,9 +385,9 @@ public class BogoBogo extends AbstractWebSite {
 		assert isLogin() == true;
 
 		if (loadNow == true) {
-			this.boards.remove(board);
+			this.boardList.remove(board);
 		} else {
-			if (this.boards.containsKey(board) == true)
+			if (this.boardList.containsKey(board) == true)
 				return true;
 		}
 
@@ -370,7 +395,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (boardItems == null)
 			return false;
 
-		this.boards.put(board, boardItems);
+		this.boardList.put(board, boardItems);
 
 		return true;
 	}
