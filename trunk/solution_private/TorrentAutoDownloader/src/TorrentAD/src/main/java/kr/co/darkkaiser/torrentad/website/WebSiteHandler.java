@@ -30,9 +30,10 @@ public interface WebSiteHandler {
 	 * 
 	 * @param board 검색하려는 게시판
 	 * @param keyword 검색 키워드
+	 * @param loadNow 검색하려는 게시판의 게시물을 다시 조회할지의 여부, false일 경우 기존에 읽어들인 데이터가 있을 경우 기존 데이터를 반환한다.
 	 * @param comparator 검색된 게시물 정렬자
 	 */
-	Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
+	Iterator<WebSiteBoardItem> search(WebSiteBoard board, String keyword, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
 
 	/**
 	 * 검색컨텍스트에 등록된 첨부파일 검색조건과 일치하는 첨부파일을 모두 다운로드한다.

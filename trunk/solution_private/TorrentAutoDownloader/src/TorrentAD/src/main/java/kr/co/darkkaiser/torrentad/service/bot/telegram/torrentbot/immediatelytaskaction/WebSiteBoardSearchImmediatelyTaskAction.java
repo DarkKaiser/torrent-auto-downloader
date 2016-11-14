@@ -38,7 +38,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 
 	@Override
 	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
-		return this.siteHandler.searchNow(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
+		return this.siteHandler.search(this.board, this.keyword, true, new WebSiteBoardItemComparatorIdentifierDesc());
 	}
 
 	@Override

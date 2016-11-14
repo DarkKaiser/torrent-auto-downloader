@@ -294,7 +294,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> searchNow(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	public Iterator<WebSiteBoardItem> search(WebSiteBoard board, String keyword, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -306,6 +306,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
+		// @@@@@ loadNow
 		List<BogoBogoBoardItem> boardItems = loadBoardItems0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
 		if (boardItems == null)
 			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
