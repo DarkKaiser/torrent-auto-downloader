@@ -9,7 +9,7 @@ import org.jsoup.helper.StringUtil;
 public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchHistoryData {
 
 	// @@@@@ 처음 생성될때 값 로드
-	private final static AtomicLong atomicIdentifier = new AtomicLong(0);
+	private static final AtomicLong atomicIdentifier = new AtomicLong(0);
 
 	protected final long identifier;
 
