@@ -301,7 +301,6 @@ public class BogoBogo extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@ 반환값 다시 생각해보기...
 	@Override
 	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (board == null)
@@ -324,7 +323,7 @@ public class BogoBogo extends AbstractWebSite {
 				return false;
 			}
 		});
-		
+
 		// 오래된 검색 기록은 모두 제거한다.
 		while (this.searchHistoryDataList.size() > (MAX_SEARCH_HISTORY_DATA_COUNT - 1))
 			this.searchHistoryDataList.remove(0);
@@ -346,7 +345,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		Collections.sort(resultList, comparator);
 
-		// 검색 기록을 남기고, 결과를 반환한다.
+		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
 		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
 		this.searchHistoryDataList.add(historyData);
 
