@@ -2,21 +2,19 @@ package kr.co.darkkaiser.torrentad.website;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.jsoup.helper.StringUtil;
 
+import kr.co.darkkaiser.torrentad.util.RadixNotation62Util;
+
 public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchHistoryData {
 
-	// @@@@@ 처음 생성될때 값 로드
-	private static final AtomicLong atomicIdentifier = new AtomicLong(0);
-
-	protected final long identifier;
+	protected final String identifier;
 
 	protected final WebSiteBoard board;
 
 	protected final String keyword;
-	
+
 	protected final List<WebSiteBoardItem> results;
 
 	public AbstractWebSiteSearchHistoryData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
@@ -27,16 +25,14 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
-		this.identifier = AbstractWebSiteSearchHistoryData.atomicIdentifier.incrementAndGet();
-		// @@@@@ identifier 값 저장
-		
 		this.board = board;
 		this.keyword = keyword;
 		this.results = results;
+		this.identifier = RadixNotation62Util.toString(System.currentTimeMillis());
 	}
 
 	@Override
-	public long getIdentifier() {
+	public String getIdentifier() {
 		return this.identifier;
 	}
 

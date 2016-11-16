@@ -15,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.apache.http.HttpStatus;
@@ -304,7 +303,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	// @@@@@ 반환값 다시 생각해보기...
 	@Override
-	public Tuple<Long/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (board == null)
 			throw new NullPointerException("board");
 		if (comparator == null)
@@ -351,11 +350,11 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
 		this.searchHistoryDataList.add(historyData);
 
-		return new Tuple<Long, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator());
+		return new Tuple<String, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator());
 	}
 	
 	// @@@@@ 함수명 변경, comparator 제거??
-	public Iterator<WebSiteBoardItem> searchNow(long identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	public Iterator<WebSiteBoardItem> searchNow(String identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (comparator == null)
 			throw new NullPointerException("comparator");
 
@@ -366,7 +365,7 @@ public class BogoBogo extends AbstractWebSite {
 		///////////////////////////////////////////////////////////
 		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
 		for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
-			if (historyData.getIdentifier() == identifier) {
+			if (historyData.getIdentifier().equals(identifier) == true) {
 				return historyData.resultIterator();
 			}
 		}

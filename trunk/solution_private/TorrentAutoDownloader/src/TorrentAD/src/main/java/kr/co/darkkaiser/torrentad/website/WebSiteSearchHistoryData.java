@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public interface WebSiteSearchHistoryData {
 
-	long getIdentifier();
+	String getIdentifier();
 
 	WebSiteBoard getBoard();
 

@@ -10,18 +10,18 @@ public final class RadixNotation62Util {
 		if (value < 0)
 			return "";
 
-		char buf[] = new char[33];
-		int charPos = buf.length - 1;
+		char charBuf[] = new char[33];
+		int charBufPos = charBuf.length - 1;
 		int radix = digits.length;
 
 		while (value > -1) {
-			buf[charPos--] = digits[(int) (value % radix)];
+			charBuf[charBufPos--] = digits[(int) (value % radix)];
 			value = value / radix;
 			if (value == 0)
 				break;
 		}
 
-		return new String(buf, charPos + 1, (buf.length - 1 - charPos));
+		return new String(charBuf, charBufPos + 1, (charBuf.length - 1 - charBufPos));
 	}
 	
 	private RadixNotation62Util() {

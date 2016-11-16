@@ -82,7 +82,7 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	}
 
 	@Override
-	public Tuple<Long/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
+	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		assert isLogin() == true;
 		
 		try {

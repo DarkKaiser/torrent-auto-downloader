@@ -40,7 +40,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	@Override
 	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
 		// @@@@@ identifier를 반환해야 한다.
-		Tuple<Long, Iterator<WebSiteBoardItem>> search = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
+		Tuple<String, Iterator<WebSiteBoardItem>> search = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
 		return search.last();
 	}
 
