@@ -7,12 +7,14 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.website.LoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.NoPermissionException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 
+// @@@@@
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardImmediatelyTaskAction {
 
 	public WebSiteBoardListImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
@@ -29,28 +31,33 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardI
 	}
 
 	@Override
-	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
+	protected Iterator<WebSiteBoardItem> resultIterator() throws NoPermissionException, LoadBoardItemsException {
 		return this.siteHandler.list(this.board, true, new WebSiteBoardItemComparatorIdentifierDesc());
 	}
 
 	@Override
-	protected String lasCompletedString() {
+	protected String getCompletedString() {
 		return "게시판 조회가 완료되었습니다";
 	}
 
 	@Override
-	protected String lasNoResultDataString() {
+	protected String getNoResultDataString() {
 		return "조회 결과 데이터가 없습니다.";
 	}
 
+	// @@@@@
 	@Override
-	protected String lasCallbackQueryCommand() {
+	protected String getCallbackQueryCommandString() {
 		return BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND;
 	}
 
 	@Override
-	protected String lasDownloadLinkListInlineCommand() {
-		return BotCommandConstants.INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST;
+	protected String getDownloadLinkListInlineCommandString(WebSiteBoardItem boardItem) {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+
+		return BotCommandUtils.toComplexBotCommandString(
+				BotCommandConstants.INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()));
 	}
 
 	@Override

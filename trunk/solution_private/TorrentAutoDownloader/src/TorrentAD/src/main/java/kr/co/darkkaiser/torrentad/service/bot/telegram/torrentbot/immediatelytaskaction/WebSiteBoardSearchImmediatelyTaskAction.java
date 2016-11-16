@@ -8,6 +8,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.LoadBoardItemsException;
 import kr.co.darkkaiser.torrentad.website.NoPermissionException;
@@ -15,9 +16,12 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 
+// @@@@@
 public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoardImmediatelyTaskAction {
 	
 	private final String keyword;
+	
+	private String historyDataIdentifier;
 
 	public WebSiteBoardSearchImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, String keyword, TorrentBotResource torrentBotResource) {
 		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, keyword, torrentBotResource);
@@ -38,30 +42,35 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	}
 
 	@Override
-	protected Iterator<WebSiteBoardItem> lasIterator() throws NoPermissionException, LoadBoardItemsException {
-		// @@@@@ identifier를 반환해야 한다.
-		Tuple<String, Iterator<WebSiteBoardItem>> search = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
-		return search.last();
+	protected Iterator<WebSiteBoardItem> resultIterator() throws NoPermissionException, LoadBoardItemsException {
+		Tuple<String, Iterator<WebSiteBoardItem>> tuple = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
+		this.historyDataIdentifier = tuple.first();
+		return tuple.last();
 	}
 
 	@Override
-	protected String lasCompletedString() {
+	protected String getCompletedString() {
 		return "게시판 검색이 완료되었습니다";
 	}
 
 	@Override
-	protected String lasNoResultDataString() {
+	protected String getNoResultDataString() {
 		return "검색 결과 데이터가 없습니다.";
 	}
 
+	// @@@@@
 	@Override
-	protected String lasCallbackQueryCommand() {
+	protected String getCallbackQueryCommandString() {
 		return BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND;
 	}
 
 	@Override
-	protected String lasDownloadLinkListInlineCommand() {
-		return BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST;
+	protected String getDownloadLinkListInlineCommandString(WebSiteBoardItem boardItem) {
+		if (boardItem == null)
+			throw new NullPointerException("boardItem");
+		
+		return BotCommandUtils.toComplexBotCommandString(
+				BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
 	}
 
 	@Override
