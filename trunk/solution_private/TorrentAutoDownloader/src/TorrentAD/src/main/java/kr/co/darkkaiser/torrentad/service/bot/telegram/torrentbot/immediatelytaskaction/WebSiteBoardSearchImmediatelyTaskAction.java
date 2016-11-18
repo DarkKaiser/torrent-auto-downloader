@@ -15,8 +15,8 @@ import kr.co.darkkaiser.torrentad.website.NoPermissionException;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 
-// @@@@@
 public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoardImmediatelyTaskAction {
 	
 	private final String keyword;
@@ -42,35 +42,37 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	}
 
 	@Override
-	protected Iterator<WebSiteBoardItem> resultIterator() throws NoPermissionException, LoadBoardItemsException {
+	protected Iterator<WebSiteBoardItem> execute() throws NoPermissionException, LoadBoardItemsException {
 		Tuple<String, Iterator<WebSiteBoardItem>> tuple = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
 		this.historyDataIdentifier = tuple.first();
 		return tuple.last();
 	}
 
 	@Override
-	protected String getCompletedString() {
+	protected String getExecuteCompletedString() {
 		return "게시판 검색이 완료되었습니다";
 	}
 
 	@Override
-	protected String getNoResultDataString() {
+	protected String getExecuteNoResultDataString() {
 		return "검색 결과 데이터가 없습니다.";
 	}
 
-	// @@@@@
 	@Override
-	protected String getCallbackQueryCommandString() {
-		return BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND;
+	protected String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue) {
+		if (identifierValue == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
+			return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.historyDataIdentifier);
+
+		return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.historyDataIdentifier, Long.toString(identifierValue));
 	}
 
 	@Override
-	protected String getDownloadLinkListInlineCommandString(WebSiteBoardItem boardItem) {
+	protected String generateDownloadLinkListRequestInlineCommandString(WebSiteBoardItem boardItem) {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 		
 		return BotCommandUtils.toComplexBotCommandString(
-				BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
+				BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST_REQUEST, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
 	}
 
 	@Override

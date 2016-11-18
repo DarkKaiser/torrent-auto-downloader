@@ -23,13 +23,13 @@ public final class BotCommandConstants {
      */
 
     // 게시판 조회 결과 게시물 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
-    public static final String INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST = "ls";
+    public static final String INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST_REQUEST = "ls";
 
     // 게시판 검색 결과 게시물 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
-    public static final String INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST = "sc";
+    public static final String INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST_REQUEST = "sc";
 
     // 선택된 첨부파일 다운로드 Inline 명령
-    public static final String INLINE_COMMAND_DOWNLOAD = "dl";
+    public static final String INLINE_COMMAND_DOWNLOAD_REQUEST = "dl";
     
     
     /**

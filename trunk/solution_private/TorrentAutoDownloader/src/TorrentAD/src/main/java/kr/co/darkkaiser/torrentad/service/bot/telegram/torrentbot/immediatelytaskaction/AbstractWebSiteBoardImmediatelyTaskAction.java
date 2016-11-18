@@ -19,6 +19,7 @@ import kr.co.darkkaiser.torrentad.website.NoPermissionException;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
@@ -57,12 +58,11 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 
 		this.requestId = requestId;
 		this.messageId = messageId;
-		
 		this.absSender = absSender;
 		this.chatRoom = chatRoom;
-		
+
 		this.board = board;
-		
+
 		this.site = torrentBotResource.getSite();
 		this.siteHandler = (WebSiteHandler) torrentBotResource.getSiteConnector().getConnection();
 	}
@@ -71,17 +71,17 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 	public Boolean call() throws Exception {
 		try {
 			// 선택된 게시판을 조회 및 검색한다.
-			Iterator<WebSiteBoardItem> iterator = resultIterator();
+			Iterator<WebSiteBoardItem> iterator = execute();
 
 			// 현재의 작업요청 이후에 클라이언트로부터 새로운 작업요청이 들어온 경우, 현재 작업요청을 클라이언트로 알리지 않는다.
 			if (this.chatRoom.getRequestId() != this.requestId)
 				return true;
 
 			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] ").append(getCompletedString()).append(":\n\n");
+			sbAnswerMessage.append("[ ").append(this.board.getDescription()).append(" ] ").append(getExecuteCompletedString()).append(":\n\n");
 
 			if (iterator.hasNext() == false) {
-				sbAnswerMessage.append(getNoResultDataString());
+				sbAnswerMessage.append(getExecuteNoResultDataString());
 
 				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());
 
@@ -96,22 +96,22 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 				identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 				identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(getDownloadLinkListInlineCommandString(boardItem)).append("\n\n");
+				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(generateDownloadLinkListRequestInlineCommandString(boardItem)).append("\n\n");
 			}
 
 			// 인라인 키보드를 설정한다.
 			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getCallbackQueryCommandString(), BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode()))
+							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE))
 			);
 			List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getCallbackQueryCommandString(), BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMaxValue))),
+							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMaxValue)),
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(getCallbackQueryCommandString(), BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, this.board.getCode(), Long.toString(identifierMinValue)))
+							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMinValue))
 			);
 
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
@@ -133,15 +133,15 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 		return true;
 	}
 
-	protected abstract Iterator<WebSiteBoardItem> resultIterator() throws NoPermissionException, LoadBoardItemsException;
+	protected abstract Iterator<WebSiteBoardItem> execute() throws NoPermissionException, LoadBoardItemsException;
 
-	protected abstract String getCompletedString();
+	protected abstract String getExecuteCompletedString();
 
-	protected abstract String getNoResultDataString();
+	protected abstract String getExecuteNoResultDataString();
 
-	protected abstract String getCallbackQueryCommandString();
+	protected abstract String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue);
 
-	protected abstract String getDownloadLinkListInlineCommandString(WebSiteBoardItem boardItem);
+	protected abstract String generateDownloadLinkListRequestInlineCommandString(WebSiteBoardItem boardItem);
 
 	@Override
 	public void validate() {
