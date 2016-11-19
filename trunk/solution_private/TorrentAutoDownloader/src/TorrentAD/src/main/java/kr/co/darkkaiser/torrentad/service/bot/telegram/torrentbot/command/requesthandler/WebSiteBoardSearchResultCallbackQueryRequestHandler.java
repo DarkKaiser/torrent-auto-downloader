@@ -74,7 +74,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 		try {
 			WebSiteSearchHistoryData historyData = siteHandler.getSearchHistoryData(parameters[1]);
 			if (historyData == null) {
-				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "이전 검색 정보를 찾을 수 없습니다. 다시 검색하여 주세요.");
+				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "이전에 검색하신 정보를 찾을 수 없습니다. 다시 검색하여 주세요.");
 				return;
 			}
 

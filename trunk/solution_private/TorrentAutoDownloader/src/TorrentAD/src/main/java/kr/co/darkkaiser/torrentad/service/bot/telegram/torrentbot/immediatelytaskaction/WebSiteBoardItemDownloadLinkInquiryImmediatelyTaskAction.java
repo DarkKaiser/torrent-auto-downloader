@@ -17,9 +17,9 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDe
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
-public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkListImmediatelyTaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction.class);
 	
 	private final int messageId;
 
@@ -35,7 +35,7 @@ public class WebSiteBoardItemDownloadLinkListImmediatelyTaskAction extends Abstr
 
 	private final WebSiteHandler siteHandler;
 
-	public WebSiteBoardItemDownloadLinkListImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
