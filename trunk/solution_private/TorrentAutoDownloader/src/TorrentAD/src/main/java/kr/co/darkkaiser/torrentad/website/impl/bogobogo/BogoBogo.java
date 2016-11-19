@@ -352,20 +352,14 @@ public class BogoBogo extends AbstractWebSite {
 		return new Tuple<String, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator());
 	}
 	
-	// @@@@@ 함수명 변경, comparator 제거??
-	public Iterator<WebSiteBoardItem> searchNow(String identifier, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
-		if (comparator == null)
-			throw new NullPointerException("comparator");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
+	// @@@@@ 함수명 변경
+	@Override
+	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) throws NoPermissionException, LoadBoardItemsException {
 		// @@@@@
 		///////////////////////////////////////////////////////////
-		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
 		for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
 			if (historyData.getIdentifier().equals(identifier) == true) {
-				return historyData.resultIterator();
+				return historyData;
 			}
 		}
 

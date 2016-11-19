@@ -15,9 +15,10 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytas
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
-public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractBotCommandRequestHandler {
+// @@@@@ search 도 만들어야 됨
+public class WebSiteBoardItemDownloadLinkInquiryRequestHandler extends AbstractBotCommandRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkListRequestHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkInquiryRequestHandler.class);
 
 	private final WebSite site;
 
@@ -25,7 +26,7 @@ public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractBotC
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardItemDownloadLinkListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardItemDownloadLinkInquiryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
@@ -80,7 +81,7 @@ public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractBotC
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(WebSiteBoardItemDownloadLinkListRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardItemDownloadLinkInquiryRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())

@@ -17,17 +17,15 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchHistoryData;
 
-public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
+public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultCallbackQueryRequestHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchResultCallbackQueryRequestHandler.class);
 
 	private final WebSite site;
 	
@@ -35,8 +33,8 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListResultCallbackQueryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND);
+	public WebSiteBoardSearchResultCallbackQueryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+		super(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND);
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
@@ -56,7 +54,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 			return false;
 
 		String callbackQueryCommand = parameters[0];
-		if (parameters.length >= 3) {
+		if (parameters.length >= 4) {
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
 					&& callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
 				return false;
@@ -69,9 +67,6 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 				return false;
 		}
 
-		if (this.site.getBoardByCode(parameters[1]) == null)
-			return false;
-
 		return true;
 	}
 
@@ -80,27 +75,30 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 		WebSiteHandler siteHandler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 
 		try {
-			WebSiteBoard board = this.site.getBoardByCode(parameters[1]);
-			if (board == null)
-				throw new NullPointerException("board");
+			// @@@@@
+			////////////////////////////////////
+			WebSiteSearchHistoryData historyData = siteHandler.getSearchHistoryData(parameters[1]);
+			WebSiteBoard board = historyData.getBoard();
+			////////////////////////////////////
 
 			String callbackQueryCommand = parameters[0];
 			String callbackQueryId = update.getCallbackQuery().getId();
 			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
-
+			
 			//
 			// 새로고침 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-				// 게시판 조회중 메시지를 사용자에게 보낸다.
+				// 게시판 검색중 메시지를 사용자에게 보낸다.
 				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다.");
+				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다.");
 
 				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString());
 
-				// 게시판 조회를 시작한다.
-				this.immediatelyTaskExecutorService.submit(
-						new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), callbackQueryMessageId, absSender, chatRoom, board, this.torrentBotResource));
+				// @@@@@
+				// 게시판 검색을 시작한다.
+//				this.immediatelyTaskExecutorService.submit(
+//						new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), callbackQueryMessageId, absSender, chatRoom, board, this.torrentBotResource));
 
 				return;
 			}
@@ -110,14 +108,13 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 			long identifierValue = Long.parseLong(parameters[2]);
 
 			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판 조회가 완료되었습니다:\n\n");
+			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판 검색이 완료되었습니다:\n\n");
 
 			//
 			// 다음페이지 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
-				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = siteHandler.list(board, false, new WebSiteBoardItemComparatorIdentifierDesc());
+				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator();
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
@@ -130,7 +127,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, historyData.getIdentifier(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
@@ -144,9 +141,9 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 			// 이전페이지 인라인명령
 			//
 			} else if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-				// 선택된 게시판을 조회한다.
-				Iterator<WebSiteBoardItem> iterator = siteHandler.list(board, false, new WebSiteBoardItemComparatorIdentifierAsc());
+				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator();
 
+				// @@@@@ 조회 방법 변경해야됨, 거꾸로
 				// 조회된 게시물의 이전페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
 				int offsetBoardItemInfo = sbAnswerMessage.length();
@@ -161,7 +158,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbBoardItemInfo.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbBoardItemInfo.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, historyData.getIdentifier(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 
 					sbAnswerMessage.insert(offsetBoardItemInfo, sbBoardItemInfo);
 					sbBoardItemInfo.delete(0, sbBoardItemInfo.length());
@@ -182,15 +179,15 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, board.getCode()))
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, historyData.getIdentifier()))
 			);
 			List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMaxValue))),
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, historyData.getIdentifier(), Long.toString(identifierMaxValue))),
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, board.getCode(), Long.toString(identifierMinValue)))
+							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, historyData.getIdentifier(), Long.toString(identifierMinValue)))
 			);
 
 			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
@@ -207,7 +204,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(WebSiteBoardListResultCallbackQueryRequestHandler.class.getSimpleName())
+				.append(WebSiteBoardSearchResultCallbackQueryRequestHandler.class.getSimpleName())
 				.append("{")
 				.append("}, ")
 				.append(super.toString())
