@@ -29,7 +29,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	private final FileTransmissionExecutorService fileTransmissionExecutorService;
 	
 	public WebSiteBoardItemDownloadRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService) {
-		super(BotCommandConstants.INLINE_COMMAND_DOWNLOAD_REQUEST);
+		super(BotCommandConstants.DOWNLOAD_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");

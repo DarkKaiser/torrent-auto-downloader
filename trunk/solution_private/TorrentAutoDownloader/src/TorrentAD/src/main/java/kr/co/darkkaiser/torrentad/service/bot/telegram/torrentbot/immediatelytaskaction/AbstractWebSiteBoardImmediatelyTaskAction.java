@@ -91,12 +91,12 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 			// 조회된 게시물의 목록을 구한다.
 			long identifierMinValue = Long.MAX_VALUE;
 			long identifierMaxValue = Long.MIN_VALUE;
-			for (int index = 0; iterator.hasNext() == true && index < BotCommandConstants.LASR_OUTPUT_BOARD_ITEM_COUNT; ++index) {
+			for (int index = 0; iterator.hasNext() == true && index < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ++index) {
 				WebSiteBoardItem boardItem = iterator.next();
 				identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 				identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(generateDownloadLinkListRequestInlineCommandString(boardItem)).append("\n\n");
+				sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append("\n").append(generateDownloadLinkInquiryRequestInlineCommandString(boardItem)).append("\n\n");
 			}
 
 			// 인라인 키보드를 설정한다.
@@ -141,7 +141,7 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 
 	protected abstract String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue);
 
-	protected abstract String generateDownloadLinkListRequestInlineCommandString(WebSiteBoardItem boardItem);
+	protected abstract String generateDownloadLinkInquiryRequestInlineCommandString(WebSiteBoardItem boardItem);
 
 	@Override
 	public void validate() {

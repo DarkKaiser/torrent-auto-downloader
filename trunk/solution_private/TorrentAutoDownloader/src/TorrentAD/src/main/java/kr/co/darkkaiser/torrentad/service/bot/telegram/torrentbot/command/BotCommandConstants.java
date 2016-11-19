@@ -19,17 +19,17 @@ public final class BotCommandConstants {
 
     
     /**
-     * 인라인 명령
+     * Inline 명령
      */
 
-    // 게시판 조회 결과 게시물 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
-    public static final String INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST_REQUEST = "ls";
+    // 게시판 조회 결과 목록에서 선택된 게시물의 다운로드 링크(첨부파일) 조회요청 Inline 명령
+    public static final String LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND = "ls";
 
-    // 게시판 검색 결과 게시물 목록에서 선택된 게시물의 첨부파일에 대한 다운로드 링크 조회 Inline 명령
-    public static final String INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST_REQUEST = "sc";
+    // 게시판 검색 결과 목록에서 선택된 게시물의 다운로드 링크(첨부파일) 조회요청 Inline 명령
+    public static final String LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND = "sc";
 
-    // 선택된 첨부파일 다운로드 Inline 명령
-    public static final String INLINE_COMMAND_DOWNLOAD_REQUEST = "dl";
+    // 선택된 첨부파일 다운로드 요청 Inline 명령
+    public static final String DOWNLOAD_REQUEST_INLINE_COMMAND = "dl";
     
     
     /**
@@ -37,7 +37,7 @@ public final class BotCommandConstants {
      */
 
     // 조회 및 검색 결과 게시물의 게시물 출력 갯수
-    public static final int LASR_OUTPUT_BOARD_ITEM_COUNT = 10;
+    public static final int LASR_BOARD_ITEM_OUTPUT_COUNT = 10;
 
     // 조회 결과 게시물 목록에서 CallbackQuery 명령
     public static final String LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND = "ls-rslt-inline";

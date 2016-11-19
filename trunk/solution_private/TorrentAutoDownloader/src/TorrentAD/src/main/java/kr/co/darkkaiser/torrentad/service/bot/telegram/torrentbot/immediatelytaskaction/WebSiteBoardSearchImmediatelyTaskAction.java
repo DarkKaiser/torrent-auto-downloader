@@ -67,12 +67,12 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	}
 
 	@Override
-	protected String generateDownloadLinkListRequestInlineCommandString(WebSiteBoardItem boardItem) {
+	protected String generateDownloadLinkInquiryRequestInlineCommandString(WebSiteBoardItem boardItem) {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
-		
+
 		return BotCommandUtils.toComplexBotCommandString(
-				BotCommandConstants.INLINE_COMMAND_LASR_SEARCH_RESULT_DOWNLOAD_LINK_LIST_REQUEST, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
+				BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
 	}
 
 	@Override

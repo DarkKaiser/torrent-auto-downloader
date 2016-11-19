@@ -122,7 +122,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
-				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_OUTPUT_BOARD_ITEM_COUNT; ) {
+				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ) {
 					WebSiteBoardItem boardItem = iterator.next();
 					if (boardItem.getIdentifier() >= identifierValue)
 						continue;
@@ -131,7 +131,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST_REQUEST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbAnswerMessage.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 				}
 
 				// 수신된 CallbackQuery에 대한 응답을 보낸다.
@@ -153,7 +153,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 				int offsetBoardItemInfo = sbAnswerMessage.length();
 				StringBuilder sbBoardItemInfo = new StringBuilder();
 				
-				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_OUTPUT_BOARD_ITEM_COUNT; ) {
+				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ) {
 					WebSiteBoardItem boardItem = iterator.next();
 					if (boardItem.getIdentifier() <= identifierValue)
 						continue;
@@ -162,7 +162,7 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 					identifierMinValue = Math.min(identifierMinValue, boardItem.getIdentifier());
 					identifierMaxValue = Math.max(identifierMaxValue, boardItem.getIdentifier());
 
-					sbBoardItemInfo.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST_REQUEST, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
+					sbBoardItemInfo.append("☞ (").append(boardItem.getRegistDateString()).append(") ").append(boardItem.getTitle()).append(" ").append(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, boardItem.getBoard().getCode(), Long.toString(boardItem.getIdentifier()))).append("\n\n");
 
 					sbAnswerMessage.insert(offsetBoardItemInfo, sbBoardItemInfo);
 					sbBoardItemInfo.delete(0, sbBoardItemInfo.length());

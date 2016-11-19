@@ -26,7 +26,7 @@ public class WebSiteBoardItemDownloadLinkListRequestHandler extends AbstractBotC
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	public WebSiteBoardItemDownloadLinkListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
-		super(BotCommandConstants.INLINE_COMMAND_LASR_LIST_RESULT_DOWNLOAD_LINK_LIST_REQUEST);
+		super(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
