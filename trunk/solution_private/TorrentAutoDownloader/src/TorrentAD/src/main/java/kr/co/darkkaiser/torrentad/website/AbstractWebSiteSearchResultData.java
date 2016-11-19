@@ -9,7 +9,7 @@ import org.jsoup.helper.StringUtil;
 
 import kr.co.darkkaiser.torrentad.util.RadixNotation62Util;
 
-public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchHistoryData {
+public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchResultData {
 
 	protected final String identifier;
 
@@ -19,7 +19,7 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 
 	protected final List<WebSiteBoardItem> results;
 
-	public AbstractWebSiteSearchHistoryData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
+	public AbstractWebSiteSearchResultData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
 		if (board == null)
 			throw new NullPointerException("board");
 		if (results == null)
@@ -61,7 +61,7 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append(AbstractWebSiteSearchHistoryData.class.getSimpleName())
+				.append(AbstractWebSiteSearchResultData.class.getSimpleName())
 				.append("{")
 				.append("identifier:").append(getIdentifier())
 				.append(", board:").append(getBoard())

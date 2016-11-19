@@ -101,8 +101,8 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	}
 
 	@Override
-	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) {
-		return this.site.getSearchHistoryData(identifier);
+	public WebSiteSearchResultData getSearchResultData(String identifier) {
+		return this.site.getSearchResultData(identifier);
 	}
 
 	@Override

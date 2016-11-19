@@ -89,7 +89,7 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 	
 					for (int index = 0; downloadLinkIterator.hasNext() == true; ++index) {
 						WebSiteBoardItemDownloadLink next = downloadLinkIterator.next();
-						sbAnswerMessage.append("☞ ").append(next).append(" ").append(generateDownloadRequestInlineCommandString(boardItem, index)).append("\n\n");
+						sbAnswerMessage.append("☞ ").append(next).append("\n").append(generateDownloadRequestInlineCommandString(boardItem, index)).append("\n\n");
 					}
 	
 					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), this.messageId);

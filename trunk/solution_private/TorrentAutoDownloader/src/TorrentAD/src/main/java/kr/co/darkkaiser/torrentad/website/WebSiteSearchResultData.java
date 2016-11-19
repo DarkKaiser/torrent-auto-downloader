@@ -3,7 +3,7 @@ package kr.co.darkkaiser.torrentad.website;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public interface WebSiteSearchHistoryData {
+public interface WebSiteSearchResultData {
 
 	String getIdentifier();
 

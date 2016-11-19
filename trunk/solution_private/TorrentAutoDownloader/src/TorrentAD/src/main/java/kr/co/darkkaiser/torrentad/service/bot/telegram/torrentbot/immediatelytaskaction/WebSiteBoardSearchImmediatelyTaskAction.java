@@ -21,7 +21,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	
 	private final String keyword;
 	
-	private String historyDataIdentifier;
+	private String searchResultDataIdentifier;
 
 	public WebSiteBoardSearchImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, String keyword, TorrentBotResource torrentBotResource) {
 		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, keyword, torrentBotResource);
@@ -44,7 +44,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	@Override
 	protected Iterator<WebSiteBoardItem> execute() throws NoPermissionException, LoadBoardItemsException {
 		Tuple<String, Iterator<WebSiteBoardItem>> tuple = this.siteHandler.search(this.board, this.keyword, new WebSiteBoardItemComparatorIdentifierDesc());
-		this.historyDataIdentifier = tuple.first();
+		this.searchResultDataIdentifier = tuple.first();
 		return tuple.last();
 	}
 
@@ -61,9 +61,9 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	@Override
 	protected String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue) {
 		if (identifierValue == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
-			return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.historyDataIdentifier);
+			return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.searchResultDataIdentifier);
 
-		return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.historyDataIdentifier, Long.toString(identifierValue));
+		return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.searchResultDataIdentifier, Long.toString(identifierValue));
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 			throw new NullPointerException("boardItem");
 
 		return BotCommandUtils.toComplexBotCommandString(
-				BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, this.historyDataIdentifier, Long.toString(boardItem.getIdentifier()));
+				BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, this.searchResultDataIdentifier, Long.toString(boardItem.getIdentifier()));
 	}
 
 	@Override

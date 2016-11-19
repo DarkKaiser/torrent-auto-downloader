@@ -47,8 +47,8 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteConnector;
 import kr.co.darkkaiser.torrentad.website.WebSiteConstants;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchContext;
-import kr.co.darkkaiser.torrentad.website.WebSiteSearchHistoryData;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
+import kr.co.darkkaiser.torrentad.website.WebSiteSearchResultData;
 
 public class BogoBogo extends AbstractWebSite {
 
@@ -71,7 +71,7 @@ public class BogoBogo extends AbstractWebSite {
 	private static final int URL_CONNECTION_TIMEOUT_LONG_MILLISECOND = 60 * 1000;
 	private static final int URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND = 15 * 1000;
 
-	private static final int MAX_SEARCH_HISTORY_DATA_COUNT = 100;
+	private static final int MAX_SEARCH_RESULT_DATA_COUNT = 100;
 
 	private Connection.Response loginConnResponse;
 
@@ -79,7 +79,7 @@ public class BogoBogo extends AbstractWebSite {
 	private Map<BogoBogoBoard, List<BogoBogoBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
-	private List<BogoBogoSearchHistoryData> searchHistoryDataList = new LinkedList<>();
+	private List<BogoBogoSearchResultData> searchResultDataList = new LinkedList<>();
 
 	// 다운로드 받은 파일이 저장되는 위치
 	private String downloadFileWriteLocation;
@@ -314,10 +314,10 @@ public class BogoBogo extends AbstractWebSite {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
 		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
-		this.searchHistoryDataList.removeIf(new Predicate<WebSiteSearchHistoryData>() {
+		this.searchResultDataList.removeIf(new Predicate<WebSiteSearchResultData>() {
 			@Override
-			public boolean test(WebSiteSearchHistoryData historyData) {
-				if (historyData.getBoard().equals(board) == true && historyData.getKeyword().equals(keyword) == true)
+			public boolean test(WebSiteSearchResultData searchResultData) {
+				if (searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true)
 					return true;
 				
 				return false;
@@ -325,8 +325,8 @@ public class BogoBogo extends AbstractWebSite {
 		});
 
 		// 오래된 검색 기록은 모두 제거한다.
-		while (this.searchHistoryDataList.size() > (MAX_SEARCH_HISTORY_DATA_COUNT - 1))
-			this.searchHistoryDataList.remove(0);
+		while (this.searchResultDataList.size() > (MAX_SEARCH_RESULT_DATA_COUNT - 1))
+			this.searchResultDataList.remove(0);
 
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
 		List<BogoBogoBoardItem> boardItems = loadBoardItems0_0((BogoBogoBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
@@ -344,19 +344,18 @@ public class BogoBogo extends AbstractWebSite {
 		}
 
 		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
-		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
-		this.searchHistoryDataList.add(historyData);
+		BogoBogoSearchResultData searchResultData = new BogoBogoSearchResultData(board, keyword, resultList);
+		this.searchResultDataList.add(searchResultData);
 
-		return new Tuple<String, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator(comparator));
+		return new Tuple<String, Iterator<WebSiteBoardItem>>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
 	}
 	
-	// @@@@@ 함수명 변경
 	@Override
-	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) {
+	public WebSiteSearchResultData getSearchResultData(String identifier) {
 		if (StringUtil.isBlank(identifier) == false) {
-			for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
-				if (historyData.getIdentifier().equals(identifier) == true) {
-					return historyData;
+			for (WebSiteSearchResultData searchResultData : this.searchResultDataList) {
+				if (searchResultData.getIdentifier().equals(identifier) == true) {
+					return searchResultData;
 				}
 			}
 		}

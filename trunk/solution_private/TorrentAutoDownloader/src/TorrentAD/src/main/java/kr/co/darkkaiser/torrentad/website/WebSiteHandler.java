@@ -35,8 +35,10 @@ public interface WebSiteHandler {
 	 */
 	Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
 
-	// @@@@@
-	WebSiteSearchHistoryData getSearchHistoryData(String identifier);
+	/**
+	 * 해당 ID에 해당하는 이전 검색정보 및 결과데이터를 찾아서 반환한다.
+	 */
+	WebSiteSearchResultData getSearchResultData(String identifier);
 
 	/**
 	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.
