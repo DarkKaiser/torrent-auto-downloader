@@ -76,7 +76,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s > %d > %d 첨부파일 다운로드", this.site.getName(), this.board.getDescription(), this.boardItemIdentifier, this.boardItemDownloadLinkIndex);
+		return String.format("%s > %s > %d > 첨부파일(%d) 다운로드", this.site.getName(), this.board.getDescription(), this.boardItemIdentifier, this.boardItemDownloadLinkIndex);
 	}
 
 	@Override

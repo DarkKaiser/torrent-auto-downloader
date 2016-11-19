@@ -51,6 +51,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 		if (super.executable0(command, parameters, containInitialChar, 3, 3) == false)
 			return false;
 
+		// @@@@@
 		if (this.site.getBoardByCode(parameters[0]) == null)
 			return false;
 		

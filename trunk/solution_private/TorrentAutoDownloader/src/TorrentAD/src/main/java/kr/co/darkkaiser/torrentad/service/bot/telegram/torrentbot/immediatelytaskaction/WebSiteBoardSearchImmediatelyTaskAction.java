@@ -38,7 +38,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s 검색", this.site.getName(), this.board.getDescription());
+		return String.format("%s > 검색(%s)", this.site.getName(), this.board.getDescription());
 	}
 
 	@Override

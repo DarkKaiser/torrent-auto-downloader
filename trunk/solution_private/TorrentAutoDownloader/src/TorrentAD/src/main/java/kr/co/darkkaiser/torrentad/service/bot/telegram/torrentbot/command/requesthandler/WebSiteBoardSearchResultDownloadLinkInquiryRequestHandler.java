@@ -11,7 +11,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction;
 
 public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends AbstractBotCommandRequestHandler {
 
@@ -47,17 +47,13 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		try {
-			String historyDataIdentifier = parameters[0];
-			long boardItemIdentifier = Long.parseLong(parameters[1]);
-
 			// 선택된 게시물의 첨부파일 확인중 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택된 게시물의 첨부파일을 확인중입니다.", messageId);
 
-			// @@@@@
 			// 첨부파일 조회를 시작한다.
-//			this.immediatelyTaskExecutorService.submit(
-//					new WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, boardItemIdentifier, this.torrentBotResource));
+			this.immediatelyTaskExecutorService.submit(
+					new WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], Long.parseLong(parameters[1]), this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 

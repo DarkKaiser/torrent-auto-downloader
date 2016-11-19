@@ -27,7 +27,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardI
 
 	@Override
 	public String getName() {
-		return String.format("%s > %s 조회", this.site.getName(), this.board.getDescription());
+		return String.format("%s > 조회(%s)", this.site.getName(), this.board.getDescription());
 	}
 
 	@Override
