@@ -1,9 +1,12 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.net.torrent.TorrentClient;
@@ -11,11 +14,14 @@ import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentG
 import kr.co.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult.Torrent;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 
 public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TorrentStatusImmediatelyTaskAction.class);
+	
+	private final int messageId;
 	
 	private final AbsSender absSender;
 
@@ -31,8 +37,25 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
 
-		this.chatRoom = chatRoom;
+		this.messageId = BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID;
 		this.absSender = absSender;
+		this.chatRoom = chatRoom;
+		
+		this.torrentBotResource = torrentBotResource;
+	}
+	
+	public TorrentStatusImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, TorrentBotResource torrentBotResource) {
+		if (absSender == null)
+			throw new NullPointerException("absSender");
+		if (chatRoom == null)
+			throw new NullPointerException("chatRoom");
+		if (torrentBotResource == null)
+			throw new NullPointerException("torrentBotResource");
+
+		this.messageId = messageId;
+		this.absSender = absSender;
+		this.chatRoom = chatRoom;
+		
 		this.torrentBotResource = torrentBotResource;
 	}
 
@@ -70,7 +93,21 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 					}
 				}
 
-				BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString());			
+				// 인라인 키보드를 설정한다.
+				List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
+						new InlineKeyboardButton()
+								.setText(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
+								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA))
+				);
+
+				InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+
+				// 클라이언트로 토렌트 서버의 상태 메시지를 전송한다.
+				if (this.messageId == BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID) {
+					BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), sbAnswerMessage.toString(), inlineKeyboardMarkup);
+				} else {
+					BotCommandUtils.editMessageText(this.absSender, this.chatRoom.getChatId(), this.messageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(null, e);
