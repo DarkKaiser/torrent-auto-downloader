@@ -18,9 +18,9 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
 // @@@@@ 추상화로 빼서 서치도 되도록 구현하기
-public class WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
+public class WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction.class);
 	
 	private final int messageId;
 
@@ -36,7 +36,7 @@ public class WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction extends Ab
 
 	private final WebSiteHandler siteHandler;
 
-	public WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)

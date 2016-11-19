@@ -11,7 +11,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
@@ -69,7 +69,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 
 			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
+					new WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 
