@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 public interface WebSiteSearchHistoryData {
@@ -10,6 +11,6 @@ public interface WebSiteSearchHistoryData {
 
 	String getKeyword();
 	
-	Iterator<WebSiteBoardItem> resultIterator();
+	Iterator<WebSiteBoardItem> resultIterator(Comparator<? super WebSiteBoardItem> comparator);
 
 }

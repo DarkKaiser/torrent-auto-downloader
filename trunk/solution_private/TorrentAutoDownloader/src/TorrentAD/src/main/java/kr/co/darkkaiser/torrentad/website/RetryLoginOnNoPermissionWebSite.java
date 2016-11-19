@@ -101,6 +101,11 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	}
 
 	@Override
+	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) {
+		return this.site.getSearchHistoryData(identifier);
+	}
+
+	@Override
 	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException {
 		assert isLogin() == true;
 		

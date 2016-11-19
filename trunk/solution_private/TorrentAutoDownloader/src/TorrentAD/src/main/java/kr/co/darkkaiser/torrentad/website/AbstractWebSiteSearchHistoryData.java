@@ -1,5 +1,7 @@
 package kr.co.darkkaiser.torrentad.website;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,7 +49,12 @@ public abstract class AbstractWebSiteSearchHistoryData implements WebSiteSearchH
 	}
 	
 	@Override
-	public Iterator<WebSiteBoardItem> resultIterator() {
+	public Iterator<WebSiteBoardItem> resultIterator(Comparator<? super WebSiteBoardItem> comparator) {
+		if (comparator == null)
+			throw new NullPointerException("comparator");
+
+		Collections.sort(this.results, comparator);
+
 		return this.results.iterator();
 	}
 

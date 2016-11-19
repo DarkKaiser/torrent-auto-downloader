@@ -35,6 +35,9 @@ public interface WebSiteHandler {
 	 */
 	Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException;
 
+	// @@@@@
+	WebSiteSearchHistoryData getSearchHistoryData(String identifier);
+
 	/**
 	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.
 	 */
@@ -49,8 +52,5 @@ public interface WebSiteHandler {
 	 * 해당 인덱스에 해당하는 다운로드 링크 첨부파일을 다운로드한다.
 	 */
 	Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException;
-
-	// @@@@@
-	WebSiteSearchHistoryData getSearchHistoryData(String identifier) throws NoPermissionException, LoadBoardItemsException;
 	
 }

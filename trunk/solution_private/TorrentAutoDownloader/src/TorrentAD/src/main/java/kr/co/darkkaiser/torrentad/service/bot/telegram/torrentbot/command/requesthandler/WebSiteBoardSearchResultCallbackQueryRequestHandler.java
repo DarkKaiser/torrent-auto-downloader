@@ -17,9 +17,11 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import kr.co.darkkaiser.torrentad.website.WebSite;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItem;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
+import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 import kr.co.darkkaiser.torrentad.website.WebSiteSearchHistoryData;
 
@@ -27,8 +29,6 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchResultCallbackQueryRequestHandler.class);
 
-	private final WebSite site;
-	
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
@@ -38,12 +38,9 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 
-		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
@@ -54,7 +51,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			return false;
 
 		String callbackQueryCommand = parameters[0];
-		if (parameters.length >= 4) {
+		if (parameters.length >= 3) {
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
 					&& callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
 				return false;
@@ -75,11 +72,13 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 		WebSiteHandler siteHandler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 
 		try {
-			// @@@@@
-			////////////////////////////////////
 			WebSiteSearchHistoryData historyData = siteHandler.getSearchHistoryData(parameters[1]);
+			if (historyData == null) {
+				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "이전 검색 정보를 찾을 수 없습니다. 다시 검색하여 주세요.");
+				return;
+			}
+
 			WebSiteBoard board = historyData.getBoard();
-			////////////////////////////////////
 
 			String callbackQueryCommand = parameters[0];
 			String callbackQueryId = update.getCallbackQuery().getId();
@@ -95,10 +94,9 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString());
 
-				// @@@@@
 				// 게시판 검색을 시작한다.
-//				this.immediatelyTaskExecutorService.submit(
-//						new WebSiteBoardListImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), callbackQueryMessageId, absSender, chatRoom, board, this.torrentBotResource));
+				this.immediatelyTaskExecutorService.submit(
+						new WebSiteBoardSearchImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), callbackQueryMessageId, absSender, chatRoom, board, historyData.getKeyword(), this.torrentBotResource));
 
 				return;
 			}
@@ -114,7 +112,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			// 다음페이지 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {				
-				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator();
+				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator(new WebSiteBoardItemComparatorIdentifierDesc());
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
@@ -141,9 +139,8 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			// 이전페이지 인라인명령
 			//
 			} else if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator();
+				Iterator<WebSiteBoardItem> iterator = historyData.resultIterator(new WebSiteBoardItemComparatorIdentifierAsc());
 
-				// @@@@@ 조회 방법 변경해야됨, 거꾸로
 				// 조회된 게시물의 이전페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
 				int offsetBoardItemInfo = sbAnswerMessage.length();

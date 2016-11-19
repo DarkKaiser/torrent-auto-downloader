@@ -343,28 +343,25 @@ public class BogoBogo extends AbstractWebSite {
 			// logger.debug("조회된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, comparator);
-
 		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
 		BogoBogoSearchHistoryData historyData = new BogoBogoSearchHistoryData(board, keyword, resultList);
 		this.searchHistoryDataList.add(historyData);
 
-		return new Tuple<String, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator());
+		return new Tuple<String, Iterator<WebSiteBoardItem>>(historyData.getIdentifier(), historyData.resultIterator(comparator));
 	}
 	
 	// @@@@@ 함수명 변경
 	@Override
-	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) throws NoPermissionException, LoadBoardItemsException {
-		// @@@@@
-		///////////////////////////////////////////////////////////
-		for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
-			if (historyData.getIdentifier().equals(identifier) == true) {
-				return historyData;
+	public WebSiteSearchHistoryData getSearchHistoryData(String identifier) {
+		if (StringUtil.isBlank(identifier) == false) {
+			for (WebSiteSearchHistoryData historyData : this.searchHistoryDataList) {
+				if (historyData.getIdentifier().equals(identifier) == true) {
+					return historyData;
+				}
 			}
 		}
 
 		return null;
-		///////////////////////////////////////////////////////////
 	}
 
 	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
