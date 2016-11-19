@@ -17,6 +17,7 @@ import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDe
 import kr.co.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
 import kr.co.darkkaiser.torrentad.website.WebSiteHandler;
 
+// @@@@@ 추상화로 빼서 서치도 되도록 구현하기
 public class WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction.class);

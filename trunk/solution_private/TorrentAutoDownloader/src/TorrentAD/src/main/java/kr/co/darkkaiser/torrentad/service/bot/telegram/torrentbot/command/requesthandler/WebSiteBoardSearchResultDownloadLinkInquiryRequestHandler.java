@@ -12,14 +12,10 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotReso
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction;
-import kr.co.darkkaiser.torrentad.website.WebSite;
-import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
 
 public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler.class);
-
-	private final WebSite site;
 
 	private final TorrentBotResource torrentBotResource;
 
@@ -30,12 +26,9 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 
 		if (torrentBotResource == null)
 			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 
-		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
 	}
@@ -54,20 +47,17 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		try {
-			// @@@@@
-			WebSiteBoard board = this.site.getBoardByCode(parameters[0]);
-			if (board == null)
-				throw new NullPointerException("board");
-
-			long identifier = Long.parseLong(parameters[1]);
+			String historyDataIdentifier = parameters[0];
+			long boardItemIdentifier = Long.parseLong(parameters[1]);
 
 			// 선택된 게시물의 첨부파일 확인중 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택된 게시물의 첨부파일을 확인중입니다.", messageId);
 
+			// @@@@@
 			// 첨부파일 조회를 시작한다.
-			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
+//			this.immediatelyTaskExecutorService.submit(
+//					new WebSiteBoardItemDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, boardItemIdentifier, this.torrentBotResource));
 		} catch (Exception e) {
 			logger.error(null, e);
 
