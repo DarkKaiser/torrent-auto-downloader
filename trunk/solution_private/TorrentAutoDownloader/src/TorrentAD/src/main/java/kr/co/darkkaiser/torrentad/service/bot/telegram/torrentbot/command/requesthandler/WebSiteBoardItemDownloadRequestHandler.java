@@ -50,10 +50,6 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 3, 3) == false)
 			return false;
-
-		// @@@@@
-		if (this.site.getBoardByCode(parameters[0]) == null)
-			return false;
 		
 		if (StringUtil.isNumeric(parameters[1]) == false || StringUtil.isNumeric(parameters[2]) == false)
 			return false;
@@ -64,20 +60,22 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		try {
-			WebSiteBoard board = this.site.getBoardByCode(parameters[0]);
-			if (board == null)
-				throw new NullPointerException("board");
-
-			long identifier = Long.parseLong(parameters[1]);
-			long downloadLinkIndex = Long.parseLong(parameters[2]);
-
 			// 첨부파일 다운로드 시작 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택한 첨부파일을 다운로드합니다. 다운로드 작업은 10초정도 소요됩니다.", messageId);
 
+			long identifier = Long.parseLong(parameters[1]);
+			long downloadLinkIndex = Long.parseLong(parameters[2]);
+
 			// 첨부파일 다운로드를 시작한다.
-			this.immediatelyTaskExecutorService.submit(
-					new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
+			WebSiteBoard board = this.site.getBoardByCode(parameters[0]);
+			if (board != null) {
+				this.immediatelyTaskExecutorService.submit(
+						new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
+			} else {
+				this.immediatelyTaskExecutorService.submit(
+						new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
+			}
 		} catch (Exception e) {
 			logger.error(null, e);
 
