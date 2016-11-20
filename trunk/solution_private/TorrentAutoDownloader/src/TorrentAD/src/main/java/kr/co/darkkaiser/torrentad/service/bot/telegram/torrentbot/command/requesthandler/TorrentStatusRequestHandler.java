@@ -38,7 +38,7 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 상태를 조회중입니다.");
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 상태를 조회중입니다...");
 
 		// 토렌트 상태 조회를 시작한다.
 		this.immediatelyTaskExecutorService.submit(

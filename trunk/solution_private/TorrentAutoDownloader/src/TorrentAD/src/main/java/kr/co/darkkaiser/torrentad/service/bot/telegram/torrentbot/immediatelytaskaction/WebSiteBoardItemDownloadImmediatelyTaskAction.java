@@ -1,15 +1,20 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.util.Tuple;
 import kr.co.darkkaiser.torrentad.website.WebSite;
@@ -156,6 +161,17 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 실패하였습니다. 다시 시도하여 주세요.", this.messageId);
 					} else if (tuple.first() == 1 && tuple.last() == 1) {
 						this.fileTransmissionExecutorService.submit();
+						
+						// 인라인 키보드를 설정한다.
+						List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
+								new InlineKeyboardButton()
+										.setText(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_TEXT)
+										.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA))
+						);
+
+						InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+
+						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 완료되었습니다.", this.messageId, inlineKeyboardMarkup);
 					}
 
 					return true;

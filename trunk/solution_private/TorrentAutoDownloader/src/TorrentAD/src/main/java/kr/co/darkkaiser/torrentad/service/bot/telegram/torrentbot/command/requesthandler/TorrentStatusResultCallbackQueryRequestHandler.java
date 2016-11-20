@@ -38,8 +38,11 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 			return false;
 
 		String callbackQueryCommand = parameters[0];
-		if (callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
-			return false;
+		if (callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false
+				&& callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA) == false) {
+			
+			return false;			
+		}
 
 		return true;
 	}
@@ -51,16 +54,23 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
 
 			//
-			// 새로고침 인라인명령
+			// 새로고침 인라인명령(1)
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
-				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, "토렌트 서버의 상태를 조회중입니다.");
+				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, "토렌트 서버의 상태를 조회중입니다...");
 
 				// 토렌트 서버의 상태 조회를 시작한다.
 				this.immediatelyTaskExecutorService.submit(
 						new TorrentStatusImmediatelyTaskAction(callbackQueryMessageId, absSender, chatRoom, this.torrentBotResource));
+			//
+			// 새로고침 인라인명령(2)
+			//
+			} else if (callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 상태를 조회중입니다...");
 
-				return;
+				// 토렌트 서버의 상태 조회를 시작한다.
+				this.immediatelyTaskExecutorService.submit(
+						new TorrentStatusImmediatelyTaskAction(absSender, chatRoom, this.torrentBotResource));
 			} else {
 				throw new IllegalArgumentException(String.format("지원하지 않는 인라인 명령(%s)입니다.", callbackQueryCommand));
 			}

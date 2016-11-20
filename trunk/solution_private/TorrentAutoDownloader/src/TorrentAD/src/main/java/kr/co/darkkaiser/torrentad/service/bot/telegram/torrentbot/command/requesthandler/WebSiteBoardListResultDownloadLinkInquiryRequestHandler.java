@@ -65,7 +65,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 
 			// 선택된 게시물의 첨부파일 확인중 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
-			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택된 게시물의 첨부파일을 확인중입니다.", messageId);
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택된 게시물의 첨부파일을 확인중입니다...", messageId);
 
 			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
