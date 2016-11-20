@@ -161,7 +161,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 실패하였습니다. 다시 시도하여 주세요.", this.messageId);
 					} else if (tuple.first() == 1 && tuple.last() == 1) {
 						this.fileTransmissionExecutorService.submit();
-						
+
 						// 인라인 키보드를 설정한다.
 						List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 								new InlineKeyboardButton()

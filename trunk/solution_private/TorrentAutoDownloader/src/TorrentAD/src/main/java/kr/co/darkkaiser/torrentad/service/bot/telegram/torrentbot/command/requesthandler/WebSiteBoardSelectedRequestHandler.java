@@ -1,6 +1,11 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
@@ -52,7 +57,18 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 
 		chatRoom.setBoard(board);
 
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.").toString());
+		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardListRequestHandler.class);
+
+		// 인라인 키보드를 설정한다.
+		List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
+				new InlineKeyboardButton()
+						.setText("조회")
+						.setCallbackData(BotCommandUtils.toComplexBotCommandString(botCommand.getCommand()))
+		);
+
+		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.").toString(), inlineKeyboardMarkup);
 	}
 
 	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {
