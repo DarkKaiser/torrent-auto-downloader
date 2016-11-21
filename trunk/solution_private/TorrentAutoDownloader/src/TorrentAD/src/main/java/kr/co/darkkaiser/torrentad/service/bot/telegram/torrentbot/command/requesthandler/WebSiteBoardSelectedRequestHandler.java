@@ -62,7 +62,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 		// 인라인 키보드를 설정한다.
 		List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 				new InlineKeyboardButton()
-						.setText("조회")
+						.setText("게시판 조회")
 						.setCallbackData(BotCommandUtils.toComplexBotCommandString(botCommand.getCommand()))
 		);
 
