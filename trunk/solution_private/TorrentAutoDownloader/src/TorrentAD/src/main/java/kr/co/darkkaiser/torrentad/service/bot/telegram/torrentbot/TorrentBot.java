@@ -1,5 +1,8 @@
 package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.helper.StringUtil;
@@ -189,7 +192,17 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 					requestHandler = this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchRequestHandler.class);
 					if (requestHandler != null) {
 						chatRoom.setLatestRequestHandler(requestHandler);
-						requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+
+						// 검색어가 command와 parameters로 분리되어 수신되므로, 이를 합하여 parameters로 만든다.
+						@SuppressWarnings("serial")
+						List<String> parameters = new ArrayList<String>() { {
+							add(outCommand.get());
+						} };
+
+						parameters.addAll(Arrays.asList(outParameters.get()));
+
+						requestHandler.execute(this, chatRoom, update, ((BotCommand) requestHandler).getCommand(), parameters.toArray(new String[parameters.size()]), outContainInitialChar.get());
+						
 						return;
 					}
 				}
