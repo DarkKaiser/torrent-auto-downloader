@@ -78,8 +78,11 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		if (parameters != null)
 			parametersCount = parameters.length;
 
-		if (minParametersCount <= parametersCount && parametersCount <= maxParametersCount)
+		if ((minParametersCount == -1 || minParametersCount <= parametersCount)
+				&& (maxParametersCount == -1 || maxParametersCount >= parametersCount)) {
+			
 			return true;
+		}
 
 		return false;
 	}
