@@ -39,6 +39,10 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 	@Override
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+		if (update.getCallbackQuery() != null) {
+			BotCommandUtils.answerCallbackQuery(absSender, update.getCallbackQuery().getId());
+		}
+		
 		// 조회할 게시판이 선택되었는지 확인한다.
 		WebSiteBoard board = chatRoom.getBoard();
 		if (board == null) {

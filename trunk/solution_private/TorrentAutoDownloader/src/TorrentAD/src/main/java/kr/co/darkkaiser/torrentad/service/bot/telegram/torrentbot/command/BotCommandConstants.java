@@ -66,7 +66,7 @@ public final class BotCommandConstants {
     public static final String TSSR_RESULT_CALLBACK_QUERY_COMMAND = "ts-rslt-inline";
 
     // 조회 결과 목록에서 CallbackQuery 명령의 새로고침 InlineKyeboard 버튼
-	public static final String TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT = "다시 조회하기";
+	public static final String TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT = "서버 상태 조회하기";
 	public static final String TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA = "refresh";
 
     // 첨부파일 다운로드 성공 메시지에서 토렌트서버의 상태 조회를 위한 새로고침 InlineKyeboard 버튼
