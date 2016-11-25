@@ -57,13 +57,17 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 
 		chatRoom.setBoard(board);
 
-		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardListRequestHandler.class);
+		BotCommand listBotCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardListRequestHandler.class);
+		BotCommand inlineKeyboardSearchBotCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchInlineKeyboardRequestHandler.class);
 
 		// 인라인 키보드를 설정한다.
 		List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 				new InlineKeyboardButton()
 						.setText("게시판 조회")
-						.setCallbackData(BotCommandUtils.toComplexBotCommandString(botCommand.getCommand()))
+						.setCallbackData(BotCommandUtils.toComplexBotCommandString(listBotCommand.getCommand())),
+				new InlineKeyboardButton()
+						.setText("게시판 검색")
+						.setCallbackData(BotCommandUtils.toComplexBotCommandString(inlineKeyboardSearchBotCommand.getCommand()))
 		);
 
 		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));

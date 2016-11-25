@@ -28,6 +28,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.reques
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListResultCallbackQueryRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListResultDownloadLinkInquiryRequestHandler;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchInlineKeyboardRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchResultCallbackQueryRequestHandler;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler;
@@ -75,6 +76,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new WebSiteBoardSearchRequestHandler(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardSearchInlineKeyboardRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new HelpRequestHandler(this.requestHandlerRegistry));
@@ -172,15 +174,27 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				OutParam<Boolean> outContainInitialChar = new OutParam<>();
 	            BotCommandUtils.parseBotCommand(message.getText(), outCommand, outParameters, outContainInitialChar);
 
-	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
+				// 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
+	            ChatRoom chatRoom = getChatRoom(message.getChat().getId());
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
-					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
+					chatRoom.setLatestRequestHandler(requestHandler);
 					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					return;
 				}
+
+				// 처리할 수 있는 RequestHandler를 찾지 못한 경우, 이전에 입력된 요청이 검색 요청인지 확인하여 처리한다.
+				RequestHandler latestRequestHandler = chatRoom.getLatestRequestHandler();
+				if (latestRequestHandler != null && WebSiteBoardSearchInlineKeyboardRequestHandler.class.isInstance(latestRequestHandler) == true) {
+					requestHandler = this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchRequestHandler.class);
+					if (requestHandler != null) {
+						chatRoom.setLatestRequestHandler(requestHandler);
+						requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
+						return;
+					}
+				}
 			}
-			
+
 			CallbackQuery callbackQuery = update.getCallbackQuery();
 			if (callbackQuery != null) {
 				String data = callbackQuery.getData();
@@ -196,6 +210,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
 					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
+					chatRoom.setLatestRequestHandler(requestHandler);
 					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					return;
 				}
