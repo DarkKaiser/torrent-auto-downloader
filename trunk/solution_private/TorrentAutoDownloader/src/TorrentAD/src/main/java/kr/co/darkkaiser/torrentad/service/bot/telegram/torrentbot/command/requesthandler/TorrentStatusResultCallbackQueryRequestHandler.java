@@ -51,8 +51,11 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
 		try {
 			String callbackQueryCommand = parameters[0];
+			String callbackQueryId = update.getCallbackQuery().getId();
 			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
 
+			BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
+			
 			//
 			// 새로고침 인라인명령(1)
 			//

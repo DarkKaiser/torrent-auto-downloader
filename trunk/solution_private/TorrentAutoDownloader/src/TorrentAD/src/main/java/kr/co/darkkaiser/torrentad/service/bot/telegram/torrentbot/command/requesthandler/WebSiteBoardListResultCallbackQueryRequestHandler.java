@@ -92,6 +92,8 @@ public class WebSiteBoardListResultCallbackQueryRequestHandler extends AbstractB
 			// 새로고침 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
+
 				// 게시판 조회중 메시지를 사용자에게 보낸다.
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다...");

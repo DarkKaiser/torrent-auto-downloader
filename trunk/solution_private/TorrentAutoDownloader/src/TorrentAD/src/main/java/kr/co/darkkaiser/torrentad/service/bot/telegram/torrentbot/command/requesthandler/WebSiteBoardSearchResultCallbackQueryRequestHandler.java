@@ -72,22 +72,25 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 		WebSiteHandler siteHandler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 
 		try {
+			String callbackQueryCommand = parameters[0];
+			String callbackQueryId = update.getCallbackQuery().getId();
+			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
+			
 			WebSiteSearchResultData searchResultData = siteHandler.getSearchResultData(parameters[1]);
 			if (searchResultData == null) {
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
 				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "이전 검색 정보를 찾을 수 없습니다. 검색을 다시 시도하여 주세요.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.");
 				return;
 			}
 
 			WebSiteBoard board = searchResultData.getBoard();
 
-			String callbackQueryCommand = parameters[0];
-			String callbackQueryId = update.getCallbackQuery().getId();
-			Integer callbackQueryMessageId = update.getCallbackQuery().getMessage().getMessageId();
-			
 			//
 			// 새로고침 인라인명령
 			//
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == true) {
+				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
+				
 				// 게시판 검색중 메시지를 사용자에게 보낸다.
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다.");
