@@ -127,12 +127,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="K2" description="The K2">
+			<torrentad-periodic-scheduled-task id="SeaLegend" description="푸른 바다의 전설">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>The+K2</item>
+						<item>푸른+바다의+전설</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
