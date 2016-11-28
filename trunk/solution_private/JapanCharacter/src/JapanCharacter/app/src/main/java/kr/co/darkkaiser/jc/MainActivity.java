@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                 contentView.setTypeface(Typeface.SERIF);
                                 contentView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
                                 contentView.setText(String.format("%s / %s\n%s", mJapanHiragana.get(mCurrentShowIndex), mJapanGatagana.get(mCurrentShowIndex), mKorea.get(mCurrentShowIndex)));
-                                contentView.setTextColor(getResources().getColor(R.color.am_description_text));
+                                contentView.setTextColor(ContextCompat.getColor(v.getContext(), R.color.am_description_text));
 
                                 MaterialDialog dialog = new MaterialDialog(MainActivity.this)
                                         .setCanceledOnTouchOutside(true)
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        nextButton.getBackground().setColorFilter(getResources().getColor(R.color.am_next_button_background), PorterDuff.Mode.MULTIPLY);
+        nextButton.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.am_next_button_background), PorterDuff.Mode.MULTIPLY);
 
         // 데이터를 초기화한다.
         mKorea = Arrays.asList(getResources().getStringArray(R.array.character_korea));
@@ -222,4 +223,5 @@ public class MainActivity extends AppCompatActivity {
             super.handleMessage(msg);
         }
     }
+
 }

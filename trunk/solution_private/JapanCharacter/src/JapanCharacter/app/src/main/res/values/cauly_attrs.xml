@@ -3,16 +3,12 @@
 
     <declare-styleable name="com.fsn.cauly.CaulyAdView">
         <attr name="appcode" format="string" />
-        <attr name="gender" format="string" />
-        <attr name="age" format="string" />
         <attr name="effect" format="string" />
-        <attr name="gps" format="string" />
-        <attr name="allowcall" format="boolean" />
         <attr name="dynamicReloadInterval" format="boolean" />
         <attr name="reloadInterval" format="integer" />
-        <attr name="support3d" format="boolean" />
         <attr name="threadPriority" format="integer" />
         <attr name="bannerHeight" format="string" />
+        <attr name="enableDefaultBannerAd" format="boolean" />
     </declare-styleable>
 
 </resources>
