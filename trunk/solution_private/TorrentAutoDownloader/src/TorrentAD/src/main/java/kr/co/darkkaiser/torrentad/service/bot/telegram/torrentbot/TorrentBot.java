@@ -73,12 +73,12 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		this.metadataRepository = new MetadataRepositoryImpl(Constants.BOT_SERVICE_METADATA_REPOSITORY_FILE_NAME);
 		
 		this.siteConnector = new DefaultWebSiteConnector(TorrentBot.class.getSimpleName(), configuration);
-		
+
 		// 사용가능한 RequestHandler를 모두 등록한다.
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectRequestHandler(this));
 		this.requestHandlerRegistry.register(new WebSiteBoardSelectedRequestHandler(this, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardListRequestHandler(this, immediatelyTaskExecutorService));
-		this.requestHandlerRegistry.register(new WebSiteBoardSearchRequestHandler(this, immediatelyTaskExecutorService));
+		this.requestHandlerRegistry.register(new WebSiteBoardSearchRequestHandler(this, immediatelyTaskExecutorService, this.requestHandlerRegistry));
 		this.requestHandlerRegistry.register(new WebSiteBoardSearchInlineKeyboardRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusRequestHandler(this, immediatelyTaskExecutorService));
 		this.requestHandlerRegistry.register(new TorrentStatusResultCallbackQueryRequestHandler(this, immediatelyTaskExecutorService));

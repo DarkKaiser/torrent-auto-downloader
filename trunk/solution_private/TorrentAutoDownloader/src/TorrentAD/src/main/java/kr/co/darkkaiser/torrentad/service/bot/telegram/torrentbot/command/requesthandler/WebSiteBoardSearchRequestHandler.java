@@ -11,6 +11,7 @@ import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotReso
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
 import kr.co.darkkaiser.torrentad.website.WebSite;
 import kr.co.darkkaiser.torrentad.website.WebSiteBoard;
@@ -24,8 +25,10 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	private final TorrentBotResource torrentBotResource;
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
+	
+	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public WebSiteBoardSearchRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardSearchRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService, RequestHandlerRegistry requestHandlerRegistry) {
 		super("search", "검색", "/search (검색) [검색어]\n/search (검색) [게시판] [검색어]", "선택된 게시판을 검색합니다.");
 
 		if (torrentBotResource == null)
@@ -34,15 +37,18 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			throw new NullPointerException("site");
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
+		if (requestHandlerRegistry == null)
+			throw new NullPointerException("requestHandlerRegistry");
 
 		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
+		this.requestHandlerRegistry = requestHandlerRegistry;
 	}
 	
 	@Override
 	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 1, -1) == false)
+		if (super.executable0(command, parameters, containInitialChar, 0, -1) == false)
 			return false;
 
 		// '검색 [게시판]' 형태(검색어가 입력되지 않은 형태)로 입력되면, false를 반환한다.
@@ -50,7 +56,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			if (this.site.getBoardByCode(parameters[0]) != null)
 				return false;
 		}
-
+		
 		return true;
 	}
 
@@ -87,8 +93,15 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 
 					keyword = sbKeyword.toString();
 				}
-			} else {
+			} else if (parameters.length == 1) {
 				keyword = parameters[0];
+			} else {
+				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(chatRoom.getBoard().getDescription()).append(" ] 검색어를 입력하세요.").toString());
+				
+				// '검색' 혹은 '/select'만 입력된 경우 이후에 검색어를 입력하였을 때 검색될 수 있도록 RequestHandler를 조정한다.
+				chatRoom.setLatestRequestHandler(this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchInlineKeyboardRequestHandler.class));
+
+				return;
 			}
 
 			// 게시판 검색중 메시지를 사용자에게 보낸다.
