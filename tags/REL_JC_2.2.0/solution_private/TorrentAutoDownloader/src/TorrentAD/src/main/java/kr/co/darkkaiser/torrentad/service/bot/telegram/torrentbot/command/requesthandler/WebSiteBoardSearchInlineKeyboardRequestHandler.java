@@ -1,0 +1,41 @@
+package kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
+
+import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.bots.AbsSender;
+
+import kr.co.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
+import kr.co.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+
+public class WebSiteBoardSearchInlineKeyboardRequestHandler extends AbstractBotCommandRequestHandler {
+
+	public WebSiteBoardSearchInlineKeyboardRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+		super("$search$");
+	}
+
+	@Override
+	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
+			return false;
+
+		return true;
+	}
+
+	@Override
+	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+		BotCommandUtils.answerCallbackQuery(absSender, update.getCallbackQuery().getId());
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(chatRoom.getBoard().getDescription()).append(" ] 검색어를 입력하세요.").toString());
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append(WebSiteBoardSearchInlineKeyboardRequestHandler.class.getSimpleName())
+				.append("{")
+				.append("}, ")
+				.append(super.toString())
+				.toString();
+	}
+
+}

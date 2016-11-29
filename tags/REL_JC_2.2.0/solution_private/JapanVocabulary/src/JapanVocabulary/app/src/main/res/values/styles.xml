@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 기본 애플리케이션 테마 -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat">
+        <item name="colorPrimary">@color/app_color_primary</item>
+        <item name="colorPrimaryDark">@color/app_color_primary_dark</item>
+
+        <!-- @@@@@ -->
+        <item name="android:buttonStyle">@android:style/Widget.Button</item>
+    </style>
+
+    <!-- @@@@@ -->
+    <!-- 상세정보 액티비티 항목 타이틀 -->
+    <style name="DetailActivityItemTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/avd_item_title_background</item>
+        <item name="android:textSize" tools:ignore="SpUsage">@dimen/text_size_large</item>
+    </style>
+
+    <!-- @@@@@ -->
+    <!-- 상세정보 액티비티 항목 내용 -->
+    <style name="DetailActivityItemContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/avd_item_content_background</item>
+        <item name="android:textSize" tools:ignore="SpUsage">@dimen/text_size_huge</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+</resources>
