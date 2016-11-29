@@ -91,15 +91,14 @@
                 android:thumbOffset="0dp"
                 />
         </RelativeLayout>
-        <com.fsn.cauly.CaulyAdView xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
+        <com.fsn.cauly.CaulyAdView
+            xmlns:app="http://schemas.android.com/apk/res/kr.co.darkkaiser.jv"
             android:id="@+id/xmladview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:appcode="wCr75ZtDLm"
             app:effect="RightSlide"
-            app:gps="off"
-            app:allowcall="true"
             app:dynamicReloadInterval="true"
             app:reloadInterval="20"
             app:bannerHeight="Fixed"
