@@ -40,9 +40,8 @@ import android.widget.ViewSwitcher.ViewFactory;
 
 import com.androidquery.AQuery;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -734,14 +733,14 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
 
         try {
             int downloadVocabularyDbFileLength = -1;
-            ByteArrayBuffer downloadVocabularyDbFileBuffer = null;
+            ByteArrayOutputStream downloadVocabularyDbFileBuffer = null;
 
             // 단어 DB 파일을 내려받는다.
             for (String downloadUrl : Constants.VOCABULARY_DB_DOWNLOAD_URL_LIST) {
                 Log.d(TAG, String.format("Vocabulary DB download : %s", downloadUrl));
 
                 downloadVocabularyDbFileLength = -1;
-                downloadVocabularyDbFileBuffer = new ByteArrayBuffer(4096);
+                downloadVocabularyDbFileBuffer = new ByteArrayOutputStream();
 
                 BufferedInputStream bis = null;
                 HttpURLConnection connection = null;
@@ -762,10 +761,10 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
                     int readBytes;
                     byte[] data = new byte[4096];
                     while ((readBytes = bis.read(data)) >= 0) {
-                        downloadVocabularyDbFileBuffer.append(data, 0, readBytes);
+                        downloadVocabularyDbFileBuffer.write(data, 0, readBytes);
 
                         // 현재까지 다운로드 받은 단어 DB의 크기 정보를 진행바에 표시한다.
-                        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOADING, downloadVocabularyDbFileBuffer.length(), 0).sendToTarget();
+                        mLoadVocabularyDataHandler.obtainMessage(MSG_VOCABULARY_DATA_DOWNLOADING, downloadVocabularyDbFileBuffer.size(), 0).sendToTarget();
                     }
 
                     // 해당 메시지의 처리가 완료될 때까지 대기한다.
@@ -773,7 +772,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
                         Thread.sleep(10);
 
                     // 파일 다운로드가 정상적으로 완료되었는지 확인한다.
-                    if (downloadVocabularyDbFileLength > 0 && downloadVocabularyDbFileLength == downloadVocabularyDbFileBuffer.length())
+                    if (downloadVocabularyDbFileLength > 0 && downloadVocabularyDbFileLength == downloadVocabularyDbFileBuffer.size())
                         break;
                 } catch (Exception e) {
                     Log.d(TAG, e.getMessage());
@@ -789,7 +788,7 @@ public class VocabularyActivity extends AppCompatActivity implements OnTouchList
                 }
             }
 
-            if (downloadVocabularyDbFileLength <= 0 || downloadVocabularyDbFileBuffer == null || downloadVocabularyDbFileLength != downloadVocabularyDbFileBuffer.length()) {
+            if (downloadVocabularyDbFileLength <= 0 || downloadVocabularyDbFileBuffer == null || downloadVocabularyDbFileLength != downloadVocabularyDbFileBuffer.size()) {
                 mLoadVocabularyDataHandler.obtainMessage(MSG_TOAST_SHOW, getString(R.string.av_update_failed_vocabulary_db_message)).sendToTarget();
             } else {
                 String vocabularyDbFilePath = VocabularyDbHelper.getInstance().getVocabularyDbFilePath();
