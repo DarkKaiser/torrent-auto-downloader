@@ -186,6 +186,7 @@ namespace JapanVocabularyDbManager
                 rc[0].Cells[9].Value = form.WordClassCodeString;
                 rc[0].Cells[5].Value = form.JlptClassNameString;
                 rc[0].Cells[10].Value = form.JlptClassCodeString;
+                rc[0].Cells[7].Value = "Y";
             }
 
             rc[0].Cells[6].Value = "-";

@@ -260,7 +260,7 @@ namespace JapanVocabularyDbManager
                         // 데이터를 갱신한다.
                         using (SQLiteCommand updateCmd = DbConnection.CreateCommand())
                         {
-                            updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, INPUT_DATE=? WHERE IDX={0};", idx);
+                            updateCmd.CommandText = string.Format("UPDATE TBL_VOCABULARY SET VOCABULARY=?, VOCABULARY_GANA=?, VOCABULARY_TRANSLATION=?, INPUT_DATE=?, USE_YN='Y' WHERE IDX={0};", idx);
                             SQLiteParameter param1 = new SQLiteParameter();
                             SQLiteParameter param2 = new SQLiteParameter();
                             SQLiteParameter param3 = new SQLiteParameter();
@@ -374,7 +374,7 @@ namespace JapanVocabularyDbManager
                         // 데이터를 추가한다.
                         using (SQLiteCommand insertCmd = DbConnection.CreateCommand())
                         {
-                            insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE) VALUES (?,?,?,?);";
+                            insertCmd.CommandText = "INSERT INTO TBL_VOCABULARY (VOCABULARY, VOCABULARY_GANA, VOCABULARY_TRANSLATION, INPUT_DATE, USE_YN) VALUES (?,?,?,?,'Y');";
                             SQLiteParameter param1 = new SQLiteParameter();
                             SQLiteParameter param2 = new SQLiteParameter();
                             SQLiteParameter param3 = new SQLiteParameter();
