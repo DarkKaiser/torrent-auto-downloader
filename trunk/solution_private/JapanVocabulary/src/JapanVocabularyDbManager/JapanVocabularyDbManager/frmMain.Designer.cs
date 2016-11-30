@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbpHanja = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.btnHanjaDataAnalyser = new System.Windows.Forms.Button();
@@ -71,8 +71,8 @@
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbpEtc = new System.Windows.Forms.TabPage();
-            this.btnExtractVocabulary = new System.Windows.Forms.Button();
             this.btnExampleTrimCheck = new System.Windows.Forms.Button();
+            this.btnExtractVocabulary = new System.Windows.Forms.Button();
             this.tbpHanja.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -131,9 +131,9 @@
             // 
             this.btnHanjaDataAnalyser.Location = new System.Drawing.Point(802, 4);
             this.btnHanjaDataAnalyser.Name = "btnHanjaDataAnalyser";
-            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(207, 23);
+            this.btnHanjaDataAnalyser.Size = new System.Drawing.Size(327, 23);
             this.btnHanjaDataAnalyser.TabIndex = 14;
-            this.btnHanjaDataAnalyser.Text = "네이버 데이터와 비교분석";
+            this.btnHanjaDataAnalyser.Text = "선택된 한자를 네이버 데이터와 비교분석";
             this.btnHanjaDataAnalyser.UseVisualStyleBackColor = true;
             this.btnHanjaDataAnalyser.Click += new System.EventHandler(this.btnHanjaDataAnalyser_Click);
             // 
@@ -211,8 +211,8 @@
             // dataHanjaGridView
             // 
             this.dataHanjaGridView.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataHanjaGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dataHanjaGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataHanjaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataHanjaGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -312,7 +312,7 @@
             this.btnAddPossibleExampleCountCheck.Name = "btnAddPossibleExampleCountCheck";
             this.btnAddPossibleExampleCountCheck.Size = new System.Drawing.Size(210, 23);
             this.btnAddPossibleExampleCountCheck.TabIndex = 8;
-            this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수";
+            this.btnAddPossibleExampleCountCheck.Text = "추가등록가능예문수확인";
             this.btnAddPossibleExampleCountCheck.UseVisualStyleBackColor = true;
             this.btnAddPossibleExampleCountCheck.Click += new System.EventHandler(this.btnAddPossibleExampleCountCheck_Click);
             // 
@@ -401,8 +401,8 @@
             // 
             this.dataVocabularyGridView.AllowUserToAddRows = false;
             this.dataVocabularyGridView.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataVocabularyGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
             this.dataVocabularyGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataVocabularyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataVocabularyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -527,25 +527,25 @@
             this.tbpEtc.Text = "기타";
             this.tbpEtc.UseVisualStyleBackColor = true;
             // 
-            // btnExtractVocabulary
-            // 
-            this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
-            this.btnExtractVocabulary.Name = "btnExtractVocabulary";
-            this.btnExtractVocabulary.Size = new System.Drawing.Size(371, 23);
-            this.btnExtractVocabulary.TabIndex = 0;
-            this.btnExtractVocabulary.Text = "네이버에서 N1~N5 단어 추출하기";
-            this.btnExtractVocabulary.UseVisualStyleBackColor = true;
-            this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
-            // 
             // btnExampleTrimCheck
             // 
             this.btnExampleTrimCheck.Location = new System.Drawing.Point(19, 48);
             this.btnExampleTrimCheck.Name = "btnExampleTrimCheck";
-            this.btnExampleTrimCheck.Size = new System.Drawing.Size(371, 23);
+            this.btnExampleTrimCheck.Size = new System.Drawing.Size(529, 23);
             this.btnExampleTrimCheck.TabIndex = 1;
-            this.btnExampleTrimCheck.Text = "전체 예문중 앞뒤에 공백있는 예문 있는지 확인";
+            this.btnExampleTrimCheck.Text = "전체 예문중에서 앞뒤에 공백있는 예문 있는지 확인";
             this.btnExampleTrimCheck.UseVisualStyleBackColor = true;
             this.btnExampleTrimCheck.Click += new System.EventHandler(this.btnExampleTrimCheck_Click);
+            // 
+            // btnExtractVocabulary
+            // 
+            this.btnExtractVocabulary.Location = new System.Drawing.Point(19, 19);
+            this.btnExtractVocabulary.Name = "btnExtractVocabulary";
+            this.btnExtractVocabulary.Size = new System.Drawing.Size(529, 23);
+            this.btnExtractVocabulary.TabIndex = 0;
+            this.btnExtractVocabulary.Text = "네이버에서 N1~N5 단어 추출해서 TBL_EXTRACT_VOCABULARY에 넣기";
+            this.btnExtractVocabulary.UseVisualStyleBackColor = true;
+            this.btnExtractVocabulary.Click += new System.EventHandler(this.btnExtractVocabulary_Click);
             // 
             // frmMain
             // 
@@ -557,6 +557,7 @@
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "일본어 단어DB 관리자";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tbpHanja.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);

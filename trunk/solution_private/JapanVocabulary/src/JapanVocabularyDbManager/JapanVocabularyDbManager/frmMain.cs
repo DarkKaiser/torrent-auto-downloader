@@ -867,6 +867,8 @@ namespace JapanVocabularyDbManager
 
                     var characterNode = jlptNode.SelectSingleNode("./span[@class='jp']");
                     var translationNode = jlptNode.SelectSingleNode("./span[@class='bot_txt']");
+                    if (characterNode == null)
+                        continue;
 
                     strVocabularyGana = characterNode.InnerText;
                     int chpos = strVocabularyGana.IndexOf('[');
