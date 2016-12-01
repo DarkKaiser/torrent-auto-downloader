@@ -101,29 +101,36 @@ namespace JapanVocabularyDbManager
             for (int i = 0; i < clbJlptClassListBox.Items.Count; ++i)
                 clbJlptClassListBox.SetItemCheckState(i, CheckState.Unchecked);
 
-            string[] wordClasCodeList = WordClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            string[] jlptClasCodeList = JlptClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            for (var index = 0; index < wordClasCodeList.Length; ++index)
+            if (WordClassCodeString != null && WordClassCodeString.Length > 0)
             {
-                string code = wordClasCodeList[index];
-                for (var j = 0; j < mWordClassCodeList.Length; ++j)
+                string[] wordClasCodeList = WordClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                for (var index = 0; index < wordClasCodeList.Length; ++index)
                 {
-                    if (mWordClassCodeList[j] == code)
+                    string code = wordClasCodeList[index];
+                    for (var j = 0; j < mWordClassCodeList.Length; ++j)
                     {
-                        clbWordClassListBox.SetItemChecked(j, true);
-                        break;
+                        if (mWordClassCodeList[j] == code)
+                        {
+                            clbWordClassListBox.SetItemChecked(j, true);
+                            break;
+                        }
                     }
                 }
             }
-            for (var index = 0; index < jlptClasCodeList.Length; ++index)
+
+            if (JlptClassCodeString != null && JlptClassCodeString.Length > 0)
             {
-                string code = jlptClasCodeList[index];
-                for (var j = 0; j < mJlptClassCodeList.Length; ++j)
+                string[] jlptClasCodeList = JlptClassCodeString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                for (var index = 0; index < jlptClasCodeList.Length; ++index)
                 {
-                    if (mJlptClassCodeList[j] == code)
+                    string code = jlptClasCodeList[index];
+                    for (var j = 0; j < mJlptClassCodeList.Length; ++j)
                     {
-                        clbJlptClassListBox.SetItemChecked(j, true);
-                        break;
+                        if (mJlptClassCodeList[j] == code)
+                        {
+                            clbJlptClassListBox.SetItemChecked(j, true);
+                            break;
+                        }
                     }
                 }
             }
