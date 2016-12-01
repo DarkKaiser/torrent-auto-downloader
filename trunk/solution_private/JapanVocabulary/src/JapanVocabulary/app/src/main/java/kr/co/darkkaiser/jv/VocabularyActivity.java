@@ -59,6 +59,7 @@ import kr.co.darkkaiser.jv.vocabulary.data.VocabularyManager;
 import kr.co.darkkaiser.jv.vocabulary.db.VocabularyDbHelper;
 import kr.co.darkkaiser.jv.vocabulary.list.internal.MemorizeTargetVocabularyList;
 
+// @@@@@
 public class VocabularyActivity extends AppCompatActivity implements OnTouchListener {
 
     private static final String TAG = "VocabularyActivity";

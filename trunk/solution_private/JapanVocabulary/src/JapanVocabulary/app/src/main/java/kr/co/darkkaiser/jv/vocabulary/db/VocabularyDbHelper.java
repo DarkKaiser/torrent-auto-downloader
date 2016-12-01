@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import kr.co.darkkaiser.jv.common.Constants;
 
+// @@@@@
 public class VocabularyDbHelper {
 
 	private static final String TAG = "VocabularyDbHelper";

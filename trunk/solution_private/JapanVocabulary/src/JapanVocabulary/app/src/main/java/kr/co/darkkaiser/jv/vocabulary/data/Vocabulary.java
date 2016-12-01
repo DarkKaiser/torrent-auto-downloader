@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import kr.co.darkkaiser.jv.BuildConfig;
 
+// @@@@@
 public class Vocabulary {
 
 	private long idx = -1;

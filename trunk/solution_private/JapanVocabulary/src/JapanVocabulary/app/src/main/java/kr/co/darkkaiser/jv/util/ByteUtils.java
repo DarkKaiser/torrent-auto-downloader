@@ -1,5 +1,6 @@
 package kr.co.darkkaiser.jv.util;
 
+// @@@@@
 public class ByteUtils {
 
 	@SuppressWarnings("unused")
@@ -55,6 +56,7 @@ public class ByteUtils {
 	/**
 	 * <p>입력한 바이트 배열(4바이트)을 int 형으로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static int toInt(byte[] src, int srcPos) {
 		int dword = 0;
 		for (int i = 0; i < 4; i++) {
@@ -75,6 +77,7 @@ public class ByteUtils {
 	/**
 	 * <p>입력한 바이트 배열(8바이트)을 long 형으로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static long toLong(byte[] src, int srcPos) {
 		long qword = 0;
 		for (int i = 0; i < 8; i++) {
@@ -95,6 +98,7 @@ public class ByteUtils {
 	/**
 	 * <p>int 형의 값을 바이트 배열(4바이트)로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static void toBytes(int value, byte[] dest, int destPos) {
 		for (int i = 0; i < 4; i++) {
 			dest[i + destPos] = (byte)(value >> ((7 - i) * 8));
@@ -114,6 +118,7 @@ public class ByteUtils {
 	/**
 	 * <p>long 형의 값을 바이트 배열(8바이트)로 변환한다.</p>
 	 */
+	@SuppressWarnings("unused")
 	public static void toBytes(long value, byte[] dest, int destPos) {
 		for (int i = 0; i < 8; i++) {
 			dest[i + destPos] = (byte)(value >> ((7 - i) * 8));
