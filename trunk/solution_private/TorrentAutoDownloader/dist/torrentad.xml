@@ -143,12 +143,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="Rui" description="쇼핑왕 루이">
+			<torrentad-periodic-scheduled-task id="Goblin" description="도깨비">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>쇼핑왕+루이</item>
+						<item>도깨비</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -309,57 +309,7 @@
 					</search-keyword>
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="JasonBourne1" description="제이슨본(최신)">
-				<board-name>newmovie</board-name>
 
-				<search-keywords type="title">
-					<search-keyword>
-						<item>제이슨+본</item>
-						<item>Jason+Bourne</item>
-					</search-keyword>
-					<search-keyword>
-						<item>2016</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-						<item>1080p</item>
-					</search-keyword>
-					<search-keyword>
-						<item>BRRip</item>
-						<item>Bluray</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="JasonBourne2" description="제이슨본(고화질)">
-				<board-name>hdmovie</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>제이슨+본</item>
-						<item>Jason+Bourne</item>
-					</search-keyword>
-					<search-keyword>
-						<item>2016</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-						<item>1080p</item>
-					</search-keyword>
-					<search-keyword>
-						<item>BRRip</item>
-						<item>Bluray</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-            
 			<torrentad-periodic-scheduled-task id="DoctorStrange1" description="닥터스트레인지(최신)">
 				<board-name>newmovie</board-name>
 
