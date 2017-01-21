@@ -95,12 +95,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
             
-			<torrentad-periodic-scheduled-task id="ThreeGoHang" description="삼시세끼">
+			<torrentad-periodic-scheduled-task id="NewJourneyToTheWest" description="신서유기3">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>삼시세끼+어촌편</item>
+						<item>신서유기</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -197,22 +197,6 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>아는+형님</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="Jipbap" description="집밥 백선생">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>집밥+백선생</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -359,55 +343,7 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
-            
-			<torrentad-periodic-scheduled-task id="BusanTrain1" description="부산행(한국영화)">
-				<board-name>kormovie</board-name>
 
-				<search-keywords type="title">
-					<search-keyword>
-						<item>부산행</item>
-					</search-keyword>
-					<search-keyword>
-						<item>2016</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-						<item>1080p</item>
-					</search-keyword>
-					<search-keyword>
-						<item>BRRip</item>
-						<item>Bluray</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-            
-			<torrentad-periodic-scheduled-task id="BusanTrain2" description="부산행(고화질)">
-				<board-name>hdmovie</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>부산행</item>
-					</search-keyword>
-					<search-keyword>
-						<item>2016</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-						<item>1080p</item>
-					</search-keyword>
-					<search-keyword>
-						<item>BRRip</item>
-						<item>Bluray</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 		</torrentad-periodic-scheduled-tasks>
 
 		<!-- 오직 한번만 토렌트 파일을 다운로드 받는 태스크 -->
