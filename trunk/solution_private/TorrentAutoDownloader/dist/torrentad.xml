@@ -127,28 +127,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="SeaLegend" description="푸른 바다의 전설">
+			<torrentad-periodic-scheduled-task id="Saimdang" description="사임당 빛의 일기">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>푸른+바다의+전설</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="Goblin" description="도깨비">
-				<board-name>kordramaon</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>도깨비</item>
+						<item>사임당+빛의+일기</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -181,6 +165,22 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>무한도전</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="HouseFood3" description="집밥백선생3">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>집밥+백선생</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
