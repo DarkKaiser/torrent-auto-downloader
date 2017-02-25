@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
@@ -167,7 +168,7 @@ public class BogoBogo extends AbstractWebSite {
 					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 					.ignoreContentType(true)
 					.get();
-			} catch (ConnectException e) {
+			} catch (HttpStatusException | ConnectException e) {
 				try {
 					Thread.sleep(100);
 				} catch (Exception e1) {
