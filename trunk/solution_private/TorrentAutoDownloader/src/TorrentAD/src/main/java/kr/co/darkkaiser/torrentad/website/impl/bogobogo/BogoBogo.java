@@ -168,16 +168,13 @@ public class BogoBogo extends AbstractWebSite {
 					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 					.ignoreContentType(true)
 					.get();
-			} catch (HttpStatusException | ConnectException e) {
+			} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
 				try {
 					Thread.sleep(100);
 				} catch (Exception e1) {
 				}
 
 				continue;
-			} catch (IllegalArgumentException e) {
-				logger.error("GET {}", doc.select("img").attr("src"));
-				throw e;
 			}
 
 			break;
