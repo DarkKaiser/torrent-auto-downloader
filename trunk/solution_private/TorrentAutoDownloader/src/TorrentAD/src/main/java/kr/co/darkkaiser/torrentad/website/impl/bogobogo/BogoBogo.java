@@ -64,7 +64,8 @@ public class BogoBogo extends AbstractWebSite {
 
 	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_process.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
-
+	private static final String LOGIN_PROCESS_URL_3 = "https://mybogo.net/bogo/member_share/sync_sid.php";
+	
 	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
@@ -183,15 +184,32 @@ public class BogoBogo extends AbstractWebSite {
 		/**
 		 * 로그인 3단계 수행
 		 */
-		Jsoup.connect(LOGIN_PROCESS_URL_2)
-			.userAgent(USER_AGENT)
-			.data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
-			.data("MEMBER_POINT", doc.select("input[name=MEMBER_POINT]").val())
-			.data("STR", doc.select("input[name=STR]").val())
-			.data("todo", doc.select("input[name=todo]").val())
-			.cookies(response.cookies())
-			.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-			.post();
+		try {
+			Jsoup.connect(LOGIN_PROCESS_URL_2)
+				.userAgent(USER_AGENT)
+				.data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
+				.data("MEMBER_POINT", doc.select("input[name=MEMBER_POINT]").val())
+				.data("STR", doc.select("input[name=STR]").val())
+				.data("todo", doc.select("input[name=todo]").val())
+				.cookies(response.cookies())
+				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+				.post();
+		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
+		}
+		
+		/**
+		 * 로그인 4단계 수행
+		 */
+		try {
+			Jsoup.connect(LOGIN_PROCESS_URL_3)
+				.userAgent(USER_AGENT)
+				.data("sid", doc.select("input[name=sid]").val())
+				.data("uid", doc.select("input[name=uid]").val())
+				.cookies(response.cookies())
+				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+				.post();
+		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
+		}
 
 		/**
 		 * 로그인이 정상적으로 완료되었는지 확인한다.
