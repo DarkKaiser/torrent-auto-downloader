@@ -127,12 +127,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="Saimdang" description="사임당 빛의 일기">
+			<torrentad-periodic-scheduled-task id="TunnelOCN" description="터널">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>사임당+빛의+일기</item>
+						<item>터널</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
