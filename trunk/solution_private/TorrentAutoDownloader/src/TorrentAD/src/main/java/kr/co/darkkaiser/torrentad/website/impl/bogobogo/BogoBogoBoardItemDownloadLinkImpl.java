@@ -24,8 +24,6 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(value1) == true)
 			throw new IllegalArgumentException("value1는 빈 문자열을 허용하지 않습니다.");
-		if (StringUtil.isBlank(value2) == true)
-			throw new IllegalArgumentException("value2는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(value3) == true)
 			throw new IllegalArgumentException("value3는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(value4) == true)
