@@ -127,12 +127,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="TunnelOCN" description="터널">
+			<torrentad-periodic-scheduled-task id="CircleTVN" description="써클">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>터널</item>
+						<item>써클</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -197,6 +197,22 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>아는+형님</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Island" description="섬총사">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>섬총사</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
