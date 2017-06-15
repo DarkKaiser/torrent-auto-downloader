@@ -143,6 +143,38 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
+			<torrentad-periodic-scheduled-task id="DualOCN" description="듀얼">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>듀얼</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="SecretForestTVN" description="비밀의숲">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>비밀의+숲</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
 			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
 				<board-name>korentertainment</board-name>
 
