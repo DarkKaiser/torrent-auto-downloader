@@ -126,6 +126,22 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Ssuljeon" description="썰전">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>썰전</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
 
 			<torrentad-periodic-scheduled-task id="CircleTVN" description="써클">
 				<board-name>kordramaon</board-name>
