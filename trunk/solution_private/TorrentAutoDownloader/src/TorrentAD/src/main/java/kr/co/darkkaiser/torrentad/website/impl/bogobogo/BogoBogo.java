@@ -149,7 +149,7 @@ public class BogoBogo extends AbstractWebSite {
 		// 로그인이 정상적으로 완료되었는지 확인한다.
 		Document doc = response.parse();
 		String outerHtml = doc.outerHtml();
-		if (outerHtml.contains("님 로그인하셨습니다.\");") == false) {		// 'alert("xxx님 로그인하셨습니다.");' 문자열이 포함되어있는지 확인
+		if (outerHtml.contains("님 로그인하셨습니다.") == false) {		// 'alert(" 편진휴님 로그인하셨습니다.. \n( * 이메일 : darkkaiser78@hotmail.com )");' 문자열이 포함되어있는지 확인
 			// 'alert("로그인 정보가 x회 틀렸습니다.\n(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)");' 문자열이 포함되어있는지 확인
 			if (outerHtml.contains("회 틀렸습니다.") == true && outerHtml.contains("(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)") == true)
 				throw new IncorrectLoginAccountException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
