@@ -142,6 +142,22 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Assj" description="알쓸신잡">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>알쓸신잡</item>
+					</search-keyword>
+					<search-keyword>
+						<item>1080p+DWBH</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
 
 			<torrentad-periodic-scheduled-task id="CircleTVN" description="써클">
 				<board-name>kordramaon</board-name>
