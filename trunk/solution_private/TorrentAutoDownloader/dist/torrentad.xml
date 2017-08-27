@@ -239,6 +239,22 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
+			<torrentad-periodic-scheduled-task id="ehdtkddlahd2" description="동상이몽2">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>동상이몽+너는+운명</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
 			<torrentad-periodic-scheduled-task id="InfiniteChallenge" description="무한도전">
 				<board-name>korentertainment</board-name>
 
