@@ -27,7 +27,7 @@
 			<website-name>보고보고</website-name>
 
 			<!-- 웹사이트 로그인 정보 -->
-			<website-account-id>darkkaiser</website-account-id>
+			<website-account-id>darkkaiser78</website-account-id>
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
@@ -95,7 +95,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
             
-			<torrentad-periodic-scheduled-task id="NewJourneyToTheWest" description="신서유기3">
+			<torrentad-periodic-scheduled-task id="NewJourneyToTheWest" description="신서유기">
 				<board-name>korentertainment</board-name>
 
 				<search-keywords type="title">
@@ -175,54 +175,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="CircleTVN" description="써클">
-				<board-name>kordramaon</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>써클</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="DualOCN" description="듀얼">
-				<board-name>kordramaon</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>듀얼</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="SecretForestTVN" description="비밀의숲">
-				<board-name>kordramaon</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>비밀의+숲</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
 				<board-name>korentertainment</board-name>
 
@@ -422,16 +374,16 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="DoctorStrange1" description="닥터스트레인지(최신)">
+			<torrentad-periodic-scheduled-task id="WarforThePlanetOfTheApes1" description="혹성탈출-종의전쟁(최신)">
 				<board-name>newmovie</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>닥터+스트레인지</item>
-						<item>Doctor+Strange</item>
+						<item>혹성+탈출+종의+전쟁</item>
+						<item>War+Planet+Apes</item>
 					</search-keyword>
 					<search-keyword>
-						<item>2016</item>
+						<item>2017</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -447,16 +399,16 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="DoctorStrange2" description="닥터스트레인지(고화질)">
+			<torrentad-periodic-scheduled-task id="WarforThePlanetOfTheApes2" description="혹성탈출-종의전쟁(고화질)">
 				<board-name>hdmovie</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>닥터+스트레인지</item>
-						<item>Doctor+Strange</item>
+						<item>혹성+탈출+종의+전쟁</item>
+						<item>War+Planet+Apes</item>
 					</search-keyword>
 					<search-keyword>
-						<item>2016</item>
+						<item>2017</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
