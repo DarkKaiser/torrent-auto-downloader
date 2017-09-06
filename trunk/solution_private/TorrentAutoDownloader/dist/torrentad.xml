@@ -26,7 +26,10 @@
 			<!-- 웹사이트 이름 -->
 			<website-name>보고보고</website-name>
 
-			<!-- 웹사이트 로그인 정보 -->
+			<!--
+			  웹사이트 로그인 정보
+			   * 보유계정 : darkkaiser, darkkaiser78
+    		-->
 			<website-account-id>darkkaiser78</website-account-id>
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
 
