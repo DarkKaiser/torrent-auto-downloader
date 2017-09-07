@@ -218,6 +218,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoSearchContext.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoSearchResultData.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co/darkkaiser/torrentad/AppTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/common" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/config" afterPath="" />
@@ -254,6 +257,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resource" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co/darkkaiser" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co/darkkaiser/torrentad" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$" afterPath="$PROJECT_DIR$" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log4j.xml" afterPath="$PROJECT_DIR$/log4j.xml" />
@@ -333,14 +339,26 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
+            <state relative-caret-position="170">
+              <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>l</find>
+      <find>log</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
+    <dirStrings>
+      <dir>F:\Solution-DarkKaiser\DARKKAISER_SOLUTION\solutions-private\TorrentAutoDownloaderBeta\src\TorrentAD\src\test\java\com\darkkaiser\torrentad</dir>
+    </dirStrings>
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
@@ -698,6 +716,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/log4j.xml" />
+        <option value="$PROJECT_DIR$/../../dist/log4j.xml" />
       </list>
     </option>
   </component>
@@ -1374,15 +1394,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1504791663724</updated>
-      <workItem from="1504791665253" duration="2282000" />
+      <workItem from="1504791665253" duration="2461000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2282000" />
+    <option name="totallyTimeSpent" value="2461000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -1405,8 +1426,9 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31208053" sideWeight="0.49755502" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1809291" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -1414,7 +1436,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1453,10 +1474,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../dist/log4j.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="40" lean-forward="false" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log4j.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="43" lean-forward="false" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
+        <state relative-caret-position="170">
+          <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
           <folding />
         </state>
       </provider>

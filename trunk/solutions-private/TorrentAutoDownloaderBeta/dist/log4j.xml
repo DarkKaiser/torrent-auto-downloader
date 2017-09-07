@@ -10,7 +10,7 @@
     </appender>
 
     <!-- CustomDailyRollingFileAppender -->
-    <appender name="dailyout" class="kr.co.darkkaiser.torrentad.util.log4j.CustomDailyRollingFileAppender">
+    <appender name="dailyout" class="com.darkkaiser.torrentad.util.log4j.CustomDailyRollingFileAppender">
         <param name="File" value="logs/dailyout.log"/>
         <param name="Append" value="true"/>
         <param name="DatePattern" value="'.'yyyyMMdd"/>
