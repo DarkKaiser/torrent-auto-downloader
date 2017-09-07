@@ -78,8 +78,185 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/.classpath" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.project" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/App.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/common/Constants.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/config/Configuration.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/config/DefaultConfiguration.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/helpers/PasswordGeneratorApp.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/ftp/FTPClient.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/TorrentClient.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/TransmissionRpcClient.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/AbstractMethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/MethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/SessionGetMethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/TorrentAddMethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/TorrentGetMethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult/TorrentStartMethodResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/Service.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/TorrentAdService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/AbstractTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/Task.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/TaskFactory.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/TaskResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/TaskType.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/TasksCallableAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/TasksCallableAdapterResult.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/UnsupportedTaskException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/AbstractImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/ImmediatelyTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/ImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/ImmediatelyTaskExecutorService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/ImmediatelyTaskImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately/ImmediatelyTasksCallableAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/AbstractScheduledTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/ScheduledTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/ScheduledTasksCallableAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/ScheduledTasksGenerator.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/once/OnceScheduledTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/once/OnceScheduledTaskImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/periodic/PeriodicScheduledTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/periodic/PeriodicScheduledTaskImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/TorrentAuService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/AbstractAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/Action.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/ActionFactory.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/ActionType.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/UnsupportedActionException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/UnsupportedTransmissionFileException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/supervisorycontrol/TorrentSupervisoryControlAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/supervisorycontrol/TorrentSupervisoryControlActionImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/transmission/FileTransmissionAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/transmission/FileTransmissionActionImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter/AbstractFileTransmitter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter/FTPFileTransmitter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter/FileTransmissionExecutorService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter/FileTransmitter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter/TorrentFileTransmitter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/BotService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/TelegramBotService.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/ChatRoom.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/TorrentBot.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/TorrentBotResource.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/BotCommand.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/BotCommandConstants.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/BotCommandUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/DefaultRequestHandlerRegistry.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/ExposedBotCommand.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/RequestHandlerRegistry.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/AbstractBotCommandRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/AbstractRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/HelpRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/RequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/TorrentStatusRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/TorrentStatusResultCallbackQueryRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardItemDownloadRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardListRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardListResultCallbackQueryRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardListResultDownloadLinkInquiryRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSearchInlineKeyboardRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSearchRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSearchResultCallbackQueryRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSelectRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler/WebSiteBoardSelectedRequestHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/AbstractImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/AbstractWebSiteBoardImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/TorrentStatusImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/WebSiteBoardItemDownloadImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/WebSiteBoardListImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/WebSiteBoardSearchImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction/WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/Disposable.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/OutParam.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/RadixNotation62Util.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/SortedProperties.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/Tuple.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/crypto/AES256Util.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/log4j/CustomDailyRollingFileAppender.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/metadata/repository/MetadataRepository.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/metadata/repository/MetadataRepositoryImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/AbstractWebSite.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/AbstractWebSiteBoardItem.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/AbstractWebSiteSearchContext.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/AbstractWebSiteSearchResultData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/DefaultWebSiteAccount.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/DefaultWebSiteConnector.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/DefaultWebSiteSearchKeywords.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/EmptySearchKeywordException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/EmptySearchKeywordsException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/IncorrectLoginAccountException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/InvalidBoardItemIdentifierValueException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/LoadBoardItemsException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/NoPermissionException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/RetryLoginOnNoPermissionWebSite.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/UnknownLoginException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSite.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteAccount.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoard.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoardItem.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoardItemComparatorIdentifierAsc.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoardItemComparatorIdentifierDesc.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoardItemComparatorRegistDateDescAndTitleAsc.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteBoardItemDownloadLink.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteConnection.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteConnector.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteConstants.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteContext.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteSearchContext.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteSearchKeywords.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteSearchKeywordsMode.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteSearchKeywordsType.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/WebSiteSearchResultData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogo.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoard.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItem.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLink.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLinkImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoSearchContext.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoSearchResultData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co/darkkaiser/torrentad/AppTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/common" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/helpers" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/ftp" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/net/torrent/transmission/methodresult" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/immediately" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/once" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/ad/task/scheduled/periodic" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/supervisorycontrol" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/action/transmission" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/au/transmitter" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/command/requesthandler" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/service/bot/telegram/torrentbot/immediatelytaskaction" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/crypto" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/log4j" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/metadata" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/util/metadata/repository" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/kr/co/darkkaiser/torrentad/website/impl/bogobogo" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resource" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/kr/co/darkkaiser/torrentad" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$" afterPath="$PROJECT_DIR$" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log4j.xml" afterPath="$PROJECT_DIR$/log4j.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -156,8 +333,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="28" column="68" lean-forward="true" selection-start-line="28" selection-start-column="68" selection-end-line="28" selection-end-column="68" />
+            <state relative-caret-position="341">
+              <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
               <folding />
             </state>
           </provider>
@@ -580,6 +757,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1171,16 +1374,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1504791663724</updated>
-      <workItem from="1504791665253" duration="2102000" />
+      <workItem from="1504791665253" duration="2282000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2102000" />
+    <option name="totallyTimeSpent" value="2282000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -1203,7 +1405,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31208053" sideWeight="0.49755502" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1809291" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -1253,8 +1455,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="28" column="68" lean-forward="true" selection-start-line="28" selection-start-column="68" selection-end-line="28" selection-end-column="68" />
+        <state relative-caret-position="341">
+          <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
           <folding />
         </state>
       </provider>
