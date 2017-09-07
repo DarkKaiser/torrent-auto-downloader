@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<torrentad>
+
+	<!--
+		* 지원 가능한 웹사이트 정보
+            1. 보고보고(BogoBogo)
+                - 영화 > 최신외국영화 : newmovie
+                - 영화 > 한국영화 : kormovie
+                - 영화 > 한국영화 : hdmovie
+                - 한국TV > 드라마(방영중) : kordramaon
+                - 한국TV > 드라마(종방) : kordramaover
+                - 한국TV > 쇼/오락/스포츠 : korentertainment
+                - 외국TV > 드라마(방영중) : foreigndramaon
+                - 외국TV > 드라마(종방) : foreigndramaover
+                - 애니메이션 > 종방 : aniover
+                - 애니메이션 > 방영중 : anion
+                - 유아, 아동용 : baby
+                - 게임 : game
+                - 만화책, 소설 : book
+                - 유틸리티, 강좌 : util
+                - 자막 나누기 : smi
+	-->
+
+	<torrentad-ad-service>
+		<torrentad-service-config-values>
+			<!-- 웹사이트 이름 -->
+			<website-name>보고보고</website-name>
+
+			<!--
+			  웹사이트 로그인 정보
+			   * 보유계정 : darkkaiser, darkkaiser78
+    		-->
+			<website-account-id>darkkaiser78</website-account-id>
+			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
+
+			<!-- 다운로드 받은 파일이 저장되는 위치 -->
+			<download-file-write-location>/usr/local/torrentad/downloads</download-file-write-location>
+
+			<!-- Task 실행 간격(단위:초) -->
+			<task-execute-interval-time-second>600</task-execute-interval-time-second>
+		</torrentad-service-config-values>
+
+		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
+		<torrentad-periodic-scheduled-tasks>
+
+			<torrentad-periodic-scheduled-task id="LiveAlone" description="나혼자산다">
+				<!-- 게시판 이름 -->
+				<board-name>korentertainment</board-name>
+
+				<!-- 게시물 제목 검색키워드 -->
+				<search-keywords type="title">
+					<!--
+					  검색키워드는 AND 연산으로 처리되며, 등록된 모든 검색키워드가 포함되어 있는 게시물만이 검색된다.
+					  검색키워드 자식 태그의 항목이 다수일 경우에는, 다수의 항목 중 하나의 항목만 포함되어 있어도 게시물이 검색된다.
+					-->
+					<search-keyword>
+						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
+						<item>나+혼자+산다</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+					<!--
+					<search-keyword mode="exclude">
+						<item></item>
+					</search-keyword>
+					-->
+				</search-keywords>
+				
+				<!-- 게시물 첨부파일 검색키워드 -->
+				<search-keywords type="file">
+					<!--
+					  검색키워드는 AND 연산으로 처리되며, 등록된 모든 검색키워드가 포함되어 있는 게시물만이 검색된다.
+					  검색키워드 자식 태그의 항목이 다수일 경우에는, 다수의 항목 중 하나의 항목만 포함되어 있어도 게시물이 검색된다.
+					-->
+					<!--
+					<search-keyword>
+						<!- - 항목의 '+' 문자는 AND 연산으로 처리된다. - - >
+						<item></item>
+					</search-keyword>
+					-->
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Honey" description="자기야-백년손님">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>자기야+백년손님</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+            
+			<torrentad-periodic-scheduled-task id="NewJourneyToTheWest" description="신서유기">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>신서유기</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="TkatltoRlqkekahrwkd" description="삼시세끼">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>삼시세끼</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Refrigerator" description="냉장고를부탁해">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>냉장고를+부탁해</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Ssuljeon" description="썰전">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>썰전</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Assj" description="알쓸신잡">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>알쓸신잡</item>
+					</search-keyword>
+					<search-keyword>
+						<item>1080p+DWBH</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+
+			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>미운+우리+새끼</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="ehdtkddlahd2" description="동상이몽2">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>동상이몽+너는+운명</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="InfiniteChallenge" description="무한도전">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>무한도전</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="HouseFood3" description="집밥백선생3">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>집밥+백선생</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="BrotherKnow" description="아는형님">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>아는+형님</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Hyori" description="효리네민박">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>효리네+민박</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Island" description="섬총사">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>섬총사</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="OnePiece" description="원피스">
+				<board-name>anion</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>원피스</item>
+					</search-keyword>
+					<search-keyword>
+						<item>SOFCJ</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+					<search-keyword>
+						<item>SOFCJ-Raws</item>
+					</search-keyword>
+					<search-keyword>
+						<item>CX</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>HombleSubs</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>Leopard-Raws</item>
+					</search-keyword>
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="Naruto" description="나루토">
+				<board-name>anion</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>나루토</item>
+					</search-keyword>
+					<search-keyword>
+						<item>SOFCJ</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+					<search-keyword>
+						<item>SOFCJ-Raws</item>
+					</search-keyword>
+					<search-keyword>
+						<item>TX</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>HombleSubs</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>Leopard-Raws</item>
+					</search-keyword>
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="DragonBall" description="드래곤볼 슈퍼">
+				<board-name>anion</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>드래곤볼+슈퍼</item>
+					</search-keyword>
+					<search-keyword>
+						<item>SOFCJ</item>
+					</search-keyword>
+					<search-keyword>
+						<item>CX</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+					<search-keyword>
+						<item>SOFCJ-Raws</item>
+					</search-keyword>
+					<search-keyword>
+						<item>CX</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>HombleSubs</item>
+					</search-keyword>
+					<search-keyword mode="exclude">
+						<item>Leopard-Raws</item>
+					</search-keyword>
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+
+			<torrentad-periodic-scheduled-task id="WarforThePlanetOfTheApes1" description="혹성탈출-종의전쟁(최신)">
+				<board-name>newmovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>혹성+탈출+종의+전쟁</item>
+						<item>War+Planet+Apes</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2017</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="WarforThePlanetOfTheApes2" description="혹성탈출-종의전쟁(고화질)">
+				<board-name>hdmovie</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>혹성+탈출+종의+전쟁</item>
+						<item>War+Planet+Apes</item>
+					</search-keyword>
+					<search-keyword>
+						<item>2017</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+						<item>1080p</item>
+					</search-keyword>
+					<search-keyword>
+						<item>BRRip</item>
+						<item>Bluray</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+
+		</torrentad-periodic-scheduled-tasks>
+
+		<!-- 오직 한번만 토렌트 파일을 다운로드 받는 태스크 -->
+		<torrentad-once-scheduled-tasks>
+			<torrentad-once-scheduled-task/>
+		</torrentad-once-scheduled-tasks>
+	</torrentad-ad-service>
+
+	<torrentad-au-service>
+		<torrentad-service-config-values>
+			<!-- AD Service에 의해 다운로드 되는 파일을 감시하기 위한 간격(단위:초) -->
+			<download-file-watch-interval-time-second>60</download-file-watch-interval-time-second>
+
+			<!-- FTP 서버 정보 -->
+			<ftp-server-host>darkkaiser.gonetis.com</ftp-server-host>
+			<ftp-server-port>55521</ftp-server-port>
+
+			<!-- FTP 서버 로그인 정보 -->
+			<ftp-server-account-id>darkkaiser</ftp-server-account-id>
+			<ftp-server-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</ftp-server-account-password>
+
+			<!-- FTP 서버 업로드 위치 -->
+			<ftp-server-upload-location>/Public/Torrent/</ftp-server-upload-location>
+
+			<!-- Torrent 서버 정보 -->
+			<torrent-rpc-url>http://darkkaiser.gonetis.com:9091/transmission/rpc</torrent-rpc-url>
+
+			<!-- Torrent 서버 로그인 정보 -->
+			<torrent-rpc-account-id>darkkaiser</torrent-rpc-account-id>
+			<torrent-rpc-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</torrent-rpc-account-password>
+
+			<!-- Torrent 상태를 감시 및 제어하기 위한 간격(단위:초) -->
+			<torrent-supervisory-control-interval-time-second>60</torrent-supervisory-control-interval-time-second>
+
+			<!-- Torrent 서버에서 한번에 다운로드 받을 수 있는 최대 개수 -->
+			<max-concurrent-downloading-torrent-count>2</max-concurrent-downloading-torrent-count>
+		</torrentad-service-config-values>
+	</torrentad-au-service>
+
+	<torrentad-bot-service>
+		<torrentad-service-config-values>
+			<!-- Telegram TorrentBot 설정정보 -->
+			<telegram-torrentbot-username>darkkaiser_torrentad_bot</telegram-torrentbot-username>
+			<telegram-torrentbot-token>298010919:AAEcnGlwklr6PXMQ4UUB7JbgMN3zTqrr6r4</telegram-torrentbot-token>
+		</torrentad-service-config-values>
+	</torrentad-bot-service>
+	
+</torrentad>
