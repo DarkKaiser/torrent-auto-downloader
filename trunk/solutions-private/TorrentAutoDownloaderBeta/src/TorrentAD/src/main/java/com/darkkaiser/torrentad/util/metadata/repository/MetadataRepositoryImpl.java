@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 public final class MetadataRepositoryImpl implements MetadataRepository {
@@ -20,8 +21,8 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	private final Properties properties = new SortedProperties();
 
 	public MetadataRepositoryImpl(final String filePath) {
-		if (filePath == null)
-			throw new NullPointerException("filePath");
+		Objects.requireNonNull(filePath, "filePath");
+
 		if (StringUtil.isBlank(filePath) == true)
 			throw new IllegalArgumentException("filePath는 빈 문자열을 허용하지 않습니다.");
 

@@ -62,9 +62,9 @@ public final class Constants {
 	 * 메타데이터 저장소 파일 관련
 	 */
 
-	//------------
+	//------------------------
 	// AD Service
-	//------------
+	//------------------------
 
 	// AD Service 메타데이터 저장소 파일명
 	public static final String AD_SERVICE_METADATA_REPOSITORY_FILE_NAME = "torrentad.ad.properties";
@@ -74,9 +74,9 @@ public final class Constants {
 	// 게시물 식별자가 비어있는 경우는 읽어들인 게시물의 모든 항목을 검색 대상으로 한다.
 	public static final String AD_SERVICE_MR_KEY_LATEST_DOWNLOAD_BOARD_ITEM_IDENTIFIER = "latest-download-board-item-identifier";
 
-	//-------------
+	//-------------------------
 	// Bot Service
-	//-------------
+	//-------------------------
 
 	// Bot Service 메타데이터 저장소 파일명
 	public static final String BOT_SERVICE_METADATA_REPOSITORY_FILE_NAME = "torrentad.bot.properties";

@@ -1,12 +1,6 @@
 package com.darkkaiser.torrentad.config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Hashtable;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.darkkaiser.torrentad.common.Constants;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +8,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.darkkaiser.torrentad.common.Constants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Hashtable;
+import java.util.Objects;
 
 public final class DefaultConfiguration implements Configuration {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultConfiguration.class);
 
 	private String filePath;
-	
+
 	private final Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
 	
 	public DefaultConfiguration() throws Exception {
@@ -29,8 +28,8 @@ public final class DefaultConfiguration implements Configuration {
 	}
 
 	private void load(final String filePath) throws Exception {
-		if (filePath == null)
-			throw new NullPointerException("filePath");
+        Objects.requireNonNull(filePath, "filePath");
+
 		if (StringUtil.isBlank(filePath) == true)
 			throw new IllegalArgumentException("filePath는 빈 문자열을 허용하지 않습니다.");
 
@@ -84,7 +83,7 @@ public final class DefaultConfiguration implements Configuration {
 	}
 
 	@Override
-	public String getValue(final String key, final  String defaultValue) {
+	public String getValue(final String key, final String defaultValue) {
 		assert key != null;
 		assert key.length() > 0;
 
