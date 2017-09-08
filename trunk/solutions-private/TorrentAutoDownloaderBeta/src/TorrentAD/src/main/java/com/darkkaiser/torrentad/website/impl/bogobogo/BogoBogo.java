@@ -1,24 +1,11 @@
 package com.darkkaiser.torrentad.website.impl.bogobogo;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Predicate;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
+import com.darkkaiser.torrentad.website.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
@@ -30,26 +17,13 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-
-import com.darkkaiser.torrentad.website.AbstractWebSite;
-import com.darkkaiser.torrentad.website.IncorrectLoginAccountException;
-import com.darkkaiser.torrentad.website.LoadBoardItemsException;
-import com.darkkaiser.torrentad.website.NoPermissionException;
-import com.darkkaiser.torrentad.website.UnknownLoginException;
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteAccount;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
-import com.darkkaiser.torrentad.website.WebSiteConnector;
-import com.darkkaiser.torrentad.website.WebSiteConstants;
-import com.darkkaiser.torrentad.website.WebSiteSearchContext;
-import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
-import com.darkkaiser.torrentad.website.WebSiteSearchResultData;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.text.ParseException;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class BogoBogo extends AbstractWebSite {
 
@@ -161,7 +135,8 @@ public class BogoBogo extends AbstractWebSite {
 		  로그인 2단계 수행
 		 */
 		// 간혹 ConnectException 예외가 발생하므로 루프를 돌린다.
-		for (int loopCount = 0; loopCount < 3; ++loopCount) {
+        //noinspection ConstantConditions
+        for (int loopCount = 0; loopCount < 3; ++loopCount) {
 			try {
 				Jsoup.connect(doc.select("img").attr("src"))
 					.userAgent(USER_AGENT)
@@ -169,7 +144,7 @@ public class BogoBogo extends AbstractWebSite {
 					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 					.ignoreContentType(true)
 					.get();
-			} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
+			} catch (final HttpStatusException | ConnectException | IllegalArgumentException e) {
 				try {
 					Thread.sleep(100);
 				} catch (final Exception ignored) {
@@ -194,7 +169,7 @@ public class BogoBogo extends AbstractWebSite {
 				.cookies(response.cookies())
 				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 				.post();
-		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
+		} catch (final HttpStatusException | ConnectException | IllegalArgumentException ignored) {
 		}
 		
 		/*
@@ -208,7 +183,7 @@ public class BogoBogo extends AbstractWebSite {
 				.cookies(response.cookies())
 				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 				.post();
-		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
+		} catch (final HttpStatusException | ConnectException | IllegalArgumentException ignored) {
 		}
 
 		/*
@@ -419,7 +394,8 @@ public class BogoBogo extends AbstractWebSite {
 				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
 
 				if (elements.isEmpty() == true) {
-					if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
+                    //noinspection StatementWithEmptyBody
+                    if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
 						// 해당 페이지가 존재하지 않는 경우... 아무 처리도 하지 않는다.
 					} else if (boardItemsDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
 						throw new NoPermissionException(String.format("게시판 접근 권한이 없습니다.(URL:%s)", url));
@@ -484,18 +460,18 @@ public class BogoBogo extends AbstractWebSite {
 
 							boardItems.add(new BogoBogoBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", BogoBogo.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
 						}
-					} catch (NoSuchElementException e) {
+					} catch (final NoSuchElementException e) {
 						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
 						throw e;
 					}
 				}
 			}
-		} catch (NoPermissionException e) {
+		} catch (final NoPermissionException e) {
 			throw e;
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// 아무 처리도 하지 않는다.
 			return null;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
 			return null;
 		}
@@ -784,8 +760,9 @@ public class BogoBogo extends AbstractWebSite {
 				FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
-				
-				notyetDownloadFile.renameTo(downloadFile);
+
+                //noinspection ResultOfMethodCallIgnored
+                notyetDownloadFile.renameTo(downloadFile);
 				
 				++downloadCompletedCount;
 				downloadLink.setDownloadCompleted(true);
