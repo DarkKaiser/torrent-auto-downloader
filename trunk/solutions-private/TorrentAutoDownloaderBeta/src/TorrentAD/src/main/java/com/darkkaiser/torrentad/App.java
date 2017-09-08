@@ -80,7 +80,7 @@ public class App {
 		try {
 			App app = new App();
 
-			String message = "\n" +
+			String productMessage = "\n" +
 					"########################################################\n" +
 					"###                                                  ###\n" +
 					"###             " + Constants.APP_NAME + " Version " + Constants.APP_VERSION + "              ###\n" +
@@ -88,7 +88,7 @@ public class App {
 					"###                         developed by DarkKaiser  ###\n" +
 					"###                                                  ###\n" +
 					"########################################################\n";
-			logger.info(message);
+			logger.info(productMessage);
 
 			if (app.start() == true) {
                 logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
