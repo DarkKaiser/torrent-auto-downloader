@@ -1,9 +1,9 @@
 package com.darkkaiser.torrentad.website;
 
+import com.darkkaiser.torrentad.util.Tuple;
+
 import java.util.Comparator;
 import java.util.Iterator;
-
-import com.darkkaiser.torrentad.util.Tuple;
 
 public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
 
@@ -108,7 +108,8 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
 		assert isLogin() == true;
-		
+
+		//noinspection Duplicates
 		try {
 			return this.site.download(boardItem, searchContext);
 		} catch (final NoPermissionException e) {
@@ -116,7 +117,7 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 			WebSiteConnector siteConnector = this.site.getSiteConnector();
 			if (siteConnector == null)
 				throw e;
-			
+
 			siteConnector.logout();
 			siteConnector.login();
 
@@ -127,7 +128,8 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
 		assert isLogin() == true;
-		
+
+		//noinspection Duplicates
 		try {
 			return this.site.download(boardItem, downloadLinkIndex);
 		} catch (final NoPermissionException e) {
@@ -135,7 +137,7 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 			WebSiteConnector siteConnector = this.site.getSiteConnector();
 			if (siteConnector == null)
 				throw e;
-			
+
 			siteConnector.logout();
 			siteConnector.login();
 
