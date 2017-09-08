@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -111,8 +112,7 @@ public class TransmissionRpcClient implements TorrentClient {
 
 	@Override
 	public boolean addTorrent(final File file, final boolean paused) throws Exception {
-		if (file == null)
-			throw new NullPointerException("file");
+		Objects.requireNonNull(file, "file");
 
 		if (isConnected() == false) {
 			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
@@ -161,8 +161,7 @@ public class TransmissionRpcClient implements TorrentClient {
 	
 	@Override
 	public boolean startTorrent(final List<Long> ids) throws Exception {
-		if (ids == null)
-			throw new NullPointerException("ids");
+        Objects.requireNonNull(ids, "ids");
 
 		if (isConnected() == false) {
 			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
@@ -245,7 +244,7 @@ public class TransmissionRpcClient implements TorrentClient {
 	private String encodeFileToBase64(final File file) throws IOException {
 		assert file != null;
 
-		try (FileInputStream fis = new FileInputStream(file)) {
+		try (final FileInputStream fis = new FileInputStream(file)) {
 			byte[] bytes = new byte[(int) file.length()];
 
 			int numRead;
