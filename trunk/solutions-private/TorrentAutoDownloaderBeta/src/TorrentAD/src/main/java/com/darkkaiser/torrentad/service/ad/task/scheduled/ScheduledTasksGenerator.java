@@ -1,16 +1,13 @@
 package com.darkkaiser.torrentad.service.ad.task.scheduled;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.management.modelmbean.XMLParseException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
+import com.darkkaiser.torrentad.service.ad.task.TaskFactory;
+import com.darkkaiser.torrentad.service.ad.task.TaskType;
+import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteSearchKeywords;
+import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +15,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.darkkaiser.torrentad.common.Constants;
-import com.darkkaiser.torrentad.service.ad.task.TaskFactory;
-import com.darkkaiser.torrentad.service.ad.task.TaskType;
-import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
+import javax.management.modelmbean.XMLParseException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public final class ScheduledTasksGenerator {
 	
@@ -34,13 +33,10 @@ public final class ScheduledTasksGenerator {
 	}
 
 	public static List<ScheduledTask> generate(final Configuration configuration, final MetadataRepository metadataRepository, final WebSite site) throws Exception {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
-		if (metadataRepository == null)
-			throw new NullPointerException("metadataRepository");
-		if (site == null)
-			throw new NullPointerException("site");
-		
+		Objects.requireNonNull(configuration, "configuration");
+		Objects.requireNonNull(metadataRepository, "metadataRepository");
+		Objects.requireNonNull(site, "site");
+
 		List<ScheduledTask> tasks = new ArrayList<>();
 
 		try {

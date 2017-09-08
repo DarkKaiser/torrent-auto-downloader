@@ -1,10 +1,11 @@
 package com.darkkaiser.torrentad.service.ad.task;
 
+import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import java.util.Objects;
 
 public abstract class AbstractTask implements Task {
 
@@ -18,12 +19,12 @@ public abstract class AbstractTask implements Task {
 	protected final MetadataRepository metadataRepository;
 	
 	protected AbstractTask(final TaskType taskType, final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
-		if (taskType == null)
-			throw new NullPointerException("taskType");
+		Objects.requireNonNull(taskType, "taskType");
+
 		if (StringUtil.isBlank(taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		if (metadataRepository == null)
-			throw new NullPointerException("metadataRepository");
+
+		Objects.requireNonNull(metadataRepository, "metadataRepository");
 
 		this.taskId = taskId;
 		this.taskType = taskType;
@@ -58,12 +59,12 @@ public abstract class AbstractTask implements Task {
 
 	@Override
 	public void validate() {
-		if (this.taskType == null)
-			throw new NullPointerException("taskType");
-		if (StringUtil.isBlank(this.taskId) == true)
+        Objects.requireNonNull(this.taskType, "taskType");
+
+        if (StringUtil.isBlank(this.taskId) == true)
 			throw new IllegalArgumentException("taskId는 빈 문자열을 허용하지 않습니다.");
-		if (this.metadataRepository == null)
-			throw new NullPointerException("metadataRepository");
+
+        Objects.requireNonNull(this.metadataRepository, "metadataRepository");
 	}
 
 	@Override

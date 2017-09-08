@@ -1,7 +1,5 @@
 package com.darkkaiser.torrentad.service.ad.task.scheduled;
 
-import java.util.List;
-
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.service.ad.task.TaskResult;
 import com.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
@@ -12,6 +10,9 @@ import com.darkkaiser.torrentad.website.WebSiteConnector;
 import com.darkkaiser.torrentad.website.WebSiteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Objects;
 
 public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter {
 
@@ -24,8 +25,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 	private final Configuration configuration;
 	
 	public ScheduledTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository) throws Exception {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.configuration = configuration;
 		this.siteConnector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);

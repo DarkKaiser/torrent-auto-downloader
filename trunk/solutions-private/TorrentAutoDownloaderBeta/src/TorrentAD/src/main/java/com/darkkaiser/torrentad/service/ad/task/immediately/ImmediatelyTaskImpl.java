@@ -7,6 +7,8 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTaskImpl.class);
@@ -42,8 +44,7 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 	public void validate() {
 		super.validate();
 
-		if (this.action == null)
-			throw new NullPointerException("action");
+		Objects.requireNonNull(this.action, "action");
 
 		this.action.validate();
 	}

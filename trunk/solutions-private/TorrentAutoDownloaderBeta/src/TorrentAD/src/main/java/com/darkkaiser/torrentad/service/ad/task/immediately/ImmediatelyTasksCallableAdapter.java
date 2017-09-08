@@ -7,6 +7,7 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapter {
@@ -18,10 +19,8 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	private static AtomicInteger count = new AtomicInteger(0);
 
 	public ImmediatelyTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository, final ImmediatelyTaskAction action) throws Exception {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
-		if (action == null)
-			throw new NullPointerException("action");
+		Objects.requireNonNull(configuration, "configuration");
+		Objects.requireNonNull(action, "action");
 
 		String name = action.getName();
 		if (StringUtil.isBlank(name) == true)

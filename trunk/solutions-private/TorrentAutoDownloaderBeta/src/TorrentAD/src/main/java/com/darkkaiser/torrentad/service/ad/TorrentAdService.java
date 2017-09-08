@@ -13,6 +13,7 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -33,8 +34,7 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 	private final MetadataRepository metadataRepository;
 
 	public TorrentAdService(final Configuration configuration) {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.configuration = configuration;
 		this.metadataRepository = new MetadataRepositoryImpl(Constants.AD_SERVICE_METADATA_REPOSITORY_FILE_NAME);

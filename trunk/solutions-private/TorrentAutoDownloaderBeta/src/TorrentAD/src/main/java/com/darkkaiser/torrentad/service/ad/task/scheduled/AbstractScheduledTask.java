@@ -1,14 +1,12 @@
 package com.darkkaiser.torrentad.service.ad.task.scheduled;
 
-import com.darkkaiser.torrentad.website.WebSiteConstants;
-import com.darkkaiser.torrentad.website.WebSiteSearchKeywords;
-import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import com.darkkaiser.torrentad.service.ad.task.TaskType;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteSearchContext;
+import com.darkkaiser.torrentad.website.*;
+
+import java.util.Objects;
 
 public abstract class AbstractScheduledTask extends AbstractTask implements ScheduledTask {
 
@@ -22,8 +20,7 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 
 	@Override
 	public ScheduledTask setWebSite(final WebSite site) {
-		if (site == null)
-			throw new NullPointerException("site");
+		Objects.requireNonNull(site, "site");
 
 		this.site = site;
 		this.searchContext = this.site.createSearchContext();
@@ -52,10 +49,8 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 
 	@Override
 	public void validate() {
-		if (this.site == null)
-			throw new NullPointerException("site");
-		if (this.searchContext == null)
-			throw new NullPointerException("searchContext");
+		Objects.requireNonNull(this.site, "site");
+		Objects.requireNonNull(this.searchContext, "searchContext");
 
 		this.searchContext.validate();
 	}

@@ -1,21 +1,17 @@
 package com.darkkaiser.torrentad.service.ad.task.scheduled.periodic;
 
-import java.util.Iterator;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.service.ad.task.TaskResult;
 import com.darkkaiser.torrentad.service.ad.task.TaskType;
 import com.darkkaiser.torrentad.service.ad.task.scheduled.AbstractScheduledTask;
 import com.darkkaiser.torrentad.util.Tuple;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteConstants;
-import com.darkkaiser.torrentad.website.WebSiteHandler;
+import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import com.darkkaiser.torrentad.website.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
-import com.darkkaiser.torrentad.website.LoadBoardItemsException;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements PeriodicScheduledTask {
 
@@ -27,8 +23,7 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 
 	@Override
 	public TaskResult run(final WebSiteHandler handler) {
-		if (handler == null)
-			throw new NullPointerException("handler");
+		Objects.requireNonNull(handler, "handler");
 
 		validate();
 
