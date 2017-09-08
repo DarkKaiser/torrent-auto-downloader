@@ -1,6 +1,5 @@
 package com.darkkaiser.torrentad.util;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -12,17 +11,12 @@ public class SortedProperties extends Properties {
 
 	public synchronized Enumeration<Object> keys() {
 		Enumeration<Object> keysEnum = super.keys();
-		Vector<Object> keyList = new Vector<Object>();
+		Vector<Object> keyList = new Vector<>();
 		while (keysEnum.hasMoreElements()) {
 			keyList.add(keysEnum.nextElement());
 		}
 
-		Collections.sort(keyList, new Comparator<Object>() {
-			@Override
-			public int compare(Object lhs, Object rhs) {
-				return lhs.toString().compareTo(rhs.toString());
-			}
-		});
+        keyList.sort(Comparator.comparing(Object::toString));
 
 		return keyList.elements();
 	}

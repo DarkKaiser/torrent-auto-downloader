@@ -22,7 +22,7 @@ public final class DefaultConfiguration implements Configuration {
 
 	private String filePath;
 	
-	private Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
+	private final Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
 	
 	public DefaultConfiguration() throws Exception {
 		load(Constants.APP_CONFIG_FILE_NAME);

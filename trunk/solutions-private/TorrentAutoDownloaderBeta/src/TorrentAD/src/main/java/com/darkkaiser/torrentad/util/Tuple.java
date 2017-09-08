@@ -18,10 +18,12 @@ public class Tuple<F, L> {
 		return this.y;
 	}
 
+	@SuppressWarnings("unused")
 	public void first(F x) {
 		this.x = x;
 	}
 
+	@SuppressWarnings("unused")
 	public void last(L y) {
 		this.y = y;
 	}

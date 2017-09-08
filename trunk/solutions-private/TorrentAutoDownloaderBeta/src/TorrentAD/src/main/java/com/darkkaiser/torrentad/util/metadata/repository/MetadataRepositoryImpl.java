@@ -1,17 +1,15 @@
 package com.darkkaiser.torrentad.util.metadata.repository;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-
+import com.darkkaiser.torrentad.util.SortedProperties;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.util.SortedProperties;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public final class MetadataRepositoryImpl implements MetadataRepository {
 
@@ -36,7 +34,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 		}
 	}
 
-	private void initialize() throws FileNotFoundException, IOException {
+	private void initialize() throws IOException {
 		assert this.filePath != null;
 		assert this.properties != null;
 
@@ -123,7 +121,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 		assert this.properties != null;
 
 		try {
-			return Double.valueOf(this.properties.getProperty(key)).doubleValue();
+			return Double.valueOf(this.properties.getProperty(key));
 		} catch (Exception e) {
 			return defaultValue;
 		}
@@ -143,7 +141,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 		assert this.properties != null;
 
 		try {
-			return Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
+			return Boolean.valueOf(this.properties.getProperty(key));
 		} catch (Exception e) {
 			return defaultValue;
 		}

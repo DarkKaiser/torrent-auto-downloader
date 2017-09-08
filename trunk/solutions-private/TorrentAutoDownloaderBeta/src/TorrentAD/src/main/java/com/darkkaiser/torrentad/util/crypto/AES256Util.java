@@ -1,10 +1,6 @@
 package com.darkkaiser.torrentad.util.crypto;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -12,8 +8,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 
 public class AES256Util {
 
@@ -27,7 +26,7 @@ public class AES256Util {
 		this(DEFAULT_CRYPTOGRAPH_KEY);
 	}
 
-	public AES256Util(String key) throws UnsupportedEncodingException {
+	private AES256Util(String key) throws UnsupportedEncodingException {
 		this.iv = key.substring(0, 16);
 
 		byte[] keyBytes = new byte[16];
@@ -36,9 +35,8 @@ public class AES256Util {
 		if (len > keyBytes.length)
 			len = keyBytes.length;
 		System.arraycopy(b, 0, keyBytes, 0, len);
-		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
 
-		this.keySpec = keySpec;
+		this.keySpec = new SecretKeySpec(keyBytes, "AES");
 	}
 
 	public String encode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, 

@@ -94,6 +94,7 @@ public final class Constants {
 	public static final String BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE = "board-code";
 
 	private Constants() {
+
 	}
 
 }
