@@ -1,14 +1,11 @@
 package com.darkkaiser.torrentad.website;
 
+import org.jsoup.helper.StringUtil;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.jsoup.helper.StringUtil;
+import java.util.*;
 
 public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 
@@ -29,8 +26,8 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	private final List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
 	protected AbstractWebSiteBoardItem(final WebSiteBoard board, final long identifier, final String title, final String registDateString) throws ParseException {
-		if (board == null)
-			throw new NullPointerException("board");
+		Objects.requireNonNull(board, "board");
+
 		if (identifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
 			throw new InvalidBoardItemIdentifierValueException();
 		if (StringUtil.isBlank(title) == true)
@@ -72,8 +69,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	
 	@Override
 	public void addDownloadLink(final WebSiteBoardItemDownloadLink downloadLink) {
-		if (downloadLink == null)
-			throw new NullPointerException("downloadLink");
+        Objects.requireNonNull(downloadLink, "downloadLink");
 
 		this.downloadLinks.add(downloadLink);
 	}

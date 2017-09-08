@@ -5,6 +5,8 @@ import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
 import org.jsoup.helper.StringUtil;
 
+import java.util.Objects;
+
 public enum WebSite {
 
 	BOGOBOGO("보고보고") {
@@ -54,8 +56,8 @@ public enum WebSite {
 	}
 
 	public static WebSite fromString(final String name) {
-		if (name == null)
-			throw new NullPointerException("name");
+		Objects.requireNonNull(name, "name");
+
 		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 

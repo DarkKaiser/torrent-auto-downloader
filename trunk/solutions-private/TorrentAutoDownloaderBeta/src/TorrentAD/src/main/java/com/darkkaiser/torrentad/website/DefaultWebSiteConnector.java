@@ -2,11 +2,12 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
+import com.darkkaiser.torrentad.util.crypto.AES256Util;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.util.crypto.AES256Util;
+import java.util.Objects;
 
 public class DefaultWebSiteConnector implements WebSiteConnector {
 
@@ -28,8 +29,8 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 	public DefaultWebSiteConnector(final String owner, final Configuration configuration) throws Exception {
 		if (StringUtil.isBlank(owner) == true)
 			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.owner = owner;
 		this.configuration = configuration;

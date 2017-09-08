@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.text.ParseException;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class BogoBogo extends AbstractWebSite {
 
@@ -99,8 +98,7 @@ public class BogoBogo extends AbstractWebSite {
 	
 	@Override
 	protected void login0(final WebSiteAccount account) throws Exception {
-		if (account == null)
-			throw new NullPointerException("account");
+		Objects.requireNonNull(account, "account");
 
 		account.validate();
 
@@ -135,7 +133,6 @@ public class BogoBogo extends AbstractWebSite {
 		  로그인 2단계 수행
 		 */
 		// 간혹 ConnectException 예외가 발생하므로 루프를 돌린다.
-        //noinspection ConstantConditions
         for (int loopCount = 0; loopCount < 3; ++loopCount) {
 			try {
 				Jsoup.connect(doc.select("img").attr("src"))
@@ -225,10 +222,8 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Iterator<WebSiteBoardItem> list(final WebSiteBoard board, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
-		if (board == null)
-			throw new NullPointerException("board");
-		if (comparator == null)
-			throw new NullPointerException("comparator");
+        Objects.requireNonNull(board, "board");
+        Objects.requireNonNull(comparator, "comparator");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -253,10 +248,8 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Iterator<WebSiteBoardItem> listAndFilter(final WebSiteSearchContext searchContext, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
-		if (searchContext == null)
-			throw new NullPointerException("searchContext");
-		if (comparator == null)
-			throw new NullPointerException("comparator");
+        Objects.requireNonNull(searchContext, "searchContext");
+        Objects.requireNonNull(comparator, "comparator");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -291,10 +284,9 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(final WebSiteBoard board, final String keyword, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
-		if (board == null)
-			throw new NullPointerException("board");
-		if (comparator == null)
-			throw new NullPointerException("comparator");
+        Objects.requireNonNull(board, "board");
+        Objects.requireNonNull(comparator, "comparator");
+
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -302,7 +294,7 @@ public class BogoBogo extends AbstractWebSite {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
 		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
-		this.searchResultDataList.removeIf((Predicate<WebSiteSearchResultData>) searchResultData -> searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true);
+		this.searchResultDataList.removeIf(searchResultData -> searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true);
 
 		// 오래된 검색 기록은 모두 제거한다.
 		while (this.searchResultDataList.size() > (MAX_SEARCH_RESULT_DATA_COUNT - 1))
@@ -343,7 +335,6 @@ public class BogoBogo extends AbstractWebSite {
 		return null;
 	}
 
-	@SuppressWarnings("SameParameterValue")
     private boolean loadBoardItems0(final BogoBogoBoard board, final String queryString, final boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
@@ -364,21 +355,22 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 	
-	private List<BogoBogoBoardItem> loadBoardItems0_0(final BogoBogoBoard board, String queryString) throws NoPermissionException {
+	private List<BogoBogoBoardItem> loadBoardItems0_0(final BogoBogoBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (StringUtil.isBlank(queryString) == true)
-			queryString = "";
-		if (queryString.startsWith("&") == true)
-			queryString = queryString.substring(1);
+		String _queryString = queryString;
+		if (StringUtil.isBlank(_queryString) == true)
+			_queryString = "";
+		if (_queryString.startsWith("&") == true)
+			_queryString = _queryString.substring(1);
 
 		String url = null;
 		List<BogoBogoBoardItem> boardItems = new ArrayList<>();
 
 		try {
 			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
-				url = String.format("%s&page=%d&%s", board.getURL(), page, queryString);
+				url = String.format("%s&page=%d&%s", board.getURL(), page, _queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
@@ -483,8 +475,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public boolean loadDownloadLink(final WebSiteBoardItem boardItem) throws NoPermissionException {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
+        Objects.requireNonNull(boardItem, "boardItem");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -507,10 +498,8 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
-		if (searchContext == null)
-			throw new NullPointerException("searchContext");
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
+        Objects.requireNonNull(searchContext, "searchContext");
+        Objects.requireNonNull(boardItem, "boardItem");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -541,8 +530,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
+        Objects.requireNonNull(boardItem, "boardItem");
 
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
@@ -761,7 +749,6 @@ public class BogoBogo extends AbstractWebSite {
 				fos.write(downloadProcess3Response.bodyAsBytes());
 				fos.close();
 
-                //noinspection ResultOfMethodCallIgnored
                 notyetDownloadFile.renameTo(downloadFile);
 				
 				++downloadCompletedCount;

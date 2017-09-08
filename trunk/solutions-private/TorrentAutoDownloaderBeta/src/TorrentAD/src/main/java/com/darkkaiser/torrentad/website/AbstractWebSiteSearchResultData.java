@@ -6,6 +6,7 @@ import org.jsoup.helper.StringUtil;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchResultData {
 
@@ -18,10 +19,9 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 	protected final List<WebSiteBoardItem> results;
 
 	public AbstractWebSiteSearchResultData(final WebSiteBoard board, final String keyword, final List<WebSiteBoardItem> results) {
-		if (board == null)
-			throw new NullPointerException("board");
-		if (results == null)
-			throw new NullPointerException("results");
+		Objects.requireNonNull(board, "board");
+		Objects.requireNonNull(results, "results");
+
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -48,8 +48,7 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 	
 	@Override
 	public Iterator<WebSiteBoardItem> resultIterator(final Comparator<? super WebSiteBoardItem> comparator) {
-		if (comparator == null)
-			throw new NullPointerException("comparator");
+		Objects.requireNonNull(comparator, "comparator");
 
 		this.results.sort(comparator);
 

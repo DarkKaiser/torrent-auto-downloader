@@ -1,9 +1,9 @@
 package com.darkkaiser.torrentad.website;
 
+import com.darkkaiser.torrentad.util.Tuple;
+
 import java.util.Comparator;
 import java.util.Iterator;
-
-import com.darkkaiser.torrentad.util.Tuple;
 
 public interface WebSiteHandler {
 
@@ -37,7 +37,7 @@ public interface WebSiteHandler {
 	/**
 	 * 해당 ID에 해당하는 이전 검색정보 및 결과데이터를 찾아서 반환한다.
 	 */
-	WebSiteSearchResultData getSearchResultData(String identifier);
+	WebSiteSearchResultData getSearchResultData(final String identifier);
 
 	/**
 	 * 해당 게시물의 첨부파일에 대한 다운로드 링크를 읽어들인다.

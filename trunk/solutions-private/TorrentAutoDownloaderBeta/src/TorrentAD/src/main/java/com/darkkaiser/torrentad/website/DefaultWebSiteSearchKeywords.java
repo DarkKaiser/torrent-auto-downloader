@@ -1,13 +1,10 @@
 package com.darkkaiser.torrentad.website;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
@@ -18,8 +15,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	private final List<List<String>> keywords = new ArrayList<>();
 
 	public DefaultWebSiteSearchKeywords(final WebSiteSearchKeywordsMode mode) {
-		if (mode == null)
-			throw new NullPointerException("mode");
+		Objects.requireNonNull(mode, "mode");
 
 		this.mode = mode;
 	}

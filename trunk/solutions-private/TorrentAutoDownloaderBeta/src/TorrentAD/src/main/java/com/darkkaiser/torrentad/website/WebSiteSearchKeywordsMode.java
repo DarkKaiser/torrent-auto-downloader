@@ -2,6 +2,8 @@ package com.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
+import java.util.Objects;
+
 public enum WebSiteSearchKeywordsMode {
 
 	INCLUDE("include"),
@@ -22,8 +24,8 @@ public enum WebSiteSearchKeywordsMode {
 	}
 	
 	public static WebSiteSearchKeywordsMode fromString(final String modeValue) {
-		if (modeValue == null)
-			throw new NullPointerException("modeValue");
+		Objects.requireNonNull(modeValue, "modeValue");
+
 		if (StringUtil.isBlank(modeValue) == true)
 			throw new IllegalArgumentException("modeValue는 빈 문자열을 허용하지 않습니다.");
 

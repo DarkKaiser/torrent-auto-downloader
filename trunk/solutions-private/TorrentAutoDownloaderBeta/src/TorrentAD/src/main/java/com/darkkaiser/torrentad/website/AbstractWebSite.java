@@ -4,6 +4,8 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
@@ -19,8 +21,8 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	protected AbstractWebSite(final WebSiteConnector siteConnector, final String owner, final WebSite site) {
 		if (StringUtil.isBlank(owner) == true)
 			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
-		if (site == null)
-			throw new NullPointerException("site");
+
+		Objects.requireNonNull(site, "site");
 
 		this.siteConnector = siteConnector;
 

@@ -1,8 +1,10 @@
 package com.darkkaiser.torrentad.website.impl.bogobogo;
 
 import com.darkkaiser.torrentad.website.AbstractWebSiteSearchContext;
-import com.darkkaiser.torrentad.website.WebSiteConstants;
 import com.darkkaiser.torrentad.website.WebSite;
+import com.darkkaiser.torrentad.website.WebSiteConstants;
+
+import java.util.Objects;
 
 public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 
@@ -36,9 +38,8 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	@Override
 	public void validate() {
 		super.validate();
-		
-		if (this.board == null)
-			throw new NullPointerException("board");
+
+		Objects.requireNonNull(this.board, "board");
 	}
 
 	@Override
@@ -50,5 +51,5 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 				"}, " +
 				super.toString();
 	}
-	
+
 }

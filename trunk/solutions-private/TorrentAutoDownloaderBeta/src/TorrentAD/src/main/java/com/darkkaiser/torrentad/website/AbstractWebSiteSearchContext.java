@@ -1,14 +1,10 @@
 package com.darkkaiser.torrentad.website;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public abstract class AbstractWebSiteSearchContext implements WebSiteSearchContext {
 
@@ -19,8 +15,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	private final Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
 	public AbstractWebSiteSearchContext(final WebSite site) {
-		if (site == null)
-			throw new NullPointerException("site");
+		Objects.requireNonNull(site, "site");
 
 		this.site = site;
 
@@ -36,18 +31,16 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public void addSearchKeywords(final WebSiteSearchKeywordsType type, final WebSiteSearchKeywords searchKeywords) {
-		if (type == null)
-			throw new NullPointerException("type");
-		if (searchKeywords == null)
-			throw new NullPointerException("searchKeywords");
+        Objects.requireNonNull(type, "type");
+        Objects.requireNonNull(searchKeywords, "searchKeywords");
 
 		this.searchKeywords.get(type).add(searchKeywords);
 	}
 
 	@Override
 	public boolean isSatisfySearchCondition(final WebSiteSearchKeywordsType type, final String text) {
-		if (type == null)
-			throw new NullPointerException("type");
+        Objects.requireNonNull(type, "type");
+
 		if (StringUtil.isBlank(text) == true)
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
 
@@ -66,8 +59,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	@Override
 	public void validate() {
-		if (this.site == null)
-			throw new NullPointerException("site");
+        Objects.requireNonNull(site, "site");
 
 		for (final WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (type.allowEmpty() == false) {
@@ -98,7 +90,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 				.append(", searchKeywords:");
 
 		boolean firstKeywordsType = true;
-		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+		for (final WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (firstKeywordsType == false) {
 				sb.append(", ")
 				  .append(type.getValue())

@@ -2,6 +2,8 @@ package com.darkkaiser.torrentad.website;
 
 import org.jsoup.helper.StringUtil;
 
+import java.util.Objects;
+
 public enum WebSiteSearchKeywordsType {
 
 	TITLE("title", false),
@@ -26,8 +28,8 @@ public enum WebSiteSearchKeywordsType {
 	}
 
 	public static WebSiteSearchKeywordsType fromString(final String typeValue) {
-		if (typeValue == null)
-			throw new NullPointerException("typeValue");
+		Objects.requireNonNull(typeValue, "typeValue");
+
 		if (StringUtil.isBlank(typeValue) == true)
 			throw new IllegalArgumentException("typeValue는 빈 문자열을 허용하지 않습니다.");
 

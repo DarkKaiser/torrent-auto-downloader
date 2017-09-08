@@ -4,6 +4,8 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public class DefaultWebSiteAccount implements WebSiteAccount {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteAccount.class);
@@ -34,12 +36,11 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 	}
 
 	private void validate0(final String id, final String password) {
-		if (id == null)
-			throw new NullPointerException("id");
+		Objects.requireNonNull(id, "id");
 		if (StringUtil.isBlank(id) == true)
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
-		if (password == null)
-			throw new NullPointerException("password");
+
+		Objects.requireNonNull(password, "password");
 		if (StringUtil.isBlank(password) == true)
 			throw new IllegalArgumentException("password는 빈 문자열을 허용하지 않습니다.");
 	}
@@ -60,7 +61,7 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 	public String toString() {
 		return DefaultWebSiteAccount.class.getSimpleName() +
 				"{" +
-				", id:" + this.id +
+				"id:" + this.id +
 				"}";
 	}
 
