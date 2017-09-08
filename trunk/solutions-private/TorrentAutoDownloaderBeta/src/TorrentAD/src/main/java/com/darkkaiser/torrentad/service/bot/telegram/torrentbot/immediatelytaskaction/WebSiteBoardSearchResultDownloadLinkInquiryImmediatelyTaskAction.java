@@ -19,7 +19,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction ex
 	
 	private final String searchResultDataIdentifier;
 	
-	public WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, String searchResultDataIdentifier, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final String searchResultDataIdentifier, final long boardItemIdentifier, TorrentBotResource torrentBotResource) {
 		super(messageId, absSender, chatRoom, boardItemIdentifier, torrentBotResource);
 
 		if (StringUtil.isBlank(searchResultDataIdentifier) == true)
@@ -43,7 +43,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction ex
 	}
 
 	@Override
-	protected String generateDownloadRequestInlineCommandString(WebSiteBoardItem boardItem, int index) {
+	protected String generateDownloadRequestInlineCommandString(final WebSiteBoardItem boardItem, final int index) {
 		assert this.boardItemIdentifier == boardItem.getIdentifier();
 		
 		return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.DOWNLOAD_REQUEST_INLINE_COMMAND, this.searchResultDataIdentifier, Long.toString(boardItem.getIdentifier()), Integer.toString(index));

@@ -17,11 +17,11 @@ import com.darkkaiser.torrentad.website.WebSiteConstants;
 
 public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardImmediatelyTaskAction {
 
-	public WebSiteBoardListImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardListImmediatelyTaskAction(final long requestId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final TorrentBotResource torrentBotResource) {
 		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, torrentBotResource);
 	}
 
-	public WebSiteBoardListImmediatelyTaskAction(long requestId, int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardListImmediatelyTaskAction(final long requestId, final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final TorrentBotResource torrentBotResource) {
 		super(requestId, messageId, absSender, chatRoom, board, torrentBotResource);
 	}
 
@@ -46,7 +46,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardI
 	}
 
 	@Override
-	protected String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue) {
+	protected String generateCallbackQueryCommandString(final String inlineKeyboardButtonData, final long identifierValue) {
 		if (identifierValue == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
 			return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_LIST_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.board.getCode());
 
@@ -54,7 +54,7 @@ public class WebSiteBoardListImmediatelyTaskAction extends AbstractWebSiteBoardI
 	}
 
 	@Override
-	protected String generateDownloadLinkInquiryRequestInlineCommandString(WebSiteBoardItem boardItem) {
+	protected String generateDownloadLinkInquiryRequestInlineCommandString(final WebSiteBoardItem boardItem) {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 

@@ -9,8 +9,8 @@ public interface RequestHandler {
 
 	String getIdentifier();
 
-	boolean executable(String command, String[] parameters, boolean containInitialChar);
+	boolean executable(final String command, final String[] parameters, final boolean containInitialChar);
 
-	void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar);
+	void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar);
 
 }

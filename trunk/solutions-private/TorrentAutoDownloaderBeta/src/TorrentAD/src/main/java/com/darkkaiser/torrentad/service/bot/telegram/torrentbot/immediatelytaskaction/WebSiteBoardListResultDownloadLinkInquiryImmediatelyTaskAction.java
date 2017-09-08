@@ -18,7 +18,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction exte
 	
 	private final WebSiteBoard board;
 	
-	public WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final long boardItemIdentifier, TorrentBotResource torrentBotResource) {
 		super(messageId, absSender, chatRoom, boardItemIdentifier, torrentBotResource);
 
 		if (board == null)
@@ -38,7 +38,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction exte
 	}
 	
 	@Override
-	protected String generateDownloadRequestInlineCommandString(WebSiteBoardItem boardItem, int index) {
+	protected String generateDownloadRequestInlineCommandString(final WebSiteBoardItem boardItem, final int index) {
 		assert this.boardItemIdentifier == boardItem.getIdentifier();
 		assert this.board.getCode().equals(boardItem.getBoard().getCode()) == true;
 

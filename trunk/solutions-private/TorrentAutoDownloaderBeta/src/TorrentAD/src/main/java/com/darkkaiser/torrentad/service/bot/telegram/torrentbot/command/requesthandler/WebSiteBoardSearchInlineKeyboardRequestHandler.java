@@ -15,7 +15,7 @@ public class WebSiteBoardSearchInlineKeyboardRequestHandler extends AbstractBotC
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
 			return false;
 
@@ -23,19 +23,17 @@ public class WebSiteBoardSearchInlineKeyboardRequestHandler extends AbstractBotC
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		BotCommandUtils.answerCallbackQuery(absSender, update.getCallbackQuery().getId());
 		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(chatRoom.getBoard().getDescription()).append(" ] 검색어를 입력하세요.").toString());
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSearchInlineKeyboardRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSearchInlineKeyboardRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

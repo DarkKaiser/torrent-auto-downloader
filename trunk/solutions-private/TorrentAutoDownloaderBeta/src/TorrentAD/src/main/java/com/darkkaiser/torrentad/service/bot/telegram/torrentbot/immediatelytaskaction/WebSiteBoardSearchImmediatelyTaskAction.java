@@ -23,11 +23,11 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	
 	private String searchResultDataIdentifier;
 
-	public WebSiteBoardSearchImmediatelyTaskAction(long requestId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, String keyword, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardSearchImmediatelyTaskAction(final long requestId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final String keyword, final TorrentBotResource torrentBotResource) {
 		this(requestId, BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID, absSender, chatRoom, board, keyword, torrentBotResource);
 	}
 
-	public WebSiteBoardSearchImmediatelyTaskAction(long requestId, int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, String keyword, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardSearchImmediatelyTaskAction(final long requestId, final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final String keyword, final TorrentBotResource torrentBotResource) {
 		super(requestId, messageId, absSender, chatRoom, board, torrentBotResource);
 
 		if (StringUtil.isBlank(keyword) == true)
@@ -59,7 +59,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	}
 
 	@Override
-	protected String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue) {
+	protected String generateCallbackQueryCommandString(final String inlineKeyboardButtonData, final long identifierValue) {
 		if (identifierValue == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
 			return BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, inlineKeyboardButtonData, this.searchResultDataIdentifier);
 
@@ -67,7 +67,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 	}
 
 	@Override
-	protected String generateDownloadLinkInquiryRequestInlineCommandString(WebSiteBoardItem boardItem) {
+	protected String generateDownloadLinkInquiryRequestInlineCommandString(final WebSiteBoardItem boardItem) {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 

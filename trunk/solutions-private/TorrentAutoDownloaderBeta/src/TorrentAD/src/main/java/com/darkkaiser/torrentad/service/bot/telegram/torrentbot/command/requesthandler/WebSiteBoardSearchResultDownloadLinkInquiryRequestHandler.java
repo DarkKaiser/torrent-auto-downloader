@@ -20,7 +20,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
@@ -33,7 +33,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 2, 2) == false)
 			return false;
 
@@ -44,7 +44,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		try {
 			// 선택된 게시물의 첨부파일 확인중 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
@@ -53,7 +53,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
 					new WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], Long.parseLong(parameters[1]), this.torrentBotResource));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
@@ -62,12 +62,10 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

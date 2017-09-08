@@ -24,7 +24,7 @@ public final class ChatRoom {
 
 	private final MetadataRepository metadataRepository;
 
-	public ChatRoom(long chatId, WebSite site, MetadataRepository metadataRepository) {
+	public ChatRoom(final long chatId, final WebSite site, final MetadataRepository metadataRepository) {
 		if (site == null)
 			throw new NullPointerException("site");
 		if (metadataRepository == null)
@@ -57,7 +57,7 @@ public final class ChatRoom {
 		return this.board;
 	}
 
-	public synchronized void setBoard(WebSiteBoard board) {
+	public synchronized void setBoard(final WebSiteBoard board) {
 		if (board == null)
 			throw new NullPointerException("board");
 
@@ -65,7 +65,7 @@ public final class ChatRoom {
 		this.metadataRepository.setString(getProperiesKeyString(Constants.BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE), this.board.getCode());
 	}
 
-	public synchronized void setLatestRequestHandler(RequestHandler requestHandler) {
+	public synchronized void setLatestRequestHandler(final RequestHandler requestHandler) {
 		this.latestRequestHandler = requestHandler;
 	}
 
@@ -73,20 +73,18 @@ public final class ChatRoom {
 		return this.latestRequestHandler;
 	}
 
-	private String getProperiesKeyString(String subKey) {
+	private String getProperiesKeyString(final String subKey) {
 		return String.format("%s-%d.%s", Constants.BOT_SERVICE_MR_KEY_CHAT_ID_PREFIX, this.chatId, subKey);
 	}
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(ChatRoom.class.getSimpleName())
-				.append("{")
-				.append("chatId:").append(getChatId())
-				.append(", board:").append(getBoard())
-				.append(", requestId:").append(getRequestId())
-				.append("}")
-				.toString();
+		return ChatRoom.class.getSimpleName() +
+				"{" +
+				"chatId:" + getChatId() +
+				", board:" + getBoard() +
+				", requestId:" + getRequestId() +
+				"}";
 	}
 
 }

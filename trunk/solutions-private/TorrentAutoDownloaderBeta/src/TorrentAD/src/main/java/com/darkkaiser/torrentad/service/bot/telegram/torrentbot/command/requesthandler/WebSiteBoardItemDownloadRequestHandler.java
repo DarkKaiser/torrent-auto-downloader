@@ -27,7 +27,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	
 	private final FileTransmissionExecutorService fileTransmissionExecutorService;
 	
-	public WebSiteBoardItemDownloadRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService) {
+	public WebSiteBoardItemDownloadRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 		super(BotCommandConstants.DOWNLOAD_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
@@ -46,18 +46,15 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 3, 3) == false)
 			return false;
-		
-		if (StringUtil.isNumeric(parameters[1]) == false || StringUtil.isNumeric(parameters[2]) == false)
-			return false;
 
-		return true;
+		return StringUtil.isNumeric(parameters[1]) != false && StringUtil.isNumeric(parameters[2]) != false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		try {
 			// 첨부파일 다운로드 시작 메시지를 사용자에게 보낸다.
 			int messageId = update.getMessage().getMessageId();
@@ -75,7 +72,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 				this.immediatelyTaskExecutorService.submit(
 						new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
@@ -85,12 +82,10 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardItemDownloadRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardItemDownloadRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

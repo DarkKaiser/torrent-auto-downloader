@@ -17,7 +17,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardListRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("list", "조회", "/list (조회)", "선택된 게시판을 조회합니다.");
 
 		if (torrentBotResource == null)
@@ -30,15 +30,12 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
-			return false;
-
-		return true;
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
+		return super.executable0(command, parameters, containInitialChar, 0, 0) != false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		if (update.getCallbackQuery() != null) {
 			BotCommandUtils.answerCallbackQuery(absSender, update.getCallbackQuery().getId());
 		}
@@ -51,10 +48,7 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 		}
 
 		// 게시판 조회중 메시지를 사용자에게 보낸다.
-		StringBuilder sbAnswerMessage = new StringBuilder();
-		sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 조회중입니다...");
-
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "[ " + board.getDescription() + " ] 게시판을 조회중입니다...");
 
 		// 게시판 조회를 시작한다.
 		this.immediatelyTaskExecutorService.submit(
@@ -63,12 +57,10 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardListRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardListRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

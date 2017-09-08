@@ -14,7 +14,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 	private final WebSite site;
 
-	public WebSiteBoardSelectRequestHandler(TorrentBotResource torrentBotResource) {
+	public WebSiteBoardSelectRequestHandler(final TorrentBotResource torrentBotResource) {
 		super("select", "선택", "/select (선택)", "조회 및 검색하려는 게시판을 선택합니다.");
 
 		if (torrentBotResource == null)
@@ -26,7 +26,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
 			return false;
 
@@ -34,7 +34,7 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("조회 및 검색하려는 게시판을 선택하세요:\n\n");
 
@@ -53,13 +53,11 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSelectRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("site:").append(this.site)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSelectRequestHandler.class.getSimpleName() +
+				"{" +
+				"site:" + this.site +
+				"}, " +
+				super.toString();
 	}
 
 }

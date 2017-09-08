@@ -40,7 +40,7 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 
 	protected final WebSiteHandler siteHandler;
 
-	public AbstractWebSiteBoardImmediatelyTaskAction(long requestId, int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, TorrentBotResource torrentBotResource) {
+	public AbstractWebSiteBoardImmediatelyTaskAction(final long requestId, final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -100,6 +100,7 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 			}
 
 			// 인라인 키보드를 설정한다.
+			//noinspection ArraysAsListWithZeroOrOneArgument
 			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
@@ -122,7 +123,7 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 			} else {
 				BotCommandUtils.editMessageText(absSender, this.chatRoom.getChatId(), messageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
@@ -139,9 +140,9 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 
 	protected abstract String getExecuteNoResultDataString();
 
-	protected abstract String generateCallbackQueryCommandString(String inlineKeyboardButtonData, long identifierValue);
+	protected abstract String generateCallbackQueryCommandString(final String inlineKeyboardButtonData, final long identifierValue);
 
-	protected abstract String generateDownloadLinkInquiryRequestInlineCommandString(WebSiteBoardItem boardItem);
+	protected abstract String generateDownloadLinkInquiryRequestInlineCommandString(final WebSiteBoardItem boardItem);
 
 	@Override
 	public void validate() {

@@ -12,7 +12,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler impleme
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public HelpRequestHandler(RequestHandlerRegistry requestHandlerRegistry) {
+	public HelpRequestHandler(final RequestHandlerRegistry requestHandlerRegistry) {
 		super("help", "도움", "/help (도움)", "도움말을 표시합니다.");
 
 		if (requestHandlerRegistry == null)
@@ -22,19 +22,16 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler impleme
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
-			return false;
-
-		return true;
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
+		return super.executable0(command, parameters, containInitialChar, 0, 0) != false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 		sbAnswerMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
-		for (RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
+		for (final RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
 			if (handler instanceof ExposedBotCommand) {
 				ExposedBotCommand botCommand = (ExposedBotCommand) handler;
 				sbAnswerMessage.append(botCommand.getCommandSyntax()).append("\n")
@@ -47,12 +44,10 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler impleme
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(HelpRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return HelpRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

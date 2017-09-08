@@ -6,14 +6,14 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesth
 
 public interface RequestHandlerRegistry {
 
-	boolean register(RequestHandler handler);
+	boolean register(final RequestHandler handler);
 
-	boolean deregister(RequestHandler handler);
+	boolean deregister(final RequestHandler handler);
 
 	Collection<RequestHandler> getRequestHandlers();
 
-	RequestHandler getRequestHandler(Class<?> clazz);
+	RequestHandler getRequestHandler(final Class<?> clazz);
 
-	RequestHandler getRequestHandler(String command, String[] parameters, boolean containInitialChar);
+	RequestHandler getRequestHandler(final String command, final String[] parameters, final boolean containInitialChar);
 
 }

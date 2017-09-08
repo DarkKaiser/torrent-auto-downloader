@@ -10,7 +10,7 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 	
 	private final String identifier;
 
-	public AbstractRequestHandler(String identifier) {
+	public AbstractRequestHandler(final String identifier) {
 		if (StringUtil.isBlank(identifier) == true)
 			throw new IllegalArgumentException("identifier는 빈 문자열을 허용하지 않습니다.");
 
@@ -22,9 +22,10 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		return this.identifier;
 	}
 	
-	protected abstract boolean executable0(String command, String[] parameters, boolean containInitialChar, int minParametersCount, int maxParametersCount);
+	protected abstract boolean executable0(final String command, final String[] parameters, final boolean containInitialChar, final int minParametersCount, final int maxParametersCount);
 
-	protected void logError(String message, String command, String[] parameters, boolean containInitialChar) {
+	@SuppressWarnings("SameParameterValue")
+	protected void logError(final String message, final String command, final String[] parameters, final boolean containInitialChar) {
 		StringBuilder sbLogMessage = new StringBuilder()
 				.append(message).append("(")
 				.append("command:").append(command)
@@ -45,12 +46,10 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("identifier:").append(getIdentifier())
-				.append("}")
-				.toString();
+		return AbstractRequestHandler.class.getSimpleName() +
+				"{" +
+				"identifier:" + getIdentifier() +
+				"}";
 	}
 
 }

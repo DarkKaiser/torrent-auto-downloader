@@ -20,7 +20,7 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public TorrentStatusResultCallbackQueryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public TorrentStatusResultCallbackQueryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND);
 
 		if (torrentBotResource == null)
@@ -33,22 +33,17 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 1, 1) == false)
 			return false;
 
 		String callbackQueryCommand = parameters[0];
-		if (callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false
-				&& callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA) == false) {
-			
-			return false;			
-		}
-
-		return true;
+		return callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) != false
+				|| callbackQueryCommand.equals(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA) != false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		try {
 			String callbackQueryCommand = parameters[0];
 			String callbackQueryId = update.getCallbackQuery().getId();
@@ -77,7 +72,7 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 			} else {
 				throw new IllegalArgumentException(String.format("지원하지 않는 인라인 명령(%s)입니다.", callbackQueryCommand));
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
@@ -86,12 +81,10 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(TorrentStatusResultCallbackQueryRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return TorrentStatusResultCallbackQueryRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

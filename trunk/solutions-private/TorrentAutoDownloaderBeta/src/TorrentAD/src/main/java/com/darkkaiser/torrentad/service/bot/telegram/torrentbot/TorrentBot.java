@@ -1,19 +1,5 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
-import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.objects.CallbackQuery;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.net.torrent.TorrentClient;
@@ -24,26 +10,26 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.DefaultRequestHandlerRegistry;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.HelpRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.TorrentStatusRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.TorrentStatusResultCallbackQueryRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardItemDownloadRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListResultCallbackQueryRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardListResultDownloadLinkInquiryRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchInlineKeyboardRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchResultCallbackQueryRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectRequestHandler;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.WebSiteBoardSelectedRequestHandler;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.*;
 import com.darkkaiser.torrentad.util.OutParam;
 import com.darkkaiser.torrentad.util.crypto.AES256Util;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 import com.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteConnector;
+import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.objects.CallbackQuery;
+import org.telegram.telegrambots.api.objects.Message;
+import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TorrentBot extends TelegramLongPollingBot implements TorrentBotResource {
 
@@ -61,7 +47,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	
 	private final MetadataRepository metadataRepository;
 
-	public TorrentBot(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService, Configuration configuration) throws Exception {
+	public TorrentBot(final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService, final Configuration configuration) throws Exception {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (fileTransmissionExecutorService == null)
@@ -121,7 +107,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 		try {
 			password = new AES256Util().decode(password);
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
 			return null;
 		}
@@ -131,7 +117,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		try {
 			if (this.torrentClient.connect(id, password) == false)
 				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
 			return null;
 		}
@@ -146,7 +132,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			if (StringUtil.isBlank(chatId) == false) {
 				try {
 					newChatRoom(Long.parseLong(chatId));
-				} catch (NumberFormatException e) {
+				} catch (final NumberFormatException ignored) {
 				}
 			}
 		}
@@ -163,7 +149,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 
 	@Override
-	public void onUpdateReceived(Update update) {
+	public void onUpdateReceived(final Update update) {
 		if (update == null)
 			throw new NullPointerException("update");
 
@@ -230,12 +216,12 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			}
 			
 			onUnknownCommandMessage(update);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 		}
 	}
 
-	private void onUnknownCommandMessage(Update update) {
+	private void onUnknownCommandMessage(final Update update) {
 		StringBuilder sbAnswerMessage = new StringBuilder();
 
 		Message message = update.getMessage();
@@ -245,17 +231,19 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		BotCommand botCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(HelpRequestHandler.class);
 		sbAnswerMessage.append("명령어를 모르시면 '/").append(botCommand.getCommand()).append("'을 입력하세요.");
 
-		BotCommandUtils.sendMessage(this, message.getChatId(), sbAnswerMessage.toString());
+		if (message != null) {
+			BotCommandUtils.sendMessage(this, message.getChatId(), sbAnswerMessage.toString());
+		}
 	}
 
-	private ChatRoom getChatRoom(Long chatId) {
+	private ChatRoom getChatRoom(final Long chatId) {
 		ChatRoom chatRoom = this.chatRooms.get(chatId);
 		if (chatRoom == null) {
 			chatRoom = newChatRoom(chatId);
 
 			// 새로 생성된 대화방의 ID를저장한다.
 			StringBuilder sbValue = new StringBuilder();
-			for (Long id : this.chatRooms.keySet()) {
+			for (final Long id : this.chatRooms.keySet()) {
 				sbValue.append(id).append(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS_SEPARATOR);
 			}
 			
@@ -265,7 +253,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		return chatRoom;
 	}
 
-	private ChatRoom newChatRoom(Long chatId) {
+	private ChatRoom newChatRoom(final Long chatId) {
 		assert this.chatRooms.get(chatId) == null;
 		ChatRoom chatRoom = new ChatRoom(chatId, this.siteConnector.getSite(), this.metadataRepository);
 		this.chatRooms.put(chatId, chatRoom);

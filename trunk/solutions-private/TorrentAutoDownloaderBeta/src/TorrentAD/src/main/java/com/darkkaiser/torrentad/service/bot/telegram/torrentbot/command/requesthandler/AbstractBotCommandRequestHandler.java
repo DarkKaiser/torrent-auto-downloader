@@ -11,11 +11,11 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	private final String commandSyntax;
 	private final String commandDescription;
 
-	public AbstractBotCommandRequestHandler(String command) {
+	public AbstractBotCommandRequestHandler(final String command) {
 		this(command, "", "", "");
 	}
 
-	public AbstractBotCommandRequestHandler(String command, String commandKor, String commandSyntax, String commandDescription) {
+	public AbstractBotCommandRequestHandler(String command, String commandKor, final String commandSyntax, final String commandDescription) {
 		super(command);
 
 		if (StringUtil.isBlank(command) == true)
@@ -62,7 +62,7 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 	}
 
 	@Override
-	protected boolean executable0(String command, String[] parameters, boolean containInitialChar, int minParametersCount, int maxParametersCount) {
+	protected boolean executable0(final String command, final String[] parameters, final boolean containInitialChar, final int minParametersCount, final int maxParametersCount) {
 		// 명령 Check
 		if (command.equals(getCommand()) == true) {
 			if (containInitialChar == false)
@@ -77,27 +77,20 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		if (parameters != null)
 			parametersCount = parameters.length;
 
-		if ((minParametersCount == -1 || minParametersCount <= parametersCount)
-				&& (maxParametersCount == -1 || maxParametersCount >= parametersCount)) {
-			
-			return true;
-		}
-
-		return false;
+		return (minParametersCount == -1 || minParametersCount <= parametersCount)
+				&& (maxParametersCount == -1 || maxParametersCount >= parametersCount);
 	}
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractBotCommandRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("command:").append(getCommand())
-				.append(", commandKor:").append(getCommandKor())
-				.append(", commandSyntax:").append(getCommandSyntax())
-				.append(", commandDescription:").append(getCommandDescription())
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return AbstractBotCommandRequestHandler.class.getSimpleName() +
+				"{" +
+				"command:" + getCommand() +
+				", commandKor:" + getCommandKor() +
+				", commandSyntax:" + getCommandSyntax() +
+				", commandDescription:" + getCommandDescription() +
+				"}, " +
+				super.toString();
 	}
 
 }

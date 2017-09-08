@@ -22,7 +22,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public WebSiteBoardSelectedRequestHandler(TorrentBotResource torrentBotResource, RequestHandlerRegistry requestHandlerRegistry) {
+	public WebSiteBoardSelectedRequestHandler(final TorrentBotResource torrentBotResource, final RequestHandlerRegistry requestHandlerRegistry) {
 		super("$selected$");
 
 		if (torrentBotResource == null)
@@ -37,7 +37,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (findBoard(command, parameters, containInitialChar) == null)
 			return false;
 
@@ -45,7 +45,7 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		WebSiteBoard board = findBoard(command, parameters, containInitialChar);
 		if (board == null) {
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "선택하신 게시판을 찾을 수 없습니다. 관리자에게 문의하세요.");
@@ -70,12 +70,13 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 						.setCallbackData(BotCommandUtils.toComplexBotCommandString(inlineKeyboardSearchBotCommand.getCommand()))
 		);
 
+		//noinspection ArraysAsListWithZeroOrOneArgument
 		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
 
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(board.getDescription()).append(" ] 게시판이 선택되었습니다.").toString(), inlineKeyboardMarkup);
+		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "[ " + board.getDescription() + " ] 게시판이 선택되었습니다.", inlineKeyboardMarkup);
 	}
 
-	private WebSiteBoard findBoard(String command, String[] parameters, boolean containInitialChar) {
+	private WebSiteBoard findBoard(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (parameters == null || parameters.length == 0) {
 			if (containInitialChar == false)
 				return null;
@@ -98,13 +99,11 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSelectedRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("site:").append(this.site)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSelectedRequestHandler.class.getSimpleName() +
+				"{" +
+				"site:" + this.site +
+				"}, " +
+				super.toString();
 	}
 
 }

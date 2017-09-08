@@ -1,7 +1,5 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
-import java.util.Arrays;
-
 import com.darkkaiser.torrentad.util.OutParam;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
@@ -14,11 +12,13 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.util.Arrays;
+
 public final class BotCommandUtils {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BotCommandUtils.class);
 	
-    public static final void parseBotCommand(String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
+    public static void parseBotCommand(final String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 		if (outCommand == null)
@@ -51,7 +51,7 @@ public final class BotCommandUtils {
 		outParameters.set(Arrays.copyOfRange(messageArrays, 1, messageArrays.length));
     }
 
-    public static final String toComplexBotCommandString(String... args) {
+    public static String toComplexBotCommandString(final String... args) {
     	StringBuilder sbComplexBotCommand = new StringBuilder()
     			.append(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER);
 
@@ -63,19 +63,19 @@ public final class BotCommandUtils {
     			.toString();
     }
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message) {
+	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message) {
 		sendMessage(absSender, chatId, message, null, null);
 	}
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId) {
+	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message, final Integer replyToMessageId) {
 		sendMessage(absSender, chatId, message, replyToMessageId, null);
 	}
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message, ReplyKeyboard replyMarkup) {
+	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message, final ReplyKeyboard replyMarkup) {
 		sendMessage(absSender, chatId, message, null, replyMarkup);
 	}
 
-	public static void sendMessage(AbsSender absSender, Long chatId, String message, Integer replyToMessageId, ReplyKeyboard replyMarkup) {
+	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message, final Integer replyToMessageId, final ReplyKeyboard replyMarkup) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatId == null)
@@ -96,16 +96,16 @@ public final class BotCommandUtils {
 
 		try {
 			absSender.sendMessage(sendMessage);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			logger.error(null, e);
 		}
 	}
 	
-	public static void editMessageText(AbsSender absSender, Long chatId, Integer messageId, String message) {
+	public static void editMessageText(final AbsSender absSender, final Long chatId, final Integer messageId, String message) {
 		editMessageText(absSender, chatId, messageId, message, null);
 	}
 
-	public static void editMessageText(AbsSender absSender, Long chatId, Integer messageId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+	public static void editMessageText(final AbsSender absSender, final Long chatId, final Integer messageId, final String message, final InlineKeyboardMarkup inlineKeyboardMarkup) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatId == null)
@@ -126,16 +126,16 @@ public final class BotCommandUtils {
 
 		try {
 			absSender.editMessageText(editMessageText);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			logger.error(null, e);
 		}
 	}
 
-	public static void answerCallbackQuery(AbsSender absSender, String callbackQueryId) {
+	public static void answerCallbackQuery(final AbsSender absSender, final String callbackQueryId) {
 		answerCallbackQuery(absSender, callbackQueryId, "");
 	}
 
-	public static void answerCallbackQuery(AbsSender absSender, String callbackQueryId, String text) {
+	public static void answerCallbackQuery(final AbsSender absSender, final String callbackQueryId, final String text) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 
@@ -146,16 +146,17 @@ public final class BotCommandUtils {
 
 		try {
 			absSender.answerCallbackQuery(answerCallbackQuery);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			logger.error(null, e);
 		}
 	}
 
-	public static void sendExceptionMessage(AbsSender absSender, Long chatId, Throwable e) {
+	public static void sendExceptionMessage(final AbsSender absSender, final Long chatId, final Throwable e) {
 		sendMessage(absSender, chatId, String.format("요청을 처리하는 중 예외가 발생하였습니다. 관리자에게 문의하세요.\n\n예외 : %s", e.toString()));
 	}
 
 	private BotCommandUtils() {
+
 	}
 
 }

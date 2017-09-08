@@ -28,7 +28,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	
 	private final RequestHandlerRegistry requestHandlerRegistry;
 
-	public WebSiteBoardSearchRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService, RequestHandlerRegistry requestHandlerRegistry) {
+	public WebSiteBoardSearchRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final RequestHandlerRegistry requestHandlerRegistry) {
 		super("search", "검색", "/search (검색) [검색어]\n/search (검색) [게시판] [검색어]", "선택된 게시판을 검색합니다.");
 
 		if (torrentBotResource == null)
@@ -47,7 +47,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 0, -1) == false)
 			return false;
 
@@ -61,7 +61,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		try {
 			String keyword;
 			WebSiteBoard board = chatRoom.getBoard();
@@ -71,11 +71,11 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 				WebSiteBoard inBoard = this.site.getBoardByCode(parameters[0]);
 				if (inBoard == null) {
 					StringBuilder sbKeyword = new StringBuilder();
-					for (int index = 0; index < parameters.length; ++index) {
+					for (final String parameter : parameters) {
 						if (sbKeyword.length() > 0)
 							sbKeyword.append(BotCommandConstants.BOT_COMMAND_PARAMETER_SEPARATOR);
-						
-						sbKeyword.append(parameters[index]);
+
+						sbKeyword.append(parameter);
 					}
 
 					keyword = sbKeyword.toString();
@@ -96,7 +96,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			} else if (parameters.length == 1) {
 				keyword = parameters[0];
 			} else {
-				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), new StringBuilder().append("[ ").append(chatRoom.getBoard().getDescription()).append(" ] 검색어를 입력하세요.").toString());
+				BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "[ " + chatRoom.getBoard().getDescription() + " ] 검색어를 입력하세요.");
 				
 				// '검색' 혹은 '/select'만 입력된 경우 이후에 검색어를 입력하였을 때 검색될 수 있도록 RequestHandler를 조정한다.
 				chatRoom.setLatestRequestHandler(this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchInlineKeyboardRequestHandler.class));
@@ -105,15 +105,12 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			}
 
 			// 게시판 검색중 메시지를 사용자에게 보낸다.
-			StringBuilder sbAnswerMessage = new StringBuilder();
-			sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다.");
-
-			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "[ " + board.getDescription() + " ] 게시판을 검색중입니다.");
 
 			// 게시판 검색을 시작한다.
 			this.immediatelyTaskExecutorService.submit(
 					new WebSiteBoardSearchImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), absSender, chatRoom, board, keyword, this.torrentBotResource));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
@@ -122,12 +119,10 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSearchRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSearchRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

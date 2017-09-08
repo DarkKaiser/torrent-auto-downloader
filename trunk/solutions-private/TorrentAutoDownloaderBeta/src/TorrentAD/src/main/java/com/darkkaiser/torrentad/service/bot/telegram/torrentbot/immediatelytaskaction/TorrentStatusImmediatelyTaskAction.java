@@ -28,7 +28,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 
 	private final TorrentBotResource torrentBotResource;
 
-	public TorrentStatusImmediatelyTaskAction(AbsSender absSender, ChatRoom chatRoom, TorrentBotResource torrentBotResource) {
+	public TorrentStatusImmediatelyTaskAction(final AbsSender absSender, final ChatRoom chatRoom, final TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -43,7 +43,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 		this.torrentBotResource = torrentBotResource;
 	}
 	
-	public TorrentStatusImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, TorrentBotResource torrentBotResource) {
+	public TorrentStatusImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -93,12 +93,14 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				}
 
 				// 인라인 키보드를 설정한다.
+				//noinspection ArraysAsListWithZeroOrOneArgument
 				List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 						new InlineKeyboardButton()
 								.setText(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
 								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA))
 				);
 
+				//noinspection ArraysAsListWithZeroOrOneArgument
 				InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
 
 				// 클라이언트로 토렌트 서버의 상태 메시지를 전송한다.
@@ -108,7 +110,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 					BotCommandUtils.editMessageText(this.absSender, this.chatRoom.getChatId(), this.messageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
@@ -122,13 +124,6 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 	@Override
 	public void validate() {
 		super.validate();
-
-		if (this.absSender == null)
-			throw new NullPointerException("absSender");
-		if (this.chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (this.torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
 	}
 
 }

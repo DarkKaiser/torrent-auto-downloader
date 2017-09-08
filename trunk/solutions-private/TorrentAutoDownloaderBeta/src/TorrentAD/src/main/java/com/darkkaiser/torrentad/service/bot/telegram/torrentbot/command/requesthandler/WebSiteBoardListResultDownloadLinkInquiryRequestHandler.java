@@ -25,7 +25,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardListResultDownloadLinkInquiryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardListResultDownloadLinkInquiryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND);
 
 		if (torrentBotResource == null)
@@ -41,7 +41,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 2, 2) == false)
 			return false;
 
@@ -79,12 +79,10 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardListResultDownloadLinkInquiryRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardListResultDownloadLinkInquiryRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

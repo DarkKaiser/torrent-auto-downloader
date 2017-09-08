@@ -32,7 +32,7 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 
 	protected final WebSiteHandler siteHandler;
 
-	public AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final long boardItemIdentifier, final TorrentBotResource torrentBotResource) {
 		if (absSender == null)
 			throw new NullPointerException("absSender");
 		if (chatRoom == null)
@@ -100,7 +100,7 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 			
 			// 선택한 게시물을 찾을 수 없는 경우, 사용자에게 에러 메시지를 보낸다.
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "해당 게시물을 찾을 수 없습니다. 조회 또는 검색을 다시 시도하여 주세요.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
@@ -113,7 +113,7 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 	
 	protected abstract Iterator<WebSiteBoardItem> execute() throws NoPermissionException, LoadBoardItemsException;
 	
-	protected abstract String generateDownloadRequestInlineCommandString(WebSiteBoardItem boardItem, int index);
+	protected abstract String generateDownloadRequestInlineCommandString(final WebSiteBoardItem boardItem, final int index);
 
 	@Override
 	public void validate() {

@@ -33,7 +33,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public WebSiteBoardSearchResultCallbackQueryRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public WebSiteBoardSearchResultCallbackQueryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND);
 
 		if (torrentBotResource == null)
@@ -46,7 +46,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 	}
 	
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
 		if (super.executable0(command, parameters, containInitialChar, 2, 3) == false)
 			return false;
 
@@ -68,7 +68,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		WebSiteHandler siteHandler = (WebSiteHandler) this.torrentBotResource.getSiteConnector().getConnection();
 
 		try {
@@ -92,10 +92,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 				BotCommandUtils.answerCallbackQuery(absSender, callbackQueryId);
 				
 				// 게시판 검색중 메시지를 사용자에게 보낸다.
-				StringBuilder sbAnswerMessage = new StringBuilder();
-				sbAnswerMessage.append("[ ").append(board.getDescription()).append(" ] 게시판을 검색중입니다.");
-
-				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString());
+				BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, "[ " + board.getDescription() + " ] 게시판을 검색중입니다.");
 
 				// 게시판 검색을 시작한다.
 				this.immediatelyTaskExecutorService.submit(
@@ -176,6 +173,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			}
 
 			// 인라인 키보드를 설정한다.
+			//noinspection ArraysAsListWithZeroOrOneArgument
 			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 					new InlineKeyboardButton()
 							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
@@ -194,7 +192,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 			// 클라이언트로 조회된 결과 메시지를 전송한다.
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
@@ -203,12 +201,10 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(WebSiteBoardSearchResultCallbackQueryRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return WebSiteBoardSearchResultCallbackQueryRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

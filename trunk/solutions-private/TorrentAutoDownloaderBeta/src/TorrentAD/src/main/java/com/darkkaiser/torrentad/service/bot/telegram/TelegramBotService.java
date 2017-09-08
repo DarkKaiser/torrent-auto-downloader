@@ -32,7 +32,7 @@ public class TelegramBotService implements BotService {
 
 	private final Configuration configuration;
 
-	public TelegramBotService(ImmediatelyTaskExecutorService immediatelyTaskExecutorService, FileTransmissionExecutorService fileTransmissionExecutorService, Configuration configuration) {
+	public TelegramBotService(final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService, final Configuration configuration) {
 		if (immediatelyTaskExecutorService == null)
 			throw new NullPointerException("immediatelyTaskExecutorService");
 		if (fileTransmissionExecutorService == null)
@@ -47,9 +47,6 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public boolean start() throws Exception {
-		if (this.configuration == null)
-			throw new NullPointerException("configuration");
-
 		BotLogger.setLevel(Level.ALL);
 		BotLogger.registerLogger(new ConsoleHandler());
 
@@ -58,7 +55,7 @@ public class TelegramBotService implements BotService {
 		try {
 			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.fileTransmissionExecutorService, this.configuration);
 			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			logger.error(null, e);
 			return false;
 		}

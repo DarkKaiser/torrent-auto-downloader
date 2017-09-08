@@ -16,7 +16,7 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
-	public TorrentStatusRequestHandler(TorrentBotResource torrentBotResource, ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
+	public TorrentStatusRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("status", "상태", "/status (상태)", "토렌트 서버의 상태를 조회합니다.");
 
 		if (torrentBotResource == null)
@@ -29,15 +29,12 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 	}
 
 	@Override
-	public boolean executable(String command, String[] parameters, boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
-			return false;
-
-		return true;
+	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
+		return super.executable0(command, parameters, containInitialChar, 0, 0) != false;
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "토렌트 서버의 상태를 조회중입니다...");
 
 		// 토렌트 상태 조회를 시작한다.
@@ -47,12 +44,10 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(TorrentStatusRequestHandler.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return TorrentStatusRequestHandler.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

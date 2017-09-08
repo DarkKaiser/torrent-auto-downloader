@@ -50,8 +50,8 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	// 검색한 게시물의 첨부파일을 다운로드시에 검색 결과데이터를 찾기 위한 ID
 	private String searchResultDataIdentifier;
 
-	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, WebSiteBoard board, long boardItemIdentifier, long boardItemDownloadLinkIndex,
-                                                         TorrentBotResource torrentBotResource, FileTransmissionExecutorService fileTransmissionExecutorService) {
+	public WebSiteBoardItemDownloadImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final long boardItemIdentifier, final long boardItemDownloadLinkIndex,
+														 final TorrentBotResource torrentBotResource, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 
 		if (absSender == null)
 			throw new NullPointerException("absSender");
@@ -86,8 +86,8 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 
-	public WebSiteBoardItemDownloadImmediatelyTaskAction(int messageId, AbsSender absSender, ChatRoom chatRoom, String searchResultDataIdentifier, long boardItemIdentifier, long boardItemDownloadLinkIndex, 
-			TorrentBotResource torrentBotResource, FileTransmissionExecutorService fileTransmissionExecutorService) {
+	public WebSiteBoardItemDownloadImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final String searchResultDataIdentifier, final long boardItemIdentifier, long boardItemDownloadLinkIndex,
+														 final TorrentBotResource torrentBotResource, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 
 		if (absSender == null)
 			throw new NullPointerException("absSender");
@@ -163,12 +163,14 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 						this.fileTransmissionExecutorService.submit();
 
 						// 인라인 키보드를 설정한다.
+						//noinspection ArraysAsListWithZeroOrOneArgument
 						List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
 								new InlineKeyboardButton()
 										.setText(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_TEXT)
 										.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA))
 						);
 
+						//noinspection ArraysAsListWithZeroOrOneArgument
 						InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
 
 						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 완료되었습니다.", this.messageId, inlineKeyboardMarkup);
@@ -180,7 +182,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 
 			// 선택한 게시물을 찾을 수 없는 경우, 사용자에게 에러 메시지를 보낸다.
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "해당 게시물을 찾을 수 없습니다. 조회 또는 검색을 다시 시도하여 주세요.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
