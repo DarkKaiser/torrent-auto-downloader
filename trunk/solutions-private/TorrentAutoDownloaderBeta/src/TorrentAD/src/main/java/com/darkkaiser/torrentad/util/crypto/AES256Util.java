@@ -34,21 +34,23 @@ public class AES256Util {
 		int len = b.length;
 		if (len > keyBytes.length)
 			len = keyBytes.length;
+
 		System.arraycopy(b, 0, keyBytes, 0, len);
 
 		this.keySpec = new SecretKeySpec(keyBytes, "AES");
 	}
 
-	public String encode(final String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException,
+	public String encode(final String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
 
 		byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+
 		return new String(Base64.encodeBase64(encrypted));
 	}
 
-	public String decode(final String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException,
+	public String decode(final String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));

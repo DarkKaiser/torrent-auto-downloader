@@ -25,6 +25,7 @@ public final class RadixNotation62Util {
 	}
 	
 	private RadixNotation62Util() {
+
 	}
 
 }

@@ -100,7 +100,6 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 		assert this.properties != null;
 
 		String value = this.properties.getProperty(key);
-
 		if (value == null)
 			return defaultValue;
 
