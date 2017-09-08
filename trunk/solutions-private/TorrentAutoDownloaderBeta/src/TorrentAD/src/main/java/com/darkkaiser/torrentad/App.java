@@ -24,10 +24,10 @@ public class App {
 
 	private boolean start() {
 		// 기본 환경설정 정보를 읽어들인다.
-		Configuration configuration = null;
+		Configuration configuration;
 		try {
 			configuration = new DefaultConfiguration();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 			return false;
 		}
@@ -40,7 +40,7 @@ public class App {
 			this.torrentBotService = new TelegramBotService((ImmediatelyTaskExecutorService) this.torrentAdService, (FileTransmissionExecutorService) this.torrentAuService, configuration);
 
 			return this.torrentAuService.start() && this.torrentAdService.start() && this.torrentBotService.start();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 			return false;
 		}
@@ -63,14 +63,12 @@ public class App {
 	}
 
     private void addShutdownHook(final App app) {
-        Runnable shutdownHook = new Runnable() {
-            public void run() {
-            	logger.info("{} 프로그램을 종료하는 중입니다...", Constants.APP_NAME);
-                
-            	app.stop();
-                
-            	logger.info("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
-            }
+        Runnable shutdownHook = () -> {
+            logger.info("{} 프로그램을 종료하는 중입니다...", Constants.APP_NAME);
+
+            app.stop();
+
+            logger.info("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
         };
 
         // add shutdown hook
@@ -78,33 +76,31 @@ public class App {
         runtime.addShutdownHook(new Thread(shutdownHook));
     }
     
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		try {
 			App app = new App();
-			if (app != null) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("\n")
-				  .append("########################################################\n")
-				  .append("###                                                  ###\n")
-				  .append("###             ").append(Constants.APP_NAME).append(" Version ").append(Constants.APP_VERSION).append("              ###\n")
-				  .append("###                                                  ###\n")
-				  .append("###                         developed by DarkKaiser  ###\n")
-				  .append("###                                                  ###\n")
-				  .append("########################################################\n");
-				logger.info(sb.toString());
 
-				if (app.start() == true) {
-					logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
+			String message = "\n" +
+					"########################################################\n" +
+					"###                                                  ###\n" +
+					"###             " + Constants.APP_NAME + " Version " + Constants.APP_VERSION + "              ###\n" +
+					"###                                                  ###\n" +
+					"###                         developed by DarkKaiser  ###\n" +
+					"###                                                  ###\n" +
+					"########################################################\n";
+			logger.info(message);
 
-		            // add shutdown hook if possible
-		            app.addShutdownHook(app);
-				} else {
-					app.stop();
+			if (app.start() == true) {
+                logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
 
-					logger.error("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
-				}
-			}
-		} catch (Exception e) {
+                // add shutdown hook if possible
+                app.addShutdownHook(app);
+            } else {
+                app.stop();
+
+                logger.error("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
+            }
+		} catch (final Exception e) {
 			logger.error("{}가 종료되었습니다.", Constants.APP_NAME, e);
 		}
 	}
