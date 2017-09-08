@@ -6,8 +6,8 @@ public interface Configuration extends Disposable {
 
 	String getFilePath();
 
-	String getValue(String key);
+	String getValue(final String key);
 
-	String getValue(String key, String defaultValue);
+	String getValue(final String key, final String defaultValue);
 
 }

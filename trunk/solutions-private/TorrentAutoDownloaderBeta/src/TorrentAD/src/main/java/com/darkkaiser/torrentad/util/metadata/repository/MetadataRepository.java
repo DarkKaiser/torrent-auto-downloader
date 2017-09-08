@@ -2,24 +2,24 @@ package com.darkkaiser.torrentad.util.metadata.repository;
 
 public interface MetadataRepository {
 
-	int getInt(String key, int defaultValue);
+	int getInt(final String key, final int defaultValue);
 
-	void setInt(String key, int value);
+	void setInt(final String key, final int value);
 
-	long getLong(String key, long defaultValue);
+	long getLong(final String key, final long defaultValue);
 
-	void setLong(String key, long value);
+	void setLong(final String key, final long value);
 
-	String getString(String key, String defaultValue);
+	String getString(final String key, final String defaultValue);
 
-	void setString(String key, String value);
+	void setString(final String key, final String value);
 
-	double getDouble(String key, double defaultValue);
+	double getDouble(final String key, final double defaultValue);
 
-	void setDouble(String key, double value);
+	void setDouble(final String key, final double value);
 
-	boolean getBoolean(String key, boolean defaultValue);
+	boolean getBoolean(final String key, final boolean defaultValue);
 
-	void setBoolean(String key, boolean value);
+	void setBoolean(final String key, final boolean value);
 
 }

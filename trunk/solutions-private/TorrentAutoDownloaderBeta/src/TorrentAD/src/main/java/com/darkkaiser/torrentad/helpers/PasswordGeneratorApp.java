@@ -4,7 +4,7 @@ import com.darkkaiser.torrentad.util.crypto.AES256Util;
 
 public class PasswordGeneratorApp {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		if (args.length != 1) {
 			System.out.println("암복호화 하시려는 비밀번호를 입력하여 주세요.");
 			return;

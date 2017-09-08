@@ -19,7 +19,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 
 	private final Properties properties = new SortedProperties();
 
-	public MetadataRepositoryImpl(String filePath) {
+	public MetadataRepositoryImpl(final String filePath) {
 		if (filePath == null)
 			throw new NullPointerException("filePath");
 		if (StringUtil.isBlank(filePath) == true)
@@ -29,7 +29,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 
 		try {
 			initialize();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			logger.error(null, e);
 		}
 	}
@@ -50,24 +50,24 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 			try (FileOutputStream fos = new FileOutputStream(new File(this.filePath))) {
 				this.properties.store(fos, null);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			logger.error(null, e);
 		}
 	}
 
 	@Override
-	public synchronized int getInt(String key, int defaultValue) {
+	public synchronized int getInt(final String key, final int defaultValue) {
 		assert this.properties != null;
 
 		try {
 			return Integer.parseInt(this.properties.getProperty(key));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return defaultValue;
 		}
 	}
 
 	@Override
-	public synchronized void setInt(String key, int value) {
+	public synchronized void setInt(final String key, final int value) {
 		assert this.properties != null;
 		
 		this.properties.setProperty(key, Integer.toString(value));
@@ -76,18 +76,18 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	}
 	
 	@Override
-	public long getLong(String key, long defaultValue) {
+	public long getLong(final String key, final long defaultValue) {
 		assert this.properties != null;
 
 		try {
 			return Long.parseLong(this.properties.getProperty(key));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return defaultValue;
 		}
 	}
 	
 	@Override
-	public void setLong(String key, long value) {
+	public void setLong(final String key, final long value) {
 		assert this.properties != null;
 		
 		this.properties.setProperty(key, Long.toString(value));
@@ -96,7 +96,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	}
 
 	@Override
-	public synchronized String getString(String key, String defaultValue) {
+	public synchronized String getString(final String key, final String defaultValue) {
 		assert this.properties != null;
 
 		String value = this.properties.getProperty(key);
@@ -108,7 +108,7 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	}
 
 	@Override
-	public synchronized void setString(String key, String value) {
+	public synchronized void setString(final String key, final String value) {
 		assert this.properties != null;
 		
 		this.properties.setProperty(key, value);
@@ -117,18 +117,18 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	}
 
 	@Override
-	public synchronized double getDouble(String key, double defaultValue) {
+	public synchronized double getDouble(final String key, final double defaultValue) {
 		assert this.properties != null;
 
 		try {
 			return Double.valueOf(this.properties.getProperty(key));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return defaultValue;
 		}
 	}
 
 	@Override
-	public synchronized void setDouble(String key, double value) {
+	public synchronized void setDouble(final String key, final double value) {
 		assert this.properties != null;
 		
 		this.properties.setProperty(key, Double.toString(value));
@@ -137,18 +137,18 @@ public final class MetadataRepositoryImpl implements MetadataRepository {
 	}
 
 	@Override
-	public synchronized boolean getBoolean(String key, boolean defaultValue) {
+	public synchronized boolean getBoolean(final String key, final boolean defaultValue) {
 		assert this.properties != null;
 
 		try {
 			return Boolean.valueOf(this.properties.getProperty(key));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return defaultValue;
 		}
 	}
 
 	@Override
-	public synchronized void setBoolean(String key, boolean value) {
+	public synchronized void setBoolean(final String key, final boolean value) {
 		assert this.properties != null;
 		
 		this.properties.setProperty(key, Boolean.toString(value));

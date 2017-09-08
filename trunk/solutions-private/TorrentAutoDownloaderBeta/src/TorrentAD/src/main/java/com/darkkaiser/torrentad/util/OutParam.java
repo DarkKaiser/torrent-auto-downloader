@@ -4,7 +4,7 @@ public final class OutParam<T> {
 	
 	private T result;
 
-	public void set(T result) {
+	public void set(final T result) {
 		this.result = result;
 	}
 

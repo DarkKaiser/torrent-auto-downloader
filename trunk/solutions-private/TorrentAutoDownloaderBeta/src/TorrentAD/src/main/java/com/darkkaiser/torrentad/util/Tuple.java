@@ -19,12 +19,12 @@ public class Tuple<F, L> {
 	}
 
 	@SuppressWarnings("unused")
-	public void first(F x) {
+	public void first(final F x) {
 		this.x = x;
 	}
 
 	@SuppressWarnings("unused")
-	public void last(L y) {
+	public void last(final L y) {
 		this.y = y;
 	}
 

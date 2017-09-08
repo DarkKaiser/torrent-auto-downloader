@@ -19,14 +19,14 @@ public class AES256Util {
 	/** 암복호화 키(최소 16자 이상) */
 	private static final String DEFAULT_CRYPTOGRAPH_KEY = "chlrhrkehlwk9876@*!";
 
-	private String iv;
-	private Key keySpec;
+	private final String iv;
+	private final Key keySpec;
 
 	public AES256Util() throws UnsupportedEncodingException {
 		this(DEFAULT_CRYPTOGRAPH_KEY);
 	}
 
-	private AES256Util(String key) throws UnsupportedEncodingException {
+	private AES256Util(final String key) throws UnsupportedEncodingException {
 		this.iv = key.substring(0, 16);
 
 		byte[] keyBytes = new byte[16];
@@ -39,7 +39,7 @@ public class AES256Util {
 		this.keySpec = new SecretKeySpec(keyBytes, "AES");
 	}
 
-	public String encode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, 
+	public String encode(final String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
@@ -48,7 +48,7 @@ public class AES256Util {
 		return new String(Base64.encodeBase64(encrypted));
 	}
 
-	public String decode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException,
+	public String decode(final String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));

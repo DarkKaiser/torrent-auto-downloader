@@ -28,7 +28,7 @@ public final class DefaultConfiguration implements Configuration {
 		load(Constants.APP_CONFIG_FILE_NAME);
 	}
 
-	private void load(String filePath) throws Exception {
+	private void load(final String filePath) throws Exception {
 		if (filePath == null)
 			throw new NullPointerException("filePath");
 		if (StringUtil.isBlank(filePath) == true)
@@ -62,10 +62,10 @@ public final class DefaultConfiguration implements Configuration {
 				}
 
 				this.filePath = filePath;
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(파일경로:'{}')", filePath, e);
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				this.configValues.clear();
 				logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
 				throw e;
@@ -79,12 +79,12 @@ public final class DefaultConfiguration implements Configuration {
 	}
 
 	@Override
-	public String getValue(String key) {
+	public String getValue(final String key) {
 		return getValue(key, "");
 	}
 
 	@Override
-	public String getValue(String key, String defaultValue) {
+	public String getValue(final String key, final  String defaultValue) {
 		assert key != null;
 		assert key.length() > 0;
 
@@ -96,7 +96,7 @@ public final class DefaultConfiguration implements Configuration {
 			}
 
 			logger.error("존재하지 않는 항목 정보를 요청(항목이름 : {})", key);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("항목 정보를 구하는 중에 예외가 발생하였습니다.", e);
 		}
 
