@@ -1,20 +1,19 @@
 package com.darkkaiser.torrentad.service.au;
 
+import com.darkkaiser.torrentad.common.Constants;
+import com.darkkaiser.torrentad.config.Configuration;
+import com.darkkaiser.torrentad.service.Service;
+import com.darkkaiser.torrentad.service.au.action.ActionFactory;
+import com.darkkaiser.torrentad.service.au.action.ActionType;
+import com.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionAction;
+import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.darkkaiser.torrentad.config.Configuration;
-import com.darkkaiser.torrentad.service.Service;
-import com.darkkaiser.torrentad.service.au.action.ActionFactory;
-import com.darkkaiser.torrentad.common.Constants;
-import com.darkkaiser.torrentad.service.au.action.ActionType;
-import com.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionAction;
-import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 
 public class TorrentAuService implements Service, FileTransmissionExecutorService {
 
@@ -28,7 +27,7 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 
 	private final Configuration configuration;
 
-	public TorrentAuService(Configuration configuration) {
+	public TorrentAuService(final Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -45,8 +44,6 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 			throw new IllegalStateException("torrentSupervisoryControlTimer 객체는 이미 초기화되었습니다.");
 		if (this.actionsExecutorService != null)
 			throw new IllegalStateException("actionExecutorService 객체는 이미 초기화되었습니다");
-		if (this.configuration == null)
-			throw new NullPointerException("configuration");
 
 		this.fileWatcherTimer = new Timer();
 		this.torrentSupervisoryControlTimer = new Timer();
@@ -93,18 +90,14 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 
 	@Override
 	public void submit() {
-		File[] listFiles = this.fileWatchLocation.listFiles(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		        return name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false;
-		    }
-		});
-
 		FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, this.configuration);
 
-		for (File file : listFiles) {
-			if (file.isFile() == true)
-				action.addFile(file);
+		File[] listFiles = this.fileWatchLocation.listFiles((dir, name) -> name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false);
+		if (listFiles != null) {
+			for (File file : listFiles) {
+                if (file.isFile() == true)
+                    action.addFile(file);
+            }
 		}
 
 		if (action.getFileCount() > 0)

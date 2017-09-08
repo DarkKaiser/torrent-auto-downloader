@@ -12,7 +12,7 @@ public abstract class AbstractAction implements Action {
 	
 	protected final Configuration configuration;
 
-	protected AbstractAction(ActionType actionType, Configuration configuration) {
+	protected AbstractAction(final ActionType actionType, final Configuration configuration) {
 		if (actionType == null)
 			throw new NullPointerException("actionType");
 		if (configuration == null)
@@ -32,7 +32,7 @@ public abstract class AbstractAction implements Action {
 		if (beforeExecute() == true) {
 			try {
 				execute();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
 			}
 		}
@@ -48,12 +48,10 @@ public abstract class AbstractAction implements Action {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractAction.class.getSimpleName())
-				.append("{")
-				.append("actionType:").append(this.actionType)
-				.append("}")
-				.toString();
+		return AbstractAction.class.getSimpleName() +
+				"{" +
+				"actionType:" + this.actionType +
+				"}";
 	}
 
 }

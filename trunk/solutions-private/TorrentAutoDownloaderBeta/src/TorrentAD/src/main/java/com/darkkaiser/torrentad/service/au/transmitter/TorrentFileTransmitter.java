@@ -1,8 +1,5 @@
 package com.darkkaiser.torrentad.service.au.transmitter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.net.torrent.TorrentClient;
@@ -10,13 +7,16 @@ import com.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentFileTransmitter.class);
 
 	private TorrentClient torrentClient;
 
-	public TorrentFileTransmitter(Configuration configuration) {
+	public TorrentFileTransmitter(final Configuration configuration) {
 		super(configuration);
 	}
 
@@ -35,7 +35,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 	}
 
 	@Override
-	public boolean transmit(File file) throws Exception {
+	public boolean transmit(final File file) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
 		if (this.torrentClient == null)
@@ -57,7 +57,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error(null, e);
 			}
 
@@ -71,11 +71,8 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 	public boolean support(File file) {
 		if (file == null)
 			throw new NullPointerException("file");
-		
-		if (file.isDirectory() == true)
-			return false;
 
-		return file.getName().toLowerCase().endsWith(".torrent");
+		return file.isDirectory() != true && file.getName().toLowerCase().endsWith(".torrent");
 	}
 
 }

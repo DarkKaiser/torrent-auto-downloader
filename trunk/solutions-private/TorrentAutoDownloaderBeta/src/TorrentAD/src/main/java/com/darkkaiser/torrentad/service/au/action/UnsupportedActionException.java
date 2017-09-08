@@ -8,15 +8,15 @@ public class UnsupportedActionException extends RuntimeException {
 		super();
 	}
 
-	public UnsupportedActionException(String s) {
+	public UnsupportedActionException(final String s) {
 		super(s);
 	}
 
-	public UnsupportedActionException(String message, Throwable cause) {
+	public UnsupportedActionException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public UnsupportedActionException(Throwable cause) {
+	public UnsupportedActionException(final Throwable cause) {
 		super(cause);
 	}
 

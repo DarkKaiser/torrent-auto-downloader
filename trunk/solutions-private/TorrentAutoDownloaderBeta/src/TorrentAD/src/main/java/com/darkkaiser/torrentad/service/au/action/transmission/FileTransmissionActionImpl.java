@@ -26,7 +26,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	private List<FileTransmitter> fileTransmitters = new ArrayList<>();
 
-	public FileTransmissionActionImpl(Configuration configuration) {
+	public FileTransmissionActionImpl(final Configuration configuration) {
 		super(ActionType.FILE_TRANSMISSION, configuration);
 	}
 
@@ -39,17 +39,18 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	@Override
 	protected void afterExecute() {
-		Iterator<FileTransmitter> iterator = this.fileTransmitters.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().transmitFinished();
+		for (final FileTransmitter fileTransmitter : this.fileTransmitters) {
+			fileTransmitter.transmitFinished();
 		}
 
 		this.fileTransmitters.clear();
 
 		// 전송이 성공한 파일들은 삭제한다.
-		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
+		for (final Map.Entry<File, Boolean> entry : this.files.entrySet()) {
 			if (entry.getValue() == true) {
 				logger.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
+
+				//noinspection ResultOfMethodCallIgnored
 				entry.getKey().delete();
 			}
 		}
@@ -57,15 +58,13 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	@Override
 	protected void execute() throws Exception {
-		for (Map.Entry<File, Boolean> entry : this.files.entrySet()) {
+		for (final Map.Entry<File, Boolean> entry : this.files.entrySet()) {
 			File file = entry.getKey();
 
 			assert entry.getValue() == false;
 
 			try {
-				Iterator<FileTransmitter> iterator = this.fileTransmitters.iterator();
-				while (iterator.hasNext()) {
-					FileTransmitter transmitter = iterator.next();
+				for (final FileTransmitter transmitter : this.fileTransmitters) {
 					if (transmitter.support(file) == true) {
 						transmitter.prepare();
 						if (transmitter.transmit(file) == true) {
@@ -78,14 +77,14 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 						break;
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error("파일을 전송하는 도중에 예외가 발생하였습니다.({})", file.getName(), e);
 			}
 		}
 	}
 
 	@Override
-	public boolean addFile(File file) {
+	public boolean addFile(final File file) {
 		if (file == null)
 			throw new NullPointerException("file");
 		if (file.isFile() == false)

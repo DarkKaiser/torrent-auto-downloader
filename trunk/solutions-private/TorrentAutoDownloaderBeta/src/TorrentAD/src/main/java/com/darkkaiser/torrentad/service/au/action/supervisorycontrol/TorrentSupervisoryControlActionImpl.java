@@ -1,20 +1,18 @@
 package com.darkkaiser.torrentad.service.au.action.supervisorycontrol;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
+import com.darkkaiser.torrentad.net.torrent.TorrentClient;
 import com.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
 import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
+import com.darkkaiser.torrentad.service.au.action.AbstractAction;
 import com.darkkaiser.torrentad.service.au.action.ActionType;
+import com.darkkaiser.torrentad.util.crypto.AES256Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.net.torrent.TorrentClient;
-import com.darkkaiser.torrentad.service.au.action.AbstractAction;
-import com.darkkaiser.torrentad.util.crypto.AES256Util;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
@@ -24,7 +22,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 	
 	private final int maxConcurrentDownloadingTorrentCount;
 
-	public TorrentSupervisoryControlActionImpl(Configuration configuration) {
+	public TorrentSupervisoryControlActionImpl(final Configuration configuration) {
 		super(ActionType.TORRENT_SUPERVISORY_CONTROL, configuration);
 
 		this.maxConcurrentDownloadingTorrentCount = Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_MAX_CONCURRENT_DOWNLOADING_TORRENT_COUNT));
@@ -41,7 +39,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 		try {
 			password = new AES256Util().decode(password);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
 			return false;
 		}
@@ -51,7 +49,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 		try {
 			if (this.torrentClient.connect(id, password) == false)
 				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
 			return false;
 		}
@@ -64,7 +62,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error(null, e);
 			}
 
@@ -84,29 +82,26 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 			if (methodResult != null) {
 				int downloadingCount = 0;
 				List<Long> ids = new ArrayList<>();
-				Iterator<TorrentGetMethodResult.Torrent> iterator = methodResult.arguments.torrents.iterator();
-				while (iterator.hasNext()) {
-					TorrentGetMethodResult.Torrent torrent = iterator.next();
-
+				for (final TorrentGetMethodResult.Torrent torrent : methodResult.arguments.torrents) {
 					switch (torrent.status()) {
-					case 0:		// Stopped
-						if (torrent.isFinished() == false && torrent.error() == 0)
-							ids.add(torrent.getId());
-						break;
+						case 0:        // Stopped
+							if (torrent.isFinished() == false && torrent.error() == 0)
+								ids.add(torrent.getId());
+							break;
 
-					case 1:		// Check waiting
-					case 2:		// Checking
-					case 3:		// Download waiting
-					case 4:		// Downloading
-						++downloadingCount;
-						break;
+						case 1:        // Check waiting
+						case 2:        // Checking
+						case 3:        // Download waiting
+						case 4:        // Downloading
+							++downloadingCount;
+							break;
 
-					case 5:		// Seed waiting
-					case 6:		// Seeding
-						break;
+						case 5:        // Seed waiting
+						case 6:        // Seeding
+							break;
 
-					default:
-						break;
+						default:
+							break;
 					}
 				}
 				
@@ -123,19 +118,17 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 					this.torrentClient.startTorrent(ids);
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("토렌트 서버의 감시 및 제어 작업이 실패하였습니다.", e);
 		}
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(TorrentSupervisoryControlActionImpl.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return TorrentSupervisoryControlActionImpl.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

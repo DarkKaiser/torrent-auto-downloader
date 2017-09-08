@@ -6,7 +6,7 @@ import com.darkkaiser.torrentad.service.au.action.Action;
 
 public interface FileTransmissionAction extends Action {
 
-	boolean addFile(File file);
+	boolean addFile(final File file);
 
 	int getFileCount();
 

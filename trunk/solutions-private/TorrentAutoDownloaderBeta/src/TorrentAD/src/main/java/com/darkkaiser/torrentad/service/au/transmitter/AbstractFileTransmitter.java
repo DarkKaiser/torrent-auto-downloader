@@ -14,20 +14,20 @@ public abstract class AbstractFileTransmitter implements FileTransmitter {
 
 	private AES256Util aes256;
 
-	protected AbstractFileTransmitter(Configuration configuration) {
+	protected AbstractFileTransmitter(final Configuration configuration) {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
 		this.configuration = configuration;
 	}
 
-	protected String decode(String encryption) throws Exception {
+	protected String decode(final String encryption) throws Exception {
 		if (this.aes256 == null)
 			this.aes256 = new AES256Util();
 
 		try {
 			return this.aes256.decode(encryption);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
 			throw e;
 		}

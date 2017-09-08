@@ -6,7 +6,7 @@ import com.darkkaiser.torrentad.service.au.action.transmission.FileTransmissionA
 
 public final class ActionFactory {
 
-	public static Action createAction(ActionType type, Configuration configuration) {
+	public static Action createAction(final ActionType type, final Configuration configuration) {
 		if (type == ActionType.FILE_TRANSMISSION) {
 			return new FileTransmissionActionImpl(configuration);
 		} else if (type == ActionType.TORRENT_SUPERVISORY_CONTROL) {
@@ -17,6 +17,7 @@ public final class ActionFactory {
 	}
 
 	private ActionFactory() {
+
 	}
 
 }

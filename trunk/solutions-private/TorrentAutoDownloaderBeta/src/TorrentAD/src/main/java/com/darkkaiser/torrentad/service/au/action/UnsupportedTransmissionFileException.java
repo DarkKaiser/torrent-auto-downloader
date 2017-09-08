@@ -8,15 +8,15 @@ public class UnsupportedTransmissionFileException extends RuntimeException {
 		super();
 	}
 
-	public UnsupportedTransmissionFileException(String s) {
+	public UnsupportedTransmissionFileException(final String s) {
 		super(s);
 	}
 
-	public UnsupportedTransmissionFileException(String message, Throwable cause) {
+	public UnsupportedTransmissionFileException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public UnsupportedTransmissionFileException(Throwable cause) {
+	public UnsupportedTransmissionFileException(final Throwable cause) {
 		super(cause);
 	}
 	

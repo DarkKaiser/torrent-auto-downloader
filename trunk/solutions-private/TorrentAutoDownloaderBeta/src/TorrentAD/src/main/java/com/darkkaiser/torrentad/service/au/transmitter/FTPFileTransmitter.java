@@ -1,14 +1,13 @@
 package com.darkkaiser.torrentad.service.au.transmitter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
+import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.common.Constants;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class FTPFileTransmitter extends AbstractFileTransmitter {
 
@@ -16,7 +15,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 	
 	private FTPClient ftpClient;
 
-	public FTPFileTransmitter(Configuration configuration) {
+	public FTPFileTransmitter(final Configuration configuration) {
 		super(configuration);
 	}
 
@@ -36,7 +35,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 	}
 
 	@Override
-	public boolean transmit(File file) throws Exception {
+	public boolean transmit(final File file) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
 		if (this.ftpClient == null)
@@ -65,7 +64,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 		if (this.ftpClient != null) {
 			try {
 				this.ftpClient.disconnect();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error(null, e);
 			}
 
@@ -80,10 +79,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 		if (file == null)
 			throw new NullPointerException("file");
 
-		if (file.isDirectory() == true)
-			return false;
-
-		return true;
+		return file.isDirectory() != true;
 	}
 
 }
