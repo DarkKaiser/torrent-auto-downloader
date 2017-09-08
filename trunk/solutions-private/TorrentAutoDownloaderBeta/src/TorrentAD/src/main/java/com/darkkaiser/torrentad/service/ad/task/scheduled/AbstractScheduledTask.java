@@ -16,12 +16,12 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 
 	protected WebSiteSearchContext searchContext;
 
-	public AbstractScheduledTask(TaskType taskType, String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	public AbstractScheduledTask(final TaskType taskType, final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		super(taskType, taskId, taskDescription, metadataRepository);
 	}
 
 	@Override
-	public ScheduledTask setWebSite(WebSite site) {
+	public ScheduledTask setWebSite(final WebSite site) {
 		if (site == null)
 			throw new NullPointerException("site");
 
@@ -36,17 +36,17 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 	}
 
 	@Override
-	public void setBoardName(String name) {
+	public void setBoardName(final String name) {
 		this.searchContext.setBoardName(name);
 	}
 
 	@Override
-	public void setLatestDownloadBoardItemIdentifier(long identifier) {
+	public void setLatestDownloadBoardItemIdentifier(final long identifier) {
 		this.searchContext.setLatestDownloadBoardItemIdentifier(identifier);
 	}
 
 	@Override
-	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) {
+	public void addSearchKeywords(final WebSiteSearchKeywordsType type, final WebSiteSearchKeywords searchKeywords) {
 		this.searchContext.addSearchKeywords(type, searchKeywords);
 	}
 
@@ -62,14 +62,12 @@ public abstract class AbstractScheduledTask extends AbstractTask implements Sche
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractScheduledTask.class.getSimpleName())
-				.append("{")
-				.append("site:").append(this.site)
-				.append(", searchContext:").append(this.searchContext)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return AbstractScheduledTask.class.getSimpleName() +
+				"{" +
+				"site:" + this.site +
+				", searchContext:" + this.searchContext +
+				"}, " +
+				super.toString();
 	}
 	
 }

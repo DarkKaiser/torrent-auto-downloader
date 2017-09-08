@@ -8,12 +8,12 @@ import com.darkkaiser.torrentad.website.WebSiteHandler;
 
 public class OnceScheduledTaskImpl extends AbstractScheduledTask implements OnceScheduledTask {
 
-	public OnceScheduledTaskImpl(String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	public OnceScheduledTaskImpl(final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		super(TaskType.ONCE_SCHEDULED, taskId, taskDescription, metadataRepository);
 	}
 
 	@Override
-	public TaskResult run(WebSiteHandler handler) {
+	public TaskResult run(final WebSiteHandler handler) {
 		throw new UnsupportedOperationException("Not implemented, yet");
 	}
 
@@ -24,12 +24,10 @@ public class OnceScheduledTaskImpl extends AbstractScheduledTask implements Once
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(OnceScheduledTaskImpl.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return OnceScheduledTaskImpl.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

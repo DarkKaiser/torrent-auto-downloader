@@ -1,12 +1,11 @@
 package com.darkkaiser.torrentad.service.ad.task.immediately;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import com.darkkaiser.torrentad.service.ad.task.TaskResult;
 import com.darkkaiser.torrentad.service.ad.task.TaskType;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
 
@@ -14,12 +13,12 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 
 	protected ImmediatelyTaskAction action;
 
-	public ImmediatelyTaskImpl(String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	public ImmediatelyTaskImpl(final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		super(TaskType.IMMEDIATELY, taskId, taskDescription, metadataRepository);
 	}
 	
 	@Override
-	public ImmediatelyTask setAction(ImmediatelyTaskAction action) {
+	public ImmediatelyTask setAction(final ImmediatelyTaskAction action) {
 		this.action = action;
 		return this;
 	}
@@ -31,7 +30,7 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 		try {
 			if (this.action.call() == false)
 				return TaskResult.FAILED;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 			return TaskResult.UNEXPECTED_EXCEPTION;
 		}
@@ -51,13 +50,11 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(ImmediatelyTaskImpl.class.getSimpleName())
-				.append("{")
-				.append("action:").append(this.action)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return ImmediatelyTaskImpl.class.getSimpleName() +
+				"{" +
+				"action:" + this.action +
+				"}, " +
+				super.toString();
 	}
 
 }

@@ -15,7 +15,7 @@ public abstract class AbstractImmediatelyTaskAction implements ImmediatelyTaskAc
 	public boolean isValid() {
 		try {
 			validate();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.debug(null, e);
 			return false;
 		}

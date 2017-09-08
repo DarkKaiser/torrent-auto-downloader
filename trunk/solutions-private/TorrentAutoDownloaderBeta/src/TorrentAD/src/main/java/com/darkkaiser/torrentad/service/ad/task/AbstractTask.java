@@ -17,7 +17,7 @@ public abstract class AbstractTask implements Task {
 	
 	protected final MetadataRepository metadataRepository;
 	
-	protected AbstractTask(TaskType taskType, String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	protected AbstractTask(final TaskType taskType, final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		if (taskType == null)
 			throw new NullPointerException("taskType");
 		if (StringUtil.isBlank(taskId) == true)
@@ -70,7 +70,7 @@ public abstract class AbstractTask implements Task {
 	public boolean isValid() {
 		try {
 			validate();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.debug(null, e);
 			return false;
 		}
@@ -80,14 +80,12 @@ public abstract class AbstractTask implements Task {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractTask.class.getSimpleName())
-				.append("{")
-				.append("taskType:").append(this.taskType)
-				.append(", taskId:").append(this.taskId)
-				.append(", taskDescription:").append(this.taskDescription)
-				.append("}")
-				.toString();
+		return AbstractTask.class.getSimpleName() +
+				"{" +
+				"taskType:" + this.taskType +
+				", taskId:" + this.taskId +
+				", taskDescription:" + this.taskDescription +
+				"}";
 	}
 	
 }

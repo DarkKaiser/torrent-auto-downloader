@@ -8,15 +8,15 @@ public class UnsupportedTaskException extends RuntimeException {
 		super();
 	}
 
-	public UnsupportedTaskException(String s) {
+	public UnsupportedTaskException(final String s) {
 		super(s);
 	}
 
-	public UnsupportedTaskException(String message, Throwable cause) {
+	public UnsupportedTaskException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public UnsupportedTaskException(Throwable cause) {
+	public UnsupportedTaskException(final Throwable cause) {
 		super(cause);
 	}
 

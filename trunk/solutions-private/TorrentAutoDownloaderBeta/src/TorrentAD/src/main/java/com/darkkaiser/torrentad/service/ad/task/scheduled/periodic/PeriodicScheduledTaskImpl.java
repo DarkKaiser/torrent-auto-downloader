@@ -21,12 +21,12 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicScheduledTaskImpl.class);
 
-	public PeriodicScheduledTaskImpl(String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	public PeriodicScheduledTaskImpl(final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		super(TaskType.PERIODIC_SCHEDULED, taskId, taskDescription, metadataRepository);
 	}
 
 	@Override
-	public TaskResult run(WebSiteHandler handler) {
+	public TaskResult run(final WebSiteHandler handler) {
 		if (handler == null)
 			throw new NullPointerException("handler");
 
@@ -64,10 +64,10 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 					}
 				}
 			}
-		} catch (LoadBoardItemsException e) {
+		} catch (final LoadBoardItemsException e) {
 			logger.error("게시판 데이터를 로드하는 중에 예외가 발생하였습니다.", e);
 			return TaskResult.FAILED;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 			return TaskResult.UNEXPECTED_EXCEPTION;
 		}
@@ -82,12 +82,10 @@ public class PeriodicScheduledTaskImpl extends AbstractScheduledTask implements 
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(PeriodicScheduledTaskImpl.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return PeriodicScheduledTaskImpl.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

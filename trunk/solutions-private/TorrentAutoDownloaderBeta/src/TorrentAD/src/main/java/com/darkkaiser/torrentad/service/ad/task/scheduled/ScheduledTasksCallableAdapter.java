@@ -23,7 +23,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 
 	private final Configuration configuration;
 	
-	public ScheduledTasksCallableAdapter(Configuration configuration, MetadataRepository metadataRepository) throws Exception {
+	public ScheduledTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 
@@ -45,7 +45,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 			// 마지막으로 실행된 Task의 성공 또는 실패코드를 반환한다.
 			TasksCallableAdapterResult result = TasksCallableAdapterResult.OK();
 
-			for (ScheduledTask task : this.tasks) {
+			for (final ScheduledTask task : this.tasks) {
 				logger.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
 
 				try {
@@ -57,7 +57,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 						logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
 						result = TasksCallableAdapterResult.OK(TaskResult.OK);
 					}
-				} catch (Throwable e) {
+				} catch (final Throwable e) {
 					logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
 					result = TasksCallableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 				}
@@ -66,7 +66,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 			this.siteConnector.logout();
 
 			return result;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 		}
 

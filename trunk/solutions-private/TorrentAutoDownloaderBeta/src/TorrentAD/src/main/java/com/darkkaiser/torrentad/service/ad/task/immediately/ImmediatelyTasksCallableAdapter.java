@@ -1,18 +1,13 @@
 package com.darkkaiser.torrentad.service.ad.task.immediately;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.darkkaiser.torrentad.config.Configuration;
-import com.darkkaiser.torrentad.service.ad.task.TasksCallableAdapter;
+import com.darkkaiser.torrentad.service.ad.task.*;
+import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.darkkaiser.torrentad.service.ad.task.TaskFactory;
-import com.darkkaiser.torrentad.service.ad.task.TaskResult;
-import com.darkkaiser.torrentad.service.ad.task.TaskType;
-import com.darkkaiser.torrentad.service.ad.task.TasksCallableAdapterResult;
-import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapter {
 
@@ -22,7 +17,7 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	
 	private static AtomicInteger count = new AtomicInteger(0);
 
-	public ImmediatelyTasksCallableAdapter(Configuration configuration, MetadataRepository metadataRepository, ImmediatelyTaskAction action) throws Exception {
+	public ImmediatelyTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository, final ImmediatelyTaskAction action) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 		if (action == null)
@@ -49,11 +44,11 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 					logger.debug("Task 실행이 완료되었습니다.(Task:{})", this.task.getTaskDescription());
 					return TasksCallableAdapterResult.OK(TaskResult.OK);
 				}
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", this.task.getTaskDescription(), e);
 				return TasksCallableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 		}
 

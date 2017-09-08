@@ -22,16 +22,16 @@ public final class TasksCallableAdapterResult {
 		TASK_EXECUTION_FAILED
 	}
 
-	private TasksCallableAdapterResultCode tasksCallableAdapterResultCode;
+	private final TasksCallableAdapterResultCode tasksCallableAdapterResultCode;
 
-	private TaskResult taskResult;
+	private final TaskResult taskResult;
 
-	public TasksCallableAdapterResult(TasksCallableAdapterResultCode tasksExecutorServiceResult) {
+	public TasksCallableAdapterResult(final TasksCallableAdapterResultCode tasksExecutorServiceResult) {
 		this.tasksCallableAdapterResultCode = tasksExecutorServiceResult;
 		this.taskResult = TaskResult.NONE;
 	}
 
-	public TasksCallableAdapterResult(TasksCallableAdapterResultCode tasksExecutorServiceResult, TaskResult taskResult) {
+	public TasksCallableAdapterResult(final TasksCallableAdapterResultCode tasksExecutorServiceResult, final TaskResult taskResult) {
 		this.tasksCallableAdapterResultCode = tasksExecutorServiceResult;
 		this.taskResult = taskResult;
 	}
@@ -48,7 +48,7 @@ public final class TasksCallableAdapterResult {
 		return new TasksCallableAdapterResult(TasksCallableAdapterResultCode.OK);
 	}
 
-	public static TasksCallableAdapterResult OK(TaskResult taskResult) {
+	public static TasksCallableAdapterResult OK(final TaskResult taskResult) {
 		return new TasksCallableAdapterResult(TasksCallableAdapterResultCode.OK, taskResult);
 	}
 
@@ -68,7 +68,7 @@ public final class TasksCallableAdapterResult {
 		return new TasksCallableAdapterResult(TasksCallableAdapterResultCode.UNEXPECTED_TASK_RUNNING_EXCEPTION);
 	}
 	
-	public static TasksCallableAdapterResult TASK_EXECUTION_FAILED(TaskResult taskResult) {
+	public static TasksCallableAdapterResult TASK_EXECUTION_FAILED(final TaskResult taskResult) {
 		return new TasksCallableAdapterResult(TasksCallableAdapterResultCode.TASK_EXECUTION_FAILED, taskResult);
 	}
 

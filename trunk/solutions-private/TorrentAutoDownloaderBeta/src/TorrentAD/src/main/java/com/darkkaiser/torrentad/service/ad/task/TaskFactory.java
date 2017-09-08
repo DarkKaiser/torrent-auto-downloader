@@ -7,7 +7,7 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 
 public final class TaskFactory {
 
-	public static Task createTask(TaskType type, String taskId, String taskDescription, MetadataRepository metadataRepository) {
+	public static Task createTask(final TaskType type, final String taskId, final String taskDescription, final MetadataRepository metadataRepository) {
 		if (type == TaskType.ONCE_SCHEDULED) {
 			return new OnceScheduledTaskImpl(taskId, taskDescription, metadataRepository);
 		} else if (type == TaskType.PERIODIC_SCHEDULED) {
@@ -20,6 +20,7 @@ public final class TaskFactory {
 	}
 
 	private TaskFactory() {
+
 	}
 	
 }

@@ -30,9 +30,10 @@ public final class ScheduledTasksGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasksGenerator.class);
 	
 	private ScheduledTasksGenerator() {
+
 	}
 
-	public static List<ScheduledTask> generate(Configuration configuration, MetadataRepository metadataRepository, WebSite site) throws Exception {
+	public static List<ScheduledTask> generate(final Configuration configuration, final MetadataRepository metadataRepository, final WebSite site) throws Exception {
 		if (configuration == null)
 			throw new NullPointerException("configuration");
 		if (metadataRepository == null)
@@ -49,7 +50,7 @@ public final class ScheduledTasksGenerator {
 			Document doc = docBuilder.parse(new File(configuration.getFilePath()));
 			doc.getDocumentElement().normalize();
 
-			String nodeName = null;
+			String nodeName;
 			NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK);
 
 			for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
@@ -118,10 +119,10 @@ public final class ScheduledTasksGenerator {
 					}
 				}
 			}
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configuration.getFilePath());
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
 			throw e;
 		}
