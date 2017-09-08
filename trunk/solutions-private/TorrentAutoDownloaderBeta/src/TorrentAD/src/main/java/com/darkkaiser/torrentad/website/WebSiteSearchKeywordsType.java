@@ -12,7 +12,7 @@ public enum WebSiteSearchKeywordsType {
 	
 	private final boolean allowEmpty;
 
-	private WebSiteSearchKeywordsType(String value, boolean allowEmpty) {
+	WebSiteSearchKeywordsType(final String value, final boolean allowEmpty) {
 		this.value = value;
 		this.allowEmpty = allowEmpty;
 	}
@@ -25,13 +25,13 @@ public enum WebSiteSearchKeywordsType {
 		return this.allowEmpty;
 	}
 
-	public static WebSiteSearchKeywordsType fromString(String typeValue) {
+	public static WebSiteSearchKeywordsType fromString(final String typeValue) {
 		if (typeValue == null)
 			throw new NullPointerException("typeValue");
 		if (StringUtil.isBlank(typeValue) == true)
 			throw new IllegalArgumentException("typeValue는 빈 문자열을 허용하지 않습니다.");
 
-		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+		for (final WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (typeValue.equals(type.getValue()) == true)
 				return type;
 	    }

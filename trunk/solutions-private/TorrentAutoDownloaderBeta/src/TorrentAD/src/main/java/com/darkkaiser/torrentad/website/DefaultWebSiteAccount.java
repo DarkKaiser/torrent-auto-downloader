@@ -11,7 +11,7 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 	private final String id;
 	private final String password;
 
-	protected DefaultWebSiteAccount(String id, String password) {
+	protected DefaultWebSiteAccount(final String id, final String password) {
 		validate0(id, password);
 
 		this.id = id;
@@ -33,7 +33,7 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 		validate0(this.id, this.password);
 	}
 
-	private void validate0(String id, String password) {
+	private void validate0(final String id, final String password) {
 		if (id == null)
 			throw new NullPointerException("id");
 		if (StringUtil.isBlank(id) == true)
@@ -48,7 +48,7 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 	public boolean isValid() {
 		try {
 			validate();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.debug(null, e);
 			return false;
 		}
@@ -58,12 +58,10 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-			.append(DefaultWebSiteAccount.class.getSimpleName())
-			.append("{")
-			.append(", id:").append(this.id)
-			.append("}")
-			.toString();
+		return DefaultWebSiteAccount.class.getSimpleName() +
+				"{" +
+				", id:" + this.id +
+				"}";
 	}
 
 }

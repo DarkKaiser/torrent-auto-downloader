@@ -15,7 +15,7 @@ public interface WebSiteBoardItem {
 
 	String getRegistDateString();
 
-	void addDownloadLink(WebSiteBoardItemDownloadLink downloadLink);
+	void addDownloadLink(final WebSiteBoardItemDownloadLink downloadLink);
 
 	void clearDownloadLink();
 

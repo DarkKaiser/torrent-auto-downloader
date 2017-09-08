@@ -1,13 +1,11 @@
 package com.darkkaiser.torrentad.website;
 
-import java.util.Collections;
+import com.darkkaiser.torrentad.util.RadixNotation62Util;
+import org.jsoup.helper.StringUtil;
+
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import org.jsoup.helper.StringUtil;
-
-import com.darkkaiser.torrentad.util.RadixNotation62Util;
 
 public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchResultData {
 
@@ -19,7 +17,7 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 
 	protected final List<WebSiteBoardItem> results;
 
-	public AbstractWebSiteSearchResultData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
+	public AbstractWebSiteSearchResultData(final WebSiteBoard board, final String keyword, final List<WebSiteBoardItem> results) {
 		if (board == null)
 			throw new NullPointerException("board");
 		if (results == null)
@@ -49,25 +47,23 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 	}
 	
 	@Override
-	public Iterator<WebSiteBoardItem> resultIterator(Comparator<? super WebSiteBoardItem> comparator) {
+	public Iterator<WebSiteBoardItem> resultIterator(final Comparator<? super WebSiteBoardItem> comparator) {
 		if (comparator == null)
 			throw new NullPointerException("comparator");
 
-		Collections.sort(this.results, comparator);
+		this.results.sort(comparator);
 
 		return this.results.iterator();
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(AbstractWebSiteSearchResultData.class.getSimpleName())
-				.append("{")
-				.append("identifier:").append(getIdentifier())
-				.append(", board:").append(getBoard())
-				.append(", keyword:").append(getKeyword())
-				.append("}")
-				.toString();
+		return AbstractWebSiteSearchResultData.class.getSimpleName() +
+				"{" +
+				"identifier:" + getIdentifier() +
+				", board:" + getBoard() +
+				", keyword:" + getKeyword() +
+				"}";
 	}
 
 }

@@ -5,8 +5,8 @@ import java.util.Comparator;
 public class WebSiteBoardItemComparatorIdentifierAsc implements Comparator<WebSiteBoardItem> {
 
 	@Override
-	public int compare(WebSiteBoardItem lhs, WebSiteBoardItem rhs) {
-		return lhs.getIdentifier() < rhs.getIdentifier() ? -1 : lhs.getIdentifier() > rhs.getIdentifier() ? 1 : 0;
+	public int compare(final WebSiteBoardItem lhs, final WebSiteBoardItem rhs) {
+		return Long.compare(lhs.getIdentifier(), rhs.getIdentifier());
 	}
 
 }

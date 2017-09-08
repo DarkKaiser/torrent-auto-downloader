@@ -106,11 +106,11 @@ public class BogoBogo extends AbstractWebSite {
 
 	}
 
-	public BogoBogo(String owner, String downloadFileWriteLocation) {
+	public BogoBogo(final String owner, final String downloadFileWriteLocation) {
 		this(null, owner, downloadFileWriteLocation);
 	}
 
-	public BogoBogo(WebSiteConnector siteConnector, String owner, String downloadFileWriteLocation) {
+	public BogoBogo(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.BOGOBOGO);
 
 		if (StringUtil.isBlank(downloadFileWriteLocation) == true)
@@ -124,14 +124,14 @@ public class BogoBogo extends AbstractWebSite {
 	}
 	
 	@Override
-	protected void login0(WebSiteAccount account) throws Exception {
+	protected void login0(final WebSiteAccount account) throws Exception {
 		if (account == null)
 			throw new NullPointerException("account");
 
 		account.validate();
 
-		/**
-		 * 로그인 1단계 수행
+		/*
+		  로그인 1단계 수행
 		 */
 		Connection.Response response = Jsoup.connect(LOGIN_PROCESS_URL_1)
 				.userAgent(USER_AGENT)
@@ -157,8 +157,8 @@ public class BogoBogo extends AbstractWebSite {
 			throw new UnknownLoginException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
 		}
 
-		/**
-		 * 로그인 2단계 수행
+		/*
+		  로그인 2단계 수행
 		 */
 		// 간혹 ConnectException 예외가 발생하므로 루프를 돌린다.
 		for (int loopCount = 0; loopCount < 3; ++loopCount) {
@@ -172,7 +172,7 @@ public class BogoBogo extends AbstractWebSite {
 			} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
 				try {
 					Thread.sleep(100);
-				} catch (Exception e1) {
+				} catch (final Exception ignored) {
 				}
 
 				continue;
@@ -181,8 +181,8 @@ public class BogoBogo extends AbstractWebSite {
 			break;
 		}
 
-		/**
-		 * 로그인 3단계 수행
+		/*
+		  로그인 3단계 수행
 		 */
 		try {
 			Jsoup.connect(LOGIN_PROCESS_URL_2)
@@ -197,8 +197,8 @@ public class BogoBogo extends AbstractWebSite {
 		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
 		}
 		
-		/**
-		 * 로그인 4단계 수행
+		/*
+		  로그인 4단계 수행
 		 */
 		try {
 			Jsoup.connect(LOGIN_PROCESS_URL_3)
@@ -211,8 +211,8 @@ public class BogoBogo extends AbstractWebSite {
 		} catch (HttpStatusException | ConnectException | IllegalArgumentException e) {
 		}
 
-		/**
-		 * 로그인이 정상적으로 완료되었는지 확인한다.
+		/*
+		  로그인이 정상적으로 완료되었는지 확인한다.
 		 */
 		Connection.Response completedCheckResponse = Jsoup.connect(MAIN_PAGE_URL)
 				.userAgent(USER_AGENT)
@@ -228,8 +228,8 @@ public class BogoBogo extends AbstractWebSite {
 		if (completedCheckOuterHtml.contains("<input type=\"button\" value=\"로그아웃\" id=\"lox\" onclick=\"window.location.href='/cdsb/login_process.php?mode=logout'\">") == false)
 			throw new UnknownLoginException("GET " + MAIN_PAGE_URL + " return message:\n" + completedCheckOuterHtml);
 
-		/**
-		 * 로그인 완료 처리 수행
+		/*
+		  로그인 완료 처리 수행
 		 */
 		setAccount(account);
 
@@ -245,14 +245,11 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public boolean isLogin() {
-		if (getAccount() == null || this.loginConnResponse == null)
-			return false;
-
-		return true;
+		return getAccount() != null && this.loginConnResponse != null;
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> list(WebSiteBoard board, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> list(final WebSiteBoard board, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		if (board == null)
 			throw new NullPointerException("board");
 		if (comparator == null)
@@ -266,7 +263,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (BogoBogoBoardItem boardItem : this.boardList.get(board)) {
+		for (final BogoBogoBoardItem boardItem : this.boardList.get(board)) {
 			assert boardItem != null;
 
 			resultList.add(boardItem);
@@ -274,13 +271,13 @@ public class BogoBogo extends AbstractWebSite {
 			// logger.debug("조회된 게시물:" + boardItem);
 		}
 
-		Collections.sort(resultList, comparator);
+		resultList.sort(comparator);
 
 		return resultList.iterator();
 	}
 
 	@Override
-	public Iterator<WebSiteBoardItem> listAndFilter(WebSiteSearchContext searchContext, boolean loadNow, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
+	public Iterator<WebSiteBoardItem> listAndFilter(final WebSiteSearchContext searchContext, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 		if (comparator == null)
@@ -298,7 +295,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
 
-		for (BogoBogoBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
+		for (final BogoBogoBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
@@ -312,13 +309,13 @@ public class BogoBogo extends AbstractWebSite {
 			}
 		}
 
-		Collections.sort(resultList, comparator);
+		resultList.sort(comparator);
 
 		return resultList.iterator();
 	}
 
 	@Override
-	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(WebSiteBoard board, String keyword, Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
+	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(final WebSiteBoard board, final String keyword, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
 		if (board == null)
 			throw new NullPointerException("board");
 		if (comparator == null)
@@ -330,15 +327,7 @@ public class BogoBogo extends AbstractWebSite {
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
 		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
-		this.searchResultDataList.removeIf(new Predicate<WebSiteSearchResultData>() {
-			@Override
-			public boolean test(WebSiteSearchResultData searchResultData) {
-				if (searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true)
-					return true;
-				
-				return false;
-			}
-		});
+		this.searchResultDataList.removeIf((Predicate<WebSiteSearchResultData>) searchResultData -> searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true);
 
 		// 오래된 검색 기록은 모두 제거한다.
 		while (this.searchResultDataList.size() > (MAX_SEARCH_RESULT_DATA_COUNT - 1))
@@ -351,7 +340,7 @@ public class BogoBogo extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (BogoBogoBoardItem boardItem : boardItems) {
+		for (final BogoBogoBoardItem boardItem : boardItems) {
 			assert boardItem != null;
 
 			resultList.add(boardItem);
@@ -363,13 +352,13 @@ public class BogoBogo extends AbstractWebSite {
 		BogoBogoSearchResultData searchResultData = new BogoBogoSearchResultData(board, keyword, resultList);
 		this.searchResultDataList.add(searchResultData);
 
-		return new Tuple<String, Iterator<WebSiteBoardItem>>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
+		return new Tuple<>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
 	}
 	
 	@Override
-	public WebSiteSearchResultData getSearchResultData(String identifier) {
+	public WebSiteSearchResultData getSearchResultData(final String identifier) {
 		if (StringUtil.isBlank(identifier) == false) {
-			for (WebSiteSearchResultData searchResultData : this.searchResultDataList) {
+			for (final WebSiteSearchResultData searchResultData : this.searchResultDataList) {
 				if (searchResultData.getIdentifier().equals(identifier) == true) {
 					return searchResultData;
 				}
@@ -379,7 +368,8 @@ public class BogoBogo extends AbstractWebSite {
 		return null;
 	}
 
-	private boolean loadBoardItems0(BogoBogoBoard board, String queryString, boolean loadNow) throws NoPermissionException {
+	@SuppressWarnings("SameParameterValue")
+    private boolean loadBoardItems0(final BogoBogoBoard board, final String queryString, final boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -399,7 +389,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 	
-	private List<BogoBogoBoardItem> loadBoardItems0_0(BogoBogoBoard board, String queryString) throws NoPermissionException {
+	private List<BogoBogoBoardItem> loadBoardItems0_0(final BogoBogoBoard board, String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -438,7 +428,7 @@ public class BogoBogo extends AbstractWebSite {
 					}
 				} else {
 					try {
-						for (Element element : elements) {
+						for (final Element element : elements) {
 							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 
 							//
@@ -505,21 +495,18 @@ public class BogoBogo extends AbstractWebSite {
 		} catch (NoSuchElementException e) {
 			// 아무 처리도 하지 않는다.
 			return null;
-		} catch (ParseException e) {
-			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
-			return null;
 		} catch (Exception e) {
 			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
 			return null;
 		}
 
-		Collections.sort(boardItems, new WebSiteBoardItemComparatorIdentifierAsc());
+		boardItems.sort(new WebSiteBoardItemComparatorIdentifierAsc());
 		
 		return boardItems;
 	}
 
 	@Override
-	public boolean loadDownloadLink(WebSiteBoardItem boardItem) throws NoPermissionException {
+	public boolean loadDownloadLink(final WebSiteBoardItem boardItem) throws NoPermissionException {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -543,7 +530,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, WebSiteSearchContext searchContext) throws NoPermissionException {
+	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
 		if (searchContext == null)
 			throw new NullPointerException("searchContext");
 		if (boardItem == null)
@@ -560,7 +547,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return new Tuple<Integer, Integer>(-1, -1);
+				return new Tuple<>(-1, -1);
 			}
 		}
 
@@ -577,7 +564,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<Integer, Integer> download(WebSiteBoardItem boardItem, long downloadLinkIndex) throws NoPermissionException {
+	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
 		if (boardItem == null)
 			throw new NullPointerException("boardItem");
 
@@ -591,7 +578,7 @@ public class BogoBogo extends AbstractWebSite {
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
-				return new Tuple<Integer, Integer>(-1, -1);
+				return new Tuple<>(-1, -1);
 			}
 		}
 
@@ -607,7 +594,7 @@ public class BogoBogo extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
-	private boolean loadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) throws NoPermissionException {
+	private boolean loadBoardItemDownloadLink0(final BogoBogoBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -643,7 +630,7 @@ public class BogoBogo extends AbstractWebSite {
 				try {
 					String[] exceptFileExtension = { "JPG", "JPEG", "GIF", "PNG" };
 
-					for (Element element : elements) {
+					for (final Element element : elements) {
 						String id = element.attr("id");
 						String value1 = element.attr("val");
 						String value2 = element.attr("val2");
@@ -658,21 +645,17 @@ public class BogoBogo extends AbstractWebSite {
 
 						boardItem.addDownloadLink(BogoBogoBoardItemDownloadLinkImpl.newInstance(id, value1, value2, value3, value4, fileId, fileName));
 					}
-				} catch (NoSuchElementException e) {
+				} catch (final NoSuchElementException e) {
 					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
 					throw e;
 				}
 			}
-		} catch (NoPermissionException e) {
+		} catch (final NoPermissionException e) {
 			throw e;
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			boardItem.clearDownloadLink();
 			return false;
-		} catch (ParseException e) {
-			boardItem.clearDownloadLink();
-			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
-			return false;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			boardItem.clearDownloadLink();
 			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
@@ -681,7 +664,7 @@ public class BogoBogo extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(BogoBogoBoardItem boardItem) {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final BogoBogoBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -703,8 +686,8 @@ public class BogoBogo extends AbstractWebSite {
 			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
 			try {
-				/**
-				 * 다운로드 페이지로 이동
+				/*
+				  다운로드 페이지로 이동
 				 */
 				Connection.Response downloadProcess1Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_1)
 						.userAgent(USER_AGENT)
@@ -729,8 +712,8 @@ public class BogoBogo extends AbstractWebSite {
 					throw new JsonParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다.(%s)", result));
 				}
 
-				/**
-				 * 다운로드 링크 페이지 열기
+				/*
+				  다운로드 링크 페이지 열기
 				 */
 				String downloadProcessURL2 = String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey());
 				Connection.Response downloadProcess2Response = Jsoup.connect(downloadProcessURL2)
@@ -773,8 +756,8 @@ public class BogoBogo extends AbstractWebSite {
 				// 이렇게 하지 않으면 첨부파일 다운로드가 실패하는 경우가 종종 발생한다.
 				Thread.sleep(10000);
 
-				/**
-				 * 첨부파일 다운로드 하기
+				/*
+				  첨부파일 다운로드 하기
 				 */
 				Connection.Response downloadProcess3Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_3)
 						.userAgent(USER_AGENT)
@@ -795,8 +778,8 @@ public class BogoBogo extends AbstractWebSite {
 				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true)
 					throw new ParseException("첨부파일 다운로드 결과로 Unauthorized Access가 반환되었습니다.", 0);
 
-				/**
-				 * 첨부파일 저장
+				/*
+				  첨부파일 저장
 				 */
 				FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
 				fos.write(downloadProcess3Response.bodyAsBytes());
@@ -808,17 +791,15 @@ public class BogoBogo extends AbstractWebSite {
 				downloadLink.setDownloadCompleted(true);
 				
 				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
-			} catch (ParseException e) {
-				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}
 		}
 
-		return new Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */>(downloadTryCount, downloadCompletedCount);
+		return new Tuple<>(downloadTryCount, downloadCompletedCount);
 	}
 
-	private String trimString(String value) {
+	private String trimString(final String value) {
 		int start = 0;
         int length = value.length();
 
@@ -836,13 +817,11 @@ public class BogoBogo extends AbstractWebSite {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(BogoBogo.class.getSimpleName())
-				.append("{")
-				.append("다운로드파일 저장위치:").append(this.downloadFileWriteLocation)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return BogoBogo.class.getSimpleName() +
+                "{" +
+                "다운로드파일 저장위치:" + this.downloadFileWriteLocation +
+                "}, " +
+                super.toString();
 	}
 
 }

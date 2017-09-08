@@ -8,15 +8,15 @@ public class UnknownLoginException extends RuntimeException {
 		super();
 	}
 
-	public UnknownLoginException(String s) {
+	public UnknownLoginException(final String s) {
 		super(s);
 	}
 
-	public UnknownLoginException(String message, Throwable cause) {
+	public UnknownLoginException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public UnknownLoginException(Throwable cause) {
+	public UnknownLoginException(final Throwable cause) {
 		super(cause);
 	}
 

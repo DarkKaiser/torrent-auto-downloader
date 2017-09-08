@@ -46,7 +46,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	private BogoBogoBoard(String name, String code, String description, String url, boolean hasCategory) {
+	BogoBogoBoard(final String name, final String code, final String description, final String url, final boolean hasCategory) {
 		this.name = name;
 		this.code = code;
 		this.description = description;
@@ -94,11 +94,11 @@ public enum BogoBogoBoard implements WebSiteBoard {
 		return this.hasCategory;
 	}
 
-	public static BogoBogoBoard fromString(String name) {
+	public static BogoBogoBoard fromString(final String name) {
 		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 
-		for (BogoBogoBoard board : BogoBogoBoard.values()) {
+		for (final BogoBogoBoard board : BogoBogoBoard.values()) {
 			if (name.equals(board.getName()) == true)
 				return board;
 	    }

@@ -6,6 +6,6 @@ public interface WebSiteContext {
 
 	WebSiteAccount getAccount();
 
-	void setAccount(WebSiteAccount account);
+	void setAccount(final WebSiteAccount account);
 
 }

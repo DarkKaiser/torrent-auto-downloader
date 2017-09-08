@@ -16,7 +16,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 	protected WebSiteAccount account;
 	
-	protected AbstractWebSite(WebSiteConnector siteConnector, String owner, WebSite site) {
+	protected AbstractWebSite(final WebSiteConnector siteConnector, final String owner, final WebSite site) {
 		if (StringUtil.isBlank(owner) == true)
 			throw new IllegalArgumentException("owner는 빈 문자열을 허용하지 않습니다.");
 		if (site == null)
@@ -29,7 +29,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 	
 	@Override
-	public void login(WebSiteAccount account) throws Exception {
+	public void login(final WebSiteAccount account) throws Exception {
 		logger.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
 
 		logout0();
@@ -38,7 +38,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		logger.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
 	}
 	
-	protected abstract void login0(WebSiteAccount account) throws Exception;
+	protected abstract void login0(final WebSiteAccount account) throws Exception;
 	
 	@Override
 	public void logout() throws Exception {
@@ -70,20 +70,18 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 
 	@Override
-	public void setAccount(WebSiteAccount account) {
+	public void setAccount(final WebSiteAccount account) {
 		this.account = account;
 	}
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-			.append(AbstractWebSite.class.getSimpleName())
-			.append("{")
-			.append("owner:").append(getOwner())
-			.append(", site:").append(this.site)
-			.append(", account:").append(getAccount())
-			.append("}")
-			.toString();
+		return AbstractWebSite.class.getSimpleName() +
+				"{" +
+				"owner:" + getOwner() +
+				", site:" + this.site +
+				", account:" + getAccount() +
+				"}";
 	}
 
 }

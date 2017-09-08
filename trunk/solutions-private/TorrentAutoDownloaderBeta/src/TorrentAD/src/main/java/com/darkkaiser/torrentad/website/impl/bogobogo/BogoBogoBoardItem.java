@@ -11,7 +11,7 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 	// 게시물 상세페이지 URL
 	private final String detailPageURL;
 
-	public BogoBogoBoardItem(BogoBogoBoard board, long identifier, String title, String registDateString, String detailPageURL) throws ParseException {
+	public BogoBogoBoardItem(final BogoBogoBoard board, final long identifier, final String title, final String registDateString, final String detailPageURL) throws ParseException {
 		super(board, identifier, title, registDateString);
 
 		if (StringUtil.isBlank(detailPageURL) == true)
@@ -26,13 +26,11 @@ public class BogoBogoBoardItem extends AbstractWebSiteBoardItem {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(BogoBogoBoardItem.class.getSimpleName())
-				.append("{")
-				.append("detailPageURL:").append(getDetailPageURL())
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return BogoBogoBoardItem.class.getSimpleName() +
+				"{" +
+				"detailPageURL:" + getDetailPageURL() +
+				"}, " +
+				super.toString();
 	}
 
 }

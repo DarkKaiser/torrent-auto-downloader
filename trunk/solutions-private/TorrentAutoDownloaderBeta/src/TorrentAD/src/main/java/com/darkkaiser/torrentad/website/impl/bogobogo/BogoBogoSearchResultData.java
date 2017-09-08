@@ -8,18 +8,16 @@ import com.darkkaiser.torrentad.website.WebSiteBoardItem;
 
 public final class BogoBogoSearchResultData extends AbstractWebSiteSearchResultData {
 
-	public BogoBogoSearchResultData(WebSiteBoard board, String keyword, List<WebSiteBoardItem> results) {
+	public BogoBogoSearchResultData(final WebSiteBoard board, final String keyword, final List<WebSiteBoardItem> results) {
 		super(board, keyword, results);
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(BogoBogoSearchResultData.class.getSimpleName())
-				.append("{")
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return BogoBogoSearchResultData.class.getSimpleName() +
+				"{" +
+				"}, " +
+				super.toString();
 	}
 
 }

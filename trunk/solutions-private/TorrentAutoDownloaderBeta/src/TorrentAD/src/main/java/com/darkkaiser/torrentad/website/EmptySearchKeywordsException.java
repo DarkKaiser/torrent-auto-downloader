@@ -8,15 +8,15 @@ public class EmptySearchKeywordsException extends RuntimeException {
 		super();
 	}
 
-	public EmptySearchKeywordsException(String s) {
+	public EmptySearchKeywordsException(final String s) {
 		super(s);
 	}
 
-	public EmptySearchKeywordsException(String message, Throwable cause) {
+	public EmptySearchKeywordsException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public EmptySearchKeywordsException(Throwable cause) {
+	public EmptySearchKeywordsException(final Throwable cause) {
 		super(cause);
 	}
 	

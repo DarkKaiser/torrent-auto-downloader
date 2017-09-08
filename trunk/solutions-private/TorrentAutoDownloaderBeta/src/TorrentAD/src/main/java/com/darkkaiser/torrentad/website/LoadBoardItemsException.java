@@ -10,15 +10,15 @@ public class LoadBoardItemsException extends IOException {
 		super();
 	}
 
-	public LoadBoardItemsException(String s) {
+	public LoadBoardItemsException(final String s) {
 		super(s);
 	}
 
-	public LoadBoardItemsException(String message, Throwable cause) {
+	public LoadBoardItemsException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public LoadBoardItemsException(Throwable cause) {
+	public LoadBoardItemsException(final Throwable cause) {
 		super(cause);
 	}
 	

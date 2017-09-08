@@ -8,15 +8,15 @@ public class IncorrectLoginAccountException extends RuntimeException {
 		super();
 	}
 	
-	public IncorrectLoginAccountException(String s) {
+	public IncorrectLoginAccountException(final String s) {
 		super(s);
 	}
     
-	public IncorrectLoginAccountException(String message, Throwable cause) {
+	public IncorrectLoginAccountException(final String message, final Throwable cause) {
         super(message, cause);
     }
     
-    public IncorrectLoginAccountException(Throwable cause) {
+    public IncorrectLoginAccountException(final Throwable cause) {
         super(cause);
     }
     

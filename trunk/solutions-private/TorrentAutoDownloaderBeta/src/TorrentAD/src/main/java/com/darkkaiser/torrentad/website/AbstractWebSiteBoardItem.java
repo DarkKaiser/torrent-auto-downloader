@@ -28,7 +28,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	// 첨부파일에 대한 다운로드 링크 목록
 	private final List<WebSiteBoardItemDownloadLink> downloadLinks = new ArrayList<>();
 
-	protected AbstractWebSiteBoardItem(WebSiteBoard board, long identifier, String title, String registDateString) throws ParseException {
+	protected AbstractWebSiteBoardItem(final WebSiteBoard board, final long identifier, final String title, final String registDateString) throws ParseException {
 		if (board == null)
 			throw new NullPointerException("board");
 		if (identifier == WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE)
@@ -71,7 +71,7 @@ public abstract class AbstractWebSiteBoardItem implements WebSiteBoardItem {
 	}
 	
 	@Override
-	public void addDownloadLink(WebSiteBoardItemDownloadLink downloadLink) {
+	public void addDownloadLink(final WebSiteBoardItemDownloadLink downloadLink) {
 		if (downloadLink == null)
 			throw new NullPointerException("downloadLink");
 

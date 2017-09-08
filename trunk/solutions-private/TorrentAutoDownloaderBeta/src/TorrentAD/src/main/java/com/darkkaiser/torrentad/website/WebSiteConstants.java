@@ -6,6 +6,7 @@ public final class WebSiteConstants {
 	public static final long INVALID_BOARD_ITEM_IDENTIFIER_VALUE = 0;
 
 	private WebSiteConstants() {
+
 	}
 
 }

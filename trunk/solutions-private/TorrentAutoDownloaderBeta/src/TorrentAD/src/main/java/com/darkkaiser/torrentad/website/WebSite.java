@@ -9,7 +9,7 @@ public enum WebSite {
 
 	BOGOBOGO("보고보고") {
 		@Override
-		public WebSiteConnection createConnection(WebSiteConnector siteConnector, String owner, String downloadFileWriteLocation) {
+		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 			return new RetryLoginOnNoPermissionWebSite(new BogoBogo(siteConnector, owner, downloadFileWriteLocation));
 		}
 
@@ -19,17 +19,17 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteBoard getBoardByName(String name) {
+		public WebSiteBoard getBoardByName(final String name) {
 			return BogoBogoBoard.fromString(name);
 		}
 
 		@Override
-		public WebSiteBoard getBoardByCode(String code) {
+		public WebSiteBoard getBoardByCode(final String code) {
 			if (StringUtil.isBlank(code) == true)
 				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
 
 			WebSiteBoard[] boardValues = getBoardValues();
-			for (WebSiteBoard board : boardValues) {
+			for (final WebSiteBoard board : boardValues) {
 				if (board.getCode().equals(code) == true)
 					return board;
 			}
@@ -45,7 +45,7 @@ public enum WebSite {
 
 	private String name;
 	
-	private WebSite(String name) {
+	WebSite(final String name) {
 		this.name = name;
 	}
 
@@ -53,13 +53,13 @@ public enum WebSite {
 		return this.name;
 	}
 
-	public static WebSite fromString(String name) {
+	public static WebSite fromString(final String name) {
 		if (name == null)
 			throw new NullPointerException("name");
 		if (StringUtil.isBlank(name) == true)
 			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
 
-		for (WebSite site : WebSite.values()) {
+		for (final WebSite site : WebSite.values()) {
 			if (name.equals(site.getName()) == true)
 				return site;
 	    }
@@ -67,21 +67,21 @@ public enum WebSite {
 		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", WebSite.class.getSimpleName(), name));
 	}
 
-	public WebSiteAccount createAccount(String id, String password) {
+	public WebSiteAccount createAccount(final String id, final String password) {
 		return new DefaultWebSiteAccount(id, password);
 	}
 	
-	public abstract WebSiteConnection createConnection(WebSiteConnector siteConnector, String owner, String downloadFileWriteLocation);
+	public abstract WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation);
 	
 	public abstract WebSiteSearchContext createSearchContext();
 	
-	public WebSiteSearchKeywords createSearchKeywords(String modeValue) {
+	public WebSiteSearchKeywords createSearchKeywords(final String modeValue) {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
 
-	public abstract WebSiteBoard getBoardByName(String name);
+	public abstract WebSiteBoard getBoardByName(final String name);
 
-	public abstract WebSiteBoard getBoardByCode(String code);
+	public abstract WebSiteBoard getBoardByCode(final String code);
 
 	public abstract WebSiteBoard[] getBoardValues();
 

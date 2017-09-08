@@ -17,7 +17,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 	private final List<List<String>> keywords = new ArrayList<>();
 
-	public DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode mode) {
+	public DefaultWebSiteSearchKeywords(final WebSiteSearchKeywordsMode mode) {
 		if (mode == null)
 			throw new NullPointerException("mode");
 
@@ -25,7 +25,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	}
 
 	@Override
-	public void add(String keyword) {
+	public void add(final String keyword) {
 		if (StringUtil.isBlank(keyword) == true)
 			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
 
@@ -33,15 +33,15 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	}
 
 	@Override
-	public boolean isSatisfySearchCondition(String text) {
+	public boolean isSatisfySearchCondition(final String text) {
 		if (StringUtil.isBlank(text) == true)
 			throw new IllegalArgumentException("text는 빈 문자열을 허용하지 않습니다.");
 		
-		int index = 0;
+		int index;
 		String upperCaseText = text.toUpperCase();
 		
 		if (mode == WebSiteSearchKeywordsMode.INCLUDE) {
-			for (List<String> splitKeywords : this.keywords) {
+			for (final List<String> splitKeywords : this.keywords) {
 				for (index = 0; index < splitKeywords.size(); ++index) {
 					if (upperCaseText.contains(splitKeywords.get(index)) == false)
 						break;
@@ -53,7 +53,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
 			return false;
 		} else {
-			for (List<String> splitKeywords : this.keywords) {
+			for (final List<String> splitKeywords : this.keywords) {
 				for (index = 0; index < splitKeywords.size(); ++index) {
 					if (upperCaseText.contains(splitKeywords.get(index)) == false)
 						break;
@@ -77,7 +77,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 	public boolean isValid() {
 		try {
 			validate();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.debug(null, e);
 			return false;
 		}

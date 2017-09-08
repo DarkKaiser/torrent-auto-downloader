@@ -11,6 +11,6 @@ public interface WebSiteSearchResultData {
 
 	String getKeyword();
 	
-	Iterator<WebSiteBoardItem> resultIterator(Comparator<? super WebSiteBoardItem> comparator);
+	Iterator<WebSiteBoardItem> resultIterator(final Comparator<? super WebSiteBoardItem> comparator);
 
 }

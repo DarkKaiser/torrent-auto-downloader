@@ -15,11 +15,11 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 	private boolean downloadable = true;
 	private boolean downloadCompleted = false;
 
-	public static BogoBogoBoardItemDownloadLink newInstance(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
+	public static BogoBogoBoardItemDownloadLink newInstance(final String id, final String value1, final String value2, final String value3, final String value4, final String fileId, final String fileName) {
 		return new BogoBogoBoardItemDownloadLinkImpl(id, value1, value2, value3, value4, fileId, fileName);
 	}
 
-	private BogoBogoBoardItemDownloadLinkImpl(String id, String value1, String value2, String value3, String value4, String fileId, String fileName) {
+	private BogoBogoBoardItemDownloadLinkImpl(final String id, final String value1, final String value2, final String value3, final String value4, final String fileId, final String fileName) {
 		if (StringUtil.isBlank(id) == true)
 			throw new IllegalArgumentException("id는 빈 문자열을 허용하지 않습니다.");
 		if (StringUtil.isBlank(value1) == true)
@@ -83,7 +83,7 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 	}
 	
 	@Override
-	public void setDownloadable(boolean flag) {
+	public void setDownloadable(final boolean flag) {
 		this.downloadable = flag;
 	}
 	
@@ -93,7 +93,7 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 	}
 	
 	@Override
-	public void setDownloadCompleted(boolean flag) {
+	public void setDownloadCompleted(final boolean flag) {
 		this.downloadCompleted = flag;
 	}
 

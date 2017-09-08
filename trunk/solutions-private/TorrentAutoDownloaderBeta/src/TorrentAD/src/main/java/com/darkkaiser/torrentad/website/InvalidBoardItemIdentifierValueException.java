@@ -8,15 +8,15 @@ public class InvalidBoardItemIdentifierValueException extends RuntimeException {
 		super();
 	}
 	
-	public InvalidBoardItemIdentifierValueException(String s) {
+	public InvalidBoardItemIdentifierValueException(final String s) {
 		super(s);
 	}
     
-	public InvalidBoardItemIdentifierValueException(String message, Throwable cause) {
+	public InvalidBoardItemIdentifierValueException(final String message, final Throwable cause) {
         super(message, cause);
     }
     
-    public InvalidBoardItemIdentifierValueException(Throwable cause) {
+    public InvalidBoardItemIdentifierValueException(final Throwable cause) {
         super(cause);
     }
     

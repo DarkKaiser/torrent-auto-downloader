@@ -4,10 +4,10 @@ public interface WebSiteBoardItemDownloadLink {
 
 	boolean isDownloadable();
 
-	void setDownloadable(boolean flag);
+	void setDownloadable(final boolean flag);
 
 	boolean isDownloadCompleted();
 
-	void setDownloadCompleted(boolean flag);
+	void setDownloadCompleted(final boolean flag);
 
 }

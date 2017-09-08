@@ -9,7 +9,7 @@ public enum WebSiteSearchKeywordsMode {
 	
 	private final String value;
 
-	private WebSiteSearchKeywordsMode(String value) {
+	WebSiteSearchKeywordsMode(final String value) {
 		this.value = value;
 	}
 
@@ -21,13 +21,13 @@ public enum WebSiteSearchKeywordsMode {
 		return INCLUDE;
 	}
 	
-	public static WebSiteSearchKeywordsMode fromString(String modeValue) {
+	public static WebSiteSearchKeywordsMode fromString(final String modeValue) {
 		if (modeValue == null)
 			throw new NullPointerException("modeValue");
 		if (StringUtil.isBlank(modeValue) == true)
 			throw new IllegalArgumentException("modeValue는 빈 문자열을 허용하지 않습니다.");
 
-		for (WebSiteSearchKeywordsMode type : WebSiteSearchKeywordsMode.values()) {
+		for (final WebSiteSearchKeywordsMode type : WebSiteSearchKeywordsMode.values()) {
 			if (modeValue.equals(type.getValue()) == true)
 				return type;
 	    }

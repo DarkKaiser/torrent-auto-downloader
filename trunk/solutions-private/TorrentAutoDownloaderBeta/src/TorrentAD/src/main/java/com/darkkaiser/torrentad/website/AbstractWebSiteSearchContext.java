@@ -18,13 +18,13 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 
 	private final Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
-	public AbstractWebSiteSearchContext(WebSite site) {
+	public AbstractWebSiteSearchContext(final WebSite site) {
 		if (site == null)
 			throw new NullPointerException("site");
 
 		this.site = site;
 
-		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+		for (final WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			this.searchKeywords.put(type, new ArrayList<>());
 	    }
 	}
@@ -35,7 +35,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	}
 
 	@Override
-	public void addSearchKeywords(WebSiteSearchKeywordsType type, WebSiteSearchKeywords searchKeywords) {
+	public void addSearchKeywords(final WebSiteSearchKeywordsType type, final WebSiteSearchKeywords searchKeywords) {
 		if (type == null)
 			throw new NullPointerException("type");
 		if (searchKeywords == null)
@@ -45,7 +45,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	}
 
 	@Override
-	public boolean isSatisfySearchCondition(WebSiteSearchKeywordsType type, String text) {
+	public boolean isSatisfySearchCondition(final WebSiteSearchKeywordsType type, final String text) {
 		if (type == null)
 			throw new NullPointerException("type");
 		if (StringUtil.isBlank(text) == true)
@@ -69,7 +69,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 		if (this.site == null)
 			throw new NullPointerException("site");
 
-		for (WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
+		for (final WebSiteSearchKeywordsType type : WebSiteSearchKeywordsType.values()) {
 			if (type.allowEmpty() == false) {
 				if (this.searchKeywords.get(type).isEmpty() == true)
 					throw new EmptySearchKeywordsException(String.format("등록된 검색 키워드 목록이 없습니다.(%s)", type.getValue()));
@@ -81,7 +81,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	public boolean isValid() {
 		try {
 			validate();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.debug(null, e);
 			return false;
 		}

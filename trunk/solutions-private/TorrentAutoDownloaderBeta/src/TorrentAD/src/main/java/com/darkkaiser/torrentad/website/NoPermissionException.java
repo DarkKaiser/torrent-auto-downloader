@@ -10,15 +10,15 @@ public class NoPermissionException extends IOException {
 		super();
 	}
 
-	public NoPermissionException(String s) {
+	public NoPermissionException(final String s) {
 		super(s);
 	}
 
-	public NoPermissionException(String message, Throwable cause) {
+	public NoPermissionException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public NoPermissionException(Throwable cause) {
+	public NoPermissionException(final Throwable cause) {
 		super(cause);
 	}
 	

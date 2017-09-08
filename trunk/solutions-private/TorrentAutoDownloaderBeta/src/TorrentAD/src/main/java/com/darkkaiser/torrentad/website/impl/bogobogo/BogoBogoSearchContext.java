@@ -19,7 +19,7 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	}
 
 	@Override
-	public void setBoardName(String name) {
+	public void setBoardName(final String name) {
 		this.board = BogoBogoBoard.fromString(name);
 	}
 
@@ -29,7 +29,7 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 	}
 	
 	@Override
-	public void setLatestDownloadBoardItemIdentifier(long identifier) {
+	public void setLatestDownloadBoardItemIdentifier(final long identifier) {
 		this.latestDownloadBoardItemIdentifier = identifier;
 	}
 
@@ -43,14 +43,12 @@ public class BogoBogoSearchContext extends AbstractWebSiteSearchContext {
 
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append(BogoBogoSearchContext.class.getSimpleName())
-				.append("{")
-				.append("board:").append(this.board)
-				.append(", latestDownloadBoardItemIdentifier:").append(this.latestDownloadBoardItemIdentifier)
-				.append("}, ")
-				.append(super.toString())
-				.toString();
+		return BogoBogoSearchContext.class.getSimpleName() +
+				"{" +
+				"board:" + this.board +
+				", latestDownloadBoardItemIdentifier:" + this.latestDownloadBoardItemIdentifier +
+				"}, " +
+				super.toString();
 	}
 	
 }
