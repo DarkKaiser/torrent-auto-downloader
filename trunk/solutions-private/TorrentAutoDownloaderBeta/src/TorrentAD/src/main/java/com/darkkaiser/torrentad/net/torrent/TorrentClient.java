@@ -13,9 +13,9 @@ public interface TorrentClient {
 
 	boolean isConnected();
 
-	boolean addTorrent(File file, boolean paused) throws Exception;
+	boolean addTorrent(final File file, final boolean paused) throws Exception;
 
-	boolean startTorrent(List<Long> ids) throws Exception;
+	boolean startTorrent(final List<Long> ids) throws Exception;
 
 	TorrentGetMethodResult getTorrent() throws Exception;
 

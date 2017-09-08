@@ -1,13 +1,9 @@
 package com.darkkaiser.torrentad.net.torrent.transmission;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
-import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.SessionGetMethodResult;
-import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentStartMethodResult;
+import com.darkkaiser.torrentad.net.torrent.TorrentClient;
+import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
@@ -16,13 +12,10 @@ import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import com.darkkaiser.torrentad.net.torrent.TorrentClient;
-import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.MethodResult;
-import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentAddMethodResult;
-import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
 
 public class TransmissionRpcClient implements TorrentClient {
 
@@ -113,14 +106,11 @@ public class TransmissionRpcClient implements TorrentClient {
 
 	@Override
 	public boolean isConnected() {
-		if (StringUtil.isBlank(this.sessionId) == true || StringUtil.isBlank(this.authorization) == true)
-			return false;
-
-		return true;
+		return StringUtil.isBlank(this.sessionId) != true && StringUtil.isBlank(this.authorization) != true;
 	}
 
 	@Override
-	public boolean addTorrent(File file, boolean paused) throws Exception {
+	public boolean addTorrent(final File file, final boolean paused) throws Exception {
 		if (file == null)
 			throw new NullPointerException("file");
 
@@ -166,13 +156,11 @@ public class TransmissionRpcClient implements TorrentClient {
 			return true;
 		}
 
-		assert methodResult.arguments.torrentAdded != null;
-
 		return true;
 	}
 	
 	@Override
-	public boolean startTorrent(List<Long> ids) throws Exception {
+	public boolean startTorrent(final List<Long> ids) throws Exception {
 		if (ids == null)
 			throw new NullPointerException("ids");
 
@@ -187,7 +175,7 @@ public class TransmissionRpcClient implements TorrentClient {
 		// ID 목록을 문자열로 변환한다.
 		boolean first = true;
 		StringBuilder sbIds = new StringBuilder();
-		for (Long id : ids) {
+		for (final Long id : ids) {
 			if (first == false) {
 				sbIds.append(",")
 					 .append(id);
@@ -254,14 +242,14 @@ public class TransmissionRpcClient implements TorrentClient {
 		return methodResult;
 	}
 	
-	private String encodeFileToBase64(File file) throws IOException {
+	private String encodeFileToBase64(final File file) throws IOException {
 		assert file != null;
 
 		try (FileInputStream fis = new FileInputStream(file)) {
 			byte[] bytes = new byte[(int) file.length()];
 
+			int numRead;
 			int offset = 0;
-			int numRead = 0;
 			while (offset < bytes.length && (numRead = fis.read(bytes, offset, bytes.length - offset)) >= 0) {
 				offset += numRead;
 			}
@@ -271,10 +259,6 @@ public class TransmissionRpcClient implements TorrentClient {
 			}
 
 			return new String(Base64.encodeBase64(bytes));
-		} catch (FileNotFoundException e) {
-			throw e;
-		} catch (IOException e) {
-			throw e;
 		}
 	}
 

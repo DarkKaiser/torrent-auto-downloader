@@ -55,7 +55,7 @@ public class FTPClient {
 
 			this.ftpClient.setSoTimeout(10000);
 			this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 			return false;
 		}
@@ -70,13 +70,13 @@ public class FTPClient {
 		if (this.ftpClient.isConnected() == true) {
 			try {
 				this.ftpClient.logout();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				logger.error("error logging off the ftp client: {}", e.getMessage());
 			}
 
 			try {
 				this.ftpClient.disconnect();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				logger.error("error disconnecting from the ftp client: {}", e.getMessage());
 			}
 		}
@@ -85,10 +85,7 @@ public class FTPClient {
 	}
 
 	public boolean isConnected() {
-		if (this.ftpClient == null)
-			return false;
-
-		return this.ftpClient.isConnected();
+		return this.ftpClient != null && this.ftpClient.isConnected();
 	}
 
 	public boolean download(final File file, final String remotePath) throws Exception {
