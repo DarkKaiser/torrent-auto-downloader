@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'application'
 
 group = 'com.darkkaiser'
 version = '1.0.0'
@@ -8,16 +8,21 @@ description = """TorrentAD"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+// 소스 인코딩 지정
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-
+// 빌드결과 폴더 지정
+buildDir = 'build'
 
 repositories {
+    mavenCentral()
+
     maven { url "https://jitpack.io" }
-    maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
