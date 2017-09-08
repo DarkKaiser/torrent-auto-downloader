@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
@@ -36,10 +37,9 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean transmit(final File file) throws Exception {
-		if (file == null)
-			throw new NullPointerException("file");
-		if (this.torrentClient == null)
-			throw new NullPointerException("torrentClient");
+		Objects.requireNonNull(file, "file");
+		Objects.requireNonNull(this.torrentClient, "torrentClient");
+
 		if (this.torrentClient.isConnected() == false)
 			throw new IllegalStateException("토렌트 서버에 연결되어 있지 않습니다.");
 
@@ -54,6 +54,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean transmitFinished() {
+		//noinspection Duplicates
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();
@@ -69,8 +70,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean support(File file) {
-		if (file == null)
-			throw new NullPointerException("file");
+		Objects.requireNonNull(file, "file");
 
 		return file.isDirectory() != true && file.getName().toLowerCase().endsWith(".torrent");
 	}

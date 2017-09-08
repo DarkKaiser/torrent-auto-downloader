@@ -1,22 +1,17 @@
 package com.darkkaiser.torrentad.service.au.action.transmission;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.darkkaiser.torrentad.config.Configuration;
-import com.darkkaiser.torrentad.service.au.transmitter.FileTransmitter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.darkkaiser.torrentad.service.au.action.AbstractAction;
 import com.darkkaiser.torrentad.service.au.action.ActionType;
 import com.darkkaiser.torrentad.service.au.action.UnsupportedTransmissionFileException;
 import com.darkkaiser.torrentad.service.au.transmitter.FTPFileTransmitter;
+import com.darkkaiser.torrentad.service.au.transmitter.FileTransmitter;
 import com.darkkaiser.torrentad.service.au.transmitter.TorrentFileTransmitter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.*;
 
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
@@ -50,7 +45,6 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 			if (entry.getValue() == true) {
 				logger.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
 
-				//noinspection ResultOfMethodCallIgnored
 				entry.getKey().delete();
 			}
 		}
@@ -85,8 +79,8 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 
 	@Override
 	public boolean addFile(final File file) {
-		if (file == null)
-			throw new NullPointerException("file");
+		Objects.requireNonNull(file, "file");
+
 		if (file.isFile() == false)
 			throw new UnsupportedTransmissionFileException(file.getAbsolutePath());
 

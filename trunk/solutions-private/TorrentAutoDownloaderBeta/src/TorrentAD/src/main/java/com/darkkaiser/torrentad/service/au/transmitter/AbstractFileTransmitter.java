@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.util.crypto.AES256Util;
 
+import java.util.Objects;
+
 public abstract class AbstractFileTransmitter implements FileTransmitter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AbstractFileTransmitter.class);
@@ -15,8 +17,7 @@ public abstract class AbstractFileTransmitter implements FileTransmitter {
 	private AES256Util aes256;
 
 	protected AbstractFileTransmitter(final Configuration configuration) {
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.configuration = configuration;
 	}

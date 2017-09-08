@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
@@ -59,6 +60,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 	@Override
 	protected void afterExecute() {
+		//noinspection Duplicates
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();
@@ -72,8 +74,8 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 	@Override
 	protected void execute() throws Exception {
-		if (this.torrentClient == null)
-			throw new NullPointerException("torrentClient");
+		Objects.requireNonNull(this.torrentClient, "torrentClient");
+
 		if (this.torrentClient.isConnected() == false)
 			throw new IllegalStateException("토렌트 서버에 연결되어 있지 않습니다.");
 

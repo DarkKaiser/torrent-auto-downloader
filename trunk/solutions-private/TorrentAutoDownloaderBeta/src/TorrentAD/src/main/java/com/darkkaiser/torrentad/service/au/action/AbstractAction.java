@@ -4,6 +4,8 @@ import com.darkkaiser.torrentad.config.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public abstract class AbstractAction implements Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractAction.class);
@@ -13,10 +15,8 @@ public abstract class AbstractAction implements Action {
 	protected final Configuration configuration;
 
 	protected AbstractAction(final ActionType actionType, final Configuration configuration) {
-		if (actionType == null)
-			throw new NullPointerException("actionType");
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(actionType, "actionType");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.actionType = actionType;
 		this.configuration = configuration;
