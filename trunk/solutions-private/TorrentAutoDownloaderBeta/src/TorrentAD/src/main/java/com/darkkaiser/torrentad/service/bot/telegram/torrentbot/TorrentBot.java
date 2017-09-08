@@ -29,6 +29,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TorrentBot extends TelegramLongPollingBot implements TorrentBotResource {
@@ -48,12 +49,9 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private final MetadataRepository metadataRepository;
 
 	public TorrentBot(final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService, final Configuration configuration) throws Exception {
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
-		if (fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
+		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.configuration = configuration;
 		this.metadataRepository = new MetadataRepositoryImpl(Constants.BOT_SERVICE_METADATA_REPOSITORY_FILE_NAME);
@@ -117,8 +115,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		try {
 			if (this.torrentClient.connect(id, password) == false)
 				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
-		} catch (final Exception e) {
-			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
+		} catch (final Exception e2) {
+			logger.error("토렌트 서버 접속이 실패하였습니다.", e2);
 			return null;
 		}
 
@@ -128,7 +126,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private void initChatRooms() {
 		String chatIds = this.metadataRepository.getString(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS, "");
 		String[] chatIdArrays = chatIds.split(Constants.BOT_SERVICE_MR_KEY_REGISTERED_CHAT_IDS_SEPARATOR);
-		for (String chatId : chatIdArrays) {
+		for (final String chatId : chatIdArrays) {
 			if (StringUtil.isBlank(chatId) == false) {
 				try {
 					newChatRoom(Long.parseLong(chatId));
@@ -150,8 +148,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 	@Override
 	public void onUpdateReceived(final Update update) {
-		if (update == null)
-			throw new NullPointerException("update");
+		Objects.requireNonNull(update, "update");
 
 		try {
 			if (update.hasMessage() == true) {

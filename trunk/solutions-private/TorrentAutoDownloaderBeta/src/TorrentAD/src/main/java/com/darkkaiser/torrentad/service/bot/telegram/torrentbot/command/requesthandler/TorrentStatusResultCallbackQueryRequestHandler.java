@@ -1,16 +1,17 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.TorrentStatusImmediatelyTaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.TorrentStatusImmediatelyTaskAction;
+import java.util.Objects;
 
 public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
 
@@ -23,10 +24,8 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 	public TorrentStatusResultCallbackQueryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND);
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;

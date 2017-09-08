@@ -1,20 +1,21 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
+import com.darkkaiser.torrentad.website.WebSite;
+import com.darkkaiser.torrentad.website.WebSiteBoard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
+import java.util.Objects;
 
 public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
@@ -31,14 +32,10 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 	public WebSiteBoardSearchRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final RequestHandlerRegistry requestHandlerRegistry) {
 		super("search", "검색", "/search (검색) [검색어]\n/search (검색) [게시판] [검색어]", "선택된 게시판을 검색합니다.");
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
-		if (requestHandlerRegistry == null)
-			throw new NullPointerException("requestHandlerRegistry");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
+		Objects.requireNonNull(requestHandlerRegistry, "requestHandlerRegistry");
 
 		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;

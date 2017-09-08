@@ -1,14 +1,15 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
+import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
-import com.darkkaiser.torrentad.website.WebSite;
+import java.util.Objects;
 
 public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
@@ -17,10 +18,8 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 	public WebSiteBoardSelectRequestHandler(final TorrentBotResource torrentBotResource) {
 		super("select", "선택", "/select (선택)", "조회 및 검색하려는 게시판을 선택합니다.");
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
 
 		this.site = torrentBotResource.getSite();
 	}

@@ -15,28 +15,31 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		this(command, "", "", "");
 	}
 
-	public AbstractBotCommandRequestHandler(String command, String commandKor, final String commandSyntax, final String commandDescription) {
+	public AbstractBotCommandRequestHandler(final String command, final String commandKor, final String commandSyntax, final String commandDescription) {
 		super(command);
 
-		if (StringUtil.isBlank(command) == true)
+		String _command = command;
+		String _commandKor = commandKor;
+
+		if (StringUtil.isBlank(_command) == true)
 			throw new IllegalArgumentException("command는 빈 문자열을 허용하지 않습니다.");
 
-		if (command.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
-			command = command.substring(1);
-		if (command.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
+		if (_command.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
+			_command = _command.substring(1);
+		if (_command.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
 			throw new IllegalArgumentException("command의 길이는 최대 " + BotCommandConstants.BOT_COMMAND_MAX_LENGTH + "자 입니다.");
 
-		if (StringUtil.isBlank(commandKor) == false) {
-			if (commandKor.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
-				commandKor = commandKor.substring(1);
-			if (commandKor.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
+		if (StringUtil.isBlank(_commandKor) == false) {
+			if (_commandKor.startsWith(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER) == true)
+				_commandKor = _commandKor.substring(1);
+			if (_commandKor.length() > BotCommandConstants.BOT_COMMAND_MAX_LENGTH)
 				throw new IllegalArgumentException("commandKor의 길이는 최대 " + BotCommandConstants.BOT_COMMAND_MAX_LENGTH + "자 입니다.");
 		} else {
-			commandKor = "";
+			_commandKor = "";
 		}
 
-		this.command = command.toLowerCase();
-		this.commandKor = commandKor;
+		this.command = _command.toLowerCase();
+		this.commandKor = _commandKor;
 		this.commandSyntax = commandSyntax;
 		this.commandDescription = commandDescription;
 	}

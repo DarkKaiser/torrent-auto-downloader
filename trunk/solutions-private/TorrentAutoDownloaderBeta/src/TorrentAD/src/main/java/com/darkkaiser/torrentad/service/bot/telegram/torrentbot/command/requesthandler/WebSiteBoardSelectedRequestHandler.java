@@ -1,20 +1,20 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
+import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.website.WebSite;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandRequestHandler {
 
@@ -25,12 +25,9 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 	public WebSiteBoardSelectedRequestHandler(final TorrentBotResource torrentBotResource, final RequestHandlerRegistry requestHandlerRegistry) {
 		super("$selected$");
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (requestHandlerRegistry == null)
-			throw new NullPointerException("requestHandlerRegistry");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(requestHandlerRegistry, "requestHandlerRegistry");
 
 		this.site = torrentBotResource.getSite();
 		this.requestHandlerRegistry = requestHandlerRegistry;

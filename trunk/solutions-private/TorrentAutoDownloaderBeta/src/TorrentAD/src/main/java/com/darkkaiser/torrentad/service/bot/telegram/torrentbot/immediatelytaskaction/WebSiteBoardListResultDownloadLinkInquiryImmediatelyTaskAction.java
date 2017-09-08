@@ -1,28 +1,23 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Iterator;
-
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
-import com.darkkaiser.torrentad.website.NoPermissionException;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.website.*;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.website.LoadBoardItemsException;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction extends AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction {
 	
 	private final WebSiteBoard board;
 	
-	public WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final long boardItemIdentifier, TorrentBotResource torrentBotResource) {
+	public WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final long boardItemIdentifier, final TorrentBotResource torrentBotResource) {
 		super(messageId, absSender, chatRoom, boardItemIdentifier, torrentBotResource);
 
-		if (board == null)
-			throw new NullPointerException("board");
+		Objects.requireNonNull(board, "board");
 
 		this.board = board;
 	}
@@ -49,8 +44,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction exte
 	public void validate() {
 		super.validate();
 
-		if (this.board == null)
-			throw new NullPointerException("board");
+		Objects.requireNonNull(this.board, "board");
 	}
 
 }

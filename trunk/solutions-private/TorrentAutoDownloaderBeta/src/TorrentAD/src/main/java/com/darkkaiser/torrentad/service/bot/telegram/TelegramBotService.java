@@ -1,10 +1,9 @@
 package com.darkkaiser.torrentad.service.bot.telegram;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
+import com.darkkaiser.torrentad.service.bot.BotService;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +12,9 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.logging.BotLogger;
 import org.telegram.telegrambots.updatesreceivers.BotSession;
 
-import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
-import com.darkkaiser.torrentad.service.bot.BotService;
+import java.util.Objects;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 
 public class TelegramBotService implements BotService {
 
@@ -33,12 +33,9 @@ public class TelegramBotService implements BotService {
 	private final Configuration configuration;
 
 	public TelegramBotService(final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService, final Configuration configuration) {
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
-		if (fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
-		if (configuration == null)
-			throw new NullPointerException("configuration");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
+		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
+		Objects.requireNonNull(configuration, "configuration");
 
 		this.configuration = configuration;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;

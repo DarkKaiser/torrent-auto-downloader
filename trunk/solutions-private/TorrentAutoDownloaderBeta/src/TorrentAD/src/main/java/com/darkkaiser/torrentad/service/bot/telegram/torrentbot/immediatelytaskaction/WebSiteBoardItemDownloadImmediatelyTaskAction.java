@@ -1,15 +1,12 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.util.Tuple;
+import com.darkkaiser.torrentad.website.*;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +14,10 @@ import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
-import com.darkkaiser.torrentad.website.WebSiteHandler;
-import com.darkkaiser.torrentad.website.WebSiteSearchResultData;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -53,22 +48,14 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	public WebSiteBoardItemDownloadImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final WebSiteBoard board, final long boardItemIdentifier, final long boardItemDownloadLinkIndex,
 														 final TorrentBotResource torrentBotResource, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (board == null)
-			throw new NullPointerException("board");
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (torrentBotResource.getSiteConnector() == null)
-			throw new NullPointerException("siteConnector");
-		if (torrentBotResource.getSiteConnector().getConnection() == null)
-			throw new NullPointerException("siteConnection");
-		if (fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatRoom, "chatRoom");
+		Objects.requireNonNull(board, "board");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector(), "siteConnector");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector().getConnection(), "siteConnection");
+		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
 
 		this.messageId = messageId;
 		
@@ -86,25 +73,20 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 		this.fileTransmissionExecutorService = fileTransmissionExecutorService;
 	}
 
-	public WebSiteBoardItemDownloadImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final String searchResultDataIdentifier, final long boardItemIdentifier, long boardItemDownloadLinkIndex,
+	public WebSiteBoardItemDownloadImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final String searchResultDataIdentifier, final long boardItemIdentifier, final long boardItemDownloadLinkIndex,
 														 final TorrentBotResource torrentBotResource, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatRoom == null)
-			throw new NullPointerException("chatRoom");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatRoom, "chatRoom");
+
 		if (StringUtil.isBlank(searchResultDataIdentifier) == true)
 			throw new IllegalArgumentException("searchResultDataIdentifier는 빈 문자열을 허용하지 않습니다.");
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (torrentBotResource.getSiteConnector() == null)
-			throw new NullPointerException("siteConnector");
-		if (torrentBotResource.getSiteConnector().getConnection() == null)
-			throw new NullPointerException("siteConnection");
-		if (fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
+
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector(), "siteConnector");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector().getConnection(), "siteConnection");
+		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
 
 		this.messageId = messageId;
 		
@@ -197,18 +179,15 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	public void validate() {
 		super.validate();
 
-		if (this.absSender == null)
-			throw new NullPointerException("absSender");
-		if (this.chatRoom == null)
-			throw new NullPointerException("chatRoom");
+		Objects.requireNonNull(this.absSender, "absSender");
+		Objects.requireNonNull(this.chatRoom, "chatRoom");
+
 		if (this.board == null && StringUtil.isBlank(searchResultDataIdentifier) == true)
 			throw new IllegalStateException();
-		if (this.site == null)
-			throw new NullPointerException("site");
-		if (this.siteHandler == null)
-			throw new NullPointerException("siteHandler");
-		if (this.fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
+
+		Objects.requireNonNull(this.site, "site");
+		Objects.requireNonNull(this.siteHandler, "siteHandler");
+		Objects.requireNonNull(this.fileTransmissionExecutorService, "fileTransmissionExecutorService");
 	}
 
 }

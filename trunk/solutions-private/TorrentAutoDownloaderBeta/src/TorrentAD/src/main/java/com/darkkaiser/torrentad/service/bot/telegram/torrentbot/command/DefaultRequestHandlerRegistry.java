@@ -1,13 +1,14 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public final class DefaultRequestHandlerRegistry implements RequestHandlerRegistry {
 	
@@ -18,8 +19,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 
 	@Override
 	public synchronized final boolean register(final RequestHandler handler) {
-		if (handler == null)
-			throw new NullPointerException("handler");
+		Objects.requireNonNull(handler, "handler");
 
 		if (this.handlerMap.containsKey(handler.getIdentifier()) == true)
 			return false;
@@ -31,8 +31,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 
 	@Override
 	public synchronized final boolean deregister(final RequestHandler handler) {
-		if (handler == null)
-			throw new NullPointerException("handler");
+		Objects.requireNonNull(handler, "handler");
 
 		if (this.handlerMap.containsKey(handler.getIdentifier()) == true) {
 			this.handlerMap.remove(handler.getIdentifier());
@@ -49,8 +48,7 @@ public final class DefaultRequestHandlerRegistry implements RequestHandlerRegist
 
 	@Override
 	public synchronized final RequestHandler getRequestHandler(final Class<?> clazz) {
-		if (clazz == null)
-			throw new NullPointerException("clazz");
+		Objects.requireNonNull(clazz, "clazz");
 
 		for (final RequestHandler handler : getRequestHandlers()) {
 			if (clazz.isInstance(handler) == true)

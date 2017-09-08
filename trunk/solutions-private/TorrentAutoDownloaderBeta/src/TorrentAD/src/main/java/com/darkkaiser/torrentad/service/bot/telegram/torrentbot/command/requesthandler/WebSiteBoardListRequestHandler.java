@@ -11,6 +11,8 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListImmediatelyTaskAction;
 
+import java.util.Objects;
+
 public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
 	private final TorrentBotResource torrentBotResource;
@@ -20,10 +22,8 @@ public class WebSiteBoardListRequestHandler extends AbstractBotCommandRequestHan
 	public WebSiteBoardListRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("list", "조회", "/list (조회)", "선택된 게시판을 조회합니다.");
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;

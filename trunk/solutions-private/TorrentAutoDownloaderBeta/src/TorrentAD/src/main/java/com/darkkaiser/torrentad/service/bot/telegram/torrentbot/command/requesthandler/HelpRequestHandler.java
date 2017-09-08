@@ -1,12 +1,13 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
+import java.util.Objects;
 
 public class HelpRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 
@@ -15,8 +16,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler impleme
 	public HelpRequestHandler(final RequestHandlerRegistry requestHandlerRegistry) {
 		super("help", "도움", "/help (도움)", "도움말을 표시합니다.");
 
-		if (requestHandlerRegistry == null)
-			throw new NullPointerException("requestHandlerRegistry");
+		Objects.requireNonNull(requestHandlerRegistry, "requestHandlerRegistry");
 
 		this.requestHandlerRegistry = requestHandlerRegistry;
 	}

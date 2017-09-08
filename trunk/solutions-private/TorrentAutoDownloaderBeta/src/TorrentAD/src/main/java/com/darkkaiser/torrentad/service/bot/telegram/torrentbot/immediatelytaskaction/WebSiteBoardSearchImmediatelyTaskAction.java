@@ -1,21 +1,16 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Iterator;
-
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.util.Tuple;
+import com.darkkaiser.torrentad.website.*;
 import org.jsoup.helper.StringUtil;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.website.LoadBoardItemsException;
-import com.darkkaiser.torrentad.website.NoPermissionException;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
-import com.darkkaiser.torrentad.website.WebSiteConstants;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoardImmediatelyTaskAction {
 	
@@ -68,8 +63,7 @@ public class WebSiteBoardSearchImmediatelyTaskAction extends AbstractWebSiteBoar
 
 	@Override
 	protected String generateDownloadLinkInquiryRequestInlineCommandString(final WebSiteBoardItem boardItem) {
-		if (boardItem == null)
-			throw new NullPointerException("boardItem");
+		Objects.requireNonNull(boardItem, "boardItem");
 
 		return BotCommandUtils.toComplexBotCommandString(
 				BotCommandConstants.LASR_SEARCH_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND, this.searchResultDataIdentifier, Long.toString(boardItem.getIdentifier()));

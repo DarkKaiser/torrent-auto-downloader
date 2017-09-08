@@ -13,6 +13,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public final class BotCommandUtils {
 	
@@ -21,10 +22,9 @@ public final class BotCommandUtils {
     public static void parseBotCommand(final String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
-		if (outCommand == null)
-			throw new NullPointerException("outCommand");
-		if (outParameters == null)
-			throw new NullPointerException("outParameters");
+
+	    Objects.requireNonNull(outCommand, "outCommand");
+	    Objects.requireNonNull(outParameters, "outParameters");
 
 		String[] messageArrays = message.split(BotCommandConstants.BOT_COMMAND_PARAMETER_SEPARATOR);
 
@@ -53,14 +53,13 @@ public final class BotCommandUtils {
 
     public static String toComplexBotCommandString(final String... args) {
     	StringBuilder sbComplexBotCommand = new StringBuilder()
-    			.append(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER);
+			    .append(BotCommandConstants.BOT_COMMAND_INITIAL_CHARACTER);
 
-    	for (String argument : args) {
+    	for (final String argument : args) {
     		sbComplexBotCommand.append(argument).append(BotCommandConstants.COMPLEX_BOT_COMMAND_PARAMETER_SEPARATOR);
     	}
 
-    	return sbComplexBotCommand.delete(sbComplexBotCommand.length() - 1, sbComplexBotCommand.length())
-    			.toString();
+    	return sbComplexBotCommand.delete(sbComplexBotCommand.length() - 1, sbComplexBotCommand.length()).toString();
     }
 
 	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message) {
@@ -76,10 +75,9 @@ public final class BotCommandUtils {
 	}
 
 	public static void sendMessage(final AbsSender absSender, final Long chatId, final String message, final Integer replyToMessageId, final ReplyKeyboard replyMarkup) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatId == null)
-			throw new NullPointerException("chatId");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatId, "chatId");
+
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
@@ -101,17 +99,15 @@ public final class BotCommandUtils {
 		}
 	}
 	
-	public static void editMessageText(final AbsSender absSender, final Long chatId, final Integer messageId, String message) {
+	public static void editMessageText(final AbsSender absSender, final Long chatId, final Integer messageId, final String message) {
 		editMessageText(absSender, chatId, messageId, message, null);
 	}
 
 	public static void editMessageText(final AbsSender absSender, final Long chatId, final Integer messageId, final String message, final InlineKeyboardMarkup inlineKeyboardMarkup) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatId == null)
-			throw new NullPointerException("chatId");
-		if (messageId == null)
-			throw new NullPointerException("messageId");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatId, "chatId");
+		Objects.requireNonNull(messageId, "messageId");
+
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
@@ -136,8 +132,7 @@ public final class BotCommandUtils {
 	}
 
 	public static void answerCallbackQuery(final AbsSender absSender, final String callbackQueryId, final String text) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
+		Objects.requireNonNull(absSender, "absSender");
 
 		AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
 		answerCallbackQuery.setCallbackQueryId(callbackQueryId);

@@ -1,20 +1,15 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Iterator;
-
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
-import com.darkkaiser.torrentad.website.NoPermissionException;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.website.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.website.LoadBoardItemsException;
-import com.darkkaiser.torrentad.website.WebSite;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemDownloadLink;
-import com.darkkaiser.torrentad.website.WebSiteHandler;
+import java.util.Iterator;
+import java.util.Objects;
 
 public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -33,18 +28,12 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 	protected final WebSiteHandler siteHandler;
 
 	public AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final long boardItemIdentifier, final TorrentBotResource torrentBotResource) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (torrentBotResource.getSiteConnector() == null)
-			throw new NullPointerException("siteConnector");
-		if (torrentBotResource.getSiteConnector().getConnection() == null)
-			throw new NullPointerException("siteConnection");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatRoom, "chatRoom");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector(), "siteConnector");
+		Objects.requireNonNull(torrentBotResource.getSiteConnector().getConnection(), "siteConnection");
 
 		this.messageId = messageId;
 		this.boardItemIdentifier = boardItemIdentifier;
@@ -119,14 +108,10 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 	public void validate() {
 		super.validate();
 
-		if (this.absSender == null)
-			throw new NullPointerException("absSender");
-		if (this.chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (this.site == null)
-			throw new NullPointerException("site");
-		if (this.siteHandler == null)
-			throw new NullPointerException("siteHandler");
+		Objects.requireNonNull(this.absSender, "absSender");
+		Objects.requireNonNull(this.chatRoom, "chatRoom");
+		Objects.requireNonNull(this.site, "site");
+		Objects.requireNonNull(this.siteHandler, "siteHandler");
 	}
 
 }

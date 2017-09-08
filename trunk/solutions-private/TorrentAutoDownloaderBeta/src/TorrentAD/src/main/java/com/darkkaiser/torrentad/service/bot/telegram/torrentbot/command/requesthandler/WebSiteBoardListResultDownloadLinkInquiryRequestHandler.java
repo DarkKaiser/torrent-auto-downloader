@@ -1,9 +1,12 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction;
+import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
@@ -11,9 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.website.WebSite;
+import java.util.Objects;
 
 public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends AbstractBotCommandRequestHandler {
 
@@ -28,12 +29,9 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 	public WebSiteBoardListResultDownloadLinkInquiryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_LIST_RESULT_DOWNLOAD_LINK_INQUIRY_REQUEST_INLINE_COMMAND);
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 
 		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;
@@ -55,11 +53,9 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 	}
 
 	@Override
-	public void execute(AbsSender absSender, ChatRoom chatRoom, Update update, String command, String[] parameters, boolean containInitialChar) {
+	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
 		try {
-			WebSiteBoard board = this.site.getBoardByCode(parameters[0]);
-			if (board == null)
-				throw new NullPointerException("board");
+			WebSiteBoard board = Objects.requireNonNull(this.site.getBoardByCode(parameters[0]), "board");
 
 			long identifier = Long.parseLong(parameters[1]);
 
@@ -70,7 +66,7 @@ public class WebSiteBoardListResultDownloadLinkInquiryRequestHandler extends Abs
 			// 첨부파일 조회를 시작한다.
 			this.immediatelyTaskExecutorService.submit(
 					new WebSiteBoardListResultDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, board, identifier, this.torrentBotResource));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);

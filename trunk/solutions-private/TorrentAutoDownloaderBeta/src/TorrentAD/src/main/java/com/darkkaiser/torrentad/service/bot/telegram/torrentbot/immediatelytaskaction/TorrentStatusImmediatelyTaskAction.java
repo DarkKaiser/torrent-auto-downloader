@@ -1,10 +1,8 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.darkkaiser.torrentad.net.torrent.TorrentClient;
 import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGetMethodResult;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
@@ -14,7 +12,9 @@ import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
 	
@@ -29,12 +29,9 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 	private final TorrentBotResource torrentBotResource;
 
 	public TorrentStatusImmediatelyTaskAction(final AbsSender absSender, final ChatRoom chatRoom, final TorrentBotResource torrentBotResource) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatRoom, "chatRoom");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
 
 		this.messageId = BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID;
 		this.absSender = absSender;
@@ -44,12 +41,9 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 	}
 	
 	public TorrentStatusImmediatelyTaskAction(final int messageId, final AbsSender absSender, final ChatRoom chatRoom, final TorrentBotResource torrentBotResource) {
-		if (absSender == null)
-			throw new NullPointerException("absSender");
-		if (chatRoom == null)
-			throw new NullPointerException("chatRoom");
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
+		Objects.requireNonNull(absSender, "absSender");
+		Objects.requireNonNull(chatRoom, "chatRoom");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
 
 		this.messageId = messageId;
 		this.absSender = absSender;

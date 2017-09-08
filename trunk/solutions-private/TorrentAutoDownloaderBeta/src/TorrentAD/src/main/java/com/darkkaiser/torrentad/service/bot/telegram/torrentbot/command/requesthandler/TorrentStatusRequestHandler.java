@@ -1,6 +1,7 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
@@ -8,7 +9,7 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaska
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
+import java.util.Objects;
 
 public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
 	
@@ -19,10 +20,8 @@ public class TorrentStatusRequestHandler extends AbstractBotCommandRequestHandle
 	public TorrentStatusRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super("status", "상태", "/status (상태)", "토렌트 서버의 상태를 조회합니다.");
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;

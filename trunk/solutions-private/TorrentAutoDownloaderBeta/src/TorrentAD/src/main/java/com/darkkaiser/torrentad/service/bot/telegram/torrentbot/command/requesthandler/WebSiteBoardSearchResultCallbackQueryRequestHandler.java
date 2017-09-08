@@ -1,12 +1,12 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecutorService;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
+import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
+import com.darkkaiser.torrentad.website.*;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +15,10 @@ import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
-import com.darkkaiser.torrentad.website.WebSiteBoard;
-import com.darkkaiser.torrentad.website.WebSiteBoardItem;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierAsc;
-import com.darkkaiser.torrentad.website.WebSiteBoardItemComparatorIdentifierDesc;
-import com.darkkaiser.torrentad.website.WebSiteHandler;
-import com.darkkaiser.torrentad.website.WebSiteSearchResultData;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
 
@@ -36,10 +31,8 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 	public WebSiteBoardSearchResultCallbackQueryRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService) {
 		super(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND);
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 
 		this.torrentBotResource = torrentBotResource;
 		this.immediatelyTaskExecutorService = immediatelyTaskExecutorService;
@@ -51,6 +44,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			return false;
 
 		String callbackQueryCommand = parameters[0];
+		//noinspection Duplicates
 		if (parameters.length >= 3) {
 			if (callbackQueryCommand.equals(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false
 					&& callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {

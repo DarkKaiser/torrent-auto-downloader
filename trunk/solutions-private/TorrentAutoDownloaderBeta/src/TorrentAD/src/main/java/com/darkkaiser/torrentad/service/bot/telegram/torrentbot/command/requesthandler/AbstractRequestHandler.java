@@ -24,7 +24,6 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 	
 	protected abstract boolean executable0(final String command, final String[] parameters, final boolean containInitialChar, final int minParametersCount, final int maxParametersCount);
 
-	@SuppressWarnings("SameParameterValue")
 	protected void logError(final String message, final String command, final String[] parameters, final boolean containInitialChar) {
 		StringBuilder sbLogMessage = new StringBuilder()
 				.append(message).append("(")
@@ -32,14 +31,14 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 				.append(", parameters:[");
 
 		if (parameters != null && parameters.length > 0) {
-			for (String parameter : parameters)
+			for (final String parameter : parameters)
 				sbLogMessage.append(parameter).append(",");
 
 			sbLogMessage.delete(sbLogMessage.length() - 1, sbLogMessage.length());
 		}
 
 		sbLogMessage.append("]")
-				.append(", containInitialChar:").append(containInitialChar).append(")");
+				    .append(", containInitialChar:").append(containInitialChar).append(")");
 
 		logger.error(sbLogMessage.toString());
 	}

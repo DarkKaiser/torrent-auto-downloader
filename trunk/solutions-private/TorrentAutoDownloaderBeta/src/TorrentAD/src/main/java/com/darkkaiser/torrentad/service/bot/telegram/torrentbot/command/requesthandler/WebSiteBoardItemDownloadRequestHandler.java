@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
+import java.util.Objects;
+
 public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadRequestHandler.class);
@@ -30,14 +32,10 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 	public WebSiteBoardItemDownloadRequestHandler(final TorrentBotResource torrentBotResource, final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService) {
 		super(BotCommandConstants.DOWNLOAD_REQUEST_INLINE_COMMAND);
 
-		if (torrentBotResource == null)
-			throw new NullPointerException("torrentBotResource");
-		if (torrentBotResource.getSite() == null)
-			throw new NullPointerException("site");
-		if (immediatelyTaskExecutorService == null)
-			throw new NullPointerException("immediatelyTaskExecutorService");
-		if (fileTransmissionExecutorService == null)
-			throw new NullPointerException("fileTransmissionExecutorService");
+		Objects.requireNonNull(torrentBotResource, "torrentBotResource");
+		Objects.requireNonNull(torrentBotResource.getSite(), "site");
+		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
+		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
 
 		this.site = torrentBotResource.getSite();
 		this.torrentBotResource = torrentBotResource;

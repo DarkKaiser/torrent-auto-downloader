@@ -1,5 +1,6 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.darkkaiser.torrentad.common.Constants;
@@ -25,10 +26,8 @@ public final class ChatRoom {
 	private final MetadataRepository metadataRepository;
 
 	public ChatRoom(final long chatId, final WebSite site, final MetadataRepository metadataRepository) {
-		if (site == null)
-			throw new NullPointerException("site");
-		if (metadataRepository == null)
-			throw new NullPointerException("metadataRepository");
+		Objects.requireNonNull(site, "site");
+		Objects.requireNonNull(metadataRepository, "metadataRepository");
 
 		this.chatId = chatId;
 		this.metadataRepository = metadataRepository;
@@ -58,8 +57,7 @@ public final class ChatRoom {
 	}
 
 	public synchronized void setBoard(final WebSiteBoard board) {
-		if (board == null)
-			throw new NullPointerException("board");
+        Objects.requireNonNull(board, "board");
 
 		this.board = board;
 		this.metadataRepository.setString(getProperiesKeyString(Constants.BOT_SERVICE_MR_KEY_CHAT_ID_SUBKEY_BOARD_CODE), this.board.getCode());
