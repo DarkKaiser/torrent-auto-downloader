@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
-	<color name="memorize_completed">#22ff22</color>
-	<color name="memorize_uncompleted">#ff2222</color>
-	<color name="memorize_completed_bg">#15cccccc</color>
-	<color name="memorize_uncompleted_bg">#000000</color>
-</resources>

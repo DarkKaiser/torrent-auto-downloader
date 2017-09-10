@@ -1,9 +1,0 @@
-<resources>
-
-    <bool name="chk_hiragana_default_value">true</bool>
-    <bool name="chk_gatakana_default_value">true</bool>
-    <bool name="chk_youm_default_value">true</bool>
-    <bool name="show_character_mean_default_value">false</bool>
-    <bool name="vibrate_next_character_default_value">true</bool>
-
-</resources>
