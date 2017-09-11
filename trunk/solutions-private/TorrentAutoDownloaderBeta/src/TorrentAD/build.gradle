@@ -1,18 +1,12 @@
 group = 'com.darkkaiser'
-
-// 프로젝트 버전
 version = '1.0.0'
 
 apply plugin: 'java'
-apply plugin: 'application'
 
-description = """TorrentAD"""
-
-mainClassName = 'com.darkkaiser.torrentad.App'
-
-// JDK 버전
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+description = """TorrentAD"""
 
 // 소스 인코딩 지정
 tasks.withType(JavaCompile) {
@@ -22,22 +16,31 @@ tasks.withType(JavaCompile) {
 // 빌드결과 폴더 지정
 buildDir = 'build'
 
+sourceSets {
+    main {
+        Java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'com.darkkaiser.torrentad.App'
     }
     archiveName 'torrentad-1.0.0.jar'
     from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
         configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
-        configurations.compile.collect {it.isDirectory()? it: zipTree(it)}
     }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
 repositories {
-    mavenCentral()
-    maven { url "https://jitpack.io" }
+    jcenter()
+
+    maven { url 'https://jitpack.io' } // This allows us to use jitpack projects
 }
+
 dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
