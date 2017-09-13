@@ -1,12 +1,23 @@
-group = 'com.darkkaiser'
-version = '1.0.0'
-
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
 
-description = """TorrentAD"""
+def projectJavaVersion = '1.8'
+def projectSourceEncoding = 'UTF-8'
+
+
+sourceCompatibility = projectJavaVersion
+targetCompatibility = projectJavaVersion
+
+compileJava.options.encoding = projectSourceEncoding
+
+description = "TorrentAD"
+group = 'com.darkkaiser'
+version = '1.0.0'
 
 // 소스 인코딩 지정
 tasks.withType(JavaCompile) {
@@ -15,14 +26,6 @@ tasks.withType(JavaCompile) {
 
 // 빌드결과 폴더 지정
 buildDir = 'build'
-
-sourceSets {
-    main {
-        Java {
-            srcDirs = ['src/main/java']
-        }
-    }
-}
 
 jar {
     manifest {
@@ -37,8 +40,9 @@ jar {
 
 repositories {
     jcenter()
-
-    maven { url 'https://jitpack.io' } // This allows us to use jitpack projects
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
