@@ -79,6 +79,38 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
+			<torrentad-periodic-scheduled-task id="BuBu" description="고백부부">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>고백부부</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="TheBlack" description="블랙">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>블랙</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+
 			<torrentad-periodic-scheduled-task id="Honey" description="자기야-백년손님">
 				<board-name>korentertainment</board-name>
 
@@ -261,22 +293,6 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>효리네+민박</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="Island" description="섬총사">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>섬총사</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
