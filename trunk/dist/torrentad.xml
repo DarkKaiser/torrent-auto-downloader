@@ -95,12 +95,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="TheBlack" description="블랙">
+			<torrentad-periodic-scheduled-task id="Ghkdbrl" description="화유기">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>블랙</item>
+						<item>화유기</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
