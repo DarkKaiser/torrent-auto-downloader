@@ -427,7 +427,7 @@
 			<torrent-supervisory-control-interval-time-second>60</torrent-supervisory-control-interval-time-second>
 
 			<!-- Torrent 서버에서 한번에 다운로드 받을 수 있는 최대 개수 -->
-			<max-concurrent-downloading-torrent-count>2</max-concurrent-downloading-torrent-count>
+			<max-concurrent-downloading-torrent-count>1</max-concurrent-downloading-torrent-count>
 		</torrentad-service-config-values>
 	</torrentad-au-service>
 
