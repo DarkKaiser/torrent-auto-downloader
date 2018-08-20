@@ -95,12 +95,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="tvnLive" description="라이브">
+			<torrentad-periodic-scheduled-task id="knownWife" description="아는와이프">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>라이브</item>
+						<item>아는+와이프</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -175,22 +175,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="TkatltoRlqkekahrwkd" description="삼시세끼">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>삼시세끼</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
 				<board-name>korentertainment</board-name>
 
@@ -229,22 +213,6 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>아는+형님</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="Hyori" description="효리네민박">
-				<board-name>korentertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>효리네+민박</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
