@@ -95,6 +95,38 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
+			<torrentad-periodic-scheduled-task id="ocnVoice2" description="보이스2">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>OCN+보이스</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
+			<torrentad-periodic-scheduled-task id="jtbcLife" description="라이프">
+				<board-name>kordramaon</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>JTBC+라이프</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
 			<torrentad-periodic-scheduled-task id="knownWife" description="아는와이프">
 				<board-name>kordramaon</board-name>
 
@@ -230,23 +262,14 @@
 					<search-keyword>
 						<item>원피스</item>
 					</search-keyword>
-					<search-keyword>
-						<item>SOFCJ</item>
-					</search-keyword>
 				</search-keywords>
 				
 				<search-keywords type="file">
 					<search-keyword>
-						<item>SOFCJ-Raws</item>
-					</search-keyword>
-					<search-keyword>
-						<item>CX</item>
+						<item>Leopard-Raws</item>
 					</search-keyword>
 					<search-keyword mode="exclude">
 						<item>HombleSubs</item>
-					</search-keyword>
-					<search-keyword mode="exclude">
-						<item>Leopard-Raws</item>
 					</search-keyword>
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
@@ -259,19 +282,13 @@
 						<item>나루토</item>
 					</search-keyword>
 					<search-keyword>
-						<item>SOFCJ</item>
+						<item>HorribleSubs</item>
 					</search-keyword>
 				</search-keywords>
 				
 				<search-keywords type="file">
 					<search-keyword>
-						<item>SOFCJ-Raws</item>
-					</search-keyword>
-					<search-keyword>
-						<item>TX</item>
-					</search-keyword>
-					<search-keyword mode="exclude">
-						<item>HombleSubs</item>
+						<item>HorribleSubs</item>
 					</search-keyword>
 					<search-keyword mode="exclude">
 						<item>Leopard-Raws</item>
