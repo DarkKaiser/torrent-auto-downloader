@@ -28,8 +28,6 @@ public class BogoBogo extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(BogoBogo.class);
 
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
-
 	public static final String BASE_URL = "https://qhrhqhrh.net";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/cdsb", BASE_URL);
 
@@ -43,11 +41,6 @@ public class BogoBogo extends AbstractWebSite {
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
 
-	private static final int URL_CONNECTION_TIMEOUT_LONG_MILLISECOND = 60 * 1000;
-	private static final int URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND = 15 * 1000;
-
-	private static final int MAX_SEARCH_RESULT_DATA_COUNT = 100;
-
 	private Connection.Response loginConnResponse;
 
 	// 조회된 결과 목록
@@ -55,9 +48,6 @@ public class BogoBogo extends AbstractWebSite {
 
 	// 검색된 결과 목록
 	private List<BogoBogoSearchResultData> searchResultDataList = new LinkedList<>();
-
-	// 다운로드 받은 파일이 저장되는 위치
-	private String downloadFileWriteLocation;
 
 	private final class DownloadProcess1Result {
 
@@ -84,16 +74,7 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	public BogoBogo(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-		super(siteConnector, owner, WebSite.BOGOBOGO);
-
-		if (StringUtil.isBlank(downloadFileWriteLocation) == true)
-			throw new IllegalArgumentException("downloadFileWriteLocation은 빈 문자열을 허용하지 않습니다.");
-		
-		if (downloadFileWriteLocation.endsWith(File.separator) == true) {
-			this.downloadFileWriteLocation = downloadFileWriteLocation;
-		} else {
-			this.downloadFileWriteLocation = String.format("%s%s", downloadFileWriteLocation, File.separator);
-		}
+		super(siteConnector, owner, WebSite.BOGOBOGO, downloadFileWriteLocation);
 	}
 	
 	@Override
@@ -763,27 +744,10 @@ public class BogoBogo extends AbstractWebSite {
 		return new Tuple<>(downloadTryCount, downloadCompletedCount);
 	}
 
-	private String trimString(final String value) {
-		int start = 0;
-        int length = value.length();
-
-		// Character.isSpaceChar() : trim()으로 제거되지 않는 공백(no-break space=줄바꿈없는공백)을 제거하기 위해 사용한다.
-
-		while ((start < length) && (Character.isSpaceChar(value.charAt(start)) == true)) {
-			start++;
-		}
-		while ((start < length) && (Character.isSpaceChar(value.charAt(length - 1)) == true)) {
-			length--;
-		}
-
-        return ((start > 0) || (length < value.length())) ? value.substring(start, length) : value;
-	}
-
 	@Override
 	public String toString() {
 		return BogoBogo.class.getSimpleName() +
                 "{" +
-                "다운로드파일 저장위치:" + this.downloadFileWriteLocation +
                 "}, " +
                 super.toString();
 	}
