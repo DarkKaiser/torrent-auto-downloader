@@ -32,7 +32,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	/* 만화책, 소설 */
 	BOOK				("book", 				"h01", 	"만화책, 소설", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=torbook",		true),
 	
-	/* 유틸맅, 강좌 */
+	/* 유틸리티, 강좌 */
 	UTIL				("util", 				"u01", 	"유틸리티, 강좌", 			BogoBogo.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=torutil",		true),
 	
 	/* 자막 나누기 */
