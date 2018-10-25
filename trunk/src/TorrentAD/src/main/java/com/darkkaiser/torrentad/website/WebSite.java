@@ -3,6 +3,9 @@ package com.darkkaiser.torrentad.website;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
+import com.darkkaiser.torrentad.website.impl.totoria.Totoria;
+import com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard;
+import com.darkkaiser.torrentad.website.impl.totoria.TotoriaSearchContext;
 import org.jsoup.helper.StringUtil;
 
 import java.util.Objects;
@@ -43,6 +46,42 @@ public enum WebSite {
 		public WebSiteBoard[] getBoardValues() {
 			return BogoBogoBoard.values();
 		}
+	},
+
+	TOTORIA("토토리아") {
+        @Override
+        public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
+            return new RetryLoginOnNoPermissionWebSite(new Totoria(siteConnector, owner, downloadFileWriteLocation));
+        }
+
+        @Override
+        public WebSiteSearchContext createSearchContext() {
+            return new TotoriaSearchContext();
+        }
+
+        @Override
+        public WebSiteBoard getBoardByName(final String name) {
+            return TotoriaBoard.fromString(name);
+        }
+
+        @Override
+        public WebSiteBoard getBoardByCode(final String code) {
+            if (StringUtil.isBlank(code) == true)
+                throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
+
+            WebSiteBoard[] boardValues = getBoardValues();
+            for (final WebSiteBoard board : boardValues) {
+                if (board.getCode().equals(code) == true)
+                    return board;
+            }
+
+            return null;
+        }
+
+        @Override
+        public WebSiteBoard[] getBoardValues() {
+            return TotoriaBoard.values();
+        }
 	};
 
 	private String name;

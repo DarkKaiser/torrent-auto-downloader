@@ -4,14 +4,19 @@
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
 			<!-- 사이트 이름 -->
-			<website-name>보고보고</website-name>
+			<!-- <website-name>보고보고</website-name> -->
+			<website-name>토토리아</website-name>
 
 			<!-- 사이트 로그인 정보 -->
+			<!-- 보고보고
 			<website-account-id>darkkaiser</website-account-id>
-			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password>
+			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password> -->
+			<!-- 토토리아 -->
+			<website-account-id>darkkaiser</website-account-id>
+			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
-			<download-file-write-location>d:\Temp</download-file-write-location>
+			<download-file-write-location>e:\Temp</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
 			<task-execute-interval-time-second>60</task-execute-interval-time-second>
@@ -21,7 +26,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>korentertainment</board-name>
+				<board-name>newmovie</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
