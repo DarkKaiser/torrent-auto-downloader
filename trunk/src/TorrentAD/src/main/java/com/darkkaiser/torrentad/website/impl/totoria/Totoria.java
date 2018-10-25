@@ -1,12 +1,9 @@
 package com.darkkaiser.torrentad.website.impl.totoria;
 
-import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
-import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoardItemDownloadLink;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -17,8 +14,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -184,7 +179,6 @@ public class Totoria extends AbstractWebSite {
 		return resultList.iterator();
 	}
 
-	// @@@@@
 	@Override
 	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(final WebSiteBoard board, final String keyword, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
         Objects.requireNonNull(board, "board");
@@ -204,7 +198,7 @@ public class Totoria extends AbstractWebSite {
 			this.searchResultDataList.remove(0);
 
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
-		List<TotoriaBoardItem> boardItems = loadBoardItems0_0((TotoriaBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		List<TotoriaBoardItem> boardItems = loadBoardItems0_0((TotoriaBoard) board, String.format("&sca=&sop=and&sfl=wr_subject&stx=%s", keyword));
 		if (boardItems == null)
 			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
@@ -224,7 +218,7 @@ public class Totoria extends AbstractWebSite {
 
 		return new Tuple<>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
 	}
-	
+
 	@Override
 	public WebSiteSearchResultData getSearchResultData(final String identifier) {
 		if (StringUtil.isBlank(identifier) == false) {
