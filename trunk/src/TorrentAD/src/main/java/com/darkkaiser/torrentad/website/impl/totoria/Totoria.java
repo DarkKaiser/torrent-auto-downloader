@@ -288,12 +288,9 @@ public class Totoria extends AbstractWebSite {
                             // 날짜
                             //
                             final Element registDateElement = iterator.next();
-                            final Iterator<Element> descriptionIterator = registDateElement.children().iterator();
-                            descriptionIterator.next();     // 댓글
-                            descriptionIterator.next();     // 조회
-                            descriptionIterator.next();     // 추천
+							final Elements descriptionElements = registDateElement.children();
 
-                            String registDate = descriptionIterator.next().text().trim();
+                            String registDate = descriptionElements.get(descriptionElements.size() - 1).text().trim();
                             if (registDate.startsWith("|") == true)
                                 registDate = registDate.substring(1).trim();
                             else

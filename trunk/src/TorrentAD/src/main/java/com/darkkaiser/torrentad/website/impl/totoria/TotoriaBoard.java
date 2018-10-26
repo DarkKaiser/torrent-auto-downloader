@@ -69,7 +69,7 @@ public enum TotoriaBoard implements WebSiteBoard {
 	 */
 	@Override
 	public String getDefaultRegistDateFormatString() {
-		return "yyyy-MM-dd";
+		return "yyyy.MM.dd";
 	}
 
 	public static TotoriaBoard fromString(final String name) {
