@@ -258,7 +258,10 @@ public class Totoria extends AbstractWebSite {
 				Elements elements = boardItemsDoc.select("div.list-webzine div.media-body");
 
 				if (elements.isEmpty() == true) {
-					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
+					if (boardItemsDoc.html().contains("게시물이 없습니다"/* 페이지에 게시물이 0건인 경우... */) == true)
+						continue;
+					else
+					    throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 				} else {
 					try {
 						for (final Element element : elements) {
