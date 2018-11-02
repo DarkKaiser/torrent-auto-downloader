@@ -188,6 +188,22 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
+			<torrentad-periodic-scheduled-task id="RhfahrTlrekd" description="골목식당">
+				<board-name>korentertainment</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>골목+식당</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+			
 			<torrentad-periodic-scheduled-task id="ocnSonTheGuest" description="손TheGuest">
 				<board-name>kordrama</board-name>
 
