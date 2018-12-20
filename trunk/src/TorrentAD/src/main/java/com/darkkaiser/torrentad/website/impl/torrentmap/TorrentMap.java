@@ -29,8 +29,8 @@ public class TorrentMap extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentMap.class);
 
-	public static final String BASE_URL = "https://qhrhqhrh.net";
-	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/cdsb", BASE_URL);
+	public static final String BASE_URL = "https://www.torrentmap.com";
+	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
 

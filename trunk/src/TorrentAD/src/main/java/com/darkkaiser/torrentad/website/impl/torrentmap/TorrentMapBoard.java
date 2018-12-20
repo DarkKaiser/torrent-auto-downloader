@@ -5,39 +5,30 @@ import org.jsoup.helper.StringUtil;
 
 public enum TorrentMapBoard implements WebSiteBoard {
 
-	// @@@@@
 	/* 영화 */
-	MOVIE_NEW			("newmovie", 			"m01", 	"영화 > 최신외국영화", 		TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=newmovie", 		true),
-	MOVIE_KOR			("kormovie", 			"m02", 	"영화 > 한국영화", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kormovie",		true),
-	MOVIE_HD			("hdmovie", 			"m03", 	"영화 > DVD고화질영화", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=hdmovie",		true),
-	
+	MOVIE_NEW			    ("newmovie", 			    "m01", 	"영화 > 최신영화", 		    TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=movie_new", 	false),
+
 	/* 한국TV */
-	KOR_DRAMA_ON		("kordramaon", 			"k01", 	"한국TV > 드라마(방영중)", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaon",		true),
-	KOR_DRAMA_OVER		("kordramaover", 		"k02", 	"한국TV > 드라마(종방)", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kdramaover",	false),
-	KOR_ENTERTAINMENT	("korentertainment",	"k03", 	"한국TV > 쇼/오락/스포츠", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=kentertain",	true),
+	KOR_DRAMA_ON		    ("kordramaon", 			    "k01", 	"한국TV > 드라마", 	        TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=kr_drama",		false),
+	KOR_DRAMA_OVER		    ("kordramaover", 		    "k02", 	"한국TV > 드라마완결", 	    TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=kr_drama1",	false),
+	KOR_ENTERTAINMENT_ON	("korentertainmenton",	    "k03", 	"한국TV > 예능/오락", 	    TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=kr_ent",	    false),
+	KOR_ENTERTAINMENT_OVER	("korentertainmentover",	"k04", 	"한국TV > 예능/다큐완결", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=kr_ent1",	    false),
+	KOR_REFINEMENT	        ("korrefinement",	        "k05", 	"한국TV > 시사/교양", 	    TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=kr_daq",	    false),
 
 	/* 외국TV */
-	FOREIGN_DRAMA_ON	("foreigndramaon", 		"f01", 	"외국TV > 드라마(방영중)", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaon",		true),
-	FOREIGN_DRAMA_OVER	("foreigndramaover",	"f02", 	"외국TV > 드라마(종방)", 	TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=fdramaover",	false),
+	FOREIGN_DRAMA_ON	    ("foreigndramaon", 		    "f01", 	"외국TV > 드라마", 	        TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=eng_drama",	false),
+	FOREIGN_DRAMA_OVER	    ("foreigndramaover",	    "f02", 	"외국TV > 드라마완결", 	    TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=eng_drama1",	false),
 
-	/* 애니메이션 */
-	ANI_OVER			("aniover", 			"a01", 	"애니메이션 > 종방", 		TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=aniover",		false),
-	ANI_ON				("anion", 				"a02", 	"애니메이션 > 방영중", 		TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=anion",			false),
-	
-	/* 유아, 아동용 */
-	BABY				("baby", 				"b01", 	"유아, 아동용", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=baby",			false),
-	
-	/* 게임 */
-	GAME				("game", 				"g01", 	"게임", 					TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=torgame",		true),
+	/* 동영상 */
+	VIDEO_ANI			    ("videoani", 			    "a01", 	"동영상 > 애니메이션", 		TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=ani",		    false),
+	VIDEO_ETC			    ("videoetc", 			    "a02", 	"동영상 > 기타영상", 		TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=mv",		    false),
 
-	/* 만화책, 소설 */
-	BOOK				("book", 				"h01", 	"만화책, 소설", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=torbook",		true),
-	
-	/* 유틸리티, 강좌 */
-	UTIL				("util", 				"u01", 	"유틸리티, 강좌", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=torutil",		true),
-	
-	/* 자막 나누기 */
-	SMI					("smi", 				"s01", 	"자막 나누기", 				TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?board=smi",			true);
+	/* 기타   */
+	ETC_GAME				("etcgame", 			    "e01", 	"기타 > 게임", 				TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=game",		    false),
+	ETC_UTIL				("etcutil", 			    "e02", 	"기타 > 유틸", 				TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=util",		    false),
+	ETC_LECTURE				("etclecture", 			    "e03", 	"기타 > 도서/강좌", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=lecture",		false),
+	ETC_CHILDREN			("etcchildren", 		    "e04", 	"기타 > 어린이", 			TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=children",		false),
+	ETC_ETC				    ("etcetc", 		    	    "e05", 	"기타 > 기타", 				TorrentMap.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=etc",		    false);
 
 	private final String name;
 	private final String code;
@@ -88,8 +79,7 @@ public enum TorrentMapBoard implements WebSiteBoard {
 	 */
 	@Override
 	public String getDefaultRegistDateFormatString() {
-		// @@@@@
-		return "yy-MM-dd";
+		return "MM-dd";
 	}
 
 	public boolean hasCategory() {
