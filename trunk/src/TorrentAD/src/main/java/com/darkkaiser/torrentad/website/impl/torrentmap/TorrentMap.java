@@ -8,7 +8,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
@@ -20,11 +19,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.text.ParseException;
 import java.util.*;
 
-// @@@@@
 public class TorrentMap extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentMap.class);
@@ -34,15 +31,10 @@ public class TorrentMap extends AbstractWebSite {
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
 
-	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_process.php", BASE_URL_WITH_DEFAULT_PATH);
-	private static final String LOGIN_PROCESS_URL_2 = "https://mybogo.net/cdsb/login_process_extern.php";
-	private static final String LOGIN_PROCESS_URL_3 = "https://mybogo.net/bogo/member_share/sync_sid.php";
-	
+	// @@@@@
 	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_DEFAULT_PATH);
 	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
 	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
-
-	private Connection.Response loginConnResponse;
 
 	// 조회된 결과 목록
 	private Map<TorrentMapBoard, List<TorrentMapBoardItem>> boardList = new HashMap<>();
@@ -50,6 +42,7 @@ public class TorrentMap extends AbstractWebSite {
 	// 검색된 결과 목록
 	private List<TorrentMapSearchResultData> searchResultDataList = new LinkedList<>();
 
+	// @@@@@
 	private final class DownloadProcess1Result {
 
 		private String stat;
@@ -75,131 +68,25 @@ public class TorrentMap extends AbstractWebSite {
 	}
 
 	public TorrentMap(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-		super(siteConnector, owner, WebSite.BOGOBOGO, downloadFileWriteLocation);
+		super(siteConnector, owner, WebSite.TORRENTMAP, downloadFileWriteLocation);
 	}
 
 	@Override
 	protected void login0(final WebSiteAccount account) throws Exception {
 		Objects.requireNonNull(account, "account");
 
-		account.validate();
-
-		/*
-		  로그인 1단계 수행
-		 */
-		Connection.Response response = Jsoup.connect(LOGIN_PROCESS_URL_1)
-				.userAgent(USER_AGENT)
-				.data("mode", "login")
-				.data("kinds", "outlogin")
-				.data("user_id", account.id())
-				.data("passwd", account.password())
-				.method(Connection.Method.POST)
-				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-				.execute();
-
-		if (response.statusCode() != HttpStatus.SC_OK)
-			throw new IOException("POST " + LOGIN_PROCESS_URL_1 + " returned " + response.statusCode() + ": " + response.statusMessage());
-
-		// 로그인이 정상적으로 완료되었는지 확인한다.
-		Document doc = response.parse();
-		String outerHtml = doc.outerHtml();
-		if (outerHtml.contains("님 로그인하셨습니다.") == false) {		// 'alert(" 편진휴님 로그인하셨습니다.. \n( * 이메일 : darkkaiser78@hotmail.com )");' 문자열이 포함되어있는지 확인
-			// 'alert("로그인 정보가 x회 틀렸습니다.\n(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)");' 문자열이 포함되어있는지 확인
-			if (outerHtml.contains("회 틀렸습니다.") == true && outerHtml.contains("(5회이상 틀렸을시 30분동안 로그인 하실수 없습니다.)") == true)
-				throw new IncorrectLoginAccountException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
-
-			throw new UnknownLoginException("POST " + LOGIN_PROCESS_URL_1 + " return message:\n" + outerHtml);
-		}
-
-		/*
-		  로그인 2단계 수행
-		 */
-		// 간혹 ConnectException 예외가 발생하므로 루프를 돌린다.
-        for (int loopCount = 0; loopCount < 3; ++loopCount) {
-			try {
-				Jsoup.connect(doc.select("img").attr("src"))
-					.userAgent(USER_AGENT)
-					.cookies(response.cookies())
-					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-					.ignoreContentType(true)
-					.get();
-			} catch (final HttpStatusException | ConnectException | IllegalArgumentException e) {
-				try {
-					Thread.sleep(100);
-				} catch (final Exception ignored) {
-				}
-
-				continue;
-			}
-
-			break;
-		}
-
-		/*
-		  로그인 3단계 수행
-		 */
-		try {
-			Jsoup.connect(LOGIN_PROCESS_URL_2)
-				.userAgent(USER_AGENT)
-				.data("MEMBER_NAME", doc.select("input[name=MEMBER_NAME]").val())
-				.data("MEMBER_POINT", doc.select("input[name=MEMBER_POINT]").val())
-				.data("STR", doc.select("input[name=STR]").val())
-				.data("todo", doc.select("input[name=todo]").val())
-				.cookies(response.cookies())
-				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-				.post();
-		} catch (final HttpStatusException | ConnectException | IllegalArgumentException ignored) {
-		}
-
-		/*
-		  로그인 4단계 수행
-		 */
-		try {
-			Jsoup.connect(LOGIN_PROCESS_URL_3)
-				.userAgent(USER_AGENT)
-				.data("sid", doc.select("input[name=sid]").val())
-				.data("uid", doc.select("input[name=uid]").val())
-				.cookies(response.cookies())
-				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-				.post();
-		} catch (final HttpStatusException | ConnectException | IllegalArgumentException ignored) {
-		}
-
-		/*
-		  로그인이 정상적으로 완료되었는지 확인한다.
-		 */
-		Connection.Response completedCheckResponse = Jsoup.connect(MAIN_PAGE_URL)
-				.userAgent(USER_AGENT)
-				.method(Connection.Method.GET)
-				.cookies(response.cookies())
-				.execute();
-
-		if (completedCheckResponse.statusCode() != HttpStatus.SC_OK)
-			throw new IOException("GET " + MAIN_PAGE_URL + " returned " + completedCheckResponse.statusCode() + ": " + completedCheckResponse.statusMessage());
-
-		Document completedCheckDoc = completedCheckResponse.parse();
-		String completedCheckOuterHtml = completedCheckDoc.outerHtml();
-		if (completedCheckOuterHtml.contains("<input type=\"button\" value=\"로그아웃\" id=\"lox\" onclick=\"window.location.href='/cdsb/login_process.php?mode=logout'\">") == false)
-			throw new UnknownLoginException("GET " + MAIN_PAGE_URL + " return message:\n" + completedCheckOuterHtml);
-
-		/*
-		  로그인 완료 처리 수행
-		 */
-		setAccount(account);
-
-		this.loginConnResponse = response;
+		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
 	}
 
 	@Override
 	protected void logout0() throws Exception {
 		setAccount(null);
-
-		this.loginConnResponse = null;
 	}
 
 	@Override
 	public boolean isLogin() {
-		return getAccount() != null && this.loginConnResponse != null;
+		// 비회원제로 운영되기 때문에 무조건 true를 반환한다.
+		return true;
 	}
 
 	@Override
@@ -283,7 +170,7 @@ public class TorrentMap extends AbstractWebSite {
 			this.searchResultDataList.remove(0);
 
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
-		List<TorrentMapBoardItem> boardItems = loadBoardItems0_0((TorrentMapBoard) board, String.format("&search=subject&keyword=%s&recom=", keyword));
+		List<TorrentMapBoardItem> boardItems = loadBoardItems0_0((TorrentMapBoard) board, String.format("&sca=&sop=and&sfl=wr_subject&stx=%s", keyword));
 		if (boardItems == null)
 			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
@@ -337,6 +224,7 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
+	// @@@@@
 	private List<TorrentMapBoardItem> loadBoardItems0_0(final TorrentMapBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
@@ -357,7 +245,6 @@ public class TorrentMap extends AbstractWebSite {
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
 		                .method(Connection.Method.GET)
-		                .cookies(this.loginConnResponse.cookies())
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .execute();
 
@@ -455,6 +342,7 @@ public class TorrentMap extends AbstractWebSite {
 		return boardItems;
 	}
 
+	// @@@@@
 	@Override
 	public boolean loadDownloadLink(final WebSiteBoardItem boardItem) throws NoPermissionException {
         Objects.requireNonNull(boardItem, "boardItem");
@@ -478,6 +366,7 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
+	// @@@@@
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
         Objects.requireNonNull(searchContext, "searchContext");
@@ -510,6 +399,7 @@ public class TorrentMap extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
+	// @@@@@
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
         Objects.requireNonNull(boardItem, "boardItem");
@@ -540,6 +430,7 @@ public class TorrentMap extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
+	// @@@@@
 	private boolean loadBoardItemDownloadLink0(final TorrentMapBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
@@ -556,7 +447,6 @@ public class TorrentMap extends AbstractWebSite {
 			Connection.Response detailPageResponse = Jsoup.connect(detailPageURL)
 					.userAgent(USER_AGENT)
 	                .method(Connection.Method.GET)
-	                .cookies(this.loginConnResponse.cookies())
 	                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 	                .execute();
 
@@ -610,6 +500,7 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
+	// @@@@@
 	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final TorrentMapBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
@@ -643,7 +534,6 @@ public class TorrentMap extends AbstractWebSite {
 		                .data("file_id", downloadLink.getFileId())
 		                .data("article_id", downloadLink.getId())
 		                .method(Connection.Method.POST)
-		                .cookies(this.loginConnResponse.cookies())
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .ignoreContentType(true)
 		                .execute();
@@ -671,7 +561,6 @@ public class TorrentMap extends AbstractWebSite {
 		                .data("file_id", downloadLink.getFileId())
 		                .data("valid_id", downloadProcess1Result.getMsg())
 		                .method(Connection.Method.POST)
-		                .cookies(this.loginConnResponse.cookies())
 						.timeout(URL_CONNECTION_TIMEOUT_LONG_MILLISECOND)
 		                .execute();
 

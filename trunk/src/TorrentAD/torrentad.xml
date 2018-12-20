@@ -5,18 +5,22 @@
 		<torrentad-service-config-values>
 			<!-- 사이트 이름 -->
 			<!-- <website-name>보고보고</website-name> -->
+			<!-- <website-name>토토리아</website-name> -->
 			<website-name>토렌트맵</website-name>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
 			<website-account-id>darkkaiser</website-account-id>
 			<website-account-password>+6NAeVw5G14OGc9FEcGIm7YuCHGyOMupk7djkuJJyO4=</website-account-password> -->
-			<!-- 토토리아 -->
+			<!-- 토토리아
 			<website-account-id>darkkaiser</website-account-id>
+			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password> -->
+			<!-- 토렌트맵 -->
+			<website-account-id>empty</website-account-id>
 			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
-			<download-file-write-location>e:\Temp</download-file-write-location>
+			<download-file-write-location>e:\Temp\torrentad</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
 			<task-execute-interval-time-second>60</task-execute-interval-time-second>
