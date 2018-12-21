@@ -16,8 +16,8 @@
 			<website-account-id>darkkaiser</website-account-id>
 			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password> -->
 			<!-- 토렌트맵 -->
-			<website-account-id>empty</website-account-id>
-			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password>
+			<website-account-id></website-account-id>
+			<website-account-password></website-account-password>
 
 			<!-- 다운로드 받은 파일이 저장되는 위치 -->
 			<download-file-write-location>e:\Temp\torrentad</download-file-write-location>

@@ -73,8 +73,6 @@ public class TorrentMap extends AbstractWebSite {
 
 	@Override
 	protected void login0(final WebSiteAccount account) throws Exception {
-		Objects.requireNonNull(account, "account");
-
 		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
 	}
 
@@ -224,7 +222,6 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
-	// @@@@@
 	private List<TorrentMapBoardItem> loadBoardItems0_0(final TorrentMapBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
@@ -238,6 +235,8 @@ public class TorrentMap extends AbstractWebSite {
 		String url = null;
 		List<TorrentMapBoardItem> boardItems = new ArrayList<>();
 
+		// @@@@@
+		System.out.println("##############");
 		try {
 			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
 				url = String.format("%s&page=%d&%s", board.getURL(), page, _queryString);

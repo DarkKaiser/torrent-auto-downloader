@@ -60,12 +60,15 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 
 	@Override
 	public boolean login() {
-		WebSiteAccount account;
-		try {
-			account = this.site.createAccount(this.accountId, this.accountPassword);
-		} catch (final Exception e) {
-			logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD), e);
-			return false;
+		WebSiteAccount account = null;
+
+		if (this.accountId.equals("") == false || this.accountPassword.equals("") == false) {
+			try {
+				account = this.site.createAccount(this.accountId, this.accountPassword);
+			} catch (final Exception e) {
+				logger.error("등록된 웹사이트의 계정정보({})가 유효하지 않습니다.", String.format("'%s', '%s'", Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID, Constants.APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD), e);
+				return false;
+			}
 		}
 
 		try {
