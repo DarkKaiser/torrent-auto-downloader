@@ -95,55 +95,7 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="torrentad.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/torrentad.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="42" column="35" lean-forward="false" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="torrentad.ad.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/torrentad.ad.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="1" column="50" lean-forward="true" selection-start-line="1" selection-start-column="50" selection-end-line="1" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TorrentMap.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
-              <caret line="569" column="17" lean-forward="true" selection-start-line="569" selection-start-column="17" selection-end-line="569" selection-end-column="17" />
-              <folding>
-                <element signature="method#TorrentMap#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#TorrentMap#1;class#TorrentMap#0" expanded="false" />
-                <element signature="method#login0#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#logout0#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#isLogin#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#list#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#listAndFilter#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#search#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#getSearchResultData#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#loadBoardItems0#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#loadBoardItems0_0#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#loadDownloadLink#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
-                <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
-                <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -172,6 +124,8 @@
       <find>downloadBoardItemDownloadLink0</find>
       <find>downloadFilePath</find>
       <find>downloadLink.getLink()</find>
+      <find>cookie</find>
+      <find>cookies</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -477,8 +431,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMapBoardItemDownloadLink.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMapBoardItemDownloadLinkImpl.java" />
         <option value="$PROJECT_DIR$/torrentad.xml" />
-        <option value="$PROJECT_DIR$/torrentad.ad.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java" />
+        <option value="$PROJECT_DIR$/torrentad.ad.properties" />
       </list>
     </option>
   </component>
@@ -597,6 +551,190 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="darkkaiser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="darkkaiser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="darkkaiser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="totoria" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="darkkaiser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentmap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="darkkaiser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torrentad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -626,7 +764,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TorrentAD">
+  <component name="RunManager" selected="Gradle.TorrentAD [jar]">
     <configuration default="false" name="TorrentAD [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -1238,12 +1376,12 @@
       <workItem from="1545402150118" duration="8703000" />
       <workItem from="1545621754718" duration="3240000" />
       <workItem from="1545630957232" duration="2724000" />
-      <workItem from="1545658127499" duration="981000" />
+      <workItem from="1545658127499" duration="2346000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21485000" />
+    <option name="totallyTimeSpent" value="22850000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1256,7 +1394,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1362,6 +1499,7 @@
             <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
             <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
+            <element signature="method#downloadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
           </folding>
         </state>
@@ -1422,6 +1560,7 @@
             <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
             <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
+            <element signature="method#downloadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
           </folding>
         </state>
@@ -1447,6 +1586,7 @@
             <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
             <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
+            <element signature="method#downloadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
           </folding>
         </state>
@@ -1491,6 +1631,7 @@
             <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
             <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
+            <element signature="method#downloadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
           </folding>
         </state>
@@ -1575,22 +1716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="79" column="0" lean-forward="true" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/TotoriaBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://D:/Program Files/Java/jdk1.8.0_144/src.zip!/java/util/Calendar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -1666,6 +1791,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/torrentad.ad.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/torrentad.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -1674,30 +1807,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/torrentad.ad.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="50" lean-forward="true" selection-start-line="1" selection-start-column="50" selection-end-line="1" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMapBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#TorrentMapBoard#0;class#TorrentMapBoard#0" expanded="false" />
-            <element signature="method#fromString#0;class#TorrentMapBoard#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="569" column="17" lean-forward="true" selection-start-line="569" selection-start-column="17" selection-end-line="569" selection-end-column="17" />
+        <state relative-caret-position="666">
+          <caret line="621" column="1" lean-forward="true" selection-start-line="621" selection-start-column="1" selection-end-line="621" selection-end-column="1" />
           <folding>
             <element signature="method#TorrentMap#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#TorrentMap#1;class#TorrentMap#0" expanded="false" />
@@ -1714,8 +1827,37 @@
             <element signature="method#download#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#download#1;class#TorrentMap#0" expanded="false" />
             <element signature="method#loadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
+            <element signature="method#downloadBoardItemDownloadLink0#0;class#TorrentMap#0" expanded="false" />
             <element signature="method#toString#0;class#TorrentMap#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMapBoard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="8" column="38" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#TorrentMapBoard#0;class#TorrentMapBoard#0" expanded="false" />
+            <element signature="method#fromString#0;class#TorrentMapBoard#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/TotoriaBoard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="79" column="0" lean-forward="true" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

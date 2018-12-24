@@ -560,14 +560,49 @@ public class TorrentMap extends AbstractWebSite {
 					fos.close();
 
 					notyetDownloadFile.renameTo(downloadFile);
-
-					++downloadCompletedCount;
-					downloadLink.setDownloadCompleted(true);
-
-					logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
 				} else {
-					// @@@@@
+					/*
+					  홈페이지의 Cookie 데이터가 필요하므로 한번 더 상세 페이지를 로드한다.
+					 */
+					Connection.Response detailPageResponse = Jsoup.connect(detailPageURL)
+							.userAgent(USER_AGENT)
+							.method(Connection.Method.GET)
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.execute();
+
+					if (detailPageResponse.statusCode() != HttpStatus.SC_OK)
+						throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
+
+					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+
+					/*
+					  첨부파일 다운로드 하기
+					 */
+					Connection.Response downloadProcessResponse = Jsoup.connect(downloadLinkPage)
+							.userAgent(USER_AGENT)
+							.method(Connection.Method.GET)
+							.cookies(detailPageResponse.cookies())
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.ignoreContentType(true)
+							.execute();
+
+					if (downloadProcessResponse.statusCode() != HttpStatus.SC_OK)
+						throw new IOException("POST " + downloadLinkPage + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());
+
+					/*
+					  첨부파일 저장
+					 */
+					FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
+					fos.write(downloadProcessResponse.bodyAsBytes());
+					fos.close();
+
+					notyetDownloadFile.renameTo(downloadFile);
 				}
+
+				++downloadCompletedCount;
+				downloadLink.setDownloadCompleted(true);
+
+				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
 			} catch (final Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}

@@ -40,10 +40,10 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>무한도전</item>
+						<item>포르토</item>
 					</search-keyword>
 					<search-keyword>
-						<item>720p+NEXT</item>
+						<item>720p</item>
 					</search-keyword>
 				</search-keywords>
 				
