@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TorrentMap extends AbstractWebSite {
@@ -78,7 +79,7 @@ public class TorrentMap extends AbstractWebSite {
 
 	@Override
 	protected void logout0() throws Exception {
-		setAccount(null);
+		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
 	}
 
 	@Override
@@ -235,8 +236,6 @@ public class TorrentMap extends AbstractWebSite {
 		String url = null;
 		List<TorrentMapBoardItem> boardItems = new ArrayList<>();
 
-		// @@@@@
-		System.out.println("##############");
 		try {
 			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
 				url = String.format("%s&page=%d&%s", board.getURL(), page, _queryString);
@@ -251,31 +250,24 @@ public class TorrentMap extends AbstractWebSite {
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 
 				Document boardItemsDoc = boardItemsResponse.parse();
-				Elements elements = boardItemsDoc.select("table.board01 tbody.num tr");
+				Elements elements = boardItemsDoc.select("div.tbl_head01 > table > tbody > tr");
 
 				if (elements.isEmpty() == true) {
-                    //noinspection StatementWithEmptyBody
-                    if (boardItemsDoc.html().contains("alert(\"잘못된 접근입니다.\");") == true) {
-						// 해당 페이지가 존재하지 않는 경우... 아무 처리도 하지 않는다.
-					} else if (boardItemsDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
-						throw new NoPermissionException(String.format("게시판 접근 권한이 없습니다.(URL:%s)", url));
-					} else {
-						throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
-					}
+					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 				} else {
 					try {
 						for (final Element element : elements) {
-							Iterator<Element> iterator = element.getElementsByTag("td").iterator();
+							final Iterator<Element> iterator = element.getElementsByTag("td").iterator();
 
 							//
 							// 번호
 							//
-							String no = iterator.next().text();
-							if (no.contains("[공지]"/* 공지사항 */) == true || no.contains("등록된 글이 없습니다."/* 페이지에 게시물이 0건인 경우... */) == true)
+							final String no = iterator.next().text();
+							if (no.contains("게시물이 없습니다."/* 페이지에 게시물이 0건인 경우... */) == true)
 								continue;
 
 							//
-							// 카테고리
+							// 이미지
 							//
 							if (board.hasCategory() == true)
 								iterator.next();
@@ -283,33 +275,25 @@ public class TorrentMap extends AbstractWebSite {
 							//
 							// 제목
 							//
-							Element titleElement = iterator.next();
-							String title = titleElement.text();
+							final Element titleElement = iterator.next();
 
-							// 제목끝에 붙어있는 댓글수('(0)') 문자열을 제거한다.
-							if (title.charAt(title.length() - 1) == ')')
-								title = title.substring(0, title.lastIndexOf("("));
+							final Elements titleLinkElement = titleElement.getElementsByTag("a");
+							if (titleLinkElement.size() == 0 || titleLinkElement.size() > 2)
+								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 
-							title = trimString(title);
-
-							if (title.contains("신고에의해 블라인드 된 글입니다.") == true)
-								continue;
-
-							Elements titleLinkElement = titleElement.getElementsByTag("a");
-							if (titleLinkElement.size() != 1)
-								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 1개가 아닙니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-
-							String detailPageURL = titleLinkElement.attr("href");
-							if (detailPageURL.startsWith("board.php") == false)
+							String detailPageURL = titleLinkElement.get(titleLinkElement.size() - 1).attr("href");
+							if (detailPageURL.startsWith(String.format("%s/board.php", TorrentMap.BASE_URL_WITH_DEFAULT_PATH)) == false)
 								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 
-							int noPos = detailPageURL.indexOf("no=");
+							int noPos = detailPageURL.indexOf("wr_id=");
 							if (noPos < 0)
 								throw new ParseException(String.format("게시물의 ID 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
-							String identifier = detailPageURL.substring(noPos + 3/* no= */, detailPageURL.indexOf("&", noPos));
+
+							final String title = trimString(titleLinkElement.get(titleLinkElement.size() - 1).text());
+							final String identifier = detailPageURL.substring(noPos + 6/* wr_id= */, detailPageURL.indexOf("&", noPos));
 
 							//
-							// 작성자
+							// 용량
 							//
 							iterator.next();
 
@@ -318,7 +302,39 @@ public class TorrentMap extends AbstractWebSite {
 							//
 							String registDate = iterator.next().text().trim();
 
-							boardItems.add(new TorrentMapBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", TorrentMap.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
+							if (registDate.matches("^[0-9]{2}:[0-9]{2}$"/* 게시물이 등록된 오늘 시간 */) == true) {
+								final String[] timeSplit = registDate.split(":");
+
+								final Calendar cal = Calendar.getInstance();
+								cal.setTime(new Date());
+								cal.set(Calendar.HOUR, Integer.parseInt(timeSplit[0]));
+								cal.set(Calendar.MINUTE, Integer.parseInt(timeSplit[1]));
+
+								registDate = (new SimpleDateFormat(board.getDefaultRegistDateFormatString())).format(cal.getTime());
+							} else if (registDate.matches("^[0-9]{2}-[0-9]{2}$"/* 게시물이 등록된 일자 */) == true) {
+								String[] daySplit = registDate.split("-");
+
+								final Calendar cal = Calendar.getInstance();
+								cal.setTime(new Date());
+
+								final int thisMonth = cal.get(Calendar.MONTH);
+								final int thisDate = cal.get(Calendar.DATE);
+
+								final int postingMonth = Integer.parseInt(daySplit[0]) - 1;
+								final int postingDate = Integer.parseInt(daySplit[1]);
+
+								if (thisMonth < postingMonth || (thisMonth == postingMonth && thisDate < postingDate))
+									cal.add(Calendar.YEAR, -1);
+
+								cal.set(Calendar.MONTH, postingMonth);
+								cal.set(Calendar.DATE, postingDate);
+
+								registDate = (new SimpleDateFormat(board.getDefaultRegistDateFormatString())).format(cal.getTime());
+							} else {
+								throw new ParseException(String.format("게시물의 날짜 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+							}
+
+							boardItems.add(new TorrentMapBoardItem(board, Long.parseLong(identifier), title, registDate, detailPageURL));
 						}
 					} catch (final NoSuchElementException e) {
 						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
@@ -341,7 +357,6 @@ public class TorrentMap extends AbstractWebSite {
 		return boardItems;
 	}
 
-	// @@@@@
 	@Override
 	public boolean loadDownloadLink(final WebSiteBoardItem boardItem) throws NoPermissionException {
         Objects.requireNonNull(boardItem, "boardItem");
@@ -365,7 +380,6 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
-	// @@@@@
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
         Objects.requireNonNull(searchContext, "searchContext");
@@ -398,7 +412,6 @@ public class TorrentMap extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
-	// @@@@@
 	@Override
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
         Objects.requireNonNull(boardItem, "boardItem");
@@ -429,7 +442,6 @@ public class TorrentMap extends AbstractWebSite {
 		return downloadBoardItemDownloadLink0(siteBoardItem);
 	}
 
-	// @@@@@
 	private boolean loadBoardItemDownloadLink0(final TorrentMapBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
@@ -453,32 +465,23 @@ public class TorrentMap extends AbstractWebSite {
 				throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
 
 			Document detailPageDoc = detailPageResponse.parse();
-			Elements elements = detailPageDoc.select("table.board01 tbody.num tr a[id^='downLink_num']");
+			Elements elements = detailPageDoc.select(".view_file_download");
 
 			if (elements.isEmpty() == true) {
-				if (detailPageDoc.html().contains("alert(\"게시판 접근 권한이 없습니다.\");") == true) {
-					throw new NoPermissionException(String.format("게시판 접근 권한이 없습니다.(URL:%s)", detailPageURL));
-				} else {
-					throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
-				}
+				throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
 			} else {
 				try {
 					String[] exceptFileExtension = { "JPG", "JPEG", "GIF", "PNG" };
 
 					for (final Element element : elements) {
-						String id = element.attr("id");
-						String value1 = element.attr("val");
-						String value2 = element.attr("val2");
-						String value3 = element.attr("val3");
-						String value4 = element.attr("val4");
-						String fileId = element.attr("file_id");
+						String link = element.attr("href");
 						String fileName = trimString(element.text());
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
-						if (Arrays.asList(exceptFileExtension).contains(value4.toUpperCase()) == true)
+						if (Arrays.asList(exceptFileExtension).contains(fileName.toUpperCase()) == true)
 							continue;
 
-						boardItem.addDownloadLink(TorrentMapBoardItemDownloadLinkImpl.newInstance(id, value1, value2, value3, value4, fileId, fileName));
+						boardItem.addDownloadLink(TorrentMapBoardItemDownloadLinkImpl.newInstance(link, fileName));
 					}
 				} catch (final NoSuchElementException e) {
 					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
@@ -499,7 +502,6 @@ public class TorrentMap extends AbstractWebSite {
 		return true;
 	}
 
-	// @@@@@
 	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final TorrentMapBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
@@ -510,7 +512,7 @@ public class TorrentMap extends AbstractWebSite {
 		String detailPageURL = boardItem.getDetailPageURL();
 
 		assert StringUtil.isBlank(detailPageURL) == false;
-		
+
 		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			TorrentMapBoardItemDownloadLink downloadLink = (TorrentMapBoardItemDownloadLink) iterator.next();
@@ -521,6 +523,7 @@ public class TorrentMap extends AbstractWebSite {
 
 			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
+			// @@@@@
 			try {
 				/*
 				  다운로드 페이지로 이동
@@ -528,10 +531,10 @@ public class TorrentMap extends AbstractWebSite {
 				Connection.Response downloadProcess1Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_1)
 						.userAgent(USER_AGENT)
 						.header("Referer", detailPageURL)
-		                .data("down", downloadLink.getValue1())
-		                .data("filetype", downloadLink.getValue4())
-		                .data("file_id", downloadLink.getFileId())
-		                .data("article_id", downloadLink.getId())
+//		                .data("down", downloadLink.getValue1())
+//		                .data("filetype", downloadLink.getValue4())
+//		                .data("file_id", downloadLink.getFileId())
+//		                .data("article_id", downloadLink.getId())
 		                .method(Connection.Method.POST)
 		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 		                .ignoreContentType(true)
@@ -553,11 +556,11 @@ public class TorrentMap extends AbstractWebSite {
 				String downloadProcessURL2 = String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey());
 				Connection.Response downloadProcess2Response = Jsoup.connect(downloadProcessURL2)
 						.userAgent(USER_AGENT)
-						.data("dddd", downloadLink.getValue1())
-		                .data("vvvv", downloadLink.getValue2())
-		                .data("ssss", downloadLink.getValue3())
+//						.data("dddd", downloadLink.getValue1())
+//		                .data("vvvv", downloadLink.getValue2())
+//		                .data("ssss", downloadLink.getValue3())
 		                .data("code", downloadProcess1Result.getKey())
-		                .data("file_id", downloadLink.getFileId())
+//		                .data("file_id", downloadLink.getFileId())
 		                .data("valid_id", downloadProcess1Result.getMsg())
 		                .method(Connection.Method.POST)
 						.timeout(URL_CONNECTION_TIMEOUT_LONG_MILLISECOND)
