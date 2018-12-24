@@ -3,9 +3,6 @@ package com.darkkaiser.torrentad.website.impl.torrentmap;
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -32,37 +29,14 @@ public class TorrentMap extends AbstractWebSite {
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
 
-	// @@@@@
-	private static final String DOWNLOAD_PROCESS_URL_1 = String.format("%s/download.php", BASE_URL_WITH_DEFAULT_PATH);
-	private static final String DOWNLOAD_PROCESS_URL_2 = "http://linktender.net/";
-	private static final String DOWNLOAD_PROCESS_URL_3 = "http://linktender.net/execDownload.php";
+	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
+	private static final String FILETENDER_DOWNLOAD_URL = String.format("%s/link2.php", FILETENDER_DOMAIN);
 
 	// 조회된 결과 목록
 	private Map<TorrentMapBoard, List<TorrentMapBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
 	private List<TorrentMapSearchResultData> searchResultDataList = new LinkedList<>();
-
-	// @@@@@
-	private final class DownloadProcess1Result {
-
-		private String stat;
-		private String key;
-		private String msg;
-
-		public String getStat() {
-			return this.stat;
-		}
-
-		public String getKey() {
-			return this.key;
-		}
-
-		public String getMsg() {
-			return this.msg;
-		}
-
-	}
 
 	public TorrentMap(final String owner, final String downloadFileWriteLocation) {
 		this(null, owner, downloadFileWriteLocation);
@@ -508,7 +482,6 @@ public class TorrentMap extends AbstractWebSite {
 
 		int downloadTryCount = 0;
 		int downloadCompletedCount = 0;
-		Gson gson = new GsonBuilder().create();
 		String detailPageURL = boardItem.getDetailPageURL();
 
 		assert StringUtil.isBlank(detailPageURL) == false;
@@ -523,111 +496,78 @@ public class TorrentMap extends AbstractWebSite {
 
 			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
-			// @@@@@
 			try {
-				/*
-				  다운로드 페이지로 이동
-				 */
-				Connection.Response downloadProcess1Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_1)
-						.userAgent(USER_AGENT)
-						.header("Referer", detailPageURL)
-//		                .data("down", downloadLink.getValue1())
-//		                .data("filetype", downloadLink.getValue4())
-//		                .data("file_id", downloadLink.getFileId())
-//		                .data("article_id", downloadLink.getId())
-		                .method(Connection.Method.POST)
-		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-		                .ignoreContentType(true)
-		                .execute();
-
-				if (downloadProcess1Response.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_1 + " returned " + downloadProcess1Response.statusCode() + ": " + downloadProcess1Response.statusMessage());
-
-				String result = downloadProcess1Response.parse().body().html();
-				DownloadProcess1Result downloadProcess1Result = gson.fromJson(result, DownloadProcess1Result.class);
-				if (StringUtil.isBlank(downloadProcess1Result.getStat()) == true || StringUtil.isBlank(downloadProcess1Result.getKey()) == true ||
-						downloadProcess1Result.getStat().equals("true") == false) {
-					throw new JsonParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다.(%s)", result));
-				}
-
-				/*
-				  다운로드 링크 페이지 열기
-				 */
-				String downloadProcessURL2 = String.format("%s%s", DOWNLOAD_PROCESS_URL_2, downloadProcess1Result.getKey());
-				Connection.Response downloadProcess2Response = Jsoup.connect(downloadProcessURL2)
-						.userAgent(USER_AGENT)
-//						.data("dddd", downloadLink.getValue1())
-//		                .data("vvvv", downloadLink.getValue2())
-//		                .data("ssss", downloadLink.getValue3())
-		                .data("code", downloadProcess1Result.getKey())
-//		                .data("file_id", downloadLink.getFileId())
-		                .data("valid_id", downloadProcess1Result.getMsg())
-		                .method(Connection.Method.POST)
-						.timeout(URL_CONNECTION_TIMEOUT_LONG_MILLISECOND)
-		                .execute();
-
-				if (downloadProcess2Response.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("POST " + downloadProcessURL2 + " returned " + downloadProcess2Response.statusCode() + ": " + downloadProcess2Response.statusMessage());
-
-				Document downloadProcess2Doc = downloadProcess2Response.parse();
-
 				// 다운로드 받는 파일의 이름을 구한다.
-				Elements elements = downloadProcess2Doc.select("#fileDetail p");
-				if (elements.size() != 3)
-					throw new ParseException(String.format("<P> 태그의 갯수 불일치로 파일명 추출이 실패하였습니다.(추출된갯수:%d) CSS셀렉터를 확인하세요.", elements.size()), 0);
-
-				String fileName = elements.get(1).text().trim();
-				if (fileName.startsWith("Filename:") == false)
-					throw new ParseException(String.format("추출된 문자열이 특정 문자열로 시작되지 않아 파일명 추출이 실패하였습니다.(추출된문자열:%s) CSS셀렉터를 확인하세요.", fileName), 0);
-
-				String downloadFilePath = String.format("%s%s", this.downloadFileWriteLocation, fileName.replace("Filename:", "").trim());
-				File downloadFile = new File(downloadFilePath);
+				final String downloadFilePath = String.format("%s%s", this.downloadFileWriteLocation, downloadLink.getFileName().trim());
+				final File downloadFile = new File(downloadFilePath);
 				if (downloadFile.exists() == true) {
 					logger.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
 					continue;
 				}
-				
-				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
 
-				// 실제 다운로드 사이트에서 10초 대기후에 다운로드 받을 수 있으므로, 프로그램에서도 10초를 대기한다.
-				// 이렇게 하지 않으면 첨부파일 다운로드가 실패하는 경우가 종종 발생한다.
-				Thread.sleep(10000);
+				final String downloadLinkPage = downloadLink.getLink();
+				if (downloadLinkPage.startsWith(FILETENDER_DOMAIN) == true) {
+					/*
+					  FileTender 다운로드 페이지 열기
+					 */
+					Connection.Response downloadLinkPageResponse = Jsoup.connect(downloadLinkPage)
+							.userAgent(USER_AGENT)
+							.header("Referer", detailPageURL)
+							.method(Connection.Method.POST)
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.ignoreContentType(true)
+							.execute();
 
-				/*
-				  첨부파일 다운로드 하기
-				 */
-				Connection.Response downloadProcess3Response = Jsoup.connect(DOWNLOAD_PROCESS_URL_3)
-						.userAgent(USER_AGENT)
-						.header("Referer", downloadProcessURL2)
-		                .data("dddd", downloadProcess2Doc.select("input[id=dddd]").val())
-		                .data("vvvv", downloadProcess2Doc.select("input[id=vvvv]").val())
-		                .data("file_id", downloadProcess2Doc.select("input[id=file_id]").val())
-		                .data("valid_id", downloadProcess2Doc.select("input[id=valid_id]").val())
-		                .method(Connection.Method.POST)
-		                .cookies(downloadProcess2Response.cookies())
-		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-		                .ignoreContentType(true)
-		                .execute();
+					if (downloadLinkPageResponse.statusCode() != HttpStatus.SC_OK)
+						throw new IOException("POST " + downloadLinkPage + " returned " + downloadLinkPageResponse.statusCode() + ": " + downloadLinkPageResponse.statusMessage());
 
-				if (downloadProcess3Response.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("POST " + DOWNLOAD_PROCESS_URL_3 + " returned " + downloadProcess3Response.statusCode() + ": " + downloadProcess3Response.statusMessage());
+					Document downloadLinkPageDoc = downloadLinkPageResponse.parse();
 
-				if (downloadProcess3Response.parse().text().contains("Unauthorized Access") == true)
-					throw new ParseException("첨부파일 다운로드 결과로 Unauthorized Access가 반환되었습니다.", 0);
+					String key = downloadLinkPageDoc.select("input[name=key]").val();
+					String token = downloadLinkPageDoc.select("input[name=token]").val();
+					String module = downloadLinkPageDoc.select("input[name=module]").val();
+					String timestamp = downloadLinkPageDoc.select("input[name=timestamp]").val();
 
-				/*
-				  첨부파일 저장
-				 */
-				FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
-				fos.write(downloadProcess3Response.bodyAsBytes());
-				fos.close();
+					if (key.equals("") == true || token.equals("") == true || module.equals("") == true || timestamp.equals("") == true)
+						throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s, key:%s, token:%s, module:%s, timestamp:%s)", downloadLinkPage, key, token, module, timestamp), 0);
 
-                notyetDownloadFile.renameTo(downloadFile);
-				
-				++downloadCompletedCount;
-				downloadLink.setDownloadCompleted(true);
-				
-				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+
+					/*
+					  첨부파일 다운로드 하기
+					 */
+					Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
+							.userAgent(USER_AGENT)
+							.header("Referer", detailPageURL)
+							.data("key", key)
+							.data("token", token)
+							.data("module", module)
+							.data("timestamp", timestamp)
+							.method(Connection.Method.POST)
+							.cookies(downloadLinkPageResponse.cookies())
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.ignoreContentType(true)
+							.execute();
+
+					if (downloadProcessResponse.statusCode() != HttpStatus.SC_OK)
+						throw new IOException("POST " + FILETENDER_DOWNLOAD_URL + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());
+
+					/*
+					  첨부파일 저장
+					 */
+					FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
+					fos.write(downloadProcessResponse.bodyAsBytes());
+					fos.close();
+
+					notyetDownloadFile.renameTo(downloadFile);
+
+					++downloadCompletedCount;
+					downloadLink.setDownloadCompleted(true);
+
+					logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+				} else {
+					// @@@@@
+				}
 			} catch (final Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}
