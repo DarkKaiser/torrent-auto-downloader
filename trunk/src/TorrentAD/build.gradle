@@ -1,4 +1,4 @@
-def projectVersion = '1.0.0'
+def projectVersion = '1.1.0'
 def projectJavaVersion = '1.8'
 def projectSourceEncoding = 'UTF-8'
 
@@ -48,7 +48,7 @@ jar {
                 'Implementation-Title': 'TorrentAD',
                 'Implementation-Version': projectVersion
     }
-    archiveName 'torrentad-1.0.0.jar'
+    archiveName 'torrentad-1.1.0.jar'
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
