@@ -203,13 +203,29 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
+
+			<torrentad-periodic-scheduled-task id="LoveMat" description="연애의맛">
+				<board-name>korentertainmenton</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>연애의+맛</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p+NEXT</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="ocnSonTheGuest" description="손TheGuest">
+			<torrentad-periodic-scheduled-task id="makedKing" description="왕이된남자">
 				<board-name>kordramaon</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>OCN+손+the+guest</item>
+						<item>왕이+된+남자</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p+NEXT</item>
@@ -262,16 +278,14 @@
 				-->
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="WarforThePlanetOfTheApes1" description="혹성탈출-종의전쟁(최신)">
+			<torrentad-periodic-scheduled-task id="totalMovie" description="영화다운록목">
 				<board-name>newmovie</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>혹성+탈출+종의+전쟁</item>
-						<item>War+Planet+Apes</item>
-					</search-keyword>
-					<search-keyword>
-						<item>2017</item>
+						<item>완벽한+타인</item>
+						<item>범블비</item>
+						<item>스파이더맨+뉴+유니버스</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
