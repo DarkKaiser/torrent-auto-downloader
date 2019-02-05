@@ -6,7 +6,8 @@
 			<!-- 사이트 이름 -->
 			<!-- <website-name>보고보고</website-name> -->
 			<!-- <website-name>토토리아</website-name> -->
-			<website-name>토렌트맵</website-name>
+			<!-- <website-name>토렌트맵</website-name> -->
+			<website-name>토렌트미</website-name>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -30,7 +31,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>newmovie</board-name>
+				<board-name>movie</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
@@ -40,7 +41,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>포르토</item>
+						<item>슬리핑</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>

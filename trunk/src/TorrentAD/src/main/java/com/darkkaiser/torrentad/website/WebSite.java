@@ -6,6 +6,9 @@ import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapSearchContext;
+import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi;
+import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiBoard;
+import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiSearchContext;
 import com.darkkaiser.torrentad.website.impl.totoria.Totoria;
 import com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard;
 import com.darkkaiser.torrentad.website.impl.totoria.TotoriaSearchContext;
@@ -120,6 +123,42 @@ public enum WebSite {
 		@Override
 		public WebSiteBoard[] getBoardValues() {
 			return TorrentMapBoard.values();
+		}
+	},
+
+	TORRENTMI("토렌트미") {
+		@Override
+		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
+			return new RetryLoginOnNoPermissionWebSite(new TorrentMi(siteConnector, owner, downloadFileWriteLocation));
+		}
+
+		@Override
+		public WebSiteSearchContext createSearchContext() {
+			return new TorrentMiSearchContext();
+		}
+
+		@Override
+		public WebSiteBoard getBoardByName(final String name) {
+			return TorrentMiBoard.fromString(name);
+		}
+
+		@Override
+		public WebSiteBoard getBoardByCode(final String code) {
+			if (StringUtil.isBlank(code) == true)
+				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
+
+			WebSiteBoard[] boardValues = getBoardValues();
+			for (final WebSiteBoard board : boardValues) {
+				if (board.getCode().equals(code) == true)
+					return board;
+			}
+
+			return null;
+		}
+
+		@Override
+		public WebSiteBoard[] getBoardValues() {
+			return TorrentMiBoard.values();
 		}
 	};
 
