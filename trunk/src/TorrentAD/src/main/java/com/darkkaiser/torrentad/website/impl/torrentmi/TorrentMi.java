@@ -228,6 +228,11 @@ public class TorrentMi extends AbstractWebSite {
 				Elements elements = boardItemsDoc.select("div.sub_list > div > table > tbody > tr");
 
 				if (elements.isEmpty() == true) {
+					// 조회된 게시물이 0건인 경우인지 확인한다.
+					Elements elements2 = boardItemsDoc.select("div.sub_list > div > table > tbody");
+					if (elements2.isEmpty() == false)
+						continue;
+
 					throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
 				} else {
 					try {
