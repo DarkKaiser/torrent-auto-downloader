@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -143,7 +145,12 @@ public class TorrentMi extends AbstractWebSite {
 			this.searchResultDataList.remove(0);
 
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
-		List<TorrentMiBoardItem> boardItems = loadBoardItems0_0((TorrentMiBoard) board, String.format("&sc=%s", keyword));
+		List<TorrentMiBoardItem> boardItems;
+		try {
+			boardItems = loadBoardItems0_0((TorrentMiBoard) board, String.format("&sc=%s", URLEncoder.encode(keyword, "UTF-8")));
+		} catch (final UnsupportedEncodingException e) {
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+		}
 		if (boardItems == null)
 			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
 
