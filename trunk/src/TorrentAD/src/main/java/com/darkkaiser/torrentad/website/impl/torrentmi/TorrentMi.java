@@ -26,7 +26,7 @@ public class TorrentMi extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentMi.class);
 
-	public static final String BASE_URL = "https://www.torrentmi.com";
+	public static final String BASE_URL = "https://www.torrentmi.net";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s", BASE_URL);
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
