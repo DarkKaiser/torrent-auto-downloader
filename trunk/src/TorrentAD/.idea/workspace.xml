@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/torrentad.xml" afterPath="$PROJECT_DIR$/torrentad.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -97,8 +98,8 @@
       <file leaf-file-name="torrentad.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/torrentad.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+            <state relative-caret-position="224">
+              <caret line="35" column="37" lean-forward="true" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -108,8 +109,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bogobogo</find>
-      <find>등록된 웹사이트의 계정정보</find>
       <find>loadBoardItemDownloadLink0</find>
       <find>JEujz1</find>
       <find>전체용</find>
@@ -123,7 +122,6 @@
       <find>1.0.0</find>
       <find>@@</find>
       <find>@@@</find>
-      <find>@@@@</find>
       <find>map</find>
       <find>detailPageURL</find>
       <find>,detailPageURL</find>
@@ -138,6 +136,9 @@
       <find>TorrentMap</find>
       <find>loadBoardItems0_0</find>
       <find>@@@@@</find>
+      <find>@@@@</find>
+      <find>FILETENDER_DOWNLOAD_URL</find>
+      <find>FILETENDER_DOMAIN</find>
     </findStrings>
     <dirStrings>
       <dir>F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD</dir>
@@ -456,8 +457,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoardItemDownloadLinkImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java" />
-        <option value="$PROJECT_DIR$/torrentad.ad.properties" />
         <option value="$PROJECT_DIR$/torrentad.xml" />
+        <option value="$PROJECT_DIR$/torrentad.ad.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" />
       </list>
     </option>
@@ -495,7 +496,7 @@
     </entry>
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -508,7 +509,25 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorrentAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.general" />
@@ -516,7 +535,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="TorrentMi&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;TorrentMap.java&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java&#10;TorrentMiBo&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;Tor&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;TorrentMi&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;TorrentMap.java&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java&#10;TorrentMiBo&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -1158,11 +1177,12 @@
       <workItem from="1549718144656" duration="1296000" />
       <workItem from="1550248044343" duration="844000" />
       <workItem from="1550805443078" duration="1017000" />
+      <workItem from="1551013586366" duration="5922000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32518000" />
+    <option name="totallyTimeSpent" value="38440000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1175,6 +1195,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="900" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1228,14 +1249,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/torrentad.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/torrentad.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="464">
@@ -1459,13 +1472,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="56" column="24" lean-forward="true" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/DefaultWebSiteConnector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
@@ -1641,13 +1647,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/torrentad.ad.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="51" lean-forward="false" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -1685,18 +1684,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/jdk1.8.0_144/jre/lib/rt.jar!/sun/net/www/protocol/http/HttpURLConnection.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="731" column="21" lean-forward="true" selection-start-line="731" selection-start-column="21" selection-end-line="731" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torrentad.ad.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="284">
+          <caret line="544" column="54" lean-forward="true" selection-start-line="544" selection-start-column="54" selection-end-line="544" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/torrentad.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+        <state relative-caret-position="224">
+          <caret line="35" column="37" lean-forward="true" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
           <folding />
         </state>
       </provider>

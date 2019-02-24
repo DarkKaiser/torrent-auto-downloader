@@ -31,8 +31,8 @@ public class TorrentMi extends AbstractWebSite {
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
 
-	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
-	private static final String FILETENDER_DOWNLOAD_URL = String.format("%s/link2.php", FILETENDER_DOMAIN);
+	private static final String FILETENDER_DOMAIN = "https://www.filetender.com";
+	private static final String FILETENDER_DOWNLOAD_URL = String.format("%s/link.php", FILETENDER_DOMAIN);
 
 	// 조회된 결과 목록
 	private Map<TorrentMiBoard, List<TorrentMiBoardItem>> boardList = new HashMap<>();
@@ -538,18 +538,27 @@ public class TorrentMi extends AbstractWebSite {
 				/*
 				  첨부파일 다운로드 하기
 				 */
-				Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
+				Connection.Response downloadProcessResponse = Jsoup.connect("http://file.filetender.com/Execdownload.php")
 						.userAgent(USER_AGENT)
 						.header("Referer", detailPageURL)
-						.data("key", key)
-						.data("token", token)
-						.data("module", module)
-						.data("timestamp", timestamp)
-						.method(Connection.Method.POST)
+						.data("link", key)
+						.method(Connection.Method.GET)
 						.cookies(downloadLinkPageResponse.cookies())
 						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 						.ignoreContentType(true)
 						.execute();
+//				Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
+//						.userAgent(USER_AGENT)
+//						.header("Referer", detailPageURL)
+//						.data("key", key)
+//						.data("token", token)
+//						.data("module", module)
+//						.data("timestamp", timestamp)
+//						.method(Connection.Method.GET)
+//						.cookies(downloadLinkPageResponse.cookies())
+//						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+//						.ignoreContentType(true)
+//						.execute();
 
 				if (downloadProcessResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + FILETENDER_DOWNLOAD_URL + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());
