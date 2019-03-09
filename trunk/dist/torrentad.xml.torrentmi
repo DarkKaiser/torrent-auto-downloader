@@ -218,22 +218,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="makedKing" description="왕이된남자">
-				<board-name>drama</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>왕이+된+남자</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="ani-list" description="애니다운목록">
 				<board-name>ani</board-name>
 
@@ -266,7 +250,8 @@
 						<item>아쿠아맨</item>
 						<item>증인</item>
 						<item>범블비</item>
-						<item>스파이더맨+뉴+유니버스</item>
+						<item>캡틴+마블</item>
+						<item>신비한+동물들+그린델왈드+범죄</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
