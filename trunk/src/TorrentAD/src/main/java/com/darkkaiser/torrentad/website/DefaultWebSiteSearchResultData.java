@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchResultData {
+public class DefaultWebSiteSearchResultData implements WebSiteSearchResultData {
 
 	protected final String identifier;
 
@@ -18,7 +18,7 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 
 	protected final List<WebSiteBoardItem> results;
 
-	public AbstractWebSiteSearchResultData(final WebSiteBoard board, final String keyword, final List<WebSiteBoardItem> results) {
+	public DefaultWebSiteSearchResultData(final WebSiteBoard board, final String keyword, final List<WebSiteBoardItem> results) {
 		Objects.requireNonNull(board, "board");
 		Objects.requireNonNull(results, "results");
 
@@ -57,7 +57,7 @@ public abstract class AbstractWebSiteSearchResultData implements WebSiteSearchRe
 
 	@Override
 	public String toString() {
-		return AbstractWebSiteSearchResultData.class.getSimpleName() +
+		return DefaultWebSiteSearchResultData.class.getSimpleName() +
 				"{" +
 				"identifier:" + getIdentifier() +
 				", board:" + getBoard() +

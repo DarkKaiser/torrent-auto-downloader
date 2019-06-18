@@ -47,7 +47,7 @@ public class BogoBogo extends AbstractWebSite {
 	private Map<BogoBogoBoard, List<WebSiteBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
-	private List<BogoBogoSearchResultData> searchResultDataList = new LinkedList<>();
+	private List<DefaultWebSiteSearchResultData> searchResultDataList = new LinkedList<>();
 
 	private final class DownloadProcess1Result {
 
@@ -297,7 +297,7 @@ public class BogoBogo extends AbstractWebSite {
 		}
 
 		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
-		BogoBogoSearchResultData searchResultData = new BogoBogoSearchResultData(board, keyword, resultList);
+		DefaultWebSiteSearchResultData searchResultData = new DefaultWebSiteSearchResultData(board, keyword, resultList);
 		this.searchResultDataList.add(searchResultData);
 
 		return new Tuple<>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));

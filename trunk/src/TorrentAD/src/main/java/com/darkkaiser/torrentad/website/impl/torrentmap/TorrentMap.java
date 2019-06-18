@@ -36,7 +36,7 @@ public class TorrentMap extends AbstractWebSite {
 	private Map<TorrentMapBoard, List<WebSiteBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
-	private List<TorrentMapSearchResultData> searchResultDataList = new LinkedList<>();
+	private List<DefaultWebSiteSearchResultData> searchResultDataList = new LinkedList<>();
 
 	public TorrentMap(final String owner, final String downloadFileWriteLocation) {
 		this(null, owner, downloadFileWriteLocation);
@@ -158,7 +158,7 @@ public class TorrentMap extends AbstractWebSite {
 		}
 
 		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
-		TorrentMapSearchResultData searchResultData = new TorrentMapSearchResultData(board, keyword, resultList);
+		DefaultWebSiteSearchResultData searchResultData = new DefaultWebSiteSearchResultData(board, keyword, resultList);
 		this.searchResultDataList.add(searchResultData);
 
 		return new Tuple<>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
