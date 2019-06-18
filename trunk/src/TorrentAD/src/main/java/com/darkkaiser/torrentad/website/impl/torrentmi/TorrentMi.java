@@ -35,7 +35,7 @@ public class TorrentMi extends AbstractWebSite {
 	private static final String FILETENDER_DOWNLOAD_URL = String.format("%s/link.php", FILETENDER_DOMAIN);
 
 	// 조회된 결과 목록
-	private Map<TorrentMiBoard, List<TorrentMiBoardItem>> boardList = new HashMap<>();
+	private Map<TorrentMiBoard, List<WebSiteBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
 	private List<TorrentMiSearchResultData> searchResultDataList = new LinkedList<>();
@@ -77,7 +77,7 @@ public class TorrentMi extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (final TorrentMiBoardItem boardItem : this.boardList.get(board)) {
+		for (final WebSiteBoardItem boardItem : this.boardList.get(board)) {
 			assert boardItem != null;
 
 			resultList.add(boardItem);
@@ -107,7 +107,7 @@ public class TorrentMi extends AbstractWebSite {
 
 		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
 
-		for (final TorrentMiBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
+		for (final WebSiteBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
@@ -145,7 +145,7 @@ public class TorrentMi extends AbstractWebSite {
 			this.searchResultDataList.remove(0);
 
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
-		List<TorrentMiBoardItem> boardItems;
+		List<WebSiteBoardItem> boardItems;
 		try {
 			boardItems = loadBoardItems0_0((TorrentMiBoard) board, String.format("&sc=%s", URLEncoder.encode(keyword, "UTF-8")));
 		} catch (final UnsupportedEncodingException e) {
@@ -156,7 +156,7 @@ public class TorrentMi extends AbstractWebSite {
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		for (final TorrentMiBoardItem boardItem : boardItems) {
+		for (final WebSiteBoardItem boardItem : boardItems) {
 			assert boardItem != null;
 
 			resultList.add(boardItem);
@@ -195,7 +195,7 @@ public class TorrentMi extends AbstractWebSite {
 				return true;
 		}
 
-		List<TorrentMiBoardItem> boardItems = loadBoardItems0_0(board, queryString);
+		List<WebSiteBoardItem> boardItems = loadBoardItems0_0(board, queryString);
 		if (boardItems == null)
 			return false;
 
@@ -205,7 +205,7 @@ public class TorrentMi extends AbstractWebSite {
 	}
 
 	@SuppressWarnings("Duplicates")
-	private List<TorrentMiBoardItem> loadBoardItems0_0(final TorrentMiBoard board, final String queryString) throws NoPermissionException {
+	private List<WebSiteBoardItem> loadBoardItems0_0(final TorrentMiBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
@@ -216,7 +216,7 @@ public class TorrentMi extends AbstractWebSite {
 			_queryString = _queryString.substring(1);
 
 		String url = null;
-		List<TorrentMiBoardItem> boardItems = new ArrayList<>();
+		List<WebSiteBoardItem> boardItems = new ArrayList<>();
 
 		try {
 			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
@@ -311,7 +311,7 @@ public class TorrentMi extends AbstractWebSite {
 								throw new ParseException(String.format("게시물의 날짜 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 							}
 
-							boardItems.add(new TorrentMiBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", TorrentMi.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
+							boardItems.add(new DefaultWebSiteBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", TorrentMi.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
 						}
 					} catch (final NoSuchElementException e) {
 						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
@@ -341,18 +341,16 @@ public class TorrentMi extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		TorrentMiBoardItem siteBoardItem = (TorrentMiBoardItem) boardItem;
-
 		// 첨부파일에 대한 다운로드 링크를 읽어들인다.
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem));
 				return false;
 			}
 		}
 
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+		assert boardItem.downloadLinkIterator().hasNext() == true;
 
 		return true;
 	}
@@ -365,28 +363,27 @@ public class TorrentMi extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		TorrentMiBoardItem siteBoardItem = (TorrentMiBoardItem) boardItem;
 		TorrentMiSearchContext siteSearchContext = (TorrentMiSearchContext) searchContext;
 
 		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
 				return new Tuple<>(-1, -1);
 			}
 		}
 
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+		assert boardItem.downloadLinkIterator().hasNext() == true;
 
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
-		iterator = siteBoardItem.downloadLinkIterator();
+		iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			TorrentMiBoardItemDownloadLink downloadLink = (TorrentMiBoardItemDownloadLink) iterator.next();
 			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
 
-		return downloadBoardItemDownloadLink0(siteBoardItem);
+		return downloadBoardItemDownloadLink0(boardItem);
 	}
 
 	@Override
@@ -396,30 +393,28 @@ public class TorrentMi extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		TorrentMiBoardItem siteBoardItem = (TorrentMiBoardItem) boardItem;
-
 		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
-		Iterator<WebSiteBoardItemDownloadLink> iterator = siteBoardItem.downloadLinkIterator();
+		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
-			if (loadBoardItemDownloadLink0(siteBoardItem) == false) {
+			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
 				return new Tuple<>(-1, -1);
 			}
 		}
 
-		assert siteBoardItem.downloadLinkIterator().hasNext() == true;
+		assert boardItem.downloadLinkIterator().hasNext() == true;
 
 		// 다운로드 링크에서 다운로드 제외 대상은 제외시킨다.
-		iterator = siteBoardItem.downloadLinkIterator();
+		iterator = boardItem.downloadLinkIterator();
 		for (int index = 0; iterator.hasNext() == true; ++index) {
 			WebSiteBoardItemDownloadLink downloadLink = iterator.next();
 			downloadLink.setDownloadable(index == downloadLinkIndex);
 		}
 
-		return downloadBoardItemDownloadLink0(siteBoardItem);
+		return downloadBoardItemDownloadLink0(boardItem);
 	}
 
-	private boolean loadBoardItemDownloadLink0(final TorrentMiBoardItem boardItem) throws NoPermissionException {
+	private boolean loadBoardItemDownloadLink0(final WebSiteBoardItem boardItem) throws NoPermissionException {
 		assert boardItem != null;
 		assert isLogin() == true;
 
@@ -479,7 +474,7 @@ public class TorrentMi extends AbstractWebSite {
 		return true;
 	}
 
-	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final TorrentMiBoardItem boardItem) {
+	private Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final WebSiteBoardItem boardItem) {
 		assert boardItem != null;
 		assert isLogin() == true;
 
