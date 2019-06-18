@@ -6,15 +6,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public abstract class AbstractWebSiteSearchContext implements WebSiteSearchContext {
+public class DefaultWebSiteSearchContext implements WebSiteSearchContext {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSiteSearchContext.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteSearchContext.class);
 	
 	private final WebSite site;
 
 	private final Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
-	public AbstractWebSiteSearchContext(final WebSite site) {
+	private WebSiteBoard board;
+
+	private long latestDownloadBoardItemIdentifier = WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE;
+
+	public DefaultWebSiteSearchContext(final WebSite site) {
 		Objects.requireNonNull(site, "site");
 
 		this.site = site;
@@ -27,6 +31,26 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	@Override
 	public WebSite getWebSite() {
 		return this.site;
+	}
+
+	@Override
+	public WebSiteBoard getBoard() {
+		return this.board;
+	}
+
+	@Override
+	public void setBoardName(final String name) {
+		this.board = this.site.getBoardByName(name);
+	}
+
+	@Override
+	public long getLatestDownloadBoardItemIdentifier() {
+		return this.latestDownloadBoardItemIdentifier;
+	}
+
+	@Override
+	public void setLatestDownloadBoardItemIdentifier(final long identifier) {
+		this.latestDownloadBoardItemIdentifier = identifier;
 	}
 
 	@Override
@@ -67,6 +91,8 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 					throw new EmptySearchKeywordsException(String.format("등록된 검색 키워드 목록이 없습니다.(%s)", type.getValue()));
 			}
 		}
+
+		Objects.requireNonNull(this.board, "board");
 	}
 
 	@Override
@@ -84,7 +110,7 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder()
-				.append(AbstractWebSiteSearchContext.class.getSimpleName())
+				.append(DefaultWebSiteSearchContext.class.getSimpleName())
 				.append("{")
 				.append("site:").append(getWebSite())
 				.append(", searchKeywords:");
@@ -116,7 +142,9 @@ public abstract class AbstractWebSiteSearchContext implements WebSiteSearchConte
 			sb.append("]");
 	    }
 
-		sb.append("}");
+		sb.append(", board:").append(getBoard())
+		  .append(", latestDownloadBoardItemIdentifier:").append(getLatestDownloadBoardItemIdentifier())
+		  .append("}");
 
 		return sb.toString();
 	}

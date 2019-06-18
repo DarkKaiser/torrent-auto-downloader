@@ -2,16 +2,12 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
-import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoSearchContext;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard;
-import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapSearchContext;
 import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi;
 import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiBoard;
-import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiSearchContext;
 import com.darkkaiser.torrentad.website.impl.totoria.Totoria;
 import com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard;
-import com.darkkaiser.torrentad.website.impl.totoria.TotoriaSearchContext;
 import org.jsoup.helper.StringUtil;
 
 import java.util.Objects;
@@ -26,7 +22,7 @@ public enum WebSite {
 
 		@Override
 		public WebSiteSearchContext createSearchContext() {
-			return new BogoBogoSearchContext();
+			return new DefaultWebSiteSearchContext(BOGOBOGO);
 		}
 
 		@Override
@@ -62,7 +58,7 @@ public enum WebSite {
 
         @Override
         public WebSiteSearchContext createSearchContext() {
-            return new TotoriaSearchContext();
+            return new DefaultWebSiteSearchContext(TOTORIA);
         }
 
         @Override
@@ -98,7 +94,7 @@ public enum WebSite {
 
 		@Override
 		public WebSiteSearchContext createSearchContext() {
-			return new TorrentMapSearchContext();
+			return new DefaultWebSiteSearchContext(TORRENTMAP);
 		}
 
 		@Override
@@ -134,7 +130,7 @@ public enum WebSite {
 
 		@Override
 		public WebSiteSearchContext createSearchContext() {
-			return new TorrentMiSearchContext();
+			return new DefaultWebSiteSearchContext(TORRENTMI);
 		}
 
 		@Override

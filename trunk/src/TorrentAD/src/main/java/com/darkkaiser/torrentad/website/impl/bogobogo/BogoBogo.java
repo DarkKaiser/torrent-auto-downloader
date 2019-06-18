@@ -235,23 +235,21 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
-
-		if (loadBoardItems0(siteSearchContext.getBoard(), "", loadNow) == false)
-			throw new LoadBoardItemsException(String.format("게시판 : %s", siteSearchContext.getBoard().toString()));
+		if (loadBoardItems0(searchContext.getBoard(), "", loadNow) == false)
+			throw new LoadBoardItemsException(String.format("게시판 : %s", searchContext.getBoard().toString()));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
-		long latestDownloadBoardItemIdentifier = siteSearchContext.getLatestDownloadBoardItemIdentifier();
+		long latestDownloadBoardItemIdentifier = searchContext.getLatestDownloadBoardItemIdentifier();
 
-		for (final WebSiteBoardItem boardItem : this.boardList.get(siteSearchContext.getBoard())) {
+		for (final WebSiteBoardItem boardItem : this.boardList.get(searchContext.getBoard())) {
 			assert boardItem != null;
 
 			// 최근에 다운로드 한 게시물 이전의 게시물이라면 검색 대상에 포함시키지 않는다.
 			if (latestDownloadBoardItemIdentifier != WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE && latestDownloadBoardItemIdentifier >= boardItem.getIdentifier())
 				continue;
 
-			if (siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
+			if (searchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				resultList.add(boardItem);
 
 				// logger.debug("필터링된 게시물:" + boardItem);
@@ -316,22 +314,24 @@ public class BogoBogo extends AbstractWebSite {
 		return null;
 	}
 
-    private boolean loadBoardItems0(final BogoBogoBoard board, final String queryString, final boolean loadNow) throws NoPermissionException {
+    private boolean loadBoardItems0(final WebSiteBoard board, final String queryString, final boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
 
-		if (loadNow == true) {
-			this.boardList.remove(board);
+	    final BogoBogoBoard siteBoard = (BogoBogoBoard) board;
+
+	    if (loadNow == true) {
+			this.boardList.remove(siteBoard);
 		} else {
-			if (this.boardList.containsKey(board) == true)
+			if (this.boardList.containsKey(siteBoard) == true)
 				return true;
 		}
 
-		List<WebSiteBoardItem> boardItems = loadBoardItems0_0(board, queryString);
+		List<WebSiteBoardItem> boardItems = loadBoardItems0_0(siteBoard, queryString);
 		if (boardItems == null)
 			return false;
 
-		this.boardList.put(board, boardItems);
+		this.boardList.put(siteBoard, boardItems);
 
 		return true;
 	}
@@ -483,8 +483,6 @@ public class BogoBogo extends AbstractWebSite {
 		if (isLogin() == false)
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
-		BogoBogoSearchContext siteSearchContext = (BogoBogoSearchContext) searchContext;
-
 		// 첨부파일에 대한 다운로드 링크를 읽어들인다. 
 		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
@@ -500,7 +498,7 @@ public class BogoBogo extends AbstractWebSite {
 		iterator = boardItem.downloadLinkIterator();
 		while (iterator.hasNext() == true) {
 			BogoBogoBoardItemDownloadLink downloadLink = (BogoBogoBoardItemDownloadLink) iterator.next();
-			downloadLink.setDownloadable(siteSearchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
+			downloadLink.setDownloadable(searchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.FILE, downloadLink.getFileName()));
 		}
 
 		return downloadBoardItemDownloadLink0(boardItem);

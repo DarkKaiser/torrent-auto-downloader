@@ -4,6 +4,8 @@ public interface WebSiteSearchContext {
 
 	WebSite getWebSite();
 
+	WebSiteBoard getBoard();
+
 	void setBoardName(final String name);
 
 	long getLatestDownloadBoardItemIdentifier();
