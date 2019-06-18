@@ -10,12 +10,12 @@ public enum TotoriaBoard implements WebSiteBoard {
 	MOVIE_HD			("hdmovie", 			"m02", 	"영화 > 고화질영화", 		Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_movie_dvd"),
 
 	/* 국내TV */
-	KOR_DRAMA			("kordrama", 			"k01", 	"국내TV > 국내 드라마", 	Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_kortv_drama"),
+	KOR_DRAMA			("kordrama", 			"k01", 	"국내TV > 국내 드라마", 	    Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_kortv_drama"),
 	KOR_ENTERTAINMENT	("korentertainment",	"k02", 	"국내TV > 국내 예능프로", 	Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_kortv_ent"),
 	KOR_SOCIAL			("korsocial",			"k03", 	"국내TV > 국내 시사/다큐", 	Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_kortv_social"),
 
 	/* 외국TV */
-	FOREIGN_DRAMA		("foreigndrama", 		"f01", 	"외국TV > 외국 드라마", 	Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_engtv_drama"),
+	FOREIGN_DRAMA		("foreigndrama", 		"f01", 	"외국TV > 외국 드라마", 	    Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_engtv_drama"),
 
 	/* 애니메이션 */
 	ANI					("ani", 				"a01", 	"동영상 > 애니", 			Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_video_ani"),
