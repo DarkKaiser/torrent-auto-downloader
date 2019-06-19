@@ -6,6 +6,4 @@ public interface TorrentMiBoardItemDownloadLink extends WebSiteBoardItemDownload
 
 	String getLink();
 	
-	String getFileName();
-
 }

@@ -10,4 +10,6 @@ public interface WebSiteBoardItemDownloadLink {
 
 	void setDownloadCompleted(final boolean flag);
 
+	String getFileName();
+
 }

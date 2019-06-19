@@ -6,6 +6,4 @@ public interface TotoriaBoardItemDownloadLink extends WebSiteBoardItemDownloadLi
 
 	String getLink();
 
-	String getFileName();
-
 }

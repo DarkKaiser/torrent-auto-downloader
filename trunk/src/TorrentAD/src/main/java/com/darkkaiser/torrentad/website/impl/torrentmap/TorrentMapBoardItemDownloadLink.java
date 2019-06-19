@@ -6,6 +6,4 @@ public interface TorrentMapBoardItemDownloadLink extends WebSiteBoardItemDownloa
 
 	String getLink();
 	
-	String getFileName();
-
 }

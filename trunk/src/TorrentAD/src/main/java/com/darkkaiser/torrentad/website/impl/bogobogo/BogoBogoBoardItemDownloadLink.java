@@ -16,6 +16,4 @@ public interface BogoBogoBoardItemDownloadLink extends WebSiteBoardItemDownloadL
 	
 	String getFileId();
 	
-	String getFileName();
-
 }
