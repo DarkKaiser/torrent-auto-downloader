@@ -29,8 +29,7 @@ public class TorrentMi extends AbstractWebSite {
 	public static final String BASE_URL = "https://www.torrentmi.net";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s", BASE_URL);
 
-	private static final String FILETENDER_DOMAIN = "https://www.filetender.com";
-	private static final String FILETENDER_DOWNLOAD_URL = String.format("%s/link.php", FILETENDER_DOMAIN);
+	private static final String FILETENDER_DOWNLOAD_URL = "http://file.filetender.com/file.php";
 
 	public TorrentMi(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENTMI, downloadFileWriteLocation);
@@ -336,55 +335,29 @@ public class TorrentMi extends AbstractWebSite {
 				Document downloadLinkPageDoc = downloadLinkPageResponse.parse();
 
 				String key = downloadLinkPageDoc.select("input[name=key]").val();
-				String token = downloadLinkPageDoc.select("input[name=token]").val();
-				String module = downloadLinkPageDoc.select("input[name=module]").val();
-				String timestamp = downloadLinkPageDoc.select("input[name=timestamp]").val();
+				String ticket = downloadLinkPageDoc.select("input[name=Ticket]").val();
+				String randStr = downloadLinkPageDoc.select("input[name=Randstr]").val();
+				String userIP = downloadLinkPageDoc.select("input[name=UserIP]").val();
 
-				if (key.equals("") == true || token.equals("") == true || module.equals("") == true || timestamp.equals("") == true)
-					throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s, key:%s, token:%s, module:%s, timestamp:%s)", downloadLinkPage, key, token, module, timestamp), 0);
-
-				Connection.Response downloadLinkPageResponse2 = Jsoup.connect("https://www.filetender.com/link.php")
-						.userAgent(USER_AGENT)
-						.header("Referer", downloadLinkPage)
-						.data("key", key)
-						.data("token", token)
-						.data("module", module)
-						.data("timestamp", timestamp)
-						.method(Connection.Method.POST)
-						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-						.ignoreContentType(true)
-						.execute();
-
-				if (downloadLinkPageResponse2.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("POST https://www.filetender.com/link.php returned " + downloadLinkPageResponse2.statusCode() + ": " + downloadLinkPageResponse2.statusMessage());
-
-				final String downloadUrl = downloadLinkPageResponse2.url().toString();
+				if (key.equals("") == true || userIP.equals("") == true)
+					throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s, key:%s, Ticket:%s, Randstr:%s, UserIP:%s)", downloadLinkPage, key, ticket, randStr, userIP), 0);
 
 				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
 
 				/*
 				  첨부파일 다운로드 하기
 				 */
-				Connection.Response downloadProcessResponse = Jsoup.connect(downloadUrl)
+				Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
 						.userAgent(USER_AGENT)
-						.header("Referer", detailPageURL)
+						.data("key", key)
+						.data("Ticket", ticket)
+						.data("Randstr", randStr)
+						.data("UserIP", userIP)
 						.method(Connection.Method.GET)
 						.cookies(downloadLinkPageResponse.cookies())
 						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 						.ignoreContentType(true)
 						.execute();
-//				Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
-//						.userAgent(USER_AGENT)
-//						.header("Referer", detailPageURL)
-//						.data("key", key)
-//						.data("token", token)
-//						.data("module", module)
-//						.data("timestamp", timestamp)
-//						.method(Connection.Method.GET)
-//						.cookies(downloadLinkPageResponse.cookies())
-//						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-//						.ignoreContentType(true)
-//						.execute();
 
 				if (downloadProcessResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("POST " + FILETENDER_DOWNLOAD_URL + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());

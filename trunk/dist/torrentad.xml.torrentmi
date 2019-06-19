@@ -75,6 +75,22 @@
 					-->
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
+
+			<torrentad-periodic-scheduled-task id="Drama" description="드라마">
+				<board-name>drama</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>보이스</item>
+					</search-keyword>
+					<search-keyword>
+						<item>720p</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
 			
 			<torrentad-periodic-scheduled-task id="Enter" description="예능">
 				<board-name>entertainment</board-name>
@@ -82,8 +98,13 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>짠내투어</item>
-						<item>미추리</item>
+						<item>강식당</item>
 						<item>호구의+연애</item>
+						<item>무엇이든+물어보살</item>
+						<item>연애의+맛</item>
+						<item>골목식당</item>
+						<item>놀라운+토요일+도레미+마켓</item>
+						<item>아는+형님</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -174,51 +195,6 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="BrotherKnow" description="아는형님">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>아는+형님</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="RhfahrTlrekd" description="골목식당">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>골목+식당</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-
-			<torrentad-periodic-scheduled-task id="LoveMat" description="연애의맛">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
-						<item>연애의+맛</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="ani-list" description="애니다운목록">
 				<board-name>ani</board-name>
 
@@ -247,10 +223,8 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>완벽한+타인</item>
 						<item>증인</item>
 						<item>범블비</item>
-						<item>캡틴+마블</item>
 						<item>극한+직업</item>
 						<item>보헤미안+랩소디</item>
 						<item>신비한+동물들+그린델왈드+범죄</item>
