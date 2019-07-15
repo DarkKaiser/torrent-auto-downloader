@@ -82,6 +82,8 @@
 				<search-keywords type="title">
 					<search-keyword>
 						<item>보이스</item>
+						<item>호텔+델루나</item>
+						<item>WATCHER왓쳐</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -105,69 +107,10 @@
 						<item>골목식당</item>
 						<item>도레미+마켓</item>
 						<item>아는+형님</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-
-			<torrentad-periodic-scheduled-task id="RunningMan" description="런닝맨">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
+						<item>뭉쳐야+찬다</item>
 						<item>런닝맨</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-
-			<torrentad-periodic-scheduled-task id="WjswlwjrWkarustlwja" description="전지적참견시점">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
 						<item>전지적+참견+시점</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-            
-			<torrentad-periodic-scheduled-task id="NewJourneyToTheWest" description="신서유기">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
 						<item>신서유기</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="MiunWori" description="미운우리새끼">
-				<board-name>entertainment</board-name>
-
-				<search-keywords type="title">
-					<search-keyword>
 						<item>미운+우리+새끼</item>
 					</search-keyword>
 					<search-keyword>
@@ -178,23 +121,7 @@
 				<search-keywords type="file">
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
-			
-			<torrentad-periodic-scheduled-task id="InfiniteChallenge" description="무한도전">
-				<board-name>entertainment</board-name>
 
-				<search-keywords type="title">
-					<search-keyword>
-						<item>무한도전</item>
-					</search-keyword>
-					<search-keyword>
-						<item>720p+NEXT</item>
-					</search-keyword>
-				</search-keywords>
-				
-				<search-keywords type="file">
-				</search-keywords>
-			</torrentad-periodic-scheduled-task>
-			
 			<torrentad-periodic-scheduled-task id="ani-list" description="애니다운목록">
 				<board-name>ani</board-name>
 
