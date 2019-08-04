@@ -29,7 +29,7 @@ public class TorrentMi extends AbstractWebSite {
 	public static final String BASE_URL = "https://www.torrentmi2.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s", BASE_URL);
 
-	private static final String FILETENDER_DOWNLOAD_URL = "http://file.filetender.com/file.php";
+	private static final String FILETENDER_DOWNLOAD_URL = "http://file.filetender.com/file2.php";
 
 	public TorrentMi(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENTMI, downloadFileWriteLocation);
