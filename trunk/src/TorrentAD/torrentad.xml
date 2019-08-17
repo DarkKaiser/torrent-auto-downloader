@@ -7,7 +7,8 @@
 			<!-- <website-name>보고보고</website-name> -->
 			<!-- <website-name>토토리아</website-name> -->
 			<!-- <website-name>토렌트맵</website-name> -->
-			<website-name>토렌트미</website-name>
+			<!-- <website-name>토렌트미</website-name> -->
+			<website-name>토렌트블랙</website-name>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -16,7 +17,10 @@
 			<!-- 토토리아
 			<website-account-id>darkkaiser</website-account-id>
 			<website-account-password>Mc8oVksd5zVHnxDW1Dew+w==</website-account-password> -->
-			<!-- 토렌트맵 -->
+			<!-- 토렌트맵
+			<website-account-id></website-account-id>
+			<website-account-password></website-account-password> -->
+			<!-- 토렌트블랙 -->
 			<website-account-id></website-account-id>
 			<website-account-password></website-account-password>
 
@@ -31,7 +35,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>movie</board-name>
+				<board-name>newmovie</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
@@ -41,7 +45,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>손오공</item>
+						<item>원더랜드</item>
 					</search-keyword>
 					<search-keyword>
 						<item>1080p</item>
