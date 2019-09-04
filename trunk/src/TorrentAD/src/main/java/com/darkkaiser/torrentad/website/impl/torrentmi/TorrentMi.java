@@ -26,29 +26,13 @@ public class TorrentMi extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentMi.class);
 
-	public static final String BASE_URL = "https://www.torrentmi2.com";
+	private static final String BASE_URL = "https://www.torrentmi2.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s", BASE_URL);
 
 	private static final String FILETENDER_DOWNLOAD_URL = "http://file.filetender.com/file2.php";
 
 	public TorrentMi(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENTMI, downloadFileWriteLocation);
-	}
-
-	@Override
-	protected void login0(final WebSiteAccount account) throws Exception {
-		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
-	}
-
-	@Override
-	protected void logout0() throws Exception {
-		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
-	}
-
-	@Override
-	public boolean isLogin() {
-		// 비회원제로 운영되기 때문에 무조건 true를 반환한다.
-		return true;
 	}
 
 	@Override
@@ -61,7 +45,7 @@ public class TorrentMi extends AbstractWebSite {
 		return null;
 	}
 
-	@SuppressWarnings("Duplicates")
+	@Override
 	protected List<WebSiteBoardItem> loadBoardItems0_0(final WebSiteBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;

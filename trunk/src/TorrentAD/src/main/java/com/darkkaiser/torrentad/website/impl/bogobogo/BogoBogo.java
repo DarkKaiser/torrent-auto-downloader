@@ -28,7 +28,7 @@ public class BogoBogo extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(BogoBogo.class);
 
-	public static final String BASE_URL = "https://qhrhqhrh.net";
+	private static final String BASE_URL = "https://qhrhqhrh.net";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/cdsb", BASE_URL);
 
 	private static final String MAIN_PAGE_URL = BASE_URL;
@@ -196,6 +196,7 @@ public class BogoBogo extends AbstractWebSite {
 		return String.format("&search=subject&keyword=%s&recom=", keyword);
 	}
 
+	@Override
 	protected List<WebSiteBoardItem> loadBoardItems0_0(final WebSiteBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;

@@ -66,7 +66,9 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		logger.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
 	}
 	
-	protected abstract void login0(final WebSiteAccount account) throws Exception;
+	protected void login0(final WebSiteAccount account) throws Exception {
+
+	}
 	
 	@Override
 	public void logout() throws Exception {
@@ -77,7 +79,14 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		logger.info("{} 에서 웹사이트('{}')가 로그아웃 되었습니다.", getOwner(), getName());
 	}
 
-	protected abstract void logout0() throws Exception;
+	protected void logout0() throws Exception {
+
+	}
+
+	@Override
+	public boolean isLogin() {
+		return true;
+	}
 
 	public WebSiteConnector getSiteConnector() {
 		return this.siteConnector;

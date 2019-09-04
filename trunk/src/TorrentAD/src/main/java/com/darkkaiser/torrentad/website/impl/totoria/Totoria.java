@@ -24,7 +24,7 @@ public class Totoria extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(Totoria.class);
 
-	public static final String BASE_URL = "http://totoria.co";
+	private static final String BASE_URL = "http://totoria.co";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String LOGIN_PROCESS_URL_1 = String.format("%s/login_check.php", BASE_URL_WITH_DEFAULT_PATH);
@@ -87,6 +87,7 @@ public class Totoria extends AbstractWebSite {
 		return String.format("&sca=&sop=and&sfl=wr_subject&stx=%s", keyword);
 	}
 
+	@Override
 	protected List<WebSiteBoardItem> loadBoardItems0_0(final WebSiteBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;

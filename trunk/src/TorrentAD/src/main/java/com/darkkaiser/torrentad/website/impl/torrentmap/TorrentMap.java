@@ -24,7 +24,7 @@ public class TorrentMap extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentMap.class);
 
-	public static final String BASE_URL = "https://www.torrentmap.com";
+	private static final String BASE_URL = "https://www.torrentmap.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
@@ -35,27 +35,11 @@ public class TorrentMap extends AbstractWebSite {
 	}
 
 	@Override
-	protected void login0(final WebSiteAccount account) throws Exception {
-		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
-	}
-
-	@Override
-	protected void logout0() throws Exception {
-		// 비회원제로 운영되기 때문에 아무 처리도 하지 않는다.
-	}
-
-	@Override
-	public boolean isLogin() {
-		// 비회원제로 운영되기 때문에 무조건 true를 반환한다.
-		return true;
-	}
-
-	@Override
 	protected String getSearchQueryString(final String keyword) {
 		return String.format("&sca=&sop=and&sfl=wr_subject&stx=%s", keyword);
 	}
 
-	@SuppressWarnings("Duplicates")
+	@Override
 	protected List<WebSiteBoardItem> loadBoardItems0_0(final WebSiteBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
