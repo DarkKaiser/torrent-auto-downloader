@@ -23,27 +23,8 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteSearchContext createSearchContext() {
-			return new DefaultWebSiteSearchContext(BOGOBOGO);
-		}
-
-		@Override
 		public WebSiteBoard getBoardByName(final String name) {
 			return BogoBogoBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard getBoardByCode(final String code) {
-			if (StringUtil.isBlank(code) == true)
-				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
-
-			WebSiteBoard[] boardValues = getBoardValues();
-			for (final WebSiteBoard board : boardValues) {
-				if (board.getCode().equals(code) == true)
-					return board;
-			}
-
-			return null;
 		}
 
 		@Override
@@ -59,27 +40,8 @@ public enum WebSite {
         }
 
         @Override
-        public WebSiteSearchContext createSearchContext() {
-            return new DefaultWebSiteSearchContext(TOTORIA);
-        }
-
-        @Override
         public WebSiteBoard getBoardByName(final String name) {
             return TotoriaBoard.fromString(name);
-        }
-
-        @Override
-        public WebSiteBoard getBoardByCode(final String code) {
-            if (StringUtil.isBlank(code) == true)
-                throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
-
-            WebSiteBoard[] boardValues = getBoardValues();
-            for (final WebSiteBoard board : boardValues) {
-                if (board.getCode().equals(code) == true)
-                    return board;
-            }
-
-            return null;
         }
 
         @Override
@@ -95,27 +57,8 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteSearchContext createSearchContext() {
-			return new DefaultWebSiteSearchContext(TORRENTMAP);
-		}
-
-		@Override
 		public WebSiteBoard getBoardByName(final String name) {
 			return TorrentMapBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard getBoardByCode(final String code) {
-			if (StringUtil.isBlank(code) == true)
-				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
-
-			WebSiteBoard[] boardValues = getBoardValues();
-			for (final WebSiteBoard board : boardValues) {
-				if (board.getCode().equals(code) == true)
-					return board;
-			}
-
-			return null;
 		}
 
 		@Override
@@ -131,27 +74,8 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteSearchContext createSearchContext() {
-			return new DefaultWebSiteSearchContext(TORRENTMI);
-		}
-
-		@Override
 		public WebSiteBoard getBoardByName(final String name) {
 			return TorrentMiBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard getBoardByCode(final String code) {
-			if (StringUtil.isBlank(code) == true)
-				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
-
-			WebSiteBoard[] boardValues = getBoardValues();
-			for (final WebSiteBoard board : boardValues) {
-				if (board.getCode().equals(code) == true)
-					return board;
-			}
-
-			return null;
 		}
 
 		@Override
@@ -167,27 +91,8 @@ public enum WebSite {
 		}
 
 		@Override
-		public WebSiteSearchContext createSearchContext() {
-			return new DefaultWebSiteSearchContext(TORRENTBLACK);
-		}
-
-		@Override
 		public WebSiteBoard getBoardByName(final String name) {
 			return TorrentBlackBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard getBoardByCode(final String code) {
-			if (StringUtil.isBlank(code) == true)
-				throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
-
-			WebSiteBoard[] boardValues = getBoardValues();
-			for (final WebSiteBoard board : boardValues) {
-				if (board.getCode().equals(code) == true)
-					return board;
-			}
-
-			return null;
 		}
 
 		@Override
@@ -226,7 +131,9 @@ public enum WebSite {
 	
 	public abstract WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation);
 	
-	public abstract WebSiteSearchContext createSearchContext();
+	public WebSiteSearchContext createSearchContext() {
+        return new DefaultWebSiteSearchContext(this);
+    }
 	
 	public WebSiteSearchKeywords createSearchKeywords(final String modeValue) {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
@@ -234,7 +141,18 @@ public enum WebSite {
 
 	public abstract WebSiteBoard getBoardByName(final String name);
 
-	public abstract WebSiteBoard getBoardByCode(final String code);
+	public WebSiteBoard getBoardByCode(final String code) {
+		if (StringUtil.isBlank(code) == true)
+			throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
+
+		WebSiteBoard[] boardValues = getBoardValues();
+		for (final WebSiteBoard board : boardValues) {
+			if (board.getCode().equals(code) == true)
+				return board;
+		}
+
+		return null;
+	}
 
 	public abstract WebSiteBoard[] getBoardValues();
 
