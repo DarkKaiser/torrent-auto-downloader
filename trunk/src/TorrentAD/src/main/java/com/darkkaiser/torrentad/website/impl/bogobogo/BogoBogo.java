@@ -192,45 +192,10 @@ public class BogoBogo extends AbstractWebSite {
 	}
 
 	@Override
-	public Tuple<String/* 검색기록 Identifier */, Iterator<WebSiteBoardItem>/* 검색결과목록 */> search(final WebSiteBoard board, final String keyword, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException{
-        Objects.requireNonNull(board, "board");
-        Objects.requireNonNull(comparator, "comparator");
-
-		if (StringUtil.isBlank(keyword) == true)
-			throw new IllegalArgumentException("keyword는 빈 문자열을 허용하지 않습니다.");
-
-		if (isLogin() == false)
-			throw new IllegalStateException("로그인 상태가 아닙니다.");
-
-		// 이전에 동일한 검색 기록이 존재하는 경우, 이전 기록을 모두 제거한다.
-		this.searchResultDataList.removeIf(searchResultData -> searchResultData.getBoard().equals(board) == true && searchResultData.getKeyword().equals(keyword) == true);
-
-		// 오래된 검색 기록은 모두 제거한다.
-		while (this.searchResultDataList.size() > (MAX_SEARCH_RESULT_DATA_COUNT - 1))
-			this.searchResultDataList.remove(0);
-
-		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
-		List<WebSiteBoardItem> boardItems = loadBoardItems0_0(board, String.format("&search=subject&keyword=%s&recom=", keyword));
-		if (boardItems == null)
-			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
-
-		List<WebSiteBoardItem> resultList = new ArrayList<>();
-
-		for (final WebSiteBoardItem boardItem : boardItems) {
-			assert boardItem != null;
-
-			resultList.add(boardItem);
-
-			// logger.debug("조회된 게시물:" + boardItem);
-		}
-
-		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
-		DefaultWebSiteSearchResultData searchResultData = new DefaultWebSiteSearchResultData(board, keyword, resultList);
-		this.searchResultDataList.add(searchResultData);
-
-		return new Tuple<>(searchResultData.getIdentifier(), searchResultData.resultIterator(comparator));
+	protected String getSearchQueryString(final String keyword) {
+		return String.format("&search=subject&keyword=%s&recom=", keyword);
 	}
-	
+
 	protected List<WebSiteBoardItem> loadBoardItems0_0(final WebSiteBoard board, final String queryString) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
