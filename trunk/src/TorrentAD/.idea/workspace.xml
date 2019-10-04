@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBeBoard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBeBoardItemDownloadLink.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBeBoardItemDownloadLinkImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -130,7 +135,7 @@
     <property name="ToolWindowDebug.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
@@ -138,6 +143,7 @@
       <recent name="com.darkkaiser.torrentad.website.impl.torrentmi" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD\src\main\java\com\darkkaiser\torrentad\website\impl\torrentbe" />
       <recent name="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD\src\main\java\com\darkkaiser\torrentad\website\impl\torrentblack" />
       <recent name="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD\src\main\java\com\darkkaiser\torrentad\website\impl\torrentmap" />
     </key>

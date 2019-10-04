@@ -2,6 +2,8 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
 import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
+import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBe;
+import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBeBoard;
 import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlack;
 import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlackBoard;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap;
@@ -98,6 +100,23 @@ public enum WebSite {
 		@Override
 		public WebSiteBoard[] getBoardValues() {
 			return TorrentBlackBoard.values();
+		}
+	},
+
+	TORRENTBE("토렌트비") {
+		@Override
+		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
+			return new RetryLoginOnNoPermissionWebSite(new TorrentBe(siteConnector, owner, downloadFileWriteLocation));
+		}
+
+		@Override
+		public WebSiteBoard getBoardByName(final String name) {
+			return TorrentBeBoard.fromString(name);
+		}
+
+		@Override
+		public WebSiteBoard[] getBoardValues() {
+			return TorrentBeBoard.values();
 		}
 	};
 

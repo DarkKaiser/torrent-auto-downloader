@@ -8,7 +8,8 @@
 			<!-- <website-name>토토리아</website-name> -->
 			<!-- <website-name>토렌트맵</website-name> -->
 			<!-- <website-name>토렌트미</website-name> -->
-			<website-name>토렌트블랙</website-name>
+			<!-- <website-name>토렌트블랙</website-name> -->
+			<website-name>토렌트비</website-name>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -45,7 +46,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>히든</item>
+						<item>어시밀레이트</item>
 					</search-keyword>
 					<search-keyword>
 						<item>1080p</item>
