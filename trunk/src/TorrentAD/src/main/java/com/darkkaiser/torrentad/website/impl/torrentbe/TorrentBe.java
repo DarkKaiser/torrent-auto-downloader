@@ -24,7 +24,7 @@ public class TorrentBe extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentBe.class);
 
-	private static final String BASE_URL = "https://www.torrentbie.com";
+	private static final String BASE_URL = "https://www.torrentp.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
