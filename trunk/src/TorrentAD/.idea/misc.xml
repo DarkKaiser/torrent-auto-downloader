@@ -6,11 +6,8 @@
     <annotation-enable>false</annotation-enable>
     <other-services-enabled>false</other-services-enabled>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="JDK_1.8.0" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
-  </component>
-  <component name="SvnBranchConfigurationManager">
-    <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="masterDetails">
     <states>
