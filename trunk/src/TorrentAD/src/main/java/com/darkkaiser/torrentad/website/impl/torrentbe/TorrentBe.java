@@ -24,11 +24,11 @@ public class TorrentBe extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentBe.class);
 
-	private static final String BASE_URL = "https://www.torrentp.com";
+	private static final String BASE_URL = "https://www.torrentp.net";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
-	private static final String FILETENDER_DOWNLOAD_URL = "https://file.filetender.net/file.php";
+	private static final String FILETENDER_DOWNLOAD_URL = "https://file.filetender.net/file3.php";
 
 	public TorrentBe(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENTBE, downloadFileWriteLocation);
