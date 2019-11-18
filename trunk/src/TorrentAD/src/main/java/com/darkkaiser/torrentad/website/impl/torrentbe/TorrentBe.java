@@ -28,7 +28,7 @@ public class TorrentBe extends AbstractWebSite {
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
-	private static final String FILETENDER_DOWNLOAD_URL = "https://file.filetender.net/file9.php";
+	private static final String FILETENDER_DOWNLOAD_URL = "https://file.filetender.net/file2.php";
 
 	public TorrentBe(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENTBE, downloadFileWriteLocation);
