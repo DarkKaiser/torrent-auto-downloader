@@ -24,7 +24,7 @@ public class TorrentBe extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentBe.class);
 
-	private static final String BASE_URL = "https://www.utofile.com";
+	private static final String BASE_URL = "https://www.utofile.me";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/bbs", BASE_URL);
 
 	private static final String FILETENDER_DOMAIN = "https://www.filetender.net";
@@ -298,12 +298,20 @@ public class TorrentBe extends AbstractWebSite {
 					if (key.equals("") == true || userIP.equals("") == true)
 						throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s, key:%s, Ticket:%s, Randstr:%s, UserIP:%s)", downloadLinkPage, key, ticket, randStr, userIP), 0);
 
-					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+					String downloadLinkPageDocHtml = downloadLinkPageDoc.html();
+					final int pos1 = downloadLinkPageDocHtml.indexOf("var newUrl = '");
+					final int pos2 = downloadLinkPageDocHtml.indexOf("'", pos1 + "var newUrl = '".length());
+					if (pos1 == -1 || pos2 == -1)
+						throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)", downloadLinkPage), 0);
+
+					String fileTenderDownloadUrl = downloadLinkPageDocHtml.substring(pos1 + "var newUrl = '".length(), pos2);
 
 					/*
 					  첨부파일 다운로드 하기
 					 */
-					Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
+					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+
+					Connection.Response downloadProcessResponse = Jsoup.connect(fileTenderDownloadUrl)
 							.userAgent(USER_AGENT)
 							.header("Referer", detailPageURL)
 							.data("key", key)
@@ -317,7 +325,7 @@ public class TorrentBe extends AbstractWebSite {
 							.execute();
 
 					if (downloadProcessResponse.statusCode() != HttpStatus.SC_OK)
-						throw new IOException("POST " + FILETENDER_DOWNLOAD_URL + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());
+						throw new IOException("POST " + fileTenderDownloadUrl + " returned " + downloadProcessResponse.statusCode() + ": " + downloadProcessResponse.statusMessage());
 
 					/*
 					  첨부파일 저장
