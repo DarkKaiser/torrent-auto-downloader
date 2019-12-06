@@ -6,6 +6,8 @@ import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBe;
 import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBeBoard;
 import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlack;
 import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlackBoard;
+import com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHall;
+import com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHallBoard;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap;
 import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard;
 import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi;
@@ -117,6 +119,23 @@ public enum WebSite {
 		@Override
 		public WebSiteBoard[] getBoardValues() {
 			return TorrentBeBoard.values();
+		}
+	},
+
+	TORRENTHALL("토렌트홀") {
+		@Override
+		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
+			return new RetryLoginOnNoPermissionWebSite(new TorrentHall(siteConnector, owner, downloadFileWriteLocation));
+		}
+
+		@Override
+		public WebSiteBoard getBoardByName(final String name) {
+			return TorrentHallBoard.fromString(name);
+		}
+
+		@Override
+		public WebSiteBoard[] getBoardValues() {
+			return TorrentHallBoard.values();
 		}
 	};
 
