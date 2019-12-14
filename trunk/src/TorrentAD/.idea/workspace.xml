@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHallBoard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHallBoardItemDownloadLink.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHallBoardItemDownloadLinkImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -587,6 +580,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java</url>
+          <line>172</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
