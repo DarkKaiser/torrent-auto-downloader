@@ -24,7 +24,7 @@ public class TorrentHall extends AbstractWebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(TorrentHall.class);
 
-	private static final String BASE_URL = "https://torrenthall1.com";
+	private static final String BASE_URL = "https://torrenthall2.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s/board", BASE_URL);
 
 	public TorrentHall(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
