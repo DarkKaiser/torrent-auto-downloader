@@ -140,6 +140,8 @@ public enum WebSite {
 	};
 
 	private String name;
+
+	private String url;
 	
 	WebSite(final String name) {
 		this.name = name;
@@ -147,6 +149,14 @@ public enum WebSite {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getURL() {
+		return this.url;
+	}
+
+	public void setURL(final String url) {
+		this.url = url;
 	}
 
 	public static WebSite fromString(final String name) {

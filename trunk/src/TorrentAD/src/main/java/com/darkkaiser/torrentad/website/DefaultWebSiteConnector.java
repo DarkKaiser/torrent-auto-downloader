@@ -38,6 +38,8 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 		// 웹사이트 정보를 읽어들인다.
 		try {
 			this.site = WebSite.fromString(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_NAME));
+
+			this.site.setURL(this.configuration.getValue(Constants.APP_CONFIG_TAG_WEBSITE_URL));
 		} catch (final RuntimeException e) {
 			logger.error("등록된 웹사이트의 이름('{}')이 유효하지 않습니다.", Constants.APP_CONFIG_TAG_WEBSITE_NAME);
 			throw e;

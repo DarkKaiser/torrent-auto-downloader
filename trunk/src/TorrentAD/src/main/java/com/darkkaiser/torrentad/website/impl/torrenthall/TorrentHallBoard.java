@@ -6,15 +6,15 @@ import org.jsoup.helper.StringUtil;
 public enum TorrentHallBoard implements WebSiteBoard {
 
 	/* 영화 */
-	MOVIE_NEW			    ("movie", 		"m01", 	"영화", 			TorrentHall.BASE_URL_WITH_DEFAULT_PATH + "/torrent_movie", 	false),
+	MOVIE_NEW			    ("movie", 		"m01", 	"영화", 			"/board/torrent_movie", 	false),
 
 	/* 방송 */
-	KOR_DRAMA_ON		    ("drama", 		"k01", 	"방송 > 드라마", 	TorrentHall.BASE_URL_WITH_DEFAULT_PATH + "/torrent_drama",	false),
-	KOR_ENTERTAINMENT_ON	("entertainment",	"k03", 	"방송 > 예능/오락", 	TorrentHall.BASE_URL_WITH_DEFAULT_PATH + "/torrent_ent",	false),
-	KOR_REFINEMENT	        ("refinement",	"k05", 	"방송 > 시사/교양", 	TorrentHall.BASE_URL_WITH_DEFAULT_PATH + "/torrent_social",	false),
+	KOR_DRAMA_ON		    ("drama", 		"k01", 	"방송 > 드라마", 	"/board/torrent_drama",		false),
+	KOR_ENTERTAINMENT_ON	("entertainment",	"k03", 	"방송 > 예능/오락", 	"/board/torrent_ent",		false),
+	KOR_REFINEMENT	        ("refinement",	"k05", 	"방송 > 시사/교양", 	"/board/torrent_social",	false),
 
 	/* 애니메이션 */
-	VIDEO_ANI			    ("videoani", 		"a01", 	"애니메이션", 	 	TorrentHall.BASE_URL_WITH_DEFAULT_PATH + "/torrent_ani",	false);
+	VIDEO_ANI			    ("videoani", 		"a01", 	"애니메이션", 	 	"/board/torrent_ani",		false);
 
 	private final String name;
 	private final String code;

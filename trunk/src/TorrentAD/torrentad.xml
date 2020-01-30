@@ -3,7 +3,7 @@
 
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
-			<!-- 사이트 이름 -->
+			<!-- 사이트 이름 및 URL -->
 			<!-- <website-name>보고보고</website-name> -->
 			<!-- <website-name>토토리아</website-name> -->
 			<!-- <website-name>토렌트맵</website-name> -->
@@ -11,6 +11,7 @@
 			<!-- <website-name>토렌트블랙</website-name> -->
             <!-- <website-name>토렌트비</website-name> -->
 			<website-name>토렌트홀</website-name>
+			<website-url>https://torrenthall6.com</website-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고

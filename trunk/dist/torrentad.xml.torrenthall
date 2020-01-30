@@ -23,8 +23,9 @@
 
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
-			<!-- 웹사이트 이름 -->
+			<!-- 웹사이트 이름 및 URL -->
 			<website-name>토렌트홀</website-name>
+			<website-url>https://torrenthall6.com</website-url>
 
 			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id></website-account-id>
@@ -101,7 +102,7 @@
 						<item>짠내투어</item>
 						<item>삼시세끼</item>
 						<item>호구의+연애</item>
-						<item>무엇이든+물어보살</item>
+						<item>개는+훌륭하다</item>
 						<item>연애의+맛</item>
 						<item>골목식당</item>
 						<item>도레미+마켓</item>
@@ -113,7 +114,6 @@
 						<item>캠핑클럽</item>
 						<item>미운+우리+새끼</item>
 						<item>일로+만난+사이</item>
-						<item>편애중계</item>
 						<item>신서유기</item>
 					</search-keyword>
 					<search-keyword>
