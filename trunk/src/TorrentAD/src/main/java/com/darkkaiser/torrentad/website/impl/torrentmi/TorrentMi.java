@@ -61,7 +61,7 @@ public class TorrentMi extends AbstractWebSite {
 
 		try {
 			for (int page = 1; page <= board.getDefaultLoadPageCount(); ++page) {
-				url = String.format("%s&page=%d&%s", board.getURL(), page, _queryString);
+				url = String.format("%s&page=%d&%s", board.getPath(), page, _queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)

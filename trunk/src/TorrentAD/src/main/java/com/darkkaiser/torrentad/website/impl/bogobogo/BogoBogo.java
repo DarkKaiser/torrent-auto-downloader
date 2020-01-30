@@ -214,7 +214,7 @@ public class BogoBogo extends AbstractWebSite {
 			final BogoBogoBoard siteBoard = (BogoBogoBoard) board;
 
 			for (int page = 1; page <= siteBoard.getDefaultLoadPageCount(); ++page) {
-				url = String.format("%s&page=%d&%s", siteBoard.getURL(), page, _queryString);
+				url = String.format("%s&page=%d&%s", siteBoard.getPath(), page, _queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)

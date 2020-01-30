@@ -51,7 +51,7 @@ public class TorrentHall extends AbstractWebSite {
 			final TorrentHallBoard siteBoard = (TorrentHallBoard) board;
 
 			for (int page = 1; page <= siteBoard.getDefaultLoadPageCount(); ++page) {
-				url = String.format("%s%s?&page=%d&%s", this.site.getURL(), siteBoard.getURL(), page, _queryString);
+				url = String.format("%s%s?&page=%d&%s", getBaseURL(), siteBoard.getPath(), page, _queryString);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
@@ -89,7 +89,7 @@ public class TorrentHall extends AbstractWebSite {
 								throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 
 							String detailPageURL = titleLinkElement.get(titleLinkElement.size() - 1).attr("href");
-							if (detailPageURL.startsWith(String.format("%s/post/", this.site.getURL())) == false)
+							if (detailPageURL.startsWith(String.format("%s/post/", getBaseURL())) == false)
 								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
 
 							final String title = trimString(titleLinkElement.get(titleLinkElement.size() - 1).text());
@@ -98,7 +98,7 @@ public class TorrentHall extends AbstractWebSite {
 							if (pos == -1)
 								pos = detailPageURL.length();
 
-							final String identifier = detailPageURL.substring(String.format("%s/post/", this.site.getURL()).length(), pos);
+							final String identifier = detailPageURL.substring(String.format("%s/post/", getBaseURL()).length(), pos);
 
 							//
 							// 용량

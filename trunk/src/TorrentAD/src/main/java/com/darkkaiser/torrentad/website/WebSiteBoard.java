@@ -8,7 +8,7 @@ public interface WebSiteBoard {
 
 	String getDescription();
 
-	String getURL();
+	String getPath();
 
 	int getDefaultLoadPageCount();
 

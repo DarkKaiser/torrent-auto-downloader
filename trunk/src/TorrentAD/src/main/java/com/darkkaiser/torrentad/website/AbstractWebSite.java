@@ -102,6 +102,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 
 	@Override
+	public String getBaseURL() {
+		return this.site.getBaseURL();
+	}
+
+	@Override
 	public WebSiteAccount getAccount() {
 		return this.account;
 	}

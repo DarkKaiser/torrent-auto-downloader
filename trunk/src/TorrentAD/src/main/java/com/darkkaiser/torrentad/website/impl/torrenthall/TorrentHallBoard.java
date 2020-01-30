@@ -9,7 +9,7 @@ public enum TorrentHallBoard implements WebSiteBoard {
 	MOVIE_NEW			    ("movie", 		"m01", 	"영화", 			"/board/torrent_movie", 	false),
 
 	/* 방송 */
-	KOR_DRAMA_ON		    ("drama", 		"k01", 	"방송 > 드라마", 	"/board/torrent_drama",		false),
+	KOR_DRAMA_ON		    ("drama", 		"k01", 	"방송 > 드라마", 	"/board/torrent_drama",	false),
 	KOR_ENTERTAINMENT_ON	("entertainment",	"k03", 	"방송 > 예능/오락", 	"/board/torrent_ent",		false),
 	KOR_REFINEMENT	        ("refinement",	"k05", 	"방송 > 시사/교양", 	"/board/torrent_social",	false),
 
@@ -19,16 +19,16 @@ public enum TorrentHallBoard implements WebSiteBoard {
 	private final String name;
 	private final String code;
 	private final String description;
-	private final String url;
+	private final String path;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	TorrentHallBoard(final String name, final String code, final String description, final String url, final boolean hasCategory) {
+	TorrentHallBoard(final String name, final String code, final String description, final String path, final boolean hasCategory) {
 		this.name = name;
 		this.code = code;
 		this.description = description;
-		this.url = url;
+		this.path = path;
 		this.hasCategory = hasCategory;
 	}
 	
@@ -48,8 +48,8 @@ public enum TorrentHallBoard implements WebSiteBoard {
 	}
 	
 	@Override
-	public String getURL() {
-		return this.url;
+	public String getPath() {
+		return this.path;
 	}
 
 	/**

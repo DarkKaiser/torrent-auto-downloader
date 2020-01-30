@@ -11,7 +11,7 @@
 			<!-- <website-name>토렌트블랙</website-name> -->
             <!-- <website-name>토렌트비</website-name> -->
 			<website-name>토렌트홀</website-name>
-			<website-url>https://torrenthall6.com</website-url>
+			<website-base-url>https://torrenthall6.com</website-base-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고

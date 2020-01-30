@@ -19,7 +19,7 @@ public final class Constants {
 
 	// AD Service 설정값 항목
 	public static final String APP_CONFIG_TAG_WEBSITE_NAME = "website-name";
-	public static final String APP_CONFIG_TAG_WEBSITE_URL = "website-url";
+	public static final String APP_CONFIG_TAG_WEBSITE_BASE_URL = "website-base-url";
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_ID = "website-account-id";
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD = "website-account-password";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION = "download-file-write-location";

@@ -70,7 +70,7 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	}
 	
 	@Override
-	public String getURL() {
+	public String getPath() {
 		return this.url;
 	}
 

@@ -62,7 +62,7 @@ public enum TorrentBeBoard implements WebSiteBoard {
 	}
 	
 	@Override
-	public String getURL() {
+	public String getPath() {
 		return this.url;
 	}
 

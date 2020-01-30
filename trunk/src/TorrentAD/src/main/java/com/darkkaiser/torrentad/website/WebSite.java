@@ -141,7 +141,7 @@ public enum WebSite {
 
 	private String name;
 
-	private String url;
+	private String baseURL;
 	
 	WebSite(final String name) {
 		this.name = name;
@@ -151,12 +151,12 @@ public enum WebSite {
 		return this.name;
 	}
 
-	public String getURL() {
-		return this.url;
+	public String getBaseURL() {
+		return this.baseURL;
 	}
 
-	public void setURL(final String url) {
-		this.url = url;
+	public void setBaseURL(final String baseURL) {
+		this.baseURL = baseURL;
 	}
 
 	public static WebSite fromString(final String name) {

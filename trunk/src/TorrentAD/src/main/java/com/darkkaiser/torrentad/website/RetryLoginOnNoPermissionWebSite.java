@@ -34,6 +34,11 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	}
 
 	@Override
+	public String getBaseURL() {
+		return this.site.getBaseURL();
+	}
+
+	@Override
 	public WebSiteAccount getAccount() {
 		return this.site.getAccount();
 	}
