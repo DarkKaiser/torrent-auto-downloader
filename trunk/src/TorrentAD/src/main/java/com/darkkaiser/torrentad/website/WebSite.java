@@ -1,150 +1,61 @@
 package com.darkkaiser.torrentad.website;
 
-import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo;
-import com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard;
-import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBe;
-import com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBeBoard;
-import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlack;
-import com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlackBoard;
-import com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHall;
-import com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHallBoard;
-import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap;
-import com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard;
-import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi;
-import com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiBoard;
-import com.darkkaiser.torrentad.website.impl.totoria.Totoria;
-import com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard;
 import org.jsoup.helper.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public enum WebSite {
 
-	BOGOBOGO("보고보고") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new BogoBogo(siteConnector, owner, downloadFileWriteLocation));
-		}
+	BOGOBOGO("보고보고",
+			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo",
+			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard"),
 
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return BogoBogoBoard.fromString(name);
-		}
+	TOTORIA("토토리아",
+			"com.darkkaiser.torrentad.website.impl.totoria.Totoria",
+			"com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard"),
 
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return BogoBogoBoard.values();
-		}
-	},
+	TORRENTMAP("토렌트맵",
+			"com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap",
+			"com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard"),
 
-	TOTORIA("토토리아") {
-        @Override
-        public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-            return new RetryLoginOnNoPermissionWebSite(new Totoria(siteConnector, owner, downloadFileWriteLocation));
-        }
+	TORRENTMI("토렌트미",
+			"com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi",
+			"com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiBoard"),
 
-        @Override
-        public WebSiteBoard getBoardByName(final String name) {
-            return TotoriaBoard.fromString(name);
-        }
+	TORRENTBLACK("토렌트블랙",
+			"com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlack",
+			"com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlackBoard"),
 
-        @Override
-        public WebSiteBoard[] getBoardValues() {
-            return TotoriaBoard.values();
-        }
-	},
+	TORRENTBE("토렌트비",
+			"com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBe",
+			"com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBeBoard"),
 
-	TORRENTMAP("토렌트맵") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new TorrentMap(siteConnector, owner, downloadFileWriteLocation));
-		}
+	TORRENTHALL("토렌트홀",
+			"com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHall",
+			"com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHallBoard"),
 
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return TorrentMapBoard.fromString(name);
-		}
+	TORRENTQQ("토렌트큐큐",
+			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQ",
+			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQBoard");
 
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return TorrentMapBoard.values();
-		}
-	},
-
-	TORRENTMI("토렌트미") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new TorrentMi(siteConnector, owner, downloadFileWriteLocation));
-		}
-
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return TorrentMiBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return TorrentMiBoard.values();
-		}
-	},
-
-	TORRENTBLACK("토렌트블랙") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new TorrentBlack(siteConnector, owner, downloadFileWriteLocation));
-		}
-
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return TorrentBlackBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return TorrentBlackBoard.values();
-		}
-	},
-
-	TORRENTBE("토렌트비") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new TorrentBe(siteConnector, owner, downloadFileWriteLocation));
-		}
-
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return TorrentBeBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return TorrentBeBoard.values();
-		}
-	},
-
-	TORRENTHALL("토렌트홀") {
-		@Override
-		public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
-			return new RetryLoginOnNoPermissionWebSite(new TorrentHall(siteConnector, owner, downloadFileWriteLocation));
-		}
-
-		@Override
-		public WebSiteBoard getBoardByName(final String name) {
-			return TorrentHallBoard.fromString(name);
-		}
-
-		@Override
-		public WebSiteBoard[] getBoardValues() {
-			return TorrentHallBoard.values();
-		}
-	};
+	private static final Logger logger = LoggerFactory.getLogger(WebSite.class);
 
 	private String name;
+	private String webSiteClassName;
+	private String webSiteBoardClassName;
 
 	private String baseURL;
-	
-	WebSite(final String name) {
+
+	WebSite(final String name, final String webSiteClassName, final String webSiteBoardClassName) {
 		this.name = name;
+		this.webSiteClassName = webSiteClassName;
+		this.webSiteBoardClassName = webSiteBoardClassName;
 	}
 
 	public String getName() {
@@ -177,7 +88,16 @@ public enum WebSite {
 		return new DefaultWebSiteAccount(id, password);
 	}
 	
-	public abstract WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation);
+	public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
+		try {
+			final Class clazz = Class.forName(this.webSiteClassName);
+			final Constructor constructor = clazz.getConstructor(WebSiteConnector.class, String.class, String.class);
+			return new RetryLoginOnNoPermissionWebSite((AbstractWebSite) constructor.newInstance(siteConnector, owner, downloadFileWriteLocation));
+		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			logger.error(null, e);
+			return null;
+		}
+	}
 	
 	public WebSiteSearchContext createSearchContext() {
         return new DefaultWebSiteSearchContext(this);
@@ -187,14 +107,23 @@ public enum WebSite {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
 
-	public abstract WebSiteBoard getBoardByName(final String name);
+	public WebSiteBoard getBoardByName(final String name) {
+		try {
+			final Class clazz = Class.forName(this.webSiteBoardClassName);
+			final Method method = clazz.getDeclaredMethod("fromString", String.class);
+			return (WebSiteBoard) method.invoke(null, name);
+		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			logger.error(null, e);
+			return null;
+		}
+	}
 
 	public WebSiteBoard getBoardByCode(final String code) {
 		if (StringUtil.isBlank(code) == true)
 			throw new IllegalArgumentException("code는 빈 문자열을 허용하지 않습니다.");
 
 		WebSiteBoard[] boardValues = getBoardValues();
-		for (final WebSiteBoard board : boardValues) {
+		for (final WebSiteBoard board : Objects.requireNonNull(boardValues)) {
 			if (board.getCode().equals(code) == true)
 				return board;
 		}
@@ -202,7 +131,16 @@ public enum WebSite {
 		return null;
 	}
 
-	public abstract WebSiteBoard[] getBoardValues();
+	public WebSiteBoard[] getBoardValues() {
+		try {
+			final Class clazz = Class.forName(this.webSiteBoardClassName);
+			final Method method = clazz.getDeclaredMethod("values");
+			return (WebSiteBoard[]) method.invoke(null);
+		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			logger.error(null, e);
+			return null;
+		}
+	}
 
 	@Override
 	public String toString() {
