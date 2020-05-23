@@ -77,13 +77,13 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="Drama" description="드라마">
+			<torrentad-periodic-scheduled-task id="dramas" description="드라마">
 				<board-name>broadcasting</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>호텔+델루나</item>
 						<item>저스티스</item>
+						<item>호텔+델루나</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -94,13 +94,14 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="Enter" description="예능">
+			<torrentad-periodic-scheduled-task id="entertainments" description="예능">
 				<board-name>broadcasting</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
 						<item>짠내투어</item>
 						<item>삼시세끼</item>
+						<item>삼시네세끼</item>
 						<item>호구의+연애</item>
 						<item>개는+훌륭하다</item>
 						<item>연애의+맛</item>
@@ -126,7 +127,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="ani-list" description="애니다운목록">
+			<torrentad-periodic-scheduled-task id="animaitions" description="애니">
 				<board-name>animation</board-name>
 
 				<search-keywords type="title">
@@ -149,15 +150,12 @@
 				-->
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="totalMovie" description="영화다운목록">
+			<torrentad-periodic-scheduled-task id="movies" description="영화">
 				<board-name>movie</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
 						<item>증인</item>
-						<item>범블비</item>
-						<item>극한+직업</item>
-						<item>보헤미안+랩소디</item>
 						<item>신비한+동물들+그린델왈드+범죄</item>
 					</search-keyword>
 					<search-keyword>
@@ -185,7 +183,7 @@
 	<torrentad-au-service>
 		<torrentad-service-config-values>
 			<!-- AD Service에 의해 다운로드 되는 파일을 감시하기 위한 간격(단위:초) -->
-			<download-file-watch-interval-time-second>180</download-file-watch-interval-time-second>
+			<download-file-watch-interval-time-second>600</download-file-watch-interval-time-second>
 
 			<!-- FTP 서버 정보 -->
 			<ftp-server-host>192.168.219.100</ftp-server-host>
