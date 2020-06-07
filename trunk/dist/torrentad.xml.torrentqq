@@ -25,7 +25,7 @@
 		<torrentad-service-config-values>
 			<!-- 웹사이트 이름 및 URL -->
 			<website-name>토렌트큐큐</website-name>
-			<website-base-url>https://torrentqq31.com</website-base-url>
+			<website-base-url>https://torrentqq33.com</website-base-url>
 
 			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id></website-account-id>
@@ -35,7 +35,7 @@
 			<download-file-write-location>/usr/local/torrentad/downloads</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
-			<task-execute-interval-time-second>1800</task-execute-interval-time-second>
+			<task-execute-interval-time-second>3600</task-execute-interval-time-second>
 		</torrentad-service-config-values>
 
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
