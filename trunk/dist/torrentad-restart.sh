@@ -1,3 +1,3 @@
 #!/bin/sh
-./torrentad.sh stop
-./torrentad.sh start
+/usr/local/torrentad/torrentad.sh stop
+/usr/local/torrentad/torrentad.sh start
