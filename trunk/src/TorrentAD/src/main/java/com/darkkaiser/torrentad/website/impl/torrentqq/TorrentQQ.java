@@ -28,7 +28,36 @@ public class TorrentQQ extends AbstractWebSite {
 		super(siteConnector, owner, WebSite.TORRENTQQ, downloadFileWriteLocation);
 	}
 
-	@Override
+    @Override
+    protected void login0(final WebSiteAccount account) throws Exception {
+    	// 도메인 리다이렉션 여부를 확인한다.
+		// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
+		checkDomainRedirection();
+	}
+
+	private void checkDomainRedirection() throws IOException {
+		Connection.Response response = Jsoup.connect(getBaseURL())
+				.userAgent(USER_AGENT)
+				.method(Connection.Method.GET)
+				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+				.execute();
+
+		if (response.statusCode() == HttpStatus.SC_OK) {
+			String baseURL = getBaseURL();
+			if (baseURL.endsWith("/") == true)
+				baseURL = baseURL.substring(0, baseURL.length() - 1);
+
+			String responseURL = response.url().toString();
+			if (responseURL.endsWith("/") == true)
+				responseURL = responseURL.substring(0, responseURL.length() - 1);
+
+			if (baseURL.equals(responseURL) == false) {
+				setBaseURL(responseURL);
+			}
+		}
+    }
+
+    @Override
 	protected String getSearchQueryString(final String keyword) {
 		return String.format("&q=%s", keyword);
 	}
