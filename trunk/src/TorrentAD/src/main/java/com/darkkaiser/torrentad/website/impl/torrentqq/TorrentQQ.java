@@ -16,6 +16,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,9 +34,13 @@ public class TorrentQQ extends AbstractWebSite {
 
     @Override
     protected void login0(final WebSiteAccount account) throws Exception {
-    	// 도메인 리다이렉션 여부를 확인한다.
-		// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
-		checkDomainRedirection();
+    	try {
+			// 도메인 리다이렉션 여부를 확인한다.
+			// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
+			checkDomainRedirection();
+		} catch (final IOException e) {
+			logger.warn("도메인 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.", e);
+		}
 	}
 
 	private void checkDomainRedirection() throws IOException {
@@ -53,6 +61,21 @@ public class TorrentQQ extends AbstractWebSite {
 
 			if (baseURL.equals(responseURL) == false) {
 				setBaseURL(responseURL);
+
+				// 도메인 변경사항을 파일에 반영한다.
+				final List<String> lines = Files.readAllLines(Paths.get(Constants.APP_CONFIG_FILE_NAME), StandardCharsets.UTF_8);
+
+				boolean finded = false;
+				for (int i = 0; i < lines.size(); i++) {
+					if (lines.get(i).contains(Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL) == true) {
+						finded = true;
+						lines.set(i, "\t\t\t<" + Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL + ">" + responseURL + "</" + Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL + ">");
+						break;
+					}
+				}
+
+				if (finded == true)
+					Files.write(Paths.get(Constants.APP_CONFIG_FILE_NAME), lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
 			}
 		}
     }
