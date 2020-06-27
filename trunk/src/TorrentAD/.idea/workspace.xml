@@ -2,14 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/darkk.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLink.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLinkImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/DefaultWebSiteBoardItemDownloadLink.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/TodawaBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/darkk.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/darkk.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoardItemDownloadLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoardItemDownloadLink.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLinkImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLinkImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLink.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,6 +153,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.darkkaiser.torrentad.website" />
+      <recent name="com.darkkaiser.torrentad.website.impl.todawa" />
       <recent name="com.darkkaiser.torrentad.website.impl.torrentmi" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -510,8 +517,8 @@
     </configuration>
     <list>
       <item itemvalue="Application.TorrentAD" />
-      <item itemvalue="Gradle.TorrentAD [jar]" />
       <item itemvalue="Gradle.TorrentAD [build]" />
+      <item itemvalue="Gradle.TorrentAD [jar]" />
       <item itemvalue="Gradle.TorrentAD [wrapper]" />
     </list>
     <recent_temporary>
@@ -595,50 +602,54 @@
     <option name="processedProjectFiles" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="605" y="139" key="#com.intellij.ide.util.MemberChooser" timestamp="1593278830976">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="605" y="139" key="#com.intellij.ide.util.MemberChooser/0.0.1600.860@0.0.1600.860" timestamp="1593278830976" />
     <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589819227744">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1600.860@0.0.1600.860" timestamp="1589819227744" />
-    <state width="1022" height="466" key="DebuggerActiveHint" timestamp="1590073420327">
+    <state width="1022" height="466" key="DebuggerActiveHint" timestamp="1593278350995">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1590073420327" />
-    <state width="1557" height="363" key="GridCell.Tab.0.bottom" timestamp="1592836423924">
+    <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1593278350995" />
+    <state width="1557" height="363" key="GridCell.Tab.0.bottom" timestamp="1593279509565">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1592836423924" />
-    <state width="1557" height="363" key="GridCell.Tab.0.center" timestamp="1592836423923">
+    <state width="1557" height="363" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
+    <state width="1557" height="363" key="GridCell.Tab.0.center" timestamp="1593279509565">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1592836423923" />
-    <state width="1557" height="363" key="GridCell.Tab.0.left" timestamp="1592836423923">
+    <state width="1557" height="363" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
+    <state width="1557" height="363" key="GridCell.Tab.0.left" timestamp="1593279509565">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1592836423923" />
-    <state width="1557" height="363" key="GridCell.Tab.0.right" timestamp="1592836423924">
+    <state width="1557" height="363" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
+    <state width="1557" height="363" key="GridCell.Tab.0.right" timestamp="1593279509565">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1592836423924" />
-    <state width="1557" height="413" key="GridCell.Tab.1.bottom" timestamp="1590075470722">
+    <state width="1557" height="363" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
+    <state width="1557" height="321" key="GridCell.Tab.1.bottom" timestamp="1593279509563">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="413" key="GridCell.Tab.1.bottom/0.0.1600.860@0.0.1600.860" timestamp="1590075470722" />
-    <state width="1557" height="413" key="GridCell.Tab.1.center" timestamp="1590075470722">
+    <state width="1557" height="321" key="GridCell.Tab.1.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593279509563" />
+    <state width="1557" height="321" key="GridCell.Tab.1.center" timestamp="1593279509562">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="413" key="GridCell.Tab.1.center/0.0.1600.860@0.0.1600.860" timestamp="1590075470722" />
-    <state width="1557" height="413" key="GridCell.Tab.1.left" timestamp="1590075470722">
+    <state width="1557" height="321" key="GridCell.Tab.1.center/0.0.1600.860@0.0.1600.860" timestamp="1593279509562" />
+    <state width="1557" height="321" key="GridCell.Tab.1.left" timestamp="1593279509562">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="413" key="GridCell.Tab.1.left/0.0.1600.860@0.0.1600.860" timestamp="1590075470722" />
-    <state width="1557" height="413" key="GridCell.Tab.1.right" timestamp="1590075470722">
+    <state width="1557" height="321" key="GridCell.Tab.1.left/0.0.1600.860@0.0.1600.860" timestamp="1593279509562" />
+    <state width="1557" height="321" key="GridCell.Tab.1.right" timestamp="1593279509563">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="413" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1590075470722" />
-    <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1590074583063">
+    <state width="1557" height="321" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1593279509563" />
+    <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1593279503854">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1590074583063" />
+    <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1593279503854" />
     <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1590074803560">
       <screen x="0" y="0" width="1600" height="860" />
     </state>

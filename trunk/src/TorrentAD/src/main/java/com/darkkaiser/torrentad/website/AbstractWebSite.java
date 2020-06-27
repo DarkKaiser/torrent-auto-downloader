@@ -1,11 +1,20 @@
 package com.darkkaiser.torrentad.website;
 
+import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
+import org.apache.http.HttpStatus;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
@@ -61,6 +70,15 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		logger.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
 
 		logout0();
+
+		try {
+			// 도메인 리다이렉션 여부를 확인한다.
+			// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
+			checkDomainRedirection();
+		} catch (final IOException e) {
+			logger.warn("도메인 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.", e);
+		}
+
 		login0(account);
 
 		logger.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
@@ -86,6 +104,43 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	@Override
 	public boolean isLogin() {
 		return true;
+	}
+
+	private void checkDomainRedirection() throws IOException {
+		Connection.Response response = Jsoup.connect(getBaseURL())
+				.userAgent(USER_AGENT)
+				.method(Connection.Method.GET)
+				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+				.execute();
+
+		if (response.statusCode() == HttpStatus.SC_OK) {
+			String baseURL = getBaseURL();
+			if (baseURL.endsWith("/") == true)
+				baseURL = baseURL.substring(0, baseURL.length() - 1);
+
+			String responseURL = response.url().toString();
+			if (responseURL.endsWith("/") == true)
+				responseURL = responseURL.substring(0, responseURL.length() - 1);
+
+			if (baseURL.equals(responseURL) == false) {
+				setBaseURL(responseURL);
+
+				// 도메인 변경사항을 파일에 반영한다.
+				final List<String> lines = Files.readAllLines(Paths.get(Constants.APP_CONFIG_FILE_NAME), StandardCharsets.UTF_8);
+
+				boolean find = false;
+				for (int i = 0; i < lines.size(); i++) {
+					if (lines.get(i).contains(Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL) == true) {
+						find = true;
+						lines.set(i, "\t\t\t<" + Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL + ">" + responseURL + "</" + Constants.APP_CONFIG_TAG_WEBSITE_BASE_URL + ">");
+						break;
+					}
+				}
+
+				if (find == true)
+					Files.write(Paths.get(Constants.APP_CONFIG_FILE_NAME), lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+			}
+		}
 	}
 
 	public WebSiteConnector getSiteConnector() {

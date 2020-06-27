@@ -73,6 +73,11 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 	}
 
 	@Override
+	public String getLink() {
+		return null;
+	}
+
+	@Override
 	public String getFileName() {
 		return this.fileName;
 	}

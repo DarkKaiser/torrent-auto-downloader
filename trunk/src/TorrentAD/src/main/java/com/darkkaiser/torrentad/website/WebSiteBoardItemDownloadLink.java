@@ -2,6 +2,10 @@ package com.darkkaiser.torrentad.website;
 
 public interface WebSiteBoardItemDownloadLink {
 
+	String getLink();
+
+	String getFileName();
+
 	boolean isDownloadable();
 
 	void setDownloadable(final boolean flag);
@@ -9,7 +13,5 @@ public interface WebSiteBoardItemDownloadLink {
 	boolean isDownloadCompleted();
 
 	void setDownloadCompleted(final boolean flag);
-
-	String getFileName();
 
 }

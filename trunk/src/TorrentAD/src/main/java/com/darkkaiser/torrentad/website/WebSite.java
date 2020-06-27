@@ -42,7 +42,11 @@ public enum WebSite {
 
 	TORRENTQQ("토렌트큐큐",
 			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQ",
-			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQBoard");
+			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQBoard"),
+
+	TODAWA("토다와",
+			"com.darkkaiser.torrentad.website.impl.todawa.Todawa",
+			"com.darkkaiser.torrentad.website.impl.todawa.TodawaBoard");
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSite.class);
 

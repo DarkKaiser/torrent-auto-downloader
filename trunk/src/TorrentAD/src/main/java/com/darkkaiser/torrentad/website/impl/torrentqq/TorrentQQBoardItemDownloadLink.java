@@ -7,5 +7,3 @@ public interface TorrentQQBoardItemDownloadLink extends WebSiteBoardItemDownload
 	String getLink();
 
 }
-
-
