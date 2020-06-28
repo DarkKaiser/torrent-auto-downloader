@@ -10,8 +10,8 @@
 			<!-- <website-name>토렌트미</website-name> -->
 			<!-- <website-name>토렌트블랙</website-name> -->
             <!-- <website-name>토렌트비</website-name> -->
-			<website-name>토렌트큐큐</website-name>
-			<website-base-url>https://torrentqq31.com</website-base-url>
+			<website-name>토다와</website-name>
+			<website-base-url>https://www2.todawa.com</website-base-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -38,7 +38,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>broadcasting</board-name>
+				<board-name>movie</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
@@ -48,7 +48,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>뽕숭아+학당+E02</item>
+						<item>옆집소녀</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>

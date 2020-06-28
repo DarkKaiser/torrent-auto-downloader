@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/DefaultWebSiteBoardItemDownloadLink.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/TodawaBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/darkk.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/darkk.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/TorrentAD.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/TorrentAD.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/TorrentAD.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/TorrentAD.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoardItemDownloadLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/WebSiteBoardItemDownloadLink.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLinkImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogoBoardItemDownloadLinkImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQBoardItemDownloadLink.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -471,7 +463,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <option name="filePath" />
       <option name="vmParameters" />
       <option name="alternativeJrePath" />
@@ -526,18 +518,6 @@
         <item itemvalue="Gradle.TorrentAD [wrapper]" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration>C:\Users\darkk\AppData\Roaming\Subversion</configuration>
@@ -606,6 +586,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="605" y="139" key="#com.intellij.ide.util.MemberChooser/0.0.1600.860@0.0.1600.860" timestamp="1593278830976" />
+    <state x="480" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1593352223435">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="480" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1600.860@0.0.1600.860" timestamp="1593352223435" />
     <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589819227744">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -614,22 +598,22 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1593278350995" />
-    <state width="1557" height="363" key="GridCell.Tab.0.bottom" timestamp="1593279509565">
+    <state width="1557" height="363" key="GridCell.Tab.0.bottom" timestamp="1593353241466">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
-    <state width="1557" height="363" key="GridCell.Tab.0.center" timestamp="1593279509565">
+    <state width="1557" height="363" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593353241466" />
+    <state width="1557" height="363" key="GridCell.Tab.0.center" timestamp="1593353241466">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
-    <state width="1557" height="363" key="GridCell.Tab.0.left" timestamp="1593279509565">
+    <state width="1557" height="363" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1593353241466" />
+    <state width="1557" height="363" key="GridCell.Tab.0.left" timestamp="1593353241466">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
-    <state width="1557" height="363" key="GridCell.Tab.0.right" timestamp="1593279509565">
+    <state width="1557" height="363" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1593353241466" />
+    <state width="1557" height="363" key="GridCell.Tab.0.right" timestamp="1593353241466">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="363" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1593279509565" />
+    <state width="1557" height="363" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1593353241466" />
     <state width="1557" height="321" key="GridCell.Tab.1.bottom" timestamp="1593279509563">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -646,10 +630,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="321" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1593279509563" />
-    <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1593279503854">
+    <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1593352193135">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1593279503854" />
+    <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1593352193135" />
     <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1590074803560">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
