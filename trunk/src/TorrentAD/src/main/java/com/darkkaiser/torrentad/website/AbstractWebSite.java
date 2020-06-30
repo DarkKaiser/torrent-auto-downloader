@@ -119,6 +119,10 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 				baseURL = baseURL.substring(0, baseURL.length() - 1);
 
 			String responseURL = response.url().toString();
+			final int pos = responseURL.indexOf("/", responseURL.indexOf("//") + 2);
+			if (pos != -1)
+				responseURL = responseURL.substring(0, pos);
+
 			if (responseURL.endsWith("/") == true)
 				responseURL = responseURL.substring(0, responseURL.length() - 1);
 
