@@ -1,2 +1,4 @@
 # 매일 밤1시, 하위폴더로 옮겨진 파일들 중에서 14일이 경과한 파일들 삭제
-0 1 * * * /usr/bin/find /DataVolume/shares/Public/Torrent/ -mindepth 2 -type f -mtime +14 -delete
+0 1 * * * /usr/bin/find /DataVolume/shares/Public/Torrent/ -mindepth 2 -type f -mtime +14 | grep "([월화수목금토일])" | tr "\n" "\0" | xargs -0 rm
+
+
