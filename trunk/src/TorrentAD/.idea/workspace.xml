@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +136,7 @@
     <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="vcs.Subversion.Network" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -626,14 +625,19 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="321" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1593477661347" />
+    <state x="555" y="37" key="SettingsEditor" timestamp="1594045778267">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="555" y="37" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1594045778267" />
+    <state x="722" y="86" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1593711008922" />
     <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1593352193135">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1593352193135" />
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1593476764411">
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1593671383872">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1593476764411" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1593671383872" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

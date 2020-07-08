@@ -9,9 +9,9 @@
 			<!-- <website-name>토렌트맵</website-name> -->
 			<!-- <website-name>토렌트미</website-name> -->
 			<!-- <website-name>토렌트블랙</website-name> -->
-            <!-- <website-name>토렌트비</website-name> -->
+			<!-- <website-name>토렌트비</website-name> -->
 			<website-name>토다와</website-name>
-			<website-base-url>https://www2.todawa.com</website-base-url>
+			<website-base-url>https://www3.todawa.com</website-base-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -54,7 +54,7 @@
 						<item>720p</item>
 					</search-keyword>
 				</search-keywords>
-				
+
 				<!-- 게시물 첨부파일 검색키워드 -->
 				<search-keywords type="file">
 					<!--
