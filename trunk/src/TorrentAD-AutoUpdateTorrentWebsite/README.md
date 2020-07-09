@@ -1,4 +1,4 @@
-# TorrentAD-AutoUpdateTorrentWebsite
+# TorrentAD-AutoUpdateTorrentWebSite
 TorrentAD 데몬의 토렌트 웹사이트 주소를 자동으로 갱신시켜 주는 프로그램
 
 # crontab 추가내용
