@@ -304,7 +304,7 @@ public class Totoria extends AbstractWebSite {
 					continue;
 				}
 
-				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 				/*
 				  첨부파일 다운로드

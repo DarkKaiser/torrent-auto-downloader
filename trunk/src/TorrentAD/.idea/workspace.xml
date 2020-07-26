@@ -3,6 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/common/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/common/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/service/au/TorrentAuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/service/au/TorrentAuService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/Totoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/Totoria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,33 +113,13 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1PdtnBRGPr3GDprFPe9jG9pCk5m" />
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-          <State>
-            <id>Control flow issuesJava</id>
-          </State>
-          <State>
-            <id>Java</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>PointlessBooleanExpression</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SearchEverywhereHistoryKey" value="TorrentMi&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;Torrentmibo&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java&#10;Tor&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java&#10;TorrentMap.java&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java&#10;TorrentMiBo&#9;FILE&#9;file://F:/Solution-DarkKaiser/torrent-auto-downloader/src/TorrentAD/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMiBoard.java" />
     <property name="ToolWindowDebug.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -136,7 +128,7 @@
     <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -522,16 +514,16 @@
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD" />
-          <option name="myCopyRoot" value="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD" />
+          <option name="myVcsRoot" value="F:\Solutions-Private\torrent-auto-downloader\src\TorrentAD" />
+          <option name="myCopyRoot" value="F:\Solutions-Private\torrent-auto-downloader\src\TorrentAD" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD" />
-          <option name="myCopyRoot" value="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD" />
+          <option name="myVcsRoot" value="F:\Solutions-Private\torrent-auto-downloader\src\TorrentAD" />
+          <option name="myCopyRoot" value="F:\Solutions-Private\torrent-auto-downloader\src\TorrentAD" />
         </SvnCopyRootSimple>
       </list>
     </option>
@@ -577,6 +569,10 @@
     <option name="processedProjectFiles" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="426" y="108" key="#Inspections" timestamp="1595605450000">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="426" y="108" key="#Inspections/0.0.1600.860@0.0.1600.860" timestamp="1595605450000" />
     <state x="605" y="139" key="#com.intellij.ide.util.MemberChooser" timestamp="1593278830976">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -589,55 +585,59 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1600.860@0.0.1600.860" timestamp="1589819227744" />
-    <state width="1022" height="466" key="DebuggerActiveHint" timestamp="1593278350995">
+    <state width="1022" height="466" key="DebuggerActiveHint" timestamp="1595690999001">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1593278350995" />
-    <state width="1557" height="321" key="GridCell.Tab.0.bottom" timestamp="1593477661346">
+    <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1595690999001" />
+    <state width="1557" height="450" key="GridCell.Tab.0.bottom" timestamp="1595780450440">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593477661346" />
-    <state width="1557" height="321" key="GridCell.Tab.0.center" timestamp="1593477661346">
+    <state width="1557" height="450" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1595780450440" />
+    <state width="1557" height="450" key="GridCell.Tab.0.center" timestamp="1595780450440">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1593477661346" />
-    <state width="1557" height="321" key="GridCell.Tab.0.left" timestamp="1593477661346">
+    <state width="1557" height="450" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1595780450440" />
+    <state width="1557" height="450" key="GridCell.Tab.0.left" timestamp="1595780450440">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1593477661346" />
-    <state width="1557" height="321" key="GridCell.Tab.0.right" timestamp="1593477661346">
+    <state width="1557" height="450" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1595780450440" />
+    <state width="1557" height="450" key="GridCell.Tab.0.right" timestamp="1595780450440">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1593477661346" />
-    <state width="1557" height="321" key="GridCell.Tab.1.bottom" timestamp="1593477661347">
+    <state width="1557" height="450" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1595780450440" />
+    <state width="1557" height="320" key="GridCell.Tab.1.bottom" timestamp="1595778521161">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.1.bottom/0.0.1600.860@0.0.1600.860" timestamp="1593477661347" />
-    <state width="1557" height="321" key="GridCell.Tab.1.center" timestamp="1593477661347">
+    <state width="1557" height="320" key="GridCell.Tab.1.bottom/0.0.1600.860@0.0.1600.860" timestamp="1595778521161" />
+    <state width="1557" height="320" key="GridCell.Tab.1.center" timestamp="1595778521161">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.1.center/0.0.1600.860@0.0.1600.860" timestamp="1593477661347" />
-    <state width="1557" height="321" key="GridCell.Tab.1.left" timestamp="1593477661346">
+    <state width="1557" height="320" key="GridCell.Tab.1.center/0.0.1600.860@0.0.1600.860" timestamp="1595778521161" />
+    <state width="1557" height="320" key="GridCell.Tab.1.left" timestamp="1595778521161">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.1.left/0.0.1600.860@0.0.1600.860" timestamp="1593477661346" />
-    <state width="1557" height="321" key="GridCell.Tab.1.right" timestamp="1593477661347">
+    <state width="1557" height="320" key="GridCell.Tab.1.left/0.0.1600.860@0.0.1600.860" timestamp="1595778521161" />
+    <state width="1557" height="320" key="GridCell.Tab.1.right" timestamp="1595778521161">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="321" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1593477661347" />
-    <state x="555" y="37" key="SettingsEditor" timestamp="1594045778267">
+    <state width="1557" height="320" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1595778521161" />
+    <state x="555" y="37" key="SettingsEditor" timestamp="1595603968374">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="555" y="37" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1594045778267" />
+    <state x="555" y="37" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1595603968374" />
     <state x="722" y="86" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1593711008922" />
-    <state x="341" y="101" width="908" height="601" key="find.popup" timestamp="1593352193135">
+    <state x="137" y="84" width="1616" height="869" key="dock-window-1" timestamp="1595603715122">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="341" y="101" width="908" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1593352193135" />
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1593671383872">
+    <state x="137" y="84" width="1616" height="869" key="dock-window-1/0.0.1600.860@0.0.1600.860" timestamp="1595603715122" />
+    <state x="341" y="101" width="918" height="601" key="find.popup" timestamp="1595778086103">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1593671383872" />
+    <state x="341" y="101" width="918" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1595778086103" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1595690632498">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1595690632498" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

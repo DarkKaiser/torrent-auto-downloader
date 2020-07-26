@@ -197,14 +197,14 @@ public class Todawa extends AbstractWebSite {
 				throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS 셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
 			} else {
 				try {
-					String[] exceptFileExtension = { "JPG", "JPEG", "GIF", "PNG" };
+					final String[] exceptFileExtensions = { ".JPG", ".JPEG", ".GIF", ".PNG" };
 
 					for (final Element element : elements) {
 						String link = element.attr("href");
 						String fileName = trimString(element.text());
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
-						if (Arrays.asList(exceptFileExtension).contains(fileName.toUpperCase()) == true)
+						if (Arrays.asList(exceptFileExtensions).contains(fileName.substring(fileName.lastIndexOf(".")).toUpperCase()) == true)
 							continue;
 
 						boardItem.addDownloadLink(new DefaultWebSiteBoardItemDownloadLink(link, fileName));
@@ -283,10 +283,10 @@ public class Todawa extends AbstractWebSite {
 				if (key.equals("") == true || userIP.equals("") == true)
 					throw new ParseException(String.format("첨부파일을 다운로드 하기 위한 작업 진행중에 수신된 데이터의 값이 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s, key:%s, Ticket:%s, Randstr:%s, UserIP:%s)", downloadLinkPage, key, ticket, randStr, userIP), 0);
 
-				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+				final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 				/*
-				  첨부파일 다운로드 하기
+				  첨부파일 다운로드
 				 */
 				Connection.Response downloadProcessResponse = Jsoup.connect(FILETENDER_DOWNLOAD_URL)
 						.userAgent(USER_AGENT)
@@ -310,12 +310,29 @@ public class Todawa extends AbstractWebSite {
 				fos.write(downloadProcessResponse.bodyAsBytes());
 				fos.close();
 
-				notyetDownloadFile.renameTo(downloadFile);
+				// 압축된 자막 파일인 경우 압축을 풀고 삭제한다.
+				final List<String> extractedSubtitleFilePathList = new ArrayList<>();
+				if (isNotYetDownloadSubtitleZipFile(notyetDownloadFile.getCanonicalPath()) == true &&
+						extractNotYetDownloadSubtitleZipFile(notyetDownloadFile.getCanonicalPath(), extractedSubtitleFilePathList) == true) {
+					notyetDownloadFile.delete();
 
-				++downloadCompletedCount;
-				downloadLink.setDownloadCompleted(true);
+					++downloadCompletedCount;
+					downloadLink.setDownloadCompleted(true);
 
-				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+					final StringBuilder sb = new StringBuilder(String.format("검색된 게시물('%s')의 첨부파일 다운로드가 완료되었습니다. 다운로드 받은 파일(%s)이 압축된 자막 파일이므로 압축을 해제합니다.", boardItem.getTitle(), downloadFilePath));
+					extractedSubtitleFilePathList.forEach(filePath -> {
+						sb.append("\n\t> 압축 해제된 자막 파일 : ").append(filePath);
+					});
+
+					logger.info(sb.toString());
+				} else {
+					notyetDownloadFile.renameTo(downloadFile);
+
+					++downloadCompletedCount;
+					downloadLink.setDownloadCompleted(true);
+
+					logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+				}
 			} catch (final Exception e) {
 				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}

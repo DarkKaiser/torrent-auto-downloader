@@ -309,7 +309,7 @@ public class TorrentBe extends AbstractWebSite {
 					/*
 					  첨부파일 다운로드 하기
 					 */
-					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 					Connection.Response downloadProcessResponse = Jsoup.connect(fileTenderDownloadUrl)
 							.userAgent(USER_AGENT)
@@ -348,7 +348,7 @@ public class TorrentBe extends AbstractWebSite {
 					if (detailPageResponse.statusCode() != HttpStatus.SC_OK)
 						throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
 
-					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+					File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 					/*
 					  첨부파일 다운로드 하기

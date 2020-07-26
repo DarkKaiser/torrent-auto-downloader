@@ -434,7 +434,7 @@ public class TorrentQQ extends AbstractWebSite {
 					/*
 					  첨부파일 저장
 					 */
-					final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+					final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 					final FileOutputStream fos = new FileOutputStream(notyetDownloadFile);
 					fos.write(downloadProcessResponse.bodyAsBytes());
@@ -442,7 +442,7 @@ public class TorrentQQ extends AbstractWebSite {
 
 					notyetDownloadFile.renameTo(downloadFile);
 				} else {
-					final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+					final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 					/*
 					  첨부파일 다운로드 하기

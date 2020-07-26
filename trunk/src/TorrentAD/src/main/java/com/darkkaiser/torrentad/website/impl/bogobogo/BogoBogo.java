@@ -475,7 +475,7 @@ public class BogoBogo extends AbstractWebSite {
 					continue;
 				}
 				
-				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION);
+				File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 				// 실제 다운로드 사이트에서 10초 대기후에 다운로드 받을 수 있으므로, 프로그램에서도 10초를 대기한다.
 				// 이렇게 하지 않으면 첨부파일 다운로드가 실패하는 경우가 종종 발생한다.

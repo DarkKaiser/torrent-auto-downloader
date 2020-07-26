@@ -92,7 +92,7 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 	public void submit() {
 		FileTransmissionAction action = (FileTransmissionAction) ActionFactory.createAction(ActionType.FILE_TRANSMISSION, this.configuration);
 
-		File[] listFiles = this.fileWatchLocation.listFiles((dir, name) -> name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOADED_FILE_EXTENSION) == false);
+		File[] listFiles = this.fileWatchLocation.listFiles((dir, name) -> name.toLowerCase().endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION) == false);
 		if (listFiles != null) {
 			for (File file : listFiles) {
                 if (file.isFile() == true)

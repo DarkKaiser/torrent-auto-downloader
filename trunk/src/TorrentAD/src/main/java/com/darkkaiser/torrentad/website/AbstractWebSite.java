@@ -2,6 +2,7 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
+import jersey.repackaged.com.google.common.collect.Lists;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -10,12 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
 
@@ -397,6 +402,78 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	protected abstract boolean loadBoardItemDownloadLink0(final WebSiteBoardItem boardItem) throws NoPermissionException;
 
 	protected abstract Tuple<Integer/* 다운로드시도횟수 */, Integer/* 다운로드성공횟수 */> downloadBoardItemDownloadLink0(final WebSiteBoardItem boardItem);
+
+	protected boolean isNotYetDownloadSubtitleZipFile(final String filePath) {
+		if (StringUtil.isBlank(filePath) == true)
+			return false;
+
+		if (filePath.endsWith(Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION) == false)
+			return false;
+
+		return filePath.substring(0, filePath.length() - Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION.length()).toLowerCase().endsWith(".zip");
+	}
+
+	protected boolean extractNotYetDownloadSubtitleZipFile(final String filePath, final List<String> extractedSubtitleFilePathList) {
+		if (isNotYetDownloadSubtitleZipFile(filePath) == false)
+			return false;
+
+		ZipEntry ze;
+		boolean decompressible = true;
+		final List<String> subtitleFileExtensions = Arrays.asList(".SMI", ".SRT");
+
+		// 폴더가 포함되어 있거나, 자막 파일 이외의 파일이 존재하는지 확인한다.
+		try (final FileInputStream fis = new FileInputStream(filePath);
+			 final ZipInputStream zis = new ZipInputStream(fis)) {
+			ze = zis.getNextEntry();
+			while (ze != null) {
+				final String fileName = ze.getName();
+				if (ze.isDirectory() == true || subtitleFileExtensions.contains(fileName.substring(fileName.lastIndexOf(".")).toUpperCase()) == false) {
+					decompressible = false;
+					break;
+				}
+
+				zis.closeEntry();
+				ze = zis.getNextEntry();
+			}
+
+			zis.closeEntry();
+		} catch (final IOException e) {
+			logger.warn("압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(1)", e);
+			return false;
+		}
+
+		if (decompressible == false)
+			return false;
+
+		try (FileInputStream fis = new FileInputStream(filePath);
+			 ZipInputStream zis = new ZipInputStream(fis)) {
+			final byte[] buffer = new byte[1024];
+
+			ze = zis.getNextEntry();
+			while (ze != null) {
+				final String subtitleFilePath = this.downloadFileWriteLocation + ze.getName();
+
+				try (final FileOutputStream fos = new FileOutputStream(subtitleFilePath)) {
+					int len;
+					while ((len = zis.read(buffer)) > 0) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				extractedSubtitleFilePathList.add(subtitleFilePath);
+
+				zis.closeEntry();
+				ze = zis.getNextEntry();
+			}
+
+			zis.closeEntry();
+		} catch (final IOException e) {
+			logger.warn("압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(2)", e);
+			return false;
+		}
+
+		return true;
+	}
 
 	protected String trimString(final String value) {
 		int start = 0;
