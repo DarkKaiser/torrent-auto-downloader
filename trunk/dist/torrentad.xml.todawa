@@ -1,26 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <torrentad>
 
-	<!--
-		* 지원 가능한 웹사이트 정보
-            1. 보고보고(BogoBogo)
-                - 영화 > 최신외국영화 : newmovie
-                - 영화 > 한국영화 : kormovie
-                - 영화 > 한국영화 : hdmovie
-                - 한국TV > 드라마(방영중) : kordramaon
-                - 한국TV > 드라마(종방) : kordramaover
-                - 한국TV > 쇼/오락/스포츠 : korentertainment
-                - 외국TV > 드라마(방영중) : foreigndramaon
-                - 외국TV > 드라마(종방) : foreigndramaover
-                - 애니메이션 > 종방 : aniover
-                - 애니메이션 > 방영중 : anion
-                - 유아, 아동용 : baby
-                - 게임 : game
-                - 만화책, 소설 : book
-                - 유틸리티, 강좌 : util
-                - 자막 나누기 : smi
-	-->
-
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
 			<!-- 웹사이트 이름 및 URL -->
@@ -41,7 +21,7 @@
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 		<torrentad-periodic-scheduled-tasks>
 
-			<torrentad-periodic-scheduled-task id="LiveAlone" description="나혼자산다">
+			<torrentad-periodic-scheduled-task id="test" description="테스트">
 				<!-- 게시판 이름 -->
 				<board-name>ent</board-name>
 
@@ -53,7 +33,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>나+혼자+산다</item>
+						<item>TEST+TEST+TEST</item>
 					</search-keyword>
 					<!--
 					<search-keyword mode="exclude">
@@ -77,13 +57,12 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="dramas" description="드라마">
+			<torrentad-periodic-scheduled-task id="dramas" description="드라마's">
 				<board-name>drama</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
 						<item>저스티스</item>
-						<item>호텔+델루나</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -94,7 +73,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="entertainments" description="예능">
+			<torrentad-periodic-scheduled-task id="entertainments" description="예능's">
 				<board-name>ent</board-name>
 
 				<search-keywords type="title">
@@ -128,7 +107,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="animaitions" description="애니">
+			<torrentad-periodic-scheduled-task id="animations" description="애니's">
 				<board-name>animation</board-name>
 
 				<search-keywords type="title">
@@ -139,25 +118,16 @@
 					</search-keyword>
 				</search-keywords>
 				
-				<!--
 				<search-keywords type="file">
-					<search-keyword>
-						<item>Leopard-Raws</item>
-					</search-keyword>
-					<search-keyword mode="exclude">
-						<item>HombleSubs</item>
-					</search-keyword>
 				</search-keywords>
-				-->
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="movies" description="영화">
+			<torrentad-periodic-scheduled-task id="movies" description="영화's">
 				<board-name>movie</board-name>
 
 				<search-keywords type="title">
 					<search-keyword>
 						<item>증인</item>
-						<item>신비한+동물들+그린델왈드+범죄</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
