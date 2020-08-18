@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_5_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_5_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_5_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_5_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/common/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/common/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/service/au/TorrentAuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/service/au/TorrentAuService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/AbstractWebSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/bogobogo/BogoBogo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/Todawa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentbe/TorrentBe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentblack/TorrentBlack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrenthall/TorrentHall.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmap/TorrentMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentmi/TorrentMi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq/TorrentQQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/Totoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/totoria/Totoria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,7 +120,7 @@
     <property name="ToolWindowDebug.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/torrentqq" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -144,7 +140,7 @@
       <recent name="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD\src\main\java\com\darkkaiser\torrentad\website\impl\torrentmap" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TorrentAD [jar]">
+  <component name="RunManager" selected="Application.TorrentAD">
     <configuration default="true" type="Applet">
       <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
@@ -327,15 +323,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file enabled="true" id="idea.log" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -494,6 +481,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.TorrentAD" />
       <item itemvalue="Gradle.TorrentAD [build]" />
@@ -506,6 +502,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration>C:\Users\darkk\AppData\Roaming\Subversion</configuration>
     <supportedVersion>125</supportedVersion>
@@ -589,22 +586,26 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1595690999001" />
-    <state width="1557" height="450" key="GridCell.Tab.0.bottom" timestamp="1595780686241">
+    <state width="1557" height="428" key="GridCell.Tab.0.bottom" timestamp="1597721142517">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="450" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1595780686241" />
-    <state width="1557" height="450" key="GridCell.Tab.0.center" timestamp="1595780686241">
+    <state width="1557" height="428" key="GridCell.Tab.0.bottom/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
+    <state width="1557" height="428" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1597599583986" />
+    <state width="1557" height="428" key="GridCell.Tab.0.center" timestamp="1597721142517">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="450" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1595780686241" />
-    <state width="1557" height="450" key="GridCell.Tab.0.left" timestamp="1595780686241">
+    <state width="1557" height="428" key="GridCell.Tab.0.center/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
+    <state width="1557" height="428" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1597599583985" />
+    <state width="1557" height="428" key="GridCell.Tab.0.left" timestamp="1597721142517">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="450" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1595780686241" />
-    <state width="1557" height="450" key="GridCell.Tab.0.right" timestamp="1595780686241">
+    <state width="1557" height="428" key="GridCell.Tab.0.left/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
+    <state width="1557" height="428" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1597599583985" />
+    <state width="1557" height="428" key="GridCell.Tab.0.right" timestamp="1597721142517">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="450" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1595780686241" />
+    <state width="1557" height="428" key="GridCell.Tab.0.right/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
+    <state width="1557" height="428" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1597599583986" />
     <state width="1557" height="320" key="GridCell.Tab.1.bottom" timestamp="1595780686237">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -621,10 +622,11 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="320" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1595780686237" />
-    <state x="555" y="37" key="SettingsEditor" timestamp="1595603968374">
+    <state x="313" y="38" key="SettingsEditor" timestamp="1597721011693">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="555" y="37" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1595603968374" />
+    <state x="313" y="38" key="SettingsEditor/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721011693" />
+    <state x="313" y="38" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1596211575304" />
     <state x="722" y="86" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1593711008922" />
     <state x="137" y="84" width="1616" height="869" key="dock-window-1" timestamp="1595603715122">
       <screen x="0" y="0" width="1600" height="860" />
