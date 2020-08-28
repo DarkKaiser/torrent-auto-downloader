@@ -5,7 +5,7 @@
 		<torrentad-service-config-values>
 			<!-- 웹사이트 이름 및 URL -->
 			<website-name>토다와</website-name>
-			<website-base-url>https://www4.todawa.com</website-base-url>
+			<website-base-url>https://www5.todawa.com</website-base-url>
 
 			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id></website-account-id>
@@ -21,7 +21,7 @@
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 		<torrentad-periodic-scheduled-tasks>
 
-			<torrentad-periodic-scheduled-task id="test" description="테스트">
+			<torrentad-periodic-scheduled-task id="test" description="샘플">
 				<!-- 게시판 이름 -->
 				<board-name>ent</board-name>
 
@@ -33,7 +33,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>TEST+TEST+TEST</item>
+						<item>SAMPLE+SAMPLE+SAMPLE</item>
 					</search-keyword>
 					<!--
 					<search-keyword mode="exclude">
@@ -62,7 +62,7 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>저스티스</item>
+						<item>편의점+샛별이</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -88,7 +88,6 @@
 						<item>도레미+마켓</item>
 						<item>아는+형님</item>
 						<item>놀면+뭐하니</item>
-						<item>뭉쳐야+찬다</item>
 						<item>런닝맨</item>
 						<item>전지적+참견+시점</item>
 						<item>캠핑클럽</item>
@@ -122,6 +121,19 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
+			<torrentad-periodic-scheduled-task id="music" description="음악's">
+				<board-name>music</board-name>
+
+				<search-keywords type="title">
+					<search-keyword>
+						<item>멜론+실시간+TOP+100</item>
+					</search-keyword>
+				</search-keywords>
+				
+				<search-keywords type="file">
+				</search-keywords>
+			</torrentad-periodic-scheduled-task>
+
 			<torrentad-periodic-scheduled-task id="movies" description="영화's">
 				<board-name>movie</board-name>
 

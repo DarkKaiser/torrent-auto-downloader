@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8a1a2eee-da81-457f-a89b-7a786f133f75" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/torrentad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/torrentad.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/TodawaBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/darkkaiser/torrentad/website/impl/todawa/TodawaBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +135,7 @@
       <recent name="F:\Solution-DarkKaiser\torrent-auto-downloader\src\TorrentAD\src\main\java\com\darkkaiser\torrentad\website\impl\torrentmap" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TorrentAD">
+  <component name="RunManager" selected="Gradle.TorrentAD [jar]">
     <configuration default="true" type="Applet">
       <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
@@ -572,34 +573,30 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="480" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1600.860@0.0.1600.860" timestamp="1593352223435" />
-    <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589819227744">
-      <screen x="0" y="0" width="1600" height="860" />
-    </state>
-    <state x="283" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1600.860@0.0.1600.860" timestamp="1589819227744" />
     <state width="1022" height="466" key="DebuggerActiveHint" timestamp="1595690999001">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1022" height="466" key="DebuggerActiveHint/0.0.1600.860@0.0.1600.860" timestamp="1595690999001" />
-    <state width="1557" height="428" key="GridCell.Tab.0.bottom" timestamp="1597721142517">
+    <state width="1557" height="428" key="GridCell.Tab.0.bottom" timestamp="1598636869961">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="428" key="GridCell.Tab.0.bottom/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
-    <state width="1557" height="428" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1597599583986" />
-    <state width="1557" height="428" key="GridCell.Tab.0.center" timestamp="1597721142517">
+    <state width="1557" height="428" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1598636869961" />
+    <state width="1557" height="428" key="GridCell.Tab.0.center" timestamp="1598636869960">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="428" key="GridCell.Tab.0.center/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
-    <state width="1557" height="428" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1597599583985" />
-    <state width="1557" height="428" key="GridCell.Tab.0.left" timestamp="1597721142517">
+    <state width="1557" height="428" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1598636869960" />
+    <state width="1557" height="428" key="GridCell.Tab.0.left" timestamp="1598636869960">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="428" key="GridCell.Tab.0.left/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
-    <state width="1557" height="428" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1597599583985" />
-    <state width="1557" height="428" key="GridCell.Tab.0.right" timestamp="1597721142517">
+    <state width="1557" height="428" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1598636869960" />
+    <state width="1557" height="428" key="GridCell.Tab.0.right" timestamp="1598636869960">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="428" key="GridCell.Tab.0.right/0.0.1600.860/-1600.0.1600.1160@0.0.1600.860" timestamp="1597721142517" />
-    <state width="1557" height="428" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1597599583986" />
+    <state width="1557" height="428" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1598636869960" />
     <state width="1557" height="320" key="GridCell.Tab.1.bottom" timestamp="1595780686237">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -626,14 +623,14 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="137" y="84" width="1616" height="869" key="dock-window-1/0.0.1600.860@0.0.1600.860" timestamp="1595603715122" />
-    <state x="341" y="101" width="918" height="601" key="find.popup" timestamp="1595778086103">
+    <state x="341" y="101" width="918" height="601" key="find.popup" timestamp="1598541711068">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="341" y="101" width="918" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1595778086103" />
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1595690632498">
+    <state x="341" y="101" width="918" height="601" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1598541711068" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1598636678557">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1595690632498" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1598636678557" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

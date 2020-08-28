@@ -9,16 +9,19 @@ public enum TodawaBoard implements WebSiteBoard {
 	MOVIE		    ("movie", 	"movie", 		"영화", 		"/list-movie.html", 		false),
 
 	/* 드라마 */
-	DRAMA	    	("drama", 	"drama", 		"드라마", 		"/list-drama.html",		false),
+	DRAMA	    	("drama", 	"drama", 		"드라마", 	"/list-drama.html",		false),
 
 	/* 예능 */
 	ENTERTAINMENT	("ent", 		"ent", 		"예능", 		"/list-ent.html",			false),
 
 	/* TV프로 */
-	TV	    		("tv", 		"tv", 			"TV프로", 		"/list-tv.html",			false),
+	TV	    		("tv", 		"tv", 		"TV프로", 	"/list-tv.html",			false),
 
 	/* 애니메이션 */
-	ANIMATION		("animation", "animation",	"애니메이션", 	"/list-animation.html",	false);
+	ANIMATION		("animation", "animation",	"애니메이션", 	"/list-animation.html",	false),
+
+	/* 음악 */
+	MUSIC			("music", 	"music",		"음악", 		"/list-music.html",		false);
 
 	private final String name;
 	private final String code;
