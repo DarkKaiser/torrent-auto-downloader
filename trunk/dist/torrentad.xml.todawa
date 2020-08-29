@@ -21,7 +21,7 @@
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->
 		<torrentad-periodic-scheduled-tasks>
 
-			<torrentad-periodic-scheduled-task id="test" description="샘플">
+			<torrentad-periodic-scheduled-task id="sample" description="샘플">
 				<!-- 게시판 이름 -->
 				<board-name>ent</board-name>
 
@@ -57,7 +57,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="dramas" description="드라마's">
+			<torrentad-periodic-scheduled-task id="drama" description="드라마">
 				<board-name>drama</board-name>
 
 				<search-keywords type="title">
@@ -73,7 +73,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="entertainments" description="예능's">
+			<torrentad-periodic-scheduled-task id="entertainment" description="예능">
 				<board-name>ent</board-name>
 
 				<search-keywords type="title">
@@ -106,7 +106,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="animations" description="애니's">
+			<torrentad-periodic-scheduled-task id="animation" description="애니">
 				<board-name>animation</board-name>
 
 				<search-keywords type="title">
@@ -121,7 +121,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 			
-			<torrentad-periodic-scheduled-task id="music" description="음악's">
+			<torrentad-periodic-scheduled-task id="music" description="음악">
 				<board-name>music</board-name>
 
 				<search-keywords type="title">
@@ -134,7 +134,7 @@
 				</search-keywords>
 			</torrentad-periodic-scheduled-task>
 
-			<torrentad-periodic-scheduled-task id="movies" description="영화's">
+			<torrentad-periodic-scheduled-task id="movie" description="영화">
 				<board-name>movie</board-name>
 
 				<search-keywords type="title">
