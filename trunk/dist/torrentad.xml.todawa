@@ -85,6 +85,7 @@
 						<item>개는+훌륭하다</item>
 						<item>연애의+맛</item>
 						<item>골목식당</item>
+						<item>식스센스</item>
 						<item>도레미+마켓</item>
 						<item>아는+형님</item>
 						<item>놀면+뭐하니</item>
@@ -113,6 +114,7 @@
 					<search-keyword>
 						<item>원피스</item>
 						<item>보루토</item>
+						<item>이누야사</item>
 						<item>소드+아트+온라인</item>
 					</search-keyword>
 				</search-keywords>
@@ -170,7 +172,7 @@
 
 			<!-- FTP 서버 정보 -->
 			<ftp-server-host>192.168.219.100</ftp-server-host>
-			<ftp-server-port>21</ftp-server-port>
+			<ftp-server-port>55021</ftp-server-port>
 
 			<!-- FTP 서버 로그인 정보 -->
 			<ftp-server-account-id>darkkaiser</ftp-server-account-id>
