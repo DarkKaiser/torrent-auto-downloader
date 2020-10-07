@@ -32,6 +32,11 @@
 
 			<!-- Task 실행 간격(단위:초) -->
 			<task-execute-interval-time-second>60</task-execute-interval-time-second>
+
+			<!-- NotifyAPI 설정값 -->
+			<notify-api-url>http://api.darkkaiser.com:5340/api/notify/message/send</notify-api-url>
+			<notify-api-key>MDA5OEU1MkItQjhFMi00QzcyLTlDQUQtRURCRUNDOUNGRjBE</notify-api-key>
+			<notify-api-application-id>torrentad</notify-api-application-id>
 		</torrentad-service-config-values>
 
 		<!-- 주기적으로 토렌트 파일을 다운로드 받는 태스크 -->

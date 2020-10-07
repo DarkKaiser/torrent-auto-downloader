@@ -9,6 +9,7 @@ import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecu
 import com.darkkaiser.torrentad.service.au.TorrentAuService;
 import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import com.darkkaiser.torrentad.service.bot.telegram.TelegramBotService;
+import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,9 @@ public class App {
 		}
 
 		this.configuration = configuration;
+
+		// NotifyAPI 클라이언트 객체를 초기화한다.
+		NotifyApiClient.init(configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_URL), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_KEY), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_APPLICATION_ID));
 
 		try {
 			this.torrentAuService = new TorrentAuService(configuration);

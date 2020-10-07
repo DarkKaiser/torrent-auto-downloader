@@ -24,6 +24,9 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_WEBSITE_ACCOUNT_PASSWORD = "website-account-password";
 	public static final String APP_CONFIG_TAG_DOWNLOAD_FILE_WRITE_LOCATION = "download-file-write-location";
 	public static final String APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND = "task-execute-interval-time-second";
+	public static final String APP_CONFIG_TAG_NOTIFY_API_URL = "notify-api-url";
+	public static final String APP_CONFIG_TAG_NOTIFY_API_KEY = "notify-api-key";
+	public static final String APP_CONFIG_TAG_NOTIFY_API_APPLICATION_ID = "notify-api-application-id";
 
 	// AU Service 설정값 항목
 	public static final String APP_CONFIG_TAG_FTP_SERVER_HOST = "ftp-server-host";
