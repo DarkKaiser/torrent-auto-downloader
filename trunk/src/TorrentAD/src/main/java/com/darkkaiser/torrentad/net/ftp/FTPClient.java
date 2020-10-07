@@ -1,5 +1,6 @@
 package com.darkkaiser.torrentad.net.ftp;
 
+import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
@@ -42,7 +43,10 @@ public class FTPClient {
 			int nReply = this.ftpClient.getReplyCode();
 			if (FTPReply.isPositiveCompletion(nReply) == false) {
 				disconnect();
+
 				logger.error("FTP server refused connection.");
+				NotifyApiClient.sendNotifyMessage("FTP server refused connection.", true);
+
 				return false;
 			}
 
@@ -52,6 +56,7 @@ public class FTPClient {
 			this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (final Exception e) {
 			logger.error(null, e);
+			NotifyApiClient.sendNotifyMessage(e.toString(), true);
 			return false;
 		}
 
@@ -89,7 +94,11 @@ public class FTPClient {
 		try {
 			bos = new BufferedOutputStream(new FileOutputStream(file));
 			if (this.ftpClient.retrieveFile(remotePath, bos) == false) {
-				logger.error("FTP 서버에서의 파일 다운로드가 실패하였습니다.({})", file.getAbsolutePath());
+				final String message = String.format("FTP 서버에서의 파일 다운로드가 실패하였습니다.(%s)", file.getAbsolutePath());
+
+				logger.error(message);
+				NotifyApiClient.sendNotifyMessage(message, true);
+
 				return false;
 			}
 			
@@ -106,7 +115,11 @@ public class FTPClient {
 		try {
 			bis = new BufferedInputStream(new FileInputStream(file));
 			if (this.ftpClient.storeFile(remotePath, bis) == false) {
-				logger.error("FTP 서버로의 파일 업로드가 실패하였습니다.({})", file.getAbsolutePath());
+				final String message = String.format("FTP 서버로의 파일 업로드가 실패하였습니다.(%s)", file.getAbsolutePath());
+
+				logger.error(message);
+				NotifyApiClient.sendNotifyMessage(message, true);
+
 				return false;
 			}
 

@@ -2,6 +2,7 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
+import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
@@ -81,7 +82,10 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
 			checkDomainRedirection();
 		} catch (final IOException e) {
-			logger.warn("도메인 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.", e);
+			final String message = "도메인 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.";
+
+			logger.warn(message, e);
+			NotifyApiClient.sendNotifyMessage(message, true);
 		}
 
 		login0(account);
@@ -332,7 +336,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		final Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem));
+				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem);
+
+				logger.error(message);
+				NotifyApiClient.sendNotifyMessage(message, true);
+
 				return false;
 			}
 		}
@@ -354,7 +362,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem);
+
+				logger.error(message);
+				NotifyApiClient.sendNotifyMessage(message, true);
+
 				return new Tuple<>(-1, -1);
 			}
 		}
@@ -382,7 +394,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		Iterator<WebSiteBoardItemDownloadLink> iterator = boardItem.downloadLinkIterator();
 		if (iterator.hasNext() == false) {
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
-				logger.error(String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem));
+				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem);
+
+				logger.error(message);
+				NotifyApiClient.sendNotifyMessage(message, true);
+
 				return new Tuple<>(-1, -1);
 			}
 		}
@@ -438,7 +454,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 			zis.closeEntry();
 		} catch (final IOException e) {
-			logger.warn("압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(1)", e);
+			final String message = "압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(1)";
+
+			logger.warn(message, e);
+			NotifyApiClient.sendNotifyMessage(message, true);
+
 			return false;
 		}
 
@@ -468,7 +488,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 			zis.closeEntry();
 		} catch (final IOException e) {
-			logger.warn("압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(2)", e);
+			final String message = "압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(2)";
+
+			logger.warn(message, e);
+			NotifyApiClient.sendNotifyMessage(message, true);
+
 			return false;
 		}
 
