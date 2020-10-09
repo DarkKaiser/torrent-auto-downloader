@@ -164,7 +164,7 @@ public class Todawa extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return null;
 		} catch (final Exception e) {
-			if (!(e instanceof SocketTimeoutException)) {
+			if (e instanceof SocketTimeoutException == false) {
 				final String message = String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url);
 
 				logger.error(message, e);

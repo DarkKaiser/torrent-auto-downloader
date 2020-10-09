@@ -15,19 +15,19 @@ public final class NotifyApiClient {
 
     private static final Logger logger = LoggerFactory.getLogger(NotifyApiClient.class);
 
-    private static String API_URL;
+    private static String URL;
     private static String API_KEY;
-    private static String API_APPLICATION_ID;
+    private static String APPLICATION_ID;
 
     public static void init(final String url, final String apiKey, final String applicationId) {
-        NotifyApiClient.API_URL = url;
+        NotifyApiClient.URL = url;
         NotifyApiClient.API_KEY = apiKey;
-        NotifyApiClient.API_APPLICATION_ID = applicationId;
+        NotifyApiClient.APPLICATION_ID = applicationId;
     }
 
     public static void sendNotifyMessage(final String message, final boolean errorOccured) {
         try {
-            final URL url = new URL(NotifyApiClient.API_URL);
+            final URL url = new URL(NotifyApiClient.URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
@@ -41,7 +41,7 @@ public final class NotifyApiClient {
                 final JSONObject jsonObj = new JSONObject(new HashMap<String, Object>(){{
                     put("message", message);
                     put("error_occured", errorOccured);
-                    put("application_id", NotifyApiClient.API_APPLICATION_ID);
+                    put("application_id", NotifyApiClient.APPLICATION_ID);
                 }});
 
                 bw.write(jsonObj.toString());

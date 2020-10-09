@@ -86,7 +86,7 @@
 
 			<!-- FTP 서버 정보 -->
 			<ftp-server-host>darkkaiser.gonetis.com</ftp-server-host>
-			<ftp-server-port>55521</ftp-server-port>
+			<ftp-server-port>55021</ftp-server-port>
 
 			<!-- FTP 서버 로그인 정보 -->
 			<ftp-server-account-id>darkkaiser</ftp-server-account-id>
