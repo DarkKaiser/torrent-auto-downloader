@@ -5,7 +5,7 @@
 		<torrentad-service-config-values>
 			<!-- 웹사이트 이름 및 URL -->
 			<website-name>토다와</website-name>
-			<website-base-url>https://www5.todawa.com</website-base-url>
+			<website-base-url>https://www6.todawa.com</website-base-url>
 
 			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id></website-account-id>
@@ -67,7 +67,9 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>편의점+샛별이</item>
+						<item>허쉬</item>
+						<item>펜트하우스</item>
+						<item>철인왕후</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -119,7 +121,6 @@
 					<search-keyword>
 						<item>원피스</item>
 						<item>보루토</item>
-						<item>반요의+야샤히메</item>
 						<item>소드+아트+온라인</item>
 					</search-keyword>
 				</search-keywords>
@@ -133,7 +134,7 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>멜론+실시간+TOP+100</item>
+						<item>멜론+TOP+100</item>
 					</search-keyword>
 				</search-keywords>
 				
@@ -146,7 +147,7 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>증인</item>
+						<item>원더+우먼+1984</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
