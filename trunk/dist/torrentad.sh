@@ -52,7 +52,7 @@ stop)
     echo "$SRV_NAME 서버가 이미 실행중입니다."
   else
     echo "$SRV_NAME 서버가 실행되었습니다."
-    nohup java -D$SRV_NAME -jar torrentad-1.1.0.jar 1>/dev/null 2>&1 &
+    nohup java -D$SRV_NAME -jar /usr/local/torrentad/torrentad-1.1.0.jar 1>/dev/null 2>&1 &
   fi
 ;;
 esac

@@ -1,1 +1,1 @@
-tail -f logs/dailyout.log
+tail -f /usr/local/torrentad/logs/dailyout.log
