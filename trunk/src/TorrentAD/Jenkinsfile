@@ -1,0 +1,79 @@
+pipeline {
+
+    agent any
+
+    environment {
+        PROJECT_NAME = "TorrentAD"
+    }
+
+    stages {
+
+        stage('준비') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('체크아웃') {
+            steps {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'svn-torrentad-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    sh "svn co svn://mycloud.darkkaiser.com/torrent-auto-downloader/trunk/dist/ ./dist/ --username $USERNAME --password $PASSWORD"
+                    sh "svn co svn://mycloud.darkkaiser.com/torrent-auto-downloader/trunk/src/TorrentAD/ ./src/TorrentAD/ --username $USERNAME --password $PASSWORD"
+                }
+            }
+        }
+
+        stage('빌드') {
+            steps {
+                sh '''
+                    cd ./src/TorrentAD
+                    sudo chmod 744 ./gradlew
+                    sudo ./gradlew clean build
+                    cd ../../
+                '''
+            }
+        }
+
+        stage('배포') {
+            steps {
+                sh '''
+                    sudo cp -f ./dist/taillog /usr/local/torrentad/
+                    sudo cp -f ./dist/torrentad.sh /usr/local/torrentad/
+                    sudo cp -f ./dist/torrentad-restart.sh /usr/local/torrentad/
+                    sudo cp -f ./src/TorrentAD/build/libs/torrentad-1.1.0.jar /usr/local/torrentad/
+
+                    sudo chown pi:staff /usr/local/torrentad/taillog
+                    sudo chown pi:staff /usr/local/torrentad/torrentad.sh
+                    sudo chown pi:staff /usr/local/torrentad/torrentad-restart.sh
+                    sudo chown pi:staff /usr/local/torrentad/torrentad-1.1.0.jar
+                '''
+            }
+        }
+
+        stage('서버 재시작') {
+            steps {
+                // 현재의 경로를 이동시켜 주지 않고 실행하게 되면 로그파일의 생성위치가 /usr/local/torrentad/logs에 생성되는게 아니라
+                // Jenkins 작업 위치에 생성되게 되는데 이때 logs 폴더가 존재하지 않아서 서버 실행이 실패하게 된다.
+                sh '''
+                    cd /usr/local/torrentad
+                    sudo -u pi /usr/local/torrentad/torrentad-restart.sh
+                '''
+            }
+        }
+
+    }
+
+    post {
+        success {
+            script {
+                telegramSend(message: '【 알림 > Jenkins > ' + env.PROJECT_NAME + ' 】\n\n빌드 작업이 성공하였습니다.\n\n' + env.BUILD_URL)
+            }
+        }
+        failure {
+            script {
+                telegramSend(message: '【 알림 > Jenkins > ' + env.PROJECT_NAME + ' 】\n\n빌드 작업이 실패하였습니다.\n\n' + env.BUILD_URL)
+            }
+        }
+    }
+
+}
