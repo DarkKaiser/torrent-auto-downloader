@@ -1,0 +1,89 @@
+package com.darkkaiser.torrentad.website.impl.torrent;
+
+import com.darkkaiser.torrentad.website.WebSiteBoard;
+import org.jsoup.helper.StringUtil;
+
+public enum TorrentBoard implements WebSiteBoard {
+
+	/* 해외영화 */
+	MOVIE_OV	    ("movieov", 		"movieov", 		"해외영화", 	"/topic/index?category1=1&category2=10", 		false),
+
+	/* 한국영화 */
+	MOVIE_KO	    ("movieko", 		"movieko", 		"한국영화", 	"/topic/index?category1=1&category2=11", 		false),
+
+	/* 해외드라마 */
+	DRAMA_OV	   	("dramaov", 		"dramaov", 		"해외드라마", 	"/topic/index?category1=2&category2=12",		false),
+
+	/* 한국드라마 */
+	DRAMA_KO	   	("dramako", 		"dramako", 		"한국드라마", 	"/topic/index?category1=2&category2=13",		false),
+
+	/* 예능 */
+	ENTERTAINMENT	("ent", 			"ent", 			"예능", 		"/topic/index?category1=4&category2=16",		false),
+
+	/* 다큐/교양 */
+	DOCUMENTARY		("documentary", 	"documentary", 	"다큐/교양", 	"/topic/index?category1=4&category2=17",		false),
+
+	/* 애니메이션 */
+	ANIMATION		("animation", 	"animation",		"애니메이션", 	"/topic/index?category1=5&category2=22",		false),
+
+	/* 음악 */
+	MUSIC			("music", 		"music",			"음악", 		"/topic/index?category1=4&category2=19",		false);
+
+	private final String name;
+	private final String code;
+	private final String description;
+	private final String path;
+
+	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
+	private final boolean hasCategory;
+
+	TorrentBoard(final String name, final String code, final String description, final String path, final boolean hasCategory) {
+		this.name = name;
+		this.code = code;
+		this.description = description;
+		this.path = path;
+		this.hasCategory = hasCategory;
+	}
+	
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public String getCode() {
+		return this.code;
+	}
+
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+	
+	@Override
+	public String getPath() {
+		return this.path;
+	}
+
+	public boolean hasCategory() {
+		return this.hasCategory;
+	}
+
+	public static TorrentBoard fromString(final String name) {
+		if (StringUtil.isBlank(name) == true)
+			throw new IllegalArgumentException("name은 빈 문자열을 허용하지 않습니다.");
+
+		for (final TorrentBoard board : TorrentBoard.values()) {
+			if (name.equals(board.getName()) == true)
+				return board;
+	    }
+
+		throw new IllegalArgumentException(String.format("열거형 %s에서 %s에 해당하는 값이 없습니다.", TorrentBoard.class.getSimpleName(), name));
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s(%s:%s)", getDescription(), getCode(), getName());
+	}
+
+}

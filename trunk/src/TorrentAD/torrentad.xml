@@ -10,8 +10,9 @@
 			<!-- <website-name>토렌트미</website-name> -->
 			<!-- <website-name>토렌트블랙</website-name> -->
 			<!-- <website-name>토렌트비</website-name> -->
-			<website-name>토다와</website-name>
-			<website-base-url>https://www5.todawa.com</website-base-url>
+			<!-- <website-name>토다와</website-name> -->
+			<website-name>토렌트</website-name>
+			<website-base-url>https://torrenttip19.com</website-base-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -53,7 +54,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>데카당스</item>
+						<item>5등분의+신부</item>
 					</search-keyword>
 				</search-keywords>
 

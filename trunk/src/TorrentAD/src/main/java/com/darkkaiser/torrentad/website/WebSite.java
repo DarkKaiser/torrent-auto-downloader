@@ -12,6 +12,10 @@ import java.util.Objects;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public enum WebSite {
 
+	TORRENT("토렌트",
+			"com.darkkaiser.torrentad.website.impl.torrent.Torrent",
+			"com.darkkaiser.torrentad.website.impl.torrent.TorrentBoard"),
+
 	BOGOBOGO("보고보고",
 			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo",
 			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard"),
@@ -50,9 +54,9 @@ public enum WebSite {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebSite.class);
 
-	private String name;
-	private String webSiteClassName;
-	private String webSiteBoardClassName;
+	private final String name;
+	private final String webSiteClassName;
+	private final String webSiteBoardClassName;
 
 	private String baseURL;
 
