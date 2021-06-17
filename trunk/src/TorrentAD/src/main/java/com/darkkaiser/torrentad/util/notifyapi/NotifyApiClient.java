@@ -25,7 +25,7 @@ public final class NotifyApiClient {
         NotifyApiClient.APPLICATION_ID = applicationId;
     }
 
-    public static void sendNotifyMessage(final String message, final boolean errorOccured) {
+    public static void sendNotifyMessage(final String message, final boolean errorOccurred) {
         try {
             final URL url = new URL(NotifyApiClient.URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -39,9 +39,9 @@ public final class NotifyApiClient {
             try (final OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
                  final BufferedWriter bw = new BufferedWriter(osw)) {
                 final JSONObject jsonObj = new JSONObject(new HashMap<String, Object>(){{
-                    put("message", message);
-                    put("error_occured", errorOccured);
                     put("application_id", NotifyApiClient.APPLICATION_ID);
+                    put("message", message);
+                    put("error_occurred", errorOccurred);
                 }});
 
                 bw.write(jsonObj.toString());
