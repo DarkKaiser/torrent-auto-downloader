@@ -52,11 +52,15 @@ public class Torrent extends AbstractWebSite {
 		try {
 			final TorrentBoard siteBoard = (TorrentBoard) board;
 
+			String loadBoardItemsSelectQuery = "div.container table.table > tbody > tr";
+			if (siteBoard.hasCategory() == true)
+				loadBoardItemsSelectQuery = "div.row-list > div.row-title";
+
 			for (int page = 1; page <= siteBoard.getDefaultLoadPageCount(); ++page) {
 				if (StringUtil.isBlank(_queryString) == true)
-					url = String.format("%s%s&page=%d", getBaseURL(), siteBoard.getPath(), page);
+					url = String.format("%s%s?page=%d", getBaseURL(), siteBoard.getPath(), page);
 				else
-					url = String.format("%s/search/index?%s&page=%d", getBaseURL(), _queryString, page);
+					url = String.format("%s/search/index?%s&search_type=0&page=%d", getBaseURL(), _queryString, page);
 
 				Connection.Response boardItemsResponse = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
@@ -68,36 +72,57 @@ public class Torrent extends AbstractWebSite {
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 
 				final Document boardItemsDoc = boardItemsResponse.parse();
-				final Elements elements = boardItemsDoc.select("div.board_01 > div.body");
+				final Elements elements = boardItemsDoc.select(loadBoardItemsSelectQuery);
 
-				if (elements.isEmpty() == true) {
-					// 조회된 게시물이 0건인 경우인지 확인한다.
-					final Elements elements2 = boardItemsDoc.select("div.board_01 > div.head");
-					if (elements2.isEmpty() == false)
-						continue;
-
-                    throw new ParseException(String.format("게시판의 추출된 게시물이 0건입니다. CSS셀렉터를 확인하세요.(URL:%s)", url), 0);
-				} else {
+				if (elements.isEmpty() == false) {
 					try {
 						for (final Element element : elements) {
-                            final Iterator<Element> iterator = element.children().iterator();
+							String registDate;
+							Elements titleLinkElement;
 
-							// 번호
-							iterator.next();
+							if (siteBoard.hasCategory() == true) {
+								// 제목
+								titleLinkElement = element.select("a.tit");
 
-							// 분류
-							iterator.next();
+								if (titleLinkElement.size() != 1)
+									throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, element.html()), 0);
+
+								// 등록일
+								final Elements registElement = element.select("div.row-other > i.bi-calendar-date");
+
+								if (registElement.size() != 1)
+									throw new ParseException(String.format("게시물 생성일의 <I> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, element.html()), 0);
+
+								final String[] splitValues = registElement.get(0).parent().text().trim().split(" ");
+								registDate = splitValues[splitValues.length - 2].replace("/", ".").trim();
+							} else {
+								final Iterator<Element> iterator = element.children().iterator();
+
+								// 번호
+								iterator.next();
+
+								// 제목
+								final Element titleElement = iterator.next();
+
+								titleLinkElement = titleElement.getElementsByTag("a");
+								if (titleLinkElement.size() != 1)
+									throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleElement.html()), 0);
+
+								// 용량
+								iterator.next().text();
+
+								// 등록일
+								registDate = iterator.next().text().trim();
+							}
 
 							//
 							// 제목
 							//
-							final Element titleLinkElement = iterator.next();
+							final String title = trimString(titleLinkElement.text());
 
 							final String detailPageURL = titleLinkElement.attr("href");
 							if (detailPageURL.isEmpty() == true)
 								throw new ParseException(String.format("게시물 상세페이지의 URL 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, titleLinkElement.html()), 0);
-
-							final String title = trimString(titleLinkElement.text());
 
 							final int noPos = detailPageURL.lastIndexOf("/");
 							if (noPos == -1)
@@ -105,19 +130,9 @@ public class Torrent extends AbstractWebSite {
 
 							final String identifier = detailPageURL.substring(noPos + 1);
 
-							// 용량
-							iterator.next().text();
-
 							//
 							// 등록일
 							//
-							String registDate = iterator.next().text().trim();
-							if (registDate.startsWith("등록일 : ") == true) {
-								registDate = registDate.substring("등록일 : ".length()).trim();
-							} else {
-								throw new ParseException(String.format("게시물의 날짜 추출이 실패하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\n등록일:%s", url, registDate), 0);
-							}
-
 							if (registDate.matches("^[0-9]{2}.[0-9]{2}$"/* 게시물이 등록된 일자 */) == true) {
 								final String[] daySplit = registDate.split("\\.");
 
@@ -202,7 +217,7 @@ public class Torrent extends AbstractWebSite {
 				throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
 
 			final Document detailPageDoc = detailPageResponse.parse();
-			final Elements elements = detailPageDoc.select("div.board_view div.bottom > table");
+			final Elements elements = detailPageDoc.select("div.container table tbody tr a.btn > i.fa-download");
 
 			if (elements.isEmpty() == true) {
 				throw new ParseException(String.format("게시물에서 추출된 첨부파일에 대한 정보가 0건입니다. CSS 셀렉터를 확인하세요.(URL:%s)", detailPageURL), 0);
@@ -212,7 +227,7 @@ public class Torrent extends AbstractWebSite {
 
 					int downloadLinkCount = 0;
 					for (final Element element : elements) {
-						final String link = element.select("span.icodowunload > a").attr("href");
+						final String link = element.parent().attr("href");
 						final String fileName = String.format("%s (%d).torrent", boardItem.getTitle(), ++downloadLinkCount);
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
@@ -279,18 +294,6 @@ public class Torrent extends AbstractWebSite {
 					continue;
 				}
 
-				/*
-				  홈페이지의 Cookie 데이터가 필요하므로 한번 더 상세 페이지를 로드한다.
-				 */
-				Connection.Response detailPageResponse = Jsoup.connect(detailPageURL)
-						.userAgent(USER_AGENT)
-						.method(Connection.Method.GET)
-						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-						.execute();
-
-				if (detailPageResponse.statusCode() != HttpStatus.SC_OK)
-					throw new IOException("GET " + detailPageURL + " returned " + detailPageResponse.statusCode() + ": " + detailPageResponse.statusMessage());
-
 				final File notyetDownloadFile = new File(downloadFilePath + Constants.AD_SERVICE_TASK_NOTYET_DOWNLOAD_FILE_EXTENSION);
 
 				/*
@@ -300,7 +303,6 @@ public class Torrent extends AbstractWebSite {
 				Connection.Response downloadProcessResponse = Jsoup.connect(downloadLinkPage)
 						.userAgent(USER_AGENT)
 						.method(Connection.Method.GET)
-						.cookies(detailPageResponse.cookies())
 						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 						.ignoreContentType(true)
 						.execute();

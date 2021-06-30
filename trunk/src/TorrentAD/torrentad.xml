@@ -12,7 +12,7 @@
 			<!-- <website-name>토렌트비</website-name> -->
 			<!-- <website-name>토다와</website-name> -->
 			<website-name>토렌트</website-name>
-			<website-base-url>https://torrenttip19.com</website-base-url>
+			<website-base-url>https://torrentsome2.com</website-base-url>
 
 			<!-- 사이트 로그인 정보 -->
 			<!-- 보고보고
@@ -44,7 +44,7 @@
 		<torrentad-periodic-scheduled-tasks>
 			<torrentad-periodic-scheduled-task id="abc123" description="테스트 메시지">
 				<!-- 게시판 이름 -->
-				<board-name>animation</board-name>
+				<board-name>movieov</board-name>
 
 				<!-- 게시물 제목 검색키워드 -->
 				<search-keywords type="title">
@@ -54,7 +54,7 @@
 					-->
 					<search-keyword>
 						<!-- 항목의 '+' 문자는 AND 연산으로 처리된다. -->
-						<item>5등분의+신부</item>
+						<item>가이아</item>
 					</search-keyword>
 				</search-keywords>
 
