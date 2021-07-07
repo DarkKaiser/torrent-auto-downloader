@@ -52,7 +52,7 @@ public class Torrent extends AbstractWebSite {
 		try {
 			final TorrentBoard siteBoard = (TorrentBoard) board;
 
-			String loadBoardItemsSelectQuery = "div.container table.table > tbody > tr";
+			String loadBoardItemsSelectQuery = "div.container div.topic-item";
 			if (siteBoard.hasCategory() == true)
 				loadBoardItemsSelectQuery = "div.row-list > div.row-title";
 
@@ -88,7 +88,7 @@ public class Torrent extends AbstractWebSite {
 									throw new ParseException(String.format("게시물 제목의 <A> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, element.html()), 0);
 
 								// 등록일
-								final Elements registElement = element.select("div.row-other > i.bi-calendar-date");
+								final Elements registElement = element.select("div.row-other > i.fa-clock");
 
 								if (registElement.size() != 1)
 									throw new ParseException(String.format("게시물 생성일의 <I> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, element.html()), 0);
