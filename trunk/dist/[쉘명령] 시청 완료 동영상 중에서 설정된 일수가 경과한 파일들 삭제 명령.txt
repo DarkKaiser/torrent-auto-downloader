@@ -4,4 +4,4 @@
 # 매일밤 1시, 시청 완료하여 하위폴더로 옮겨진 파일들 중에서 14일이 경과한 파일들 삭제
 0 1 * * * /usr/bin/find /DataVolume/shares/Public/Torrent/ -mindepth 2 -type f -mtime +14 | grep "([월화수목금토일])" | tr "\n" "\0" | xargs -0 rm
 
-=> Go 언어 기반의 'reposition-torrent-downloaded-files' 프로젝트에서 동일한 기능을 추가하여 위 기능은 사용하지 않음
+=> Go 언어 기반의 'reposition-torrent-downloaded-files' 프로젝트에서 동일한 기능을 추가하여 위 기능은 사용하지 않음!!
