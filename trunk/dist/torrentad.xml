@@ -5,7 +5,7 @@
 		<torrentad-service-config-values>
 			<!-- 웹사이트 이름 및 URL -->
 			<website-name>토렌트</website-name>
-			<website-base-url>https://torrenttip19.com</website-base-url>
+			<website-base-url>https://torrentsome2.com</website-base-url>
 
 			<!-- 웹사이트 로그인 정보 -->
 			<website-account-id></website-account-id>
@@ -15,7 +15,7 @@
 			<download-file-write-location>/usr/local/torrentad/downloads</download-file-write-location>
 
 			<!-- Task 실행 간격(단위:초) -->
-			<task-execute-interval-time-second>3600</task-execute-interval-time-second>
+			<task-execute-interval-time-second>1800</task-execute-interval-time-second>
 			
 			<!-- NotifyAPI 설정값 -->
 			<notify-api-url>http://api.darkkaiser.com:5340/api/notify/message/send</notify-api-url>
@@ -67,10 +67,9 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>허쉬</item>
-						<item>괴물</item>
-						<item>타임즈</item>
 						<item>펜트하우스</item>
+						<item>간+떨어지는+동거</item>
+						<item>보이스</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -90,7 +89,6 @@
 						<item>삼시세끼</item>
 						<item>삼시네세끼</item>
 						<item>호구의+연애</item>
-						<item>개는+훌륭하다</item>
 						<item>연애의+맛</item>
 						<item>골목식당</item>
 						<item>식스센스</item>
@@ -105,6 +103,8 @@
 						<item>신서유기</item>
 						<item>온앤오프</item>
 						<item>1호가+없어</item>
+						<item>바퀴달린+집</item>
+						<item>해방타운</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
@@ -123,10 +123,6 @@
 						<item>원피스</item>
 						<item>보루토</item>
 						<item>소드+아트+온라인</item>
-						<item>무직+전생</item>
-						<item>블랙+클로버</item>
-						<item>제로부터+시작하는+이세계+생활</item>
-						<item>전생했더니+슬라임이었던</item>
 					</search-keyword>
 				</search-keywords>
 				
@@ -152,7 +148,7 @@
 
 				<search-keywords type="title">
 					<search-keyword>
-						<item>원더+우먼+1984</item>
+						<item>블랙+이도우</item>
 					</search-keyword>
 					<search-keyword>
 						<item>720p</item>
