@@ -1,21 +1,24 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Slf4j
 public class DefaultWebSiteSearchContext implements WebSiteSearchContext {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteSearchContext.class);
-	
 	private final WebSite site;
 
 	private final Map<WebSiteSearchKeywordsType, List<WebSiteSearchKeywords>> searchKeywords = new HashMap<>();
 
+	@Getter
 	private WebSiteBoard board;
 
+	@Getter
+	@Setter
 	private long latestDownloadBoardItemIdentifier = WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE;
 
 	public DefaultWebSiteSearchContext(final WebSite site) {
@@ -34,23 +37,8 @@ public class DefaultWebSiteSearchContext implements WebSiteSearchContext {
 	}
 
 	@Override
-	public WebSiteBoard getBoard() {
-		return this.board;
-	}
-
-	@Override
 	public void setBoardName(final String name) {
 		this.board = this.site.getBoardByName(name);
-	}
-
-	@Override
-	public long getLatestDownloadBoardItemIdentifier() {
-		return this.latestDownloadBoardItemIdentifier;
-	}
-
-	@Override
-	public void setLatestDownloadBoardItemIdentifier(final long identifier) {
-		this.latestDownloadBoardItemIdentifier = identifier;
 	}
 
 	@Override
@@ -100,7 +88,7 @@ public class DefaultWebSiteSearchContext implements WebSiteSearchContext {
 		try {
 			validate();
 		} catch (final Exception e) {
-			logger.debug(null, e);
+			log.debug(null, e);
 			return false;
 		}
 

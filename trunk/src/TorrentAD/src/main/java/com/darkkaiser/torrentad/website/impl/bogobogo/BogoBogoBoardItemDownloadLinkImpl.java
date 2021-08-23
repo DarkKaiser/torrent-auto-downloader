@@ -1,7 +1,10 @@
 package com.darkkaiser.torrentad.website.impl.bogobogo;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.helper.StringUtil;
 
+@Getter
 public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardItemDownloadLink {
 
 	private final String id;
@@ -12,7 +15,9 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 	private final String fileId;
 	private final String fileName;
 
+	@Setter
 	private boolean downloadable = true;
+	@Setter
 	private boolean downloadCompleted = false;
 
 	public static BogoBogoBoardItemDownloadLink newInstance(final String id, final String value1, final String value2, final String value3, final String value4, final String fileId, final String fileName) {
@@ -41,65 +46,10 @@ public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardIte
 		this.fileId = fileId;
 		this.fileName = fileName;
 	}
-	
-	@Override
-	public String getId() {
-		return this.id;
-	}
-
-	@Override
-	public String getValue1() {
-		return this.value1;
-	}
-
-	@Override
-	public String getValue2() {
-		return this.value2;
-	}
-
-	@Override
-	public String getValue3() {
-		return this.value3;
-	}
-
-	@Override
-	public String getValue4() {
-		return this.value4;
-	}
-
-	@Override
-	public String getFileId() {
-		return this.fileId;
-	}
 
 	@Override
 	public String getLink() {
 		return null;
-	}
-
-	@Override
-	public String getFileName() {
-		return this.fileName;
-	}
-	
-	@Override
-	public boolean isDownloadable() {
-		return this.downloadable;
-	}
-	
-	@Override
-	public void setDownloadable(final boolean flag) {
-		this.downloadable = flag;
-	}
-	
-	@Override
-	public boolean isDownloadCompleted() {
-		return this.downloadCompleted;
-	}
-	
-	@Override
-	public void setDownloadCompleted(final boolean flag) {
-		this.downloadCompleted = flag;
 	}
 
 	@Override

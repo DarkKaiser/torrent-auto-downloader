@@ -4,6 +4,7 @@ import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
 import com.darkkaiser.torrentad.website.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -11,8 +12,6 @@ import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,9 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 public class Torrent extends AbstractWebSite {
-
-	private static final Logger logger = LoggerFactory.getLogger(Torrent.class);
 
     public Torrent(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		super(siteConnector, owner, WebSite.TORRENT, downloadFileWriteLocation);
@@ -161,7 +159,7 @@ public class Torrent extends AbstractWebSite {
 					} catch (final NoSuchElementException e) {
 						final String message = String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html());
 
-						logger.error(message, e);
+						log.error(message, e);
 						NotifyApiClient.sendNotifyMessage(message, true);
 
 						throw e;
@@ -177,7 +175,7 @@ public class Torrent extends AbstractWebSite {
 			if (e instanceof SocketTimeoutException == false) {
 				final String message = String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url);
 
-				logger.error(message, e);
+				log.error(message, e);
 				NotifyApiClient.sendNotifyMessage(message, true);
 			}
 
@@ -198,7 +196,7 @@ public class Torrent extends AbstractWebSite {
 		if (StringUtil.isBlank(detailPageURL) == true) {
 			final String message = String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem);
 
-			logger.error(message);
+			log.error(message);
 			NotifyApiClient.sendNotifyMessage(message, true);
 
 			return false;
@@ -239,7 +237,7 @@ public class Torrent extends AbstractWebSite {
 				} catch (final NoSuchElementException e) {
 					final String message = String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html());
 
-					logger.error(message, e);
+					log.error(message, e);
 					NotifyApiClient.sendNotifyMessage(message, true);
 
 					throw e;
@@ -255,7 +253,7 @@ public class Torrent extends AbstractWebSite {
 
 			final String message = String.format("게시물(%s)의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem);
 
-			logger.error(message, e);
+			log.error(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);
 
 			return false;
@@ -283,14 +281,14 @@ public class Torrent extends AbstractWebSite {
 
 			++downloadTryCount;
 
-			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
+			log.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
 			try {
 				// 다운로드 받는 파일의 이름을 구한다.
 				final String downloadFilePath = String.format("%s%s", this.downloadFileWriteLocation, downloadLink.getFileName().trim());
 				final File downloadFile = new File(downloadFilePath);
 				if (downloadFile.exists() == true) {
-					logger.warn("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
+					log.warn("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
 					continue;
 				}
 
@@ -327,23 +325,21 @@ public class Torrent extends AbstractWebSite {
 					downloadLink.setDownloadCompleted(true);
 
 					final StringBuilder sb = new StringBuilder(String.format("검색된 게시물('%s')의 첨부파일 다운로드가 완료되었습니다. 다운로드 받은 파일(%s)이 압축된 자막 파일이므로 압축을 해제합니다.", boardItem.getTitle(), downloadFilePath));
-					extractedSubtitleFilePathList.forEach(filePath -> {
-						sb.append("\n\t> 압축 해제된 자막 파일 : ").append(filePath);
-					});
+					extractedSubtitleFilePathList.forEach(filePath -> sb.append("\n\t> 압축 해제된 자막 파일 : ").append(filePath));
 
-					logger.info(sb.toString());
+					log.info(sb.toString());
 				} else {
 					notyetDownloadFile.renameTo(downloadFile);
 
 					++downloadCompletedCount;
 					downloadLink.setDownloadCompleted(true);
 
-					logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+					log.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
 				}
 			} catch (final Exception e) {
 				final String message = String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink);
 
-				logger.error(message, e);
+				log.error(message, e);
 				NotifyApiClient.sendNotifyMessage(message, true);
 			}
 		}

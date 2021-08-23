@@ -1,8 +1,10 @@
 package com.darkkaiser.torrentad.website.impl.torrentmi;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.AllArgsConstructor;
 import org.jsoup.helper.StringUtil;
 
+@AllArgsConstructor
 public enum TorrentMiBoard implements WebSiteBoard {
 
 	MOVIE		    ("movie", 			"m01", 	"영화", 		    TorrentMi.BASE_URL_WITH_DEFAULT_PATH + "/list.php?b_id=tmovie", false),
@@ -21,14 +23,6 @@ public enum TorrentMiBoard implements WebSiteBoard {
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	TorrentMiBoard(final String name, final String code, final String description, final String url, final boolean hasCategory) {
-		this.name = name;
-		this.code = code;
-		this.description = description;
-		this.url = url;
-		this.hasCategory = hasCategory;
-	}
-	
 	@Override
 	public String getName() {
 		return this.name;

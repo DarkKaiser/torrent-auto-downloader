@@ -1,8 +1,10 @@
 package com.darkkaiser.torrentad.website.impl.bogobogo;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.AllArgsConstructor;
 import org.jsoup.helper.StringUtil;
 
+@AllArgsConstructor
 public enum BogoBogoBoard implements WebSiteBoard {
 
 	/* 영화 */
@@ -46,14 +48,6 @@ public enum BogoBogoBoard implements WebSiteBoard {
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
 	private boolean hasCategory;
 
-	BogoBogoBoard(final String name, final String code, final String description, final String url, final boolean hasCategory) {
-		this.name = name;
-		this.code = code;
-		this.description = description;
-		this.url = url;
-		this.hasCategory = hasCategory;
-	}
-	
 	@Override
 	public String getName() {
 		return this.name;

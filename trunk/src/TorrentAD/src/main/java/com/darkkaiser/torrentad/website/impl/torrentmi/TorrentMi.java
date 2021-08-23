@@ -3,6 +3,7 @@ package com.darkkaiser.torrentad.website.impl.torrentmi;
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -10,8 +11,6 @@ import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,9 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 public class TorrentMi extends AbstractWebSite {
-
-	private static final Logger logger = LoggerFactory.getLogger(TorrentMi.class);
 
 	private static final String BASE_URL = "https://www.torrentmi2.com";
 	public static final String BASE_URL_WITH_DEFAULT_PATH = String.format("%s", BASE_URL);
@@ -155,7 +153,7 @@ public class TorrentMi extends AbstractWebSite {
 							boardItems.add(new DefaultWebSiteBoardItem(board, Long.parseLong(identifier), title, registDate, String.format("%s/%s", TorrentMi.BASE_URL_WITH_DEFAULT_PATH, detailPageURL)));
 						}
 					} catch (final NoSuchElementException e) {
-						logger.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
+						log.error(String.format("게시물을 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, elements.html()), e);
 						throw e;
 					}
 				}
@@ -166,7 +164,7 @@ public class TorrentMi extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return null;
 		} catch (final Exception e) {
-			logger.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
+			log.error(String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.(URL:%s)", board, url), e);
 			return null;
 		}
 
@@ -182,7 +180,7 @@ public class TorrentMi extends AbstractWebSite {
 
 		String detailPageURL = boardItem.getDetailPageURL();
 		if (StringUtil.isBlank(detailPageURL) == true) {
-			logger.error(String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem));
+			log.error(String.format("게시물의 상세페이지 URL이 빈 문자열이므로, 첨부파일에 대한 정보를 로드할 수 없습니다.(%s)", boardItem));
 			return false;
 		}
 
@@ -218,7 +216,7 @@ public class TorrentMi extends AbstractWebSite {
 						boardItem.addDownloadLink(TorrentMiBoardItemDownloadLinkImpl.newInstance(link, fileName));
 					}
 				} catch (final NoSuchElementException e) {
-					logger.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
+					log.error(String.format("게시물에서 첨부파일에 대한 정보를 추출하는 중에 예외가 발생하였습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", detailPageURL, elements.html()), e);
 					throw e;
 				}
 			}
@@ -229,7 +227,7 @@ public class TorrentMi extends AbstractWebSite {
 			return false;
 		} catch (final Exception e) {
 			boardItem.clearDownloadLink();
-			logger.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
+			log.error("게시물({})의 첨부파일에 대한 정보를 로드하는 중에 예외가 발생하였습니다.", boardItem, e);
 			return false;
 		}
 		
@@ -255,14 +253,14 @@ public class TorrentMi extends AbstractWebSite {
 
 			++downloadTryCount;
 
-			logger.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
+			log.info("검색된 게시물('{}')의 첨부파일을 다운로드합니다.({})", boardItem.getTitle(), downloadLink);
 
 			try {
 				// 다운로드 받는 파일의 이름을 구한다.
 				final String downloadFilePath = String.format("%s%s", this.downloadFileWriteLocation, downloadLink.getFileName().trim());
 				final File downloadFile = new File(downloadFilePath);
 				if (downloadFile.exists() == true) {
-					logger.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
+					log.error("동일한 이름을 가진 파일이 이미 존재합니다. 해당 파일의 다운로드는 중지됩니다.({})", downloadFilePath);
 					continue;
 				}
 
@@ -323,9 +321,9 @@ public class TorrentMi extends AbstractWebSite {
 				++downloadCompletedCount;
 				downloadLink.setDownloadCompleted(true);
 
-				logger.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
+				log.info("검색된 게시물('{}')의 첨부파일 다운로드가 완료되었습니다.({})", boardItem.getTitle(), downloadFilePath);
 			} catch (final Exception e) {
-				logger.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
+				log.error(String.format("첨부파일 다운로드 중에 예외가 발생하였습니다.(%s, %s)", boardItem, downloadLink), e);
 			}
 		}
 

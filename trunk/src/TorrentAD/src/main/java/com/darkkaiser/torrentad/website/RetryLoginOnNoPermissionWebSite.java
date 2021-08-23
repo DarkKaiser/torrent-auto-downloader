@@ -1,52 +1,17 @@
 package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.util.Tuple;
+import lombok.AllArgsConstructor;
+import lombok.experimental.Delegate;
 
 import java.util.Comparator;
 import java.util.Iterator;
 
+@AllArgsConstructor
 public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
 
+	@Delegate(types={WebSiteConnection.class, WebSiteContext.class})
 	private final AbstractWebSite site;
-
-	public RetryLoginOnNoPermissionWebSite(final AbstractWebSite site) {
-		this.site = site;
-	}
-
-	@Override
-	public void login(final WebSiteAccount account) throws Exception {
-		this.site.login(account);
-	}
-
-	@Override
-	public void logout() throws Exception {
-		this.site.logout();
-	}
-
-	@Override
-	public boolean isLogin() {
-		return this.site.isLogin();
-	}
-
-	@Override
-	public String getName() {
-		return this.site.getName();
-	}
-
-	@Override
-	public String getBaseURL() {
-		return this.site.getBaseURL();
-	}
-
-	@Override
-	public WebSiteAccount getAccount() {
-		return this.site.getAccount();
-	}
-
-	@Override
-	public void setAccount(final WebSiteAccount account) {
-		this.site.setAccount(account);
-	}
 
 	@Override
 	public Iterator<WebSiteBoardItem> list(final WebSiteBoard board, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
@@ -114,7 +79,6 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final WebSiteSearchContext searchContext) throws NoPermissionException {
 		assert isLogin() == true;
 
-		//noinspection Duplicates
 		try {
 			return this.site.download(boardItem, searchContext);
 		} catch (final NoPermissionException e) {
@@ -134,7 +98,6 @@ public final class RetryLoginOnNoPermissionWebSite implements WebSiteConnection,
 	public Tuple<Integer, Integer> download(final WebSiteBoardItem boardItem, final long downloadLinkIndex) throws NoPermissionException {
 		assert isLogin() == true;
 
-		//noinspection Duplicates
 		try {
 			return this.site.download(boardItem, downloadLinkIndex);
 		} catch (final NoPermissionException e) {

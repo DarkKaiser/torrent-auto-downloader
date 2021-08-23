@@ -3,13 +3,13 @@ package com.darkkaiser.torrentad.website;
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
-import jersey.repackaged.com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,9 +23,8 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@Slf4j
 public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandler, WebSiteContext {
-
-	private static final Logger logger = LoggerFactory.getLogger(AbstractWebSite.class);
 
 	protected static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 
@@ -34,12 +33,16 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 	protected static final int MAX_SEARCH_RESULT_DATA_COUNT = 100;
 
+	@Getter
 	protected final WebSiteConnector siteConnector;
-	
+
+	@Getter
 	protected final String owner;
 
 	protected final WebSite site;
 
+	@Getter
+	@Setter
 	protected WebSiteAccount account;
 
 	// 다운로드 받은 파일이 저장되는 위치
@@ -73,7 +76,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	
 	@Override
 	public void login(final WebSiteAccount account) throws Exception {
-		logger.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
+		log.info("{} 에서 웹사이트('{}')를 로그인합니다.", getOwner(), getName());
 
 		logout0();
 
@@ -84,13 +87,13 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		} catch (final IOException e) {
 			final String message = "도메인 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.";
 
-			logger.warn(message, e);
+			log.warn(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);
 		}
 
 		login0(account);
 
-		logger.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
+		log.info("{} 에서 웹사이트('{}')가 로그인 되었습니다.", getOwner(), getName());
 	}
 	
 	protected void login0(final WebSiteAccount account) throws Exception {
@@ -99,11 +102,11 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	
 	@Override
 	public void logout() throws Exception {
-		logger.info("{} 에서 웹사이트('{}')를 로그아웃합니다.", getOwner(), getName());
+		log.info("{} 에서 웹사이트('{}')를 로그아웃합니다.", getOwner(), getName());
 
 		logout0();
 
-		logger.info("{} 에서 웹사이트('{}')가 로그아웃 되었습니다.", getOwner(), getName());
+		log.info("{} 에서 웹사이트('{}')가 로그아웃 되었습니다.", getOwner(), getName());
 	}
 
 	protected void logout0() throws Exception {
@@ -156,14 +159,6 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		}
 	}
 
-	public WebSiteConnector getSiteConnector() {
-		return this.siteConnector;
-	}
-
-	protected String getOwner() {
-		return this.owner;
-	}
-
 	@Override
 	public String getName() {
 		return this.site.getName();
@@ -179,16 +174,6 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 
 	@Override
-	public WebSiteAccount getAccount() {
-		return this.account;
-	}
-
-	@Override
-	public void setAccount(final WebSiteAccount account) {
-		this.account = account;
-	}
-
-	@Override
 	public Iterator<WebSiteBoardItem> list(final WebSiteBoard board, final boolean loadNow, final Comparator<? super WebSiteBoardItem> comparator) throws NoPermissionException, LoadBoardItemsException {
 		Objects.requireNonNull(board, "board");
 		Objects.requireNonNull(comparator, "comparator");
@@ -197,7 +182,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			throw new IllegalStateException("로그인 상태가 아닙니다.");
 
 		if (loadBoardItems0(board, "", loadNow) == false)
-			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board));
 
 		final List<WebSiteBoardItem> resultList = new ArrayList<>();
 
@@ -206,7 +191,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 			resultList.add(boardItem);
 
-			// logger.debug("조회된 게시물:" + boardItem);
+			// log.debug("조회된 게시물:" + boardItem);
 		}
 
 		resultList.sort(comparator);
@@ -239,7 +224,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			if (searchContext.isSatisfySearchCondition(WebSiteSearchKeywordsType.TITLE, boardItem.getTitle()) == true) {
 				resultList.add(boardItem);
 
-				// logger.debug("필터링된 게시물:" + boardItem);
+				// log.debug("필터링된 게시물:" + boardItem);
 			}
 		}
 
@@ -269,7 +254,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		// 입력된 검색어를 이용하여 해당 게시판을 검색한다.
 		List<WebSiteBoardItem> boardItems = loadBoardItems0_0(board, getSearchQueryString(keyword));
 		if (boardItems == null)
-			throw new LoadBoardItemsException(String.format("게시판 : %s", board.toString()));
+			throw new LoadBoardItemsException(String.format("게시판 : %s", board));
 
 		List<WebSiteBoardItem> resultList = new ArrayList<>();
 
@@ -278,7 +263,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 			resultList.add(boardItem);
 
-			// logger.debug("조회된 게시물:" + boardItem);
+			// log.debug("조회된 게시물:" + boardItem);
 		}
 
 		// 검색 기록을 남기고, 검색 결과 데이터를 반환한다.
@@ -290,6 +275,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 
 	protected abstract String getSearchQueryString(final String keyword);
 
+	@SuppressWarnings("SameParameterValue")
 	private boolean loadBoardItems0(final WebSiteBoard board, final String queryString, final boolean loadNow) throws NoPermissionException {
 		assert board != null;
 		assert isLogin() == true;
@@ -338,7 +324,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없습니다.(%s)", boardItem);
 
-				logger.error(message);
+				log.error(message);
 				NotifyApiClient.sendNotifyMessage(message, true);
 
 				return false;
@@ -364,7 +350,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem);
 
-				logger.error(message);
+				log.error(message);
 				NotifyApiClient.sendNotifyMessage(message, true);
 
 				return new Tuple<>(-1, -1);
@@ -396,7 +382,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			if (loadBoardItemDownloadLink0(boardItem) == false) {
 				final String message = String.format("첨부파일에 대한 정보를 읽어들일 수 없어, 첨부파일 다운로드가 실패하였습니다.(%s)", boardItem);
 
-				logger.error(message);
+				log.error(message);
 				NotifyApiClient.sendNotifyMessage(message, true);
 
 				return new Tuple<>(-1, -1);
@@ -456,7 +442,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		} catch (final IOException e) {
 			final String message = "압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(1)";
 
-			logger.warn(message, e);
+			log.warn(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);
 
 			return false;
@@ -490,7 +476,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 		} catch (final IOException e) {
 			final String message = "압축된 자막 파일의 압축을 해제하는 중에 예외가 발생하였습니다.(2)";
 
-			logger.warn(message, e);
+			log.warn(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);
 
 			return false;

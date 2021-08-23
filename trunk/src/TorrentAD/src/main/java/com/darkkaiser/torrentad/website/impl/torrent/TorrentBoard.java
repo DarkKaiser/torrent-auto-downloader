@@ -1,8 +1,13 @@
 package com.darkkaiser.torrentad.website.impl.torrent;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jsoup.helper.StringUtil;
 
+@Getter
+@AllArgsConstructor
 public enum TorrentBoard implements WebSiteBoard {
 
 	/* 해외영화 */
@@ -35,39 +40,8 @@ public enum TorrentBoard implements WebSiteBoard {
 	private final String path;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
+	@Accessors(fluent = true)
 	private final boolean hasCategory;
-
-	TorrentBoard(final String name, final String code, final String description, final String path, final boolean hasCategory) {
-		this.name = name;
-		this.code = code;
-		this.description = description;
-		this.path = path;
-		this.hasCategory = hasCategory;
-	}
-	
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getCode() {
-		return this.code;
-	}
-
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
-	
-	@Override
-	public String getPath() {
-		return this.path;
-	}
-
-	public boolean hasCategory() {
-		return this.hasCategory;
-	}
 
 	public static TorrentBoard fromString(final String name) {
 		if (StringUtil.isBlank(name) == true)

@@ -1,15 +1,13 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Slf4j
 public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteSearchKeywords.class);
-	
 	private final WebSiteSearchKeywordsMode mode;
 
 	private final List<List<String>> keywords = new ArrayList<>();
@@ -74,7 +72,7 @@ public class DefaultWebSiteSearchKeywords implements WebSiteSearchKeywords {
 		try {
 			validate();
 		} catch (final Exception e) {
-			logger.debug(null, e);
+			log.debug(null, e);
 			return false;
 		}
 

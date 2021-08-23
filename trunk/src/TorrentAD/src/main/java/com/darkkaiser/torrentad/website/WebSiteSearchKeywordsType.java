@@ -1,9 +1,14 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jsoup.helper.StringUtil;
 
 import java.util.Objects;
 
+@Getter
+@AllArgsConstructor
 public enum WebSiteSearchKeywordsType {
 
 	TITLE("title", false),
@@ -11,21 +16,9 @@ public enum WebSiteSearchKeywordsType {
 	FILE("file", true);
 
 	private final String value;
-	
+
+	@Accessors(fluent = true)
 	private final boolean allowEmpty;
-
-	WebSiteSearchKeywordsType(final String value, final boolean allowEmpty) {
-		this.value = value;
-		this.allowEmpty = allowEmpty;
-	}
-
-	public String getValue() {
-		return this.value;
-	}
-	
-	public boolean allowEmpty() {
-		return this.allowEmpty;
-	}
 
 	public static WebSiteSearchKeywordsType fromString(final String typeValue) {
 		Objects.requireNonNull(typeValue, "typeValue");

@@ -1,8 +1,11 @@
 package com.darkkaiser.torrentad.website.impl.totoria;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
+@AllArgsConstructor
 public enum TotoriaBoard implements WebSiteBoard {
 
 	/* 영화 */
@@ -24,33 +27,14 @@ public enum TotoriaBoard implements WebSiteBoard {
 	ETC_GAME			("etcgame", 			"e01", 	"기타 > 게임", 				Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_game"),
 	ETC_UTIL			("etcutil", 			"e02", 	"기타 > 유틸리티", 			Totoria.BASE_URL_WITH_DEFAULT_PATH + "/board.php?bo_table=torrent_util");
 
+	@Getter
 	private final String name;
+	@Getter
 	private final String code;
+	@Getter
 	private final String description;
 	private final String url;
 
-	TotoriaBoard(final String name, final String code, final String description, final String url) {
-		this.name = name;
-		this.code = code;
-		this.description = description;
-		this.url = url;
-	}
-	
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getCode() {
-		return this.code;
-	}
-
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
-	
 	@Override
 	public String getPath() {
 		return this.url;

@@ -1,6 +1,7 @@
 package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.util.RadixNotation62Util;
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
 import java.util.Comparator;
@@ -10,10 +11,13 @@ import java.util.Objects;
 
 public class DefaultWebSiteSearchResultData implements WebSiteSearchResultData {
 
+	@Getter
 	protected final String identifier;
 
+	@Getter
 	protected final WebSiteBoard board;
 
+	@Getter
 	protected final String keyword;
 
 	protected final List<WebSiteBoardItem> results;
@@ -31,21 +35,6 @@ public class DefaultWebSiteSearchResultData implements WebSiteSearchResultData {
 		this.identifier = RadixNotation62Util.toString(System.currentTimeMillis());
 	}
 
-	@Override
-	public String getIdentifier() {
-		return this.identifier;
-	}
-
-	@Override
-	public WebSiteBoard getBoard() {
-		return this.board;
-	}
-
-	@Override
-	public String getKeyword() {
-		return this.keyword;
-	}
-	
 	@Override
 	public Iterator<WebSiteBoardItem> resultIterator(final Comparator<? super WebSiteBoardItem> comparator) {
 		Objects.requireNonNull(comparator, "comparator");

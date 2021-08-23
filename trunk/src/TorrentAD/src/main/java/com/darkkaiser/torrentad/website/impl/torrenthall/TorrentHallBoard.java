@@ -1,8 +1,13 @@
 package com.darkkaiser.torrentad.website.impl.torrenthall;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jsoup.helper.StringUtil;
 
+@Getter
+@AllArgsConstructor
 public enum TorrentHallBoard implements WebSiteBoard {
 
 	/* 영화 */
@@ -22,35 +27,8 @@ public enum TorrentHallBoard implements WebSiteBoard {
 	private final String path;
 
 	// 게시물 목록에서 카테고리 정보를 가지고 있는지의 여부
+	@Accessors(fluent = true)
 	private boolean hasCategory;
-
-	TorrentHallBoard(final String name, final String code, final String description, final String path, final boolean hasCategory) {
-		this.name = name;
-		this.code = code;
-		this.description = description;
-		this.path = path;
-		this.hasCategory = hasCategory;
-	}
-	
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getCode() {
-		return this.code;
-	}
-
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
-	
-	@Override
-	public String getPath() {
-		return this.path;
-	}
 
 	/**
 	 * 게시판에서 읽어들일 페이지 수, 읽어들인 페이수에 해당하는 게시물을 이용하여 검색 작업을 수행한다.
@@ -66,10 +44,6 @@ public enum TorrentHallBoard implements WebSiteBoard {
 	@Override
 	public String getDefaultRegistDateFormatString() {
 		return "yyyy.MM.dd";
-	}
-
-	public boolean hasCategory() {
-		return this.hasCategory;
 	}
 
 	public static TorrentHallBoard fromString(final String name) {

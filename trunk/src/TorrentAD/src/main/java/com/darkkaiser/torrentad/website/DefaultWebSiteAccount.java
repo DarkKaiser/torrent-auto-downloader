@@ -1,15 +1,17 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+@Slf4j
+@Getter
+@Accessors(fluent = true)
 public class DefaultWebSiteAccount implements WebSiteAccount {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultWebSiteAccount.class);
-	
 	private final String id;
 	private final String password;
 
@@ -20,16 +22,6 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 		this.password = password;
 	}
 
-	@Override
-	public String id() {
-		return this.id;
-	}
-
-	@Override
-	public String password() {
-		return this.password;
-	}
-	
 	@Override
 	public void validate() {
 		validate0(this.id, this.password);
@@ -50,7 +42,7 @@ public class DefaultWebSiteAccount implements WebSiteAccount {
 		try {
 			validate();
 		} catch (final Exception e) {
-			logger.debug(null, e);
+			log.debug(null, e);
 			return false;
 		}
 

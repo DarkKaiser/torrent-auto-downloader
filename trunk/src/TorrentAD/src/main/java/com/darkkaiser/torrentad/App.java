@@ -10,13 +10,11 @@ import com.darkkaiser.torrentad.service.au.TorrentAuService;
 import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import com.darkkaiser.torrentad.service.bot.telegram.TelegramBotService;
 import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class App {
 	
-	private static final Logger logger = LoggerFactory.getLogger(App.class);
-		
 	private Service torrentAdService;
 	private Service torrentAuService;
 	private Service torrentBotService;
@@ -29,7 +27,7 @@ public class App {
 		try {
 			configuration = new DefaultConfiguration();
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return false;
 		}
 
@@ -45,7 +43,7 @@ public class App {
 
 			return this.torrentAuService.start() && this.torrentAdService.start() && this.torrentBotService.start();
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return false;
 		}
 	}
@@ -68,11 +66,11 @@ public class App {
 
     private void addShutdownHook(final App app) {
         Runnable shutdownHook = () -> {
-            logger.info("{} 프로그램을 종료하는 중입니다...", Constants.APP_NAME);
+			log.info("{} 프로그램을 종료하는 중입니다...", Constants.APP_NAME);
 
             app.stop();
 
-            logger.info("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
+			log.info("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
         };
 
         // add shutdown hook
@@ -92,20 +90,20 @@ public class App {
 					"###                         developed by DarkKaiser  ###\n" +
 					"###                                                  ###\n" +
 					"########################################################\n";
-			logger.info(productMessage);
+			log.info(productMessage);
 
 			if (app.start() == true) {
-                logger.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
+				log.info("{} 프로그램이 시작되었습니다.", Constants.APP_NAME);
 
                 // add shutdown hook if possible
                 app.addShutdownHook(app);
             } else {
                 app.stop();
 
-                logger.error("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
+				log.error("{} 프로그램이 종료되었습니다.", Constants.APP_NAME);
             }
 		} catch (final Exception e) {
-			logger.error("{}가 종료되었습니다.", Constants.APP_NAME, e);
+			log.error("{}가 종료되었습니다.", Constants.APP_NAME, e);
 		}
 	}
 

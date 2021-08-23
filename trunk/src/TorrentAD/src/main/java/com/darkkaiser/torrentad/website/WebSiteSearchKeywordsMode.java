@@ -1,23 +1,19 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
 import java.util.Objects;
 
+@Getter
+@AllArgsConstructor
 public enum WebSiteSearchKeywordsMode {
 
 	INCLUDE("include"),
 	EXCLUDE("exclude");
 	
 	private final String value;
-
-	WebSiteSearchKeywordsMode(final String value) {
-		this.value = value;
-	}
-
-	public String getValue() {
-		return this.value;
-	}
 
 	public static WebSiteSearchKeywordsMode getDefault() {
 		return INCLUDE;

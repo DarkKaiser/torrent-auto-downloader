@@ -1,15 +1,18 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@Slf4j
+@RequiredArgsConstructor
 public enum WebSite {
 
 	TORRENT("토렌트",
@@ -52,31 +55,14 @@ public enum WebSite {
 			"com.darkkaiser.torrentad.website.impl.todawa.Todawa",
 			"com.darkkaiser.torrentad.website.impl.todawa.TodawaBoard");
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSite.class);
-
+	@Getter
 	private final String name;
 	private final String webSiteClassName;
 	private final String webSiteBoardClassName;
 
+	@Getter
+	@Setter
 	private String baseURL;
-
-	WebSite(final String name, final String webSiteClassName, final String webSiteBoardClassName) {
-		this.name = name;
-		this.webSiteClassName = webSiteClassName;
-		this.webSiteBoardClassName = webSiteBoardClassName;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getBaseURL() {
-		return this.baseURL;
-	}
-
-	public void setBaseURL(final String baseURL) {
-		this.baseURL = baseURL;
-	}
 
 	public static WebSite fromString(final String name) {
 		Objects.requireNonNull(name, "name");
@@ -95,14 +81,15 @@ public enum WebSite {
 	public WebSiteAccount createAccount(final String id, final String password) {
 		return new DefaultWebSiteAccount(id, password);
 	}
-	
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public WebSiteConnection createConnection(final WebSiteConnector siteConnector, final String owner, final String downloadFileWriteLocation) {
 		try {
 			final Class clazz = Class.forName(this.webSiteClassName);
 			final Constructor constructor = clazz.getConstructor(WebSiteConnector.class, String.class, String.class);
 			return new RetryLoginOnNoPermissionWebSite((AbstractWebSite) constructor.newInstance(siteConnector, owner, downloadFileWriteLocation));
 		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return null;
 		}
 	}
@@ -115,13 +102,14 @@ public enum WebSite {
 		return new DefaultWebSiteSearchKeywords(WebSiteSearchKeywordsMode.fromString(modeValue));
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public WebSiteBoard getBoardByName(final String name) {
 		try {
 			final Class clazz = Class.forName(this.webSiteBoardClassName);
 			final Method method = clazz.getDeclaredMethod("fromString", String.class);
 			return (WebSiteBoard) method.invoke(null, name);
 		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return null;
 		}
 	}
@@ -139,13 +127,14 @@ public enum WebSite {
 		return null;
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public WebSiteBoard[] getBoardValues() {
 		try {
 			final Class clazz = Class.forName(this.webSiteBoardClassName);
 			final Method method = clazz.getDeclaredMethod("values");
 			return (WebSiteBoard[]) method.invoke(null);
 		} catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return null;
 		}
 	}

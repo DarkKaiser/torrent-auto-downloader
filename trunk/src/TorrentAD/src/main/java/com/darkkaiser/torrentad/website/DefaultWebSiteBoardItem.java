@@ -1,5 +1,6 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
 import java.text.DateFormat;
@@ -10,19 +11,24 @@ import java.util.*;
 public class DefaultWebSiteBoardItem implements WebSiteBoardItem {
 
 	// 게시판
+	@Getter
 	private final WebSiteBoard board;
 
 	// 식별자
+	@Getter
 	private final long identifier;
 
 	// 제목
+	@Getter
 	private final String title;
 
 	// 등록일자
+	@Getter
 	private final Date registDate;
 	private final DateFormat registDateFormat;
 
 	// 게시물 상세페이지 URL
+	@Getter
 	private final String detailPageURL;
 
 	// 첨부파일에 대한 다운로드 링크 목록
@@ -49,33 +55,8 @@ public class DefaultWebSiteBoardItem implements WebSiteBoardItem {
 	}
 
 	@Override
-	public WebSiteBoard getBoard() {
-		return this.board;
-	}
-
-	@Override
-	public long getIdentifier() {
-		return this.identifier;
-	}
-
-	@Override
-	public String getTitle() {
-		return this.title;
-	}
-
-	@Override
-	public Date getRegistDate() {
-		return this.registDate;
-	}
-
-	@Override
 	public String getRegistDateString() {
 		return this.registDateFormat.format(this.registDate);
-	}
-
-	@Override
-	public String getDetailPageURL() {
-		return this.detailPageURL;
 	}
 
 	@Override

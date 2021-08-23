@@ -1,13 +1,18 @@
 package com.darkkaiser.torrentad.website;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.helper.StringUtil;
 
+@Getter
 public class DefaultWebSiteBoardItemDownloadLink implements WebSiteBoardItemDownloadLink {
 
 	private final String link;
 	private final String fileName;
 
+	@Setter
 	private boolean downloadable = true;
+	@Setter
 	private boolean downloadCompleted = false;
 
 	public DefaultWebSiteBoardItemDownloadLink(final String link, final String fileName) {
@@ -18,36 +23,6 @@ public class DefaultWebSiteBoardItemDownloadLink implements WebSiteBoardItemDown
 
 		this.link = link;
 		this.fileName = fileName;
-	}
-
-	@Override
-	public String getLink() {
-		return this.link;
-	}
-
-	@Override
-	public String getFileName() {
-		return this.fileName;
-	}
-
-	@Override
-	public boolean isDownloadable() {
-		return this.downloadable;
-	}
-	
-	@Override
-	public void setDownloadable(final boolean flag) {
-		this.downloadable = flag;
-	}
-	
-	@Override
-	public boolean isDownloadCompleted() {
-		return this.downloadCompleted;
-	}
-	
-	@Override
-	public void setDownloadCompleted(final boolean flag) {
-		this.downloadCompleted = flag;
 	}
 
 	@Override
