@@ -4,14 +4,12 @@ import com.darkkaiser.torrentad.service.ad.task.AbstractTask;
 import com.darkkaiser.torrentad.service.ad.task.TaskResult;
 import com.darkkaiser.torrentad.service.ad.task.TaskType;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
+@Slf4j
 public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask {
-
-	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTaskImpl.class);
 
 	protected ImmediatelyTaskAction action;
 
@@ -33,7 +31,7 @@ public class ImmediatelyTaskImpl extends AbstractTask implements ImmediatelyTask
 			if (this.action.call() == false)
 				return TaskResult.FAILED;
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return TaskResult.UNEXPECTED_EXCEPTION;
 		}
 

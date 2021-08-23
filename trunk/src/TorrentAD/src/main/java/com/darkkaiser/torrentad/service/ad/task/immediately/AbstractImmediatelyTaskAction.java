@@ -1,11 +1,9 @@
 package com.darkkaiser.torrentad.service.ad.task.immediately;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AbstractImmediatelyTaskAction implements ImmediatelyTaskAction {
-
-	private static final Logger logger = LoggerFactory.getLogger(AbstractImmediatelyTaskAction.class);
 
 	@Override
 	public void validate() {
@@ -16,7 +14,7 @@ public abstract class AbstractImmediatelyTaskAction implements ImmediatelyTaskAc
 		try {
 			validate();
 		} catch (final Exception e) {
-			logger.debug(null, e);
+			log.debug(null, e);
 			return false;
 		}
 

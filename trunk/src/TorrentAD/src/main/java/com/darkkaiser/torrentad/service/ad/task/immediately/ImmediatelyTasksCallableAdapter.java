@@ -3,20 +3,18 @@ package com.darkkaiser.torrentad.service.ad.task.immediately;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.service.ad.task.*;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapter {
-
-	private static final Logger logger = LoggerFactory.getLogger(ImmediatelyTasksCallableAdapter.class);
 
 	private final ImmediatelyTask task;
 	
-	private static AtomicInteger count = new AtomicInteger(0);
+	private static final AtomicInteger count = new AtomicInteger(0);
 
 	public ImmediatelyTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository, final ImmediatelyTaskAction action) throws Exception {
 		Objects.requireNonNull(configuration, "configuration");
@@ -32,23 +30,23 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	@Override
 	public TasksCallableAdapterResult call() throws Exception {
 		try {
-			logger.debug("Task를 실행합니다.(Task:{})", this.task.getTaskDescription());
+			log.debug("Task를 실행합니다.(Task:{})", this.task.getTaskDescription());
 
 			try {
 				TaskResult taskResult = this.task.run();
 				if (taskResult != TaskResult.OK) {
-					logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, this.task.getTaskDescription());
+					log.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, this.task.getTaskDescription());
 					return TasksCallableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 				} else {
-					logger.debug("Task 실행이 완료되었습니다.(Task:{})", this.task.getTaskDescription());
+					log.debug("Task 실행이 완료되었습니다.(Task:{})", this.task.getTaskDescription());
 					return TasksCallableAdapterResult.OK(TaskResult.OK);
 				}
 			} catch (final Throwable e) {
-				logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", this.task.getTaskDescription(), e);
+				log.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", this.task.getTaskDescription(), e);
 				return TasksCallableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 			}
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 
 		return TasksCallableAdapterResult.UNEXPECTED_EXCEPTION();

@@ -1,15 +1,15 @@
 package com.darkkaiser.torrentad.service.ad.task;
 
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+@Slf4j
+@Getter
 public abstract class AbstractTask implements Task {
-
-	private static final Logger logger = LoggerFactory.getLogger(AbstractTask.class);
 
 	protected final TaskType taskType;
 	
@@ -38,26 +38,6 @@ public abstract class AbstractTask implements Task {
 	}
 
 	@Override
-	public TaskType getTaskType() {
-		return this.taskType;
-	}
-	
-	@Override
-	public String getTaskId() {
-		return this.taskId;
-	}
-	
-	@Override
-	public String getTaskDescription() {
-		return this.taskDescription;
-	}
-
-	@Override
-	public MetadataRepository getMetadataRepository() {
-		return this.metadataRepository;
-	}
-
-	@Override
 	public void validate() {
         Objects.requireNonNull(this.taskType, "taskType");
 
@@ -72,7 +52,7 @@ public abstract class AbstractTask implements Task {
 		try {
 			validate();
 		} catch (final Exception e) {
-			logger.debug(null, e);
+			log.debug(null, e);
 			return false;
 		}
 

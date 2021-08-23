@@ -9,8 +9,7 @@ import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteSearchKeywords;
 import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsMode;
 import com.darkkaiser.torrentad.website.WebSiteSearchKeywordsType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -24,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public final class ScheduledTasksGenerator {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasksGenerator.class);
 	
 	private ScheduledTasksGenerator() {
 
@@ -101,7 +99,7 @@ public final class ScheduledTasksGenerator {
 									}
 								}
 							} else {
-								logger.warn("유효하지 않은 XML 항목:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
+								log.warn("유효하지 않은 XML 항목:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
 								assert false;
 							}
 						}
@@ -109,17 +107,17 @@ public final class ScheduledTasksGenerator {
 
 					if (task.isValid() == true) {
 						tasks.add(task);
-						logger.debug("Task 생성완료:{}", task.toString());
+						log.debug("Task 생성완료:{}", task);
 					} else {
 						throw new XMLParseException(task.toString());
 					}
 				}
 			}
 		} catch (final FileNotFoundException e) {
-			logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configuration.getFilePath());
+			log.error("프로그램 설정정보 파일을 찾을 수 없습니다.(경로:'{}')", configuration.getFilePath());
 			throw e;
 		} catch (final Exception e) {
-			logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
+			log.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.");
 			throw e;
 		}
 

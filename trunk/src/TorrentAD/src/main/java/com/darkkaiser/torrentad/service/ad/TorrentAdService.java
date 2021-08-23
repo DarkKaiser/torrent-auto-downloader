@@ -10,8 +10,7 @@ import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTasksCall
 import com.darkkaiser.torrentad.service.ad.task.scheduled.ScheduledTasksCallableAdapter;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 import java.util.Timer;
@@ -19,9 +18,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public final class TorrentAdService implements Service, ImmediatelyTaskExecutorService {
-
-	private static final Logger logger = LoggerFactory.getLogger(TorrentAdService.class);
 
 	private Timer scheduledTasksExecutorTimer;
 	private ExecutorService scheduledTasksExecutorService;
@@ -87,14 +85,14 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 	@Override
 	public boolean submit(final ImmediatelyTaskAction action) {
 		if (this.immediatelyTasksExecutorService == null) {
-			logger.error("ImmediatelyTasksExecutorService가 중지된 상태에서 submit이 요청되었습니다.");
+			log.error("ImmediatelyTasksExecutorService가 중지된 상태에서 submit이 요청되었습니다.");
 			return false;
 		}
 
 		try {
 			this.immediatelyTasksExecutorService.submit(new ImmediatelyTasksCallableAdapter(this.configuration, this.metadataRepository, action));
 		} catch (final Exception e) {
-			logger.error("ImmediatelyTaskAction의 작업 요청이 실패하였습니다.", e);
+			log.error("ImmediatelyTaskAction의 작업 요청이 실패하였습니다.", e);
 			return false;
 		}
 

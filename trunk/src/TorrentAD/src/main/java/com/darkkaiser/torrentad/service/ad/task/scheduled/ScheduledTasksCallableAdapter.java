@@ -8,30 +8,25 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import com.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import com.darkkaiser.torrentad.website.WebSiteConnector;
 import com.darkkaiser.torrentad.website.WebSiteHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasksCallableAdapter.class);
-
-	private WebSiteConnector siteConnector;
+	private final WebSiteConnector siteConnector;
 
 	private final List<ScheduledTask> tasks;
 
-	private final Configuration configuration;
-	
 	public ScheduledTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository) throws Exception {
 		Objects.requireNonNull(configuration, "configuration");
 
-		this.configuration = configuration;
 		this.siteConnector = new DefaultWebSiteConnector(ScheduledTasksCallableAdapter.class.getSimpleName(), configuration);
 
 		// Task 목록을 생성한다.
-		this.tasks = ScheduledTasksGenerator.generate(this.configuration, metadataRepository, this.siteConnector.getSite());
+		this.tasks = ScheduledTasksGenerator.generate(configuration, metadataRepository, this.siteConnector.getSite());
 	}
 
 	@Override
@@ -46,19 +41,19 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 			TasksCallableAdapterResult result = TasksCallableAdapterResult.OK();
 
 			for (final ScheduledTask task : this.tasks) {
-				logger.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
+				log.debug("Task를 실행합니다.(Task:{})", task.getTaskDescription());
 
 				try {
 					TaskResult taskResult = task.run(handler);
 					if (taskResult != TaskResult.OK) {
-						logger.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskDescription());
+						log.error("Task 실행이 실패('{}') 하였습니다.(Task:{})", taskResult, task.getTaskDescription());
 						result = TasksCallableAdapterResult.TASK_EXECUTION_FAILED(taskResult);
 					} else {
-						logger.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
+						log.debug("Task 실행이 완료되었습니다.(Task:{})", task.getTaskDescription());
 						result = TasksCallableAdapterResult.OK(TaskResult.OK);
 					}
 				} catch (final Throwable e) {
-					logger.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
+					log.error("Task 실행 중 예외가 발생하였습니다.(Task:{})", task.getTaskDescription(), e);
 					result = TasksCallableAdapterResult.UNEXPECTED_TASK_RUNNING_EXCEPTION();
 				}
 			}
@@ -67,7 +62,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 
 			return result;
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 
 		return TasksCallableAdapterResult.UNEXPECTED_EXCEPTION();
