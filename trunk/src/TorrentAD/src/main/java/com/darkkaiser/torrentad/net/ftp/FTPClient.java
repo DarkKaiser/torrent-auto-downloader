@@ -1,18 +1,16 @@
 package com.darkkaiser.torrentad.net.ftp;
 
 import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
+@Slf4j
 public class FTPClient {
-
-	private static final Logger logger = LoggerFactory.getLogger(FTPClient.class);
 
 	private org.apache.commons.net.ftp.FTPClient ftpClient;
 
@@ -44,7 +42,7 @@ public class FTPClient {
 			if (FTPReply.isPositiveCompletion(nReply) == false) {
 				disconnect();
 
-				logger.error("FTP server refused connection.");
+				log.error("FTP server refused connection.");
 				NotifyApiClient.sendNotifyMessage("FTP server refused connection.", true);
 
 				return false;
@@ -55,7 +53,7 @@ public class FTPClient {
 			this.ftpClient.setSoTimeout(10000);
 			this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 			NotifyApiClient.sendNotifyMessage(e.toString(), true);
 			return false;
 		}
@@ -71,13 +69,13 @@ public class FTPClient {
 			try {
 				this.ftpClient.logout();
 			} catch (final IOException e) {
-				logger.error("error logging off the ftp client: {}", e.getMessage());
+				log.error("error logging off the ftp client: {}", e.getMessage());
 			}
 
 			try {
 				this.ftpClient.disconnect();
 			} catch (final IOException e) {
-				logger.error("error disconnecting from the ftp client: {}", e.getMessage());
+				log.error("error disconnecting from the ftp client: {}", e.getMessage());
 			}
 		}
 
@@ -89,44 +87,32 @@ public class FTPClient {
 	}
 
 	public boolean download(final File file, final String remotePath) throws Exception {
-		BufferedOutputStream bos = null;
-
-		try {
-			bos = new BufferedOutputStream(new FileOutputStream(file));
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
 			if (this.ftpClient.retrieveFile(remotePath, bos) == false) {
 				final String message = String.format("FTP 서버에서의 파일 다운로드가 실패하였습니다.(%s)", file.getAbsolutePath());
 
-				logger.error(message);
+				log.error(message);
 				NotifyApiClient.sendNotifyMessage(message, true);
 
 				return false;
 			}
-			
+
 			return true;
-		} finally {
-			if (bos != null)
-				bos.close();
 		}
 	}
 
 	public boolean upload(final File file, final String remotePath) throws Exception {
-		BufferedInputStream bis = null;
-
-		try {
-			bis = new BufferedInputStream(new FileInputStream(file));
+		try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
 			if (this.ftpClient.storeFile(remotePath, bis) == false) {
 				final String message = String.format("FTP 서버로의 파일 업로드가 실패하였습니다.(%s)", file.getAbsolutePath());
 
-				logger.error(message);
+				log.error(message);
 				NotifyApiClient.sendNotifyMessage(message, true);
 
 				return false;
 			}
 
 			return true;
-		} finally {
-			if (bis != null)
-				bis.close();
 		}
 	}
 

@@ -1,14 +1,12 @@
 package com.darkkaiser.torrentad.util;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class Tuple<F, L> {
 
 	private F x;
 	private L y;
-
-	public Tuple(F x, L y) {
-		this.x = x;
-		this.y = y;
-	}
 
 	public F first() {
 		return this.x;

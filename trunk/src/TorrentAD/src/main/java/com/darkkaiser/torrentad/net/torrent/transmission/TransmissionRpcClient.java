@@ -4,13 +4,12 @@ import com.darkkaiser.torrentad.net.torrent.TorrentClient;
 import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +17,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class TransmissionRpcClient implements TorrentClient {
-
-	private static final Logger logger = LoggerFactory.getLogger(TransmissionRpcClient.class);
 
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
 	
@@ -75,24 +73,24 @@ public class TransmissionRpcClient implements TorrentClient {
 					.execute();
 
 			if (response.statusCode() != HttpStatus.SC_OK) {
-				logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+				log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
 				return false;
 			}
 
 			String result = response.parse().body().html();
 			MethodResult methodResult = gson.fromJson(result, SessionGetMethodResult.class);
 			if (methodResult.isResultSuccess() == false) {
-				logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:session-get, 수신된 데이터:{})", result);
+				log.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:session-get, 수신된 데이터:{})", result);
 				return false;
 			}
 
 			this.sessionId = sessionId;
 			this.authorization = authorization;
 		} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
-			logger.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage() + ": 사용자 인증이 실패하였습니다.");
+			log.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage() + ": 사용자 인증이 실패하였습니다.");
 			return false;
 		} else {
-			logger.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage());
+			log.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage());
 			return false;
 		}
 
@@ -115,13 +113,13 @@ public class TransmissionRpcClient implements TorrentClient {
 		Objects.requireNonNull(file, "file");
 
 		if (isConnected() == false) {
-			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			log.error("토렌트 서버와 접속중인 상태가 아닙니다.");
 			return false;			
 		}
 
 		String filePath = file.getAbsolutePath().toLowerCase();
 		if (filePath.endsWith(".torrent") == false) {
-			logger.error("토렌트 서버에 추가하시려는 파일이 토렌트 파일이 아닙니다.({})", file.getAbsolutePath());
+			log.error("토렌트 서버에 추가하시려는 파일이 토렌트 파일이 아닙니다.({})", file.getAbsolutePath());
 			return false;
 		}
 
@@ -129,30 +127,30 @@ public class TransmissionRpcClient implements TorrentClient {
 				.userAgent(USER_AGENT)
 				.header("Authorization", this.authorization)
 				.header("X-Transmission-Session-Id", this.sessionId)
-				.requestBody(String.format("{ \"method\":\"torrent-add\", \"arguments\":{\"metainfo\":\"%s\", \"paused\":\"%s\"}}", encodeFileToBase64(file), Boolean.toString(paused)))
+				.requestBody(String.format("{ \"method\":\"torrent-add\", \"arguments\":{\"metainfo\":\"%s\", \"paused\":\"%s\"}}", encodeFileToBase64(file), paused))
 				.method(Connection.Method.POST)
 				.ignoreHttpErrors(true)
 				.ignoreContentType(true)
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
 			return false;
 		}
 
 		String result = response.parse().body().html();
 		TorrentAddMethodResult methodResult = gson.fromJson(result, TorrentAddMethodResult.class);
 		if (methodResult.isResultSuccess() == false) {
-			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-add, 수신된 데이터:{})", result);
+			log.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-add, 수신된 데이터:{})", result);
 			return false;
 		}
 
 		if (methodResult.arguments == null || (methodResult.arguments.torrentAdded == null && methodResult.arguments.torrentDuplicate == null)) {
-			logger.error("토렌트 서버에서 수신된 데이터의 파싱 결과가 유효하지 않습니다.(method:torrent-add, 수신된 데이터:{})", result);
+			log.error("토렌트 서버에서 수신된 데이터의 파싱 결과가 유효하지 않습니다.(method:torrent-add, 수신된 데이터:{})", result);
 			return false;
 		} else if (methodResult.arguments.torrentDuplicate != null) {
 			assert methodResult.arguments.torrentAdded == null;
-			logger.warn("토렌트 서버에 이미 등록되어 있는 토렌트입니다.(method:torrent-add, 파일:{})", file.getAbsolutePath());
+			log.warn("토렌트 서버에 이미 등록되어 있는 토렌트입니다.(method:torrent-add, 파일:{})", file.getAbsolutePath());
 			return true;
 		}
 
@@ -164,7 +162,7 @@ public class TransmissionRpcClient implements TorrentClient {
         Objects.requireNonNull(ids, "ids");
 
 		if (isConnected() == false) {
-			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			log.error("토렌트 서버와 접속중인 상태가 아닙니다.");
 			return false;
 		}
 
@@ -188,21 +186,21 @@ public class TransmissionRpcClient implements TorrentClient {
 				.userAgent(USER_AGENT)
 				.header("Authorization", this.authorization)
 				.header("X-Transmission-Session-Id", this.sessionId)
-				.requestBody(String.format("{ \"method\":\"torrent-start\", \"arguments\":{\"ids\":[%s]}}", sbIds.toString()))
+				.requestBody(String.format("{ \"method\":\"torrent-start\", \"arguments\":{\"ids\":[%s]}}", sbIds))
 				.method(Connection.Method.POST)
 				.ignoreHttpErrors(true)
 				.ignoreContentType(true)
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
 			return false;
 		}
 
 		String result = response.parse().body().html();
 		MethodResult methodResult = gson.fromJson(result, TorrentStartMethodResult.class);
 		if (methodResult.isResultSuccess() == false) {
-			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-start, 수신된 데이터:{})", result);
+			log.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-start, 수신된 데이터:{})", result);
 			return false;
 		}
 
@@ -212,7 +210,7 @@ public class TransmissionRpcClient implements TorrentClient {
 	@Override
 	public TorrentGetMethodResult getTorrent() throws Exception {
 		if (isConnected() == false) {
-			logger.error("토렌트 서버와 접속중인 상태가 아닙니다.");
+			log.error("토렌트 서버와 접속중인 상태가 아닙니다.");
 			return null;
 		}
 
@@ -227,14 +225,14 @@ public class TransmissionRpcClient implements TorrentClient {
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			logger.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
 			return null;
 		}
 
 		String result = response.parse().body().html();
 		TorrentGetMethodResult methodResult = gson.fromJson(result, TorrentGetMethodResult.class);
 		if (methodResult.isResultSuccess() == false) {
-			logger.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-get, 수신된 데이터:{})", result);
+			log.error("토렌트 서버에서 수신된 데이터가 success가 아닙니다.(method:torrent-get, 수신된 데이터:{})", result);
 			return null;
 		}
 

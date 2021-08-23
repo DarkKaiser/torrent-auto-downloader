@@ -1,9 +1,9 @@
 package com.darkkaiser.torrentad.config;
 
 import com.darkkaiser.torrentad.common.Constants;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -15,10 +15,10 @@ import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.Objects;
 
+@Slf4j
 public final class DefaultConfiguration implements Configuration {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultConfiguration.class);
-
+	@Getter
 	private String filePath;
 
 	private final Hashtable<String/* 키 */, String/* 값 */> configValues = new Hashtable<>();
@@ -54,7 +54,7 @@ public final class DefaultConfiguration implements Configuration {
 							Node cvChildNode = cvChildNodeList.item(cvChildNodeListIndex);
 							if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 								this.configValues.put(cvChildNode.getNodeName(), cvChildNode.getTextContent());
-								logger.debug("프로그램 설정정보:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
+								log.debug("프로그램 설정정보:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
 							}
 						}
 					}
@@ -62,19 +62,14 @@ public final class DefaultConfiguration implements Configuration {
 
 				this.filePath = filePath;
 			} catch (final FileNotFoundException e) {
-				logger.error("프로그램 설정정보 파일을 찾을 수 없습니다.(파일경로:'{}')", filePath, e);
+				log.error("프로그램 설정정보 파일을 찾을 수 없습니다.(파일경로:'{}')", filePath, e);
 				throw e;
 			} catch (final Exception e) {
 				this.configValues.clear();
-				logger.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
+				log.error("프로그램 설정정보를 읽어들이는 중에 예외가 발생하였습니다.", e);
 				throw e;
 			}
 		}
-	}
-
-	@Override
-	public String getFilePath() {
-		return this.filePath;
 	}
 
 	@Override
@@ -94,9 +89,9 @@ public final class DefaultConfiguration implements Configuration {
 				}
 			}
 
-			logger.error("존재하지 않는 항목 정보를 요청(항목이름 : {})", key);
+			log.error("존재하지 않는 항목 정보를 요청(항목이름 : {})", key);
 		} catch (final Exception e) {
-			logger.error("항목 정보를 구하는 중에 예외가 발생하였습니다.", e);
+			log.error("항목 정보를 구하는 중에 예외가 발생하였습니다.", e);
 		}
 
 		return defaultValue;

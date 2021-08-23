@@ -10,7 +10,7 @@ public final class RadixNotation62Util {
 		if (value < 0)
 			return "";
 
-		char charBuf[] = new char[33];
+		char[] charBuf = new char[33];
 		int charBufPos = charBuf.length - 1;
 		int radix = digits.length;
 
