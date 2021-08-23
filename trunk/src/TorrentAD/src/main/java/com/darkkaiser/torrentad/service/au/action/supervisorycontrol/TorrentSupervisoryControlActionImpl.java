@@ -8,17 +8,15 @@ import com.darkkaiser.torrentad.net.torrent.transmission.methodresult.TorrentGet
 import com.darkkaiser.torrentad.service.au.action.AbstractAction;
 import com.darkkaiser.torrentad.service.au.action.ActionType;
 import com.darkkaiser.torrentad.util.crypto.AES256Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class TorrentSupervisoryControlActionImpl extends AbstractAction implements TorrentSupervisoryControlAction {
 
-	private static final Logger logger = LoggerFactory.getLogger(TorrentSupervisoryControlActionImpl.class);
-	
 	private TorrentClient torrentClient;
 	
 	private final int maxConcurrentDownloadingTorrentCount;
@@ -41,7 +39,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 		try {
 			password = new AES256Util().decode(password);
 		} catch (final Exception e) {
-			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
+			log.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
 			return false;
 		}
 
@@ -49,9 +47,9 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 		try {
 			if (this.torrentClient.connect(id, password) == false)
-				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+				log.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 		} catch (final Exception e) {
-			logger.error("토렌트 서버 접속이 실패하였습니다.", e);
+			log.error("토렌트 서버 접속이 실패하였습니다.", e);
 			return false;
 		}
 		
@@ -65,7 +63,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 			try {
 				this.torrentClient.disconnect();
 			} catch (final Exception e) {
-				logger.error(null, e);
+				log.error(null, e);
 			}
 
 			this.torrentClient = null;
@@ -109,11 +107,8 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 				
 				if (ids.isEmpty() == false && downloadingCount < this.maxConcurrentDownloadingTorrentCount) {
 					int possibleDownloadCount = this.maxConcurrentDownloadingTorrentCount - downloadingCount;
-					
-					while (true) {
-						if (ids.size() <= possibleDownloadCount)
-							break;
-						
+
+					while (ids.size() > possibleDownloadCount) {
 						ids.remove(ids.size() - 1);
 					}
 
@@ -121,7 +116,7 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 				}
 			}
 		} catch (final Exception e) {
-			logger.error("토렌트 서버의 감시 및 제어 작업이 실패하였습니다.", e);
+			log.error("토렌트 서버의 감시 및 제어 작업이 실패하였습니다.", e);
 		}
 	}
 

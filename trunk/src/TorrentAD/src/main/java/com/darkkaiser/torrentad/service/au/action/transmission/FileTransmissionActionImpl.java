@@ -7,19 +7,17 @@ import com.darkkaiser.torrentad.service.au.action.UnsupportedTransmissionFileExc
 import com.darkkaiser.torrentad.service.au.transmitter.FTPFileTransmitter;
 import com.darkkaiser.torrentad.service.au.transmitter.FileTransmitter;
 import com.darkkaiser.torrentad.service.au.transmitter.TorrentFileTransmitter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.*;
 
+@Slf4j
 public class FileTransmissionActionImpl extends AbstractAction implements FileTransmissionAction {
 
-	private static final Logger logger = LoggerFactory.getLogger(FileTransmissionActionImpl.class);
+	private final Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
 
-	private Map<File, Boolean/* 액션실행결과 */> files = new LinkedHashMap<>();
-
-	private List<FileTransmitter> fileTransmitters = new ArrayList<>();
+	private final List<FileTransmitter> fileTransmitters = new ArrayList<>();
 
 	public FileTransmissionActionImpl(final Configuration configuration) {
 		super(ActionType.FILE_TRANSMISSION, configuration);
@@ -43,7 +41,7 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 		// 전송이 성공한 파일들은 삭제한다.
 		for (final Map.Entry<File, Boolean> entry : this.files.entrySet()) {
 			if (entry.getValue() == true) {
-				logger.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
+				log.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
 
 				entry.getKey().delete();
 			}
@@ -63,16 +61,16 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 						transmitter.prepare();
 						if (transmitter.transmit(file) == true) {
 							entry.setValue(true);
-							logger.debug("{} 파일의 전송이 완료되었습니다.", file.getName());
+							log.debug("{} 파일의 전송이 완료되었습니다.", file.getName());
 						} else {
-							logger.warn("{} 파일의 전송이 실패하였습니다.", file.getName());
+							log.warn("{} 파일의 전송이 실패하였습니다.", file.getName());
 						}
 
 						break;
 					}
 				}
 			} catch (final Exception e) {
-				logger.error("파일을 전송하는 도중에 예외가 발생하였습니다.({})", file.getName(), e);
+				log.error("파일을 전송하는 도중에 예외가 발생하였습니다.({})", file.getName(), e);
 			}
 		}
 	}

@@ -1,15 +1,15 @@
 package com.darkkaiser.torrentad.service.au.action;
 
 import com.darkkaiser.torrentad.config.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
+@Slf4j
 public abstract class AbstractAction implements Action {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractAction.class);
-
+	@Getter
 	private final ActionType actionType;
 	
 	protected final Configuration configuration;
@@ -23,17 +23,12 @@ public abstract class AbstractAction implements Action {
 	}
 
 	@Override
-	public ActionType getActionType() {
-		return this.actionType;
-	}
-
-	@Override
 	public final void run() {
 		if (beforeExecute() == true) {
 			try {
 				execute();
 			} catch (final Exception e) {
-				logger.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
+				log.error("Action 실행 중 예외가 발생하였습니다.({})", this, e);
 			}
 		}
 

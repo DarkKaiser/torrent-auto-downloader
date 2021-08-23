@@ -1,16 +1,13 @@
 package com.darkkaiser.torrentad.service.au.transmitter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.util.crypto.AES256Util;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
+@Slf4j
 public abstract class AbstractFileTransmitter implements FileTransmitter {
-	
-	private static final Logger logger = LoggerFactory.getLogger(AbstractFileTransmitter.class);
 	
 	protected final Configuration configuration;
 
@@ -29,7 +26,7 @@ public abstract class AbstractFileTransmitter implements FileTransmitter {
 		try {
 			return this.aes256.decode(encryption);
 		} catch (final Exception e) {
-			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
+			log.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", encryption);
 			throw e;
 		}
 	}

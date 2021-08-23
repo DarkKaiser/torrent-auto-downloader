@@ -4,16 +4,14 @@ import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.net.torrent.TorrentClient;
 import com.darkkaiser.torrentad.net.torrent.transmission.TransmissionRpcClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 
+@Slf4j
 public class TorrentFileTransmitter extends AbstractFileTransmitter {
-
-	private static final Logger logger = LoggerFactory.getLogger(TorrentFileTransmitter.class);
 
 	private TorrentClient torrentClient;
 
@@ -32,7 +30,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 		this.torrentClient = new TransmissionRpcClient(url);
 		if (this.torrentClient.connect(id, password) == false)
-			logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+			log.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 			try {
 				this.torrentClient.disconnect();
 			} catch (final Exception e) {
-				logger.error(null, e);
+				log.error(null, e);
 			}
 
 			this.torrentClient = null;

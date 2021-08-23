@@ -3,17 +3,15 @@ package com.darkkaiser.torrentad.service.au.transmitter;
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.net.ftp.FTPClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 
+@Slf4j
 public class FTPFileTransmitter extends AbstractFileTransmitter {
 
-	private static final Logger logger = LoggerFactory.getLogger(FTPFileTransmitter.class);
-	
 	private FTPClient ftpClient;
 
 	public FTPFileTransmitter(final Configuration configuration) {
@@ -32,7 +30,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 
 		this.ftpClient = new FTPClient();
 		if (this.ftpClient.connect(host, Integer.parseInt(port), id, password) == false)
-			logger.warn(String.format("FTP 서버 접속이 실패하였습니다.(Host:%s, Port:%s, Id:%s)", host, port, id));
+			log.warn(String.format("FTP 서버 접속이 실패하였습니다.(Host:%s, Port:%s, Id:%s)", host, port, id));
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class FTPFileTransmitter extends AbstractFileTransmitter {
 			try {
 				this.ftpClient.disconnect();
 			} catch (final Exception e) {
-				logger.error(null, e);
+				log.error(null, e);
 			}
 
 			this.ftpClient = null;
