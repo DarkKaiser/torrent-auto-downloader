@@ -6,17 +6,15 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResour
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import java.util.Objects;
 
+@Slf4j
 public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends AbstractBotCommandRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler.class);
 
 	private final TorrentBotResource torrentBotResource;
 
@@ -54,7 +52,7 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 			this.immediatelyTaskExecutorService.submit(
 					new WebSiteBoardSearchResultDownloadLinkInquiryImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], Long.parseLong(parameters[1]), this.torrentBotResource));
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}

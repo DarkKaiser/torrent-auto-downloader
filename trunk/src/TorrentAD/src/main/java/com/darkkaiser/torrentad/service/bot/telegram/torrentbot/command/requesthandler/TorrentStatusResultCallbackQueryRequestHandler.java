@@ -6,16 +6,14 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResour
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.TorrentStatusImmediatelyTaskAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import java.util.Objects;
 
+@Slf4j
 public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(TorrentStatusResultCallbackQueryRequestHandler.class);
 
 	private final TorrentBotResource torrentBotResource;
 
@@ -72,7 +70,7 @@ public class TorrentStatusResultCallbackQueryRequestHandler extends AbstractBotC
 				throw new IllegalArgumentException(String.format("지원하지 않는 인라인 명령(%s)입니다.", callbackQueryCommand));
 			}
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}

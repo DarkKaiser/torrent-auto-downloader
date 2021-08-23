@@ -2,8 +2,10 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request
 
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
+@Getter
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {
 
 	private final String command;
@@ -42,26 +44,6 @@ public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHa
 		this.commandKor = _commandKor;
 		this.commandSyntax = commandSyntax;
 		this.commandDescription = commandDescription;
-	}
-
-	@Override
-	public String getCommand() {
-		return this.command;
-	}
-	
-	@Override
-	public String getCommandKor() {
-		return this.commandKor;
-	}
-	
-	@Override
-	public String getCommandSyntax() {
-		return this.commandSyntax;
-	}
-
-	@Override
-	public String getCommandDescription() {
-		return this.commandDescription;
 	}
 
 	@Override

@@ -5,8 +5,7 @@ import com.darkkaiser.torrentad.service.ad.task.immediately.ImmediatelyTaskExecu
 import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorService;
 import com.darkkaiser.torrentad.service.bot.BotService;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.logging.BotLogger;
@@ -16,10 +15,9 @@ import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
+@Slf4j
 public class TelegramBotService implements BotService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
-	
 	private final ImmediatelyTaskExecutorService immediatelyTaskExecutorService;
 	
 	private final FileTransmissionExecutorService fileTransmissionExecutorService;
@@ -53,7 +51,7 @@ public class TelegramBotService implements BotService {
 			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.fileTransmissionExecutorService, this.configuration);
 			this.torrentBotSession = this.botsApi.registerBot(this.torrentBot);
 		} catch (final TelegramApiException e) {
-			logger.error(null, e);
+			log.error(null, e);
 			return false;
 		}
 

@@ -7,9 +7,8 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
 import com.darkkaiser.torrentad.website.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -20,9 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends AbstractBotCommandRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchResultCallbackQueryRequestHandler.class);
 
 	private final TorrentBotResource torrentBotResource;
 
@@ -187,7 +185,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			// 클라이언트로 조회된 결과 메시지를 전송한다.
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}

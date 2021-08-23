@@ -1,9 +1,8 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
 import com.darkkaiser.torrentad.util.OutParam;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
@@ -15,9 +14,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Slf4j
 public final class BotCommandUtils {
-	
-	private static final Logger logger = LoggerFactory.getLogger(BotCommandUtils.class);
 	
     public static void parseBotCommand(final String message, final OutParam<String> outCommand, final OutParam<String[]> outParameters, final OutParam<Boolean> outContainInitialChar) {
 		if (StringUtil.isBlank(message) == true)
@@ -95,7 +93,7 @@ public final class BotCommandUtils {
 		try {
 			absSender.sendMessage(sendMessage);
 		} catch (final TelegramApiException e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 	}
 	
@@ -123,7 +121,7 @@ public final class BotCommandUtils {
 		try {
 			absSender.editMessageText(editMessageText);
 		} catch (final TelegramApiException e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 	}
 
@@ -142,7 +140,7 @@ public final class BotCommandUtils {
 		try {
 			absSender.answerCallbackQuery(answerCallbackQuery);
 		} catch (final TelegramApiException e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 	}
 

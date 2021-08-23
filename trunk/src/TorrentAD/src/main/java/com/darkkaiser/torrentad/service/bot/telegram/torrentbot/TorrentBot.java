@@ -18,9 +18,9 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepositoryImpl;
 import com.darkkaiser.torrentad.website.DefaultWebSiteConnector;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteConnector;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class TorrentBot extends TelegramLongPollingBot implements TorrentBotResource {
-
-	private static final Logger logger = LoggerFactory.getLogger(TorrentBot.class);
 
 	private final ConcurrentHashMap<Long/* CHAT_ID */, ChatRoom> chatRooms = new ConcurrentHashMap<>();
 
+	@Getter
 	private final WebSiteConnector siteConnector;
 
 	private TorrentClient torrentClient;
@@ -90,11 +90,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	}
 	
 	@Override
-	public WebSiteConnector getSiteConnector() {
-		return this.siteConnector;
-	}
-
-	@Override
 	public TorrentClient getTorrentClient() {
 		if (this.torrentClient != null && this.torrentClient.isConnected() == true) 
 			return this.torrentClient;
@@ -106,7 +101,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		try {
 			password = new AES256Util().decode(password);
 		} catch (final Exception e1) {
-			logger.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
+			log.error("암호화 된 문자열('{}')의 복호화 작업이 실패하였습니다.", password);
 			return null;
 		}
 
@@ -114,9 +109,9 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 		
 		try {
 			if (this.torrentClient.connect(id, password) == false)
-				logger.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
+				log.warn(String.format("토렌트 서버 접속이 실패하였습니다.(Url:%s, Id:%s)", url, id));
 		} catch (final Exception e2) {
-			logger.error("토렌트 서버 접속이 실패하였습니다.", e2);
+			log.error("토렌트 서버 접속이 실패하였습니다.", e2);
 			return null;
 		}
 
@@ -177,7 +172,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 						chatRoom.setLatestRequestHandler(requestHandler);
 
 						// 검색어가 command와 parameters로 분리되어 수신되므로, 이를 합하여 parameters로 만든다.
-						@SuppressWarnings("serial")
 						List<String> parameters = new ArrayList<String>() { {
 							add(outCommand.get());
 						} };
@@ -214,7 +208,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			
 			onUnknownCommandMessage(update);
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 		}
 	}
 

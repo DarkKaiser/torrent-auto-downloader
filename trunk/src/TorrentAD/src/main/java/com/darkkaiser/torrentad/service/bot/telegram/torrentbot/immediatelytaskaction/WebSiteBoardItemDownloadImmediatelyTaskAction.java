@@ -7,9 +7,8 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
@@ -19,9 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
-	
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadImmediatelyTaskAction.class);
 	
 	private final int messageId;
 
@@ -165,7 +163,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 			// 선택한 게시물을 찾을 수 없는 경우, 사용자에게 에러 메시지를 보낸다.
 			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "해당 게시물을 찾을 수 없습니다. 조회 또는 검색을 다시 시도하여 주세요.\n문제가 지속적으로 발생하는 경우에는 관리자에게 문의하세요.", this.messageId);
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
 

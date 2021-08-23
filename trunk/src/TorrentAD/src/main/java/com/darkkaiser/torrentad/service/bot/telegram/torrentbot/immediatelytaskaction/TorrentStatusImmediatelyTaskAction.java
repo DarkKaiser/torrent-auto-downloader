@@ -6,8 +6,7 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResource;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;
@@ -16,9 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskAction {
-	
-	private static final Logger logger = LoggerFactory.getLogger(TorrentStatusImmediatelyTaskAction.class);
 	
 	private final int messageId;
 	
@@ -105,7 +103,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				}
 			}
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, this.chatRoom.getChatId(), e);
 

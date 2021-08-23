@@ -9,17 +9,15 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardItemDownloadImmediatelyTaskAction;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import java.util.Objects;
 
+@Slf4j
 public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRequestHandler {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardItemDownloadRequestHandler.class);
 
 	private final WebSite site;
 
@@ -71,7 +69,7 @@ public class WebSiteBoardItemDownloadRequestHandler extends AbstractBotCommandRe
 						new WebSiteBoardItemDownloadImmediatelyTaskAction(messageId, absSender, chatRoom, parameters[0], identifier, downloadLinkIndex, this.torrentBotResource, this.fileTransmissionExecutorService));
 			}
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}

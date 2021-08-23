@@ -10,16 +10,14 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestH
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaskaction.WebSiteBoardSearchImmediatelyTaskAction;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
 import java.util.Objects;
 
+@Slf4j
 public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestHandler implements ExposedBotCommand {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSiteBoardSearchRequestHandler.class);
 
 	private final WebSite site;
 	
@@ -108,7 +106,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 			this.immediatelyTaskExecutorService.submit(
 					new WebSiteBoardSearchImmediatelyTaskAction(chatRoom.incrementAndGetRequestId(), absSender, chatRoom, board, keyword, this.torrentBotResource));
 		} catch (final Exception e) {
-			logger.error(null, e);
+			log.error(null, e);
 
 			BotCommandUtils.sendExceptionMessage(absSender, chatRoom.getChatId(), e);
 		}

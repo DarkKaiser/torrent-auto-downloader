@@ -8,10 +8,12 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesth
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
+import lombok.Getter;
 import org.jsoup.helper.StringUtil;
 
 public final class ChatRoom {
 
+	@Getter
 	private final long chatId;
 
 	// 사용자가 조회, 검색등의 작업을 요청하였을 때, 각각의 작업을 구분하기 위한 ID
@@ -38,10 +40,6 @@ public final class ChatRoom {
 			if (board != null)
 				this.board = board;
 		}
-	}
-
-	public final long getChatId() {
-		return this.chatId;
 	}
 
 	public long getRequestId() {

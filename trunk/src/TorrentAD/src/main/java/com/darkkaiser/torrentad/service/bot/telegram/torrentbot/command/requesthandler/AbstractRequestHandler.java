@@ -1,12 +1,12 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.helper.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
+@Getter
 public abstract class AbstractRequestHandler implements RequestHandler {
-	
-	private static final Logger logger = LoggerFactory.getLogger(AbstractRequestHandler.class);
 	
 	private final String identifier;
 
@@ -17,11 +17,6 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		this.identifier = identifier;
 	}
 
-	@Override
-	public String getIdentifier() {
-		return this.identifier;
-	}
-	
 	protected abstract boolean executable0(final String command, final String[] parameters, final boolean containInitialChar, final int minParametersCount, final int maxParametersCount);
 
 	protected void logError(final String message, final String command, final String[] parameters, final boolean containInitialChar) {
@@ -40,7 +35,7 @@ public abstract class AbstractRequestHandler implements RequestHandler {
 		sbLogMessage.append("]")
 				    .append(", containInitialChar:").append(containInitialChar).append(")");
 
-		logger.error(sbLogMessage.toString());
+		log.error(sbLogMessage.toString());
 	}
 
 	@Override
