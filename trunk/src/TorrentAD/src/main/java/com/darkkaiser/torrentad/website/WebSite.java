@@ -23,34 +23,6 @@ public enum WebSite {
 			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogo",
 			 "com.darkkaiser.torrentad.website.impl.bogobogo.BogoBogoBoard"),
 
-	TOTORIA("토토리아",
-			"com.darkkaiser.torrentad.website.impl.totoria.Totoria",
-			"com.darkkaiser.torrentad.website.impl.totoria.TotoriaBoard"),
-
-	TORRENTMAP("토렌트맵",
-			"com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMap",
-			"com.darkkaiser.torrentad.website.impl.torrentmap.TorrentMapBoard"),
-
-	TORRENTMI("토렌트미",
-			"com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMi",
-			"com.darkkaiser.torrentad.website.impl.torrentmi.TorrentMiBoard"),
-
-	TORRENTBLACK("토렌트블랙",
-			"com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlack",
-			"com.darkkaiser.torrentad.website.impl.torrentblack.TorrentBlackBoard"),
-
-	TORRENTBE("토렌트비",
-			"com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBe",
-			"com.darkkaiser.torrentad.website.impl.torrentbe.TorrentBeBoard"),
-
-	TORRENTHALL("토렌트홀",
-			"com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHall",
-			"com.darkkaiser.torrentad.website.impl.torrenthall.TorrentHallBoard"),
-
-	TORRENTQQ("토렌트큐큐",
-			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQ",
-			"com.darkkaiser.torrentad.website.impl.torrentqq.TorrentQQBoard"),
-
 	TODAWA("토다와",
 			"com.darkkaiser.torrentad.website.impl.todawa.Todawa",
 			"com.darkkaiser.torrentad.website.impl.todawa.TodawaBoard");

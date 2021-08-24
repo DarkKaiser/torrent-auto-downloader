@@ -4,13 +4,8 @@
 	<torrentad-ad-service>
 		<torrentad-service-config-values>
 			<!-- 사이트 이름 및 URL -->
-			<!-- <website-name>보고보고</website-name> -->
-			<!-- <website-name>토토리아</website-name> -->
-			<!-- <website-name>토렌트맵</website-name> -->
-			<!-- <website-name>토렌트미</website-name> -->
-			<!-- <website-name>토렌트블랙</website-name> -->
-			<!-- <website-name>토렌트비</website-name> -->
 			<!-- <website-name>토다와</website-name> -->
+			<!-- <website-name>보고보고</website-name> -->
 			<website-name>토렌트</website-name>
 			<website-base-url>https://torrentsome3.com</website-base-url>
 
