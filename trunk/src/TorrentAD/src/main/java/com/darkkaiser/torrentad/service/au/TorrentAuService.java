@@ -61,7 +61,7 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 			public void run() {
 				TorrentAuService.this.submit();
 			}
-		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000);
+		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_DOWNLOAD_FILE_WATCH_INTERVAL_TIME_SECOND)) * 1000L);
 
 		// 토렌트의 상태를 감시 및 제어하는 Action을 발생시키는 타이머를 시작한다.
 		this.torrentSupervisoryControlTimer.scheduleAtFixedRate(new TimerTask() {
@@ -69,7 +69,7 @@ public class TorrentAuService implements Service, FileTransmissionExecutorServic
 			public void run() {
 				TorrentAuService.this.actionsExecutorService.submit(ActionFactory.createAction(ActionType.TORRENT_SUPERVISORY_CONTROL, TorrentAuService.this.configuration));
 			}
-		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000);
+		}, 1000, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TORRENT_SUPERVISORY_CONTROL_INTERVAL_TIME_SECOND)) * 1000L);
 		return true;
 	}
 

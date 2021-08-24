@@ -58,7 +58,6 @@ public class TorrentSupervisoryControlActionImpl extends AbstractAction implemen
 
 	@Override
 	protected void afterExecute() {
-		//noinspection Duplicates
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();

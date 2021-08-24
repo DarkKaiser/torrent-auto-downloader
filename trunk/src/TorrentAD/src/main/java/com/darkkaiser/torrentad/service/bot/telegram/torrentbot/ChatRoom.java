@@ -1,8 +1,5 @@
 package com.darkkaiser.torrentad.service.bot.telegram.torrentbot;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.darkkaiser.torrentad.common.Constants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
@@ -10,6 +7,9 @@ import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import lombok.Getter;
 import org.jsoup.helper.StringUtil;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class ChatRoom {
 

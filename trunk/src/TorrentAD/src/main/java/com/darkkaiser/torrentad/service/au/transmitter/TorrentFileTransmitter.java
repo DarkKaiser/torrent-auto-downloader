@@ -52,7 +52,6 @@ public class TorrentFileTransmitter extends AbstractFileTransmitter {
 
 	@Override
 	public boolean transmitFinished() {
-		//noinspection Duplicates
 		if (this.torrentClient != null) {
 			try {
 				this.torrentClient.disconnect();
