@@ -61,7 +61,7 @@ public class FTPClient {
 		return true;
 	}
 
-	public void disconnect() throws Exception {
+	public void disconnect() {
 		if (this.ftpClient == null)
 			return;
 

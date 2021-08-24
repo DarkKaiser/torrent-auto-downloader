@@ -23,7 +23,7 @@ tasks.withType(JavaCompile) {
 buildDir = 'build'
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url 'https://jitpack.io'
     }

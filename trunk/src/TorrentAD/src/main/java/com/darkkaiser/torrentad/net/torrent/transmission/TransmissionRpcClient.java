@@ -98,7 +98,7 @@ public class TransmissionRpcClient implements TorrentClient {
 	}
 	
 	@Override
-	public void disconnect() throws Exception {
+	public void disconnect() {
 		this.sessionId = null;
 		this.authorization = null;
 	}

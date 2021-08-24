@@ -16,7 +16,7 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	
 	private static final AtomicInteger count = new AtomicInteger(0);
 
-	public ImmediatelyTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository, final ImmediatelyTaskAction action) throws Exception {
+	public ImmediatelyTasksCallableAdapter(final Configuration configuration, final MetadataRepository metadataRepository, final ImmediatelyTaskAction action) {
 		Objects.requireNonNull(configuration, "configuration");
 		Objects.requireNonNull(action, "action");
 
@@ -28,7 +28,7 @@ public final class ImmediatelyTasksCallableAdapter implements TasksCallableAdapt
 	}
 
 	@Override
-	public TasksCallableAdapterResult call() throws Exception {
+	public TasksCallableAdapterResult call() {
 		try {
 			log.debug("Task를 실행합니다.(Task:{})", this.task.getTaskDescription());
 

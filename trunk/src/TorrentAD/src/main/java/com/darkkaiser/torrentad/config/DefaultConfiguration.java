@@ -27,6 +27,7 @@ public final class DefaultConfiguration implements Configuration {
 		load(Constants.APP_CONFIG_FILE_NAME);
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private void load(final String filePath) throws Exception {
         Objects.requireNonNull(filePath, "filePath");
 

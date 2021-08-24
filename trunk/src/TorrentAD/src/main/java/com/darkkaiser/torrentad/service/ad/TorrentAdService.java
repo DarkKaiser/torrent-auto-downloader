@@ -58,7 +58,7 @@ public final class TorrentAdService implements Service, ImmediatelyTaskExecutorS
 			public void run() {
 				TorrentAdService.this.scheduledTasksExecutorService.submit(TorrentAdService.this.scheduledTasksCallableAdapter);
 			}
-		}, 500, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000);
+		}, 500, Integer.parseInt(this.configuration.getValue(Constants.APP_CONFIG_TAG_TASK_EXECUTE_INTERVAL_TIME_SECOND)) * 1000L);
 
 		this.immediatelyTasksExecutorService = Executors.newFixedThreadPool(1);
 
