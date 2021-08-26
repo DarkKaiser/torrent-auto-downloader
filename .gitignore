@@ -16,3 +16,5 @@ src/TorrentAD/.idea/
 src/TorrentAD/build
 src/TorrentAD/logs
 src/TorrentAD/out
+src/TorrentAD/torrentad.ad.properties
+src/TorrentAD/torrentad.bot.properties
