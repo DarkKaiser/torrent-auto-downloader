@@ -3,7 +3,7 @@ package com.darkkaiser.torrentad.config;
 import com.darkkaiser.torrentad.common.Constants;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

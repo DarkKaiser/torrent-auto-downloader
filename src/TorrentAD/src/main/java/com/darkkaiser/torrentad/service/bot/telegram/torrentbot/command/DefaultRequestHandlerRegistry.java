@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.requesthandler.RequestHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.website.impl.bogobogo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @Getter
 public final class BogoBogoBoardItemDownloadLinkImpl implements BogoBogoBoardItemDownloadLink {

@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @Slf4j
 @Getter

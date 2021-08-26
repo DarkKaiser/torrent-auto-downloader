@@ -8,7 +8,7 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.bots.AbsSender;

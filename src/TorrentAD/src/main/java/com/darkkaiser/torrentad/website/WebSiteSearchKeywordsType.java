@@ -3,7 +3,7 @@ package com.darkkaiser.torrentad.website;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Objects;
 

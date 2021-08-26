@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.website.impl.bogobogo;
 
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import lombok.AllArgsConstructor;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @AllArgsConstructor
 public enum BogoBogoBoard implements WebSiteBoard {

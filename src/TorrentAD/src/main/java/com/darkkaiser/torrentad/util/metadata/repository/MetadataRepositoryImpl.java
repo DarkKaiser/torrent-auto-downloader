@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.util.metadata.repository;
 
 import com.darkkaiser.torrentad.util.SortedProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

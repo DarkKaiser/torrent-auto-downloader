@@ -4,7 +4,7 @@ import com.darkkaiser.torrentad.website.WebSiteBoard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @Getter
 @AllArgsConstructor

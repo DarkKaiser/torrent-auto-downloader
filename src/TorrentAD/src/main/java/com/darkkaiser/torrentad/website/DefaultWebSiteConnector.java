@@ -5,7 +5,7 @@ import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.util.crypto.AES256Util;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Objects;
 

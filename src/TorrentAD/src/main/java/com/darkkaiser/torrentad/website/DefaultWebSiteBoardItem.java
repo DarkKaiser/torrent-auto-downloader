@@ -1,7 +1,7 @@
 package com.darkkaiser.torrentad.website;
 
 import lombok.Getter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;

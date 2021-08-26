@@ -1,7 +1,7 @@
 package com.darkkaiser.torrentad.website;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.*;
 

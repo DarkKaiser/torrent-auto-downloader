@@ -4,7 +4,7 @@ import com.darkkaiser.torrentad.config.Configuration;
 import com.darkkaiser.torrentad.service.ad.task.*;
 import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;

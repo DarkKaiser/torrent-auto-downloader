@@ -3,7 +3,7 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.request
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import lombok.Getter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @Getter
 public abstract class AbstractBotCommandRequestHandler extends AbstractRequestHandler implements BotCommand {

@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 
 import com.darkkaiser.torrentad.util.OutParam;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;

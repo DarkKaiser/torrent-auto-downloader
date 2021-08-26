@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.website;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 @Getter
 public class DefaultWebSiteBoardItemDownloadLink implements WebSiteBoardItemDownloadLink {

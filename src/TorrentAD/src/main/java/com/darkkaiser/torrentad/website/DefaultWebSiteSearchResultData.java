@@ -2,7 +2,7 @@ package com.darkkaiser.torrentad.website;
 
 import com.darkkaiser.torrentad.util.RadixNotation62Util;
 import lombok.Getter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Comparator;
 import java.util.Iterator;

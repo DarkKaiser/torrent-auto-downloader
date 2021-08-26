@@ -6,7 +6,7 @@ import com.darkkaiser.torrentad.util.metadata.repository.MetadataRepository;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
 import lombok.Getter;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
