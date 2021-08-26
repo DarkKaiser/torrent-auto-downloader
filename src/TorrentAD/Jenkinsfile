@@ -16,10 +16,7 @@ pipeline {
 
         stage('체크아웃') {
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'svn-torrentad-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                    sh "svn co svn://mycloud.darkkaiser.com/torrent-auto-downloader/trunk/dist/ ./dist/ --username $USERNAME --password $PASSWORD"
-                    sh "svn co svn://mycloud.darkkaiser.com/torrent-auto-downloader/trunk/src/TorrentAD/ ./src/TorrentAD/ --username $USERNAME --password $PASSWORD"
-                }
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github-darkkaiser-credentials', url: 'https://github.com/DarkKaiser/torrent-auto-downloader.git']]])
             }
         }
 
