@@ -1,3 +1,3 @@
-## TorrentAD
+# TorrentAD
 
 설정파일을 기반으로 토렌트 사이트에서 원하는 토렌트 파일을 자동으로 다운로드 받고, 이를 Transmission으로 전달해주는 프로그램
