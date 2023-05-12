@@ -18,3 +18,4 @@ src/TorrentAD/logs
 src/TorrentAD/out
 src/TorrentAD/torrentad.ad.properties
 src/TorrentAD/torrentad.bot.properties
+src/TorrentAD/torrentad.xml
