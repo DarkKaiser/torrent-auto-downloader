@@ -15,23 +15,22 @@ import java.util.HashMap;
 public final class NotifyApiClient {
 
     private static String URL;
-    private static String API_KEY;
+    private static String APP_KEY;
     private static String APPLICATION_ID;
 
-    public static void init(final String url, final String apiKey, final String applicationId) {
+    public static void init(final String url, final String appKey, final String applicationId) {
         NotifyApiClient.URL = url;
-        NotifyApiClient.API_KEY = apiKey;
+        NotifyApiClient.APP_KEY = appKey;
         NotifyApiClient.APPLICATION_ID = applicationId;
     }
 
     public static void sendNotifyMessage(final String message, final boolean errorOccurred) {
         try {
-            final URL url = new URL(NotifyApiClient.URL);
+            final URL url = new URL(String.format("%s?app_key=%s", NotifyApiClient.URL, NotifyApiClient.APP_KEY));
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "Bearer " + NotifyApiClient.API_KEY);
             conn.setRequestProperty("Cache-Control", "no-cache");
 
             conn.setDoOutput(true);

@@ -34,7 +34,7 @@ public class App {
 		this.configuration = configuration;
 
 		// NotifyAPI 클라이언트 객체를 초기화한다.
-		NotifyApiClient.init(configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_URL), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_KEY), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFY_API_APPLICATION_ID));
+		NotifyApiClient.init(configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFYAPI_URL), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFYAPI_APP_KEY), configuration.getValue(Constants.APP_CONFIG_TAG_NOTIFYAPI_APPLICATION_ID));
 
 		try {
 			this.torrentAuService = new TorrentAuService(configuration);
