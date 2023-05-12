@@ -1,0 +1,63 @@
+def projectVersion = '1.1.0'
+def projectJavaVersion = '1.8'
+def projectSourceEncoding = 'UTF-8'
+
+apply plugin: 'java'
+
+project.group = 'com.darkkaiser'
+project.version = projectVersion
+project.description = 'TorrentAD'
+
+sourceCompatibility = projectJavaVersion
+targetCompatibility = projectJavaVersion
+
+compileJava {
+    options.encoding = projectSourceEncoding
+}
+
+// 소스 인코딩 지정
+tasks.withType(JavaCompile) {
+    options.encoding = projectSourceEncoding
+}
+
+buildDir = 'build'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    implementation 'log4j:log4j:1.2.17'
+    implementation 'org.jsoup:jsoup:1.14.2'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.32'
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'commons-net:commons-net:3.8.0'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.14'
+    implementation 'org.telegram:telegrambots:2.4.0'
+    testImplementation 'junit:junit:4.13.2'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'com.darkkaiser.torrentad.App',
+                   'Implementation-Title': 'TorrentAD',
+                   'Implementation-Version': projectVersion)
+    }
+    archiveName 'torrentad-' + projectVersion + '.jar'
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
