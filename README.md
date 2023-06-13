@@ -69,7 +69,7 @@
     ```java
     keytool error: java.lang.Exception: Certificate not imported, alias <letsencrypt> already exists
     ```
-    이 경우 아래 명령어로 기존 label 을 삭제합니다.
+    이 경우 아래 명령어로 기존 label 을 삭제합니다..
     ```bash
     sudo keytool -delete  -keystore /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/lib/security/cacerts -storepass changeit  -alias letsencrypt
     ```
