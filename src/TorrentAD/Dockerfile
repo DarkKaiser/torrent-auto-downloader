@@ -7,7 +7,7 @@ WORKDIR /usr/src/app/
 
 COPY ./src/TorrentAD ./src/TorrentAD
 
-WORKDIR /usr/src/app/src/TorrentAD
+WORKDIR /usr/src/app/src/TorrentAD/
 
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
