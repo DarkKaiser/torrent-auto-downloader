@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('체크아웃') {
+        stage('소스 체크아웃') {
             steps {
                 checkout([
                     $class: 'GitSCM',
@@ -36,63 +36,52 @@ pipeline {
             }
         }
 
-        stage('빌드') {
+        stage('도커 이미지 빌드') {
+            steps {
+                sh "docker build -t darkkaiser/torrentad -f src/TorrentAD/Dockerfile ."
+            }
+        }
+
+        stage('도커 컨테이너 실행') {
             steps {
                 sh '''
-                    cd ./src/TorrentAD
-                    sudo chmod 744 ./gradlew
-                    sudo ./gradlew clean build
+                    docker ps -q --filter name=torrentad | grep -q . && docker container stop torrentad && docker container rm torrentad
 
-                    cd ../../
-                    sudo chown -R jenkins:jenkins ./*
+                    docker run -d --name torrentad \
+                                  -e TZ=Asia/Seoul \
+                                  -v /usr/local/docker/torrentad:/usr/local/app \
+                                  --restart="always" \
+                                  darkkaiser/torrentad
                 '''
             }
         }
 
-        stage('배포') {
+        stage('도커 이미지 정리') {
             steps {
-                sh '''
-                    sudo cp -f ./dist/taillog /usr/local/torrentad/
-                    sudo cp -f ./dist/torrentad.sh /usr/local/torrentad/
-                    sudo cp -f ./dist/torrentad-restart.sh /usr/local/torrentad/
-                    sudo cp -f ./src/TorrentAD/build/libs/torrentad-1.1.0.jar /usr/local/torrentad/
-
-                    sudo chown pi:staff /usr/local/torrentad/taillog
-                    sudo chown pi:staff /usr/local/torrentad/torrentad.sh
-                    sudo chown pi:staff /usr/local/torrentad/torrentad-restart.sh
-                    sudo chown pi:staff /usr/local/torrentad/torrentad-1.1.0.jar
-                '''
-            }
-        }
-
-        stage('서버 재시작') {
-            steps {
-                // 경로를 이동하지 않고 서버를 재시작하게 되면 로그 파일의 생성 위치가
-                // '/usr/local/torrentad/logs'에 생성되는게 아니라 Jenkins 작업 위치에 생성되게 되는데
-                // 이때 'logs' 폴더가 존재하지 않으므로 서버 실행이 실패하게 된다.
-                sh '''
-                    cd /usr/local/torrentad
-                    sudo -u pi /usr/local/torrentad/torrentad-restart.sh
-                '''
+                sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
             }
         }
 
     }
 
     post {
+
         success {
             script {
-                telegramSend(message: '【 알림 > Jenkins > ' + env.PROJECT_NAME + ' 】\n\n빌드 작업이 성공하였습니다.\n\n' + env.BUILD_URL)
+                sh "curl -s -X POST https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${env.TELEGRAM_CHAT_ID} -d text='【 알림 > Jenkins > ${env.PROJECT_NAME} 】\n\n빌드 작업이 성공하였습니다.\n\n${env.BUILD_URL}'"
             }
         }
+
         failure {
             script {
-                telegramSend(message: '【 알림 > Jenkins > ' + env.PROJECT_NAME + ' 】\n\n빌드 작업이 실패하였습니다.\n\n' + env.BUILD_URL)
+                sh "curl -s -X POST https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${env.TELEGRAM_CHAT_ID} -d text='【 알림 > Jenkins > ${env.PROJECT_NAME} 】\n\n빌드 작업이 실패하였습니다.\n\n${env.BUILD_URL}'"
             }
         }
+
         always {
             cleanWs()
         }
+
     }
 
 }
