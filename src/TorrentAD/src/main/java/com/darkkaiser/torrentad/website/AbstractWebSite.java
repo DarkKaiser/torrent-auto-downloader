@@ -6,7 +6,7 @@ import com.darkkaiser.torrentad.util.notifyapi.NotifyApiClient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.internal.StringUtil;

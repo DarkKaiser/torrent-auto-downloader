@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
