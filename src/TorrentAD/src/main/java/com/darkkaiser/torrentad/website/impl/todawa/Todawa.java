@@ -343,9 +343,7 @@ public class Todawa extends AbstractWebSite {
 					downloadLink.setDownloadCompleted(true);
 
 					final StringBuilder sb = new StringBuilder(String.format("검색된 게시물('%s')의 첨부파일 다운로드가 완료되었습니다. 다운로드 받은 파일(%s)이 압축된 자막 파일이므로 압축을 해제합니다.", boardItem.getTitle(), downloadFilePath));
-					extractedSubtitleFilePathList.forEach(filePath -> {
-						sb.append("\n\t> 압축 해제된 자막 파일 : ").append(filePath);
-					});
+					extractedSubtitleFilePathList.forEach(filePath -> sb.append("\n\t> 압축 해제된 자막 파일 : ").append(filePath));
 
 					log.info(sb.toString());
 				} else {

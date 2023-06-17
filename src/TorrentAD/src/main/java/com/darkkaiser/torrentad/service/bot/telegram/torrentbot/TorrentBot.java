@@ -172,9 +172,11 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 						chatRoom.setLatestRequestHandler(requestHandler);
 
 						// 검색어가 command와 parameters로 분리되어 수신되므로, 이를 합하여 parameters로 만든다.
-						List<String> parameters = new ArrayList<String>() { {
-							add(outCommand.get());
-						} };
+						List<String> parameters = new ArrayList<>() {
+							{
+								add(outCommand.get());
+							}
+						};
 
 						parameters.addAll(Arrays.asList(outParameters.get()));
 

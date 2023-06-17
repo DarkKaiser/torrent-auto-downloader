@@ -271,26 +271,13 @@ public class CustomDailyRollingFileAppender extends FileAppender {
 
 	void printPeriodicity(int type) {
 		switch (type) {
-		case TOP_OF_MINUTE:
-			LogLog.debug("Appender [" + name + "] to be rolled every minute.");
-			break;
-		case TOP_OF_HOUR:
-			LogLog.debug("Appender [" + name + "] to be rolled on top of every hour.");
-			break;
-		case HALF_DAY:
-			LogLog.debug("Appender [" + name + "] to be rolled at midday and midnight.");
-			break;
-		case TOP_OF_DAY:
-			LogLog.debug("Appender [" + name + "] to be rolled at midnight.");
-			break;
-		case TOP_OF_WEEK:
-			LogLog.debug("Appender [" + name + "] to be rolled at start of week.");
-			break;
-		case TOP_OF_MONTH:
-			LogLog.debug("Appender [" + name + "] to be rolled at start of every month.");
-			break;
-		default:
-			LogLog.warn("Unknown periodicity for appender [" + name + "].");
+			case TOP_OF_MINUTE -> LogLog.debug("Appender [" + name + "] to be rolled every minute.");
+			case TOP_OF_HOUR -> LogLog.debug("Appender [" + name + "] to be rolled on top of every hour.");
+			case HALF_DAY -> LogLog.debug("Appender [" + name + "] to be rolled at midday and midnight.");
+			case TOP_OF_DAY -> LogLog.debug("Appender [" + name + "] to be rolled at midnight.");
+			case TOP_OF_WEEK -> LogLog.debug("Appender [" + name + "] to be rolled at start of week.");
+			case TOP_OF_MONTH -> LogLog.debug("Appender [" + name + "] to be rolled at start of every month.");
+			default -> LogLog.warn("Unknown periodicity for appender [" + name + "].");
 		}
 	}
 
@@ -415,18 +402,16 @@ public class CustomDailyRollingFileAppender extends FileAppender {
 	 * @return List&lt;ModifiedTimeSortableFile&gt;
 	 */
 	private List<ModifiedTimeSortableFile> getAllFiles() {
-		List<ModifiedTimeSortableFile> files = new ArrayList<ModifiedTimeSortableFile>();
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				String directoryName = dir.getPath();
-				File file = new File(fileName);
-				String perentDirectory = file.getParent();
-				if (perentDirectory != null) {
-					String localFile = fileName.substring(directoryName.length() + 1);
-					return name.startsWith(localFile);
-				}
-				return name.startsWith(fileName);
+		List<ModifiedTimeSortableFile> files = new ArrayList<>();
+		FilenameFilter filter = (dir, name) -> {
+			String directoryName = dir.getPath();
+			File file = new File(fileName);
+			String perentDirectory = file.getParent();
+			if (perentDirectory != null) {
+				String localFile = fileName.substring(directoryName.length() + 1);
+				return name.startsWith(localFile);
 			}
+			return name.startsWith(fileName);
 		};
 		File file = new File(fileName);
 		String perentDirectory = file.getParent();
@@ -440,8 +425,8 @@ public class CustomDailyRollingFileAppender extends FileAppender {
 		File dir = new File(perentDirectory);
 		String[] names = dir.list(filter);
 
-		for (int i = 0; i < names.length; i++) {
-			files.add(new ModifiedTimeSortableFile(dir + System.getProperty("file.separator") + names[i]));
+		for (String s : names) {
+			files.add(new ModifiedTimeSortableFile(dir + System.getProperty("file.separator") + s));
 		}
 		return files;
 	}
@@ -473,7 +458,7 @@ class ModifiedTimeSortableFile extends File implements Serializable, Comparable<
 	public int compareTo(File anotherPathName) {
 		long thisVal = this.lastModified();
 		long anotherVal = anotherPathName.lastModified();
-		return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+		return (Long.compare(thisVal, anotherVal));
 	}
 }
 

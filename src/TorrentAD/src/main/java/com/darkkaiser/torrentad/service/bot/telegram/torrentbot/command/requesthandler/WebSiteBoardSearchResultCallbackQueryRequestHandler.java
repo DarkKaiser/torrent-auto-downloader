@@ -108,7 +108,7 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 
 				// 조회된 게시물의 다음페이지 목록을 구한다.
 				int outputBoardItemCount = 0;
-				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ) {
+				while (iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT) {
 					WebSiteBoardItem boardItem = iterator.next();
 					if (boardItem.getIdentifier() >= identifierValue)
 						continue;
@@ -137,8 +137,8 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 				int outputBoardItemCount = 0;
 				int offsetBoardItemInfo = sbAnswerMessage.length();
 				StringBuilder sbBoardItemInfo = new StringBuilder();
-				
-				for ( ; iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT; ) {
+
+				while (iterator.hasNext() == true && outputBoardItemCount < BotCommandConstants.LASR_BOARD_ITEM_OUTPUT_COUNT) {
 					WebSiteBoardItem boardItem = iterator.next();
 					if (boardItem.getIdentifier() <= identifierValue)
 						continue;

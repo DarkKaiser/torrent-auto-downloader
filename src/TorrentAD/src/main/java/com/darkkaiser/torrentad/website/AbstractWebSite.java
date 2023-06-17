@@ -108,7 +108,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			sslContext.init(null, trustAllCerts, new SecureRandom());
 			HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 		} catch (final NoSuchAlgorithmException | KeyManagementException e) {
-			final String message = String.format("SSL 통신 오류에 대한 인증서 전체 허용 코드를 실행하는 중에 예외가 발생하였습니다.", getBaseURL());
+			final String message = "SSL 통신 오류에 대한 인증서 전체 허용 코드를 실행하는 중에 예외가 발생하였습니다.";
 
 			log.warn(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);

@@ -9,6 +9,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -30,7 +31,7 @@ public class AES256Util {
 		this.iv = key.substring(0, 16);
 
 		byte[] keyBytes = new byte[16];
-		byte[] b = key.getBytes("UTF-8");
+		byte[] b = key.getBytes(StandardCharsets.UTF_8);
 		int len = b.length;
 		if (len > keyBytes.length)
 			len = keyBytes.length;
@@ -45,7 +46,7 @@ public class AES256Util {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
 
-		byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+		byte[] encrypted = c.doFinal(str.getBytes(StandardCharsets.UTF_8));
 
 		return new String(Base64.encodeBase64(encrypted));
 	}
@@ -53,11 +54,11 @@ public class AES256Util {
 	public String decode(final String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));
+		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8)));
 
 		byte[] byteStr = Base64.decodeBase64(str.getBytes());
 
-		return new String(c.doFinal(byteStr), "UTF-8");
+		return new String(c.doFinal(byteStr), StandardCharsets.UTF_8);
 	}
 
 }

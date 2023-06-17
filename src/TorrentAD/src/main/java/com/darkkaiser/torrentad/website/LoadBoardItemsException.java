@@ -1,10 +1,12 @@
 package com.darkkaiser.torrentad.website;
 
 import java.io.IOException;
+import java.io.Serial;
 
 public class LoadBoardItemsException extends IOException {
 
-	private static final long serialVersionUID = -6224782226170936673L;
+	@Serial
+    private static final long serialVersionUID = -6224782226170936673L;
 
 	public LoadBoardItemsException() {
 		super();

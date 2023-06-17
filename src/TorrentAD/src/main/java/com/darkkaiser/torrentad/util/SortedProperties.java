@@ -1,5 +1,6 @@
 package com.darkkaiser.torrentad.util;
 
+import java.io.Serial;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -7,6 +8,7 @@ import java.util.Vector;
 
 public class SortedProperties extends Properties {
 
+	@Serial
 	private static final long serialVersionUID = -3870119338315926034L;
 
 	public synchronized Enumeration<Object> keys() {

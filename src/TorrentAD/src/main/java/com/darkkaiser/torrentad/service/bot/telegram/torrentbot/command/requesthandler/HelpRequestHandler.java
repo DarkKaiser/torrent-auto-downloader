@@ -32,8 +32,7 @@ public class HelpRequestHandler extends AbstractBotCommandRequestHandler impleme
 		sbAnswerMessage.append("입력 가능한 명령어는 아래와 같습니다:\n\n");
 
 		for (final RequestHandler handler : this.requestHandlerRegistry.getRequestHandlers()) {
-			if (handler instanceof ExposedBotCommand) {
-				ExposedBotCommand botCommand = (ExposedBotCommand) handler;
+			if (handler instanceof ExposedBotCommand botCommand) {
 				sbAnswerMessage.append(botCommand.getCommandSyntax()).append("\n")
 						.append(botCommand.getCommandDescription()).append("\n\n");
 			}
