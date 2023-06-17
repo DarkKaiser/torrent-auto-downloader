@@ -1,7 +1,7 @@
 # ------------------------------------------
 # 1. Build Image
 # ------------------------------------------
-FROM openjdk:8 AS builder
+FROM openjdk:17 AS builder
 
 WORKDIR /usr/src/app/
 
@@ -15,7 +15,7 @@ RUN ./gradlew clean build
 # ------------------------------------------
 # 2. Production Image
 # ------------------------------------------
-FROM openjdk:8-jre-slim-bullseye
+FROM openjdk:17-jdk-slim-bullseye
 
 COPY ./src/TorrentAD/docker-entrypoint.sh /docker-entrypoint/
 RUN chmod +x /docker-entrypoint/docker-entrypoint.sh
