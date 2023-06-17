@@ -1,26 +1,19 @@
-def projectVersion = '1.1.0'
-def projectJavaVersion = '1.8'
-def projectSourceEncoding = 'UTF-8'
+plugins {
+    id "java"
+}
 
-apply plugin: 'java'
-
-project.group = 'com.darkkaiser'
-project.version = projectVersion
-project.description = 'TorrentAD'
-
-sourceCompatibility = projectJavaVersion
-targetCompatibility = projectJavaVersion
+group = "com.darkkaiser"
+version = "1.1.0"
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
 compileJava {
-    options.encoding = projectSourceEncoding
+    options.encoding = "UTF-8"
 }
 
-// 소스 인코딩 지정
 tasks.withType(JavaCompile) {
-    options.encoding = projectSourceEncoding
+    options.encoding = "UTF-8"
 }
-
-buildDir = 'build'
 
 repositories {
     mavenCentral()
@@ -30,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'log4j:log4j:1.2.17'
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.jsoup:jsoup:1.14.2'
     implementation 'org.slf4j:slf4j-api:1.7.32'
     implementation 'org.slf4j:slf4j-log4j12:1.7.32'
@@ -42,22 +35,23 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testCompileOnly 'org.projectlombok:lombok:1.18.28'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
 
 jar {
+    archiveFileName = "torrentad-" + version + ".jar"
     manifest {
         attributes('Main-Class': 'com.darkkaiser.torrentad.App',
                    'Implementation-Title': 'TorrentAD',
-                   'Implementation-Version': projectVersion)
+                   'Implementation-Version': version)
     }
-    archiveName 'torrentad-' + projectVersion + '.jar'
     from {
-        configurations.compileClasspath.collect {
+        configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
