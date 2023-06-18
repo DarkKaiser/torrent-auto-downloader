@@ -49,6 +49,8 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	private final MetadataRepository metadataRepository;
 
 	public TorrentBot(final ImmediatelyTaskExecutorService immediatelyTaskExecutorService, final FileTransmissionExecutorService fileTransmissionExecutorService, final Configuration configuration) throws Exception {
+		super(configuration.getValue(Constants.APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_BOTTOKEN));
+
 		Objects.requireNonNull(immediatelyTaskExecutorService, "immediatelyTaskExecutorService");
 		Objects.requireNonNull(fileTransmissionExecutorService, "fileTransmissionExecutorService");
 		Objects.requireNonNull(configuration, "configuration");
@@ -134,11 +136,6 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	@Override
 	public String getBotUsername() {
 		return this.configuration.getValue(Constants.APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_BOTNAME);
-	}
-
-	@Override
-	public String getBotToken() {
-		return this.configuration.getValue(Constants.APP_CONFIG_TAG_TELEGRAM_TORRENTBOT_BOTTOKEN);
 	}
 
 	@Override
