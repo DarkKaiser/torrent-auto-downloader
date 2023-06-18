@@ -6,14 +6,12 @@ import com.darkkaiser.torrentad.service.au.transmitter.FileTransmissionExecutorS
 import com.darkkaiser.torrentad.service.bot.BotService;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBot;
 import lombok.extern.slf4j.Slf4j;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
-import org.telegram.telegrambots.logging.BotLogger;
-import org.telegram.telegrambots.updatesreceivers.BotSession;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.util.Objects;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 
 @Slf4j
 public class TelegramBotService implements BotService {
@@ -42,10 +40,7 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public boolean start() throws Exception {
-		BotLogger.setLevel(Level.ALL);
-		BotLogger.registerLogger(new ConsoleHandler());
-
-		this.botsApi = new TelegramBotsApi();
+		this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
 
 		try {
 			this.torrentBot = new TorrentBot(this.immediatelyTaskExecutorService, this.fileTransmissionExecutorService, this.configuration);
@@ -60,11 +55,8 @@ public class TelegramBotService implements BotService {
 
 	@Override
 	public void stop() {
-		// 종료할 때 TelegramBot API에서 예외가 항상 발생하므로 로그를 출력하지 않도록 한다.
-		BotLogger.setLevel(Level.OFF);
-
 		if (this.torrentBotSession != null) {
-			this.torrentBotSession.close();
+			this.torrentBotSession.stop();
 			this.torrentBotSession = null;
 		}
 

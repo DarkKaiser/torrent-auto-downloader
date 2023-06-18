@@ -6,9 +6,9 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.website.*;
 import lombok.extern.slf4j.Slf4j;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -85,22 +85,21 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 			}
 
 			// 인라인 키보드를 설정한다.
-			//noinspection ArraysAsListWithZeroOrOneArgument
-			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE))
-			);
-			List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMaxValue)),
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMinValue))
-			);
+			final InlineKeyboardButton keyboardButton01 = new InlineKeyboardButton();
+			keyboardButton01.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton01.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, WebSiteConstants.INVALID_BOARD_ITEM_IDENTIFIER_VALUE));
+			final List<InlineKeyboardButton> keyboardButtonList01 = List.of(keyboardButton01);
 
-			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
+			final InlineKeyboardButton keyboardButton02 = new InlineKeyboardButton();
+			keyboardButton02.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton02.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMaxValue));
+			final InlineKeyboardButton keyboardButton03 = new InlineKeyboardButton();
+			keyboardButton03.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton03.setCallbackData(generateCallbackQueryCommandString(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, identifierMinValue));
+			final List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(keyboardButton02, keyboardButton03);
+
+			final InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+			inlineKeyboardMarkup.setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
 
 			// 클라이언트로 조회 및 검색된 결과 메시지를 전송한다.
 			if (this.messageId == BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID) {

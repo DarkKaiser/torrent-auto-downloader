@@ -7,7 +7,7 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
 import org.jsoup.internal.StringUtil;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Iterator;
 import java.util.Objects;

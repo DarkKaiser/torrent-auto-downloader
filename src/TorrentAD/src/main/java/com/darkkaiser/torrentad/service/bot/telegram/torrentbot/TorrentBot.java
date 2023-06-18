@@ -21,9 +21,9 @@ import com.darkkaiser.torrentad.website.WebSiteConnector;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
-import org.telegram.telegrambots.api.objects.CallbackQuery;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import java.util.ArrayList;

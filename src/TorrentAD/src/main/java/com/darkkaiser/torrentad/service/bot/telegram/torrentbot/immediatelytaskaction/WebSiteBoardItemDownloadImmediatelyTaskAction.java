@@ -9,9 +9,9 @@ import com.darkkaiser.torrentad.util.Tuple;
 import com.darkkaiser.torrentad.website.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -143,15 +143,13 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 						this.fileTransmissionExecutorService.submit();
 
 						// 인라인 키보드를 설정한다.
-						//noinspection ArraysAsListWithZeroOrOneArgument
-						List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
-								new InlineKeyboardButton()
-										.setText(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_TEXT)
-										.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA))
-						);
+						final InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
+						keyboardButton.setText(BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_TEXT);
+						keyboardButton.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_ETC_INLINE_KEYBOARD_BUTTON_DATA));
+						final List<InlineKeyboardButton> keyboardButtonList = List.of(keyboardButton);
 
-						//noinspection ArraysAsListWithZeroOrOneArgument
-						InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+						final InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+						inlineKeyboardMarkup.setKeyboard(List.of(keyboardButtonList));
 
 						BotCommandUtils.sendMessage(this.absSender, this.chatRoom.getChatId(), "선택한 첨부파일의 다운로드가 완료되었습니다.", this.messageId, inlineKeyboardMarkup);
 					}

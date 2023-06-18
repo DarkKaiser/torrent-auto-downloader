@@ -4,8 +4,8 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.ChatRoom;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.ExposedBotCommand;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Objects;
 

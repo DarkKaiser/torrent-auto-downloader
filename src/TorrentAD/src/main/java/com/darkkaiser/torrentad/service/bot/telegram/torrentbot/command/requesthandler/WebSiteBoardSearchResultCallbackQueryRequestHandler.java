@@ -9,10 +9,10 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.immediatelytaska
 import com.darkkaiser.torrentad.website.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -165,22 +165,21 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 			}
 
 			// 인라인 키보드를 설정한다.
-			//noinspection ArraysAsListWithZeroOrOneArgument
-			List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier()))
-			);
-			List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier(), Long.toString(identifierMaxValue))),
-					new InlineKeyboardButton()
-							.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT)
-							.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier(), Long.toString(identifierMinValue)))
-			);
+			final InlineKeyboardButton keyboardButton01 = new InlineKeyboardButton();
+			keyboardButton01.setText(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton01.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier()));
+			final List<InlineKeyboardButton> keyboardButtonList01 = List.of(keyboardButton01);
 
-			InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
+			final InlineKeyboardButton keyboardButton02 = new InlineKeyboardButton();
+			keyboardButton02.setText(BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton02.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_PREV_PAGE_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier(), Long.toString(identifierMaxValue)));
+			final InlineKeyboardButton keyboardButton03 = new InlineKeyboardButton();
+			keyboardButton03.setText(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_TEXT);
+			keyboardButton03.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.LASR_SEARCH_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA, searchResultData.getIdentifier(), Long.toString(identifierMinValue)));
+			final List<InlineKeyboardButton> keyboardButtonList02 = Arrays.asList(keyboardButton02, keyboardButton03);
+
+			final InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+			inlineKeyboardMarkup.setKeyboard(Arrays.asList(keyboardButtonList01, keyboardButtonList02));
 
 			// 클라이언트로 조회된 결과 메시지를 전송한다.
 			BotCommandUtils.editMessageText(absSender, chatRoom.getChatId(), callbackQueryMessageId, sbAnswerMessage.toString(), inlineKeyboardMarkup);

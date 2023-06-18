@@ -7,10 +7,10 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotComma
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.RequestHandlerRegistry;
 import com.darkkaiser.torrentad.website.WebSite;
 import com.darkkaiser.torrentad.website.WebSiteBoard;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,17 +58,16 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 		BotCommand inlineKeyboardSearchBotCommand = (BotCommand) this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchInlineKeyboardRequestHandler.class);
 
 		// 인라인 키보드를 설정한다.
-		List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
-				new InlineKeyboardButton()
-						.setText("게시판 조회")
-						.setCallbackData(BotCommandUtils.toComplexBotCommandString(listBotCommand.getCommand())),
-				new InlineKeyboardButton()
-						.setText("게시판 검색")
-						.setCallbackData(BotCommandUtils.toComplexBotCommandString(inlineKeyboardSearchBotCommand.getCommand()))
-		);
+		final InlineKeyboardButton keyboardButton01 = new InlineKeyboardButton();
+		keyboardButton01.setText("게시판 조회");
+		keyboardButton01.setCallbackData(BotCommandUtils.toComplexBotCommandString(listBotCommand.getCommand()));
+		final InlineKeyboardButton keyboardButton02 = new InlineKeyboardButton();
+		keyboardButton02.setText("게시판 검색");
+		keyboardButton02.setCallbackData(BotCommandUtils.toComplexBotCommandString(inlineKeyboardSearchBotCommand.getCommand()));
+		final List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(keyboardButton01, keyboardButton02);
 
-		//noinspection ArraysAsListWithZeroOrOneArgument
-		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+		final InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+		inlineKeyboardMarkup.setKeyboard(List.of(keyboardButtonList01));
 
 		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), "[ " + board.getDescription() + " ] 게시판이 선택되었습니다.", inlineKeyboardMarkup);
 	}

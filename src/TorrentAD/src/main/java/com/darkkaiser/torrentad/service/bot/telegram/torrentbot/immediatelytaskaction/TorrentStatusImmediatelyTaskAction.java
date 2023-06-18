@@ -7,9 +7,9 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResour
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandConstants;
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,15 +85,13 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				}
 
 				// 인라인 키보드를 설정한다.
-				//noinspection ArraysAsListWithZeroOrOneArgument
-				List<InlineKeyboardButton> keyboardButtonList01 = Arrays.asList(
-						new InlineKeyboardButton()
-								.setText(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT)
-								.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA))
-				);
+				final InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
+				keyboardButton.setText(BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_TEXT);
+				keyboardButton.setCallbackData(BotCommandUtils.toComplexBotCommandString(BotCommandConstants.TSSR_RESULT_CALLBACK_QUERY_COMMAND, BotCommandConstants.TSSR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA));
+				final List<InlineKeyboardButton> keyboardButtonList = List.of(keyboardButton);
 
-				//noinspection ArraysAsListWithZeroOrOneArgument
-				InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(Arrays.asList(keyboardButtonList01));
+				final InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+				inlineKeyboardMarkup.setKeyboard(List.of(keyboardButtonList));
 
 				// 클라이언트로 토렌트 서버의 상태 메시지를 전송한다.
 				if (this.messageId == BotCommandConstants.INVALID_BOT_COMMAND_MESSAGE_ID) {

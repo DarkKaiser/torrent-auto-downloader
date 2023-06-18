@@ -3,13 +3,13 @@ package com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command;
 import com.darkkaiser.torrentad.util.OutParam;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
-import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -79,10 +79,10 @@ public final class BotCommandUtils {
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
-		SendMessage sendMessage = new SendMessage()
-				.setChatId(Long.toString(chatId))
-				.setText(message)
-				.enableHtml(true);
+		SendMessage sendMessage = new SendMessage();
+		sendMessage.setChatId(Long.toString(chatId));
+		sendMessage.setText(message);
+		sendMessage.enableHtml(true);
 
 		if (replyToMessageId != null)
 			sendMessage.setReplyToMessageId(replyToMessageId);
@@ -91,7 +91,7 @@ public final class BotCommandUtils {
 			sendMessage.setReplyMarkup(replyMarkup);
 
 		try {
-			absSender.sendMessage(sendMessage);
+			absSender.execute(sendMessage);
 		} catch (final TelegramApiException e) {
 			log.error(null, e);
 		}
@@ -109,17 +109,17 @@ public final class BotCommandUtils {
 		if (StringUtil.isBlank(message) == true)
 			throw new IllegalArgumentException("message는 빈 문자열을 허용하지 않습니다.");
 
-		EditMessageText editMessageText = new EditMessageText()
-				.setChatId(Long.toString(chatId))
-				.setMessageId(messageId)
-				.setText(message)
-				.enableHtml(true);
+		EditMessageText editMessageText = new EditMessageText();
+		editMessageText.setChatId(Long.toString(chatId));
+		editMessageText.setMessageId(messageId);
+		editMessageText.setText(message);
+		editMessageText.enableHtml(true);
 
 		if (inlineKeyboardMarkup != null)
 			editMessageText.setReplyMarkup(inlineKeyboardMarkup);
 
 		try {
-			absSender.editMessageText(editMessageText);
+			absSender.execute(editMessageText);
 		} catch (final TelegramApiException e) {
 			log.error(null, e);
 		}
@@ -138,7 +138,7 @@ public final class BotCommandUtils {
 			answerCallbackQuery.setText(text);
 
 		try {
-			absSender.answerCallbackQuery(answerCallbackQuery);
+			absSender.execute(answerCallbackQuery);
 		} catch (final TelegramApiException e) {
 			log.error(null, e);
 		}

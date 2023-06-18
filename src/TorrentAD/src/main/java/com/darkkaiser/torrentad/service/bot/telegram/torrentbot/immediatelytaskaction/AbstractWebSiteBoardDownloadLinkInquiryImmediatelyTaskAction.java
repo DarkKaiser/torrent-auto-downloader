@@ -5,7 +5,7 @@ import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.TorrentBotResour
 import com.darkkaiser.torrentad.service.bot.telegram.torrentbot.command.BotCommandUtils;
 import com.darkkaiser.torrentad.website.*;
 import lombok.extern.slf4j.Slf4j;
-import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.Iterator;
 import java.util.Objects;
