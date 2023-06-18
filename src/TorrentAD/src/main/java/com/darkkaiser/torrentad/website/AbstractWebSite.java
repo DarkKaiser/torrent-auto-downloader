@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.KeyManagementException;
@@ -57,10 +58,10 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	protected final String downloadFileWriteLocation;
 
 	// 조회된 결과 목록
-	protected Map<WebSiteBoard, List<WebSiteBoardItem>> boardList = new HashMap<>();
+	protected final Map<WebSiteBoard, List<WebSiteBoardItem>> boardList = new HashMap<>();
 
 	// 검색된 결과 목록
-	protected List<DefaultWebSiteSearchResultData> searchResultDataList = new LinkedList<>();
+	protected final List<DefaultWebSiteSearchResultData> searchResultDataList = new LinkedList<>();
 
 	protected AbstractWebSite(final WebSiteConnector siteConnector, final String owner, final WebSite site, final String downloadFileWriteLocation) {
 		if (StringUtil.isBlank(owner) == true)
@@ -180,7 +181,8 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 				setBaseURL(responseURL);
 
 				// 도메인 변경사항을 파일에 반영한다.
-				final List<String> lines = Files.readAllLines(Paths.get(Constants.APP_CONFIG_FILE_NAME), StandardCharsets.UTF_8);
+				final Path configFilePath = Paths.get(Constants.APP_CONFIG_FILE_NAME);
+				final List<String> lines = Files.readAllLines(configFilePath, StandardCharsets.UTF_8);
 
 				boolean find = false;
 				for (int i = 0; i < lines.size(); i++) {
@@ -192,7 +194,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 				}
 
 				if (find == true)
-					Files.write(Paths.get(Constants.APP_CONFIG_FILE_NAME), lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+					Files.write(configFilePath, lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
 			}
 		}
 	}
