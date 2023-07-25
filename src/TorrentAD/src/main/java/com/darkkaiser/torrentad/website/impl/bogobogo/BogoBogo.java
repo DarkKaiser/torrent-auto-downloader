@@ -43,7 +43,7 @@ public class BogoBogo extends AbstractWebSite {
 	private Connection.Response loginConnResponse;
 
 	@Getter
-	private final class DownloadProcess1Result {
+	private static final class DownloadProcess1Result {
 
 		private String stat;
 		private String key;

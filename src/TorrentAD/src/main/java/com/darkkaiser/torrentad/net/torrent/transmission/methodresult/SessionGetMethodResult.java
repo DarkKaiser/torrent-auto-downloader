@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public final class SessionGetMethodResult extends AbstractMethodResult {
 
-	public final class Argument {
+	public static final class Argument {
 
 		@SerializedName("rpc-version")
 		private long rpcVersion;

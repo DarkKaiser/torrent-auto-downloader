@@ -163,7 +163,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 				// 처리할 수 있는 RequestHandler를 찾지 못한 경우, 이전에 입력된 요청이 검색 요청인지 확인하여 처리한다.
 				RequestHandler latestRequestHandler = chatRoom.getLatestRequestHandler();
-				if (latestRequestHandler != null && latestRequestHandler instanceof WebSiteBoardSearchInlineKeyboardRequestHandler == true) {
+				if (latestRequestHandler instanceof WebSiteBoardSearchInlineKeyboardRequestHandler == true) {
 					requestHandler = this.requestHandlerRegistry.getRequestHandler(WebSiteBoardSearchRequestHandler.class);
 					if (requestHandler != null) {
 						chatRoom.setLatestRequestHandler(requestHandler);

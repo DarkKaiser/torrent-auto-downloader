@@ -10,7 +10,7 @@ public final class TorrentGetMethodResult extends AbstractMethodResult {
 
 	}
 
-	public final class Torrent {
+	public static final class Torrent {
 
 		private long id;
 		private String name;

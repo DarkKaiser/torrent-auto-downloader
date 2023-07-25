@@ -14,7 +14,7 @@ public final class TorrentAddMethodResult extends AbstractMethodResult {
 
 	}
 
-	public final class TorreatAdded {
+	public static final class TorreatAdded {
 				
 		private long id;
 		private String name;
