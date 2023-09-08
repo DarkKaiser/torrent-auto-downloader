@@ -1,8 +1,34 @@
 # TorrentAD
 
-## About
+<p>
+  <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=Go&logoColor=white" />
+  <img src="https://img.shields.io/badge/jenkins-%232C5263.svg?style=flat&logo=jenkins&logoColor=white">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white">
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black">
+  <a href="https://github.com/DarkKaiser/torrent-auto-downloader/blob/main/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
+  </a>
+</p>
 
 설정파일을 기반으로 토렌트 사이트에서 원하는 토렌트 파일을 자동으로 다운로드 받고, 이를 Transmission으로 전달해주는 프로그램
+
+## Build
+
+```bash
+docker build -t darkkaiser/torrentad -f src/TorrentAD/Dockerfile .
+```
+
+## Run
+
+```bash
+docker ps -q --filter name=torrentad | grep -q . && docker container stop torrentad && docker container rm torrentad
+
+docker run -d --name torrentad \
+              -e TZ=Asia/Seoul \
+              -v /usr/local/docker/torrentad:/usr/local/app \
+              --restart="always" \
+              darkkaiser/torrentad
+```
 
 ## Troubleshooting
 
@@ -73,5 +99,15 @@
     ```bash
     sudo keytool -delete  -keystore /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/lib/security/cacerts -storepass changeit  -alias letsencrypt
     ```
+    
+## 🤝 Contributing
 
+Contributions, issues and feature requests are welcome.<br />
+Feel free to check [issues page](https://github.com/DarkKaiser/torrent-auto-downloader/issues) if you want to contribute.
 
+## Author
+
+👤 **DarkKaiser**
+
+- Blog: [@DarkKaiser](http://www.darkkaiser.com)
+- Github: [@DarkKaiser](https://github.com/DarkKaiser)
