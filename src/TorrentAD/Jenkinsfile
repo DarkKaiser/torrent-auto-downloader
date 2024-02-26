@@ -50,6 +50,7 @@ pipeline {
                     docker run -d --name torrentad \
                                   -e TZ=Asia/Seoul \
                                   -v /usr/local/docker/torrentad:/usr/local/app \
+                                  --add-host=api.darkkaiser.com:192.168.219.110 \
                                   --restart="always" \
                                   darkkaiser/torrentad
                 '''
