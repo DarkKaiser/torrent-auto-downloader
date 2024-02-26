@@ -26,6 +26,7 @@ docker ps -q --filter name=torrentad | grep -q . && docker container stop torren
 docker run -d --name torrentad \
               -e TZ=Asia/Seoul \
               -v /usr/local/docker/torrentad:/usr/local/app \
+              --add-host=api.darkkaiser.com:192.168.219.110 \
               --restart="always" \
               darkkaiser/torrentad
 ```
@@ -126,5 +127,5 @@ Feel free to check [issues page](https://github.com/DarkKaiser/torrent-auto-down
 
 👤 **DarkKaiser**
 
-- Blog: [@DarkKaiser](http://www.darkkaiser.com)
+- Blog: [@DarkKaiser](https://www.darkkaiser.com)
 - Github: [@DarkKaiser](https://github.com/DarkKaiser)
