@@ -226,7 +226,23 @@ public class Torrent extends AbstractWebSite {
 					int downloadLinkCount = 0;
 					for (final Element element : elements) {
 						final String link = element.parent().attr("href");
-						final String fileName = String.format("%s (%d).torrent", boardItem.getTitle(), ++downloadLinkCount);
+						String fileName = String.format("%s (%d).torrent", boardItem.getTitle(), ++downloadLinkCount);
+
+						if (element.parent() != null && element.parent().parent() != null && element.parent().parent().parent() != null) {
+							try {
+								final Element previousElementSibling = element.parent().parent().parent().previousElementSibling();
+                                if (previousElementSibling != null) {
+									// 파일명을 출력하고 있는 태그인지 확인한다.
+									if (previousElementSibling.hasClass("border-t") == true) {
+										final String value = previousElementSibling.text().trim();
+										if (value.toLowerCase().endsWith(".torrent") == false) {
+											fileName = value;
+										}
+									}
+                                }
+							} catch (final NullPointerException ignored) {
+							}
+						}
 
 						// 특정 파일은 다운로드 받지 않도록 한다.
 						if (Arrays.asList(exceptFileExtensions).contains(fileName.substring(fileName.lastIndexOf(".")).toUpperCase()) == true)
