@@ -222,6 +222,7 @@ public class Torrent extends AbstractWebSite {
 			} else {
 				try {
 					final String[] exceptFileExtensions = { ".JPG", ".JPEG", ".GIF", ".PNG" };
+					final String[] notTorrentFileExtensions = { ".SMI", ".SRT", ".ASS" };
 
 					int downloadLinkCount = 0;
 					for (final Element element : elements) {
@@ -235,7 +236,7 @@ public class Torrent extends AbstractWebSite {
 									// 파일명을 출력하고 있는 태그인지 확인한다.
 									if (previousElementSibling.hasClass("border-t") == true) {
 										final String value = previousElementSibling.text().trim();
-										if (value.toLowerCase().endsWith(".torrent") == false) {
+										if (Arrays.asList(notTorrentFileExtensions).contains(value.substring(value.lastIndexOf(".")).toUpperCase()) == true) {
 											fileName = value;
 										}
 									}
