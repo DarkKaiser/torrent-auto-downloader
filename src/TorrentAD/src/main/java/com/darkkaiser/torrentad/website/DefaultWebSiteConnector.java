@@ -61,7 +61,7 @@ public class DefaultWebSiteConnector implements WebSiteConnector {
 	public boolean login() {
 		WebSiteAccount account = null;
 
-		if (this.accountId.equals("") == false || this.accountPassword.equals("") == false) {
+		if (this.accountId.isEmpty() == false || this.accountPassword.isEmpty() == false) {
 			try {
 				account = this.site.createAccount(this.accountId, this.accountPassword);
 			} catch (final Exception e) {

@@ -91,7 +91,9 @@ public class Torrent extends AbstractWebSite {
 								if (registElement.size() != 1)
 									throw new ParseException(String.format("게시물 생성일의 <I> 태그의 갯수가 유효하지 않습니다. CSS셀렉터를 확인하세요.(URL:%s)\r\nHTML:%s", url, element.html()), 0);
 
-								final String[] splitValues = registElement.get(0).parent().text().trim().split(" ");
+                                assert registElement.get(0).parent() != null;
+
+                                final String[] splitValues = Objects.requireNonNull(registElement.get(0).parent()).text().trim().split(" ");
 								registDate = splitValues[splitValues.length - 2].replace("/", ".").trim();
 							} else {
 								final Iterator<Element> iterator = element.children().iterator();
@@ -226,7 +228,9 @@ public class Torrent extends AbstractWebSite {
 
 					int downloadLinkCount = 0;
 					for (final Element element : elements) {
-						final String link = element.parent().attr("href");
+                        assert element.parent() != null;
+
+                        final String link = element.parent().attr("href");
 						String fileName = String.format("%s (%d).torrent", boardItem.getTitle(), ++downloadLinkCount);
 
 						if (element.parent() != null && element.parent().parent() != null && element.parent().parent().parent() != null) {
@@ -336,7 +340,8 @@ public class Torrent extends AbstractWebSite {
 				final List<String> extractedSubtitleFilePathList = new ArrayList<>();
 				if (isNotYetDownloadSubtitleZipFile(notyetDownloadFile.getCanonicalPath()) == true &&
 						extractNotYetDownloadSubtitleZipFile(notyetDownloadFile.getCanonicalPath(), extractedSubtitleFilePathList) == true) {
-					notyetDownloadFile.delete();
+                    //noinspection ResultOfMethodCallIgnored
+                    notyetDownloadFile.delete();
 
 					++downloadCompletedCount;
 					downloadLink.setDownloadCompleted(true);
@@ -346,7 +351,8 @@ public class Torrent extends AbstractWebSite {
 
 					log.info(sb.toString());
 				} else {
-					notyetDownloadFile.renameTo(downloadFile);
+                    //noinspection ResultOfMethodCallIgnored
+                    notyetDownloadFile.renameTo(downloadFile);
 
 					++downloadCompletedCount;
 					downloadLink.setDownloadCompleted(true);
