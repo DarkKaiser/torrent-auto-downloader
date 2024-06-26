@@ -1,5 +1,6 @@
 package com.darkkaiser.torrentad.util.metadata.repository;
 
+@SuppressWarnings("unused")
 public interface MetadataRepository {
 
 	int getInt(final String key, final int defaultValue);

@@ -69,7 +69,8 @@ public final class ChatRoom {
 		return this.latestRequestHandler;
 	}
 
-	private String getProperiesKeyString(final String subKey) {
+	@SuppressWarnings("SameParameterValue")
+    private String getProperiesKeyString(final String subKey) {
 		return String.format("%s-%d.%s", Constants.BOT_SERVICE_MR_KEY_CHAT_ID_PREFIX, this.chatId, subKey);
 	}
 	

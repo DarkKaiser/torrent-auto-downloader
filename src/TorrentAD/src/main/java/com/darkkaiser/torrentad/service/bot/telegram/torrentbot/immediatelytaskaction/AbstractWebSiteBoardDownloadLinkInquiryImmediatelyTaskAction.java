@@ -44,7 +44,7 @@ public abstract class AbstractWebSiteBoardDownloadLinkInquiryImmediatelyTaskActi
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		try {
 			// 선택된 게시판을 검색 또는 조회한다.
 			Iterator<WebSiteBoardItem> iterator = execute();

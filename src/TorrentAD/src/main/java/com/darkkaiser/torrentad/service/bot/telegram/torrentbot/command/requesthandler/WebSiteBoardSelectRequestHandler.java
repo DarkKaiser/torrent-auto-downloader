@@ -26,11 +26,8 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 
 	@Override
 	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
-			return false;
-
-		return true;
-	}
+        return super.executable0(command, parameters, containInitialChar, 0, 0) != false;
+    }
 
 	@Override
 	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {
@@ -38,16 +35,18 @@ public class WebSiteBoardSelectRequestHandler extends AbstractBotCommandRequestH
 		sbAnswerMessage.append("조회 및 검색하려는 게시판을 선택하세요:\n\n");
 
 		WebSiteBoard[] boardValues = this.site.getBoardValues();
-		for (int index = 0; index < boardValues.length; ++index) {
-			WebSiteBoard board = boardValues[index];
+        if (boardValues != null) {
+            for (int index = 0; index < boardValues.length; ++index) {
+                WebSiteBoard board = boardValues[index];
 
-			sbAnswerMessage.append(String.format("%02d", index + 1)).append(". ")
-					.append(board.getDescription())
-					.append(" : ")
-					.append("/").append(board.getCode()).append("\n");
-		}
-		
-		BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+                sbAnswerMessage.append(String.format("%02d", index + 1)).append(". ")
+                        .append(board.getDescription())
+                        .append(" : ")
+                        .append("/").append(board.getCode()).append("\n");
+            }
+
+			BotCommandUtils.sendMessage(absSender, chatRoom.getChatId(), sbAnswerMessage.toString());
+        }
 	}
 
 	@Override

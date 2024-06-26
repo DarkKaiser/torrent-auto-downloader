@@ -178,7 +178,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 
 						parameters.addAll(Arrays.asList(outParameters.get()));
 
-						requestHandler.execute(this, chatRoom, update, ((BotCommand) requestHandler).getCommand(), parameters.toArray(new String[parameters.size()]), outContainInitialChar.get());
+						requestHandler.execute(this, chatRoom, update, ((BotCommand) requestHandler).getCommand(), parameters.toArray(new String[0]), outContainInitialChar.get());
 						
 						return;
 					}

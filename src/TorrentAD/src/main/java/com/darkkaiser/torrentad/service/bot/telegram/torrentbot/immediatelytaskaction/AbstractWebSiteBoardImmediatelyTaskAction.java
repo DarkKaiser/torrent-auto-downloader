@@ -53,7 +53,7 @@ public abstract class AbstractWebSiteBoardImmediatelyTaskAction extends Abstract
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		try {
 			// 선택된 게시판을 조회 및 검색한다.
 			Iterator<WebSiteBoardItem> iterator = execute();

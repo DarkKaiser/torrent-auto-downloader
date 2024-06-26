@@ -43,7 +43,8 @@ public class FileTransmissionActionImpl extends AbstractAction implements FileTr
 			if (entry.getValue() == true) {
 				log.debug("{} 파일의 전송이 완료되어 삭제합니다.", entry.getKey().getName());
 
-				entry.getKey().delete();
+                //noinspection ResultOfMethodCallIgnored
+                entry.getKey().delete();
 			}
 		}
 	}

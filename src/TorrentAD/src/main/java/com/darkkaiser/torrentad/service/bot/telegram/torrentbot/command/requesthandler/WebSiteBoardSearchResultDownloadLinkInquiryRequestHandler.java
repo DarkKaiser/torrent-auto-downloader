@@ -35,11 +35,8 @@ public class WebSiteBoardSearchResultDownloadLinkInquiryRequestHandler extends A
 		if (super.executable0(command, parameters, containInitialChar, 2, 2) == false)
 			return false;
 
-		if (StringUtil.isNumeric(parameters[1]) == false)
-			return false;
-
-		return true;
-	}
+        return StringUtil.isNumeric(parameters[1]) != false;
+    }
 
 	@Override
 	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {

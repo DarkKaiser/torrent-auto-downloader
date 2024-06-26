@@ -35,11 +35,8 @@ public class WebSiteBoardSelectedRequestHandler extends AbstractBotCommandReques
 
 	@Override
 	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
-		if (findBoard(command, parameters, containInitialChar) == null)
-			return false;
-
-		return true;
-	}
+        return findBoard(command, parameters, containInitialChar) != null;
+    }
 
 	@Override
 	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {

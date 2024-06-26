@@ -14,7 +14,7 @@ public final class RadixNotation62Util {
 		int charBufPos = charBuf.length - 1;
 		int radix = digits.length;
 
-		while (value > -1) {
+		while (true) {
 			charBuf[charBufPos--] = digits[(int) (value % radix)];
 			value = value / radix;
 			if (value == 0)
