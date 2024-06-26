@@ -13,23 +13,23 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
-    implementation 'org.jsoup:jsoup:1.16.1'
-    implementation 'org.slf4j:slf4j-api:2.0.7'
-    implementation 'org.slf4j:slf4j-reload4j:2.0.7'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'commons-net:commons-net:3.9.0'
-    implementation 'commons-codec:commons-codec:1.15'
-    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.1'
-    implementation 'org.telegram:telegrambots:6.7.0'
-    implementation 'org.json:json:20230227'
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+    implementation 'org.jsoup:jsoup:1.17.2'
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    implementation 'org.slf4j:slf4j-reload4j:2.0.13'
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'commons-net:commons-net:3.11.1'
+    implementation 'commons-codec:commons-codec:1.17.0'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.4'
+    implementation 'org.telegram:telegrambots:6.9.7.1'
+    implementation 'org.json:json:20240303'
     testImplementation 'junit:junit:4.13.2'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
-    testCompileOnly 'org.projectlombok:lombok:1.18.28'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
 jar {

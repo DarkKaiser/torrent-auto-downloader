@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.MaybeInaccessibleMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -187,7 +188,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 			CallbackQuery callbackQuery = update.getCallbackQuery();
 			if (callbackQuery != null) {
 				String data = callbackQuery.getData();
-				Message message = callbackQuery.getMessage();
+				MaybeInaccessibleMessage message = callbackQuery.getMessage();
 
 	            // 수신된 메시지를 명령+파라메터로 분리한다.
 	            OutParam<String> outCommand = new OutParam<>();
@@ -198,7 +199,7 @@ public class TorrentBot extends TelegramLongPollingBot implements TorrentBotReso
 	            // 해당 요청을 처리할 수 있는 RequestHandler를 찾는다.
 				RequestHandler requestHandler = this.requestHandlerRegistry.getRequestHandler(outCommand.get(), outParameters.get(), outContainInitialChar.get());
 				if (requestHandler != null) {
-					ChatRoom chatRoom = getChatRoom(message.getChat().getId());
+					ChatRoom chatRoom = getChatRoom(message.getChatId());
 					chatRoom.setLatestRequestHandler(requestHandler);
 					requestHandler.execute(this, chatRoom, update, outCommand.get(), outParameters.get(), outContainInitialChar.get());
 					return;
