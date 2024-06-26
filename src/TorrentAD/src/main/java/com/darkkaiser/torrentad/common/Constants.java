@@ -57,7 +57,6 @@ public final class Constants {
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_BOARD_NAME = "board-name";
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS = "search-keywords";
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORDS_ATTR_TYPE = "type";
-	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD = "search-keyword";
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ATTR_MODE = "mode";
 	public static final String APP_CONFIG_TAG_PERIODIC_SCHEDULED_TASK_SEARCH_KEYWORD_ITEM = "item";
 

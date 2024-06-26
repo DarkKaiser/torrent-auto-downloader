@@ -8,7 +8,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -23,11 +22,11 @@ public class AES256Util {
 	private final String iv;
 	private final Key keySpec;
 
-	public AES256Util() throws UnsupportedEncodingException {
+	public AES256Util() {
 		this(DEFAULT_CRYPTOGRAPH_KEY);
 	}
 
-	private AES256Util(final String key) throws UnsupportedEncodingException {
+	private AES256Util(final String key) {
 		this.iv = key.substring(0, 16);
 
 		byte[] keyBytes = new byte[16];
@@ -41,7 +40,7 @@ public class AES256Util {
 		this.keySpec = new SecretKeySpec(keyBytes, "AES");
 	}
 
-	public String encode(final String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
+	public String encode(final String str) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
@@ -51,7 +50,7 @@ public class AES256Util {
 		return new String(Base64.encodeBase64(encrypted));
 	}
 
-	public String decode(final String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
+	public String decode(final String str) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8)));
