@@ -48,16 +48,12 @@ public class WebSiteBoardSearchResultCallbackQueryRequestHandler extends Abstrac
 					&& callbackQueryCommand.equals(BotCommandConstants.LASR_NEXT_PAGE_INLINE_KEYBOARD_BUTTON_DATA) == false) {
 				return false;
 			}
-			
-			if (StringUtil.isNumeric(parameters[2]) == false)
-				return false;
-		} else {
-			if (callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) == false)
-				return false;
-		}
 
-		return true;
-	}
+            return StringUtil.isNumeric(parameters[2]) != false;
+		} else {
+            return callbackQueryCommand.equals(BotCommandConstants.LASR_REFRESH_INLINE_KEYBOARD_BUTTON_DATA) != false;
+		}
+    }
 
 	@Override
 	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {

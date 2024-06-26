@@ -30,7 +30,7 @@ public final class ScheduledTasksCallableAdapter implements TasksCallableAdapter
 	}
 
 	@Override
-	public TasksCallableAdapterResult call() throws Exception {
+	public TasksCallableAdapterResult call() {
 		try {
 			if (this.siteConnector.login() == false)
 				return TasksCallableAdapterResult.WEBSITE_LOGIN_FAILED();

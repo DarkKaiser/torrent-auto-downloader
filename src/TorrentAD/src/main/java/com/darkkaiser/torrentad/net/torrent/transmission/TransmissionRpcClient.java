@@ -61,6 +61,10 @@ public class TransmissionRpcClient implements TorrentClient {
 		int statusCode = response.statusCode();
 		if (statusCode == HttpStatus.SC_CONFLICT) {
 			String sessionId = response.header("X-Transmission-Session-Id");
+			if (sessionId == null) {
+				log.error("POST {}(X-Transmission-Session-Id가 비어있는 값입니다) returned {}: {}", this.rpcURL, response.statusCode(), response.statusMessage());
+				return false;
+			}
 
 			response = Jsoup.connect(this.rpcURL)
 					.userAgent(USER_AGENT)
@@ -73,7 +77,7 @@ public class TransmissionRpcClient implements TorrentClient {
 					.execute();
 
 			if (response.statusCode() != HttpStatus.SC_OK) {
-				log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+                log.error("POST {}(X-Transmission-Session-Id:{}) returned {}: {}", this.rpcURL, sessionId, response.statusCode(), response.statusMessage());
 				return false;
 			}
 
@@ -87,10 +91,10 @@ public class TransmissionRpcClient implements TorrentClient {
 			this.sessionId = sessionId;
 			this.authorization = authorization;
 		} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
-			log.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage() + ": 사용자 인증이 실패하였습니다.");
+            log.error("POST {} returned {}: {}: 사용자 인증이 실패하였습니다.", this.rpcURL, response.statusCode(), response.statusMessage());
 			return false;
 		} else {
-			log.error("POST " + this.rpcURL + " returned " + response.statusCode() + ": " + response.statusMessage());
+            log.error("POST {} returned {}: {}", this.rpcURL, response.statusCode(), response.statusMessage());
 			return false;
 		}
 
@@ -134,7 +138,7 @@ public class TransmissionRpcClient implements TorrentClient {
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+            log.error("POST {}(X-Transmission-Session-Id:{}) returned {}: {}", this.rpcURL, sessionId, response.statusCode(), response.statusMessage());
 			return false;
 		}
 
@@ -193,7 +197,7 @@ public class TransmissionRpcClient implements TorrentClient {
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+            log.error("POST {}(X-Transmission-Session-Id:{}) returned {}: {}", this.rpcURL, sessionId, response.statusCode(), response.statusMessage());
 			return false;
 		}
 
@@ -225,7 +229,7 @@ public class TransmissionRpcClient implements TorrentClient {
 				.execute();
 
 		if (response.statusCode() != HttpStatus.SC_OK) {
-			log.error("POST " + this.rpcURL + "(X-Transmission-Session-Id:" + sessionId + ")" + " returned " + response.statusCode() + ": " + response.statusMessage());
+            log.error("POST {}(X-Transmission-Session-Id:{}) returned {}: {}", this.rpcURL, sessionId, response.statusCode(), response.statusMessage());
 			return null;
 		}
 

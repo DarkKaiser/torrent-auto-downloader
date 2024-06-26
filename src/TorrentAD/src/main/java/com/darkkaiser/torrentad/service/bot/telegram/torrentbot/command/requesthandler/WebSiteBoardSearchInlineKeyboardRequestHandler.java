@@ -15,11 +15,8 @@ public class WebSiteBoardSearchInlineKeyboardRequestHandler extends AbstractBotC
 
 	@Override
 	public boolean executable(final String command, final String[] parameters, final boolean containInitialChar) {
-		if (super.executable0(command, parameters, containInitialChar, 0, 0) == false)
-			return false;
-
-		return true;
-	}
+        return super.executable0(command, parameters, containInitialChar, 0, 0) != false;
+    }
 
 	@Override
 	public void execute(final AbsSender absSender, final ChatRoom chatRoom, final Update update, final String command, final String[] parameters, final boolean containInitialChar) {

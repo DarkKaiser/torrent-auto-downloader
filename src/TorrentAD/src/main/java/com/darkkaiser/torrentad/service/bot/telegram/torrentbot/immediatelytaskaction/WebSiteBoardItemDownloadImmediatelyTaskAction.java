@@ -110,7 +110,7 @@ public class WebSiteBoardItemDownloadImmediatelyTaskAction extends AbstractImmed
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		try {
 			// 선택된 게시판을 조회한다.
 			Iterator<WebSiteBoardItem> iterator = null;

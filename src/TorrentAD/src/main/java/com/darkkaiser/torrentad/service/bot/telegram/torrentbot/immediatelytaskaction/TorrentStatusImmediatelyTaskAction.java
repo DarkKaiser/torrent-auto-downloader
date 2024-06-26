@@ -55,7 +55,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		try {
 			TorrentClient torrentClient = this.torrentBotResource.getTorrentClient();
 
@@ -75,7 +75,7 @@ public class TorrentStatusImmediatelyTaskAction extends AbstractImmediatelyTaskA
 				StringBuilder sbAnswerMessage = new StringBuilder();
 				sbAnswerMessage.append("토렌트 서버의 상태 조회가 완료되었습니다:\n\n");
 
-				if (torrents.size() == 0) {
+				if (torrents.isEmpty() == true) {
 					sbAnswerMessage.append("등록된 토렌트 파일이 없습니다.");
 				} else {
 					for (TorrentGetMethodResult.Torrent torrent : torrents) {

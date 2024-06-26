@@ -48,8 +48,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 
 		// '검색 [게시판]' 형태(검색어가 입력되지 않은 형태)로 입력되면, false를 반환한다.
 		if (parameters.length == 1) {
-			if (this.site.getBoardByCode(parameters[0]) != null)
-				return false;
+            return this.site.getBoardByCode(parameters[0]) == null;
 		}
 		
 		return true;
@@ -67,7 +66,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 				if (inBoard == null) {
 					StringBuilder sbKeyword = new StringBuilder();
 					for (final String parameter : parameters) {
-						if (sbKeyword.length() > 0)
+						if (sbKeyword.isEmpty() == false)
 							sbKeyword.append(BotCommandConstants.BOT_COMMAND_PARAMETER_SEPARATOR);
 
 						sbKeyword.append(parameter);
@@ -80,7 +79,7 @@ public class WebSiteBoardSearchRequestHandler extends AbstractBotCommandRequestH
 					
 					StringBuilder sbKeyword = new StringBuilder();
 					for (int index = 1; index < parameters.length; ++index) {
-						if (sbKeyword.length() > 0)
+						if (sbKeyword.isEmpty() == false)
 							sbKeyword.append(BotCommandConstants.BOT_COMMAND_PARAMETER_SEPARATOR);
 
 						sbKeyword.append(parameters[index]);
