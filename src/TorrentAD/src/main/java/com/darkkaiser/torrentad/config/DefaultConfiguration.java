@@ -39,20 +39,20 @@ public final class DefaultConfiguration implements Configuration {
 			this.configValues.clear();
 
 			try {
-				DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+				final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+				final DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-				Document doc = docBuilder.parse(new File(filePath));
+				final Document doc = docBuilder.parse(new File(filePath));
 				doc.getDocumentElement().normalize();
 
-				NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_SERVICE_CONFIG_VALUES);
+				final NodeList cvNodeList = doc.getElementsByTagName(Constants.APP_CONFIG_TAG_SERVICE_CONFIG_VALUES);
 				for (int cvNodeListIndex = 0; cvNodeListIndex < cvNodeList.getLength(); ++cvNodeListIndex) {
-					Node cvNode = cvNodeList.item(cvNodeListIndex);
+					final Node cvNode = cvNodeList.item(cvNodeListIndex);
 
 					if (cvNode.getNodeType() == Node.ELEMENT_NODE) {
-						NodeList cvChildNodeList = cvNode.getChildNodes();
+						final NodeList cvChildNodeList = cvNode.getChildNodes();
 						for (int cvChildNodeListIndex = 0; cvChildNodeListIndex < cvChildNodeList.getLength(); ++cvChildNodeListIndex) {
-							Node cvChildNode = cvChildNodeList.item(cvChildNodeListIndex);
+							final Node cvChildNode = cvChildNodeList.item(cvChildNodeListIndex);
 							if (cvChildNode.getNodeType() == Node.ELEMENT_NODE) {
 								this.configValues.put(cvChildNode.getNodeName(), cvChildNode.getTextContent());
 								log.debug("프로그램 설정정보:{}={}", cvChildNode.getNodeName(), cvChildNode.getTextContent());
@@ -81,7 +81,7 @@ public final class DefaultConfiguration implements Configuration {
 	@Override
 	public String getValue(final String key, final String defaultValue) {
 		assert key != null;
-		assert key.length() > 0;
+		assert key.isEmpty() == false;
 
 		try {
 			synchronized (this.configValues) {
