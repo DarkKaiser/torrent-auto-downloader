@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,13 +61,24 @@ public class Torrent extends AbstractWebSite {
 				else
 					url = String.format("%s/search/index?%s&search_type=0&page=%d", getBaseURL(), _queryString, page);
 
-				Connection.Response boardItemsResponse = Jsoup.connect(url)
+//				Connection.Response boardItemsResponse = Jsoup.connect(url)
+//						.userAgent(USER_AGENT)
+//		                .method(Connection.Method.GET)
+//		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+//		                .execute();
+				Connection.Response boardItemsResponse;
+				Connection conn = Jsoup.connect(url)
 						.userAgent(USER_AGENT)
-		                .method(Connection.Method.GET)
-		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-		                .execute();
+						.method(Connection.Method.GET)
+						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND);
+				try {
+					boardItemsResponse = conn.execute();
+				} catch (final NoRouteToHostException e) {
+					// NoRouteToHostException 발생시 한번 더 시도하도록 한다.
+                    boardItemsResponse = conn.execute();
+				}
 
-				if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
+                if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
 					throw new IOException("GET " + url + " returned " + boardItemsResponse.statusCode() + ": " + boardItemsResponse.statusMessage());
 
 				final Document boardItemsDoc = boardItemsResponse.parse();
