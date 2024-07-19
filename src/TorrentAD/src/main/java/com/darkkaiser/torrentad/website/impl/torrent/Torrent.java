@@ -67,15 +67,19 @@ public class Torrent extends AbstractWebSite {
 //		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
 //		                .execute();
 				Connection.Response boardItemsResponse;
-				Connection conn = Jsoup.connect(url)
-						.userAgent(USER_AGENT)
-						.method(Connection.Method.GET)
-						.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND);
 				try {
-					boardItemsResponse = conn.execute();
+					boardItemsResponse = Jsoup.connect(url)
+							.userAgent(USER_AGENT)
+							.method(Connection.Method.GET)
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.execute();
 				} catch (final NoRouteToHostException e) {
 					// NoRouteToHostException 발생시 한번 더 시도하도록 한다.
-                    boardItemsResponse = conn.execute();
+					boardItemsResponse = Jsoup.connect(url)
+							.userAgent(USER_AGENT)
+							.method(Connection.Method.GET)
+							.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+							.execute();
 				}
 
                 if (boardItemsResponse.statusCode() != HttpStatus.SC_OK)
