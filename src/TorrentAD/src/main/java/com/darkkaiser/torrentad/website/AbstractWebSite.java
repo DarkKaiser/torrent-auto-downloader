@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -121,7 +122,7 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 			// 리다이렉션 되는 경우 토렌트 사이트 URL을 리다이렉션 되는 URL로 변경해준다.
 			checkDomainRedirection();
 		} catch (final IOException e) {
-			final String message = String.format("도메인(%s) 리다이렉션 여부를 확인하는 중에 예외가 발생하였습니다.", getBaseURL());
+			final String message = String.format("도메인(%s) 리다이렉션 여부를 확인하는 중에 예외(%s)가 발생하였습니다.", getBaseURL(), e.getClass().getSimpleName());
 
 			log.warn(message, e);
 			NotifyApiClient.sendNotifyMessage(message, true);
@@ -158,11 +159,21 @@ public abstract class AbstractWebSite implements WebSiteConnection, WebSiteHandl
 	}
 
 	private void checkDomainRedirection() throws IOException {
-		Connection.Response response = Jsoup.connect(getBaseURL())
-				.userAgent(USER_AGENT)
-				.method(Connection.Method.GET)
-				.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-				.execute();
+		Connection.Response response;
+
+		try {
+			response = Jsoup.connect(getBaseURL())
+					.userAgent(USER_AGENT)
+					.method(Connection.Method.GET)
+					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+					.execute();
+		} catch (final NoRouteToHostException e) {
+			response = Jsoup.connect(getBaseURL())
+					.userAgent(USER_AGENT)
+					.method(Connection.Method.GET)
+					.timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
+					.execute();
+		}
 
 		if (response.statusCode() == HttpStatus.SC_OK) {
 			String baseURL = getBaseURL();
