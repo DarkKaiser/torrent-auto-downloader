@@ -61,11 +61,6 @@ public class Torrent extends AbstractWebSite {
 				else
 					url = String.format("%s/search/index?%s&search_type=0&page=%d", getBaseURL(), _queryString, page);
 
-//				Connection.Response boardItemsResponse = Jsoup.connect(url)
-//						.userAgent(USER_AGENT)
-//		                .method(Connection.Method.GET)
-//		                .timeout(URL_CONNECTION_TIMEOUT_SHORT_MILLISECOND)
-//		                .execute();
 				Connection.Response boardItemsResponse;
 				try {
 					boardItemsResponse = Jsoup.connect(url)
@@ -190,17 +185,10 @@ public class Torrent extends AbstractWebSite {
 			// 아무 처리도 하지 않는다.
 			return null;
 		} catch (final Exception e) {
-			if (e instanceof SocketTimeoutException == false) {
-				final String message = String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.1(URL:%s)", board, url);
+			final String message = String.format("게시판(%s) 데이터를 로드하는 중에 예외(%s)가 발생하였습니다.(URL:%s)", board, e.getClass().getSimpleName(), url);
 
-				log.error(message, e);
-				NotifyApiClient.sendNotifyMessage(message, true);
-			} else {
-				final String message = String.format("게시판(%s) 데이터를 로드하는 중에 예외가 발생하였습니다.2(URL:%s)", board, url);
-
-				log.error(message, e);
-				NotifyApiClient.sendNotifyMessage(message, true);
-			}
+			log.error(message, e);
+			NotifyApiClient.sendNotifyMessage(message, true);
 
 			return null;
 		}
